@@ -5,7 +5,7 @@ pipeline {
         stage('Build') {
             agent any
             steps {
-                sh 'exit 0'
+                sh 'perl -v'
             }
         }
     }
