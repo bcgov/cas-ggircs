@@ -7,6 +7,7 @@ pipeline {
             steps {
                 sh 'make -v'
                 sh 'perl -v'
+                sh 'cpan -v'
             }
         }
     }
