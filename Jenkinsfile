@@ -3,14 +3,11 @@ pipeline {
 
     stages {
         stage('Build') {
-            agent {
-                docker { image 'sqitch/sqitch' }
-            }
+            agent any
             steps {
                 sh 'make -v'
                 sh 'perl -v'
-                sh 'which -a perl'
-                sh 'cpan -v'
+                sh 'perl -MCPAN -e "install App::Sqitch DBD::Pg"'
             }
         }
     }
