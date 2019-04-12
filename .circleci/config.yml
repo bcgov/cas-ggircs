@@ -20,5 +20,9 @@ jobs:
             createdb -O sqitch ggircs_test -U postgres -h localhost
 
       - run:
+          name: Deploy schema with sqitch
+          command: sqitch deploy -h localhost
+
+      - run:
           name: Check sqitch status
           command: sqitch status -h localhost
