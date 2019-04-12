@@ -2,11 +2,11 @@ version: 2
 jobs:
   build:
     docker:
-      - image: sqitch/sqitch:0.9999
+      - image: wenzowski/sqitch:0.9999
 
     steps:
       - checkout
 
       - run:
-          name: Smoke Test
-          command: exit 0
+          name: Check sqitch status
+          command: sqitch status
