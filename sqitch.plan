@@ -1,3 +1,5 @@
 %syntax-version=1.0.0
 %project=ggircs
 %uri=https://github.com/bcgov/cas-ggircs
+
+schema_ggircs 2019-04-12T19:45:19Z Alec Wenzowski <alec@button.is> # Add a schema for ggircs
