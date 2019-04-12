@@ -3,10 +3,17 @@ jobs:
   build:
     docker:
       - image: wenzowski/sqitch:0.9999
+      - image: postgres:11.2
 
     steps:
       - checkout
 
       - run:
+          name: Create testing db
+          command: |
+            createuser sqitch  -U postgres -h localhost
+            createdb -O sqitch ggircs_test -U postgres -h localhost
+
+      - run:
           name: Check sqitch status
-          command: sqitch status
+          command: sqitch status -h localhost
