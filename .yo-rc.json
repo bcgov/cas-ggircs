@@ -1,0 +1,33 @@
+{
+  "generator-bcdk": {
+    "promptValues": {
+      "modules": {
+        "jenkins": {
+          "path": ".jenkins",
+          "namespace": "wksv3k-tools",
+          "name": "jenkins",
+          "version": "1.0.0",
+          "environments": {
+            "build": {
+              "namespace": "wksv3k-tools"
+            },
+            "dev": {
+              "namespace": "wksv3k-dev"
+            },
+            "test": {
+              "namespace": "wksv3k-test"
+            },
+            "prod": {
+              "namespace": "wksv3k-prod"
+            }
+          },
+          "jenkinsJobName": "_jenkins",
+          "github_owner": "bcgov",
+          "github_repo": "cas-ggircs",
+          "jenkinsFilePath": ".jenkins/Jenkinsfile",
+          "uuid": "4e57c447-12bc-41ff-b783-f081f23115c4"
+        }
+      }
+    }
+  }
+}
