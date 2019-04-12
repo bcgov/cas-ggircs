@@ -12,13 +12,13 @@
               "namespace": "wksv3k-tools"
             },
             "dev": {
-              "namespace": "wksv3k-dev"
+              "namespace": "wksv3k-tools"
             },
             "test": {
-              "namespace": "wksv3k-test"
+              "namespace": "wksv3k-tools"
             },
             "prod": {
-              "namespace": "wksv3k-prod"
+              "namespace": "wksv3k-tools"
             }
           },
           "jenkinsJobName": "_jenkins",
