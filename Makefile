@@ -6,6 +6,7 @@ GIT=git
 AWK=awk
 PSQL=psql
 TEST_DB=ggircs_test
+PG_PROVE=pg_prove
 DOCKER_SQITCH_IMAGE=wenzowski/sqitch
 DOCKER_SQITCH_TAG=0.9999
 DOCKER_POSTGRES_IMAGE=wenzowski/postgres
@@ -16,6 +17,7 @@ test:
 	@@$(MAKE) -s $(MAKEFLAGS) deploy;
 	@@$(MAKE) -s $(MAKEFLAGS) revert;
 	@@$(MAKE) -s $(MAKEFLAGS) deploy;
+	@@$(MAKE) -s $(MAKEFLAGS) prove;
 	@@$(MAKE) -s $(MAKEFLAGS) dropdb;
 .PHONY: test
 
@@ -23,6 +25,11 @@ deploy:
 	# Deploy all changes to ${TEST_DB} using sqitch
 	@@sqitch deploy ${TEST_DB};
 .PHONY: deploy
+
+prove:
+	# Run test suite using pg_prove
+	@@${PG_PROVE} -v -d ${TEST_DB} test/*
+.PHONY: test
 
 revert:
 	# Revert all changes to ${TEST_DB} using sqitch
