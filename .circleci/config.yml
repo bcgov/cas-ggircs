@@ -17,6 +17,7 @@ jobs:
               sleep 1
             done
             createuser sqitch  -U postgres -h localhost
+            createdb -O sqitch sqitch -U postgres -h localhost
             createdb -O sqitch ggircs_test -U postgres -h localhost
 
       - run:
