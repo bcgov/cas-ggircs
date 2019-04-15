@@ -21,8 +21,8 @@ jobs:
 
       - run:
           name: Deploy schema with sqitch
-          command: sqitch deploy -h localhost
+          command: sqitch deploy ggircs_test
 
       - run:
           name: Check sqitch status
-          command: sqitch status -h localhost
+          command: sqitch status ggircs_test
