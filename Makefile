@@ -6,11 +6,11 @@ PSQL=psql
 TEST_DB=ggircs_test
 
 test:
-	@@$(MAKE) $(MAKEFLAGS) createdb;
-	@@$(MAKE) $(MAKEFLAGS) deploy;
-	@@$(MAKE) $(MAKEFLAGS) revert;
-	@@$(MAKE) $(MAKEFLAGS) deploy;
-	@@$(MAKE) $(MAKEFLAGS) dropdb;
+	@@$(MAKE) -s $(MAKEFLAGS) createdb;
+	@@$(MAKE) -s $(MAKEFLAGS) deploy;
+	@@$(MAKE) -s $(MAKEFLAGS) revert;
+	@@$(MAKE) -s $(MAKEFLAGS) deploy;
+	@@$(MAKE) -s $(MAKEFLAGS) dropdb;
 .PHONY: test
 
 deploy: 
