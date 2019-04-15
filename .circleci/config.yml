@@ -20,9 +20,5 @@ jobs:
             createdb -O sqitch ggircs_test -U postgres -h localhost
 
       - run:
-          name: Deploy schema with sqitch
-          command: sqitch deploy ggircs_test
-
-      - run:
-          name: Check sqitch status
-          command: sqitch status ggircs_test
+          name: Test database using Make
+          command: make test
