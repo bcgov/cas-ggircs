@@ -20,7 +20,7 @@ deploy:
 
 revert:
 	# Revert all changes to ${TEST_DB} using sqitch
-	@@yes | sqitch revert ${TEST_DB};
+	@@sqitch revert -y ${TEST_DB};
 .PHONY: revert
 
 createdb:
