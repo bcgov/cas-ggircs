@@ -1,28 +1,9 @@
 version: 2
 jobs:
-  install:
-    docker:
-      - image: wenzowski/sqitch:0.9999
-      - image: postgres:11.2
-    steps:
-      - checkout
-      - run:
-          name: Create testing db
-          command: |
-            RETRIES=5
-            until psql -h localhost -U postgres -d postgres -c "select 1" > /dev/null 2>&1 || [ $RETRIES -eq 0 ]; do
-              echo "Waiting for postgres server, $((RETRIES--)) remaining attempts..."
-              sleep 1
-            done
-            createuser sqitch  -U postgres -h localhost
-            createdb -O sqitch sqitch -U postgres -h localhost
-      - run:
-          name: Ensure all perl modules are installed
-          command: make install PSQL="psql -h localhost"
   test:
     docker:
       - image: wenzowski/sqitch:0.9999
-      - image: postgres:11.2
+      - image: wenzowski/postgres:11.2
     steps:
       - checkout
       - run:
@@ -42,27 +23,13 @@ jobs:
   verify:
     docker:
       - image: wenzowski/sqitch:0.9999
-      - image: postgres:11.2
     steps:
       - checkout
-      - run:
-          name: Create testing db
-          command: |
-            RETRIES=5
-            until psql -h localhost -U postgres -d postgres -c "select 1" > /dev/null 2>&1 || [ $RETRIES -eq 0 ]; do
-              echo "Waiting for postgres server, $((RETRIES--)) remaining attempts..."
-              sleep 1
-            done
-            createuser sqitch  -U postgres -h localhost
-            createdb -O sqitch sqitch -U postgres -h localhost
       - run:
           name: Ensure all dependencies are installed and configured
           command: make verify PSQL="psql -h localhost"
 workflows:
   version: 2
-  install:
-    jobs:
-       - install
   test_and_verify:
     jobs:
        - test

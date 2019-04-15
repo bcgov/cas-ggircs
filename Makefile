@@ -6,6 +6,10 @@ GIT=git
 AWK=awk
 PSQL=psql
 TEST_DB=ggircs_test
+DOCKER_SQITCH_IMAGE=wenzowski/sqitch
+DOCKER_SQITCH_TAG=0.9999
+DOCKER_POSTGRES_IMAGE=wenzowski/postgres
+DOCKER_POSTGRES_TAG=11.2
 
 test:
 	@@$(MAKE) -s $(MAKEFLAGS) createdb;
@@ -69,7 +73,7 @@ pgtap:
 		cd pgtap && \
 		${GIT} checkout v1.0.0;
 
-install: pgtap
+install_pgtap: pgtap
 	# install pg_prove
 	@@${CPAN} TAP::Parser::SourceHandler::pgTAP
 	# install pgTAP into postgres
@@ -77,8 +81,39 @@ install: pgtap
 		$(MAKE) -s $(MAKEFLAGS) && \
 		$(MAKE) -s $(MAKEFLAGS) installcheck && \
 		$(MAKE) -s $(MAKEFLAGS) install;
+
+install_sqitch:
 	# install sqitch
 	@@${CPAN} App::Sqitch
 	# install postgres driver for sqitch
 	@@${CPAN} DBD::Pg
+.PHONY: install_sqitch
+
+install: install_sqitch install_pgtap
 .PHONY: install
+
+docker_build_sqitch:
+	# rebuild sqitch
+	@@docker build -t ${DOCKER_SQITCH_IMAGE}:${DOCKER_SQITCH_TAG} -f docker/sqitch/Dockerfile .
+.PHONY: docker_build_sqitch
+
+docker_push_sqitch: docker_build_sqitch
+	# push sqitch
+	@@docker push ${DOCKER_SQITCH_IMAGE}:${DOCKER_SQITCH_TAG}
+.PHONY: docker_push_sqitch
+
+docker_build_postgres:
+	# rebuild postgres
+	@@docker build -t ${DOCKER_POSTGRES_IMAGE}:${DOCKER_POSTGRES_TAG} -f docker/postgres/Dockerfile .
+.PHONY: docker_build_postgres
+
+docker_push_postgres: docker_build_postgres
+	# push postgres
+	@@docker push ${DOCKER_POSTGRES_IMAGE}:${DOCKER_POSTGRES_TAG}
+.PHONY: docker_push_postgres
+
+docker_build: docker_build_sqitch docker_build_postgres
+.PHONY: docker_build
+
+docker_push: docker_push_sqitch docker_push_postgres
+.PHONY: docker_push
