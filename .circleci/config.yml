@@ -20,17 +20,8 @@ jobs:
       - run:
           name: Test database using Make
           command: make test PSQL="psql -h localhost"
-  verify:
-    docker:
-      - image: wenzowski/sqitch:0.9999
-    steps:
-      - checkout
-      - run:
-          name: Ensure all dependencies are installed and configured
-          command: make verify PSQL="psql -h localhost"
 workflows:
   version: 2
-  test_and_verify:
+  test:
     jobs:
        - test
-       - verify
