@@ -1,4 +1,5 @@
 GGIRCS
+`[![CircleCI](https://circleci.com/gh/bcgov/cas-ggircs/tree/master.svg?style=shield)](https://circleci.com/gh/bcgov/cas-ggircs/tree/master)`
 ======
 
 > Greenhouse Gas Industrial Reporting and Control System
