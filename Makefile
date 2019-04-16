@@ -4,9 +4,9 @@ SQITCH=sqitch
 GREP=grep
 GIT=git
 AWK=awk
-PSQL=psql
+PSQL=psql -h localhost
 TEST_DB=ggircs_test
-PG_PROVE=pg_prove
+PG_PROVE=pg_prove -h localhost
 DOCKER_SQITCH_IMAGE=wenzowski/sqitch
 DOCKER_SQITCH_TAG=0.9999
 DOCKER_POSTGRES_IMAGE=wenzowski/postgres
@@ -50,10 +50,12 @@ dropdb:
 		${PSQL} -c "DROP DATABASE ${TEST_DB}";
 .PHONY: dropdb
 
-verify:
+verify_installed:
 	# ensure perl >= 5.10.0
 	@@${PERL} -e 'print $$] . "\n";'
 	@@${PERL} -e 'if ($$] < 5.010001) { exit 1 }'
+	# show all perl install paths
+	@@${PERL} -V:'install.*'
 	# ensure cpan is defined
 	@@${PERL} -MCPAN -e 'print $$CPAN::VERSION . "\n";'
 	# ensure sqitch is >= 0.97.0
@@ -70,8 +72,14 @@ verify:
 	@@${GIT} --version | ${AWK} '{print $$NF}';
 	# ensure psql is installed
 	@@${PSQL} --version | ${AWK} '{print $$NF}';
-	# ensure postgres is online
+.PHONY: verify_installed
+
+verify_ready:
+	ensure postgres is online
 	@@${PSQL} -tc 'show server_version;' | ${AWK} '{print $$NF}';
+.PHONY: verify_ready
+
+verify: verify_installed verify_ready
 .PHONY: verify
 
 pgtap:
@@ -88,12 +96,15 @@ install_pgtap: pgtap
 		$(MAKE) -s $(MAKEFLAGS) && \
 		$(MAKE) -s $(MAKEFLAGS) installcheck && \
 		$(MAKE) -s $(MAKEFLAGS) install;
+.PHONY: install_pgtap
 
 install_sqitch:
 	# install sqitch
 	@@${CPAN} App::Sqitch
 	# install postgres driver for sqitch
 	@@${CPAN} DBD::Pg
+	# install pg_prove
+	@@${CPAN} TAP::Parser::SourceHandler::pgTAP
 .PHONY: install_sqitch
 
 install: install_sqitch install_pgtap
@@ -101,7 +112,7 @@ install: install_sqitch install_pgtap
 
 docker_build_sqitch:
 	# rebuild sqitch
-	@@docker build -t ${DOCKER_SQITCH_IMAGE}:${DOCKER_SQITCH_TAG} -f docker/sqitch/Dockerfile .
+	@@docker build --no-cache -t ${DOCKER_SQITCH_IMAGE}:${DOCKER_SQITCH_TAG} -f docker/sqitch/Dockerfile .
 .PHONY: docker_build_sqitch
 
 docker_push_sqitch: docker_build_sqitch
@@ -111,7 +122,7 @@ docker_push_sqitch: docker_build_sqitch
 
 docker_build_postgres:
 	# rebuild postgres
-	@@docker build -t ${DOCKER_POSTGRES_IMAGE}:${DOCKER_POSTGRES_TAG} -f docker/postgres/Dockerfile .
+	@@docker build --no-cache -t ${DOCKER_POSTGRES_IMAGE}:${DOCKER_POSTGRES_TAG} -f docker/postgres/Dockerfile .
 .PHONY: docker_build_postgres
 
 docker_push_postgres: docker_build_postgres
