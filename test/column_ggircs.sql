@@ -6,6 +6,8 @@ begin;
 
 select plan(0);
 
+/** Check Column Compliance **/
+
 -- TODO: DB should have descriptions for all columns
 
 -- TODO: Columns must have defined maximums for CHAR columns
