@@ -4,7 +4,7 @@ reset client_min_messages;
 
 begin;
 
--- select plan();
+select plan(0);
 
 /** Check table compliance **/
 
