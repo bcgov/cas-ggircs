@@ -7,15 +7,15 @@ SQL Conventions
 GGIRCS establishes several conventions in harmony with the [High Level Data Design Guidelines]
 and the [system architecure proposal].
 
-1. Schemas are used to separate concerns
+1. Schemas are used to separate concerns.
      - This ensures that each application reads and writes to/from its own namespace.
          eg. ETL pipeline operations write to `ggircs_private` while the 
          reporting tools read from `ggircs` and the audit tools read from `ggircs_history`.
-2. First-class are preferred over materialized views
+2. Tables are preferred over materialized views.
      - In cases where data integrity is required, GGIRCS prefers to drop and re-create derived tables
        using stored procedures instead of relying on materialized views in order to ensure
        related tables have foreign key constraints.
-3. Automated Testing of the Database
+3. Automated Testing of the Database.
      - This ensures that established conventions are enshrined in code and can be verified.
      - This ensures developer expectations align with reality.
 
