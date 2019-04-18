@@ -6,7 +6,9 @@ begin;
 
 select plan(2);
 
--- Check schema compliance
+/** Check schema compliance **/
+
+-- TODO: generalize this to check multiple schemas
 select has_schema('ggircs');
 select matches(
            obj_description('ggircs'::regnamespace, 'pg_namespace'),
