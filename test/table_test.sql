@@ -18,14 +18,14 @@ select matches(
            'Table raw_report has a description'
          );
 
--- TODO: Enforce table naming conventions
+-- Enforce table naming conventions
         -- Names are lower-case with underscores_as_word_separators
         select matches(
                 obj_description('ggircs.test'::regclass, 'pg_class'),
                 '([a-z]+_?[a-z$])*',
                 'Table names are lower-case and separated by underscores'
         );
-        -- Names are singular
+        -- TODO: Names are singular
         -- Avoid reserved keywords (ie. COMMENT -> [name]_comment) https://www.drupal.org/docs/develop/coding-standards/list-of-sql-reserved-words
         select hasnt_table(
                 'ggircs',
