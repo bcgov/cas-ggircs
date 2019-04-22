@@ -4,7 +4,7 @@ reset client_min_messages;
 
 begin;
 
-select plan(3);
+select plan(4);
 
 /** Check Column Compliance **/
 
@@ -16,7 +16,12 @@ select matches(
            'Column has a description'
          ) FROM (VALUES(1),(2),(3)) F(pos);
 
--- TODO: Columns must have defined maximums for CHAR columns
+-- Columns must have defined maximums for CHAR columns
+-- TODO: Automate to test all tables in schema, check veracity of 'select 0' comparison
+prepare coltype as select columns.character_maximum_length from information_schema.columns where table_schema = 'ggircs' and table_name = 'test' and data_type like 'char%';
+select bag_hasnt(
+           'coltype', 'select 0', 'columns have defined maximums'
+        );
 
 -- TODO: Columns must have defined Scale and Precision for NUMERIC columns
 
