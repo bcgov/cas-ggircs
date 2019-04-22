@@ -4,11 +4,17 @@ reset client_min_messages;
 
 begin;
 
-select plan(0);
+select plan(3);
 
 /** Check Column Compliance **/
 
--- TODO: DB should have descriptions for all columns
+-- DB should have descriptions for all columns
+-- TODO: Automate to test on all tables in schema ggircs
+select matches(
+           col_description('ggircs.test'::regclass::oid, pos),
+           '.+',
+           'Column has a description'
+         ) FROM (VALUES(1),(2),(3)) F(pos);
 
 -- TODO: Columns must have defined maximums for CHAR columns
 
