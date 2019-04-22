@@ -17,10 +17,10 @@ select matches(
          ) FROM (VALUES(1),(2),(3)) F(pos);
 
 -- Columns must have defined maximums for CHAR columns
--- TODO: Automate to test all tables in schema, check veracity of 'select 0' comparison
-prepare coltype as select columns.character_maximum_length from information_schema.columns where table_schema = 'ggircs' and table_name = 'test' and data_type like 'char%';
+prepare coltype as select columns.character_maximum_length from information_schema.columns where table_schema = 'ggircs' and data_type like 'char%';
+prepare nullcoltype as select columns.character_maximum_length from information_schema.columns where table_schema = 'ggircs' and character_maximum_length IS NULL;
 select bag_hasnt(
-           'coltype', 'select 0', 'columns have defined maximums'
+           'coltype', 'nullcoltype', 'columns have defined maximums'
         );
 
 -- TODO: Columns must have defined Scale and Precision for NUMERIC columns
