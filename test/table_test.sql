@@ -21,10 +21,11 @@ select matches(
 -- Enforce table naming conventions
         -- Names are lower-case with underscores_as_word_separators
         -- TODO: Automate to run on all tables within schema
-        select matches(
+        prepare names as SELECT table_name FROM information_schema.tables WHERE table_schema = 'ggircs';
+        select doesnt_match(
                 tbl,
-                '([a-z]+_?[a-z$])*',
-                'Table names are lower-case and separated by underscores'
+                '[A-Z]|\W',
+                'table names are lower-case and separated by underscores'
         ) FROM (VALUES('test'), ('test1')) F(tbl);
 
         -- TODO: Names are singular
