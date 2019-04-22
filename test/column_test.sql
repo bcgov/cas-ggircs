@@ -30,9 +30,9 @@ select bag_hasnt(
 -- TODO: Enforce column naming conventions
         -- Names are lower-case with underscores_as_word_separators
         -- TODO: Automate getting all columns from tables
-        select matches(
+        select doesnt_match(
                 col,
-                '([a-z]+_?[a-z$])*',
+                '[A-Z]|\W',
                 'Column names are lower-case and separated by underscores'
         ) FROM (VALUES('id'), ('name'), ('team')) F(col);
 
