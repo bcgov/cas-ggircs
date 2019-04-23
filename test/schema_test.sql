@@ -1,27 +1,27 @@
-set client_min_messages to warning;
-create extension if not exists pgtap;
-reset client_min_messages;
+SET client_min_messages TO warning;
+CREATE extension IF NOT EXISTS pgtap;
+RESET client_min_messages;
 
-begin;
-create schema ggircs_test_fixture;
-set search_path to ggircs_test_fixture,public;
+BEGIN;
+CREATE schema ggircs_test_fixture;
+SET search_path TO ggircs_test_fixture,public;
 
-select plan(2);
+SELECT plan(2);
 
 /** Check schema compliance **/
 
 -- Check schema exists
-select has_schema('ggircs_test_fixture');
+SELECT has_schema('ggircs_test_fixture');
 
 -- GUIDELINE: Schema has a description
   -- Check schema for an existing description (regex '.+')
   COMMENT ON SCHEMA ggircs_test_fixture IS 'has a description';
-  select matches(
+  SELECT matches(
             obj_description('ggircs_test_fixture'::regnamespace, 'pg_namespace'),
             '.+',
             'Schema ggircs has a description'
           );
 
-select * from finish();
+SELECT * FROM finish();
 
-rollback;
+ROLLBACK;
