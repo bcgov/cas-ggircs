@@ -11,7 +11,6 @@ DOCKER_SQITCH_IMAGE=wenzowski/sqitch
 DOCKER_SQITCH_TAG=0.9999
 DOCKER_POSTGRES_IMAGE=wenzowski/postgres
 DOCKER_POSTGRES_TAG=11.2
-CURRENT_DIR=$(strip $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST)))))
 
 test:
 	@@$(MAKE) -s $(MAKEFLAGS) createdb;
@@ -29,7 +28,7 @@ deploy:
 
 prove:
 	# Run test suite using pg_prove
-	@@${PG_PROVE} -S CURRENT_DIR="${CURRENT_DIR}" -v -d ${TEST_DB} test/*
+	@@${PG_PROVE} -v -d ${TEST_DB} test/*
 .PHONY: test
 
 revert:
