@@ -29,7 +29,7 @@ select tables_are('ggircs_test_fixture', array ['test_fixture', 'no_comment_no_p
   select matches(
             obj_description(tbl::regclass, 'pg_class'),
             '.+',
-            'Table has a description'
+            format('Table has a description. Violation: %I', tbl)
           ) FROM tnames F(tbl);
 
 --GUIDELINE GROUP: Enforce table naming conventions
@@ -39,7 +39,7 @@ select tables_are('ggircs_test_fixture', array ['test_fixture', 'no_comment_no_p
     select doesnt_match(
           tbl,
           '[A-Z]|\W',
-          'table names are lower-case and separated by underscores'
+          format('table names are lower-case and separated by underscores. Violation: %I', tbl)
   ) FROM tnames F(tbl);
 
   -- TODO: Names are singular
