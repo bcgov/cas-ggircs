@@ -35,7 +35,13 @@ select plan(832);
 
 -- TODO: Columns must have defined Scale and Precision for NUMERIC columns
 
--- TODO: Columns must be defined by an accepted data type
+-- GUIDELINE: Columns must be defined by an accepted data_type
+  -- Get all colums in schema ggircs that have an undefined data_type
+  prepare noDataType as select data_type from information_schema.columns
+                  where table_schema='ggircs'
+                  and data_type IS NULL;
+  -- Check that the results returned by the above prepared statement are empty (no undefined data_types)
+  select is_empty('noDataType', 'Columns must be defined by an accepted data_type');
 
 -- TODO: Enforce column naming conventions
         -- GUIDELINE: Names are lower-case with underscores_as_word_separators
