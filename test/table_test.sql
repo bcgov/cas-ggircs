@@ -62,17 +62,16 @@ select tables_are('ggircs_test_fixture', array ['test_fixture', 'test_1_fixture'
         -- Drop table 'name' to comply with reserved keywords guideline, comment out next line to test the test
         DROP TABLE name;
         -- GUIDELINE: Avoid reserved keywords (ie. COMMENT -> [name]_comment) https://www.drupal.org/docs/develop/coding-standards/list-of-sql-reserved-words
-        -- TODO create one-column csv to read reserved words from
-        create table csv_import_fixture (csv_column_fixture text);
-        \copy csv_import_fixture from './reserved.csv' delimiter ',' csv;
-        -- TODO: Add full absolute path
-        -- copy reserved_words from 'reserved.csv';
-        WITH reserved_words AS (SELECT csv_column_fixture FROM csv_import_fixture)
-        select hasnt_table(
-                'ggircs_test_fixture',
-                tbl,
-                format('Table names avoid reserved keywords. Violation: %I', tbl)
-        ) FROM reserved_words F(tbl);
+          -- create table from csv list of reserved words
+          create table csv_import_fixture (csv_column_fixture text);
+          \copy csv_import_fixture from './reserved.csv' delimiter ',' csv;
+          -- test that schema does not contain any table names that intersect with reserved words csv dictionary
+          WITH reserved_words AS (SELECT csv_column_fixture FROM csv_import_fixture)
+          select hasnt_table(
+                  'ggircs_test_fixture',
+                  tbl,
+                  format('Table names avoid reserved keywords. Violation: %I', tbl)
+          ) FROM reserved_words F(tbl);
 
 -- GUIDELINE: All tables must have a unique primary key
 -- TODO: Automate to run on all tables in schema ggircs
