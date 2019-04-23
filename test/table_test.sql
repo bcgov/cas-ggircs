@@ -4,7 +4,7 @@ reset client_min_messages;
 
 begin;
 
-select plan(830);
+select plan(831);
 
 /** Check table compliance **/
 
@@ -53,8 +53,8 @@ select tables_are('ggircs', array ['test', 'test1']);
 -- TODO: Automate to run on all tables in schema ggircs
   -- pg_TAP built in test functuon for checking a table has a primary key
   select has_pk(
-            'ggircs', 'test', 'Table has Primary key'
-          );
+            'ggircs', tbl, 'Table has Primary key'
+          ) FROM (VALUES('test'), ('test1')) F(tbl);
 
 -- TODO: Related tables must have foreign key constraints : FK column names must match PK name from parent
 

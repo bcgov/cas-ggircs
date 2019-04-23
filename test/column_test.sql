@@ -4,7 +4,7 @@ reset client_min_messages;
 
 begin;
 
-select plan(832);
+select plan(833);
 
 /** Check Column Compliance **/
 
