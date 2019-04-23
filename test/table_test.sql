@@ -23,6 +23,7 @@ select tables_are('ggircs', array ['test', 'test1']);
 --GUIDELINE GROUP: Enforce table naming conventions
         -- GUIDELINE: Names are lower-case with underscores_as_word_separators
         -- TODO: Automate to run on all tables within schema
+        -- replacing VALUES with a WITH query could be helpful in dynamically accessing table names
 
           /** Test code for dynamically getting all tables from schema **/
           prepare names as SELECT table_name FROM information_schema.tables WHERE table_schema = 'ggircs';
@@ -41,8 +42,17 @@ select tables_are('ggircs', array ['test', 'test1']);
         ) FROM (VALUES('test'), ('test1')) F(tbl);
 
         -- TODO: Names are singular
+          -- POSTGRES stemmer
+          -- ACTIVE RECORD (Ruby/Rails)
 
         -- GUIDELINE: Avoid reserved keywords (ie. COMMENT -> [name]_comment) https://www.drupal.org/docs/develop/coding-standards/list-of-sql-reserved-words
+        -- TODO create one-column csv to read reserved words from
+        create schema ggircs_test_fixture;
+        set search_path to ggircs_test_fixture,public;
+        -- TODO: add to top of file, add test specific tables columns etc just above the test
+        create table reserved_words_fixture(words text);
+        -- TODO: Add full absolute path
+        -- copy reserved_words from 'reserved.csv';
         select hasnt_table(
                 'ggircs',
                 tbl,
