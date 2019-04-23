@@ -1,16 +1,16 @@
-set client_min_messages to warning;
-create extension if not exists pgtap;
-reset client_min_messages;
+SET client_min_messages TO warning;
+CREATE extension IF NOT EXISTS pgtap;
+RESET client_min_messages;
 
-begin;
+BEGIN;
 
-create schema ggircs_test_fixture;
-set search_path to ggircs_test_fixture,public;
-create table test_fixture(id serial, name varchar(50), lname varchar, bad$Name varchar(10));
+CREATE schema ggircs_test_fixture;
+SET search_path TO ggircs_test_fixture,public;
+CREATE TABLE test_fixture(id SERIAL, name VARCHAR(50), lname VARCHAR, bad$Name VARCHAR(10));
 COMMENT ON COLUMN test_fixture.id IS 'has a description';
 COMMENT ON COLUMN test_fixture.name IS 'has a description';
 
-select plan(1657);
+SELECT plan(1657);
 
 /** Check Column Compliance **/
 
@@ -19,9 +19,9 @@ select plan(1657);
   -- Add comment to lname column, comment out next line to test the test
   COMMENT ON COLUMN test_fixture.lname IS 'has a description';
   -- Check all columns (position FROM VALUES) for an existing description (regex '.+')
-  WITH colcount AS (select count(*) from information_schema.columns where table_name='test_fixture')
-  select matches(
-            col_description('test_fixture'::regclass::oid, pos),
+  WITH colcount AS (select count(*) FROM information_schema.columns WHERE table_name='test_fixture')
+  SELECT matches(
+            col_description('test_fixture'::regclass::OID, pos),
             '.+',
             format('Column has a description. Violation: %I', pos)
           )
@@ -31,17 +31,17 @@ select plan(1657);
   -- Drop column lname (has no char max length) comment out to test the test
   ALTER TABLE test_fixture DROP COLUMN lname;
   -- Get all max char lengths from char tables
-  prepare charCol as select columns.character_maximum_length
-                  from information_schema.columns
-                  where table_schema = 'ggircs_test_fixture'
-                  and data_type like 'char%';
+  PREPARE charCol AS SELECT columns.character_maximum_length
+                  FROM information_schema.columns
+                  WHERE table_schema = 'ggircs_test_fixture'
+                  AND data_type LIKE 'char%';
   -- Get all nulls from character_maximum_length column
-  prepare nullCol as select columns.character_maximum_length
-                      from information_schema.columns
-                      where table_schema = 'ggircs_test_fixture'
-                      and character_maximum_length IS NULL;
+  PREPARE nullCol AS SELECT columns.character_maximum_length
+                      FROM information_schema.columns
+                      WHERE table_schema = 'ggircs_test_fixture'
+                      AND character_maximum_length IS NULL;
   -- Check there are no nulls for character_max_length when datatype is like 'char%' (INTERSECT ALL charcol <-> nullCol)
-  select bag_hasnt(
+  SELECT bag_hasnt(
             'charCol', 'nullCol', 'columns have defined maximums'
         );
 
@@ -49,11 +49,11 @@ select plan(1657);
 
 -- GUIDELINE: Columns must be defined by an accepted data_type
   -- Get all colums in schema ggircs that have an undefined data_type
-  prepare noDataType as select data_type from information_schema.columns
-                  where table_schema='ggircs_test_fixture'
-                  and data_type IS NULL;
+  prepare noDataType AS SELECT data_type FROM information_schema.columns
+                  WHERE table_schema='ggircs_test_fixture'
+                  AND data_type IS NULL;
   -- Check that the results returned by the above prepared statement are empty (no undefined data_types)
-  select is_empty('noDataType', 'Columns must be defined by an accepted data_type');
+  SELECT is_empty('noDataType', 'Columns must be defined by an accepted data_type');
 
 -- TODO: Enforce column naming conventions
         -- GUIDELINE: Names are lower-case with underscores_as_word_separators
@@ -61,7 +61,7 @@ select plan(1657);
           ALTER TABLE test_fixture DROP COLUMN bad$Name;
           -- Check that all columns in schema do not return a match of capital letters or non-word characters
           WITH cnames AS (SELECT column_name FROM information_schema.columns WHERE table_schema = 'ggircs_test_fixture')
-          select doesnt_match(
+          SELECT doesnt_match(
                   col,
                   '[A-Z]|\W',
                   'Column names are lower-case and separated by underscores'
@@ -73,17 +73,17 @@ select plan(1657);
           -- Drop table 'name' to comply with reserved keywords guideline, comment out next line to test the test
           ALTER TABLE test_fixture DROP COLUMN name;
           -- create table from csv list of reserved words
-          create table csv_import_fixture (csv_column_fixture text);
-          \copy csv_import_fixture from './reserved.csv' delimiter ',' csv;
+          CREATE TABLE csv_import_fixture (csv_column_fixture TEXT);
+          \COPY csv_import_fixture FROM './reserved.csv' delimiter ',' csv;
           -- test that all tables in schema do not contain any column names that intersect with reserved words csv dictionary
           WITH reserved_words AS (SELECT csv_column_fixture FROM csv_import_fixture),
           tnames AS (SELECT table_name FROM information_schema.tables WHERE table_schema = 'ggircs_test_fixture')
-          select hasnt_column(
+          SELECT hasnt_column(
                   'ggircs_test_fixture',
                   tbl,
                   word,
                   format('Column names avoid reserved keywords. Violation: %I', word)
-          ) FROM reserved_words as wtmp (word)
+          ) FROM reserved_words AS wtmp (word)
           CROSS JOIN tnames AS ttmp (tbl);
 
-rollback;
+ROLLBACK;

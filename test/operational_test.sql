@@ -1,10 +1,10 @@
-set client_min_messages to warning;
-create extension if not exists pgtap;
-reset client_min_messages;
+SET client_min_messages TO warning;
+CREATE extension IF NOT EXISTS pgtap;
+RESET client_min_messages;
 
-begin;
+BEGIN;
 
-select plan(0);
+SELECT plan(0);
 
 /** Check Operation Compliance **/
 
@@ -13,4 +13,4 @@ select plan(0);
 
 -- TODO: Changes to the data must be able to be audited
 
-rollback;
+ROLLBACK;
