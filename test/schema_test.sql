@@ -9,12 +9,16 @@ select plan(2);
 /** Check schema compliance **/
 
 -- TODO: generalize this to check multiple schemas
+-- Check schema exists
 select has_schema('ggircs');
-select matches(
-           obj_description('ggircs'::regnamespace, 'pg_namespace'),
-           '.+',
-           'Schema ggircs has a description'
-         );
+
+-- GUIDELINE: Schema has a description
+  -- Check schema for an existing description (regex '.+')
+  select matches(
+            obj_description('ggircs'::regnamespace, 'pg_namespace'),
+            '.+',
+            'Schema ggircs has a description'
+          );
 
 select * from finish();
 
