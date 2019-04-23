@@ -10,7 +10,7 @@ create table test_fixture(id serial, name varchar(50), lname varchar, bad$Name v
 COMMENT ON COLUMN test_fixture.id IS 'has a description';
 COMMENT ON COLUMN test_fixture.name IS 'has a description';
 
-select plan(832);
+select plan(1657);
 
 /** Check Column Compliance **/
 
@@ -19,11 +19,13 @@ select plan(832);
   -- Add comment to lname column, comment out next line to test the test
   COMMENT ON COLUMN test_fixture.lname IS 'has a description';
   -- Check all columns (position FROM VALUES) for an existing description (regex '.+')
+  WITH colcount AS (select count(*) from information_schema.columns where table_name='test_fixture')
   select matches(
             col_description('test_fixture'::regclass::oid, pos),
             '.+',
-            'Column has a description'
-          ) FROM (VALUES(1),(2),(3)) F(pos);
+            format('Column has a description. Violation: %I', pos)
+          )
+          FROM generate_series(1,3) F(pos);
 
 -- GUIDELINE: Columns must have defined maximums for CHAR columns
   -- Drop column lname (has no char max length) comment out to test the test
@@ -55,32 +57,33 @@ select plan(832);
 
 -- TODO: Enforce column naming conventions
         -- GUIDELINE: Names are lower-case with underscores_as_word_separators
-        -- TODO: Automate getting all columns from tables
           -- Drop column bad$Name to comply with naming guideline, comment out next line to test the test
           ALTER TABLE test_fixture DROP COLUMN bad$Name;
-          -- Check that all columns do not return a match of capital letters or non-word characters
+          -- Check that all columns in schema do not return a match of capital letters or non-word characters
+          WITH cnames AS (SELECT column_name FROM information_schema.columns WHERE table_schema = 'ggircs_test_fixture')
           select doesnt_match(
                   col,
                   '[A-Z]|\W',
                   'Column names are lower-case and separated by underscores'
-          ) FROM (VALUES('id'), ('name')) F(col);
+          ) FROM cnames F(col);
 
         -- TODO: Names are singular
 
         -- GUIDELINE: Avoid reserved keywords (ie. COMMENT -> [name]_comment) https://www.drupal.org/docs/develop/coding-standards/list-of-sql-reserved-words
           -- Drop table 'name' to comply with reserved keywords guideline, comment out next line to test the test
           ALTER TABLE test_fixture DROP COLUMN name;
-
           -- create table from csv list of reserved words
           create table csv_import_fixture (csv_column_fixture text);
           \copy csv_import_fixture from './reserved.csv' delimiter ',' csv;
-          -- test that table does not contain any column names that intersect with reserved words csv dictionary
-          WITH reserved_words AS (SELECT csv_column_fixture FROM csv_import_fixture)
+          -- test that all tables in schema do not contain any column names that intersect with reserved words csv dictionary
+          WITH reserved_words AS (SELECT csv_column_fixture FROM csv_import_fixture),
+          tnames AS (SELECT table_name FROM information_schema.tables WHERE table_schema = 'ggircs_test_fixture')
           select hasnt_column(
                   'ggircs_test_fixture',
-                  'test_fixture',
-                  col,
-                  format('Column names avoid reserved keywords. Violation: %I', col)
-          ) FROM reserved_words F(col);
+                  tbl,
+                  word,
+                  format('Column names avoid reserved keywords. Violation: %I', word)
+          ) FROM reserved_words as wtmp (word)
+          CROSS JOIN tnames AS ttmp (tbl);
 
 rollback;
