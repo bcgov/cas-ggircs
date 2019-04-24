@@ -3,3 +3,4 @@
 %uri=https://github.com/bcgov/cas-ggircs
 
 schema_ggircs 2019-04-12T19:45:19Z Alec Wenzowski <alec@button.is> # Add a schema for ggircs
+schema_ggircs_private 2019-04-24T21:52:37Z Alec Wenzowski <alec@button.is> # Add private schema for ggircs ETL process
