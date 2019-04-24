@@ -9,24 +9,27 @@ SET search_path TO ggircs_test_fixture,public;
 CREATE TABLE test_fixture(id SERIAL, name VARCHAR(50), lname VARCHAR, bad$Name VARCHAR(10), badnumber numeric);
 COMMENT ON COLUMN test_fixture.id IS 'has a description';
 COMMENT ON COLUMN test_fixture.name IS 'has a description';
+COMMENT ON COLUMN test_fixture.bad$name IS 'has a description';
 COMMENT ON COLUMN test_fixture.badnumber IS 'has a description';
 
-SELECT plan(1659);
+
+SELECT plan(1657);
 
 /** Check Column Compliance **/
 
 -- GUIDELINE: DB should have descriptions for all columns
--- TODO: Automate to test on all columns in schema ggircs, Dynamically get number of columns
   -- Add comment to lname column, comment out next line to test the test
-  COMMENT ON COLUMN test_fixture.lname IS 'has a description';
-  -- Check all columns (position FROM VALUES) for an existing description (regex '.+')
-  WITH colcount AS (select count(*) FROM information_schema.columns WHERE table_name='test_fixture')
-  SELECT matches(
-            col_description('test_fixture'::regclass::OID, pos),
-            '.+',
-            format('Column has a description. Violation: %I', pos)
-          )
-          FROM generate_series(1,3) F(pos);
+  COMMENT ON COLUMN test_fixture.lname IS 'has a description';;
+  -- Get all columns within schema ggircs_test_fixture that do not have a comment
+  PREPARE nullComment AS SELECT pg_catalog.col_description(format('%s.%s',isc.table_schema,isc.table_name)::regclass::oid,isc.ordinal_position)
+            as column_description
+            FROM information_schema.columns isc
+            WHERE table_schema='ggircs_test_fixture'
+            AND pg_catalog.col_description(format('%s.%s',isc.table_schema,isc.table_name)::regclass::oid,isc.ordinal_position) IS NULL;
+  -- Test that there are no results on the above query for null comments
+  SELECT is_empty(
+            'nullComment', 'Columns have descriptions'
+            );
 
 -- GUIDELINE: Columns must have defined maximums for CHAR columns
   -- Drop column lname (has no char max length) comment out to test the test
