@@ -6,11 +6,12 @@ BEGIN;
 
 CREATE schema ggircs_test_fixture;
 SET search_path TO ggircs_test_fixture,public;
-CREATE TABLE test_fixture(id SERIAL, name VARCHAR(50), lname VARCHAR, bad$Name VARCHAR(10));
+CREATE TABLE test_fixture(id SERIAL, name VARCHAR(50), lname VARCHAR, bad$Name VARCHAR(10), badnumber numeric);
 COMMENT ON COLUMN test_fixture.id IS 'has a description';
 COMMENT ON COLUMN test_fixture.name IS 'has a description';
+COMMENT ON COLUMN test_fixture.badnumber IS 'has a description';
 
-SELECT plan(1657);
+SELECT plan(1659);
 
 /** Check Column Compliance **/
 
@@ -45,7 +46,26 @@ SELECT plan(1657);
             'charCol', 'nullCol', 'columns have defined maximums'
         );
 
--- TODO: Columns must have defined Scale and Precision for NUMERIC columns
+-- GUIDELINE: Columns must have defined Scale and Precision for NUMERIC columns
+  -- Drop column lacking precision and scale, add column with (p,s) to satisfy guideline. Comment out next line to test the test
+  ALTER TABLE test_fixture drop badnumber;
+  ALTER TABLE test_fixture ADD goodnumber numeric(6);
+  -- Get all numeric data types that return null when queried for their precision or scale
+  PREPARE numericCol AS SELECT columns.numeric_precision, columns.numeric_scale
+                    FROM information_schema.columns
+                    WHERE table_schema = 'ggircs_test_fixture'
+                    AND (data_type LIKE '%int%' 
+                        OR data_type LIKE '%serial%'
+                        OR data_type LIKE 'double%'
+                        OR data_type = 'decimal'
+                        OR data_type = 'numeric'
+                        OR data_type = 'real'
+                        )
+                    AND (columns.numeric_precision IS NULL OR columns.numeric_scale IS NULL);               
+  -- Check that the result of the above query is empty
+  SELECT is_empty(
+            'numericCol', 'numeric columns have precison and scale'
+  );
 
 -- GUIDELINE: Columns must be defined by an accepted data_type
   -- Get all colums in schema ggircs that have an undefined data_type
@@ -55,7 +75,7 @@ SELECT plan(1657);
   -- Check that the results returned by the above prepared statement are empty (no undefined data_types)
   SELECT is_empty('noDataType', 'Columns must be defined by an accepted data_type');
 
--- TODO: Enforce column naming conventions
+-- GUIDELINE GROUP: Enforce column naming conventions
         -- GUIDELINE: Names are lower-case with underscores_as_word_separators
           -- Drop column bad$Name to comply with naming guideline, comment out next line to test the test
           ALTER TABLE test_fixture DROP COLUMN bad$Name;
