@@ -51,7 +51,7 @@ SELECT tables_are('ggircs_test_fixture', array ['test_fixture', 'no_comment_no_p
     DROP TABLE name;
     -- create table from csv list of reserved words
     CREATE TABLE csv_import_fixture (csv_column_fixture TEXT);
-    \COPY csv_import_fixture FROM './reserved.csv' delimiter ',' csv;
+    \COPY csv_import_fixture FROM './test/fixture/sql_reserved_words.csv' delimiter ',' csv;
     -- test that schema does not contain any table names that intersect with reserved words csv dictionary
     WITH reserved_words AS (SELECT csv_column_fixture FROM csv_import_fixture)
     SELECT hasnt_table(
