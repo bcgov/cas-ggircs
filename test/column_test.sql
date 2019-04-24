@@ -97,7 +97,7 @@ SELECT plan(1657);
           ALTER TABLE test_fixture DROP COLUMN name;
           -- create table from csv list of reserved words
           CREATE TABLE csv_import_fixture (csv_column_fixture TEXT);
-          \COPY csv_import_fixture FROM './reserved.csv' delimiter ',' csv;
+          \COPY csv_import_fixture FROM './test/fixture/sql_reserved_words.csv' delimiter ',' csv;
           -- test that all tables in schema do not contain any column names that intersect with reserved words csv dictionary
           WITH reserved_words AS (SELECT csv_column_fixture FROM csv_import_fixture),
           tnames AS (SELECT table_name FROM information_schema.tables WHERE table_schema = 'ggircs_test_fixture')
