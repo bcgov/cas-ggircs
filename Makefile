@@ -29,7 +29,7 @@ deploy:
 prove:
 	# Run test suite using pg_prove
 	@@${PG_PROVE} -v -d ${TEST_DB} test/**/*_test.sql
-.PHONY: test
+.PHONY: prove
 
 revert:
 	# Revert all changes to ${TEST_DB} using sqitch
@@ -75,7 +75,7 @@ verify_installed:
 .PHONY: verify_installed
 
 verify_ready:
-	ensure postgres is online
+	# ensure postgres is online
 	@@${PSQL} -tc 'show server_version;' | ${AWK} '{print $$NF}';
 .PHONY: verify_ready
 
