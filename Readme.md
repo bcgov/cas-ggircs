@@ -6,12 +6,20 @@ GGIRCS
 > for the Climate Action Secretariat
 
 ##Getting Started
-
+------------
 > Clone repository
 > In terminal:
   - Run `make verify`
   - If `make verify` passes:
   - Run `make test`
+
+##Using Sqitch
+------------
+> **Add Schema**
+> - sqitch add schema_[schema_name]
+
+> **Add Table**
+> - sqitch add table_[table_name] require schema_[schema_name] --set schema=[schema_name]
 
 ##Dependencies
 ------------
