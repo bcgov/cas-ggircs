@@ -33,6 +33,7 @@ select tables_are('ggircs_test_fixture', array ['test_fixture', 'no_comment_no_p
           ) from tnames f(tbl);
 
 --guideline group: enforce table naming conventions
+  -- TODO: Pull regex into a variable and write a test to verify the validity of the regex
   -- guideline: names are lower-case with underscores_as_word_separators
     -- check that all table names do not return a match of capital letters or non-word characters
     with tnames as (select table_name from information_schema.tables where table_schema = 'ggircs_test_fixture')

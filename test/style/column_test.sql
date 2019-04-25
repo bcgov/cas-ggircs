@@ -79,6 +79,7 @@ select plan(1657);
   select is_empty('no_data_type', 'columns must be defined by an accepted data_type');
 
 -- guideline group: enforce column naming conventions
+        -- TODO: Pull regex into a variable and write a test to verify the validity of the regex
         -- guideline: names are lower-case with underscores_as_word_separators
           -- drop column bad$name to comply with naming guideline, comment out next line to test the test
           alter table test_fixture drop column bad$name;
