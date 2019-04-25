@@ -2,6 +2,6 @@
 
 BEGIN;
 
-drop table ggircs_private.raw_report;
+drop table ggircs_swrs.raw_report;
 
 COMMIT;

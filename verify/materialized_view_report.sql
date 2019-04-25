@@ -2,6 +2,6 @@
 
 BEGIN;
 
-select * from ggircs_private.report;
+select * from ggircs_swrs.report;
 
 ROLLBACK;

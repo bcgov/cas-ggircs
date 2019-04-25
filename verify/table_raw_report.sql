@@ -2,6 +2,6 @@
 
 BEGIN;
 
-select pg_catalog.has_table_privilege('ggircs_private.raw_report', 'select');
+select pg_catalog.has_table_privilege('ggircs_swrs.raw_report', 'select');
 
 ROLLBACK;

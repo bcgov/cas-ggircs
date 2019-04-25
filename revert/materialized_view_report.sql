@@ -2,6 +2,6 @@
 
 BEGIN;
 
-drop materialized view ggircs_private.report;
+drop materialized view ggircs_swrs.report;
 
 COMMIT;

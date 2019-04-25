@@ -1,15 +1,15 @@
 -- Deploy ggircs:materialized_view_report to pg
--- requires: schema_ggircs_private
+-- requires: schema_ggircs_swrs
 -- requires: table_raw_report
 
 begin;
 
-create materialized view ggircs_private.report as (
+create materialized view ggircs_swrs.report as (
   with x as (
     select id          as ghgr_id,
            xml_file    as source_xml,
            imported_at as imported_at
-    from ggircs_private.raw_report
+    from ggircs_swrs.raw_report
     order by ghgr_id desc
   )
   select
@@ -52,7 +52,7 @@ create materialized view ggircs_private.report as (
 );
 
 
-create unique index ggircs_private_report_primary_key on ggircs_private.report (id);
-create index ggircs_private_report_history on ggircs_private.report (swim_report_history_id);
+create unique index ggircs_swrs_report_primary_key on ggircs_swrs.report (id);
+create index ggircs_swrs_report_history on ggircs_swrs.report (swim_report_history_id);
 
 commit;
