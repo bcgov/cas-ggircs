@@ -2,6 +2,9 @@ set client_min_messages to warning;
 create extension if not exists pgtap;
 reset client_min_messages;
 
+--TODO: **Will likely need to be updated to include materialized views when looping through all tables**
+    -- ie: join table_name and materialized_view_name then loop through the joined result
+
 begin;
 
 create schema ggircs_test_fixture;
