@@ -13,17 +13,17 @@ select has_column('ggircs_swrs', 'report', 'id', 'Matview report has column: id'
 select has_column('ggircs_swrs', 'report', 'ghgr_id', 'Matview report has column: ghgr_id');
 select has_column('ggircs_swrs', 'report', 'source_xml', 'Matview report has column: source_xml');
 select has_column('ggircs_swrs', 'report', 'imported_at', 'Matview report has column: imported_at');
-select has_column('ggircs_swrs', 'report', 'swim_report_id', 'Matview report has column: swim_report_id');
+select has_column('ggircs_swrs', 'report', 'swrs_report_id', 'Matview report has column: swrs_report_id');
 select has_column('ggircs_swrs', 'report', 'prepop_report_id', 'Matview report has column: prepop_report_id');
 select has_column('ggircs_swrs', 'report', 'report_type', 'Matview report has column: report_type');
-select has_column('ggircs_swrs', 'report', 'swim_facility_id', 'Matview report has column: swim_facility_id');
+select has_column('ggircs_swrs', 'report', 'swrs_facility_id', 'Matview report has column: swrs_facility_id');
 select has_column('ggircs_swrs', 'report', 'reporting_period_duration', 'Matview report has column: reporting_period_duration');
 select has_column('ggircs_swrs', 'report', 'status', 'Matview report has column: status');
 select has_column('ggircs_swrs', 'report', 'version', 'Matview report has column: version');
 select has_column('ggircs_swrs', 'report', 'submission_date', 'Matview report has column: submission_date');
 select has_column('ggircs_swrs', 'report', 'last_modified_by', 'Matview report has column: last_modified_by');
 select has_column('ggircs_swrs', 'report', 'update_comment', 'Matview report has column: update_comment');
-select has_column('ggircs_swrs', 'report', 'swim_report_history_id', 'Matview report has column: swim_report_history_id');
+select has_column('ggircs_swrs', 'report', 'swrs_report_history_id', 'Matview report has column: swrs_report_history_id');
 
 -- Test index names in matview report exist and are correct
 select has_index('ggircs_swrs', 'report', 'ggircs_swrs_report_primary_key', 'Matview report has index: ggircs_swrs_report_primary_key');

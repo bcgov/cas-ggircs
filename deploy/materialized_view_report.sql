@@ -21,21 +21,21 @@ create materialized view ggircs_swrs.report as (
     report_details.*,
     report_status.*,
     row_number() over (
-      partition by report_details.swim_report_id
+      partition by report_details.swrs_report_id
       order by
         imported_at desc,
         ghgr_id desc
-      )                                      as swim_report_history_id
+      )                                      as swrs_report_history_id
   from x,
        xmltable(
            '/ReportData/ReportDetails'
            passing source_xml
            columns
-             swim_report_id numeric path 'ReportID',
+             swrs_report_id numeric path 'ReportID',
              prepop_report_id numeric path 'PrepopReportID', -- null
              report_type text path 'ReportType',
-             swim_facility_id numeric path 'FacilityId',
-             swim_organisation_id numeric path 'OrganisationId',
+             swrs_facility_id numeric path 'FacilityId',
+             swrs_organisation_id numeric path 'OrganisationId',
              reporting_period_duration numeric path 'ReportingPeriodDuration'
          ) as report_details,
 
@@ -53,6 +53,6 @@ create materialized view ggircs_swrs.report as (
 
 
 create unique index ggircs_swrs_report_primary_key on ggircs_swrs.report (id);
-create index ggircs_swrs_report_history on ggircs_swrs.report (swim_report_history_id);
+create index ggircs_swrs_report_history on ggircs_swrs.report (swrs_report_history_id);
 
 commit;
