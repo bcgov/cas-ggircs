@@ -13,6 +13,4 @@ comment on column ggircs_private.raw_report.id is 'The internal primary key for 
 comment on column ggircs_private.raw_report.xml_file is 'The raw xml file imported from GHGR';
 comment on column ggircs_private.raw_report.imported_at is 'The timestamp noting when the file was imported';
 
---TODO: verify type and not null
-
 commit;
