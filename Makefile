@@ -17,7 +17,7 @@ test:
 	@@$(MAKE) -s $(MAKEFLAGS) deploy;
 	@@$(MAKE) -s $(MAKEFLAGS) revert;
 	@@$(MAKE) -s $(MAKEFLAGS) deploy;
-	@@$(MAKE) -s $(MAKEFLAGS) prove;
+	@@$(MAKE) -s $(MAKEFLAGS) prove_unit;
 	@@$(MAKE) -s $(MAKEFLAGS) dropdb;
 .PHONY: test
 
@@ -26,10 +26,15 @@ deploy:
 	@@sqitch deploy ${TEST_DB};
 .PHONY: deploy
 
-prove:
-	# Run test suite using pg_prove
+prove_style:
+	# Run style-related test suite on all objects in db using pg_prove
 	@@${PG_PROVE} -v -d ${TEST_DB} test/**/*_test.sql
 .PHONY: prove
+
+prove_unit:
+	# Run unit test suite using pg_prove
+	@@${PG_PROVE} -v -d ${TEST_DB} test/*_test.sql
+.PHONY: test
 
 revert:
 	# Revert all changes to ${TEST_DB} using sqitch
