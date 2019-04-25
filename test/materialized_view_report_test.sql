@@ -3,7 +3,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(19);
+select plan(20);
 
 -- Test matview report exists in schema ggircs_swrs
 select has_materialized_view('ggircs_swrs', 'report', 'Materialized view report exists');
@@ -33,16 +33,7 @@ select has_index('ggircs_swrs', 'report', 'ggircs_swrs_report_history', 'Matview
 select index_is_unique('ggircs_swrs', 'report', 'ggircs_swrs_report_primary_key', 'Matview report index ggircs_swrs_report_primary_key is unique');
 
 -- Test columns in matview report have correct types
--- select col_type_is('ggircs_swrs', 'raw_report', 'id', 'integer', 'Column id has type integer');
-
--- Test NOT NULL columns have constraint
--- select col_not_null('ggircs_swrs', 'report', 'source_xml', 'Column source_xml has NOT NULL constraint');
-
--- Test default columns have default
--- select col_has_default('ggircs_swrs', 'raw_report', 'imported_at', 'Column imported_at has default');
-
--- Test default columns have correct default value
--- select col_default_is('ggircs_swrs', 'raw_report', 'imported_at', 'now()', 'Column imported_at defaults to now()');
+select col_type_is('ggircs_swrs', 'report', 'id', 'bigint', 'Matview report column id has type bigint');
 
 select finish();
 rollback;
