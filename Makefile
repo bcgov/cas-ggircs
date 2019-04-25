@@ -26,9 +26,11 @@ deploy:
 	@@sqitch deploy ${TEST_DB};
 .PHONY: deploy
 
+# TODO: split prove into unit & style test commands (currently running style)
+
 prove:
 	# Run test suite using pg_prove
-	@@${PG_PROVE} -v -d ${TEST_DB} test/*_test.sql
+	@@${PG_PROVE} -v -d ${TEST_DB} test/style/*_test.sql
 .PHONY: test
 
 revert:
