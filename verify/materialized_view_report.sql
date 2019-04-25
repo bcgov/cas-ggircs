@@ -2,6 +2,6 @@
 
 BEGIN;
 
-select * from pg_matviews where matviewname='report';
+select * from ggircs_private.report;
 
 ROLLBACK;
