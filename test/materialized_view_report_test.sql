@@ -3,7 +3,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(20);
+select plan(21);
 
 -- Test matview report exists in schema ggircs_swrs
 select has_materialized_view('ggircs_swrs', 'report', 'Materialized view report exists');
@@ -34,6 +34,7 @@ select index_is_unique('ggircs_swrs', 'report', 'ggircs_swrs_report_primary_key'
 
 -- Test columns in matview report have correct types
 select col_type_is('ggircs_swrs', 'report', 'id', 'bigint', 'Matview report column id has type bigint');
+select col_type_is('ggircs_swrs', 'report', 'ghgr_id', 'integer', 'Matview report column ghgr has type integer');
 
 select finish();
 rollback;
