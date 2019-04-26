@@ -18,6 +18,7 @@ test:
 	@@$(MAKE) -s $(MAKEFLAGS) revert;
 	@@$(MAKE) -s $(MAKEFLAGS) deploy;
 	@@$(MAKE) -s $(MAKEFLAGS) prove_unit;
+	@@$(MAKE) -s $(MAKEFLAGS) prove_style;
 	@@$(MAKE) -s $(MAKEFLAGS) dropdb;
 .PHONY: test
 
