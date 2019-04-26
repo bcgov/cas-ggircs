@@ -7,7 +7,7 @@ begin;
 -- create schema ggircs_swrs;
 set search_path to ggircs_swrs,public;
 
-select plan(1658);
+select plan(1660);
 
 /** Check Column Compliance **/
 
@@ -59,6 +59,22 @@ select bag_hasnt(
                'charcol', 'nullcol', 'columns have defined maximums'
            );
 
+-- Get all max char lengths from char material views
+prepare null_char_max as SELECT a.attname,
+           pg_catalog.format_type(a.atttypid, a.atttypmod),
+           a.atttypmod
+        FROM pg_attribute a
+        JOIN pg_class t on a.attrelid = t.oid
+        JOIN pg_namespace s on t.relnamespace = s.oid
+        WHERE a.attnum > 0
+        AND NOT a.attisdropped
+        AND t.relkind = 'm'
+        AND s.nspname = 'ggircs_swrs'
+        AND pg_catalog.format_type(a.atttypid, a.atttypmod) like '%char%'
+        AND a.atttypmod < 0;
+-- Check there are no nulls for character_max_length when datatype is like 'char%'
+select is_empty('null_char_max', 'Material view char columns have defined maximums');
+
 -- GUIDELINE: Columns must have defined Scale and Precision for NUMERIC columns
 -- Get all numeric data types that return null when queried for their precision or scale
 prepare numericcol as select columns.numeric_precision, columns.numeric_scale
@@ -76,15 +92,36 @@ prepare numericcol as select columns.numeric_precision, columns.numeric_scale
 select is_empty(
                'numericcol', 'numeric columns have precison and scale'
            );
+-- Get all numeric data types that return null when queried for their precision or scale
+prepare null_num_precision as SELECT a.attname,
+           pg_catalog.format_type(a.atttypid, a.atttypmod),
+           a.atttypmod
+        FROM pg_attribute a
+        JOIN pg_class t on a.attrelid = t.oid
+        JOIN pg_namespace s on t.relnamespace = s.oid
+        WHERE a.attnum > 0
+        AND NOT a.attisdropped
+        AND t.relkind = 'm'
+        AND s.nspname = 'ggircs_swrs'
+        AND a.atttypmod < 0
+        AND
+            (
+                pg_catalog.format_type(a.atttypid, a.atttypmod) like '%int%'
+                or pg_catalog.format_type(a.atttypid, a.atttypmod) = 'numeric'
+            );
+-- Check there are no nulls for precision/scale when datatype is numeric
+select is_empty('null_num_precision', 'Material view numeric columns have defined precision and scale');
 
 -- GUIDELINE: Columns must be defined by an accepted data_type
--- Get all colums in schema ggircs that have an undefined data_type
+-- Get all table columns that have an undefined data_type
 prepare nodatatype as select data_type
                       from information_schema.columns
                       where table_schema = 'ggircs_swrs'
                         and data_type is null;
 -- Check that the results returned by the above prepared statement are empty (no undefined data_types)
 select is_empty('nodatatype', 'columns must be defined by an accepted data_type');
+
+-- Get all materialized view columns that have an undefined data_type
 
 -- GUIDELINE GROUP: Enforce column naming conventions
 -- GUIDELINE: Names are lower-case with underscores_as_word_separators
