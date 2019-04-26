@@ -21,7 +21,7 @@ with mvnames as (select matviewname from pg_matviews where schemaname like 'ggir
 select matches(
                obj_description(mv::regclass, 'pg_class'),
                '.+',
-               format('Table has a description. Violation: %I', mv)
+               format('Materialized view has a description. Violation: %I', mv)
            )
 from mvnames f(mv);
 --
@@ -32,7 +32,7 @@ with mvnames as (select matviewname from pg_matviews where schemaname like 'ggir
 select doesnt_match(
                mv,
                '[A-Z]|\W',
-               format('Table names are lower-case and separated by underscores. Violation: %I', mv)
+               format('Materialized view names are lower-case and separated by underscores. Violation: %I', mv)
            )
 from mvnames f(mv);
 --
@@ -53,20 +53,20 @@ schema_names as (select schema_name from information_schema.schemata where schem
 select hasnt_materialized_view(
                sch,
                res,
-               format('Table names avoid reserved keywords. Violation: %I', res)
+               format('Materialized view names avoid reserved keywords. Violation: %I', res)
            )
 from reserved_words as rtmp (res)
 cross join schema_names as stmp (sch);
 drop table csv_import_fixture;
--- --
--- -- GUIDELINE: All tables must have a unique primary key
--- -- pg_TAP built in test functuon for checking all tables in schema have a primary key
--- with tnames as (select table_name from information_schema.tables where table_schema like 'ggircs%')
--- select has_pk(
---                tbl, format('Table has primary key. Violation: %I', tbl)
---            )
--- from tnames f(tbl);
 --
+-- GUIDELINE: All tables must have a unique primary key
+-- pg_TAP built in test functuon for checking all tables in schema have a primary key
+-- with mvnames as (select matviewname from pg_matviews where schemaname like 'ggircs%')
+-- select has_(
+--                mv, format('Table has primary key. Violation: %I', mv)
+--            )
+-- from mvnames f(mv);
+
 -- -- TODO: Related tables must have foreign key constraints : FK column names must match PK name from parent
 
 select *
