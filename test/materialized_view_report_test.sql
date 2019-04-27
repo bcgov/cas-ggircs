@@ -3,7 +3,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(24);
+select plan(25);
 
 -- Test matview report exists in schema ggircs_swrs
 select has_materialized_view('ggircs_swrs', 'report', 'Materialized view report exists');
@@ -37,7 +37,9 @@ select col_type_is('ggircs_swrs', 'report', 'id', 'bigint', 'Matview report colu
 select col_type_is('ggircs_swrs', 'report', 'ghgr_id', 'integer', 'Matview report column ghgr has type integer');
 select col_type_is('ggircs_swrs', 'report', 'source_xml', 'xml', 'Matview report column source_xml has type xml');
 select col_type_is('ggircs_swrs', 'report', 'imported_at', 'timestamp with time zone', 'Matview report column imported_at has type timestamp with time zone');
-select col_type_is('ggircs_swrs', 'report', 'swrs_report_id', 'text', 'Matview report column swrs_report_id has type text');
+select col_type_is('ggircs_swrs', 'report', 'swrs_report_id', 'numeric', 'Matview report column swrs_report_id has type numeric');
+select col_type_is('ggircs_swrs', 'report', 'prepop_report_id', 'numeric', 'Matview report column prepop_report_id has type numeric');
+
 
 select finish();
 rollback;
