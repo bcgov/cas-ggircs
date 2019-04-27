@@ -3,7 +3,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(25);
+select plan(35);
 
 -- Test matview report exists in schema ggircs_swrs
 select has_materialized_view('ggircs_swrs', 'report', 'Materialized view report exists');
@@ -39,7 +39,16 @@ select col_type_is('ggircs_swrs', 'report', 'source_xml', 'xml', 'Matview report
 select col_type_is('ggircs_swrs', 'report', 'imported_at', 'timestamp with time zone', 'Matview report column imported_at has type timestamp with time zone');
 select col_type_is('ggircs_swrs', 'report', 'swrs_report_id', 'numeric', 'Matview report column swrs_report_id has type numeric');
 select col_type_is('ggircs_swrs', 'report', 'prepop_report_id', 'numeric', 'Matview report column prepop_report_id has type numeric');
-
+select col_type_is('ggircs_swrs', 'report', 'report_type', 'text', 'Matview report column report_type has type text');
+select col_type_is('ggircs_swrs', 'report', 'swrs_facility_id', 'numeric', 'Matview report column swrs_facility_id has type numeric');
+select col_type_is('ggircs_swrs', 'report', 'swrs_organisation_id', 'numeric', 'Matview report column swrs_organisation_id has type numeric');
+select col_type_is('ggircs_swrs', 'report', 'reporting_period_duration', 'numeric', 'Matview report column reporting_period_duration has type numeric');
+select col_type_is('ggircs_swrs', 'report', 'status', 'text', 'Matview report column status has type text');
+select col_type_is('ggircs_swrs', 'report', 'version', 'text', 'Matview report column version has type text');
+select col_type_is('ggircs_swrs', 'report', 'submission_date', 'text', 'Matview report column submission_date has type text');
+select col_type_is('ggircs_swrs', 'report', 'last_modified_by', 'text', 'Matview report column last_modified_by has type text');
+select col_type_is('ggircs_swrs', 'report', 'update_comment', 'text', 'Matview report column update_comment has type text');
+select col_type_is('ggircs_swrs', 'report', 'swrs_report_history_id', 'bigint', 'Matview report column swrs_report_history_id has type bigint');
 
 select finish();
 rollback;
