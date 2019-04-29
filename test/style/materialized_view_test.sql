@@ -11,7 +11,7 @@ begin;
 --       schemas other than ggircs_swrs become populated with tables
 set search_path to ggircs_swrs,public;
 
-select plan(1652);
+select plan(828);
 
 /** Check table compliance **/
 
@@ -49,9 +49,9 @@ create table csv_import_fixture
 \copy csv_import_fixture from './test/fixture/sql_reserved_words.csv' delimiter ',' csv;
 -- -- test that schema does not contain any table names that intersect with reserved words csv dictionary
 with reserved_words as (select csv_column_fixture from csv_import_fixture),
-mvnames as (select matviewname from pg_matviews where schemaname like 'ggircs%')
+mv_names as (select matviewname from pg_matviews where schemaname like 'ggircs%')
 select hasnt_materialized_view(
-               sch,
+               mv,
                res,
                format('Materialized view names avoid reserved keywords. Violation: %I', res)
            )
@@ -59,13 +59,11 @@ from reserved_words as rtmp (res)
 cross join mv_names as stmp (mv);
 drop table csv_import_fixture;
 --
--- GUIDELINE: All tables must have a unique primary key
--- pg_TAP built in test functuon for checking all tables in schema have a primary key
--- with mvnames as (select matviewname from pg_matviews where schemaname like 'ggircs%')
--- select has_(
---                mv, format('Table has primary key. Violation: %I', mv)
---            )
--- from mvnames f(mv);
+-- GUIDELINE: All materialized views must have a primary key
+-- Get all materialized views in schema that do not have an index matching %primary%
+prepare null_pkey as select tablename from pg_indexes where not exists (select indexname from pg_indexes where indexname like '%primary%') and schemaname = 'ggircs_swrs';
+-- Test that the above query returns nothing, else throw an error
+select is_empty('null_pkey', 'All materialized views must have a primary key');
 
 -- -- TODO: Related tables must have foreign key constraints : FK column names must match PK name from parent
 
