@@ -3,7 +3,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(12);
+select plan(15);
 
 -- Test matview report exists in schema ggircs_swrs
 select has_materialized_view('ggircs_swrs', 'facility', 'Materialized view facility exists');
@@ -22,10 +22,11 @@ select has_column('ggircs_swrs', 'facility', 'longitude', 'Matview facility has 
 select has_column('ggircs_swrs', 'facility', 'swrs_facility_history_id', 'Matview facility has column: swrs_facility_history_id');
 
 -- Test index names in matview report exist and are correct
--- select has_index('ggircs_swrs', 'facility', 'ggircs_facility_primary_key', 'Matview facility has index: ggircs_facility_primary_key');
+select has_index('ggircs_swrs', 'facility', 'ggircs_facility_primary_key', 'Matview facility has index: ggircs_facility_primary_key');
+select has_index('ggircs_swrs', 'facility', 'ggircs_swrs_facility_history', 'Matview facility has index: ggircs_swrs_facility_history');
 
 -- Test unique indicies are defined unique
--- select index_is_unique('ggircs_swrs', 'facility', 'ggircs_facility_primary_key', 'Matview report index ggircs_facility_primary_key is unique');
+select index_is_unique('ggircs_swrs', 'facility', 'ggircs_facility_primary_key', 'Matview report index ggircs_facility_primary_key is unique');
 
 -- Test columns in matview report have correct types
 -- select col_type_is('ggircs_swrs', 'facility', 'id', 'bigint', 'Matview facility column id has type bigint');
