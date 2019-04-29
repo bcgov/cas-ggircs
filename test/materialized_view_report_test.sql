@@ -37,17 +37,17 @@ select col_type_is('ggircs_swrs', 'report', 'id', 'bigint', 'Matview report colu
 select col_type_is('ggircs_swrs', 'report', 'ghgr_id', 'integer', 'Matview report column ghgr has type integer');
 select col_type_is('ggircs_swrs', 'report', 'source_xml', 'xml', 'Matview report column source_xml has type xml');
 select col_type_is('ggircs_swrs', 'report', 'imported_at', 'timestamp with time zone', 'Matview report column imported_at has type timestamp with time zone');
-select col_type_is('ggircs_swrs', 'report', 'swrs_report_id', 'numeric', 'Matview report column swrs_report_id has type numeric');
-select col_type_is('ggircs_swrs', 'report', 'prepop_report_id', 'numeric', 'Matview report column prepop_report_id has type numeric');
-select col_type_is('ggircs_swrs', 'report', 'report_type', 'text', 'Matview report column report_type has type text');
-select col_type_is('ggircs_swrs', 'report', 'swrs_facility_id', 'numeric', 'Matview report column swrs_facility_id has type numeric');
-select col_type_is('ggircs_swrs', 'report', 'swrs_organisation_id', 'numeric', 'Matview report column swrs_organisation_id has type numeric');
-select col_type_is('ggircs_swrs', 'report', 'reporting_period_duration', 'numeric', 'Matview report column reporting_period_duration has type numeric');
-select col_type_is('ggircs_swrs', 'report', 'status', 'text', 'Matview report column status has type text');
-select col_type_is('ggircs_swrs', 'report', 'version', 'text', 'Matview report column version has type text');
-select col_type_is('ggircs_swrs', 'report', 'submission_date', 'text', 'Matview report column submission_date has type text');
-select col_type_is('ggircs_swrs', 'report', 'last_modified_by', 'text', 'Matview report column last_modified_by has type text');
-select col_type_is('ggircs_swrs', 'report', 'update_comment', 'text', 'Matview report column update_comment has type text');
+select col_type_is('ggircs_swrs', 'report', 'swrs_report_id', 'numeric(1000,0)', 'Matview report column swrs_report_id has type numeric(1000,0)');
+select col_type_is('ggircs_swrs', 'report', 'prepop_report_id', 'numeric(1000,0)', 'Matview report column prepop_report_id has type numeric(1000,0)');
+select col_type_is('ggircs_swrs', 'report', 'report_type', 'character varying(1000)', 'Matview report column report_type has type character varying(1000)');
+select col_type_is('ggircs_swrs', 'report', 'swrs_facility_id', 'numeric(1000,0)', 'Matview report column swrs_facility_id has type numeric(1000,0)');
+select col_type_is('ggircs_swrs', 'report', 'swrs_organisation_id', 'numeric(1000,0)', 'Matview report column swrs_organisation_id has type numeric(1000,0)');
+select col_type_is('ggircs_swrs', 'report', 'reporting_period_duration', 'numeric(1000,0)', 'Matview report column reporting_period_duration has type numeric(1000,0)');
+select col_type_is('ggircs_swrs', 'report', 'status', 'character varying(1000)', 'Matview report column status has type character varying(1000)');
+select col_type_is('ggircs_swrs', 'report', 'version', 'character varying(1000)', 'Matview report column version has type character varying(1000)');
+select col_type_is('ggircs_swrs', 'report', 'submission_date', 'character varying(1000)', 'Matview report column submission_date has type character varying(1000)');
+select col_type_is('ggircs_swrs', 'report', 'last_modified_by', 'character varying(1000)', 'Matview report column last_modified_by has type character varying(1000)');
+select col_type_is('ggircs_swrs', 'report', 'update_comment', 'character varying(1000)', 'Matview report column update_comment has type character varying(1000)');
 select col_type_is('ggircs_swrs', 'report', 'swrs_report_history_id', 'bigint', 'Matview report column swrs_report_history_id has type bigint');
 
 select finish();
