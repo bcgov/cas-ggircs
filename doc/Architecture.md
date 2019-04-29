@@ -9,7 +9,7 @@ and the [system architecure proposal].
 
 1. Schemas are used to separate concerns.
      - This ensures that each application reads and writes to/from its own namespace.
-         eg. ETL pipeline operations write to `ggircs_private` while the 
+         eg. ETL pipeline operations write to `ggircs_swrs` while the 
          reporting tools read from `ggircs` and the audit tools read from `ggircs_history`.
 2. Tables are preferred over materialized views.
      - In cases where data integrity is required, GGIRCS prefers to drop and re-create derived tables
