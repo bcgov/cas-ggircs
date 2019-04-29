@@ -1,6 +1,6 @@
 -- Deploy ggircs:materialized_view_report to pg
 -- requires: schema_ggircs_swrs
--- requires: table_raw_report
+-- requires: table_ghgr_import
 
 begin;
 
@@ -9,7 +9,7 @@ create materialized view ggircs_swrs.report as (
     select id          as ghgr_id,
            xml_file    as source_xml,
            imported_at as imported_at
-    from ggircs_swrs.raw_report
+    from ggircs_swrs.ghgr_import
     order by ghgr_id desc
   )
   select
@@ -55,7 +55,7 @@ create materialized view ggircs_swrs.report as (
 create unique index ggircs_swrs_report_primary_key on ggircs_swrs.report (id);
 create index ggircs_swrs_report_history on ggircs_swrs.report (swrs_report_history_id);
 
-comment on materialized view ggircs_swrs.report is 'the materialized view housing all report data, derived from raw_report table';
+comment on materialized view ggircs_swrs.report is 'the materialized view housing all report data, derived from ghgr_import table';
 comment on column ggircs_swrs.report.id is 'The primary key for the materialized view';
 comment on column ggircs_swrs.report.ghgr_id is 'The internal primary key for the file';
 comment on column ggircs_swrs.report.source_xml is 'The raw xml file imported from GHGR';
