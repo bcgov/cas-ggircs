@@ -5,17 +5,17 @@
 
 begin;
 
-create materialized view ggircs_private.facility as (
-  -- Select the XML reports from raw_reports table and get the Facility ID and Report ID from reports table
+create materialized view ggircs_swrs.facility as (
+  -- Select the XML reports from ghgr_imports table and get the Facility ID and Report ID from reports table
   with x as (
     select _report.id               as report_id,
            _report.swrs_report_id   as swrs_report_id,
-           _raw_report.xml_file     as source_xml,
-           _raw_report.imported_at  as imported_at,
+           _ghgr_import.xml_file     as source_xml,
+           _ghgr_import.imported_at  as imported_at,
            _report.swrs_facility_id as swrs_facility_id
-    from ggircs_private.report as _report
-           inner join ggircs_private.raw_report as _raw_report
-                      on _report.ghgr_id = _raw_report.id
+    from ggircs_swrs.report as _report
+           inner join ggircs_swrs.ghgr_import as _ghgr_import
+                      on _report.ghgr_id = _ghgr_import.id
     order by _report.id desc
   )
        -- Walk the XML to extract facility details
@@ -67,7 +67,7 @@ create materialized view ggircs_private.facility as (
          ) as vt_facility_details
 );
 
-create unique index ggircs_facility_primary_key on ggircs_private.facility (id);
-create index ggircs_facility_history on ggircs_private.facility (swrs_facility_history_id);
+create unique index ggircs_facility_primary_key on ggircs_swrs.facility (id);
+create index ggircs_facility_history on ggircs_swrs.facility (swrs_facility_history_id);
 
 commit;
