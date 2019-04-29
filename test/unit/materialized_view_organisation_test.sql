@@ -22,7 +22,7 @@ select has_column('ggircs_swrs', 'organisation', 'swrs_organisation_history_id',
 --
 -- -- Test index names in matview report exist and are correct
 select has_index('ggircs_swrs', 'organisation', 'ggircs_organisation_primary_key', 'Matview organisation has index: ggircs_organisation_primary_key');
-select has_index('ggircs_swrs', 'organisation', 'ggircs_organisation_history', 'Matview organisation has index: ggircs_organisation_history');
+select has_index('ggircs_swrs', 'organisation', 'ggircs_swrs_organisation_history', 'Matview organisation has index: ggircs_swrs_organisation_history');
 --
 -- -- Test unique indicies are defined unique
 select index_is_unique('ggircs_swrs', 'organisation', 'ggircs_organisation_primary_key', 'Matview report index ggircs_organisation_primary_key is unique');

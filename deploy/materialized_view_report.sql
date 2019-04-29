@@ -53,7 +53,7 @@ create materialized view ggircs_swrs.report as (
 
 
 create unique index ggircs_report_primary_key on ggircs_swrs.report (id);
-create index ggircs_report_history on ggircs_swrs.report (swrs_report_history_id);
+create index ggircs_swrs_report_history on ggircs_swrs.report (swrs_report_history_id);
 
 comment on materialized view ggircs_swrs.report is 'the materialized view housing all report data, derived from ghgr_import table';
 comment on column ggircs_swrs.report.id is 'The primary key for the materialized view';

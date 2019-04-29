@@ -55,7 +55,7 @@ create materialized view ggircs_swrs.organisation as (
          ) as vt_organisation_details
 );
 create unique index ggircs_organisation_primary_key on ggircs_swrs.organisation (id);
-create index ggircs_organisation_history on ggircs_swrs.organisation (swrs_organisation_history_id);
+create index ggircs_swrs_organisation_history on ggircs_swrs.organisation (swrs_organisation_history_id);
 
 comment on materialized view ggircs_swrs.organisation is 'the materialized view housing all report data pertaining to the reporting organisation';
 comment on column ggircs_swrs.organisation.id is 'The primary key for the materialized view';
