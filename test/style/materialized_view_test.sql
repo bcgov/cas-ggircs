@@ -49,14 +49,14 @@ create table csv_import_fixture
 \copy csv_import_fixture from './test/fixture/sql_reserved_words.csv' delimiter ',' csv;
 -- -- test that schema does not contain any table names that intersect with reserved words csv dictionary
 with reserved_words as (select csv_column_fixture from csv_import_fixture),
-schema_names as (select schema_name from information_schema.schemata where schema_name like 'ggircs%')
+mvnames as (select matviewname from pg_matviews where schemaname like 'ggircs%')
 select hasnt_materialized_view(
                sch,
                res,
                format('Materialized view names avoid reserved keywords. Violation: %I', res)
            )
 from reserved_words as rtmp (res)
-cross join schema_names as stmp (sch);
+cross join mv_names as stmp (mv);
 drop table csv_import_fixture;
 --
 -- GUIDELINE: All tables must have a unique primary key
