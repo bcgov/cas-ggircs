@@ -7,13 +7,13 @@ begin;
 -- create schema ggircs_swrs;
 set search_path to ggircs_swrs,public;
 
-select plan(1661);
+select plan(14861);
 
 /** Check Column Compliance **/
 
 -- GUIDELINE: DB should have descriptions for all columns
 -- Get all table columns within schema ggircs_swrs that do not have a comment
-prepare nullcomment as select pg_catalog.col_description(
+prepare null_table_comment as select pg_catalog.col_description(
                                       format('%s.%s', isc.table_schema, isc.table_name)::regclass::oid,
                                       isc.ordinal_position)
                                   as column_description
@@ -24,7 +24,7 @@ prepare nullcomment as select pg_catalog.col_description(
                                isc.ordinal_position) is null;
 -- Test that there are no results on the above query for null comments
 select is_empty(
-               'nullcomment', 'table columns have descriptions'
+               'null_table_comment', 'table columns have descriptions'
            );
 
 -- Get all materialized view columns in schema ggrics_swrs that do not have a comment
@@ -160,9 +160,26 @@ select hasnt_column(
                'ggircs_swrs',
                tbl,
                word,
-               format('Column names avoid reserved keywords. Violation: %I', word)
+               format('Column names avoid reserved keywords. Violation: col: %I, word: %I', tbl, word)
            )
 from reserved_words as wtmp (word)
          cross join tnames as ttmp (tbl);
+with reserved_words as (select csv_column_fixture from csv_import_fixture),
+mv_names as (select a.attname
+        from pg_attribute a
+        join pg_class t on a.attrelid = t.oid
+        join pg_namespace s on t.relnamespace = s.oid
+        where a.attnum > 0
+        and not a.attisdropped
+        and t.relkind = 'm'
+        and s.nspname = 'ggircs_swrs')
+select hasnt_column(
+               'ggircs_swrs',
+               mv,
+               word,
+               format('Column names avoid reserved keywords. Violation: col: %I, word: %I', mv, word)
+           )
+from reserved_words as wtmp (word)
+         cross join mv_names as mvtmp (mv);
 
 rollback;
