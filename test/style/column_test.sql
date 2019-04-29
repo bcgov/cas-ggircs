@@ -7,7 +7,7 @@ begin;
 -- create schema ggircs_swrs;
 set search_path to ggircs_swrs,public;
 
-select plan(14861);
+select plan(23111);
 
 /** Check Column Compliance **/
 
