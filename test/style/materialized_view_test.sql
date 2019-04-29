@@ -39,7 +39,7 @@ from mvnames f(mv);
 -- -- TODO: Names are singular
 -- -- POSTGRES stemmer
 -- -- ACTIVE RECORD (Ruby/Rails)
---
+
 -- -- GUIDELINE: Avoid reserved keywords (ie. COMMENT -> [name]_comment) https://www.drupal.org/docs/develop/coding-standards/list-of-sql-reserved-words
 -- -- create table from csv list of reserved words
 create table csv_import_fixture

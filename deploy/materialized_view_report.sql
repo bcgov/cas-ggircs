@@ -31,23 +31,23 @@ create materialized view ggircs_swrs.report as (
            '/ReportData/ReportDetails'
            passing source_xml
            columns
-             swrs_report_id numeric path 'ReportID',
-             prepop_report_id numeric path 'PrepopReportID', -- null
-             report_type text path 'ReportType',
-             swrs_facility_id numeric path 'FacilityId',
-             swrs_organisation_id numeric path 'OrganisationId',
-             reporting_period_duration numeric path 'ReportingPeriodDuration'
+             swrs_report_id numeric(1000,0) path 'ReportID',
+             prepop_report_id numeric(1000,0) path 'PrepopReportID', -- null
+             report_type varchar(1000) path 'ReportType',
+             swrs_facility_id numeric(1000,0) path 'FacilityId',
+             swrs_organisation_id numeric(1000,0) path 'OrganisationId',
+             reporting_period_duration numeric(1000,0) path 'ReportingPeriodDuration'
          ) as report_details,
 
        xmltable(
            '/ReportData/ReportDetails/ReportStatus'
            passing source_xml
            columns
-             status text path 'Status|ReportStatus', -- Unknown, In Progress, Submitted, Archived, Completed
-             version text path 'Version',
-             submission_date text path 'SubmissionDate', -- null
-             last_modified_by text path 'LastModifiedBy',
-             update_comment text path 'UpdateComment' -- null
+             status varchar(1000) path 'Status|ReportStatus', -- Unknown, In Progress, Submitted, Archived, Completed
+             version varchar(1000) path 'Version',
+             submission_date varchar(1000) path 'SubmissionDate', -- null
+             last_modified_by varchar(1000) path 'LastModifiedBy',
+             update_comment varchar(1000) path 'UpdateComment' -- null
          ) as report_status
 );
 
