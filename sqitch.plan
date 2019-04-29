@@ -4,5 +4,6 @@
 
 schema_ggircs 2019-04-12T19:45:19Z Alec Wenzowski <alec@button.is> # Add a schema for ggircs
 schema_ggircs_swrs 2019-04-24T21:52:37Z Alec Wenzowski <alec@button.is> # Add swrs schema for ggircs ETL process
-table_ghgr_import [schema_ggircs_swrs] 2019-04-24T22:45:47Z Dylan Leard <dleard@button.is> # add table ghgr_import to schema ggircs_swrs
-materialized_view_report [schema_ggircs_swrs table_ghgr_import] 2019-04-25T21:07:39Z Dylan Leard <dleard@button.is> # add materialized view report to schema ggircs_swrs
+table_ghgr_import [schema_ggircs_swrs] 2019-04-24T22:45:47Z Dylan Leard <dylan@button.is> # add table ghgr_import to schema ggircs_swrs
+materialized_view_report [schema_ggircs_swrs table_ghgr_import] 2019-04-25T21:07:39Z Dylan Leard <dylan@button.is> # add materialized view report to schema ggircs_swrs
+materialized_view_organisation [schema_ggircs_swrs materialized_view_report] 2019-04-29T20:14:13Z Dylan Leard <dylan@button.is> # add materialized view organisation to schema ggrics_swrs

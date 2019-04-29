@@ -26,11 +26,11 @@ select has_column('ggircs_swrs', 'report', 'update_comment', 'Matview report has
 select has_column('ggircs_swrs', 'report', 'swrs_report_history_id', 'Matview report has column: swrs_report_history_id');
 
 -- Test index names in matview report exist and are correct
-select has_index('ggircs_swrs', 'report', 'ggircs_swrs_report_primary_key', 'Matview report has index: ggircs_swrs_report_primary_key');
+select has_index('ggircs_swrs', 'report', 'ggircs_report_primary_key', 'Matview report has index: ggircs_report_primary_key');
 select has_index('ggircs_swrs', 'report', 'ggircs_swrs_report_history', 'Matview report has index: ggircs_swrs_report_history');
 
 -- Test unique indicies are defined unique
-select index_is_unique('ggircs_swrs', 'report', 'ggircs_swrs_report_primary_key', 'Matview report index ggircs_swrs_report_primary_key is unique');
+select index_is_unique('ggircs_swrs', 'report', 'ggircs_report_primary_key', 'Matview report index ggircs_report_primary_key is unique');
 
 -- Test columns in matview report have correct types
 select col_type_is('ggircs_swrs', 'report', 'id', 'bigint', 'Matview report column id has type bigint');
