@@ -1,7 +1,7 @@
 -- Verify ggircs:materialized_view_facility on pg
 
-BEGIN;
+begin;
 
--- XXX Add verifications here.
+select * from ggircs_swrs.facility;
 
-ROLLBACK;
+rollback;

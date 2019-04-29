@@ -1,7 +1,7 @@
 -- Revert ggircs:materialized_view_facility from pg
 
-BEGIN;
+begin;
 
--- XXX Add DDLs here.
+drop materialized view ggircs_swrs.organisation;
 
-COMMIT;
+commit;
