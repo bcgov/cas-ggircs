@@ -24,7 +24,7 @@ create materialized view ggircs_swrs.facility as (
   select row_number() over (order by report_id asc)                                     as id,
          x.report_id,
          x.swrs_facility_id,
-         coalesce(vt_facility_details.facility_name, rd_facility_details.facility_name) as name,
+         coalesce(vt_facility_details.facility_name, rd_facility_details.facility_name) as facility_name,
          rd_facility_details.facility_type,
          coalesce(vt_facility_details.relationship_type,
                   rd_facility_details.relationship_type)                                as relationship_type,
@@ -45,29 +45,43 @@ create materialized view ggircs_swrs.facility as (
            '/ReportData'
            passing source_xml
            columns
-             facility_name text path './RegistrationData/Facility/Details/FacilityName',
-             facility_type text path './ReportDetails/FacilityType', -- null
-             relationship_type text path './RegistrationData/Facility/Details/RelationshipType',
-             portability_indicator text path './RegistrationData/Facility/Details/PortabilityIndicator',
-             status text path './RegistrationData/Facility/Details/Status',
-             latitude text path './RegistrationData/Facility/Address/GeographicAddress/Latitude',
-             longitude text path './RegistrationData/Facility/Address/GeographicAddress/Longitude'
+             facility_name varchar(1000) path './RegistrationData/Facility/Details/FacilityName',
+             facility_type varchar(1000) path './ReportDetails/FacilityType', -- null
+             relationship_type varchar(1000) path './RegistrationData/Facility/Details/RelationshipType',
+             portability_indicator varchar(1000) path './RegistrationData/Facility/Details/PortabilityIndicator',
+             status varchar(1000) path './RegistrationData/Facility/Details/Status',
+             latitude varchar(1000) path './RegistrationData/Facility/Address/GeographicAddress/Latitude',
+             longitude varchar(1000) path './RegistrationData/Facility/Address/GeographicAddress/Longitude'
          ) as rd_facility_details,
 
        xmltable(
            '/ReportData'
            passing source_xml
            columns
-             facility_name text path './VerifyTombstone/Facility/Details/FacilityName',
-             relationship_type text path './VerifyTombstone/Facility/Details/RelationshipType',
-             portability_indicator text path './VerifyTombstone/Facility/Details/PortabilityIndicator',
-             status text path './VerifyTombstone/Facility/Details/Status',
-             latitude text path './VerifyTombstone/Facility/Address/GeographicalAddress/Latitude',
-             longitude text path './VerifyTombstone/Facility/Address/GeographicalAddress/Longitude'
+             facility_name varchar(1000) path './VerifyTombstone/Facility/Details/FacilityName',
+             relationship_type varchar(1000) path './VerifyTombstone/Facility/Details/RelationshipType',
+             portability_indicator varchar(1000) path './VerifyTombstone/Facility/Details/PortabilityIndicator',
+             status varchar(1000) path './VerifyTombstone/Facility/Details/Status',
+             latitude varchar(1000) path './VerifyTombstone/Facility/Address/GeographicalAddress/Latitude',
+             longitude varchar(1000) path './VerifyTombstone/Facility/Address/GeographicalAddress/Longitude'
          ) as vt_facility_details
 );
 
 create unique index ggircs_facility_primary_key on ggircs_swrs.facility (id);
-create index ggircs_facility_history on ggircs_swrs.facility (swrs_facility_history_id);
+create index ggircs_swrs_facility_history on ggircs_swrs.facility (swrs_facility_history_id);
+
+comment on materialized view ggircs_swrs.facility is 'the materialized view housing all report data pertaining to the reporting facility';
+comment on column ggircs_swrs.facility.id is 'The primary key for the materialized view';
+comment on column ggircs_swrs.facility.report_id is 'The swrs report id';
+comment on column ggircs_swrs.facility.swrs_facility_id is 'The reporting facility swrs id';
+
+comment on column ggircs_swrs.facility.facility_name is 'The name of the reporting facility';
+comment on column ggircs_swrs.facility.facility_type is 'The type of the reporting facility';
+comment on column ggircs_swrs.facility.relationship_type is 'The type of relationship';
+comment on column ggircs_swrs.facility.portability_indicator is 'The portability indicator';
+comment on column ggircs_swrs.facility.status is 'The status of the facility';
+comment on column ggircs_swrs.facility.latitude is 'The latitude of the reporting facility';
+comment on column ggircs_swrs.facility.longitude is 'The longitude of the reporting facility';
+comment on column ggircs_swrs.facility.swrs_facility_history_id is 'The id denoting the history attached to the facility (1=latest)';
 
 commit;
