@@ -29,12 +29,12 @@ deploy:
 
 prove_style:
 	# Run style-related test suite on all objects in db using pg_prove
-	@@${PG_PROVE} -v -d ${TEST_DB} test/**/*_test.sql
+	@@${PG_PROVE} -v -d ${TEST_DB} test/style/*_test.sql
 .PHONY: prove
 
 prove_unit:
 	# Run unit test suite using pg_prove
-	@@${PG_PROVE} -v -d ${TEST_DB} test/*_test.sql
+	@@${PG_PROVE} -v -d ${TEST_DB} test/unit/*_test.sql
 .PHONY: test
 
 revert:
