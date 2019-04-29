@@ -3,7 +3,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(14);
+select plan(24);
 
 -- Test matview report exists in schema ggircs_swrs
 select has_materialized_view('ggircs_swrs', 'organisation', 'Materialized view report exists');
@@ -28,7 +28,16 @@ select has_index('ggircs_swrs', 'organisation', 'ggircs_organisation_history', '
 select index_is_unique('ggircs_swrs', 'organisation', 'ggircs_organisation_primary_key', 'Matview report index ggircs_organisation_primary_key is unique');
 --
 -- -- Test columns in matview report have correct types
--- select col_type_is('ggircs_swrs', 'report', 'id', 'bigint', 'Matview report column id has type bigint');
+select col_type_is('ggircs_swrs', 'organisation', 'id', 'bigint', 'Matview organisation column id has type bigint');
+select col_type_is('ggircs_swrs', 'organisation', 'report_id', 'bigint', 'Matview organisation column report_id has type bigint');
+select col_type_is('ggircs_swrs', 'organisation', 'swrs_organisation_id', 'numeric(1000,0)', 'Matview organisation column id has type numeric(1000,0)');
+select col_type_is('ggircs_swrs', 'organisation', 'business_legal_name', 'character varying(1000)', 'Matview organisation column business_legal_name has type varchar');
+select col_type_is('ggircs_swrs', 'organisation', 'english_trade_name', 'character varying(1000)', 'Matview organisation column english_trade_name has type varchar');
+select col_type_is('ggircs_swrs', 'organisation', 'french_trade_name', 'character varying(1000)', 'Matview organisation column french_trade_name has type varchar');
+select col_type_is('ggircs_swrs', 'organisation', 'cra_business_number', 'character varying(1000)', 'Matview organisation column cra_business_number has type varchar');
+select col_type_is('ggircs_swrs', 'organisation', 'duns', 'character varying(1000)', 'Matview organisation column duns has type varchar');
+select col_type_is('ggircs_swrs', 'organisation', 'website', 'character varying(1000)', 'Matview organisation column website has type varchar');
+select col_type_is('ggircs_swrs', 'organisation', 'swrs_organisation_history_id', 'bigint', 'Matview organisation column swrs_organisation_history_id has type bigint');
 
 select finish();
 rollback;
