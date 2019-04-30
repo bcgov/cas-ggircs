@@ -10,7 +10,7 @@ select has_materialized_view('ggircs_swrs', 'report', 'Materialized view report 
 
 -- Test column names in matview report exist and are correct
 select has_column('ggircs_swrs', 'report', 'id', 'Matview report has column: id');
-select has_column('ggircs_swrs', 'report', 'ghgr_id', 'Matview report has column: ghgr_id');
+select has_column('ggircs_swrs', 'report', 'ghgr_import_id', 'Matview report has column: ghgr_import_id');
 select has_column('ggircs_swrs', 'report', 'source_xml', 'Matview report has column: source_xml');
 select has_column('ggircs_swrs', 'report', 'imported_at', 'Matview report has column: imported_at');
 select has_column('ggircs_swrs', 'report', 'swrs_report_id', 'Matview report has column: swrs_report_id');
@@ -34,7 +34,7 @@ select index_is_unique('ggircs_swrs', 'report', 'ggircs_report_primary_key', 'Ma
 
 -- Test columns in matview report have correct types
 select col_type_is('ggircs_swrs', 'report', 'id', 'bigint', 'Matview report column id has type bigint');
-select col_type_is('ggircs_swrs', 'report', 'ghgr_id', 'integer', 'Matview report column ghgr has type integer');
+select col_type_is('ggircs_swrs', 'report', 'ghgr_import_id', 'integer', 'Matview report column ghgr has type integer');
 select col_type_is('ggircs_swrs', 'report', 'source_xml', 'xml', 'Matview report column source_xml has type xml');
 select col_type_is('ggircs_swrs', 'report', 'imported_at', 'timestamp with time zone', 'Matview report column imported_at has type timestamp with time zone');
 select col_type_is('ggircs_swrs', 'report', 'swrs_report_id', 'numeric(1000,0)', 'Matview report column swrs_report_id has type numeric(1000,0)');
@@ -73,7 +73,7 @@ $$);
 -- Ensure fixture is processed correctly
 refresh materialized view ggircs_swrs.report with data;
 select results_eq('select id from ggircs_swrs.report', ARRAY[1::bigint], 'Matview report parsed column id');
-select results_eq('select ghgr_id from ggircs_swrs.report', ARRAY[1::int], 'Matview report parsed column ghgr_id');
+select results_eq('select ghgr_import_id from ggircs_swrs.report', 'select id from ggircs_swrs.ghgr_import', 'Matview report parsed column ghgr_import_id');
 -- TODO(wenzowski): need an xml comparison operator
 select results_eq('select source_xml::text from ggircs_swrs.report', ARRAY[$$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">

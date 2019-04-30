@@ -7,7 +7,7 @@ begin;
 -- create schema ggircs_swrs;
 set search_path to ggircs_swrs,public;
 
-select plan(36311);
+select * from no_plan();
 
 /** Check Column Compliance **/
 
@@ -181,5 +181,7 @@ select hasnt_column(
            )
 from reserved_words as wtmp (word)
          cross join mv_names as mvtmp (mv);
+
+select * from finish();
 
 rollback;

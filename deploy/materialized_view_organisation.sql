@@ -6,17 +6,16 @@ begin;
 
 create materialized view ggircs_swrs.organisation as (
   with x as (
-    select _report.source_xml as source_xml,
-           _report.id         as report_id,
-           _report.swrs_report_id,
-           _report.imported_at,
-           _report.swrs_organisation_id
-    from ggircs_swrs.report as _report
-    order by _report.id desc
+    select
+           ghgr_import.id as ghgr_import_id,
+           ghgr_import.xml_file as source_xml,
+           ghgr_import.imported_at
+    from ggircs_swrs.ghgr_import
+    order by ghgr_import_id desc
   )
-  select row_number() over (order by report_id asc)               as id,
-         report_id,
-         swrs_organisation_id,
+  select row_number() over (order by ghgr_import_id asc)               as id,
+         ghgr_import_id,
+         report_details.swrs_organisation_id,
          coalesce(vt_business_legal_name, rd_business_legal_name) as business_legal_name,
          coalesce(vt_english_trade_name, rd_english_trade_name)   as english_trade_name,
          coalesce(vt_french_trade_name, rd_french_trade_name)     as french_trade_name,
@@ -24,12 +23,18 @@ create materialized view ggircs_swrs.organisation as (
          coalesce(vt_duns, rd_duns)                               as duns,
          coalesce(vt_web_site, rd_web_site)                       as website,
          row_number() over (
-           partition by swrs_organisation_id
+           partition by report_details.swrs_organisation_id
            order by
-             report_id desc,
+             ghgr_import_id desc,
              imported_at desc
            )                                                      as swrs_organisation_history_id
   from x,
+       xmltable(
+           '/ReportData/ReportDetails'
+           passing source_xml
+           columns
+             swrs_organisation_id numeric(1000,0) not null path 'OrganisationId[normalize-space(.)]'
+         ) as report_details,
        xmltable(
            '/ReportData'
            passing source_xml
@@ -59,7 +64,7 @@ create index ggircs_swrs_organisation_history on ggircs_swrs.organisation (swrs_
 
 comment on materialized view ggircs_swrs.organisation is 'the materialized view housing all report data pertaining to the reporting organisation';
 comment on column ggircs_swrs.organisation.id is 'The primary key for the materialized view';
-comment on column ggircs_swrs.organisation.report_id is 'The swrs report id';
+comment on column ggircs_swrs.organisation.ghgr_import_id is 'The internal reference to the file imported from ghgr';
 comment on column ggircs_swrs.organisation.swrs_organisation_id is 'The reporting organisation swrs id';
 comment on column ggircs_swrs.organisation.business_legal_name is 'The legal business name of the reporting organisation';
 comment on column ggircs_swrs.organisation.english_trade_name is 'The trade name in english';

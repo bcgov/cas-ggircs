@@ -15,7 +15,7 @@ create materialized view ggircs_swrs.facility as (
            _report.swrs_facility_id as swrs_facility_id
     from ggircs_swrs.report as _report
            inner join ggircs_swrs.ghgr_import as _ghgr_import
-                      on _report.ghgr_id = _ghgr_import.id
+                      on _report.ghgr_import_id = _ghgr_import.id
     order by _report.id desc
   )
        -- Walk the XML to extract facility details

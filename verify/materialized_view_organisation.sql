@@ -3,5 +3,6 @@
 BEGIN;
 
 select * from ggircs_swrs.organisation where false;
+--  select false from pg_matviews where schemaname = 'ggircs_swrs' and matviewname = 'organisation';
 
 ROLLBACK;
