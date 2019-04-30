@@ -65,7 +65,7 @@ create materialized view ggircs_swrs.facility as (
              latitude varchar(1000) path './VerifyTombstone/Facility/Address/GeographicalAddress/Latitude',
              longitude varchar(1000) path './VerifyTombstone/Facility/Address/GeographicalAddress/Longitude'
          ) as vt_facility_details
-);
+) with no data;
 
 create unique index ggircs_facility_primary_key on ggircs_swrs.facility (id);
 create index ggircs_swrs_facility_history on ggircs_swrs.facility (swrs_facility_history_id);
