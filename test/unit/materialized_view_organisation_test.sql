@@ -74,16 +74,16 @@ $$);
 refresh materialized view ggircs_swrs.report with data;
 refresh materialized view ggircs_swrs.organisation with data;
 
-select results_eq('select id from ggircs_swrs.organisation', ARRAY[1::bigint], 'Matview organisation parsed column id');
-select results_eq('select report_id from ggircs_swrs.organisation', ARRAY[1::bigint], 'Matview organisation parsed column report_id');
-select results_eq('select swrs_organisation_id from ggircs_swrs.organisation', ARRAY[1337::numeric], 'Matview organisation parsed column swrs_organisation_id');
-select results_eq('select business_legal_name from ggircs_swrs.organisation', ARRAY['Ren and Stimpys House'::varchar(1000)], 'Matview organisation parsed column business_legal_name');
-select results_eq('select english_trade_name from ggircs_swrs.organisation', ARRAY[''::varchar], 'Matview organisation parsed column english_trade_name');
-select results_eq('select french_trade_name from ggircs_swrs.organisation', ARRAY[''::varchar], 'Matview organisation parsed column french_trade_name');
-select results_eq('select cra_business_number from ggircs_swrs.organisation', ARRAY[123456789::varchar], 'Matview organisation parsed column cra_business_number');
-select results_eq('select duns from ggircs_swrs.organisation', ARRAY[90210::varchar], 'Matview organisation parsed column duns');
-select results_eq('select website from ggircs_swrs.organisation', ARRAY['www.hockeyisgood.com'::varchar], 'Matview organisation parsed column website');
-select results_eq('select swrs_organisation_history_id from ggircs_swrs.organisation', ARRAY[1::bigint], 'Matview organisation parsed column swrs_organisation_history_id');
+select results_eq('select id from ggircs_swrs.organisation', ARRAY[1::bigint], 'ghgr_swrs.organisation is a generated sequence');
+select results_eq('select ghgr_import_id from ggircs_swrs.organisation', 'select id from ggircs_swrs.ghgr_import', 'ghgr_swrs.organisation.ghgr_import_id references ghgr_swrs.ghgr_import.id');
+select results_eq('select swrs_organisation_id from ggircs_swrs.organisation', ARRAY[1337::numeric], 'ghgr_swrs.organisation.swrs_organisation_id parsed from xml');
+select results_eq('select business_legal_name from ggircs_swrs.organisation', ARRAY['Ren and Stimpys House'::varchar(1000)], 'ghgr_swrs.organisation.business_legal_name parsed from xml');
+select results_eq('select english_trade_name from ggircs_swrs.organisation', ARRAY[''::varchar], 'ghgr_swrs.organisation.english_trade_name parsed from xml');
+select results_eq('select french_trade_name from ggircs_swrs.organisation', ARRAY[''::varchar], 'ghgr_swrs.organisation.french_trade_name parsed from xml');
+select results_eq('select cra_business_number from ggircs_swrs.organisation', ARRAY[123456789::varchar], 'ghgr_swrs.organisation.cra_business_number parsed from xml');
+select results_eq('select duns from ggircs_swrs.organisation', ARRAY[90210::varchar], 'ghgr_swrs.organisation.duns parsed from xml');
+select results_eq('select website from ggircs_swrs.organisation', ARRAY['www.hockeyisgood.com'::varchar], 'ghgr_swrs.organisation.website parsed from xml');
+select results_eq('select swrs_organisation_history_id from ggircs_swrs.organisation', ARRAY[1::bigint], 'ghgr_swrs.organisation.swrs_organisation_history_id parsed from xml');
 
 select finish();
 rollback;
