@@ -11,7 +11,7 @@ begin;
 --       schemas other than ggircs_swrs become populated with tables
 set search_path to ggircs_swrs,public;
 
-select plan(2482);
+select plan(3309);
 
 /** Check table compliance **/
 
