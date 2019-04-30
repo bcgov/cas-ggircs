@@ -1,7 +1,9 @@
 -- Verify ggircs:materialized_view_report on pg
 
-BEGIN;
+begin;
 
+-- selecting from the matview will throw an error if it doesn't exist
+-- but there's no need to return any value so select where false
 select * from ggircs_swrs.report where false;
 
-ROLLBACK;
+rollback;

@@ -31,31 +31,32 @@ create materialized view ggircs_swrs.report as (
            '/ReportData/ReportDetails'
            passing source_xml
            columns
-             swrs_report_id numeric(1000,0) path 'ReportID',
-             prepop_report_id numeric(1000,0) path 'PrepopReportID', -- null
-             report_type varchar(1000) path 'ReportType',
-             swrs_facility_id numeric(1000,0) path 'FacilityId',
-             swrs_organisation_id numeric(1000,0) path 'OrganisationId',
-             reporting_period_duration numeric(1000,0) path 'ReportingPeriodDuration'
+             swrs_report_id numeric(1000,0) not null path 'ReportID[normalize-space(.)]',
+             prepop_report_id numeric(1000,0) path 'PrepopReportID[normalize-space(.)]',
+             report_type varchar(1000) not null path 'ReportType[normalize-space(.)]',
+             swrs_facility_id numeric(1000,0) not null path 'FacilityId[normalize-space(.)]',
+             swrs_organisation_id numeric(1000,0) not null path 'OrganisationId[normalize-space(.)]',
+             reporting_period_duration numeric(1000,0) not null path 'ReportingPeriodDuration[normalize-space(.)]'
          ) as report_details,
 
        xmltable(
            '/ReportData/ReportDetails/ReportStatus'
            passing source_xml
            columns
-             status varchar(1000) path 'Status|ReportStatus', -- Unknown, In Progress, Submitted, Archived, Completed
-             version varchar(1000) path 'Version',
-             submission_date varchar(1000) path 'SubmissionDate', -- null
-             last_modified_by varchar(1000) path 'LastModifiedBy',
-             update_comment varchar(1000) path 'UpdateComment' -- null
+             status varchar(1000) not null path 'Status|ReportStatus[normalize-space(.)]', -- Unknown, In Progress, Submitted, Archived, Completed
+             version varchar(1000) not null path 'Version[normalize-space(.)]',
+             submission_date varchar(1000) path 'SubmissionDate[normalize-space(.)]',
+             last_modified_by varchar(1000) not null path 'LastModifiedBy[normalize-space(.)]',
+             last_modified_date timestamp with time zone not null path 'LastModifiedDate[normalize-space(.)]',
+             update_comment varchar(1000) path 'UpdateComment[normalize-space(.)]'
          ) as report_status
-);
+) with no data;
 
 
 create unique index ggircs_report_primary_key on ggircs_swrs.report (id);
 create index ggircs_swrs_report_history on ggircs_swrs.report (swrs_report_history_id);
 
-comment on materialized view ggircs_swrs.report is 'the materialized view housing all report data, derived from ghgr_import table';
+comment on materialized view ggircs_swrs.report is 'The materialized view housing all report data, derived from ghgr_import table';
 comment on column ggircs_swrs.report.id is 'The primary key for the materialized view';
 comment on column ggircs_swrs.report.ghgr_id is 'The internal primary key for the file';
 comment on column ggircs_swrs.report.source_xml is 'The raw xml file imported from GHGR';

@@ -22,6 +22,9 @@ test:
 	@@$(MAKE) -s $(MAKEFLAGS) dropdb;
 .PHONY: test
 
+unit: dropdb createdb deploy prove_unit
+.PHONY: unit
+
 deploy: 
 	# Deploy all changes to ${TEST_DB} using sqitch
 	@@sqitch deploy ${TEST_DB};
