@@ -3,7 +3,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(16);
+select plan(15);
 
 -- Test matview report exists in schema ggircs_swrs
 select has_materialized_view('ggircs_swrs', 'flat', 'Materialized view flat exists');
@@ -55,11 +55,18 @@ refresh materialized view ggircs_swrs.report with data;
 refresh materialized view ggircs_swrs.flat with data;
 
 -- test the columnns for matview facility have been properly parsed from xml
-select set_eq('select swrs_report_id from ggircs_swrs.flat', ARRAY[800855555::numeric], 'Matview flat parsed column swrs_report_id');
-select set_eq('select element_id from ggircs_swrs.flat', ARRAY[1::bigint], 'Matview flat parsed column element_id');
-select set_eq('select class from ggircs_swrs.flat', ARRAY[''::varchar], 'Matview flat parsed column class');
--- select results_eq('select attr from ggircs_swrs.flat', ARRAY[''::varchar], 'Matview flat parsed column attr');
--- select results_eq('select value from ggircs_swrs.flat', ARRAY[''::varchar], 'Matview flat parsed column value');
+select results_eq('select * from ggircs_swrs.flat', $$ VALUES
+(800855555::numeric,1::bigint, 'ReportID'::varchar,''::varchar,800855555::varchar),
+(800855555::numeric,2::bigint, 'PrepopReportID'::varchar,''::varchar,5::varchar),
+(800855555::numeric,3::bigint, 'ReportType'::varchar,''::varchar,'R7'::varchar),
+(800855555::numeric,4::bigint, 'FacilityId'::varchar,''::varchar,666::varchar),
+(800855555::numeric,5::bigint, 'OrganisationId'::varchar,''::varchar,1337::varchar),
+(800855555::numeric,6::bigint, 'ReportingPeriodDuration'::varchar,''::varchar,1999::varchar),
+(800855555::numeric,7::bigint, 'Status'::varchar,''::varchar,'In Progress'::varchar),
+(800855555::numeric,8::bigint, 'Version'::varchar,''::varchar,3::varchar),
+(800855555::numeric,9::bigint, 'LastModifiedBy'::varchar,''::varchar,'Donny Donaldson McDonaldface'::varchar),
+(800855555::numeric,10::bigint,'LastModifiedDate'::varchar,''::varchar,'2018-09-28T11:55:39.423'::varchar)
+$$, 'ggircs_swrs.flat() should return all xml nodes with values as rows');
 
 select finish();
 rollback;
