@@ -69,4 +69,6 @@ comment on column ggircs_swrs.organisation.duns is 'The organisation duns number
 comment on column ggircs_swrs.organisation.website is 'The organisation website address';
 comment on column ggircs_swrs.organisation.swrs_organisation_history_id is 'The id denoting the history attached to the organisation (1=latest)';
 
+
+
 commit;
