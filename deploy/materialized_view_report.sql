@@ -71,6 +71,7 @@ comment on column ggircs_swrs.report.status is 'The status of the report';
 comment on column ggircs_swrs.report.version is 'The report version';
 comment on column ggircs_swrs.report.submission_date is 'The date the report was submitted';
 comment on column ggircs_swrs.report.last_modified_by is 'The person who last modified the report';
+comment on column ggircs_swrs.report.last_modified_date is 'The timestamp recorded in SWRS when the report was last modified';
 comment on column ggircs_swrs.report.update_comment is 'The description of the update';
 comment on column ggircs_swrs.report.swrs_report_history_id is 'The id denoting the history of the report (1 = latest)';
 
