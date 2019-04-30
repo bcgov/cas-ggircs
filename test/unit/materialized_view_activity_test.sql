@@ -4,7 +4,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select no_plan();
+select plan(33);
 
 select has_materialized_view(
     'ggircs_swrs', 'activity',
@@ -82,7 +82,7 @@ $$);
 
 -- refresh necessary views with data
 
-refresh materialized view ggircs_swrs.report with data; 
+refresh materialized view ggircs_swrs.report with data;
 refresh materialized view ggircs_swrs.activity with data;
 
 -- test the columns for matview facility have been properly parsed from xml
