@@ -11,7 +11,7 @@ select has_materialized_view(
     'should have materialized view activity'
 );
 
-select has_index
+select has_index(
     'ggircs_swrs', 'activity',
     'table activity should have a primary key'
 );
