@@ -74,6 +74,39 @@ comment on column ggircs_swrs.organisation.duns is 'The organisation duns number
 comment on column ggircs_swrs.organisation.website is 'The organisation website address';
 comment on column ggircs_swrs.organisation.swrs_organisation_history_id is 'The id denoting the history attached to the organisation (1=latest)';
 
+insert into ggircs_swrs.ghgr_import (xml_file) values ($$
+    <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <RegistrationData>
+        <Organisation>
+          <Details>
+            <BusinessLegalName>Ren and Stimpy's House</BusinessLegalName>
+            <EnglishTradeName/>
+            <FrenchTradeName/>
+            <CRABusinessNumber>123456789</CRABusinessNumber>
+            <DUNSNumber>0</DUNSNumber>
+            <WebSite>www.hockeyisgood.com</WebSite>
+          </Details>
+        </Organisation>
+      </RegistrationData>
+      <ReportDetails>
+        <ReportID>800855555</ReportID>
+        <PrepopReportID>5</PrepopReportID>
+        <ReportType>R7</ReportType>
+        <FacilityId>666</FacilityId>
+        <OrganisationId>1337</OrganisationId>
+        <ReportingPeriodDuration>1999</ReportingPeriodDuration>
+        <ReportStatus>
+          <Status>In Progress</Status>
+          <Version>3</Version>
+          <LastModifiedBy>Donny Donaldson McDonaldface</LastModifiedBy>
+          <LastModifiedDate>2018-09-28T11:55:39.423</LastModifiedDate>
+        </ReportStatus>
+      </ReportDetails>
+    </ReportData>
 
+$$);
+
+refresh materialized view ggircs_swrs.report with data;
+refresh materialized view ggircs_swrs.organisation with data;
 
 commit;
