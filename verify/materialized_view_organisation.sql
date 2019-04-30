@@ -2,6 +2,6 @@
 
 BEGIN;
 
-select * from ggircs_swrs.organisation;
+select * from ggircs_swrs.organisation where false;
 
 ROLLBACK;

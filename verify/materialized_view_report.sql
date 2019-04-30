@@ -2,6 +2,6 @@
 
 BEGIN;
 
-select * from ggircs_swrs.report;
+select * from ggircs_swrs.report where false;
 
 ROLLBACK;
