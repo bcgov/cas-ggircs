@@ -2,6 +2,6 @@
 
 BEGIN;
 
--- XXX Add verifications here.
+select * from ggircs_swrs.identifier where false;
 
 ROLLBACK;
