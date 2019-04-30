@@ -2,6 +2,6 @@
 
 BEGIN;
 
-select * from ggircs_swrs.activity;
+select * from ggircs_swrs.activity where false;
 
 ROLLBACK;
