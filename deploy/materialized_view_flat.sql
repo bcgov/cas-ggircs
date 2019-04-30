@@ -15,9 +15,9 @@ create materialized view ggircs_swrs.flat as (
   )
   select x.swrs_report_id,
          element_id,
-         (xpath('name(/*)', node))[1]::text        as class,
-         (xpath('name(/*/@*)', node))[1]::text     as attr,
-         (xpath('/*/text()|/*/@*', node))[1]::text as value
+         (xpath('name(/*)', node))[1]::varchar(1000)        as class,
+         (xpath('name(/*/@*)', node))[1]::varchar(1000)     as attr,
+         (xpath('/*/text()|/*/@*', node))[1]::varchar(1000) as value
   from x,
        unnest(x.tag)
          with ordinality as t(node, element_id)
@@ -27,5 +27,10 @@ create unique index ggircs_flat_primary_key on ggircs_swrs.flat (swrs_report_id,
 create index ggircs_flat_report on ggircs_swrs.flat (swrs_report_id);
 
 comment on materialized view ggircs_swrs.flat is 'The flat view of data in the swrs report';
+comment on column ggircs_swrs.flat.swrs_report_id is 'The swrs report id';
+comment on column ggircs_swrs.flat.element_id is 'The element id';
+comment on column ggircs_swrs.flat.class is 'The class';
+comment on column ggircs_swrs.flat.attr is 'The attribute';
+comment on column ggircs_swrs.flat.value is 'The value';
 
 commit;
