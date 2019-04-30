@@ -104,7 +104,7 @@ select results_eq('select status from ggircs_swrs.report', ARRAY['In Progress'::
 select results_eq('select version from ggircs_swrs.report', ARRAY[3::varchar], 'Matview report parsed column version');
 select results_eq('select submission_date from ggircs_swrs.report', ARRAY[null::varchar], 'Matview report parsed column submission_date');
 select results_eq('select last_modified_by from ggircs_swrs.report', ARRAY['Donny Donaldson McDonaldface'::varchar], 'Matview report parsed column last_modified_by');
-select results_eq('select last_modified_date from ggircs_swrs.report', ARRAY['2018-09-28 11:55:39.423-07'::timestamptz], 'Matview report parsed column last_modified_date');
+select results_eq('select last_modified_date from ggircs_swrs.report', ARRAY['2018-09-28T11:55:39.423'::timestamptz], 'Matview report parsed column last_modified_date');
 select results_eq('select update_comment from ggircs_swrs.report', ARRAY[null::varchar], 'Matview report parsed column update_comment');
 select results_eq('select swrs_report_history_id from ggircs_swrs.report', ARRAY[1::bigint], 'Matview report parsed column swrs_report_history_id');
 
