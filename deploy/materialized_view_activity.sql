@@ -29,7 +29,7 @@ create materialized view ggircs_swrs.activity as (
              information_requirement varchar(1000) path './@InformationRequirement[normalize-space(.)]',
              sub_activity_xml xml path '.'
          ) as activity_details
-);
+) without data;
 
 comment on materialized view ggircs_swrs.activity is 'The materialized view for Activity and Subactivity from each report';
 comment on column ggircs_swrs.activity.id is 'The primary key';
