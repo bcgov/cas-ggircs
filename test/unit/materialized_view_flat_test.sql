@@ -31,11 +31,28 @@ select col_type_is('ggircs_swrs', 'flat', 'value', 'character varying(1000)', 'g
 
 -- insert necessary data into table ghgr_import
 insert into ggircs_swrs.ghgr_import (imported_at, xml_file) values ('2018-09-29T11:55:39.423', $$
-    <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-      <ReportDetails>
-        <ReportID>800855555</ReportID>
-      </ReportDetails>
-    </ReportData>
+<ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ActivityData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <ActivityPages>
+      <TotalCO2Captured>
+        <TotalGroups TotalGroupType="TotalCO2CapturedEmissions">
+          <Totals>
+            <Emissions EmissionsGasType="CO2Captured">
+              <TotalRow>
+                <Groups>
+                  <EmissionGroupTypes>BC_CO2Captured</EmissionGroupTypes>
+                </Groups>
+                <NotApplicable>true</NotApplicable>
+                <CalculatedQuantity xsi:nil="true"/>
+                <GasType>CO2nonbio</GasType>
+              </TotalRow>
+            </Emissions>
+          </Totals>
+        </TotalGroups>
+      </TotalCO2Captured>
+    </ActivityPages>
+  </ActivityData>
+</ReportData>
 $$);
 
 -- refresh necessary views with data
@@ -44,7 +61,12 @@ refresh materialized view ggircs_swrs.flat with data;
 
 -- test the columnns for matview facility have been properly parsed from xml
 select results_eq('select * from ggircs_swrs.flat', $$ VALUES
-(2::integer,1::bigint, 'ReportID'::varchar,''::varchar,'800855555'::varchar)
+(2::integer,1::bigint, 'TotalGroups'::varchar,'TotalGroupType'::varchar,'TotalCO2CapturedEmissions'::varchar),
+(2::integer,2::bigint, 'Emissions'::varchar,'EmissionsGasType'::varchar,'CO2Captured'::varchar),
+(2::integer,3::bigint, 'EmissionGroupTypes'::varchar,''::varchar,'BC_CO2Captured'::varchar),
+(2::integer,4::bigint, 'NotApplicable'::varchar,''::varchar,'true'::varchar),
+(2::integer,5::bigint, 'CalculatedQuantity'::varchar,'xsi:nil'::varchar,'true'::varchar),
+(2::integer,6::bigint, 'GasType'::varchar,''::varchar,'CO2nonbio'::varchar)
 $$, 'ggircs_swrs.flat() should return all xml nodes with values as rows');
 
 select finish();
