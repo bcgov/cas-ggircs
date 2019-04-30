@@ -4,7 +4,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(33);
+select no_plan();
 
 select has_materialized_view(
     'ggircs_swrs', 'activity',
@@ -12,8 +12,8 @@ select has_materialized_view(
 );
 
 select has_index(
-    'ggircs_swrs', 'activity',
-    'table activity should have a primary key'
+    'ggircs_swrs', 'activity', 'ggircs_activity_primary_key',
+    'mat view activity should have a primary key'
 );
 
 select columns_are('ggircs_swrs'::name, 'activity'::name, array[
@@ -29,13 +29,9 @@ select columns_are('ggircs_swrs'::name, 'activity'::name, array[
 
 select has_column(       'ggircs_swrs', 'activity', 'id', 'column activity.id should exist');
 select col_type_is(      'ggircs_swrs', 'activity', 'id', 'bigint', 'column activity.id should be type bigint');
---select col_not_null(     'ggircs_swrs', 'activity', 'id', 'column activity.id should be not null');
---select col_has_default(  'ggircs_swrs', 'activity', 'id', 'column activity.id should have a default');
---select col_default_is(   'ggircs_swrs', 'activity', 'id', 'nextval(''ggircs.activity_id_seq''::regclass)', 'column activity.id default is');
 
 select has_column(       'ggircs_swrs', 'activity', 'report_id', 'column activity.report_id should exist');
 select col_type_is(      'ggircs_swrs', 'activity', 'report_id', 'bigint', 'column activity.report_id should be type bigint');
-select col_not_null(     'ggircs_swrs', 'activity', 'report id', 'column activity.report_id should be not null');
 select col_hasnt_default('ggircs_swrs', 'activity', 'report_id', 'column activity.report_id should not  have a default');
 
 select has_column(       'ggircs_swrs', 'activity', 'swrs_report_id', 'column activity.swrs_report_id should exist');
@@ -67,6 +63,31 @@ select has_column(       'ggircs_swrs', 'activity', 'swrs_report_history_id', 'c
 select col_type_is(      'ggircs_swrs', 'activity', 'swrs_report_history_id', 'bigint', 'column activity.swrs_report_history_id should be type bigint');
 select col_is_null(      'ggircs_swrs', 'activity', 'swrs_report_history_id', 'column activity.swrs_report_history_id should allow null');
 select col_hasnt_default('ggircs_swrs', 'activity', 'swrs_report_history_id', 'column activity.swrs_report_history_id should not  have a default');
+
+-- Insert data for fixture based testing
+
+insert into ggircs_swrs.ghgr_import (xml_file) values ($$
+  <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ActivityData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <ActivityPages>
+      <Process ProcessName="GeneralStationaryCombustion">
+        <SubProcess SubprocessName="(a) general stationary combustion, useful energy" InformationRequirement="Required">
+        </SubProcess>
+      </Process>
+    </ActivityPages>
+  </ActivityData>
+</ReportData>
+$$);
+
+
+-- refresh necessary views with data
+
+refresh materialized view ggircs_swrs.report with data; 
+refresh materialized view ggircs_swrs.activity with data;
+
+-- test the columns for matview facility have been properly parsed from xml
+select results_eq('select id from ggircs_swrs.activity', ARRAY[1::bigint], 'Matview activity parsed column id');
+
 
 select * from finish();
 rollback;
