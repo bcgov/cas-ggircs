@@ -3,7 +3,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(24);
+select plan(26);
 
 -- Test matview report exists in schema ggircs_swrs
 select has_materialized_view('ggircs_swrs', 'organisation', 'ggircs_swrs.organisation exists as a materialized view');
@@ -38,6 +38,44 @@ select col_type_is('ggircs_swrs', 'organisation', 'cra_business_number', 'charac
 select col_type_is('ggircs_swrs', 'organisation', 'duns', 'character varying(1000)', 'ggircs_swrs.organisation column duns has type varchar');
 select col_type_is('ggircs_swrs', 'organisation', 'website', 'character varying(1000)', 'ggircs_swrs.organisation column website has type varchar');
 select col_type_is('ggircs_swrs', 'organisation', 'swrs_organisation_history_id', 'bigint', 'ggircs_swrs.organisation column swrs_organisation_history_id has type bigint');
+
+insert into ggircs_swrs.ghgr_import (xml_file) values ($$
+    <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <RegistrationData>
+        <Organisation>
+          <Details>
+            <BusinessLegalName>Ren and Stimpy's House</BusinessLegalName>
+            <EnglishTradeName/>
+            <FrenchTradeName/>
+            <CRABusinessNumber>123456789</CRABusinessNumber>
+            <DUNSNumber>0</DUNSNumber>
+            <WebSite>www.hockeyisgood.com</WebSite>
+          </Details>
+        </Organisation>
+      </RegistrationData>
+      <ReportDetails>
+        <ReportID>800855555</ReportID>
+        <PrepopReportID>5</PrepopReportID>
+        <ReportType>R7</ReportType>
+        <FacilityId>666</FacilityId>
+        <OrganisationId>1337</OrganisationId>
+        <ReportingPeriodDuration>1999</ReportingPeriodDuration>
+        <ReportStatus>
+          <Status>In Progress</Status>
+          <Version>3</Version>
+          <LastModifiedBy>Donny Donaldson McDonaldface</LastModifiedBy>
+          <LastModifiedDate>2018-09-28T11:55:39.423</LastModifiedDate>
+        </ReportStatus>
+      </ReportDetails>
+    </ReportData>
+
+$$);
+
+refresh materialized view ggircs_swrs.report with data;
+refresh materialized view ggircs_swrs.organisation with data;
+
+select results_eq('select id from ggircs_swrs.organisation', ARRAY[1::bigint], 'Matview organisation parsed column id');
+select results_eq('select report_id from ggircs_swrs.organisation', ARRAY[1::bigint], 'Matview organisation parsed column report_id');
 
 select finish();
 rollback;
