@@ -6,7 +6,7 @@ begin;
 create materialized view ggircs_swrs.flat as (
   with x as (
     select ghgr_import.id,
-           xpath('//*[./text()[normalize-space(.)]/parent::* or ./@*]', xml_file) as tag
+           xpath('//*[./text()[normalize-space(.)]/parent::* or ./@*[not(name()="xsi:nil") and not(text()="true")]]', xml_file) as tag
     from ggircs_swrs.ghgr_import
   )
   select x.id as ghgr_import_id,

@@ -65,8 +65,7 @@ select results_eq('select * from ggircs_swrs.flat', $$ VALUES
 (2::integer,2::bigint, 'Emissions'::varchar,'EmissionsGasType'::varchar,'CO2Captured'::varchar),
 (2::integer,3::bigint, 'EmissionGroupTypes'::varchar,''::varchar,'BC_CO2Captured'::varchar),
 (2::integer,4::bigint, 'NotApplicable'::varchar,''::varchar,'true'::varchar),
-(2::integer,5::bigint, 'CalculatedQuantity'::varchar,'xsi:nil'::varchar,'true'::varchar),
-(2::integer,6::bigint, 'GasType'::varchar,''::varchar,'CO2nonbio'::varchar)
+(2::integer,5::bigint, 'GasType'::varchar,''::varchar,'CO2nonbio'::varchar)
 $$, 'ggircs_swrs.flat() should return all xml nodes with values as rows');
 
 select finish();
