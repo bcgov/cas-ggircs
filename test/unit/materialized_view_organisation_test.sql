@@ -3,7 +3,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(26);
+select plan(34);
 
 -- Test matview report exists in schema ggircs_swrs
 select has_materialized_view('ggircs_swrs', 'organisation', 'ggircs_swrs.organisation exists as a materialized view');
@@ -44,11 +44,11 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
       <RegistrationData>
         <Organisation>
           <Details>
-            <BusinessLegalName>Ren and Stimpy's House</BusinessLegalName>
+            <BusinessLegalName>Ren and Stimpys House</BusinessLegalName>
             <EnglishTradeName/>
             <FrenchTradeName/>
             <CRABusinessNumber>123456789</CRABusinessNumber>
-            <DUNSNumber>0</DUNSNumber>
+            <DUNSNumber>90210</DUNSNumber>
             <WebSite>www.hockeyisgood.com</WebSite>
           </Details>
         </Organisation>
@@ -76,6 +76,14 @@ refresh materialized view ggircs_swrs.organisation with data;
 
 select results_eq('select id from ggircs_swrs.organisation', ARRAY[1::bigint], 'Matview organisation parsed column id');
 select results_eq('select report_id from ggircs_swrs.organisation', ARRAY[1::bigint], 'Matview organisation parsed column report_id');
+select results_eq('select swrs_organisation_id from ggircs_swrs.organisation', ARRAY[1337::numeric], 'Matview organisation parsed column swrs_organisation_id');
+select results_eq('select business_legal_name from ggircs_swrs.organisation', ARRAY['Ren and Stimpys House'::varchar(1000)], 'Matview organisation parsed column business_legal_name');
+select results_eq('select english_trade_name from ggircs_swrs.organisation', ARRAY[''::varchar], 'Matview organisation parsed column english_trade_name');
+select results_eq('select french_trade_name from ggircs_swrs.organisation', ARRAY[''::varchar], 'Matview organisation parsed column french_trade_name');
+select results_eq('select cra_business_number from ggircs_swrs.organisation', ARRAY[123456789::varchar], 'Matview organisation parsed column cra_business_number');
+select results_eq('select duns from ggircs_swrs.organisation', ARRAY[90210::varchar], 'Matview organisation parsed column duns');
+select results_eq('select website from ggircs_swrs.organisation', ARRAY['www.hockeyisgood.com'::varchar], 'Matview organisation parsed column website');
+select results_eq('select swrs_organisation_history_id from ggircs_swrs.organisation', ARRAY[1::bigint], 'Matview organisation parsed column swrs_organisation_history_id');
 
 select finish();
 rollback;
