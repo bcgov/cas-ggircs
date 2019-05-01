@@ -6,7 +6,7 @@ begin;
 select plan(15);
 
 -- Test matview report exists in schema ggircs_swrs
-select has_materialized_view('ggircs_swrs', 'flat', 'Materialized view flat exists');
+select has_materialized_view('ggircs_swrs', 'flat', 'ggircs_swrs.flat exists as a materialized view');
 
 -- Test column names in matview report exist and are correct
 select has_column('ggircs_swrs', 'flat', 'ghgr_import_id', 'ggircs_swrs.flat.ghgr_import_id exists');
@@ -56,7 +56,6 @@ insert into ggircs_swrs.ghgr_import (imported_at, xml_file) values ('2018-09-29T
 $$);
 
 -- refresh necessary views with data
-refresh materialized view ggircs_swrs.report with data;
 refresh materialized view ggircs_swrs.flat with data;
 
 -- test the columnns for matview facility have been properly parsed from xml
@@ -64,13 +63,13 @@ select results_eq('select * from ggircs_swrs.flat', $$
   with _flat as (
     select * from (
       values
-        (1::bigint, 'TotalGroups'::varchar,'TotalGroupType'::varchar,'TotalCO2CapturedEmissions'::varchar),
-        (2::bigint, 'Emissions'::varchar,'EmissionsGasType'::varchar,'CO2Captured'::varchar),
-        (3::bigint, 'EmissionGroupTypes'::varchar,''::varchar,'BC_CO2Captured'::varchar),
-        (4::bigint, 'NotApplicable'::varchar,''::varchar,'true'::varchar),
-        (5::bigint, 'GasType'::varchar,''::varchar,'CO2nonbio'::varchar)
+        (1::bigint, 'TotalGroups'::varchar,'TotalGroupType'::varchar,'TotalCO2CapturedEmissions'::varchar, null::varchar),
+        (2::bigint, 'Emissions'::varchar,'EmissionsGasType'::varchar,'CO2Captured'::varchar, 'TotalCO2CapturedEmissions'::varchar),
+        (3::bigint, 'EmissionGroupTypes'::varchar,''::varchar,'BC_CO2Captured'::varchar, 'TotalCO2CapturedEmissionsCO2Captured'::varchar),
+        (4::bigint, 'NotApplicable'::varchar,''::varchar,'true'::varchar, 'TotalCO2CapturedEmissionsCO2Captured'::varchar),
+        (5::bigint, 'GasType'::varchar,''::varchar,'CO2nonbio'::varchar, 'TotalCO2CapturedEmissionsCO2Captured'::varchar)
     )
-    as flat (element_id, class, attr, value)
+    as flat (element_id, class, attr, value, context)
   )
   select ghgr_import.id, _flat.* from _flat, ggircs_swrs.ghgr_import;
 $$, 'ggircs_swrs.flat() should return all xml nodes with values as rows');

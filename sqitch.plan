@@ -8,5 +8,5 @@ table_ghgr_import [schema_ggircs_swrs] 2019-04-24T22:45:47Z Dylan Leard <dylan@b
 materialized_view_report [table_ghgr_import] 2019-04-25T21:07:39Z Dylan Leard <dylan@button.is> # add materialized view report to schema ggircs_swrs
 materialized_view_organisation [table_ghgr_import] 2019-04-29T20:14:13Z Dylan Leard <dylan@button.is> # add materialized view organisation to schema ggrics_swrs
 materialized_view_facility [materialized_view_report] 2019-04-29T22:24:35Z Dylan Leard <dylan@button.is> # add materialized view facility to schema ggrics_swrs
-materialized_view_flat [materialized_view_report] 2019-04-30T18:11:08Z Dylan Leard <dylan@button.is> # add materialized view flat to schema ggircs_swrs
 materialized_view_activity [table_ghgr_import] 2019-04-29T23:51:13Z Hamza Javed <hamza@button.is> # Create a materialized view for activity and subactivity from report
+materialized_view_flat [table_ghgr_import] 2019-04-30T18:11:08Z Dylan Leard <dylan@button.is> # add materialized view flat to schema ggircs_swrs
