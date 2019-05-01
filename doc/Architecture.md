@@ -1,23 +1,4 @@
 GGIRCS Architecture
 ===================
 
-SQL Conventions
----------------
-
-GGIRCS establishes several conventions in harmony with the [High Level Data Design Guidelines]
-and the [system architecure proposal].
-
-1. Schemas are used to separate concerns.
-     - This ensures that each application reads and writes to/from its own namespace.
-         eg. ETL pipeline operations write to `ggircs_swrs` while the 
-         reporting tools read from `ggircs` and the audit tools read from `ggircs_history`.
-2. Tables are preferred over materialized views.
-     - In cases where data integrity is required, GGIRCS prefers to drop and re-create derived tables
-       using stored procedures instead of relying on materialized views in order to ensure
-       related tables have foreign key constraints.
-3. Automated Testing of the Database.
-     - This ensures that established conventions are enshrined in code and can be verified.
-     - This ensures developer expectations align with reality.
-
-[High Level Data Design Guidelines]: https://buttoninc.sharepoint.com/:b:/r/sites/bc-cas2/Shared%20Documents/Data/High%20Level%20Data%20Design%20Guidelines.pdf?csf=1&e=erpmdJ
-[system architecure proposal]: https://buttoninc.sharepoint.com/:w:/r/sites/bc-cas2/Shared%20Documents/Wireframes%20and%20Design/GGIRCS%20Database%20Architecture%20and%20Process.docx?d=w44768c53b54a42e6b3323b2d1d415720&csf=1&e=JAe1Zy
+XML processing via xpath identified in [Hamza's work](https://buttoninc.sharepoint.com/:x:/r/sites/bc-cas2/Shared%20Documents/User%20Interviews%20and%20Feature%20Dev/Discovery/Activity%20View%20Excel-based%20Mockup.xlsx?d=wf9af122418d44944871b3cfbc80e095c&csf=1&e=85IKEm).
