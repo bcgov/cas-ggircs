@@ -3,7 +3,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(20);
+select plan(28);
 
 -- Test matview report exists in schema ggircs_swrs
 select has_materialized_view('ggircs_swrs', 'identifier', 'Materialized view facility exists');
@@ -45,7 +45,7 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
             <IdentifierList>
               <Identifier>
                 <IdentifierType>GHGRP Identification Number</IdentifierType>
-                <IdentifierValue>G11741</IdentifierValue>
+                <IdentifierValue>R0B0T2</IdentifierValue>
               </Identifier>
             </IdentifierList>
           </Identifiers>
@@ -75,7 +75,14 @@ refresh materialized view ggircs_swrs.facility with data;
 refresh materialized view ggircs_swrs.identifier with data;
 
 -- test the columnns for ggircs_swrs.identifier have been properly parsed from xml
--- select results_eq('select id from ggircs_swrs.facility', ARRAY[1::bigint], 'ggircs_swrs.identifier parsed column id');
+select results_eq('select id from ggircs_swrs.identifier', ARRAY[1::bigint], 'ggircs_swrs.identifier parsed column id');
+select results_eq('select report_id from ggircs_swrs.identifier', ARRAY[1::bigint], 'ggircs_swrs.identifier parsed column report_id');
+select results_eq('select swrs_report_id from ggircs_swrs.identifier', ARRAY[800855555::numeric], 'ggircs_swrs.identifier parsed swrs_report_id');
+select results_eq('select facility_id from ggircs_swrs.identifier', ARRAY[1::bigint], 'ggircs_swrs.identifier parsed column facility_id');
+select results_eq('select swrs_facility_id from ggircs_swrs.identifier', ARRAY[666::numeric], 'ggircs_swrs.identifier parsed column swrs_facility_id');
+select results_eq('select identifier_type from ggircs_swrs.identifier', ARRAY['GHGRP Identification Number'::varchar], 'ggircs_swrs.identifier parsed column identifier_type');
+select results_eq('select identifier_value from ggircs_swrs.identifier', ARRAY['R0B0T2'::varchar], 'ggircs_swrs.identifier parsed column identifier_value');
+select results_eq('select swrs_identifier_history_id from ggircs_swrs.identifier', ARRAY[1::bigint], 'ggircs_swrs.identifier parsed column swrs_identifier_history_id');
 
 select finish();
 rollback;
