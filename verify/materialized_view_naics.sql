@@ -2,6 +2,6 @@
 
 BEGIN;
 
--- XXX Add verifications here.
+select * from ggircs_swrs.naics where false;
 
 ROLLBACK;

@@ -2,6 +2,6 @@
 
 BEGIN;
 
--- XXX Add DDLs here.
+drop materialized view ggircs_swrs.naics;
 
 COMMIT;
