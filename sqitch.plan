@@ -11,4 +11,4 @@ materialized_view_facility [materialized_view_report] 2019-04-29T22:24:35Z Dylan
 materialized_view_activity [table_ghgr_import] 2019-04-29T23:51:13Z Hamza Javed <hamza@button.is> # Create a materialized view for activity and subactivity from report
 materialized_view_flat [table_ghgr_import] 2019-04-30T18:11:08Z Dylan Leard <dylan@button.is> # add materialized view flat to schema ggircs_swrs
 materialized_view_unit [materialized_view_activity] 2019-05-02T19:54:25Z Dylan Leard <dylan@button.is> # add materialized view unit to schema ggircs_swrs
-materialized_view_identifier [materialized_view_report] 2019-04-30T23:33:13Z Dylan Leard <dylan@button.is> # add materialized view identifier to schema ggircs_swrs
+materialized_view_identifier [materialized_view_facility] 2019-04-30T23:33:13Z Dylan Leard <dylan@button.is> # add materialized view identifier to schema ggircs_swrs
