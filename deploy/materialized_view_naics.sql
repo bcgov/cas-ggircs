@@ -31,12 +31,23 @@ create materialized view ggircs_swrs.naics as (
            '/ReportData/RegistrationData/Facility/Identifiers/NAICSCodeList/NAICSCode/NaicsPriority[normalize-space(.)][contains(., "Primary")]|/ReportData/RegistrationData/Facility/Identifiers/NAICSCodeList/NAICSCode/ActivityPercentage[normalize-space(.)][contains(., "100")]'
            passing x.source_xml
            columns
-             naics_classification text path './../NAICSClassification[normalize-space(.)]',
-             naics_code text path './../Code[normalize-space(.)]',
-             naics_priority text path 'normalize-space(.)'
+             naics_classification varchar(1000) path './../NAICSClassification[normalize-space(.)]',
+             naics_code varchar(1000) path './../Code[normalize-space(.)]',
+             naics_priority varchar(1000) path 'normalize-space(.)'
          ) as naics
 ) with no data;
 create unique index ggircs_naics_primary_key on ggircs_swrs.naics (id);
 create index ggircs_swrs_naics_history on ggircs_swrs.naics (swrs_naics_history_id);
+
+comment on materialized view ggircs_swrs.naics is 'The materialized view housing all report data pertaining to naics';
+comment on column ggircs_swrs.naics.id is 'The primary key for the materialized view';
+comment on column ggircs_swrs.naics.facility_id is 'The facility id (foreign key)';
+comment on column ggircs_swrs.naics.swrs_facility_id is 'The reporting facility swrs id';
+
+comment on column ggircs_swrs.naics.naics_classification is 'The naics classification';
+comment on column ggircs_swrs.naics.naics_code is 'The naics code';
+comment on column ggircs_swrs.naics.naics_priority is 'The naics priority';
+comment on column ggircs_swrs.naics.swrs_naics_history_id is 'The id denoting the history (1=latest)';
+
 
 commit;
