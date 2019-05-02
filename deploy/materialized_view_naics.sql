@@ -1,5 +1,5 @@
 -- Deploy ggircs:materialized_view_naics to pg
--- requires: materialized_view_facility
+-- requires: table_ghgr_import
 
 begin;
 
