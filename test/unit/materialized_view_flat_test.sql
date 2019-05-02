@@ -60,12 +60,19 @@ refresh materialized view ggircs_swrs.report with data;
 refresh materialized view ggircs_swrs.flat with data;
 
 -- test the columnns for matview facility have been properly parsed from xml
-select results_eq('select * from ggircs_swrs.flat', $$ VALUES
-(2::integer,1::bigint, 'TotalGroups'::varchar,'TotalGroupType'::varchar,'TotalCO2CapturedEmissions'::varchar),
-(2::integer,2::bigint, 'Emissions'::varchar,'EmissionsGasType'::varchar,'CO2Captured'::varchar),
-(2::integer,3::bigint, 'EmissionGroupTypes'::varchar,''::varchar,'BC_CO2Captured'::varchar),
-(2::integer,4::bigint, 'NotApplicable'::varchar,''::varchar,'true'::varchar),
-(2::integer,5::bigint, 'GasType'::varchar,''::varchar,'CO2nonbio'::varchar)
+select results_eq('select * from ggircs_swrs.flat', $$
+  with _flat as (
+    select * from (
+      values
+        (1::bigint, 'TotalGroups'::varchar,'TotalGroupType'::varchar,'TotalCO2CapturedEmissions'::varchar),
+        (2::bigint, 'Emissions'::varchar,'EmissionsGasType'::varchar,'CO2Captured'::varchar),
+        (3::bigint, 'EmissionGroupTypes'::varchar,''::varchar,'BC_CO2Captured'::varchar),
+        (4::bigint, 'NotApplicable'::varchar,''::varchar,'true'::varchar),
+        (5::bigint, 'GasType'::varchar,''::varchar,'CO2nonbio'::varchar)
+    )
+    as flat (element_id, class, attr, value)
+  )
+  select ghgr_import.id, _flat.* from _flat, ggircs_swrs.ghgr_import;
 $$, 'ggircs_swrs.flat() should return all xml nodes with values as rows');
 
 select finish();

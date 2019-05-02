@@ -11,7 +11,7 @@ begin;
 --       schemas other than ggircs_swrs become populated with tables
 set search_path to ggircs_swrs,public;
 
-select plan(3309);
+select * from no_plan();
 
 /** Check table compliance **/
 
@@ -67,7 +67,6 @@ select is_empty('null_pkey', 'All materialized views must have a primary key');
 
 -- -- TODO: Related tables must have foreign key constraints : FK column names must match PK name from parent
 
-select *
-from finish();
+select * from finish();
 
 rollback;
