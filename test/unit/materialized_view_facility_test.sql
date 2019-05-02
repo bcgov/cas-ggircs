@@ -10,7 +10,6 @@ select has_materialized_view('ggircs_swrs', 'facility', 'Materialized view facil
 
 -- Test column names in matview report exist and are correct
 select has_column('ggircs_swrs', 'facility', 'id', 'ggircs_swrs.facility has column: id');
--- select has_column('ggircs_swrs', 'facility', 'report_id', 'ggircs_swrs.facility has column: report_id');
 select has_column('ggircs_swrs', 'facility', 'swrs_facility_id', 'ggircs_swrs.facility has column: swrs_facility_id');
 select has_column('ggircs_swrs', 'facility', 'facility_name', 'ggircs_swrs.facility has column: facility_name');
 select has_column('ggircs_swrs', 'facility', 'facility_type', 'ggircs_swrs.facility has column: facility_type');
@@ -30,7 +29,6 @@ select index_is_unique('ggircs_swrs', 'facility', 'ggircs_facility_primary_key',
 
 -- Test columns in matview report have correct types
 select col_type_is('ggircs_swrs', 'facility', 'id', 'bigint', 'ggircs_swrs.facility column id has type bigint');
--- select col_type_is('ggircs_swrs', 'facility', 'report_id', 'bigint', 'ggircs_swrs.facility column report_id has type bigint');
 select col_type_is('ggircs_swrs', 'facility', 'swrs_facility_id', 'numeric(1000,0)', 'ggircs_swrs.facility column swrs_facility_id has type numeric');
 select col_type_is('ggircs_swrs', 'facility', 'facility_name', 'character varying(1000)', 'ggircs_swrs.facility column facility_name has type varchar');
 select col_type_is('ggircs_swrs', 'facility', 'relationship_type', 'character varying(1000)', 'ggircs_swrs.facility column relationship_type has type varchar');
@@ -83,7 +81,6 @@ refresh materialized view ggircs_swrs.facility with data;
 
 -- test the columnns for ggircs_swrs.facility have been properly parsed from xml
 select results_eq('select id from ggircs_swrs.facility', ARRAY[1::bigint], 'ggircs_swrs.facility parsed column id');
--- select results_eq('select report_id from ggircs_swrs.facility', ARRAY[1::bigint], 'ggircs_swrs.facility parsed column report_id');
 select results_eq('select swrs_facility_id from ggircs_swrs.facility', ARRAY[666::numeric], 'ggircs_swrs.facility parsed column swrs_facility_id');
 select results_eq('select facility_name from ggircs_swrs.facility', ARRAY['Stark Tower'::varchar], 'ggircs_swrs.facility parsed column facility_name');
 select results_eq('select relationship_type from ggircs_swrs.facility', ARRAY['complicated'::varchar], 'ggircs_swrs.facility parsed column relationship_type');
