@@ -8,23 +8,19 @@ begin;
 create materialized view ggircs_swrs.facility as (
   -- Select the XML reports from ghgr_imports table and get the Facility ID and Report ID from reports table
   with x as (
-    select _report.id               as report_id,
-           _report.swrs_report_id   as swrs_report_id,
+    select _ghgr_import.id               as ghgr_id,
            _ghgr_import.xml_file     as source_xml,
-           _ghgr_import.imported_at  as imported_at,
-           _report.swrs_facility_id as swrs_facility_id
-    from ggircs_swrs.report as _report
-           inner join ggircs_swrs.ghgr_import as _ghgr_import
-                      on _report.ghgr_import_id = _ghgr_import.id
-    order by _report.id desc
+           _ghgr_import.imported_at  as imported_at
+    from ggircs_swrs.ghgr_import as _ghgr_import
+    order by _ghgr_import.id desc
   )
        -- Walk the XML to extract facility details
        -- coalesce results from VerifyTombstone (vt) and RegistrationData (rd)
 
-  select row_number() over (order by report_id asc)                                     as id,
-         x.report_id,
-         x.swrs_facility_id,
+  select row_number() over (order by ghgr_id asc)                                     as id,
+         x.ghgr_id,
          coalesce(vt_facility_details.facility_name, rd_facility_details.facility_name) as facility_name,
+         rd_facility_details.swrs_facility_id,
          rd_facility_details.facility_type,
          coalesce(vt_facility_details.relationship_type,
                   rd_facility_details.relationship_type)                                as relationship_type,
@@ -37,7 +33,7 @@ create materialized view ggircs_swrs.facility as (
            partition by swrs_facility_id
            order by
              imported_at desc,
-             x.report_id desc
+             x.ghgr_id desc
            )                                                                            as swrs_facility_history_id
 
   from x,
@@ -45,6 +41,7 @@ create materialized view ggircs_swrs.facility as (
            '/ReportData'
            passing source_xml
            columns
+             swrs_facility_id numeric(1000,0) path '//descendant-or-self::ReportDetails/FacilityId',
              facility_name varchar(1000) path './RegistrationData/Facility/Details/FacilityName',
              facility_type varchar(1000) path './ReportDetails/FacilityType', -- null
              relationship_type varchar(1000) path './RegistrationData/Facility/Details/RelationshipType',
@@ -72,7 +69,7 @@ create index ggircs_swrs_facility_history on ggircs_swrs.facility (swrs_facility
 
 comment on materialized view ggircs_swrs.facility is 'the materialized view housing all report data pertaining to the reporting facility';
 comment on column ggircs_swrs.facility.id is 'The primary key for the materialized view';
-comment on column ggircs_swrs.facility.report_id is 'The swrs report id';
+comment on column ggircs_swrs.facility.ghgr_id is 'The primary key for the materialized view';
 comment on column ggircs_swrs.facility.swrs_facility_id is 'The reporting facility swrs id';
 
 comment on column ggircs_swrs.facility.facility_name is 'The name of the reporting facility';
