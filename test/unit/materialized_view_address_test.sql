@@ -5,6 +5,8 @@ reset client_min_messages;
 begin;
 select plan(29);
 
+-- TODO: add tests for existence of columns, data-types etc
+
 -- insert necessary data into table ghgr_import
 insert into ggircs_swrs.ghgr_import (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
