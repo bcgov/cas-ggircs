@@ -33,4 +33,8 @@ create materialized view ggircs_swrs.final_report as (
 
 create unique index ggircs_final_report_primary_key on ggircs_swrs.final_report (report_id);
 
+comment on materialized view ggircs_swrs.final_report is 'The view showing the latest submitted report by a facility';
+comment on column ggircs_swrs.final_report.report_id is 'The foreign key refrencing ggircs_swrs.report';
+comment on column ggircs_swrs.final_report.facility_id is 'The foreign key refrencing ggircs_swrs.facility';
+
 commit;
