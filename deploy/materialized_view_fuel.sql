@@ -31,11 +31,11 @@ create materialized view ggircs_swrs.fuel as (
            '/Unit/Fuels/Fuel'
            passing unit_xml_hunk
            columns
-             fuel_type text path './FuelType',
-             fuel_classification text path './FuelClassification',
-             fuel_units text path './FuelUnits',
-             annual_fuel_amount text path './AnnualFuelAmount',
-             annual_weighted_avg_hhv text path './AnnualWeightedAverageHighHeatingValue',
+             fuel_type varchar(1000) path './FuelType',
+             fuel_classification varchar(1000) path './FuelClassification',
+             fuel_units varchar(1000) path './FuelUnits',
+             annual_fuel_amount varchar(1000) path './AnnualFuelAmount',
+             annual_weighted_avg_hhv varchar(1000) path './AnnualWeightedAverageHighHeatingValue',
              fuel_xml_hunk xml path '.'
          ) as fuel_details
 );
