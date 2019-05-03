@@ -65,6 +65,7 @@ select results_eq(
   ARRAY[666::numeric],
   'ggircs_swrs.address parsed column facility_id'
 );
+-- test that the organisation_id is null when getting address from the context of facility
 select results_eq(
   'select organisation_id from ggircs_swrs.address',
   ARRAY[null::numeric],
