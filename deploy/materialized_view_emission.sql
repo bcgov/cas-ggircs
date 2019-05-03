@@ -51,6 +51,7 @@ create unique index ggircs_emission_primary_key on ggircs_swrs.emission (id);
 comment on materialized view ggircs_swrs.emission is 'The materialized view containing the information on emissions';
 comment on column ggircs_swrs.emission.id is 'The primary key for the fuel';
 comment on column ggircs_swrs.emission.ghgr_import_id is 'A foreign key reference to ggircs_swrs.ghgr_import';
+comment on column ggircs_swrs.emission.fuel_id is 'A foreign key reference to ggircs_swrs.fuel';
 comment on column ggircs_swrs.emission.unit_id is 'A foreign key reference to ggircs_swrs.unit';
 comment on column ggircs_swrs.emission.activity_id is 'A foreign key reference to ggrics_swrs.activity';
 comment on column ggircs_swrs.emission.fuel_type is 'The type of the fuel';
