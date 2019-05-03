@@ -205,6 +205,8 @@ select results_eq(
 select finish();
 rollback;
 
+-- organisation fixture data
+
 -- <Organisation>
 --       <Address>
 --         <PhysicalAddress>
