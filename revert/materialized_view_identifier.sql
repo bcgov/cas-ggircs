@@ -1,7 +1,7 @@
 -- Revert ggircs:materialized_view_identifier from pg
 
-BEGIN;
+begin;
 
 drop materialized view ggircs_swrs.identifier;
 
-COMMIT;
+commit;
