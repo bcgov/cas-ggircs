@@ -12,13 +12,17 @@ with x as (
        unit_id,
        activity_id,
        fuel_type,
-       fuel_xml
-  from fuel
+       xml_hunk     as fuel_xml_hunk
+  from ggircs_swrs.fuel
   order by ghgr_import_id desc
 )
 select
-      row_number() over (order by x.ghghr_import_id asc, x.fuel_id asc) as id,
-      x.*,
+      row_number() over (order by ghgr_import_id asc, x.fuel_id asc) as id,
+      x.ghgr_import_id,
+      x.fuel_id,
+      x.unit_id,
+      x.activity_id,
+      x.fuel_type,
       emission_details.emission_type,
       emission_details.gas_type,
       emission_details.methodology,
@@ -29,7 +33,7 @@ select
 from x,
      xmltable(
        '//Emission'
-       passing fuel_xml
+       passing fuel_xml_hunk
        columns
            gas_type varchar(1000) path 'GasType[normalize-space(.)]',
            emission_type varchar(1000) path '../@EmissionsType[normalize-space(.)]',
