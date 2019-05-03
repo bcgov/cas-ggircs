@@ -13,3 +13,4 @@ materialized_view_flat [table_ghgr_import] 2019-04-30T18:11:08Z Dylan Leard <dyl
 materialized_view_unit [materialized_view_activity] 2019-05-02T19:54:25Z Dylan Leard <dylan@button.is> # add materialized view unit to schema ggircs_swrs
 materialized_view_identifier [table_ghgr_import] 2019-04-30T23:33:13Z Dylan Leard <dylan@button.is> # add materialized view identifier to schema ggircs_swrs
 materialized_view_naics [table_ghgr_import] 2019-05-01T23:52:03Z Dylan Leard <dylan@button.is> # add materialized view naics to schema ggircs_swrs
+materialized_view_final_report [materialized_view_facility] 2019-05-03T18:47:28Z Dylan Leard <dylan@button.is> # add materialized view final_report to schema ggircs_swrs
