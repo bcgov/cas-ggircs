@@ -61,6 +61,7 @@ create unique index ggircs_adddress_primary_key
 
 comment on materialized view ggircs_swrs.address is 'The materialized view housing address information for facilities, organisations and contacts';
 comment on column ggircs_swrs.address.id is 'The primary key for the materialized view';
+comment on column ggircs_swrs.address.ghgr_import_id is 'The foreign key that references ggircs_swrs.ghgr_import';
 comment on column ggircs_swrs.address.facility_id is 'The foreign key that references ggircs_swrs.facility';
 comment on column ggircs_swrs.address.organisation_id is 'The foreign key that references ggircs_swrs.organisation';
 comment on column ggircs_swrs.address.type is 'What the address belongs to (facility, organisation, contact)';
