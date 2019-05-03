@@ -58,7 +58,7 @@ create materialized view ggircs_swrs.organisation as (
              vt_duns varchar(1000) path './VerifyTombstone/Organisation/Details/DUNSNumber',
              vt_web_site varchar(1000) path './VerifyTombstone/Organisation/Details/WebSite'
          ) as vt_organisation_details
-);
+) with no data;
 create unique index ggircs_organisation_primary_key on ggircs_swrs.organisation (id);
 create index ggircs_swrs_organisation_history on ggircs_swrs.organisation (swrs_organisation_history_id);
 

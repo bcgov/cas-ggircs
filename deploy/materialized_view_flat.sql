@@ -35,7 +35,7 @@ create materialized view ggircs_swrs.flat as (
              context xml path './ancestor::*/@*'
          ) as report_flat
   order by ghgr_import_id desc, element_id asc
-);
+) with no data;
 create unique index ggircs_flat_primary_key on ggircs_swrs.flat (ghgr_import_id, element_id);
 create index ggircs_flat_report on ggircs_swrs.flat (ghgr_import_id);
 
