@@ -17,7 +17,7 @@ with x as (
   order by ghgr_import_id desc
 )
 select
-      row_number() over (order by x.fuel_id asc) as id,
+      row_number() over (order by x.ghghr_import_id asc, x.fuel_id asc) as id,
       x.*,
       emission_details.emission_type,
       emission_details.gas_type,
@@ -28,7 +28,7 @@ select
       CAST(emission_details.groups as text) as emission_category
 from x,
      xmltable(
-       '/Fuel/Emissions/Emission'
+       '//Emission'
        passing fuel_xml
        columns
            gas_type text path 'GasType[normalize-space(.)]',
