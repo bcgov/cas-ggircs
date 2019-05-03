@@ -3,7 +3,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(27);
+select plan(29);
 
 -- insert necessary data into table ghgr_import
 insert into ggircs_swrs.ghgr_import (xml_file) values ($$
@@ -188,6 +188,18 @@ select results_eq(
   'select mailing_address_additional_information from ggircs_swrs.address',
   ARRAY['The site is located at A-123-B-456-C-789'::varchar],
   'ggircs_swrs.address parsed column mailing_address_additional_information'
+);
+
+-- Geographic Address columns
+select results_eq(
+  'select geographic_address_latitude from ggircs_swrs.address',
+  ARRAY['23.45125'::varchar],
+  'ggircs_swrs.address parsed column geographic_address_latitude'
+);
+select results_eq(
+  'select geographic_address_longitude from ggircs_swrs.address',
+  ARRAY['-90.59062'::varchar],
+  'ggircs_swrs.address parsed column geographic_address_longitude'
 );
 
 select finish();

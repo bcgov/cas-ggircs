@@ -45,8 +45,10 @@ create materialized view ggircs_swrs.address as (
                 mailing_address_prov_terr_state varchar(1000) path './MailingAddress/ProvTerrState[normalize-space(.)]',
                 mailing_address_postal_code_zip_code varchar(1000) path './MailingAddress/PostalCodeZipCode[normalize-space(.)]',
                 mailing_address_country varchar(1000) path './MailingAddress/Country[normalize-space(.)]',
-                mailing_address_additional_information varchar(1000) path './MailingAddress/AdditionalInformation[normalize-space(.)]'
+                mailing_address_additional_information varchar(1000) path './MailingAddress/AdditionalInformation[normalize-space(.)]',
 
+                geographic_address_latitude varchar(1000) path './GeographicAddress/Latitude[normalize-space(.)]',
+                geographic_address_longitude varchar(1000) path './GeographicAddress/Longitude[normalize-space(.)]'
          ) as address_details
 ) with no data;
 
