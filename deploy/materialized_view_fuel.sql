@@ -47,6 +47,7 @@ comment on column ggircs_swrs.fuel.id is 'The primary key for the fuel';
 comment on column ggircs_swrs.fuel.ghgr_import_id is 'A foreign key reference to ggircs_swrs.ghgr_import';
 comment on column ggircs_swrs.fuel.activity_id is 'A foreign key reference to ggrics_swrs.activity';
 comment on column ggircs_swrs.fuel.activity is 'The name of the activity';
+comment on column ggircs_swrs.fuel.unit_id is 'A foreign key reference to ggircs_swrs.unit';
 comment on column ggircs_swrs.fuel.unit_name is 'The name of the unit';
 comment on column ggircs_swrs.fuel.sub_activity is 'The name of the sub-activity';
 comment on column ggircs_swrs.fuel.fuel_type is 'The type of the fuel';
