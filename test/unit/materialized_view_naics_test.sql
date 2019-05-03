@@ -10,7 +10,7 @@ select has_materialized_view('ggircs_swrs', 'naics', 'ggircs_swrs.naics exists')
 --
 -- -- Test column names in matview report exist and are correct
 select has_column('ggircs_swrs', 'naics', 'id', 'ggircs_swrs.naics_ has column: id');
-select has_column('ggircs_swrs', 'naics', 'ghgr_id', 'ggircs_swrs.naics_ has column: ghgr_id');
+select has_column('ggircs_swrs', 'naics', 'ghgr_import_id', 'ggircs_swrs.naics_ has column: ghgr_import_id');
 select has_column('ggircs_swrs', 'naics', 'swrs_facility_id', 'ggircs_swrs.naics_ has column: swrs_facility_id');
 select has_column('ggircs_swrs', 'naics', 'naics_classification', 'ggircs_swrs.naics_ has column: naics_classification');
 select has_column('ggircs_swrs', 'naics', 'naics_code', 'ggircs_swrs.naics_ has column: naics_code');
@@ -27,7 +27,7 @@ select index_is_unique('ggircs_swrs', 'naics', 'ggircs_naics_primary_key', 'ggir
 --
 -- -- Test columns in matview report have correct types
 select col_type_is('ggircs_swrs', 'naics', 'id', 'bigint', 'ggircs_swrs.naics.id has type bigint');
-select col_type_is('ggircs_swrs', 'naics', 'ghgr_id', 'integer', 'ggircs_swrs.naics.facility_id has type integer');
+select col_type_is('ggircs_swrs', 'naics', 'ghgr_import_id', 'integer', 'ggircs_swrs.naics.facility_id has type integer');
 select col_type_is('ggircs_swrs', 'naics', 'swrs_facility_id', 'numeric(1000,0)', 'ggircs_swrs.naics.swrs_facility_id has type numeric');
 select col_type_is('ggircs_swrs', 'naics', 'naics_classification', 'character varying(1000)', 'ggircs_swrs.naics.naics_classification has type varchar');
 select col_type_is('ggircs_swrs', 'naics', 'naics_code', 'character varying(1000)', 'ggircs_swrs.naics.naics_code has type varchar');
@@ -37,48 +37,65 @@ select col_type_is('ggircs_swrs', 'naics', 'swrs_naics_history_id', 'bigint', 'g
 --
 -- insert necessary data into table ghgr_import
 insert into ggircs_swrs.ghgr_import (xml_file) values ($$
-    <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-      <RegistrationData>
-        <Facility>
-         <Identifiers>
-           <NAICSCodeList>
-              <NAICSCode>
-                <NAICSClassification>Conventional Oil and Gas Extraction</NAICSClassification>
-                <Code>123456</Code>
-                <NaicsPriority>Primary</NaicsPriority>
-              </NAICSCode>
-            </NAICSCodeList>
-          </Identifiers>
-        </Facility>
-      </RegistrationData>
-      <ReportDetails>
-        <ReportID>800855555</ReportID>
-        <PrepopReportID>5</PrepopReportID>
-        <ReportType>R7</ReportType>
-        <FacilityId>666</FacilityId>
-        <OrganisationId>1337</OrganisationId>
-        <ReportingPeriodDuration>1999</ReportingPeriodDuration>
-        <ReportStatus>
-          <Status>In Progress</Status>
-          <Version>3</Version>
-          <LastModifiedBy>Donny Donaldson McDonaldface</LastModifiedBy>
-          <LastModifiedDate>2018-09-28T11:55:39.423</LastModifiedDate>
-        </ReportStatus>
-      </ReportDetails>
-    </ReportData>
+<ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <RegistrationData>
+    <Facility>
+     <Identifiers>
+       <NAICSCodeList>
+          <NAICSCode>
+            <NAICSClassification>Conventional Oil and Gas Extraction</NAICSClassification>
+            <Code>123456</Code>
+            <NaicsPriority>Primary</NaicsPriority>
+          </NAICSCode>
+        </NAICSCodeList>
+      </Identifiers>
+    </Facility>
+  </RegistrationData>
+  <ReportDetails>
+    <FacilityId>666</FacilityId>
+  </ReportDetails>
+</ReportData>
 $$);
 
 -- refresh necessary views with data
 refresh materialized view ggircs_swrs.naics with data;
 
 -- test that the columns in ggircs_swrs.naics have been properly parsed from xml
-select results_eq('select id from ggircs_swrs.naics', ARRAY[1::bigint], 'ggircs_swrs.naics parsed column id');
-select results_eq('select ghgr_id from ggircs_swrs.naics', ARRAY[3::integer], 'ggircs_swrs.naics parsed column ghgr_id');
-select results_eq('select swrs_facility_id from ggircs_swrs.naics', ARRAY[666::numeric], 'ggircs_swrs.naics parsed column swrs_facility_id');
-select results_eq('select naics_classification from ggircs_swrs.naics', ARRAY['Conventional Oil and Gas Extraction'::varchar], 'ggircs_swrs.naics parsed column naics_classification');
-select results_eq('select naics_code from ggircs_swrs.naics', ARRAY[123456::varchar], 'ggircs_swrs.naics parsed column naics_code');
-select results_eq('select naics_priority from ggircs_swrs.naics', ARRAY['Primary'::varchar], 'ggircs_swrs.naics parsed column naics_priority');
-select results_eq('select swrs_naics_history_id from ggircs_swrs.naics', ARRAY[1::bigint], 'ggircs_swrs.naics parsed column swrs_naics_history_id');
+select results_eq(
+  'select id from ggircs_swrs.naics',
+  ARRAY[1::bigint],
+  'ggircs_swrs.naics parsed column id'
+);
+select results_eq(
+  'select ghgr_import_id from ggircs_swrs.naics',
+  'select id from ggircs_swrs.ghgr_import',
+  'ggircs_swrs.naics parsed column ghgr_import_id'
+);
+select results_eq(
+  'select swrs_facility_id from ggircs_swrs.naics',
+  ARRAY[666::numeric],
+  'ggircs_swrs.naics parsed column swrs_facility_id'
+);
+select results_eq(
+  'select naics_classification from ggircs_swrs.naics',
+  ARRAY['Conventional Oil and Gas Extraction'::varchar],
+  'ggircs_swrs.naics parsed column naics_classification'
+);
+select results_eq(
+  'select naics_code from ggircs_swrs.naics',
+  ARRAY[123456::varchar],
+  'ggircs_swrs.naics parsed column naics_code'
+);
+select results_eq(
+  'select naics_priority from ggircs_swrs.naics',
+  ARRAY['Primary'::varchar],
+  'ggircs_swrs.naics parsed column naics_priority'
+);
+select results_eq(
+  'select swrs_naics_history_id from ggircs_swrs.naics',
+  ARRAY[1::bigint],
+  'ggircs_swrs.naics parsed column swrs_naics_history_id'
+);
 
 select finish();
 rollback;
