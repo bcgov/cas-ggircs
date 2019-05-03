@@ -16,6 +16,8 @@ GGIRCS
 
 ## Using Sqitch
 ------------
+If you're new to Sqitch, the best place to start is with [the tutuorial](https://github.com/sqitchers/sqitch/blob/master/lib/sqitchtutorial.pod) and other [docs](https://sqitch.org/docs/).
+
 > **Add Schema**
 > - sqitch add schema_[schema_name]
 -
