@@ -42,6 +42,7 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
   </RegistrationData>
   <ReportDetails>
     <FacilityId>666</FacilityId>
+    <OrganisationId>50804</OrganisationId>
   </ReportDetails>
 </ReportData>
 $$);
@@ -129,3 +130,34 @@ select results_eq(
 
 select finish();
 rollback;
+
+
+-- <Organisation>
+--       <Address>
+--         <PhysicalAddress>
+--           <UnitNumber>1</UnitNumber>
+--           <StreetNumber>123</StreetNumber>
+--           <StreetNumberSuffix/>
+--           <StreetName>1st</StreetName>
+--           <StreetType>Street</StreetType>
+--           <StreetDirection>Southwest</StreetDirection>
+--           <Municipality>Utopia</Municipality>
+--           <ProvTerrState>British Columbia</ProvTerrState>
+--           <PostalCodeZipCode>H0H0H0</PostalCodeZipCode>
+--           <Country>Canada</Country>
+--         </PhysicalAddress>
+--         <MailingAddress>
+--           <UnitNumber>1</UnitNumber>
+--           <StreetNumber>123</StreetNumber>
+--           <StreetNumberSuffix/>
+--           <StreetName>1st </StreetName>
+--           <StreetType>Street</StreetType>
+--           <StreetDirection>Southwest</StreetDirection>
+--           <Municipality>Utopia</Municipality>
+--           <ProvTerrState>Alberta</ProvTerrState>
+--           <PostalCodeZipCode>H0H 0H0</PostalCodeZipCode>
+--           <Country>Canada</Country>
+--           <AdditionalInformation/>
+--         </MailingAddress>
+--       </Address>
+--     </Organisation>
