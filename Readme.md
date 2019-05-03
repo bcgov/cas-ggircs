@@ -5,15 +5,16 @@ GGIRCS
 > Greenhouse Gas Industrial Reporting and Control System
 > for the Climate Action Secretariat
 
-##Getting Started
+## Getting Started
 ------------
 > Clone repository
 > In terminal:
-  - Run `make verify`
-  - If `make verify` passes:
-  - Run `make test`
+  - If needed, run `make install` to set up a development environment on OS X
+  - Run `make verify` to ensure minimum required versions of all dependencies are installed and postgres is online
+  - Run `make test` to execute all pgTAP-based tests against a `ggircs_test` database
+  - Run `sqitch deploy` to deploy to a `ggircs_dev` database
 
-##Using Sqitch
+## Using Sqitch
 ------------
 > **Add Schema**
 > - sqitch add schema_[schema_name]
@@ -21,14 +22,11 @@ GGIRCS
 > **Add Table**
 > - sqitch add table_[table_name] --require schema_[schema_name] --set schema=[schema_name]
 
-##Dependencies
+## Dependencies
 ------------
-- [Postgres 10](https://www.postgresql.org/docs/10/index.html)
-- [Squitch](https://sqitch.org/)
-
 * [PostgreSQL](http://www.postgresql.org/)
 
-    9.1.0 or higher recommended. Usually available via your distribution's
+    10 or higher recommended. Usually available via your distribution's
     package system. Binaries and source are also available
     [for download](http://www.postgresql.org/download/).
 
