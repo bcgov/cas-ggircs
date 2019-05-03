@@ -3,7 +3,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(5);
+select plan(15);
 
 
 -- insert necessary data into table ghgr_import
@@ -16,9 +16,9 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
         <PhysicalAddress>
           <Municipality>Fort Nelson</Municipality>
           <ProvTerrState>British Columbia</ProvTerrState>
-          <PostalCodeZipCode>V0C 1R0</PostalCodeZipCode>
+          <PostalCodeZipCode>H0H 0H0</PostalCodeZipCode>
           <Country>Canada</Country>
-          <NationalTopographicalDescription>D-076-J/094-P-04</NationalTopographicalDescription>
+          <NationalTopographicalDescription>A-123-B/456-C-00</NationalTopographicalDescription>
         </PhysicalAddress>
         <MailingAddress>
           <DeliveryMode>Post Office Box</DeliveryMode>
@@ -72,9 +72,59 @@ select results_eq(
   'ggircs_swrs.address parsed column organisation_id'
 );
 select results_eq(
+  'select physical_address_unit_number from ggircs_swrs.address',
+  ARRAY[null::varchar],
+  'ggircs_swrs.address parsed column physical_address_unit_number'
+);
+select results_eq(
+  'select physical_address_street_number from ggircs_swrs.address',
+  ARRAY[null::varchar],
+  'ggircs_swrs.address parsed column physical_address_street_number'
+);
+select results_eq(
+  'select physical_address_street_number_suffix from ggircs_swrs.address',
+  ARRAY[null::varchar],
+  'ggircs_swrs.address parsed column physical_address_street_number_suffix'
+);
+select results_eq(
+  'select physical_address_street_name from ggircs_swrs.address',
+  ARRAY[null::varchar],
+  'ggircs_swrs.address parsed column physical_address_municipality'
+);
+select results_eq(
+  'select physical_address_street_type from ggircs_swrs.address',
+  ARRAY[null::varchar],
+  'ggircs_swrs.address parsed column physical_address_street_type'
+);
+select results_eq(
+  'select physical_address_street_direction from ggircs_swrs.address',
+  ARRAY[null::varchar],
+  'ggircs_swrs.address parsed column physical_address_street_direction'
+);
+select results_eq(
   'select physical_address_municipality from ggircs_swrs.address',
   ARRAY['Fort Nelson'::varchar],
   'ggircs_swrs.address parsed column physical_address_municipality'
+);
+select results_eq(
+  'select physical_address_prov_terr_state from ggircs_swrs.address',
+  ARRAY['British Columbia'::varchar],
+  'ggircs_swrs.address parsed column physical_address_prov_terr_state'
+);
+select results_eq(
+  'select physical_address_postal_code_zip_code from ggircs_swrs.address',
+  ARRAY['H0H 0H0'::varchar],
+  'ggircs_swrs.address parsed column physical_address_postal_code_zip_code'
+);
+select results_eq(
+  'select physical_address_country from ggircs_swrs.address',
+  ARRAY['Canada'::varchar],
+  'ggircs_swrs.address parsed column physical_address_country'
+);
+select results_eq(
+  'select physical_address_national_topographical_description from ggircs_swrs.address',
+  ARRAY['A-123-B/456-C-00'::varchar],
+  'ggircs_swrs.address parsed column physical_address_national_topographical_description'
 );
 
 select finish();
