@@ -52,6 +52,9 @@ create materialized view ggircs_swrs.address as (
          ) as address_details
 ) with no data;
 
+-- THIS WILL FAIL
+-- addresses for contacts are not currently covered with this materialized view
+-- TODO: figure out what we are doing with addresses from contacts
 create unique index ggircs_adddress_primary_key
     on ggircs_swrs.address (id, facility_id, organisation_id)
     where facility_id is not null or organisation_id is not null;
