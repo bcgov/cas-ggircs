@@ -33,7 +33,19 @@ create materialized view ggircs_swrs.address as (
                 physical_address_prov_terr_state varchar(1000) path './PhysicalAddress/ProvTerrState[normalize-space(.)]',
                 physical_address_postal_code_zip_code varchar(1000) path './PhysicalAddress/PostalCodeZipCode[normalize-space(.)]',
                 physical_address_country varchar(1000) path './PhysicalAddress/Country[normalize-space(.)]',
-                physical_address_national_topographical_description varchar(1000) path './PhysicalAddress/NationalTopographicalDescription[normalize-space(.)]'
+                physical_address_national_topographical_description varchar(1000) path './PhysicalAddress/NationalTopographicalDescription[normalize-space(.)]',
+
+                mailing_address_delivery_mode varchar(1000) path './MailingAddress/DeliveryMode[normalize-space(.)]',
+                mailing_address_po_box_number varchar(1000) path './MailingAddress/POBoxNumber[normalize-space(.)]',
+                mailing_address_street_number varchar(1000) path './MailingAddress/StreetNumber[normalize-space(.)]',
+                mailing_address_street_number_suffix varchar(1000) path './MailingAddress/StreetNumberSuffix[normalize-space(.)]',
+                mailing_address_street_name varchar(1000) path './MailingAddress/StreetName[normalize-space(.)]',
+                mailing_address_street_type varchar(1000) path './MailingAddress/StreetType[normalize-space(.)]',
+                mailing_address_municipality varchar(1000) path './MailingAddress/Municipality[normalize-space(.)]',
+                mailing_address_prov_terr_state varchar(1000) path './MailingAddress/ProvTerrState[normalize-space(.)]',
+                mailing_address_postal_code varchar(1000) path './MailingAddress/PostalCode[normalize-space(.)]',
+                mailing_address_country varchar(1000) path './MailingAddress/Country[normalize-space(.)]',
+                mailing_address_additional_information varchar(1000) path './MailingAddress/AdditionalInformation[normalize-space(.)]'
 
          ) as address_details
 ) with no data;
