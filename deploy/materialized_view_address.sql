@@ -20,7 +20,10 @@ create materialized view ggircs_swrs.address as (
            '//Address'
            passing source_xml
            columns
-             physical_address_municipality varchar(1000) path './PhysicalAddress/Municipality[normalize-space(.)]'
+                facility_id numeric(1000,0) path './ancestor::Facility/../../ReportDetails/FacilityId[normalize-space(.)]',
+                organisation_id numeric(1000,0) path './ancestor::Organisation/../../ReportDetails/FacilityId[normalize-space(.)]',
+                physical_address_municipality varchar(1000) path './PhysicalAddress/Municipality[normalize-space(.)]'
+
          ) as address_details
 ) with no data;
 
