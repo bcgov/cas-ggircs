@@ -1,6 +1,6 @@
 -- Deploy ggircs:materialized_view_organisation to pg
 -- requires: schema_ggircs_swrs
--- requires: materialized_view_report
+-- requires: table_ghgr_import
 
 begin;
 
