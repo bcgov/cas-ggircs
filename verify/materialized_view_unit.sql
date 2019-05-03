@@ -1,7 +1,7 @@
 -- Verify ggircs:materialized_view_unit on pg
 
-BEGIN;
+begin;
 
 select * from ggircs_swrs.unit where false;
 
-ROLLBACK;
+rollback;
