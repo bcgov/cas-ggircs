@@ -3,11 +3,9 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(16);
-
+select plan(27);
 
 -- insert necessary data into table ghgr_import
--- TODO(wenzowski): test VerifyTombstone
 insert into ggircs_swrs.ghgr_import (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <RegistrationData>
@@ -77,6 +75,8 @@ select results_eq(
   ARRAY[null::numeric],
   'ggircs_swrs.address parsed column organisation_id'
 );
+
+-- Physical Address columns
 select results_eq(
   'select physical_address_unit_number from ggircs_swrs.address',
   ARRAY[null::varchar],
@@ -133,9 +133,65 @@ select results_eq(
   'ggircs_swrs.address parsed column physical_address_national_topographical_description'
 );
 
+-- Mailing Address Columns
+select results_eq(
+  'select mailing_address_delivery_mode from ggircs_swrs.address',
+  ARRAY['Post Office Box'::varchar],
+  'ggircs_swrs.address parsed column mailing_address_delivery_mode'
+);
+select results_eq(
+  'select mailing_address_po_box_number from ggircs_swrs.address',
+  ARRAY['0000'::varchar],
+  'ggircs_swrs.address parsed column mailing_address_po_box_number'
+);
+select results_eq(
+  'select mailing_address_street_number from ggircs_swrs.address',
+  ARRAY[1234::varchar],
+  'ggircs_swrs.address parsed column mailing_address_street_number'
+);
+select results_eq(
+  'select mailing_address_street_number_suffix from ggircs_swrs.address',
+  ARRAY[null::varchar],
+  'ggircs_swrs.address parsed column mailing_address_street_number_suffix'
+);
+select results_eq(
+  'select mailing_address_street_name from ggircs_swrs.address',
+  ARRAY['00th'::varchar],
+  'ggircs_swrs.address parsed column mailing_address_street_name'
+);
+select results_eq(
+  'select mailing_address_street_type from ggircs_swrs.address',
+  ARRAY['Avenue'::varchar],
+  'ggircs_swrs.address parsed column mailing_address_street_type'
+);
+select results_eq(
+  'select mailing_address_municipality from ggircs_swrs.address',
+  ARRAY['Fort Nelson'::varchar],
+  'ggircs_swrs.address parsed column mailing_address_municipality'
+);
+select results_eq(
+  'select mailing_address_prov_terr_state from ggircs_swrs.address',
+  ARRAY['British Columbia'::varchar],
+  'ggircs_swrs.address parsed column mailing_address_prov_terr_state'
+);
+select results_eq(
+  'select mailing_address_postal_code_zip_code from ggircs_swrs.address',
+  ARRAY['H0H 0H0'::varchar],
+  'ggircs_swrs.address parsed column mailing_address_postal_code_zip_code'
+);
+select results_eq(
+  'select mailing_address_country from ggircs_swrs.address',
+  ARRAY['Canada'::varchar],
+  'ggircs_swrs.address parsed column mailing_address_country'
+);
+select results_eq(
+  'select mailing_address_additional_information from ggircs_swrs.address',
+  ARRAY['The site is located at A-123-B-456-C-789'::varchar],
+  'ggircs_swrs.address parsed column mailing_address_additional_information'
+);
+
 select finish();
 rollback;
-
 
 -- <Organisation>
 --       <Address>
