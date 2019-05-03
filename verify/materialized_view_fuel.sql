@@ -1,7 +1,7 @@
 -- Verify ggircs:materialized_view_fuel on pg
 
-BEGIN;
+begin;
 
 select * from ggircs_swrs.fuel where false;
 
-ROLLBACK;
+rollback;
