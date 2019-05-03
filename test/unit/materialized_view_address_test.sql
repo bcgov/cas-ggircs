@@ -207,6 +207,8 @@ select results_eq(
 select finish();
 rollback;
 
+-- TODO: Create separate tests for organisation data?
+
 -- organisation fixture data
 
 -- <Organisation>
