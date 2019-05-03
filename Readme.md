@@ -26,32 +26,32 @@ If you're new to Sqitch, the best place to start is with [the tutuorial](https:/
 
 ## Dependencies
 ------------
-* [PostgreSQL](http://www.postgresql.org/)
+1. [PostgreSQL](http://www.postgresql.org/)
 
     10 or higher recommended. Usually available via your distribution's
     package system. Binaries and source are also available
     [for download](http://www.postgresql.org/download/).
 
-* [Git](http://git-scm.com)
+2. [Git](http://git-scm.com)
 
     1.7.0 or higher recommended. Usually available via your distribution's
     package system. Binaries and source are also available
     [for download](http://git-scm.com/downloads).
 
-* [pgTAP](http://pgtap.org/)
+3. [pgTAP](http://pgtap.org/)
 
     0.92.0 or higher recommended. Download
     [from PGXN](http://pgxn.org/dist/pgtap/) and consult its
     [`README.md`](https://github.com/theory/pgtap/blob/master/README.md) for
     build instructions. Also available in some packaging systems.
 
-* [Perl](http://perl.org/)
+4. [Perl](http://perl.org/)
 
     5.10.0 or higher. Included in most Unix distributions and on OS X. Windows
     users can install
     [ActivePerl](http://www.activestate.com/activeperl/downloads).
 
-* [`pg_prove`](http://pgtap.org/pg_prove.html)
+5. [`pg_prove`](http://pgtap.org/pg_prove.html)
 
     3.28 or higher recommended. Available in some packaging systems.
     Otherwise, Download via CPAN:
@@ -62,7 +62,7 @@ If you're new to Sqitch, the best place to start is with [the tutuorial](https:/
 
         ppm install TAP-Parser-SourceHandler-pgTAP
 
-* [Sqitch](http://sqitch.org/)
+6. [Sqitch](http://sqitch.org/)
 
     0.97.0 or higher recommended. Install via CPAN:
 
