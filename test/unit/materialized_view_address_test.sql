@@ -3,7 +3,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(15);
+select plan(16);
 
 
 -- insert necessary data into table ghgr_import
@@ -60,6 +60,11 @@ select results_eq(
   'select ghgr_import_id from ggircs_swrs.address',
   'select id from ggircs_swrs.ghgr_import',
   'ggircs_swrs.address parsed column ghgr_import_id'
+);
+select results_eq(
+  'select type from ggircs_swrs.address',
+  ARRAY['Facility'::varchar],
+  'ggircs_swrs.address parsed column type'
 );
 select results_eq(
   'select facility_id from ggircs_swrs.address',
