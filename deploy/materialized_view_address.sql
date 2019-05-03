@@ -52,7 +52,9 @@ create materialized view ggircs_swrs.address as (
          ) as address_details
 ) with no data;
 
-create unique index ggircs_adddress_primary_key on ggircs_swrs.address (id);
+create unique index ggircs_adddress_primary_key
+    on ggircs_swrs.address (id, facility_id, organisation_id)
+    where facility_id is not null or organisation_id is not null;
 
 comment on materialized view ggircs_swrs.address is 'The materialized view housing address information for facilities, organisations and contacts';
 comment on column ggircs_swrs.address.id is 'The primary key for the materialized view';
