@@ -54,4 +54,36 @@ create materialized view ggircs_swrs.address as (
 
 create unique index ggircs_adddress_primary_key on ggircs_swrs.address (id);
 
+comment on materialized view ggircs_swrs.address is 'The materialized view housing address information for facilities, organisations and contacts';
+comment on column ggircs_swrs.address.id is 'The primary key for the materialized view';
+comment on column ggircs_swrs.address.facility_id is 'The foreign key that references ggircs_swrs.facility';
+comment on column ggircs_swrs.address.organisation_id is 'The foreign key that references ggircs_swrs.organisation';
+comment on column ggircs_swrs.address.type is 'What the address belongs to (facility, organisation, contact)';
+comment on column ggircs_swrs.address.physical_address_municipality is 'The municipality according to the phsyical address';
+comment on column ggircs_swrs.address.physical_address_unit_number is 'The unit number according to the phsyical address';
+comment on column ggircs_swrs.address.physical_address_street_number is 'The street number according to the phsyical address';
+comment on column ggircs_swrs.address.physical_address_street_number_suffix is 'The street number suffix according to the phsyical address';
+comment on column ggircs_swrs.address.physical_address_street_name is 'The street name according to the phsyical address';
+comment on column ggircs_swrs.address.physical_address_street_type is 'The street type according to the phsyical address';
+comment on column ggircs_swrs.address.physical_address_street_direction is 'The street direction according to the phsyical address';
+comment on column ggircs_swrs.address.physical_address_prov_terr_state is 'The province or territory according to the phsyical address';
+comment on column ggircs_swrs.address.physical_address_postal_code_zip_code is 'The postal code according to the phsyical address';
+comment on column ggircs_swrs.address.physical_address_country is 'The country according to the phsyical address';
+comment on column ggircs_swrs.address.physical_address_national_topographical_description is 'The national topographical description according to the phsyical address';
+
+comment on column ggircs_swrs.address.mailing_address_delivery_mode is 'The delivery mode according to the mailing address';
+comment on column ggircs_swrs.address.mailing_address_po_box_number is 'The po box number according to the mailing address';
+comment on column ggircs_swrs.address.mailing_address_street_number is 'The street number according to the mailing address';
+comment on column ggircs_swrs.address.mailing_address_street_number_suffix is 'The street number suffix according to the mailing address';
+comment on column ggircs_swrs.address.mailing_address_street_name is 'The street name according to the mailing address';
+comment on column ggircs_swrs.address.mailing_address_street_type is 'The street type according to the mailing address';
+comment on column ggircs_swrs.address.mailing_address_municipality is 'The municipality according to the mailing address';
+comment on column ggircs_swrs.address.mailing_address_prov_terr_state is 'The province or territory according to the mailing address';
+comment on column ggircs_swrs.address.mailing_address_postal_code_zip_code is 'The postal code according to the mailing address';
+comment on column ggircs_swrs.address.mailing_address_country is 'The country according to the mailing address';
+comment on column ggircs_swrs.address.mailing_address_additional_information is 'The additional information attached to the mailing address';
+
+comment on column ggircs_swrs.address.geographic_address_latitude is 'The latitude of the address';
+comment on column ggircs_swrs.address.geographic_address_longitude is 'The longitude of the address';
+
 commit;
