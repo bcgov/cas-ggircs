@@ -23,7 +23,7 @@ create materialized view ggircs_swrs.report as (
     row_number() over (
       partition by report_details.swrs_report_id
       order by
-        imported_at desc,
+        report_status.submission_date desc,
         ghgr_import_id desc
       )                                      as swrs_report_history_id
   from x,
@@ -44,10 +44,10 @@ create materialized view ggircs_swrs.report as (
            passing source_xml
            columns
              status varchar(1000) not null path 'Status|ReportStatus[normalize-space(.)]', -- Unknown, In Progress, Submitted, Archived, Completed
-             version varchar(1000) not null path 'Version[normalize-space(.)]',
+             version varchar(1000) path 'Version[normalize-space(.)]',
              submission_date varchar(1000) path 'SubmissionDate[normalize-space(.)]',
              last_modified_by varchar(1000) not null path 'LastModifiedBy[normalize-space(.)]',
-             last_modified_date timestamp with time zone not null path 'LastModifiedDate[normalize-space(.)]',
+             last_modified_date timestamp with time zone path 'LastModifiedDate[normalize-space(.)]',
              update_comment varchar(1000) path 'UpdateComment[normalize-space(.)]'
          ) as report_status
 ) with no data;
