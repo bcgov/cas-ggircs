@@ -52,5 +52,19 @@ select col_type_is(      'ggircs_swrs', 'unit', 'xml_hunk', 'xml', 'unit.xml_hun
 select col_is_null(      'ggircs_swrs', 'unit', 'xml_hunk', 'unit.xml_hunk column should allow null');
 select col_hasnt_default('ggircs_swrs', 'unit', 'xml_hunk', 'unit.xml_hunk column should not have a default value');
 
+-- TODO(wenzowski): ensure all descriptors are extracted
+-- with x as (select id, xml_hunk from ggircs_swrs.unit)
+-- select distinct tag.name
+-- from x,
+--      xmltable('/Unit/*' passing xml_hunk columns name text path 'name(.)') as tag
+-- order by tag.name;
+
+-- COGenUnit
+-- Fuels
+-- NonCOGenUnit
+-- UnitDesc
+-- UnitName
+
+
 select * from finish();
 rollback;
