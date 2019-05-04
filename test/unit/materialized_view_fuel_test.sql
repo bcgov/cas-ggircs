@@ -77,5 +77,34 @@ select col_type_is(      'ggircs_swrs', 'fuel', 'annual_weighted_avg_hhv', 'char
 select col_is_null(      'ggircs_swrs', 'fuel', 'annual_weighted_avg_hhv', 'fuel.units column should allow null');
 select col_hasnt_default('ggircs_swrs', 'fuel', 'annual_weighted_avg_hhv', 'fuel.units column should not  have a default');
 
+-- TODO(wenzowski): ensure all descriptors are extracted
+-- with x as (select id, xml_hunk from ggircs_swrs.fuel)
+-- select distinct tags.name
+-- from x,
+--      xmltable('/Fuel/*' passing xml_hunk columns name text path 'name(.)') as tags
+-- order by tags.name;
+
+-- AlternativeMethodologyDescription
+-- AnnualFuelAmount
+-- AnnualSteamGeneration
+-- AnnualWeightedAverageCarbonContent
+-- AnnualWeightedAverageHighHeatingValue
+-- Emissions
+-- FuelClassification
+-- FuelDescription
+-- FuelType
+-- FuelUnits
+-- MeasuredConversionFactors
+-- MeasuredEmissionFactor
+-- MeasuredEmissionFactorUnitType
+-- MeasuredEmissionFactors
+-- OtherFlareDetails
+-- Q1
+-- Q2
+-- Q3
+-- Q4
+-- WastewaterProcessingFactors
+
+
 select * from finish();
 rollback;
