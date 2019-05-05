@@ -9,30 +9,30 @@ create materialized view ggircs_swrs.activity as (
            ghgr_import.xml_file as source_xml
     from ggircs_swrs.ghgr_import
   )
-  select row_number() over (order by x.ghgr_import_id asc) as id,
-         x.ghgr_import_id,
-         activity_details.*
+  select x.ghgr_import_id, activity_details.*
   from x,
        xmltable(
-           '/ReportData/ActivityData/ActivityPages/Process/SubProcess'
+           '//SubProcess'
            passing x.source_xml
            columns
-             process_name varchar(1000) path '../@ProcessName[normalize-space(.)]', -- Todo: Redundant. Remove in cleanup phase
+             process_idx integer not null path 'string(count(./ancestor::Process/preceding-sibling::Process))',
+             sub_process_idx integer not null path 'string(count(./preceding-sibling::SubProcess))',
+             activity_name varchar(1000) not null path 'name(./ancestor::Process/parent::*)',
+             process_name varchar(1000) path './ancestor::Process/@ProcessName[normalize-space(.)]',
              subprocess_name varchar(1000) path './@SubprocessName[normalize-space(.)]',
-             information_requirement varchar(1000) path './@InformationRequirement[normalize-space(.)]',
-             xml_hunk xml path '.'
+             information_requirement varchar(1000) path './@InformationRequirement[normalize-space(.)]'
          ) as activity_details
 ) with no data;
 
-comment on materialized view ggircs_swrs.activity is 'The materialized view for Activity and Subactivity from each SWRS report';
-comment on column ggircs_swrs.activity.id is 'The primary key for the activity';
-comment on column ggircs_swrs.activity.ghgr_import_id is 'A foreign key reference to ggircs_swrs.ghgr_import';
-comment on column ggircs_swrs.activity.process_name is 'The name of the activity';
-comment on column ggircs_swrs.activity.subprocess_name is 'The name of the sub-activity';
-comment on column ggircs_swrs.activity.information_requirement is 'The requirement in reporting regulation to report this activity';
-comment on column ggircs_swrs.activity.xml_hunk is 'The raw xml hunk used to extract this activity';
+create unique index ggircs_activity_primary_key on ggircs_swrs.activity (ghgr_import_id, process_idx, sub_process_idx, activity_name);
 
-create unique index ggircs_activity_primary_key on ggircs_swrs.activity (id);
+comment on materialized view ggircs_swrs.activity is 'The materialized view for Activity and Subactivity from each SWRS report';
+comment on column ggircs_swrs.activity.ghgr_import_id is 'A foreign key reference to ggircs_swrs.ghgr_import';
+comment on column ggircs_swrs.activity.process_idx is 'The number of preceding Process siblings before this activity';
+comment on column ggircs_swrs.activity.sub_process_idx is 'The number of preceding SubProcess siblings before this activity';
+comment on column ggircs_swrs.activity.activity_name is 'The name of the activity';
+comment on column ggircs_swrs.activity.process_name is 'The name of the process';
+comment on column ggircs_swrs.activity.subprocess_name is 'The name of the sub-process';
+comment on column ggircs_swrs.activity.information_requirement is 'The requirement in reporting regulation to report this activity';
 
 commit;
-

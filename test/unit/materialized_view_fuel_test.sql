@@ -4,7 +4,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(30);
+select plan(27);
 
 select has_materialized_view(
     'ggircs_swrs', 'fuel',
@@ -20,35 +20,33 @@ select columns_are('ggircs_swrs'::name, 'fuel'::name, array[
     'id'::name,
     'ghgr_import_id'::name,
     'activity_id'::name,
-    'unit_name'::name,
     'unit_id'::name,
     'fuel_type'::name,
     'fuel_classification'::name,
     'fuel_units'::name,
     'annual_fuel_amount'::name,
-    'annual_weighted_avg_hhv'::name,
-    'xml_hunk'::name
+    'annual_weighted_avg_hhv'::name
 ]);
 
 --  select has_column(       'ggircs_swrs', 'fuel', 'id', 'fuel.id column should exist');
-select col_type_is(      'ggircs_swrs', 'fuel', 'id', 'bigint', 'fuel.id column should be type bigint');
+select col_type_is(      'ggircs_swrs', 'fuel', 'id', 'integer', 'fuel.id column should be type integer');
 
 --  select has_column(       'ggircs_swrs', 'fuel', 'ghgr_import_id', 'fuel.ghgr_import_id column should exist');
 select col_type_is(      'ggircs_swrs', 'fuel', 'ghgr_import_id', 'integer', 'fuel.ghgr_import_id column should be type integer');
 select col_hasnt_default('ggircs_swrs', 'fuel', 'ghgr_import_id', 'fuel.ghgr_import_id column should not have a default value');
 
 --  select has_column(       'ggircs_swrs', 'fuel', 'activity_id', 'fuel.activity_id column should exist');
-select col_type_is(      'ggircs_swrs', 'fuel', 'activity_id', 'bigint', 'fuel.activity_id column should be type bigint');
+select col_type_is(      'ggircs_swrs', 'fuel', 'activity_id', 'integer', 'fuel.activity_id column should be type integer');
 select col_is_null(      'ggircs_swrs', 'fuel', 'activity_id', 'fuel.activity_id column should allow null');
-select col_hasnt_default('ggircs_swrs', 'fuel', 'activity_id', 'fuel.activity_id column should not  have a default');
+select col_hasnt_default('ggircs_swrs', 'fuel', 'activity_id', 'fuel.activity_id column should not have a default');
 
 --  select has_column(       'ggircs_swrs', 'fuel', 'unit_name', 'fuel.activity_id column should exist');
-select col_type_is(      'ggircs_swrs', 'fuel', 'unit_name', 'character varying(1000)', 'fuel.unit_name column should be type varchar');
-select col_is_null(      'ggircs_swrs', 'fuel', 'unit_name', 'fuel.activity_id column should allow null');
-select col_hasnt_default('ggircs_swrs', 'fuel', 'unit_name', 'fuel.activity_id column should not  have a default');
+-- select col_type_is(      'ggircs_swrs', 'fuel', 'unit_name', 'character varying(1000)', 'fuel.unit_name column should be type varchar');
+-- select col_is_null(      'ggircs_swrs', 'fuel', 'unit_name', 'fuel.activity_id column should allow null');
+-- select col_hasnt_default('ggircs_swrs', 'fuel', 'unit_name', 'fuel.activity_id column should not  have a default');
 
 --  select has_column(       'ggircs_swrs', 'fuel', 'unit_id', 'fuel.unit_id column should exist');
-select col_type_is(      'ggircs_swrs', 'fuel', 'unit_id', 'bigint', 'fuel.unit_id column should be type bigint');
+select col_type_is(      'ggircs_swrs', 'fuel', 'unit_id', 'integer', 'fuel.unit_id column should be type integer');
 select col_is_null(      'ggircs_swrs', 'fuel', 'unit_id', 'fuel.unit_id column should allow null');
 select col_hasnt_default('ggircs_swrs', 'fuel', 'unit_id', 'fuel.unit_id column should not  have a default');
 
@@ -76,6 +74,11 @@ select col_hasnt_default('ggircs_swrs', 'fuel', 'annual_fuel_amount', 'fuel.unit
 select col_type_is(      'ggircs_swrs', 'fuel', 'annual_weighted_avg_hhv', 'character varying(1000)', 'fuel.annual_weighted_avg_hhv column should be type varchar');
 select col_is_null(      'ggircs_swrs', 'fuel', 'annual_weighted_avg_hhv', 'fuel.units column should allow null');
 select col_hasnt_default('ggircs_swrs', 'fuel', 'annual_weighted_avg_hhv', 'fuel.units column should not  have a default');
+
+-- TODO(wenzowski): check foreign key references
+-- id integer not null path 'count(./preceding-sibling::Fuel)',
+-- activity_id integer not null path 'count(./ancestor::Unit/preceding-sibling::Unit)',
+-- unit_id integer not null path 'count(./ancestor::Unit/preceding-sibling::Unit)',
 
 -- TODO(wenzowski): ensure all descriptors are extracted
 -- with x as (select id, xml_hunk from ggircs_swrs.fuel)
