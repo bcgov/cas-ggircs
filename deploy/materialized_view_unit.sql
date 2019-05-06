@@ -55,5 +55,17 @@ comment on column ggircs_swrs.unit.units_idx is 'The number of preceding Units s
 comment on column ggircs_swrs.unit.unit_idx is 'The number of preceding Unit siblings before this Unit';
 comment on column ggircs_swrs.unit.unit_name is 'The name of the unit of machinery emitting greenhouse gas';
 comment on column ggircs_swrs.unit.unit_description is 'The description of the unit of machinery emitting greenhouse gas';
+comment on column ggircs_swrs.unit.cogen_unit_name is 'The name of the cogen unit';
+comment on column ggircs_swrs.unit.cogen_cycle_type is 'The cycle type of the cogen unit';
+comment on column ggircs_swrs.unit.cogen_nameplate_capacity is 'The nameplate capacity] of the cogen unit';
+comment on column ggircs_swrs.unit.cogen_net_power is 'The net power of the cogen unit';
+comment on column ggircs_swrs.unit.cogen_steam_heat_acq_quantity is 'The steam heat quantity of the cogen unit';
+comment on column ggircs_swrs.unit.cogen_steam_heat_acq_name is 'The steam heat name of the cogen unit';
+comment on column ggircs_swrs.unit.cogen_thermal_output_quantity is 'The thermal output of the cogen unit';
+comment on column ggircs_swrs.unit.non_cogen_nameplate_capacity is 'The nameplate capacity of the non-cogen unit';
+comment on column ggircs_swrs.unit.non_cogen_net_powwer is 'The net power of the non-cogen unit';
+comment on column ggircs_swrs.unit.non_cogen_unit_name is 'The name of the non-cogen unit';
+
+
 
 commit;
