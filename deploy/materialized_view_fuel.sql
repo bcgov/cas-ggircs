@@ -19,6 +19,9 @@ create materialized view ggircs_swrs.fuel as (
            passing source_xml
            columns
              activity_name varchar(1000) not null path 'name(./ancestor::Process/parent::*)',
+             process_idx integer not null path 'string(count(./ancestor::Process/preceding-sibling::Process))',
+             sub_process_idx integer not null path 'string(count(./ancestor::SubProcess/preceding-sibling::SubProcess))',
+             units_idx integer not null path 'string(count(./ancestor::Units/preceding-sibling::Units))',
              unit_idx integer not null path 'string(count(./ancestor::Unit/preceding-sibling::Unit))',
              idx integer not null path 'string(count(./preceding-sibling::Fuel))',
              fuel_type varchar(1000) path './FuelType',
@@ -29,12 +32,15 @@ create materialized view ggircs_swrs.fuel as (
          ) as fuel_details
 ) with no data;
 
-create unique index ggircs_fuel_primary_key on ggircs_swrs.fuel (ghgr_import_id, activity_idx, unit_idx, idx);
+create unique index ggircs_fuel_primary_key on ggircs_swrs.fuel (ghgr_import_id, activity_name, process_idx, sub_process_idx, units_idx, unit_idx, idx);
 
 comment on materialized view ggircs_swrs.fuel is 'The materialized view containing the information on fuels';
 comment on column ggircs_swrs.fuel.ghgr_import_id is 'A foreign key reference to ggircs_swrs.ghgr_import';
-comment on column ggircs_swrs.fuel.activity_idx is 'A foreign key reference to ggrics_swrs.activity';
-comment on column ggircs_swrs.fuel.unit_idx is 'A foreign key reference to ggircs_swrs.unit';
+comment on column ggircs_swrs.fuel.activity_name is 'The name of the activity (partial fk reference)';
+comment on column ggircs_swrs.fuel.process_idx is 'The number of preceding Process siblings before this Process (partial fk reference)';
+comment on column ggircs_swrs.fuel.sub_process_idx is 'The number of preceding SubProcess siblings before this SubProcess (partial fk reference)';
+comment on column ggircs_swrs.fuel.units_idx is 'The number of preceding Units siblings before this Units (partial fk reference)';
+comment on column ggircs_swrs.fuel.unit_idx is 'A foreign key reference to ggircs_swrs.unit (partial fk reference)';
 comment on column ggircs_swrs.fuel.idx is 'The primary key for the fuel';
 comment on column ggircs_swrs.fuel.fuel_type is 'The type of the fuel';
 comment on column ggircs_swrs.fuel.fuel_classification is 'The classification of the fuel';
