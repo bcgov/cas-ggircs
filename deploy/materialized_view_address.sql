@@ -33,6 +33,8 @@ create materialized view ggircs_swrs.address as (
                 physical_address_postal_code_zip_code varchar(1000) path './PhysicalAddress/PostalCodeZipCode[normalize-space(.)]',
                 physical_address_country varchar(1000) path './PhysicalAddress/Country[normalize-space(.)]',
                 physical_address_national_topographical_description varchar(1000) path './PhysicalAddress/NationalTopographicalDescription[normalize-space(.)]',
+                physical_address_additional_information varchar(1000) path './PhysicalAddress/AdditionalInformation[normalize-space(.)]',
+                physical_address_land_survey_description varchar(1000) path './PhysicalAddress/LandSurveyDescription[normalize-space(.)]',
 
                 mailing_address_delivery_mode varchar(1000) path './MailingAddress/DeliveryMode[normalize-space(.)]',
                 mailing_address_po_box_number varchar(1000) path './MailingAddress/POBoxNumber[normalize-space(.)]',
@@ -78,6 +80,8 @@ comment on column ggircs_swrs.address.physical_address_prov_terr_state is 'The p
 comment on column ggircs_swrs.address.physical_address_postal_code_zip_code is 'The postal code according to the phsyical address';
 comment on column ggircs_swrs.address.physical_address_country is 'The country according to the phsyical address';
 comment on column ggircs_swrs.address.physical_address_national_topographical_description is 'The national topographical description according to the phsyical address';
+comment on column ggircs_swrs.address.physical_address_additional_information is 'The additional information attached to the phsyical address';
+comment on column ggircs_swrs.address.physical_address_land_survey_description is 'The land survey description according to the phsyical address';
 
 comment on column ggircs_swrs.address.mailing_address_delivery_mode is 'The delivery mode according to the mailing address';
 comment on column ggircs_swrs.address.mailing_address_po_box_number is 'The po box number according to the mailing address';

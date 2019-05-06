@@ -3,7 +3,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(32);
+select plan(34);
 
 -- TODO: add tests for existence of columns, data-types etc
 
@@ -133,6 +133,16 @@ select results_eq(
   'select physical_address_national_topographical_description from ggircs_swrs.address',
   ARRAY['A-123-B/456-C-00'::varchar],
   'ggircs_swrs.address parsed column physical_address_national_topographical_description'
+);
+select results_eq(
+  'select physical_address_additional_information from ggircs_swrs.address',
+  ARRAY[null::varchar],
+  'ggircs_swrs.address parsed column physical_address_additional_information'
+);
+select results_eq(
+  'select physical_address_land_survey_description from ggircs_swrs.address',
+  ARRAY[null::varchar],
+  'ggircs_swrs.address parsed column physical_address_land_survey_description'
 );
 
 -- Mailing Address Columns
