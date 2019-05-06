@@ -40,11 +40,6 @@ select col_type_is(      'ggircs_swrs', 'fuel', 'activity_idx', 'integer', 'fuel
 select col_is_null(      'ggircs_swrs', 'fuel', 'activity_idx', 'fuel.activity_idx column should allow null');
 select col_hasnt_default('ggircs_swrs', 'fuel', 'activity_idx', 'fuel.activity_idx column should not have a default');
 
---  select has_column(       'ggircs_swrs', 'fuel', 'unit_name', 'fuel.activity_id column should exist');
--- select col_type_is(      'ggircs_swrs', 'fuel', 'unit_name', 'character varying(1000)', 'fuel.unit_name column should be type varchar');
--- select col_is_null(      'ggircs_swrs', 'fuel', 'unit_name', 'fuel.activity_id column should allow null');
--- select col_hasnt_default('ggircs_swrs', 'fuel', 'unit_name', 'fuel.activity_id column should not  have a default');
-
 --  select has_column(       'ggircs_swrs', 'fuel', 'unit_idx', 'fuel.unit_idx column should exist');
 select col_type_is(      'ggircs_swrs', 'fuel', 'unit_idx', 'integer', 'fuel.unit_idx column should be type integer');
 select col_is_null(      'ggircs_swrs', 'fuel', 'unit_idx', 'fuel.unit_idx column should allow null');
@@ -76,9 +71,9 @@ select col_is_null(      'ggircs_swrs', 'fuel', 'annual_weighted_avg_hhv', 'fuel
 select col_hasnt_default('ggircs_swrs', 'fuel', 'annual_weighted_avg_hhv', 'fuel.units column should not  have a default');
 
 -- TODO(wenzowski): check foreign key references
--- id integer not null path 'count(./preceding-sibling::Fuel)',
--- activity_id integer not null path 'count(./ancestor::Unit/preceding-sibling::Unit)',
--- unit_id integer not null path 'count(./ancestor::Unit/preceding-sibling::Unit)',
+-- idx integer not null path 'count(./preceding-sibling::Fuel)',
+-- activity_idx integer not null path 'count(./ancestor::Unit/preceding-sibling::Unit)',
+-- unit_idx integer not null path 'count(./ancestor::Unit/preceding-sibling::Unit)',
 
 -- TODO(wenzowski): ensure all descriptors are extracted
 -- with x as (select id, xml_hunk from ggircs_swrs.fuel)
@@ -107,7 +102,6 @@ select col_hasnt_default('ggircs_swrs', 'fuel', 'annual_weighted_avg_hhv', 'fuel
 -- Q3
 -- Q4
 -- WastewaterProcessingFactors
-
 
 select * from finish();
 rollback;
