@@ -3,7 +3,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(29);
+select plan(32);
 
 -- TODO: add tests for existence of columns, data-types etc
 
@@ -147,6 +147,16 @@ select results_eq(
   'ggircs_swrs.address parsed column mailing_address_po_box_number'
 );
 select results_eq(
+  'select mailing_address_unit_number from ggircs_swrs.address',
+  ARRAY[null::varchar],
+  'ggircs_swrs.address parsed column mailing_address_unit_number'
+);
+select results_eq(
+  'select mailing_address_rural_route_number from ggircs_swrs.address',
+  ARRAY[null::varchar],
+  'ggircs_swrs.address parsed column mailing_address_rural_route_number'
+);
+select results_eq(
   'select mailing_address_street_number from ggircs_swrs.address',
   ARRAY[1234::varchar],
   'ggircs_swrs.address parsed column mailing_address_street_number'
@@ -165,6 +175,11 @@ select results_eq(
   'select mailing_address_street_type from ggircs_swrs.address',
   ARRAY['Avenue'::varchar],
   'ggircs_swrs.address parsed column mailing_address_street_type'
+);
+select results_eq(
+  'select mailing_address_street_direction from ggircs_swrs.address',
+  ARRAY[null::varchar],
+  'ggircs_swrs.address parsed column mailing_address_street_direction'
 );
 select results_eq(
   'select mailing_address_municipality from ggircs_swrs.address',

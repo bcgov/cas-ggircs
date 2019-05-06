@@ -36,10 +36,13 @@ create materialized view ggircs_swrs.address as (
 
                 mailing_address_delivery_mode varchar(1000) path './MailingAddress/DeliveryMode[normalize-space(.)]',
                 mailing_address_po_box_number varchar(1000) path './MailingAddress/POBoxNumber[normalize-space(.)]',
+                mailing_address_unit_number varchar(1000) path './MailingAddress/UnitNumber[normalize-space(.)]',
+                mailing_address_rural_route_number varchar(1000) path './MailingAddress/RuralRouteNumber[normalize-space(.)]',
                 mailing_address_street_number varchar(1000) path './MailingAddress/StreetNumber[normalize-space(.)]',
                 mailing_address_street_number_suffix varchar(1000) path './MailingAddress/StreetNumberSuffix[normalize-space(.)]',
                 mailing_address_street_name varchar(1000) path './MailingAddress/StreetName[normalize-space(.)]',
                 mailing_address_street_type varchar(1000) path './MailingAddress/StreetType[normalize-space(.)]',
+                mailing_address_street_direction varchar(1000) path './MailingAddress/StreetDirection[normalize-space(.)]',
                 mailing_address_municipality varchar(1000) path './MailingAddress/Municipality[normalize-space(.)]',
                 mailing_address_prov_terr_state varchar(1000) path './MailingAddress/ProvTerrState[normalize-space(.)]',
                 mailing_address_postal_code_zip_code varchar(1000) path './MailingAddress/PostalCodeZipCode[normalize-space(.)]',
@@ -78,10 +81,13 @@ comment on column ggircs_swrs.address.physical_address_national_topographical_de
 
 comment on column ggircs_swrs.address.mailing_address_delivery_mode is 'The delivery mode according to the mailing address';
 comment on column ggircs_swrs.address.mailing_address_po_box_number is 'The po box number according to the mailing address';
+comment on column ggircs_swrs.address.mailing_address_unit_number is 'The unit number according to the mailing address';
+comment on column ggircs_swrs.address.mailing_address_rural_route_number is 'The rural route number according to the mailing address';
 comment on column ggircs_swrs.address.mailing_address_street_number is 'The street number according to the mailing address';
 comment on column ggircs_swrs.address.mailing_address_street_number_suffix is 'The street number suffix according to the mailing address';
 comment on column ggircs_swrs.address.mailing_address_street_name is 'The street name according to the mailing address';
 comment on column ggircs_swrs.address.mailing_address_street_type is 'The street type according to the mailing address';
+comment on column ggircs_swrs.address.mailing_address_street_direction is 'The street direction according to the mailing address';
 comment on column ggircs_swrs.address.mailing_address_municipality is 'The municipality according to the mailing address';
 comment on column ggircs_swrs.address.mailing_address_prov_terr_state is 'The province or territory according to the mailing address';
 comment on column ggircs_swrs.address.mailing_address_postal_code_zip_code is 'The postal code according to the mailing address';
