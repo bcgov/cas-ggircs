@@ -1,5 +1,5 @@
 -- Deploy ggircs:materialized_view_unit to pg
--- requires: materialized_view_activity
+-- requires: table_ghgr_import
 
 begin;
 
