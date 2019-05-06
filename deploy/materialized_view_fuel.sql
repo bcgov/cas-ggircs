@@ -18,9 +18,9 @@ create materialized view ggircs_swrs.fuel as (
            '//Fuel'
            passing source_xml
            columns
-             activity_id integer not null path 'count(./ancestor::SubProcess/preceding-sibling::SubProcess)',
-             unit_id integer not null path 'count(./ancestor::Unit/preceding-sibling::Unit)',
-             id integer not null path 'count(./preceding-sibling::Fuel)',
+             activity_idx integer not null path 'count(./ancestor::SubProcess/preceding-sibling::SubProcess)',
+             unit_idx integer not null path 'count(./ancestor::Unit/preceding-sibling::Unit)',
+             idx integer not null path 'count(./preceding-sibling::Fuel)',
              fuel_type varchar(1000) path './FuelType',
              fuel_classification varchar(1000) path './FuelClassification',
              fuel_units varchar(1000) path './FuelUnits',
@@ -29,14 +29,14 @@ create materialized view ggircs_swrs.fuel as (
          ) as fuel_details
 ) with no data;
 
-create unique index ggircs_fuel_primary_key on ggircs_swrs.fuel (ghgr_import_id, activity_id, unit_id, id);
+create unique index ggircs_fuel_primary_key on ggircs_swrs.fuel (ghgr_import_id, activity_idx, unit_idx, idx);
 
 comment on materialized view ggircs_swrs.fuel is 'The materialized view containing the information on fuels';
 comment on column ggircs_swrs.fuel.ghgr_import_id is 'A foreign key reference to ggircs_swrs.ghgr_import';
-comment on column ggircs_swrs.fuel.activity_id is 'A foreign key reference to ggrics_swrs.activity';
-comment on column ggircs_swrs.fuel.unit_id is 'A foreign key reference to ggircs_swrs.unit';
-comment on column ggircs_swrs.fuel.id is 'The primary key for the fuel';
-comment on column ggircs_swrs.fuel.unit_name is 'The name of the unit';
+comment on column ggircs_swrs.fuel.activity_idx is 'A foreign key reference to ggrics_swrs.activity';
+comment on column ggircs_swrs.fuel.unit_idx is 'A foreign key reference to ggircs_swrs.unit';
+comment on column ggircs_swrs.fuel.idx is 'The primary key for the fuel';
+-- comment on column ggircs_swrs.fuel.unit_name is 'The name of the unit';
 comment on column ggircs_swrs.fuel.fuel_type is 'The type of the fuel';
 comment on column ggircs_swrs.fuel.fuel_classification is 'The classification of the fuel';
 comment on column ggircs_swrs.fuel.fuel_units is 'The units of the fuel';
