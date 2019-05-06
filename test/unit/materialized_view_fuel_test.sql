@@ -105,12 +105,9 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
     </ActivityPages>
   </ActivityData>$$);
 
--- idx integer not null path 'count(./preceding-sibling::Fuel)',
--- activity_idx integer not null path 'count(./ancestor::Unit/preceding-sibling::Unit)',
--- unit_idx integer not null path 'count(./ancestor::Unit/preceding-sibling::Unit)',
-
 refresh materialized view ggircs_swrs.fuel with data;
 refresh materialized view ggircs_swrs.unit with data;
+
 -- test foreign keys
 select results_eq(
   'select distinct ghgr_import_id from ggircs_swrs.fuel',
@@ -133,8 +130,6 @@ select results_eq(
 
     'Foreign keys ghgr_import_id, process_idx, sub_process_idx, activity_name, units_idx and unit_idx in ggircs_swrs_fuel reference ggircs_swrs.unit'
 );
-
-
 
 -- TODO(wenzowski): ensure all descriptors are extracted
 -- with x as (select id, xml_hunk from ggircs_swrs.fuel)
