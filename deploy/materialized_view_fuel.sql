@@ -18,7 +18,7 @@ create materialized view ggircs_swrs.fuel as (
            '//Fuel'
            passing source_xml
            columns
-             activity_idx integer not null path 'string(count(./ancestor::SubProcess/preceding-sibling::SubProcess))',
+             activity_name varchar(1000) not null path 'name(./ancestor::Process/parent::*)',
              unit_idx integer not null path 'string(count(./ancestor::Unit/preceding-sibling::Unit))',
              idx integer not null path 'string(count(./preceding-sibling::Fuel))',
              fuel_type varchar(1000) path './FuelType',

@@ -19,7 +19,7 @@ select has_index(
 select columns_are('ggircs_swrs'::name, 'fuel'::name, array[
     'idx'::name,
     'ghgr_import_id'::name,
-    'activity_idx'::name,
+    'activity_name'::name,
     'unit_idx'::name,
     'fuel_type'::name,
     'fuel_classification'::name,
@@ -35,14 +35,14 @@ select col_type_is(      'ggircs_swrs', 'fuel', 'idx', 'integer', 'fuel.idx colu
 select col_type_is(      'ggircs_swrs', 'fuel', 'ghgr_import_id', 'integer', 'fuel.ghgr_import_id column should be type integer');
 select col_hasnt_default('ggircs_swrs', 'fuel', 'ghgr_import_id', 'fuel.ghgr_import_id column should not have a default value');
 
---  select has_column(       'ggircs_swrs', 'fuel', 'activity_idx', 'fuel.activity_id column should exist');
-select col_type_is(      'ggircs_swrs', 'fuel', 'activity_idx', 'integer', 'fuel.activity_idx column should be type integer');
-select col_is_null(      'ggircs_swrs', 'fuel', 'activity_idx', 'fuel.activity_idx column should allow null');
-select col_hasnt_default('ggircs_swrs', 'fuel', 'activity_idx', 'fuel.activity_idx column should not have a default');
+--  select has_column(       'ggircs_swrs', 'fuel', 'activity_name', 'fuel.activity_id column should exist');
+select col_type_is(      'ggircs_swrs', 'fuel', 'activity_name', 'character varying(1000)', 'fuel.activity_name column should be type varchar');
+select col_is_null(      'ggircs_swrs', 'fuel', 'activity_name', 'fuel.activity_idx column should not allow null');
+select col_hasnt_default('ggircs_swrs', 'fuel', 'activity_name', 'fuel.activity_idx column should not have a default');
 
 --  select has_column(       'ggircs_swrs', 'fuel', 'unit_idx', 'fuel.unit_idx column should exist');
 select col_type_is(      'ggircs_swrs', 'fuel', 'unit_idx', 'integer', 'fuel.unit_idx column should be type integer');
-select col_is_null(      'ggircs_swrs', 'fuel', 'unit_idx', 'fuel.unit_idx column should allow null');
+select col_is_null(      'ggircs_swrs', 'fuel', 'unit_idx', 'fuel.unit_idx column should not allow null');
 select col_hasnt_default('ggircs_swrs', 'fuel', 'unit_idx', 'fuel.unit_idx column should not  have a default');
 
 --  select has_column(       'ggircs_swrs', 'fuel', 'fuel_type', 'fuel.fuel_type column should exist');
