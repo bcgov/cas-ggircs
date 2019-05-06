@@ -20,11 +20,11 @@ create materialized view ggircs_swrs.unit as (
            '//Unit'
            passing source_xml
            columns
-             activity_name varchar(1000) not null path 'name(./ancestor::Process/parent::*)',
-             process_idx integer not null path 'string(count(./ancestor::Process/preceding-sibling::Process))',
-             sub_process_idx integer not null path 'string(count(./ancestor::SubProcess/preceding-sibling::SubProcess))',
-             units_idx integer not null path 'string(count(./ancestor::Units/preceding-sibling::Units))',
-             unit_idx integer not null path 'string(count(./preceding-sibling::Unit))',
+             activity_name varchar(1000) path 'name(./ancestor::Process/parent::*)' not null,
+             process_idx integer path 'string(count(./ancestor::Process/preceding-sibling::Process))' not null,
+             sub_process_idx integer path 'string(count(./ancestor::SubProcess/preceding-sibling::SubProcess))' not null,
+             units_idx integer path 'string(count(./ancestor::Units/preceding-sibling::Units))' not null,
+             unit_idx integer path 'string(count(./preceding-sibling::Unit))' not null,
              unit_name varchar(1000) path './UnitName|./ancestor::Units/@UnitType',
              unit_description varchar(1000) path './UnitDesc/text()',
              -- cogen_unit xml path './COGenUnit',
