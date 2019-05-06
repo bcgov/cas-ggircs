@@ -49,7 +49,6 @@ create unique index ggircs_emission_primary_key on ggircs_swrs.emission (ghgr_im
 
 comment on materialized view ggircs_swrs.emission is 'The materialized view containing the information on emissions';
 comment on column ggircs_swrs.emission.ghgr_import_id is 'A foreign key reference to ggircs_swrs.ghgr_import';
-comment on column ggircs_swrs.emission.ghgr_import_id is 'A foreign key reference to ggircs_swrs.ghgr_import';
 comment on column ggircs_swrs.emission.process_idx is 'The number of preceding Process siblings before this activity';
 comment on column ggircs_swrs.emission.sub_process_idx is 'The number of preceding SubProcess siblings before this activity';
 comment on column ggircs_swrs.emission.unit_idx is 'The number of preceding Unit siblings before this activity';
@@ -60,7 +59,7 @@ comment on column ggircs_swrs.emission.gas_type is 'The type of the gas';
 comment on column ggircs_swrs.emission.methodology is 'The emission methodology';
 comment on column ggircs_swrs.emission.not_applicable is 'Is the emission applicable/NA';
 comment on column ggircs_swrs.emission.quantity is 'The quantity of the emission';
-comment on column ggircs_swrs.emission.calculated_quantity is 'The calcualted quantity of the emission';
-comment on column ggircs_swrs.emission.emission_category is 'The emission groups (categories) as xml';
+comment on column ggircs_swrs.emission.calculated_quantity is 'The CO2 Equivalent quantity of the emission';
+comment on column ggircs_swrs.emission.emission_category is 'The emissions category ';
 
 commit;
