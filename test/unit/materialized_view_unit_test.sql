@@ -4,7 +4,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(56);
+select plan(57);
 
 select has_materialized_view(
     'ggircs_swrs', 'unit',
@@ -146,17 +146,6 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
             </Unit>
           </Units>
         </SubProcess>
-        <SubProcess SubprocessName="(b) general stationary combustion, no useful energy" InformationRequirement="Required">
-          <Units/>
-        </SubProcess>
-        <SubProcess SubprocessName="Additional information for cement and lime production facilities only (not aggregated in totals)" InformationRequirement="MandatoryAdditional">
-          <Units UnitType="Fuel combustion emissions from all kilns combined">
-            <Unit/>
-          </Units>
-          <Units UnitType="Fuel combustion emissions from all other fuel combustion units (kilns excluded)">
-            <Unit/>
-          </Units>
-        </SubProcess>
       </Process>
     </ActivityPages>
   </ActivityData>
@@ -165,6 +154,7 @@ $$);
 
 -- refresh necessary views with data
 refresh materialized view ggircs_swrs.unit with data;
+refresh materialized view ggircs_swrs.activity with data;
 
 -- test the columns for matview facility have been properly parsed from xml
 select results_eq(
@@ -172,6 +162,22 @@ select results_eq(
   'select id from ggircs_swrs.ghgr_import',
   'ggircs_swrs.activity.ghgr_import_id relates to ggircs_swrs.ghgr_import.id'
 );
+
+-- test the foreign keys in unit return a value when joined on activity
+select results_eq(
+    'select activity.ghgr_import_id from ggircs_swrs.unit ' ||
+    'join ggircs_swrs.activity ' ||
+    'on (' ||
+    'unit.ghgr_import_id =  activity.ghgr_import_id ' ||
+    'and unit.process_idx = activity.process_idx ' ||
+    'and unit.sub_process_idx = activity.sub_process_idx ' ||
+    'and unit.activity_name = activity.activity_name)',
+
+    'select ghgr_import_id from ggircs_swrs.activity',
+
+    'Foreign keys ghgr_import_id, process_idx, sub_process_idx and activity_name in ggircs_swrs_unit reference ggircs_swrs.activity'
+);
+
 select results_eq(
   'select distinct activity_name from ggircs_swrs.unit',
   ARRAY['ActivityPages'::varchar],
