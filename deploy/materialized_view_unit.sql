@@ -61,9 +61,10 @@ comment on column ggircs_swrs.unit.cogen_nameplate_capacity is 'The nameplate ca
 comment on column ggircs_swrs.unit.cogen_net_power is 'The net power of the cogen unit';
 comment on column ggircs_swrs.unit.cogen_steam_heat_acq_quantity is 'The steam heat quantity of the cogen unit';
 comment on column ggircs_swrs.unit.cogen_steam_heat_acq_name is 'The steam heat name of the cogen unit';
+comment on column ggircs_swrs.unit.cogen_supplemental_firing_purpose is 'The firing purpose of the cogen unit';
 comment on column ggircs_swrs.unit.cogen_thermal_output_quantity is 'The thermal output of the cogen unit';
 comment on column ggircs_swrs.unit.non_cogen_nameplate_capacity is 'The nameplate capacity of the non-cogen unit';
-comment on column ggircs_swrs.unit.non_cogen_net_powwer is 'The net power of the non-cogen unit';
+comment on column ggircs_swrs.unit.non_cogen_net_power is 'The net power of the non-cogen unit';
 comment on column ggircs_swrs.unit.non_cogen_unit_name is 'The name of the non-cogen unit';
 
 
