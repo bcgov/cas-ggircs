@@ -1,7 +1,7 @@
 -- Revert ggircs:materialized_view_report from pg
 
-BEGIN;
+begin;
 
 drop materialized view ggircs_swrs.report;
 
-COMMIT;
+commit;

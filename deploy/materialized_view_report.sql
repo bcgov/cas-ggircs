@@ -31,23 +31,23 @@ create materialized view ggircs_swrs.report as (
            '/ReportData/ReportDetails'
            passing source_xml
            columns
-             swrs_report_id numeric(1000,0) not null path 'ReportID[normalize-space(.)]',
+             swrs_report_id numeric(1000,0) path 'ReportID[normalize-space(.)]' not null,
              prepop_report_id numeric(1000,0) path 'PrepopReportID[normalize-space(.)]',
-             report_type varchar(1000) not null path 'ReportType[normalize-space(.)]',
-             swrs_facility_id numeric(1000,0) not null path 'FacilityId[normalize-space(.)]',
-             swrs_organisation_id numeric(1000,0) not null path 'OrganisationId[normalize-space(.)]',
-             reporting_period_duration numeric(1000,0) not null path 'ReportingPeriodDuration[normalize-space(.)]'
+             report_type varchar(1000) path 'ReportType[normalize-space(.)]' not null,
+             swrs_facility_id numeric(1000,0) path 'FacilityId[normalize-space(.)]' not null,
+             swrs_organisation_id numeric(1000,0) path 'OrganisationId[normalize-space(.)]' not null,
+             reporting_period_duration numeric(1000,0) path 'ReportingPeriodDuration[normalize-space(.)]' not null
          ) as report_details,
 
        xmltable(
            '/ReportData/ReportDetails/ReportStatus'
            passing source_xml
            columns
-             status varchar(1000) not null path 'Status|ReportStatus[normalize-space(.)]', -- Unknown, In Progress, Submitted, Archived, Completed
-             version varchar(1000) not null path 'Version[normalize-space(.)]',
+             status varchar(1000) path 'Status|ReportStatus[normalize-space(.)]' not null, -- Unknown, In Progress, Submitted, Archived, Completed
+             version varchar(1000) path 'Version[normalize-space(.)]',
              submission_date varchar(1000) path 'SubmissionDate[normalize-space(.)]',
-             last_modified_by varchar(1000) not null path 'LastModifiedBy[normalize-space(.)]',
-             last_modified_date timestamp with time zone not null path 'LastModifiedDate[normalize-space(.)]',
+             last_modified_by varchar(1000) path 'LastModifiedBy[normalize-space(.)]' not null,
+             last_modified_date timestamp with time zone path 'LastModifiedDate[normalize-space(.)]',
              update_comment varchar(1000) path 'UpdateComment[normalize-space(.)]'
          ) as report_status
 ) with no data;
