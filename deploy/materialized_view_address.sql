@@ -9,7 +9,7 @@ create materialized view ggircs_swrs.address as (
            _ghgr_import.id         as ghgr_import_id,
            _ghgr_import.imported_at
     from ggircs_swrs.ghgr_import as _ghgr_import
-    order by _ghgr_import.id asc
+    order by ghgr_import_id asc
   )
   select row_number() over (order by ghgr_import_id asc) as id,
          x.ghgr_import_id,
