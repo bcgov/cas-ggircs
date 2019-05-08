@@ -13,12 +13,12 @@ create materialized view ggircs_swrs.contact as (
   select ghgr_import_id, contact_details.*
   from x,
        xmltable(
-           '//Contact'
+           '//Contact[not(ancestor::ConfidentialityRequest)]'
            passing source_xml
            columns
                 report_id numeric(1000,0) path './ancestor-or-self::Contact/ancestor::ReportData/ReportDetails/ReportID[normalize-space(.)]',
                 facility_id numeric(1000,0) path './ancestor-or-self::Contact/ancestor::ReportData/ReportDetails/FacilityId[normalize-space(.)]',
-                path_context varchar(1000) path 'name(./ancestor::VerifyTombstone|./ancestor::ReportDetails)',
+                path_context varchar(1000) path 'name(./ancestor::VerifyTombstone|./ancestor::RegistrationData)',
                 contact_idx integer path 'string(count(./ancestor-or-self::Contact/preceding-sibling::Contact))' not null,
                 contact_type varchar(1000) path './Details/ContactType[normalize-space(.)]',
                 given_name varchar(1000) path './Details/GivenName[normalize-space(.)]',

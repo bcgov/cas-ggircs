@@ -18,6 +18,8 @@ select has_index(
 
 select columns_are('ggircs_swrs'::name, 'contact'::name, array[
     'ghgr_import_id'::name,
+    'report_id'::name,
+    'path_context'::name,
     'facility_id'::name,
     'contact_idx'::name,
     'contact_type'::name,
@@ -27,10 +29,7 @@ select columns_are('ggircs_swrs'::name, 'contact'::name, array[
     'position'::name
 ]);
 
-
 refresh materialized view ggircs_swrs.contact with data;
-
-
 
 select * from finish();
 rollback;
