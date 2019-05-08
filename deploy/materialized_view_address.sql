@@ -55,10 +55,7 @@ create materialized view ggircs_swrs.address as (
          ) as address_details
 ) with no data;
 
--- THIS WILL FAIL
--- addresses for contacts are not currently covered with this materialized view
--- TODO: figure out what we are doing with addresses from contacts
-create unique index ggircs_adddress_primary_key
+create unique index ggircs_address_primary_key
     on ggircs_swrs.address (ghgr_import_id, facility_id, organisation_id, type, contact_idx, parent_organisation_idx);
 
 comment on materialized view ggircs_swrs.address is 'The materialized view housing address information for facilities, organisations and contacts';
@@ -66,6 +63,8 @@ comment on column ggircs_swrs.address.ghgr_import_id is 'The foreign key that re
 comment on column ggircs_swrs.address.facility_id is 'The foreign key that references ggircs_swrs.facility';
 comment on column ggircs_swrs.address.organisation_id is 'The foreign key that references ggircs_swrs.organisation';
 comment on column ggircs_swrs.address.type is 'What the address belongs to (facility, organisation, contact)';
+comment on column ggircs_swrs.address.contact_idx is 'The number of preceding Contact siblings before this Contact';
+comment on column ggircs_swrs.address.parent_organisation_idx is 'The number of preceding ParentOrganisation siblings before this ParentOrganisation';
 comment on column ggircs_swrs.address.physical_address_municipality is 'The municipality according to the phsyical address';
 comment on column ggircs_swrs.address.physical_address_unit_number is 'The unit number according to the phsyical address';
 comment on column ggircs_swrs.address.physical_address_street_number is 'The street number according to the phsyical address';

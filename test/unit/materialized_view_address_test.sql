@@ -3,9 +3,58 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(33);
+select plan(36);
 
 -- TODO: add tests for existence of columns, data-types etc
+select has_materialized_view(
+    'ggircs_swrs', 'address',
+    'ggircs_swrs.address should be a materialized view'
+);
+
+select has_index(
+    'ggircs_swrs', 'address', 'ggircs_address_primary_key',
+    'ggircs_swrs.address should have a primary key'
+);
+
+select columns_are('ggircs_swrs'::name, 'address'::name, array[
+    'ghgr_import_id'::name,
+    'facility_id'::name,
+                'organisation_id'::name,
+                'type'::name,
+                'contact_idx'::name,
+                'parent_organisation_idx'::name,
+                'physical_address_municipality'::name,
+                'physical_address_unit_number'::name,
+                'physical_address_street_number'::name,
+                'physical_address_street_number_suffix'::name,
+                'physical_address_street_name'::name,
+                'physical_address_street_type'::name,
+                'physical_address_street_direction'::name,
+                'physical_address_prov_terr_state'::name,
+                'physical_address_postal_code_zip_code'::name,
+                'physical_address_country'::name,
+                'physical_address_national_topographical_description'::name,
+                'physical_address_additional_information'::name,
+                'physical_address_land_survey_description'::name,
+
+                'mailing_address_delivery_mode'::name,
+                'mailing_address_po_box_number'::name,
+                'mailing_address_unit_number'::name,
+                'mailing_address_rural_route_number'::name,
+                'mailing_address_street_number'::name,
+                'mailing_address_street_number_suffix'::name,
+                'mailing_address_street_name'::name,
+                'mailing_address_street_type'::name,
+                'mailing_address_street_direction'::name,
+                'mailing_address_municipality'::name,
+                'mailing_address_prov_terr_state'::name,
+                'mailing_address_postal_code_zip_code'::name,
+                'mailing_address_country'::name,
+                'mailing_address_additional_information'::name,
+
+                'geographic_address_latitude'::name,
+                'geographic_address_longitude'::name
+]);
 
 -- insert necessary data into table ghgr_import
 insert into ggircs_swrs.ghgr_import (xml_file) values ($$
