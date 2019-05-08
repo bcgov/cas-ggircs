@@ -19,6 +19,7 @@ create materialized view ggircs_swrs.address as (
                 facility_id numeric(1000,0) path './ancestor::Facility/../../ReportDetails/FacilityId[normalize-space(.)]',
                 organisation_id numeric(1000,0) path './ancestor::Organisation/../../ReportDetails/OrganisationId[normalize-space(.)]',
                 type varchar(1000) path 'name(..)',
+                contact_idx integer path 'string(count(./ancestor::Contact/preceding-sibling::Contact))' not null,
                 physical_address_municipality varchar(1000) path './PhysicalAddress/Municipality[normalize-space(.)]',
                 physical_address_unit_number varchar(1000) path './PhysicalAddress/UnitNumber[normalize-space(.)]',
                 physical_address_street_number varchar(1000) path './PhysicalAddress/StreetNumber[normalize-space(.)]',
@@ -57,11 +58,9 @@ create materialized view ggircs_swrs.address as (
 -- addresses for contacts are not currently covered with this materialized view
 -- TODO: figure out what we are doing with addresses from contacts
 create unique index ggircs_adddress_primary_key
-    on ggircs_swrs.address (id, facility_id, organisation_id)
-    where facility_id is not null or organisation_id is not null;
+    on ggircs_swrs.address (ghgr_import_id, facility_id, organisation_id, type, contact_idx);
 
 comment on materialized view ggircs_swrs.address is 'The materialized view housing address information for facilities, organisations and contacts';
-comment on column ggircs_swrs.address.id is 'The primary key for the materialized view';
 comment on column ggircs_swrs.address.ghgr_import_id is 'The foreign key that references ggircs_swrs.ghgr_import';
 comment on column ggircs_swrs.address.facility_id is 'The foreign key that references ggircs_swrs.facility';
 comment on column ggircs_swrs.address.organisation_id is 'The foreign key that references ggircs_swrs.organisation';
