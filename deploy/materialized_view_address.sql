@@ -13,7 +13,7 @@ create materialized view ggircs_swrs.address as (
   select ghgr_import_id, address_details.*
   from x,
        xmltable(
-           '//Address'
+           '//Address[not(ancestor::Stack)]'
            passing source_xml
            columns
                 facility_id numeric(1000,0) path './ancestor::Facility/../../ReportDetails/FacilityId[normalize-space(.)]',
