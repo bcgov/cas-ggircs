@@ -5,7 +5,6 @@ reset client_min_messages;
 begin;
 select plan(131);
 
--- TODO: add tests for existence of columns, data-types etc
 select has_materialized_view(
     'ggircs_swrs', 'address',
     'ggircs_swrs.address should be a materialized view'
