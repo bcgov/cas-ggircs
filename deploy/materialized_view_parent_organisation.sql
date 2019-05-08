@@ -34,7 +34,15 @@ create unique index ggircs_parent_organisation_primary_key
 
 comment on materialized view ggircs_swrs.parent_organisation is 'The materialized view housing parent organisation information';
 comment on column ggircs_swrs.parent_organisation.ghgr_import_id is 'The foreign key reference to ggircs_swrs.ghgr_import';
-comment on column ggircs_swrs.parent_organisation.ghgr_import_id is 'The organisation id according to the swrs report fk to ggircs_swrs.organisation';
+comment on column ggircs_swrs.parent_organisation.swrs_organisation_id is 'The organisation id according to the swrs report. fkey to ggircs_swrs.organisation';
+comment on column ggircs_swrs.parent_organisation.path_context is 'The path context used to reach the ParentOrganisation node (VerifyTombstone or RegistrationData';
+comment on column ggircs_swrs.parent_organisation.parent_organisation_idx is 'The number of preceding ParentOrganisation nodes before this ParentOrganisation node';
+comment on column ggircs_swrs.parent_organisation.percentage_owned is 'The % owned by this parent organisation';
+comment on column ggircs_swrs.parent_organisation.french_trade_name is 'The french trade name of this parent organisation';
+comment on column ggircs_swrs.parent_organisation.english_trade_name is 'The english trade name of this parent organisation';
+comment on column ggircs_swrs.parent_organisation.duns is 'The duns number for this parent organisation';
+comment on column ggircs_swrs.parent_organisation.business_legal_name is 'The legal busniess name of this parent organisation';
+comment on column ggircs_swrs.parent_organisation.website is 'The website for this parent organisation';
 
 commit;
 
