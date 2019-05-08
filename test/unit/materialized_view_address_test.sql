@@ -17,56 +17,56 @@ select has_index(
 
 select columns_are('ggircs_swrs'::name, 'address'::name, array[
     'ghgr_import_id'::name,
-    'facility_id'::name,
-                'organisation_id'::name,
-                'type'::name,
-                'contact_idx'::name,
-                'parent_organisation_idx'::name,
-                'physical_address_municipality'::name,
-                'physical_address_unit_number'::name,
-                'physical_address_street_number'::name,
-                'physical_address_street_number_suffix'::name,
-                'physical_address_street_name'::name,
-                'physical_address_street_type'::name,
-                'physical_address_street_direction'::name,
-                'physical_address_prov_terr_state'::name,
-                'physical_address_postal_code_zip_code'::name,
-                'physical_address_country'::name,
-                'physical_address_national_topographical_description'::name,
-                'physical_address_additional_information'::name,
-                'physical_address_land_survey_description'::name,
+    'swrs_facility_id'::name,
+    'swrs_organisation_id'::name,
+    'type'::name,
+    'contact_idx'::name,
+    'parent_organisation_idx'::name,
+    'physical_address_municipality'::name,
+    'physical_address_unit_number'::name,
+    'physical_address_street_number'::name,
+    'physical_address_street_number_suffix'::name,
+    'physical_address_street_name'::name,
+    'physical_address_street_type'::name,
+    'physical_address_street_direction'::name,
+    'physical_address_prov_terr_state'::name,
+    'physical_address_postal_code_zip_code'::name,
+    'physical_address_country'::name,
+    'physical_address_national_topographical_description'::name,
+    'physical_address_additional_information'::name,
+    'physical_address_land_survey_description'::name,
 
-                'mailing_address_delivery_mode'::name,
-                'mailing_address_po_box_number'::name,
-                'mailing_address_unit_number'::name,
-                'mailing_address_rural_route_number'::name,
-                'mailing_address_street_number'::name,
-                'mailing_address_street_number_suffix'::name,
-                'mailing_address_street_name'::name,
-                'mailing_address_street_type'::name,
-                'mailing_address_street_direction'::name,
-                'mailing_address_municipality'::name,
-                'mailing_address_prov_terr_state'::name,
-                'mailing_address_postal_code_zip_code'::name,
-                'mailing_address_country'::name,
-                'mailing_address_additional_information'::name,
+    'mailing_address_delivery_mode'::name,
+    'mailing_address_po_box_number'::name,
+    'mailing_address_unit_number'::name,
+    'mailing_address_rural_route_number'::name,
+    'mailing_address_street_number'::name,
+    'mailing_address_street_number_suffix'::name,
+    'mailing_address_street_name'::name,
+    'mailing_address_street_type'::name,
+    'mailing_address_street_direction'::name,
+    'mailing_address_municipality'::name,
+    'mailing_address_prov_terr_state'::name,
+    'mailing_address_postal_code_zip_code'::name,
+    'mailing_address_country'::name,
+    'mailing_address_additional_information'::name,
 
-                'geographic_address_latitude'::name,
-                'geographic_address_longitude'::name
+    'geographic_address_latitude'::name,
+    'geographic_address_longitude'::name
 ]);
 
 select col_type_is(      'ggircs_swrs', 'address', 'ghgr_import_id', 'integer', 'address.ghgr_import_id column should be type integer');
 select col_hasnt_default('ggircs_swrs', 'address', 'ghgr_import_id', 'address.ghgr_import_id column should not have a default value');
 
---  select has_column(       'ggircs_swrs', 'address', 'facility_id', 'address.facility_id column should exist');
-select col_type_is(      'ggircs_swrs', 'address', 'facility_id', 'numeric(1000,0)', 'address.facility_id column should be type numeric');
-select col_is_null(      'ggircs_swrs', 'address', 'facility_id', 'address.facility_id column should allow null');
-select col_hasnt_default('ggircs_swrs', 'address', 'facility_id', 'address.facility_id column should not have a default');
+--  select has_column(       'ggircs_swrs', 'address', 'swrs_facility_id', 'address.swrs_facility_id column should exist');
+select col_type_is(      'ggircs_swrs', 'address', 'swrs_facility_id', 'numeric(1000,0)', 'address.swrs_facility_id column should be type numeric');
+select col_is_null(      'ggircs_swrs', 'address', 'swrs_facility_id', 'address.swrs_facility_id column should allow null');
+select col_hasnt_default('ggircs_swrs', 'address', 'swrs_facility_id', 'address.swrs_facility_id column should not have a default');
 
---  select has_column(       'ggircs_swrs', 'address', 'organisation_id', 'address.organisation_id column should exist');
-select col_type_is(      'ggircs_swrs', 'address', 'organisation_id', 'numeric(1000,0)', 'address.organisation_id column should be type numeric');
-select col_is_null(      'ggircs_swrs', 'address', 'organisation_id', 'address.organisation_id column should allow null');
-select col_hasnt_default('ggircs_swrs', 'address', 'organisation_id', 'address.organisation_id column should not have a default');
+--  select has_column(       'ggircs_swrs', 'address', 'swrs_organisation_id', 'address.swrs_organisation_id column should exist');
+select col_type_is(      'ggircs_swrs', 'address', 'swrs_organisation_id', 'numeric(1000,0)', 'address.swrs_organisation_id column should be type numeric');
+select col_is_null(      'ggircs_swrs', 'address', 'swrs_organisation_id', 'address.swrs_organisation_id column should allow null');
+select col_hasnt_default('ggircs_swrs', 'address', 'swrs_organisation_id', 'address.swrs_organisation_id column should not have a default');
 
 --  select has_column(       'ggircs_swrs', 'address', 'type', 'address.type column should exist');
 select col_type_is(      'ggircs_swrs', 'address', 'type', 'character varying(1000)', 'address.type column should be type varchar');
@@ -272,15 +272,15 @@ select results_eq(
   'ggircs_swrs.address parsed column type'
 );
 select results_eq(
-  'select facility_id from ggircs_swrs.address',
+  'select swrs_facility_id from ggircs_swrs.address',
   ARRAY[666::numeric],
-  'ggircs_swrs.address parsed column facility_id'
+  'ggircs_swrs.address parsed column swrs_facility_id'
 );
--- test that the organisation_id is null when getting address from the context of facility
+-- test that the swrs_organisation_id is null when getting address from the context of facility
 select results_eq(
-  'select organisation_id from ggircs_swrs.address',
+  'select swrs_organisation_id from ggircs_swrs.address',
   ARRAY[null::numeric],
-  'ggircs_swrs.address parsed column organisation_id'
+  'ggircs_swrs.address parsed column swrs_organisation_id'
 );
 
 -- Physical Address columns
