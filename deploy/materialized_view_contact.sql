@@ -32,6 +32,7 @@ create unique index ggircs_contact_primary_key
     on ggircs_swrs.contact (ghgr_import_id, path_context, swrs_facility_id, contact_idx);
 
 comment on materialized view ggircs_swrs.contact is 'The materialized view housing contact information';
+comment on column ggircs_swrs.contact.ghgr_import_id is 'The foreign key reference to ggircs_swrs.ghgr_import';
 comment on column ggircs_swrs.contact.swrs_facility_id is 'The facility id according to the swrs report';
 comment on column ggircs_swrs.contact.path_context is 'The umbrella context from which the contact was pulled from the xml (VerifyTombstone or RegistrationData';
 comment on column ggircs_swrs.contact.contact_idx is 'The number of preceding Contact siblings before this Contact node';
