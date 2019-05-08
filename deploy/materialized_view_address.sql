@@ -6,14 +6,11 @@ begin;
 create materialized view ggircs_swrs.address as (
   with x as (
     select _ghgr_import.xml_file as source_xml,
-           _ghgr_import.id         as ghgr_import_id,
-           _ghgr_import.imported_at
+           _ghgr_import.id         as ghgr_import_id
     from ggircs_swrs.ghgr_import as _ghgr_import
     order by ghgr_import_id asc
   )
-  select row_number() over (order by ghgr_import_id asc) as id,
-         x.ghgr_import_id,
-         address_details.*
+  select ghgr_import_id, address_details.*
   from x,
        xmltable(
            '//Address'
