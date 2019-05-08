@@ -27,7 +27,10 @@ select columns_are('ggircs_swrs'::name, 'contact'::name, array[
     'position'::name
 ]);
 
+
 refresh materialized view ggircs_swrs.contact with data;
+
+
 
 select * from finish();
 rollback;
