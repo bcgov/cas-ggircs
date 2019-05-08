@@ -25,14 +25,11 @@ create materialized view ggircs_swrs.flat as (
            '//*[./text()[normalize-space(.)] | ./@*[not(name()="xsi:nil") and not(text()="true")]]'
            passing source_xml
            columns
-             -- xml_hunk xml path '.' not null,
              swrs_report_id numeric(1000,0) path '//ReportID[normalize-space(.)]' not null,
              class varchar(10000) path 'name(.)' not null,
              attr varchar(10000) path 'name(./@*[1])',
              value varchar(10000) path 'concat(./text()[normalize-space(.)], ./@*[1])' not null,
-             context text path 'concat( (./ancestor::*/@*)[1], "/", (./ancestor::*/@*)[2], "/", (./ancestor::*/@*)[3] )' not null,
-             parent xml path 'name(./ancestor::*[1])' not null,
-             grandparent xml path 'name(./ancestor::*[2])' not null
+             context varchar(10000) path 'concat( (./ancestor::*/@*)[1], "/", (./ancestor::*/@*)[2], "/", (./ancestor::*/@*)[3] )' not null
          ) as report_flat
   order by ghgr_import_id desc, element_id asc
 ) with no data;
@@ -47,7 +44,5 @@ comment on column ggircs_swrs.flat.class is 'The xml class';
 comment on column ggircs_swrs.flat.attr is 'The xml attribute';
 comment on column ggircs_swrs.flat.value is 'The value of either the xml attribute or the xml body text';
 comment on column ggircs_swrs.flat.context is 'The concatenated parent attribute context values';
-comment on column ggircs_swrs.flat.parent is 'The name of the parent class';
-comment on column ggircs_swrs.flat.grandparent is 'The name of the grandparent class';
 
 commit;
