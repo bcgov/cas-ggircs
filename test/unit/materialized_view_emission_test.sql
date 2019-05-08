@@ -4,7 +4,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(40);
+select plan(66);
 
 select has_materialized_view(
     'ggircs_swrs', 'emission',
@@ -18,11 +18,20 @@ select has_index(
 
 select columns_are('ggircs_swrs'::name, 'emission'::name, array[
     'ghgr_import_id'::name,
+    'activity_name'::name,
+    'sub_activity_name'::name,
+    'unit_name'::name,
+    'sub_unit_name'::name,
     'process_idx'::name,
     'sub_process_idx'::name,
+    'units_idx'::name,
     'unit_idx'::name,
+    'substances_idx'::name,
+    'substance_idx'::name,
     'fuel_idx'::name,
-    'idx'::name,
+    'fuel_name'::name,
+    'emissions_idx'::name,
+    'emission_idx'::name,
     'emission_type'::name,
     'gas_type'::name,
     'methodology'::name,
@@ -30,12 +39,31 @@ select columns_are('ggircs_swrs'::name, 'emission'::name, array[
     'quantity'::name,
     'calculated_quantity'::name,
     'emission_category'::name
-
 ]);
 
 
 select col_type_is(      'ggircs_swrs', 'emission', 'ghgr_import_id', 'integer', 'emission.ghgr_import_id column should be type integer');
 select col_hasnt_default('ggircs_swrs', 'emission', 'ghgr_import_id', 'emission.ghgr_import_id column should not have a default value');
+
+--  select has_column(       'ggircs_swrs', 'emission', 'activity_name', 'emission.activity_id column should exist');
+select col_type_is(      'ggircs_swrs', 'emission', 'activity_name', 'character varying(1000)', 'emission.activity_name column should be type varchar');
+select col_is_null(      'ggircs_swrs', 'emission', 'activity_name', 'emission.activity_idx column should not allow null');
+select col_hasnt_default('ggircs_swrs', 'emission', 'activity_name', 'emission.activity_idx column should not have a default');
+
+--  select has_column(       'ggircs_swrs', 'emission', 'sub_activity_name', 'emission.activity_id column should exist');
+select col_type_is(      'ggircs_swrs', 'emission', 'sub_activity_name', 'character varying(1000)', 'emission.sub_activity_name column should be type varchar');
+select col_is_null(      'ggircs_swrs', 'emission', 'sub_activity_name', 'emission.activity_idx column should not allow null');
+select col_hasnt_default('ggircs_swrs', 'emission', 'sub_activity_name', 'emission.activity_idx column should not have a default');
+
+--  select has_column(       'ggircs_swrs', 'emission', 'unit_name', 'emission.activity_id column should exist');
+select col_type_is(      'ggircs_swrs', 'emission', 'unit_name', 'character varying(1000)', 'emission.unit_name column should be type varchar');
+select col_is_null(      'ggircs_swrs', 'emission', 'unit_name', 'emission.activity_idx column should not allow null');
+select col_hasnt_default('ggircs_swrs', 'emission', 'unit_name', 'emission.activity_idx column should not have a default');
+
+--  select has_column(       'ggircs_swrs', 'emission', 'sub_unit_name', 'emission.activity_id column should exist');
+select col_type_is(      'ggircs_swrs', 'emission', 'sub_unit_name', 'character varying(1000)', 'emission.sub_unit_name column should be type varchar');
+select col_is_null(      'ggircs_swrs', 'emission', 'sub_unit_name', 'emission.activity_idx column should not allow null');
+select col_hasnt_default('ggircs_swrs', 'emission', 'sub_unit_name', 'emission.activity_idx column should not have a default');
 
 --  select col_is_null(      'ggircs_swrs', 'emission', 'process_idx', 'emission.process_idx column should allow null');
 select col_type_is(      'ggircs_swrs', 'emission', 'process_idx', 'integer', 'emission.process_idx column should be type integer');
@@ -45,17 +73,41 @@ select col_hasnt_default('ggircs_swrs', 'emission', 'process_idx', 'emission.pro
 select col_type_is(      'ggircs_swrs', 'emission', 'sub_process_idx', 'integer', 'emission.sub_process_idx column should be type integer');
 select col_hasnt_default('ggircs_swrs', 'emission', 'sub_process_idx', 'emission.sub_process_idx column should not have a default');
 
+--  select has_column(       'ggircs_swrs', 'emission', 'units_idx', 'emission.units_idx column should exist');
+select col_type_is(      'ggircs_swrs', 'emission', 'units_idx', 'integer', 'emission.units_idx column should be type integer');
+select col_is_null(      'ggircs_swrs', 'emission', 'units_idx', 'emission.units_idx column should not allow null');
+select col_hasnt_default('ggircs_swrs', 'emission', 'units_idx', 'emission.units_idx column should not  have a default');
+
 --  select col_is_null(      'ggircs_swrs', 'emission', 'unit_idx', 'emission.unit_idx column should allow null');
 select col_type_is(      'ggircs_swrs', 'emission', 'unit_idx', 'integer', 'emission.unit_idx column should be type integer');
 select col_hasnt_default('ggircs_swrs', 'emission', 'unit_idx', 'emission.unit_idx column should not have a default');
+
+--  select has_column(       'ggircs_swrs', 'emission', 'substances_idx', 'emission.substances_idx column should exist');
+select col_type_is(      'ggircs_swrs', 'emission', 'substances_idx', 'integer', 'emission.substances_idx column should be type integer');
+select col_is_null(      'ggircs_swrs', 'emission', 'substances_idx', 'emission.substances_idx column should not allow null');
+select col_hasnt_default('ggircs_swrs', 'emission', 'substances_idx', 'emission.substances_idx column should not  have a default');
+
+--  select has_column(       'ggircs_swrs', 'emission', 'substance_idx', 'emission.substance_idx column should exist');
+select col_type_is(      'ggircs_swrs', 'emission', 'substance_idx', 'integer', 'emission.substance_idx column should be type integer');
+select col_is_null(      'ggircs_swrs', 'emission', 'substance_idx', 'emission.substance_idx column should not allow null');
+select col_hasnt_default('ggircs_swrs', 'emission', 'substance_idx', 'emission.substance_idx column should not  have a default');
 
 -- select col_is_null(      'ggircs_swrs', 'emission', 'fuel_idx', 'emission.fuel_idx column should allow null');
 select col_type_is(      'ggircs_swrs', 'emission', 'fuel_idx', 'integer', 'emission.fuel_idx column should be type integer');
 select col_hasnt_default('ggircs_swrs', 'emission', 'fuel_idx', 'emission.fuel_idx column should not have a default');
 
---  select col_is_null(      'ggircs_swrs', 'emission', 'idx', 'emission.idx column should allow null');
-select col_type_is(      'ggircs_swrs', 'emission', 'idx', 'integer', 'emission.idx column should be type integer');
-select col_hasnt_default('ggircs_swrs', 'emission', 'idx', 'emission.idx column should not have a default');
+--  select has_column(       'ggircs_swrs', 'emission', 'fuel_name', 'emission.activity_id column should exist');
+select col_type_is(      'ggircs_swrs', 'emission', 'fuel_name', 'character varying(1000)', 'emission.fuel_name column should be type varchar');
+select col_is_null(      'ggircs_swrs', 'emission', 'fuel_name', 'emission.activity_idx column should not allow null');
+select col_hasnt_default('ggircs_swrs', 'emission', 'fuel_name', 'emission.activity_idx column should not have a default');
+
+--  select col_is_null(      'ggircs_swrs', 'emission', 'emissions_idx', 'emission.emissions_idx column should allow null');
+select col_type_is(      'ggircs_swrs', 'emission', 'emissions_idx', 'integer', 'emission.emissions_idx column should be type integer');
+select col_hasnt_default('ggircs_swrs', 'emission', 'emissions_idx', 'emission.emissions_idx column should not have a default');
+
+--  select col_is_null(      'ggircs_swrs', 'emission', 'emission_idx', 'emission.emission_idx column should allow null');
+select col_type_is(      'ggircs_swrs', 'emission', 'emission_idx', 'integer', 'emission.emission_idx column should be type integer');
+select col_hasnt_default('ggircs_swrs', 'emission', 'emission_idx', 'emission.emission_idx column should not have a default');
 
 select col_type_is(      'ggircs_swrs', 'emission', 'gas_type', 'character varying(1000)', 'emission.gas_type column should be type text');
 select col_hasnt_default('ggircs_swrs', 'emission', 'gas_type', 'emission.gas_type column should not have a default');
@@ -154,11 +206,11 @@ select results_eq(
   'ggircs_swrs.emission.fuel_idx is extracted'
 );
 
--- Extract idx
+-- Extract emission_idx
 select results_eq(
-  'select idx from ggircs_swrs.emission',
+  'select emission_idx from ggircs_swrs.emission',
    ARRAY[0::integer],
-  'ggircs_swrs.emission.idx is extracted'
+  'ggircs_swrs.emission.emission_idx is extracted'
 );
 
 -- Extract emission_type
@@ -205,7 +257,7 @@ select results_eq(
 
 -- Extract emission_category
 select results_eq(
-  'select emission_category from ggircs_swrs.emission',
+  'select emission_category::varchar from ggircs_swrs.emission',
    ARRAY['BC_ScheduleB_GeneralStationaryCombustionEmissions'::varchar(1000)],
   'ggircs_swrs.emission.emission_category is extracted'
 );
