@@ -16,10 +16,10 @@ create materialized view ggircs_swrs.parent_organisation as (
            '//ParentOrganisation'
            passing source_xml
            columns
-                swrs_organisation_id numeric(1000,100) path './ancestor-or-self::ParentOrganisation/ancestor::ReportData/ReportDetails/OrganisationId[normalize-space(.)]',
+                swrs_organisation_id numeric(1000,0) path './ancestor-or-self::ParentOrganisation/ancestor::ReportData/ReportDetails/OrganisationId[normalize-space(.)]',
                 path_context varchar(1000) path 'name(./ancestor::VerifyTombstone|./ancestor::RegistrationData)',
                 parent_organisation_idx integer path 'string(count(./ancestor-or-self::ParentOrganisation/preceding-sibling::ParentOrganisation))' not null,
-                percentage_owned numeric(1000,100) path './Details/PercentageOwned',
+                percentage_owned numeric(1000,2) path './Details/PercentageOwned',
                 french_trade_name varchar(1000) path './Details/FrenchTradeName',
                 english_trade_name varchar(1000) path './Details/EnglishTradeName',
                 duns varchar(1000) path './Details/DUNSNumber',
@@ -34,6 +34,7 @@ create unique index ggircs_parent_organisation_primary_key
 
 comment on materialized view ggircs_swrs.parent_organisation is 'The materialized view housing parent organisation information';
 comment on column ggircs_swrs.parent_organisation.ghgr_import_id is 'The foreign key reference to ggircs_swrs.ghgr_import';
+comment on column ggircs_swrs.parent_organisation.ghgr_import_id is 'The organisation id according to the swrs report fk to ggircs_swrs.organisation';
 
 commit;
 
