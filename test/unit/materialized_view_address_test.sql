@@ -3,7 +3,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(36);
+select plan(47);
 
 -- TODO: add tests for existence of columns, data-types etc
 select has_materialized_view(
@@ -55,6 +55,24 @@ select columns_are('ggircs_swrs'::name, 'address'::name, array[
                 'geographic_address_latitude'::name,
                 'geographic_address_longitude'::name
 ]);
+
+select col_type_is(      'ggircs_swrs', 'address', 'ghgr_import_id', 'integer', 'address.ghgr_import_id column should be type integer');
+select col_hasnt_default('ggircs_swrs', 'address', 'ghgr_import_id', 'address.ghgr_import_id column should not have a default value');
+
+--  select has_column(       'ggircs_swrs', 'address', 'facility_id', 'emission.facility_id column should exist');
+select col_type_is(      'ggircs_swrs', 'address', 'facility_id', 'numeric(1000,0)', 'address.facility_id column should be type numeric');
+select col_is_null(      'ggircs_swrs', 'address', 'facility_id', 'address.facility_id column should allow null');
+select col_hasnt_default('ggircs_swrs', 'address', 'facility_id', 'address.facility_id column should not have a default');
+
+--  select has_column(       'ggircs_swrs', 'address', 'organisation_id', 'emission.organisation_id column should exist');
+select col_type_is(      'ggircs_swrs', 'address', 'organisation_id', 'numeric(1000,0)', 'address.organisation_id column should be type numeric');
+select col_is_null(      'ggircs_swrs', 'address', 'organisation_id', 'address.organisation_id column should allow null');
+select col_hasnt_default('ggircs_swrs', 'address', 'organisation_id', 'address.organisation_id column should not have a default');
+
+--  select has_column(       'ggircs_swrs', 'address', 'type', 'emission.type column should exist');
+select col_type_is(      'ggircs_swrs', 'address', 'type', 'character varying(1000)', 'address.type column should be type varchar');
+select col_is_null(      'ggircs_swrs', 'address', 'type', 'address.type column should allow null');
+select col_hasnt_default('ggircs_swrs', 'address', 'type', 'address.type column should not have a default');
 
 -- insert necessary data into table ghgr_import
 insert into ggircs_swrs.ghgr_import (xml_file) values ($$
