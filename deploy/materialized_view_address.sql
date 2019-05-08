@@ -16,10 +16,11 @@ create materialized view ggircs_swrs.address as (
            '//Address[not(ancestor::Stack)]'
            passing source_xml
            columns
-                facility_id numeric(1000,0) path './ancestor::Facility/../../ReportDetails/FacilityId[normalize-space(.)]',
-                organisation_id numeric(1000,0) path './ancestor::Organisation/../../ReportDetails/OrganisationId[normalize-space(.)]',
+                facility_id numeric(1000,0) path './ancestor::Facility/../../ReportDetails/FacilityId[normalize-space(.)]|./ancestor::Contact/ancestor::ReportData/ReportDetails/FacilityId[normalize-space(.)]',
+                organisation_id numeric(1000,0) path './ancestor::Organisation/../../ReportDetails/OrganisationId[normalize-space(.)]|./ancestor::ParentOrganisation/ancestor::ReportData/ReportDetails/OrganisationId[normalize-space(.)]',
                 type varchar(1000) path 'name(..)',
                 contact_idx integer path 'string(count(./ancestor::Contact/preceding-sibling::Contact))' not null,
+                parent_organisation_idx integer path 'string(count(./ancestor::ParentOrganisation/preceding-sibling::ParentOrganisation))' not null,
                 physical_address_municipality varchar(1000) path './PhysicalAddress/Municipality[normalize-space(.)]',
                 physical_address_unit_number varchar(1000) path './PhysicalAddress/UnitNumber[normalize-space(.)]',
                 physical_address_street_number varchar(1000) path './PhysicalAddress/StreetNumber[normalize-space(.)]',
@@ -31,7 +32,7 @@ create materialized view ggircs_swrs.address as (
                 physical_address_postal_code_zip_code varchar(1000) path './PhysicalAddress/PostalCodeZipCode[normalize-space(.)]',
                 physical_address_country varchar(1000) path './PhysicalAddress/Country[normalize-space(.)]',
                 physical_address_national_topographical_description varchar(1000) path './PhysicalAddress/NationalTopographicalDescription[normalize-space(.)]',
-                physical_address_additional_information varchar(1000) path './PhysicalAddress/AdditionalInformation[normalize-space(.)]',
+                physical_address_additional_information varchar(10000) path './PhysicalAddress/AdditionalInformation[normalize-space(.)]',
                 physical_address_land_survey_description varchar(1000) path './PhysicalAddress/LandSurveyDescription[normalize-space(.)]',
 
                 mailing_address_delivery_mode varchar(1000) path './MailingAddress/DeliveryMode[normalize-space(.)]',
@@ -47,7 +48,7 @@ create materialized view ggircs_swrs.address as (
                 mailing_address_prov_terr_state varchar(1000) path './MailingAddress/ProvTerrState[normalize-space(.)]',
                 mailing_address_postal_code_zip_code varchar(1000) path './MailingAddress/PostalCodeZipCode[normalize-space(.)]',
                 mailing_address_country varchar(1000) path './MailingAddress/Country[normalize-space(.)]',
-                mailing_address_additional_information varchar(1000) path './MailingAddress/AdditionalInformation[normalize-space(.)]',
+                mailing_address_additional_information varchar(10000) path './MailingAddress/AdditionalInformation[normalize-space(.)]',
 
                 geographic_address_latitude varchar(1000) path './GeographicAddress/Latitude[normalize-space(.)]',
                 geographic_address_longitude varchar(1000) path './GeographicAddress/Longitude[normalize-space(.)]'
@@ -58,7 +59,7 @@ create materialized view ggircs_swrs.address as (
 -- addresses for contacts are not currently covered with this materialized view
 -- TODO: figure out what we are doing with addresses from contacts
 create unique index ggircs_adddress_primary_key
-    on ggircs_swrs.address (ghgr_import_id, facility_id, organisation_id, type, contact_idx);
+    on ggircs_swrs.address (ghgr_import_id, facility_id, organisation_id, type, contact_idx, parent_organisation_idx);
 
 comment on materialized view ggircs_swrs.address is 'The materialized view housing address information for facilities, organisations and contacts';
 comment on column ggircs_swrs.address.ghgr_import_id is 'The foreign key that references ggircs_swrs.ghgr_import';

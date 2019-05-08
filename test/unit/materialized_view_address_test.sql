@@ -3,7 +3,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(34);
+select plan(33);
 
 -- TODO: add tests for existence of columns, data-types etc
 
@@ -51,11 +51,7 @@ $$);
 refresh materialized view ggircs_swrs.address with data;
 
 -- test the columnns for ggircs_swrs.facility have been properly parsed from xml
-select results_eq(
-  'select id from ggircs_swrs.address',
-  ARRAY[1::bigint],
-  'ggircs_swrs.facility parsed column id'
-);
+
 select results_eq(
   'select ghgr_import_id from ggircs_swrs.address',
   'select id from ggircs_swrs.ghgr_import',
