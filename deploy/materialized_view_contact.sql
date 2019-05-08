@@ -13,19 +13,24 @@ create materialized view ggircs_swrs.contact as (
   select ghgr_import_id, contact_details.*
   from x,
        xmltable(
-           '//Address[not(ancestor::Stack)]'
+           '//Contact'
            passing source_xml
            columns
-                facility_id numeric(1000,0) path './ancestor::Facility/../../ReportDetails/FacilityId[normalize-space(.)]|./ancestor::Contact/ancestor::ReportData/ReportDetails/FacilityId[normalize-space(.)]',
-                contact_idx integer path 'string(count(./ancestor::Contact/preceding-sibling::Contact))' not null,
-                parent_organisation_idx integer path 'string(count(./ancestor::ParentOrganisation/preceding-sibling::ParentOrganisation))' not null,
+                facility_id numeric(1000,0) path './ancestor-or-self::Contact/ancestor::ReportData/ReportDetails/FacilityId[normalize-space(.)]',
+                contact_idx integer path 'string(count(./ancestor-or-self::Contact/preceding-sibling::Contact))' not null,
+                contact_type varchar(1000) path './Details/ContactType[normalize-space(.)]',
+                given_name varchar(1000) path './Details/GivenName[normalize-space(.)]',
+                telephone_number varchar(1000) path './Details/TelephoneNumber[normalize-space(.)]',
+                email_address varchar(1000) path './Details/EmailAddress[normalize-space(.)]',
+                position varchar(1000) path './Details/Position[normalize-space(.)]'
+
          ) as contact_details
 ) with no data;
 
 create unique index ggircs_contact_primary_key
-    on ggircs_swrs.contact (ghgr_import_id);
+    on ggircs_swrs.contact (ghgr_import_id, facility_id, contact_idx);
 
-comment on materialized view ggircs_swrs.address is 'The materialized view housing contact information';
+comment on materialized view ggircs_swrs.contact is 'The materialized view housing contact information';
 
 commit;
 
