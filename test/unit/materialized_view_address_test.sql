@@ -3,7 +3,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(47);
+select plan(131);
 
 -- TODO: add tests for existence of columns, data-types etc
 select has_materialized_view(
@@ -59,20 +59,163 @@ select columns_are('ggircs_swrs'::name, 'address'::name, array[
 select col_type_is(      'ggircs_swrs', 'address', 'ghgr_import_id', 'integer', 'address.ghgr_import_id column should be type integer');
 select col_hasnt_default('ggircs_swrs', 'address', 'ghgr_import_id', 'address.ghgr_import_id column should not have a default value');
 
---  select has_column(       'ggircs_swrs', 'address', 'facility_id', 'emission.facility_id column should exist');
+--  select has_column(       'ggircs_swrs', 'address', 'facility_id', 'address.facility_id column should exist');
 select col_type_is(      'ggircs_swrs', 'address', 'facility_id', 'numeric(1000,0)', 'address.facility_id column should be type numeric');
 select col_is_null(      'ggircs_swrs', 'address', 'facility_id', 'address.facility_id column should allow null');
 select col_hasnt_default('ggircs_swrs', 'address', 'facility_id', 'address.facility_id column should not have a default');
 
---  select has_column(       'ggircs_swrs', 'address', 'organisation_id', 'emission.organisation_id column should exist');
+--  select has_column(       'ggircs_swrs', 'address', 'organisation_id', 'address.organisation_id column should exist');
 select col_type_is(      'ggircs_swrs', 'address', 'organisation_id', 'numeric(1000,0)', 'address.organisation_id column should be type numeric');
 select col_is_null(      'ggircs_swrs', 'address', 'organisation_id', 'address.organisation_id column should allow null');
 select col_hasnt_default('ggircs_swrs', 'address', 'organisation_id', 'address.organisation_id column should not have a default');
 
---  select has_column(       'ggircs_swrs', 'address', 'type', 'emission.type column should exist');
+--  select has_column(       'ggircs_swrs', 'address', 'type', 'address.type column should exist');
 select col_type_is(      'ggircs_swrs', 'address', 'type', 'character varying(1000)', 'address.type column should be type varchar');
 select col_is_null(      'ggircs_swrs', 'address', 'type', 'address.type column should allow null');
 select col_hasnt_default('ggircs_swrs', 'address', 'type', 'address.type column should not have a default');
+
+--  select has_column(       'ggircs_swrs', 'address', 'contact_idx', 'address.contact_idx column should exist');
+select col_type_is(      'ggircs_swrs', 'address', 'contact_idx', 'integer', 'address.contact_idx column should be type integer');
+select col_is_null(      'ggircs_swrs', 'address', 'contact_idx', 'address.contact_idx column should allow null');
+select col_hasnt_default('ggircs_swrs', 'address', 'contact_idx', 'address.contact_idx column should not have a default');
+
+--  Physical Address Columns
+--  select has_column(       'ggircs_swrs', 'address', 'parent_organisation_idx', 'address.parent_organisation_idx column should exist');
+select col_type_is(      'ggircs_swrs', 'address', 'parent_organisation_idx', 'integer', 'address.parent_organisation_idx column should be type integer');
+select col_is_null(      'ggircs_swrs', 'address', 'parent_organisation_idx', 'address.parent_organisation_idx column should allow null');
+select col_hasnt_default('ggircs_swrs', 'address', 'parent_organisation_idx', 'address.parent_organisation_idx column should not have a default');
+
+--  select has_column(       'ggircs_swrs', 'address', 'physical_address_municipality', 'address.physical_address_municipality column should exist');
+select col_type_is(      'ggircs_swrs', 'address', 'physical_address_municipality', 'character varying(1000)', 'address.physical_address_municipality column should be type varchar');
+select col_is_null(      'ggircs_swrs', 'address', 'physical_address_municipality', 'address.physical_address_municipality column should allow null');
+select col_hasnt_default('ggircs_swrs', 'address', 'physical_address_municipality', 'address.physical_address_municipality column should not have a default');
+
+--  select has_column(       'ggircs_swrs', 'address', 'physical_address_unit_number', 'address.physical_address_unit_number column should exist');
+select col_type_is(      'ggircs_swrs', 'address', 'physical_address_unit_number', 'character varying(1000)', 'address.physical_address_unit_number column should be type varchar');
+select col_is_null(      'ggircs_swrs', 'address', 'physical_address_unit_number', 'address.physical_address_unit_number column should allow null');
+select col_hasnt_default('ggircs_swrs', 'address', 'physical_address_unit_number', 'address.physical_address_unit_number column should not have a default');
+
+--  select has_column(       'ggircs_swrs', 'address', 'physical_address_street_number', 'address.physical_address_street_number column should exist');
+select col_type_is(      'ggircs_swrs', 'address', 'physical_address_street_number', 'character varying(1000)', 'address.physical_address_street_number column should be type varchar');
+select col_is_null(      'ggircs_swrs', 'address', 'physical_address_street_number', 'address.physical_address_street_number column should allow null');
+select col_hasnt_default('ggircs_swrs', 'address', 'physical_address_street_number', 'address.physical_address_street_number column should not have a default');
+
+--  select has_column(       'ggircs_swrs', 'address', 'physical_address_street_number_suffix', 'address.physical_address_street_number_suffix column should exist');
+select col_type_is(      'ggircs_swrs', 'address', 'physical_address_street_number_suffix', 'character varying(1000)', 'address.physical_address_street_number_suffix column should be type varchar');
+select col_is_null(      'ggircs_swrs', 'address', 'physical_address_street_number_suffix', 'address.physical_address_street_number_suffix column should allow null');
+select col_hasnt_default('ggircs_swrs', 'address', 'physical_address_street_number_suffix', 'address.physical_address_street_number_suffix column should not have a default');
+
+--  select has_column(       'ggircs_swrs', 'address', 'physical_address_street_name', 'address.physical_address_street_name column should exist');
+select col_type_is(      'ggircs_swrs', 'address', 'physical_address_street_name', 'character varying(1000)', 'address.physical_address_street_name column should be type varchar');
+select col_is_null(      'ggircs_swrs', 'address', 'physical_address_street_name', 'address.physical_address_street_name column should allow null');
+select col_hasnt_default('ggircs_swrs', 'address', 'physical_address_street_name', 'address.physical_address_street_name column should not have a default');
+
+--  select has_column(       'ggircs_swrs', 'address', 'physical_address_street_type', 'address.physical_address_street_type column should exist');
+select col_type_is(      'ggircs_swrs', 'address', 'physical_address_street_type', 'character varying(1000)', 'address.physical_address_street_type column should be type varchar');
+select col_is_null(      'ggircs_swrs', 'address', 'physical_address_street_type', 'address.physical_address_street_type column should allow null');
+select col_hasnt_default('ggircs_swrs', 'address', 'physical_address_street_type', 'address.physical_address_street_type column should not have a default');
+
+--  select has_column(       'ggircs_swrs', 'address', 'physical_address_street_direction', 'address.physical_address_street_direction column should exist');
+select col_type_is(      'ggircs_swrs', 'address', 'physical_address_street_direction', 'character varying(1000)', 'address.physical_address_street_direction column should be type varchar');
+select col_is_null(      'ggircs_swrs', 'address', 'physical_address_street_direction', 'address.physical_address_street_direction column should allow null');
+select col_hasnt_default('ggircs_swrs', 'address', 'physical_address_street_direction', 'address.physical_address_street_direction column should not have a default');
+
+--  select has_column(       'ggircs_swrs', 'address', 'physical_address_prov_terr_state', 'address.physical_address_prov_terr_state column should exist');
+select col_type_is(      'ggircs_swrs', 'address', 'physical_address_prov_terr_state', 'character varying(1000)', 'address.physical_address_prov_terr_state column should be type varchar');
+select col_is_null(      'ggircs_swrs', 'address', 'physical_address_prov_terr_state', 'address.physical_address_prov_terr_state column should allow null');
+select col_hasnt_default('ggircs_swrs', 'address', 'physical_address_prov_terr_state', 'address.physical_address_prov_terr_state column should not have a default');
+
+--  select has_column(       'ggircs_swrs', 'address', 'physical_address_postal_code_zip_code', 'address.physical_address_postal_code_zip_code column should exist');
+select col_type_is(      'ggircs_swrs', 'address', 'physical_address_postal_code_zip_code', 'character varying(1000)', 'address.physical_address_postal_code_zip_code column should be type varchar');
+select col_is_null(      'ggircs_swrs', 'address', 'physical_address_postal_code_zip_code', 'address.physical_address_postal_code_zip_code column should allow null');
+select col_hasnt_default('ggircs_swrs', 'address', 'physical_address_postal_code_zip_code', 'address.physical_address_postal_code_zip_code column should not have a default');
+
+--  select has_column(       'ggircs_swrs', 'address', 'physical_address_country', 'address.physical_address_country column should exist');
+select col_type_is(      'ggircs_swrs', 'address', 'physical_address_country', 'character varying(1000)', 'address.physical_address_country column should be type varchar');
+select col_is_null(      'ggircs_swrs', 'address', 'physical_address_country', 'address.physical_address_country column should allow null');
+select col_hasnt_default('ggircs_swrs', 'address', 'physical_address_country', 'address.physical_address_country column should not have a default');
+
+--  select has_column(       'ggircs_swrs', 'address', 'physical_address_additional_information', 'address.physical_address_additional_information column should exist');
+select col_type_is(      'ggircs_swrs', 'address', 'physical_address_additional_information', 'character varying(10000)', 'address.physical_address_additional_information column should be type varchar');
+select col_is_null(      'ggircs_swrs', 'address', 'physical_address_additional_information', 'address.physical_address_additional_information column should allow null');
+select col_hasnt_default('ggircs_swrs', 'address', 'physical_address_additional_information', 'address.physical_address_additional_information column should not have a default');
+
+--  Mailing Address Columns
+--  select has_column(       'ggircs_swrs', 'address', 'mailing_address_delivery_mode', 'address.mailing_address_delivery_mode column should exist');
+select col_type_is(      'ggircs_swrs', 'address', 'mailing_address_delivery_mode', 'character varying(1000)', 'address.mailing_address_delivery_mode column should be type varchar');
+select col_is_null(      'ggircs_swrs', 'address', 'mailing_address_delivery_mode', 'address.mailing_address_delivery_mode column should allow null');
+select col_hasnt_default('ggircs_swrs', 'address', 'mailing_address_delivery_mode', 'address.mailing_address_delivery_mode column should not have a default');
+
+--  select has_column(       'ggircs_swrs', 'address', 'mailing_address_po_box_number', 'address.mailing_address_po_box_number column should exist');
+select col_type_is(      'ggircs_swrs', 'address', 'mailing_address_po_box_number', 'character varying(1000)', 'address.mailing_address_po_box_number column should be type varchar');
+select col_is_null(      'ggircs_swrs', 'address', 'mailing_address_po_box_number', 'address.mailing_address_po_box_number column should allow null');
+select col_hasnt_default('ggircs_swrs', 'address', 'mailing_address_po_box_number', 'address.mailing_address_po_box_number column should not have a default');
+
+--  select has_column(       'ggircs_swrs', 'address', 'mailing_address_unit_number', 'address.mailing_address_unit_number column should exist');
+select col_type_is(      'ggircs_swrs', 'address', 'mailing_address_unit_number', 'character varying(1000)', 'address.mailing_address_unit_number column should be type varchar');
+select col_is_null(      'ggircs_swrs', 'address', 'mailing_address_unit_number', 'address.mailing_address_unit_number column should allow null');
+select col_hasnt_default('ggircs_swrs', 'address', 'mailing_address_unit_number', 'address.mailing_address_unit_number column should not have a default');
+
+--  select has_column(       'ggircs_swrs', 'address', 'mailing_address_rural_route_number', 'address.mailing_address_rural_route_number column should exist');
+select col_type_is(      'ggircs_swrs', 'address', 'mailing_address_rural_route_number', 'character varying(1000)', 'address.mailing_address_rural_route_number column should be type varchar');
+select col_is_null(      'ggircs_swrs', 'address', 'mailing_address_rural_route_number', 'address.mailing_address_rural_route_number column should allow null');
+select col_hasnt_default('ggircs_swrs', 'address', 'mailing_address_rural_route_number', 'address.mailing_address_rural_route_number column should not have a default');
+
+--  select has_column(       'ggircs_swrs', 'address', 'mailing_address_street_number', 'address.mailing_address_street_number column should exist');
+select col_type_is(      'ggircs_swrs', 'address', 'mailing_address_street_number', 'character varying(1000)', 'address.mailing_address_street_number column should be type varchar');
+select col_is_null(      'ggircs_swrs', 'address', 'mailing_address_street_number', 'address.mailing_address_street_number column should allow null');
+select col_hasnt_default('ggircs_swrs', 'address', 'mailing_address_street_number', 'address.mailing_address_street_number column should not have a default');
+
+--  select has_column(       'ggircs_swrs', 'address', 'mailing_address_street_number_suffix', 'address.mailing_address_street_number_suffix column should exist');
+select col_type_is(      'ggircs_swrs', 'address', 'mailing_address_street_number_suffix', 'character varying(1000)', 'address.mailing_address_street_number_suffix column should be type varchar');
+select col_is_null(      'ggircs_swrs', 'address', 'mailing_address_street_number_suffix', 'address.mailing_address_street_number_suffix column should allow null');
+select col_hasnt_default('ggircs_swrs', 'address', 'mailing_address_street_number_suffix', 'address.mailing_address_street_number_suffix column should not have a default');
+
+--  select has_column(       'ggircs_swrs', 'address', 'mailing_address_street_name', 'address.mailing_address_street_name column should exist');
+select col_type_is(      'ggircs_swrs', 'address', 'mailing_address_street_name', 'character varying(1000)', 'address.mailing_address_street_name column should be type varchar');
+select col_is_null(      'ggircs_swrs', 'address', 'mailing_address_street_name', 'address.mailing_address_street_name column should allow null');
+select col_hasnt_default('ggircs_swrs', 'address', 'mailing_address_street_name', 'address.mailing_address_street_name column should not have a default');
+
+--  select has_column(       'ggircs_swrs', 'address', 'mailing_address_street_type', 'address.mailing_address_street_type column should exist');
+select col_type_is(      'ggircs_swrs', 'address', 'mailing_address_street_type', 'character varying(1000)', 'address.mailing_address_street_type column should be type varchar');
+select col_is_null(      'ggircs_swrs', 'address', 'mailing_address_street_type', 'address.mailing_address_street_type column should allow null');
+select col_hasnt_default('ggircs_swrs', 'address', 'mailing_address_street_type', 'address.mailing_address_street_type column should not have a default');
+
+--  select has_column(       'ggircs_swrs', 'address', 'mailing_address_street_direction', 'address.mailing_address_street_direction column should exist');
+select col_type_is(      'ggircs_swrs', 'address', 'mailing_address_street_direction', 'character varying(1000)', 'address.mailing_address_street_direction column should be type varchar');
+select col_is_null(      'ggircs_swrs', 'address', 'mailing_address_street_direction', 'address.mailing_address_street_direction column should allow null');
+select col_hasnt_default('ggircs_swrs', 'address', 'mailing_address_street_direction', 'address.mailing_address_street_direction column should not have a default');
+
+--  select has_column(       'ggircs_swrs', 'address', 'mailing_address_prov_terr_state', 'address.mailing_address_prov_terr_state column should exist');
+select col_type_is(      'ggircs_swrs', 'address', 'mailing_address_prov_terr_state', 'character varying(1000)', 'address.mailing_address_prov_terr_state column should be type varchar');
+select col_is_null(      'ggircs_swrs', 'address', 'mailing_address_prov_terr_state', 'address.mailing_address_prov_terr_state column should allow null');
+select col_hasnt_default('ggircs_swrs', 'address', 'mailing_address_prov_terr_state', 'address.mailing_address_prov_terr_state column should not have a default');
+
+--  select has_column(       'ggircs_swrs', 'address', 'mailing_address_postal_code_zip_code', 'address.mailing_address_postal_code_zip_code column should exist');
+select col_type_is(      'ggircs_swrs', 'address', 'mailing_address_postal_code_zip_code', 'character varying(1000)', 'address.mailing_address_postal_code_zip_code column should be type varchar');
+select col_is_null(      'ggircs_swrs', 'address', 'mailing_address_postal_code_zip_code', 'address.mailing_address_postal_code_zip_code column should allow null');
+select col_hasnt_default('ggircs_swrs', 'address', 'mailing_address_postal_code_zip_code', 'address.mailing_address_postal_code_zip_code column should not have a default');
+
+--  select has_column(       'ggircs_swrs', 'address', 'mailing_address_country', 'address.mailing_address_country column should exist');
+select col_type_is(      'ggircs_swrs', 'address', 'mailing_address_country', 'character varying(1000)', 'address.mailing_address_country column should be type varchar');
+select col_is_null(      'ggircs_swrs', 'address', 'mailing_address_country', 'address.mailing_address_country column should allow null');
+select col_hasnt_default('ggircs_swrs', 'address', 'mailing_address_country', 'address.mailing_address_country column should not have a default');
+
+--  select has_column(       'ggircs_swrs', 'address', 'mailing_address_additional_information', 'address.mailing_address_additional_information column should exist');
+select col_type_is(      'ggircs_swrs', 'address', 'mailing_address_additional_information', 'character varying(10000)', 'address.mailing_address_additional_information column should be type varchar');
+select col_is_null(      'ggircs_swrs', 'address', 'mailing_address_additional_information', 'address.mailing_address_additional_information column should allow null');
+select col_hasnt_default('ggircs_swrs', 'address', 'mailing_address_additional_information', 'address.mailing_address_additional_information column should not have a default');
+
+--  Geographic Address Columns
+--  select has_column(       'ggircs_swrs', 'address', 'geographic_address_latitude', 'address.geographic_address_latitude column should exist');
+select col_type_is(      'ggircs_swrs', 'address', 'geographic_address_latitude', 'character varying(1000)', 'address.geographic_address_latitude column should be type varchar');
+select col_is_null(      'ggircs_swrs', 'address', 'geographic_address_latitude', 'address.geographic_address_latitude column should allow null');
+select col_hasnt_default('ggircs_swrs', 'address', 'geographic_address_latitude', 'address.geographic_address_latitude column should not have a default');
+
+--  select has_column(       'ggircs_swrs', 'address', 'geographic_address_longitude', 'address.geographic_address_longitude column should exist');
+select col_type_is(      'ggircs_swrs', 'address', 'geographic_address_longitude', 'character varying(1000)', 'address.geographic_address_longitude column should be type varchar');
+select col_is_null(      'ggircs_swrs', 'address', 'geographic_address_longitude', 'address.geographic_address_longitude column should allow null');
+select col_hasnt_default('ggircs_swrs', 'address', 'geographic_address_longitude', 'address.geographic_address_longitude column should not have a default');
 
 -- insert necessary data into table ghgr_import
 insert into ggircs_swrs.ghgr_import (xml_file) values ($$
