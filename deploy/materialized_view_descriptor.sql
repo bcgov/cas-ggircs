@@ -93,6 +93,21 @@ create unique index ggircs_descriptor_primary_key on ggircs_swrs.descriptor (ghg
 
 
 
+comment on materialized view ggircs_swrs.descriptor is 'The materialized view containing the information on descriptors';
+comment on column ggircs_swrs.descriptor.ghgr_import_id is 'A foreign key reference to ggircs_swrs.ghgr_import';
+comment on column ggircs_swrs.descriptor.process_idx is 'The number of preceding Process siblings before this node';
+comment on column ggircs_swrs.descriptor.sub_process_idx is 'The number of preceding SubProcess siblings before this node';
+comment on column ggircs_swrs.descriptor.grandparent_idx is 'The count of grandparent node before this node';
+comment on column ggircs_swrs.descriptor.parent_idx is 'The count of parent node before this node';
+comment on column ggircs_swrs.descriptor.class_idx is 'The count of self node';
+comment on column ggircs_swrs.descriptor.grandparent is 'The name of the grandparent node';
+comment on column ggircs_swrs.descriptor.parent is 'The name of the parent node';
+comment on column ggircs_swrs.descriptor.class is 'The name of the node itself';
+comment on column ggircs_swrs.descriptor.attribute is 'The name of any attributes on this node';
+comment on column ggircs_swrs.descriptor.attr_value is 'The value of the attributes on this node concatenated';
+comment on column ggircs_swrs.descriptor.node_value is 'The text value of the node';
+
+
 COMMIT;
 
 
