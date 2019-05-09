@@ -31,7 +31,9 @@ create unique index ggircs_naics_primary_key on ggircs_swrs.naics (ghgr_import_i
 
 comment on materialized view ggircs_swrs.naics is 'The materialized view housing all report data pertaining to naics';
 comment on column ggircs_swrs.naics.ghgr_import_id is 'The foreign key reference to ggircs_swrs.ghgr_import.id';
-comment on column ggircs_swrs.naics.swrs_facility_id is 'The reporting facility swrs id';
+comment on column ggircs_swrs.naics.swrs_facility_id is 'The reporting facility swrs id, fk to ggircs_swrs.facility';
+comment on column ggircs_swrs.naics.path_context is 'The ancestor context from which this naics code was selected (from VerifyTombstone or RegistrationData)';
+comment on column ggircs_swrs.naics.naics_code_idx is 'The number of NAICSCode siblings preceding this NAICSCode node';
 comment on column ggircs_swrs.naics.naics_classification is 'The naics classification';
 comment on column ggircs_swrs.naics.naics_code is 'The naics code';
 comment on column ggircs_swrs.naics.naics_priority is 'The naics priority';
