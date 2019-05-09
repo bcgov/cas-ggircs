@@ -95,6 +95,7 @@ create unique index ggircs_descriptor_primary_key on ggircs_swrs.descriptor (ghg
 
 comment on materialized view ggircs_swrs.descriptor is 'The materialized view containing the information on descriptors';
 comment on column ggircs_swrs.descriptor.ghgr_import_id is 'A foreign key reference to ggircs_swrs.ghgr_import';
+comment on column ggircs_swrs.descriptor.context is 'The name of the node immediately after ReportData';
 comment on column ggircs_swrs.descriptor.process_idx is 'The number of preceding Process siblings before this node';
 comment on column ggircs_swrs.descriptor.sub_process_idx is 'The number of preceding SubProcess siblings before this node';
 comment on column ggircs_swrs.descriptor.grandparent_idx is 'The count of grandparent node before this node';
