@@ -3,7 +3,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(18);
+select plan(19);
 
 -- Test matview report exists in schema ggircs_swrs
 select has_materialized_view('ggircs_swrs', 'naics', 'ggircs_swrs.naics exists');
@@ -58,7 +58,20 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
 $$);
 
 -- refresh necessary views with data
+refresh materialized view ggircs_swrs.facility with data;
 refresh materialized view ggircs_swrs.naics with data;
+
+--  Test the foreign key join on facility
+select results_eq(
+    'select facility.ghgr_import_id from ggircs_swrs.naics ' ||
+    'join ggircs_swrs.facility ' ||
+    'on ' ||
+    'naics.ghgr_import_id = facility.ghgr_import_id ',
+
+    'select ghgr_import_id from ggircs_swrs.facility',
+
+    'Foreign keys ghgr_import_id, swrs_facility_id in ggircs_swrs_naics reference ggircs_swrs.facility'
+);
 
 -- test that the columns in ggircs_swrs.naics have been properly parsed from xml
 select results_eq(
