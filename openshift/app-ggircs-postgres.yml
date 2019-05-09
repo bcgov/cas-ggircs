@@ -1,0 +1,80 @@
+apiVersion: v1
+items:
+- apiVersion: apps.openshift.io/v1
+  kind: DeploymentConfig
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: ggircs-postgres
+    name: ggircs-postgres
+  spec:
+    replicas: 1
+    selector:
+      app: ggircs-postgres
+      deploymentconfig: ggircs-postgres
+    strategy:
+      resources: {}
+    template:
+      metadata:
+        annotations:
+          openshift.io/generated-by: OpenShiftNewApp
+        creationTimestamp: null
+        labels:
+          app: ggircs-postgres
+          deploymentconfig: ggircs-postgres
+      spec:
+        containers:
+        - image: docker-registry.default.svc:5000/wksv3k-tools/postgres:11.2
+          name: ggircs-postgres
+          ports:
+          - containerPort: 5432
+            protocol: TCP
+          resources: {}
+          volumeMounts:
+          - mountPath: /var/lib/postgresql/data
+            name: ggircs-postgres-volume-1
+        volumes:
+        - emptyDir: {}
+          name: ggircs-postgres-volume-1
+    test: false
+    triggers:
+    - type: ConfigChange
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+        - ggircs-postgres
+        from:
+          kind: ImageStreamTag
+          name: ggircs-postgres:11.2
+      type: ImageChange
+  status:
+    availableReplicas: 0
+    latestVersion: 0
+    observedGeneration: 0
+    replicas: 0
+    unavailableReplicas: 0
+    updatedReplicas: 0
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: ggircs-postgres
+    name: ggircs-postgres
+  spec:
+    ports:
+    - name: 5432-tcp
+      port: 5432
+      protocol: TCP
+      targetPort: 5432
+    selector:
+      app: ggircs-postgres
+      deploymentconfig: ggircs-postgres
+  status:
+    loadBalancer: {}
+kind: List
+metadata: {}
