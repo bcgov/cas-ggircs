@@ -31,9 +31,24 @@ select columns_are('ggircs_swrs'::name, 'fuel'::name, array[
     'fuel_idx'::name,
     'fuel_type'::name,
     'fuel_classification'::name,
+    'fuel_description'::name,
     'fuel_units'::name,
     'annual_fuel_amount'::name,
-    'annual_weighted_avg_hhv'::name
+    'annual_weighted_avg_carbon_content'::name,
+    'annual_weighted_avg_hhv'::name,
+    'annual_steam_generation'::name,
+    'alternative_methodology_description'::name,
+    'measured_emission_factor'::name,
+    'measured_emission_factor_unit_type'::name,
+    'other_flare_details'::name,
+    'q1'::name,
+    'q2'::name,
+    'q3'::name,
+    'q4'::name,
+    'measured_emission_factors'::name,
+    'wastewater_processing_factors'::name,
+    'measured_conversion_factors'::name
+
 ]);
 
 --  select has_column(       'ggircs_swrs', 'fuel', 'ghgr_import_id', 'fuel.ghgr_import_id column should exist');

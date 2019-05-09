@@ -38,7 +38,6 @@ create materialized view ggircs_swrs.fuel as (
              annual_weighted_avg_hhv varchar(1000) path './AnnualWeightedAverageHighHeatingValue',
              annual_steam_generation varchar(1000) path './AnnualSteamGeneration',
              alternative_methodology_description varchar(10000) path './AlternativeMethodologyDescription',
-             emissions xml path './Emissions',
              measured_emission_factor varchar(1000) path './MeasuredEmissionFactor',
              measured_emission_factor_unit_type varchar(1000) path './MeasuredEmissionFactorUnitType',
              other_flare_details varchar(1000) path './OtherFlareDetails',
@@ -63,7 +62,6 @@ create materialized view ggircs_swrs.fuel as (
              --  Do we want these values pulled into columns in fuel?
 
          ) as fuel_details
-    where ghgr_import_id > 25000
 ) with no data;
 
 create unique index ggircs_fuel_primary_key on ggircs_swrs.fuel (ghgr_import_id, activity_name, sub_activity_name, unit_name, sub_unit_name, process_idx, sub_process_idx, units_idx, unit_idx, substances_idx, substance_idx, fuel_idx);
@@ -97,5 +95,9 @@ comment on column ggircs_swrs.fuel.q1 is 'The fuel used in the first quarter';
 comment on column ggircs_swrs.fuel.q2 is 'The fuel used in the second quarter';
 comment on column ggircs_swrs.fuel.q3 is 'The fuel used in the third quarter';
 comment on column ggircs_swrs.fuel.q4 is 'The fuel used in the fourth quarter';
+
+comment on column ggircs_swrs.fuel.measured_emission_factors is 'Details on the measured emission factors for this fuel';
+comment on column ggircs_swrs.fuel.wastewater_processing_factors is 'Details on the wastewater processing factors for this fuel';
+comment on column ggircs_swrs.fuel.measured_conversion_factors is 'Details on the measured_conversion_factors for this fuel';
 
 commit;
