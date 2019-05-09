@@ -31,10 +31,20 @@ create materialized view ggircs_swrs.fuel as (
              fuel_idx integer path 'string(count(./preceding-sibling::Fuel))' not null,
              fuel_type varchar(1000) path './FuelType',
              fuel_classification varchar(1000) path './FuelClassification',
+             fuel_description varchar(1000) path './FuelDescription',
              fuel_units varchar(1000) path './FuelUnits',
              annual_fuel_amount varchar(1000) path './AnnualFuelAmount',
+             annual_weighted_avg_carbon_content varchar(1000) path './AnnualWeightedAverageCarbonContent',
              annual_weighted_avg_hhv varchar(1000) path './AnnualWeightedAverageHighHeatingValue',
-             alternative_methodology_description varchar(1000) path './AlternativeMethodologyDescription'
+             annual_steam_generation varchar(1000) path './AnnualSteamGeneration',
+             alternative_methodology_description varchar(10000) path './AlternativeMethodologyDescription',
+             measured_emission_factor text path './MeasuredEmissionFactor',
+             measured_emission_factor_unit_type varchar(1000) path './MeasuredEmissionFactorUnitType',
+             other_flare_details varchar(1000) path './OtherFlareDetails',
+             q1 varchar(1000) path './Q1',
+             q2 varchar(1000) path './Q2',
+             q3 varchar(1000) path './Q3',
+             q4 varchar(1000) path './Q4'
          ) as fuel_details
 ) with no data;
 
@@ -55,8 +65,19 @@ comment on column ggircs_swrs.fuel.substance_idx is 'The number of preceding sib
 comment on column ggircs_swrs.fuel.fuel_idx is 'The primary key for the fuel';
 comment on column ggircs_swrs.fuel.fuel_type is 'The type of the fuel';
 comment on column ggircs_swrs.fuel.fuel_classification is 'The classification of the fuel';
+comment on column ggircs_swrs.fuel.fuel_description is 'The description of the fuel';
 comment on column ggircs_swrs.fuel.fuel_units is 'The units of the fuel';
 comment on column ggircs_swrs.fuel.annual_fuel_amount is 'The annual amount of the fuel';
+comment on column ggircs_swrs.fuel.annual_weighted_avg_carbon_content is 'The annual weight avg of the fuel carbon content';
 comment on column ggircs_swrs.fuel.annual_weighted_avg_hhv is 'The annual weight avg of the high heating value of the fuel';
+comment on column ggircs_swrs.fuel.annual_steam_generation is 'The annual steam generation of the fuel';
+comment on column ggircs_swrs.fuel.alternative_methodology_description is 'The description of the fuels alternative methodology';
+comment on column ggircs_swrs.fuel.measured_emission_factor is 'The measured emission factor of the fuel';
+comment on column ggircs_swrs.fuel.measured_emission_factor_unit_type is 'The measured emission factor unit type of the fuel';
+comment on column ggircs_swrs.fuel.other_flare_details is 'The other flare details concerning the fuel';
+comment on column ggircs_swrs.fuel.q1 is 'The fuel used in the first quarter';
+comment on column ggircs_swrs.fuel.q2 is 'The fuel used in the second quarter';
+comment on column ggircs_swrs.fuel.q3 is 'The fuel used in the third quarter';
+comment on column ggircs_swrs.fuel.q4 is 'The fuel used in the fourth quarter';
 
 commit;
