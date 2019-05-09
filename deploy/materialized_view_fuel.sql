@@ -33,7 +33,8 @@ create materialized view ggircs_swrs.fuel as (
              fuel_classification varchar(1000) path './FuelClassification',
              fuel_units varchar(1000) path './FuelUnits',
              annual_fuel_amount varchar(1000) path './AnnualFuelAmount',
-             annual_weighted_avg_hhv varchar(1000) path './AnnualWeightedAverageHighHeatingValue'
+             annual_weighted_avg_hhv varchar(1000) path './AnnualWeightedAverageHighHeatingValue',
+             alternative_methodology_description varchar(1000) path './AlternativeMethodologyDescription'
          ) as fuel_details
 ) with no data;
 
