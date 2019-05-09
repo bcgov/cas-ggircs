@@ -11,16 +11,9 @@ create materialized view ggircs_swrs.naics as (
     from ggircs_swrs.ghgr_import as _ghgr_import
     order by _ghgr_import.id asc
   )
-  select row_number() over (order by ghgr_import_id asc) as id,
+  select
          ghgr_import_id,
-         naics.*,
-         row_number() over (
-           partition by swrs_facility_id
-           order by
-             ghgr_import_id desc,
-             naics_priority desc,
-             naics_code desc
-           ) as swrs_naics_history_id
+         naics.*
   from x,
        xmltable(
            '//NAICSCode'
@@ -33,16 +26,12 @@ create materialized view ggircs_swrs.naics as (
          ) as naics
 ) with no data;
 create unique index ggircs_naics_primary_key on ggircs_swrs.naics (id);
-create index ggircs_swrs_naics_history on ggircs_swrs.naics (swrs_naics_history_id);
 
 comment on materialized view ggircs_swrs.naics is 'The materialized view housing all report data pertaining to naics';
-comment on column ggircs_swrs.naics.id is 'The primary key for the materialized view';
 comment on column ggircs_swrs.naics.ghgr_import_id is 'The foreign key reference to ggircs_swrs.ghgr_import.id';
 comment on column ggircs_swrs.naics.swrs_facility_id is 'The reporting facility swrs id';
 comment on column ggircs_swrs.naics.naics_classification is 'The naics classification';
 comment on column ggircs_swrs.naics.naics_code is 'The naics code';
 comment on column ggircs_swrs.naics.naics_priority is 'The naics priority';
-comment on column ggircs_swrs.naics.swrs_naics_history_id is 'The id denoting the history (1=latest)';
-
 
 commit;
