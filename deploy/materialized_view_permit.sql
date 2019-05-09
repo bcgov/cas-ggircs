@@ -31,5 +31,11 @@ create unique index ggircs_permit_primary_key
 
 comment on materialized view ggircs_swrs.permit is 'The materialized view housing permit information';
 comment on column ggircs_swrs.permit.ghgr_import_id is 'The foreign key reference to ggircs_swrs.ghgr_import';
+comment on column ggircs_swrs.permit.swrs_facility_id is 'The foreign key reference to ggircs_swrs.facility';
+comment on column ggircs_swrs.permit.path_context is 'The context of the parent path (from VerifyTombstone or RegistrationData';
+comment on column ggircs_swrs.permit.permit_idx is 'The number of preceding Permit siblings before this Permit';
+comment on column ggircs_swrs.permit.issuing_agency is 'The issuing agency for this permit';
+comment on column ggircs_swrs.permit.issuing_dept_agency_program is 'The issuing agency program for this permit';
+comment on column ggircs_swrs.permit.permit_number is 'The permit number';
 
 commit;
