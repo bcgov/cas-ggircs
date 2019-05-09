@@ -19,9 +19,9 @@ create materialized view ggircs_swrs.permit as (
                 swrs_facility_id numeric(1000,0) path './ancestor-or-self::Permit/ancestor::ReportData/ReportDetails/FacilityId[normalize-space(.)]',
                 path_context varchar(1000) path 'name(./ancestor::VerifyTombstone|./ancestor::RegistrationData)',
                 permit_idx integer path 'string(count(./ancestor-or-self::Permit/preceding-sibling::Permit))' not null,
-                issuing_agency text path'./IssuingAgency[normalize-space(.)]',
-                issuing_dept_agency_program text path'./IssuingDeptAgencyProgram[normalize-space(.)]',
-                permit_number integer path'./PermitNumber[normalize-space(.)]'
+                issuing_agency varchar(1000) path'./IssuingAgency[normalize-space(.)]',
+                issuing_dept_agency_program varchar(1000) path'./IssuingDeptAgencyProgram[normalize-space(.)]',
+                permit_number varchar(1000) path'./PermitNumber[normalize-space(.)]'
 
          ) as permit_details
 ) with no data;
