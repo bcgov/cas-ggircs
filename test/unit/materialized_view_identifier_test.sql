@@ -57,21 +57,31 @@ $$);
 refresh materialized view ggircs_swrs.identifier with data;
 
 -- test the columnns for ggircs_swrs.identifier have been properly parsed from xml
-select results_eq(
-  'select id from ggircs_swrs.identifier',
-  ARRAY[1::bigint],
-  'ggircs_swrs.identifier parsed column id'
-);
+
 select results_eq(
   'select ghgr_import_id from ggircs_swrs.identifier',
   'select id from ggircs_swrs.ghgr_import',
   'ggircs_swrs.identifier parsed column ghgr_import_id'
 );
+
 select results_eq(
   'select swrs_facility_id from ggircs_swrs.identifier',
   ARRAY[666::numeric],
   'ggircs_swrs.identifier parsed column swrs_facility_id'
 );
+
+select results_eq(
+  'select path_context from ggircs_swrs.identifier',
+  ARRAY['RegistrationData'::varchar],
+  'ggircs_swrs.identifier parsed column path_context'
+);
+
+select results_eq(
+  'select swrs_identifier_idx from ggircs_swrs.identifier',
+  ARRAY[0::integer],
+  'ggircs_swrs.identifier parsed column identifier_idx'
+);
+
 select results_eq(
   'select identifier_type from ggircs_swrs.identifier',
   ARRAY['GHGRP Identification Number'::varchar],
@@ -81,11 +91,6 @@ select results_eq(
   'select identifier_value from ggircs_swrs.identifier',
   ARRAY['R0B0T2'::varchar],
   'ggircs_swrs.identifier parsed column identifier_value'
-);
-select results_eq(
-  'select swrs_identifier_history_id from ggircs_swrs.identifier',
-  ARRAY[1::bigint],
-  'ggircs_swrs.identifier parsed column swrs_identifier_history_id'
 );
 
 select finish();
