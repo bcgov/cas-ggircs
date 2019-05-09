@@ -4,7 +4,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(55);
+select plan(97);
 
 select has_materialized_view(
     'ggircs_swrs', 'fuel',
@@ -120,6 +120,11 @@ select col_type_is(      'ggircs_swrs', 'fuel', 'fuel_classification', 'characte
 select col_is_null(      'ggircs_swrs', 'fuel', 'fuel_classification', 'fuel.fuel_classification column should allow null');
 select col_hasnt_default('ggircs_swrs', 'fuel', 'fuel_classification', 'fuel.fuel_classification column should not  have a default');
 
+--  select has_column(       'ggircs_swrs', 'fuel', 'fuel_description', 'fuel.fuel_description column should exist');
+select col_type_is(      'ggircs_swrs', 'fuel', 'fuel_description', 'character varying(1000)', 'fuel.fuel_description column should be type varchar');
+select col_is_null(      'ggircs_swrs', 'fuel', 'fuel_description', 'fuel.fuel_description column should allow null');
+select col_hasnt_default('ggircs_swrs', 'fuel', 'fuel_description', 'fuel.fuel_description column should not  have a default');
+
 --  select has_column(       'ggircs_swrs', 'fuel', 'fuel_units', 'fuel.fuel_units column should exist');
 select col_type_is(      'ggircs_swrs', 'fuel', 'fuel_units', 'character varying(1000)', 'fuel.fuel_units column should be type varchar');
 select col_is_null(      'ggircs_swrs', 'fuel', 'fuel_units', 'fuel.units column should allow null');
@@ -130,10 +135,76 @@ select col_type_is(      'ggircs_swrs', 'fuel', 'annual_fuel_amount', 'character
 select col_is_null(      'ggircs_swrs', 'fuel', 'annual_fuel_amount', 'fuel.units column should allow null');
 select col_hasnt_default('ggircs_swrs', 'fuel', 'annual_fuel_amount', 'fuel.units column should not  have a default');
 
+--  select has_column(       'ggircs_swrs', 'fuel', 'annual_weighted_avg_carbon_content', 'fuel.annual_weighted_avg_carbon_content column should exist');
+select col_type_is(      'ggircs_swrs', 'fuel', 'annual_weighted_avg_carbon_content', 'character varying(1000)', 'fuel.annual_weighted_avg_carbon_content column should be type varchar');
+select col_is_null(      'ggircs_swrs', 'fuel', 'annual_weighted_avg_carbon_content', 'fuel.annual_weighted_avg_carbon_content column should allow null');
+select col_hasnt_default('ggircs_swrs', 'fuel', 'annual_weighted_avg_carbon_content', 'fuel.annual_weighted_avg_carbon_content column should not  have a default');
+
 --  select has_column(       'ggircs_swrs', 'fuel', 'annual_weighted_avg_hhv', 'fuel.annual_weighted_avg_hhv column should exist');
 select col_type_is(      'ggircs_swrs', 'fuel', 'annual_weighted_avg_hhv', 'character varying(1000)', 'fuel.annual_weighted_avg_hhv column should be type varchar');
 select col_is_null(      'ggircs_swrs', 'fuel', 'annual_weighted_avg_hhv', 'fuel.units column should allow null');
 select col_hasnt_default('ggircs_swrs', 'fuel', 'annual_weighted_avg_hhv', 'fuel.units column should not  have a default');
+
+--  select has_column(       'ggircs_swrs', 'fuel', 'annual_steam_generation', 'fuel.annual_steam_generation column should exist');
+select col_type_is(      'ggircs_swrs', 'fuel', 'annual_steam_generation', 'character varying(1000)', 'fuel.annual_steam_generation column should be type varchar');
+select col_is_null(      'ggircs_swrs', 'fuel', 'annual_steam_generation', 'fuel.annual_steam_generation column should allow null');
+select col_hasnt_default('ggircs_swrs', 'fuel', 'annual_steam_generation', 'fuel.annual_steam_generation column should not  have a default');
+
+--  select has_column(       'ggircs_swrs', 'fuel', 'alternative_methodology_description', 'fuel.alternative_methodology_description column should exist');
+select col_type_is(      'ggircs_swrs', 'fuel', 'alternative_methodology_description', 'character varying(10000)', 'fuel.alternative_methodology_description column should be type varchar');
+select col_is_null(      'ggircs_swrs', 'fuel', 'alternative_methodology_description', 'fuel.alternative_methodology_description column should allow null');
+select col_hasnt_default('ggircs_swrs', 'fuel', 'alternative_methodology_description', 'fuel.alternative_methodology_description column should not  have a default');
+
+--  select has_column(       'ggircs_swrs', 'fuel', 'measured_emission_factor', 'fuel.measured_emission_factor column should exist');
+select col_type_is(      'ggircs_swrs', 'fuel', 'measured_emission_factor', 'character varying(1000)', 'fuel.measured_emission_factor column should be type varchar');
+select col_is_null(      'ggircs_swrs', 'fuel', 'measured_emission_factor', 'fuel.measured_emission_factor column should allow null');
+select col_hasnt_default('ggircs_swrs', 'fuel', 'measured_emission_factor', 'fuel.measured_emission_factor column should not  have a default');
+
+--  select has_column(       'ggircs_swrs', 'fuel', 'measured_emission_factor_unit_type', 'fuel.measured_emission_factor_unit_type column should exist');
+select col_type_is(      'ggircs_swrs', 'fuel', 'measured_emission_factor_unit_type', 'character varying(1000)', 'fuel.measured_emission_factor_unit_type column should be type varchar');
+select col_is_null(      'ggircs_swrs', 'fuel', 'measured_emission_factor_unit_type', 'fuel.measured_emission_factor_unit_type column should allow null');
+select col_hasnt_default('ggircs_swrs', 'fuel', 'measured_emission_factor_unit_type', 'fuel.measured_emission_factor_unit_type column should not  have a default');
+
+--  select has_column(       'ggircs_swrs', 'fuel', 'other_flare_details', 'fuel.other_flare_details column should exist');
+select col_type_is(      'ggircs_swrs', 'fuel', 'other_flare_details', 'character varying(1000)', 'fuel.other_flare_details column should be type varchar');
+select col_is_null(      'ggircs_swrs', 'fuel', 'other_flare_details', 'fuel.other_flare_details column should allow null');
+select col_hasnt_default('ggircs_swrs', 'fuel', 'other_flare_details', 'fuel.other_flare_details column should not  have a default');
+
+--  select has_column(       'ggircs_swrs', 'fuel', 'q1', 'fuel.q1 column should exist');
+select col_type_is(      'ggircs_swrs', 'fuel', 'q1', 'character varying(1000)', 'fuel.q1 column should be type varchar');
+select col_is_null(      'ggircs_swrs', 'fuel', 'q1', 'fuel.q1 column should allow null');
+select col_hasnt_default('ggircs_swrs', 'fuel', 'q1', 'fuel.q1 column should not  have a default');
+
+--  select has_column(       'ggircs_swrs', 'fuel', 'q2', 'fuel.q2 column should exist');
+select col_type_is(      'ggircs_swrs', 'fuel', 'q2', 'character varying(1000)', 'fuel.q2 column should be type varchar');
+select col_is_null(      'ggircs_swrs', 'fuel', 'q2', 'fuel.q2 column should allow null');
+select col_hasnt_default('ggircs_swrs', 'fuel', 'q2', 'fuel.q2 column should not  have a default');
+
+--  select has_column(       'ggircs_swrs', 'fuel', 'q3', 'fuel.q3 column should exist');
+select col_type_is(      'ggircs_swrs', 'fuel', 'q3', 'character varying(1000)', 'fuel.q3 column should be type varchar');
+select col_is_null(      'ggircs_swrs', 'fuel', 'q3', 'fuel.q3 column should allow null');
+select col_hasnt_default('ggircs_swrs', 'fuel', 'q3', 'fuel.q3 column should not  have a default');
+
+--  select has_column(       'ggircs_swrs', 'fuel', 'q4', 'fuel.q4 column should exist');
+select col_type_is(      'ggircs_swrs', 'fuel', 'q4', 'character varying(1000)', 'fuel.q4 column should be type varchar');
+select col_is_null(      'ggircs_swrs', 'fuel', 'q4', 'fuel.q4 column should allow null');
+select col_hasnt_default('ggircs_swrs', 'fuel', 'q4', 'fuel.q4 column should not  have a default');
+
+--  select has_column(       'ggircs_swrs', 'fuel', 'measured_emission_factors', 'fuel.measured_emission_factors column should exist');
+select col_type_is(      'ggircs_swrs', 'fuel', 'measured_emission_factors', 'xml', 'fuel.measured_emission_factors column should be type xml');
+select col_is_null(      'ggircs_swrs', 'fuel', 'measured_emission_factors', 'fuel.measured_emission_factors column should allow null');
+select col_hasnt_default('ggircs_swrs', 'fuel', 'measured_emission_factors', 'fuel.measured_emission_factors column should not  have a default');
+
+--  select has_column(       'ggircs_swrs', 'fuel', 'wastewater_processing_factors', 'fuel.wastewater_processing_factors column should exist');
+select col_type_is(      'ggircs_swrs', 'fuel', 'wastewater_processing_factors', 'xml', 'fuel.wastewater_processing_factors column should be type xml');
+select col_is_null(      'ggircs_swrs', 'fuel', 'wastewater_processing_factors', 'fuel.wastewater_processing_factors column should allow null');
+select col_hasnt_default('ggircs_swrs', 'fuel', 'wastewater_processing_factors', 'fuel.wastewater_processing_factors column should not  have a default');
+
+--  select has_column(       'ggircs_swrs', 'fuel', 'measured_conversion_factors', 'fuel.measured_conversion_factors column should exist');
+select col_type_is(      'ggircs_swrs', 'fuel', 'measured_conversion_factors', 'xml', 'fuel.measured_conversion_factors column should be type xml');
+select col_is_null(      'ggircs_swrs', 'fuel', 'measured_conversion_factors', 'fuel.measured_conversion_factors column should allow null');
+select col_hasnt_default('ggircs_swrs', 'fuel', 'measured_conversion_factors', 'fuel.measured_conversion_factors column should not  have a default');
+
 
 -- TODO(wenzowski): check foreign key references
 

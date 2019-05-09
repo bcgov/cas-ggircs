@@ -52,6 +52,7 @@ create materialized view ggircs_swrs.fuel as (
 
              -- <Dylan>
              -- I populated fuel with data and never found measured_conversion_factors that were not null or immediately terminated ie <MeasuredConversionFactors/>
+             --     all rows that are immediately terminated are from very new reports so perhaps it is expected to hold values going forward, but we don't know what the structure will be
              -- wastewater_processing_factors contains single values:
              --     <WastewaterProcessingFactors>
              --         <NotApplicableBOD>true</NotApplicableBOD>
