@@ -16,17 +16,20 @@ create materialized view ggircs_swrs.permit as (
            '//Permit'
            passing source_xml
            columns
-                swrs_organisation_id numeric(1000,0) path './ancestor-or-self::ParentOrganisation/ancestor::ReportData/ReportDetails/OrganisationId[normalize-space(.)]',
+                swrs_facility_id numeric(1000,0) path './ancestor-or-self::Permit/ancestor::ReportData/ReportDetails/FacilityId[normalize-space(.)]',
                 path_context varchar(1000) path 'name(./ancestor::VerifyTombstone|./ancestor::RegistrationData)',
-                parent_organisation_idx integer path 'string(count(./ancestor-or-self::ParentOrganisation/preceding-sibling::ParentOrganisation))' not null,
+                permit_idx integer path 'string(count(./ancestor-or-self::Permit/preceding-sibling::Permit))' not null,
+                issuing_agency text path'./IssuingAgency[normalize-space(.)]',
+                issuing_dept_agency_program text path'./IssuingDeptAgencyProgram[normalize-space(.)]',
+                permit_number integer path'./PermitNumber[normalize-space(.)]'
 
          ) as permit_details
 ) with no data;
 
 create unique index ggircs_permit_primary_key
-    on ggircs_swrs.permit (ghgr_import_id);
+    on ggircs_swrs.permit (ghgr_import_id, swrs_facility_id, path_context, permit_idx);
 
-comment on materialized view ggircs_swrs.parent_organisation is 'The materialized view housing parent organisation information';
-comment on column ggircs_swrs.parent_organisation.ghgr_import_id is 'The foreign key reference to ggircs_swrs.ghgr_import';
+comment on materialized view ggircs_swrs.permit is 'The materialized view housing permit information';
+comment on column ggircs_swrs.permit.ghgr_import_id is 'The foreign key reference to ggircs_swrs.ghgr_import';
 
 commit;
