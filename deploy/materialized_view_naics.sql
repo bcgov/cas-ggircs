@@ -20,12 +20,14 @@ create materialized view ggircs_swrs.naics as (
            passing x.source_xml
            columns
              swrs_facility_id numeric(1000,0) path '//FacilityId[normalize-space(.)]',
+             path_context varchar(1000) path 'name(./ancestor::VerifyTombstone|./ancestor::RegistrationData)',
+             naics_code_idx integer path 'string(count(./preceding-sibling::NAICSCode))' not null,
              naics_classification varchar(1000) path './NAICSClassification[normalize-space(.)]',
              naics_code varchar(1000) path './Code[normalize-space(.)]',
              naics_priority varchar(1000) path './NaicsPriority[normalize-space(.)][contains(., "Primary")]|./ActivityPercentage[normalize-space(.)][contains(., "100")]'
          ) as naics
 ) with no data;
-create unique index ggircs_naics_primary_key on ggircs_swrs.naics (id);
+create unique index ggircs_naics_primary_key on ggircs_swrs.naics (ghgr_import_id, swrs_facility_id, path_context, naics_code_idx);
 
 comment on materialized view ggircs_swrs.naics is 'The materialized view housing all report data pertaining to naics';
 comment on column ggircs_swrs.naics.ghgr_import_id is 'The foreign key reference to ggircs_swrs.ghgr_import.id';
