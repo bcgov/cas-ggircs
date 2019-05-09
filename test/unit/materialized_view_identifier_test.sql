@@ -3,20 +3,20 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(22);
+select plan(16);
 
 -- Test matview report exists in schema ggircs_swrs
 select has_materialized_view('ggircs_swrs', 'identifier', 'Materialized view facility exists');
 
 -- Test column names in matview identifier exist
-select columns_are(
+select columns_are('ggircs_swrs'::name, 'identifier'::name,ARRAY[
     'ghgr_import_id'::name,
     'swrs_facility_id'::name,
     'path_context'::name,
     'identifier_idx'::name,
     'identifier_type'::name,
     'identifier_value'::name
-);
+]);
 
 -- Test index names in matview report exist and are correct
 select has_index('ggircs_swrs', 'identifier', 'ggircs_identifier_primary_key', 'ggircs_swrs.identifier has index: ggircs_identifier_primary_key');
@@ -27,7 +27,7 @@ select index_is_unique('ggircs_swrs', 'facility', 'ggircs_facility_primary_key',
 -- Test columns in matview report have correct types
 select col_type_is('ggircs_swrs', 'identifier', 'ghgr_import_id', 'integer', 'ggircs_swrs.identifier column ghgr_import_id has type integer');
 select col_type_is('ggircs_swrs', 'identifier', 'swrs_facility_id', 'numeric(1000,0)', 'ggircs_swrs.identifier column swrs_facility_id has type numeric');
-select col_type_is('ggircs_swrs', 'identifier', 'path_context', 'character varying (1000)', 'ggircs_swrs.identifier column path_context has type varchar');
+select col_type_is('ggircs_swrs', 'identifier', 'path_context', 'character varying(1000)', 'ggircs_swrs.identifier column path_context has type varchar');
 select col_type_is('ggircs_swrs', 'identifier', 'identifier_idx', 'integer', 'ggircs_swrs.identifier column identifier_idx has type integer');
 select col_type_is('ggircs_swrs', 'identifier', 'identifier_type', 'character varying(1000)', 'ggircs_swrs.identifier column identifier_type has type varchar');
 select col_type_is('ggircs_swrs', 'identifier', 'identifier_value', 'character varying(1000)', 'ggircs_swrs.identifier column identifier_value has type varchar');
@@ -77,7 +77,7 @@ select results_eq(
 );
 
 select results_eq(
-  'select swrs_identifier_idx from ggircs_swrs.identifier',
+  'select identifier_idx from ggircs_swrs.identifier',
   ARRAY[0::integer],
   'ggircs_swrs.identifier parsed column identifier_idx'
 );
