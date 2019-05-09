@@ -3,7 +3,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(131);
+select plan(133);
 
 select has_materialized_view(
     'ggircs_swrs', 'address',
@@ -257,10 +257,36 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
 $$);
 
 -- refresh necessary views with data
+refresh materialized view ggircs_swrs.facility with data;
+refresh materialized view ggircs_swrs.organisation with data;
 refresh materialized view ggircs_swrs.address with data;
 
--- test the columnns for ggircs_swrs.facility have been properly parsed from xml
+-- test fk join on facility, organisation
+-- TODO: update to test join on contact, parent_organisation
 
+select results_eq(
+    'select facility.ghgr_import_id from ggircs_swrs.address ' ||
+    'join ggircs_swrs.facility ' ||
+    'on ' ||
+    'address.ghgr_import_id =  facility.ghgr_import_id',
+
+    'select ghgr_import_id from ggircs_swrs.facility',
+
+    'Foreign keys ghgr_import_id in ggircs_swrs_address reference ggircs_swrs.facility'
+);
+
+select results_eq(
+    'select organisation.ghgr_import_id from ggircs_swrs.address ' ||
+    'join ggircs_swrs.organisation ' ||
+    'on ' ||
+    'address.ghgr_import_id =  organisation.ghgr_import_id',
+
+    'select ghgr_import_id from ggircs_swrs.organisation',
+
+    'Foreign keys ghgr_import_id in ggircs_swrs_address reference ggircs_swrs.organisation'
+);
+
+-- test the columnns for ggircs_swrs.facility have been properly parsed from xml
 select results_eq(
   'select ghgr_import_id from ggircs_swrs.address',
   'select id from ggircs_swrs.ghgr_import',
