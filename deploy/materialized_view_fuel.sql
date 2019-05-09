@@ -32,20 +32,38 @@ create materialized view ggircs_swrs.fuel as (
              fuel_type varchar(1000) path './FuelType',
              fuel_classification varchar(1000) path './FuelClassification',
              fuel_description varchar(1000) path './FuelDescription',
-             fuel_units varchar(1000) path './FuelUnits',
+             fuel_units varchar(1000) path './FuelUnits|./Units',
              annual_fuel_amount varchar(1000) path './AnnualFuelAmount',
              annual_weighted_avg_carbon_content varchar(1000) path './AnnualWeightedAverageCarbonContent',
              annual_weighted_avg_hhv varchar(1000) path './AnnualWeightedAverageHighHeatingValue',
              annual_steam_generation varchar(1000) path './AnnualSteamGeneration',
              alternative_methodology_description varchar(10000) path './AlternativeMethodologyDescription',
-             measured_emission_factor text path './MeasuredEmissionFactor',
+             emissions xml path './Emissions',
+             measured_emission_factor varchar(1000) path './MeasuredEmissionFactor',
              measured_emission_factor_unit_type varchar(1000) path './MeasuredEmissionFactorUnitType',
              other_flare_details varchar(1000) path './OtherFlareDetails',
              q1 varchar(1000) path './Q1',
              q2 varchar(1000) path './Q2',
              q3 varchar(1000) path './Q3',
-             q4 varchar(1000) path './Q4'
+             q4 varchar(1000) path './Q4',
+
+             measured_emission_factors xml path './MeasuredEmissionFactors',
+             wastewater_processing_factors xml path './WastewaterProcessingFactors',
+             measured_conversion_factors xml path './MeasuredConversionFactors'
+
+             -- <Dylan>
+             -- I populated fuel with data and never found measured_conversion_factors that were not null or immediately terminated ie <MeasuredConversionFactors/>
+             -- wastewater_processing_factors contains single values:
+             --     <WastewaterProcessingFactors>
+             --         <NotApplicableBOD>true</NotApplicableBOD>
+             --         <NotApplicableCOD>true</NotApplicableCOD>
+             --         <AverageQuarterlyTotalNinInfluent>0</AverageQuarterlyTotalNinInfluent>
+             --         <AverageQuarterlyTotalNinInfluentUnit>g/m3</AverageQuarterlyTotalNinInfluentUnit>
+             --     </WastewaterProcessingFactors>
+             --  Do we want these values pulled into columns in fuel?
+
          ) as fuel_details
+    where ghgr_import_id > 25000
 ) with no data;
 
 create unique index ggircs_fuel_primary_key on ggircs_swrs.fuel (ghgr_import_id, activity_name, sub_activity_name, unit_name, sub_unit_name, process_idx, sub_process_idx, units_idx, unit_idx, substances_idx, substance_idx, fuel_idx);
