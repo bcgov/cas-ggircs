@@ -4,7 +4,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(44);
+select plan(41);
 
 select has_materialized_view(
     'ggircs_swrs', 'contact',
@@ -19,7 +19,6 @@ select has_index(
 select columns_are('ggircs_swrs'::name, 'contact'::name, array[
     'ghgr_import_id'::name,
     'path_context'::name,
-    'swrs_facility_id'::name,
     'contact_idx'::name,
     'contact_type'::name,
     'given_name'::name,
@@ -40,11 +39,6 @@ select col_hasnt_default('ggircs_swrs', 'contact', 'ghgr_import_id', 'contact.gh
 select col_type_is(      'ggircs_swrs', 'contact', 'path_context', 'character varying(1000)', 'contact.path_context column should be type varchar');
 select col_is_null(      'ggircs_swrs', 'contact', 'path_context', 'contact.path_context column should not allow null');
 select col_hasnt_default('ggircs_swrs', 'contact', 'path_context', 'contact.path_context column should not have a default');
-
---  select has_column(       'ggircs_swrs', 'contact', 'swrs_facility_id', 'contact.swrs_facility_id column should exist');
-select col_type_is(      'ggircs_swrs', 'contact', 'swrs_facility_id', 'numeric(1000,0)', 'contact.swrs_facility_id column should be type numeric');
-select col_is_null(      'ggircs_swrs', 'contact', 'swrs_facility_id', 'contact.swrs_facility_id column should not allow null');
-select col_hasnt_default('ggircs_swrs', 'contact', 'swrs_facility_id', 'contact.swrs_facility_id column should not have a default');
 
 --  select has_column(       'ggircs_swrs', 'contact', 'contact_idx', 'contact.contact_idx column should exist');
 select col_type_is(      'ggircs_swrs', 'contact', 'contact_idx', 'integer', 'contact.contact_idx column should be type integer');
