@@ -181,7 +181,6 @@ select hasnt_column(
            )
 from reserved_words as wtmp (word)
          cross join mv_names as mvtmp (mv);
-
 */
 
 
