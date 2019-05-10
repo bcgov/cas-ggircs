@@ -10,9 +10,15 @@ materialized_view_organisation [table_ghgr_import] 2019-04-29T20:14:13Z Dylan Le
 materialized_view_facility [table_ghgr_import] 2019-04-29T22:24:35Z Dylan Leard <dylan@button.is> # add materialized view facility to schema ggrics_swrs
 materialized_view_activity [table_ghgr_import] 2019-04-29T23:51:13Z Hamza Javed <hamza@button.is> # Create a materialized view for activity and subactivity from report
 materialized_view_flat [table_ghgr_import] 2019-04-30T18:11:08Z Dylan Leard <dylan@button.is> # add materialized view flat to schema ggircs_swrs
-materialized_view_unit [materialized_view_activity] 2019-05-02T19:54:25Z Dylan Leard <dylan@button.is> # add materialized view unit to schema ggircs_swrs
+materialized_view_unit [table_ghgr_import] 2019-05-02T19:54:25Z Dylan Leard <dylan@button.is> # add materialized view unit to schema ggircs_swrs
 materialized_view_identifier [table_ghgr_import] 2019-04-30T23:33:13Z Dylan Leard <dylan@button.is> # add materialized view identifier to schema ggircs_swrs
 materialized_view_naics [table_ghgr_import] 2019-05-01T23:52:03Z Dylan Leard <dylan@button.is> # add materialized view naics to schema ggircs_swrs
-materialized_view_fuel [materialized_view_unit] 2019-05-02T22:17:16Z Dylan Leard <dylan@button.is> # add materialized view fuel to schema ggircs_swrs
 materialized_view_emission [table_ghgr_import] 2019-05-03T17:27:02Z Dylan Leard <dylan@button.is> # add materialized view emission to schema ggircs_swrs
+materialized_view_final_report [materialized_view_report] 2019-05-03T18:47:28Z Dylan Leard <dylan@button.is> # add materialized view final_report to schema ggircs_swrs
+materialized_view_fuel [table_ghgr_import] 2019-05-02T22:17:16Z Dylan Leard <dylan@button.is> # add materialized view fuel to schema ggircs_swrs
+materialized_view_permit [table_ghgr_import] 2019-05-09T18:51:00Z Dylan Leard <dylan@button.is> # add materialized view permit to schema ggircs_swrs
+table_ignore_organisation [schema_ggircs_swrs] 2019-05-09T00:21:15Z Alec Wenzowski <alec@button.is> # Add a list of swrs_organisation_id values to ignore
+materialized_view_parent_organisation [table_ghgr_import] 2019-05-08T22:44:21Z Dylan Leard <dylan@button.is> # add materialized view parent_organisation to ggircs_swrs
+materialized_view_contact [table_ghgr_import] 2019-05-08T20:37:31Z Dylan Leard <dylan@button.is> # add materialized view contact to schema ggircs_swrs
+materialized_view_address [table_ghgr_import] 2019-05-03T20:18:07Z Dylan Leard <dylan@button.is> # add materialized view address to schema ggircs_swrs
 materialized_view_descriptor [table_ghgr_import] 2019-05-07T18:18:40Z Hamza Javed <hamzajaved@Hamzas-MacBook-Pro.local> # Add Materialized View for descriptors for activities and subactivities
