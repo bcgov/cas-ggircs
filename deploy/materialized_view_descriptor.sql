@@ -8,7 +8,6 @@ create materialized view ggircs_swrs.descriptor as (
     select ghgr_import.id       as ghgr_import_id,
            ghgr_import.xml_file as source_xml
     from ggircs_swrs.ghgr_import
-    order by ghgr_import_id desc
   )
   select ghgr_import_id,
          depth_four_descriptors.*
