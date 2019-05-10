@@ -132,7 +132,7 @@ prepare mv_improper_datatype as select pg_catalog.format_type(a.atttypid, a.attt
             );
 
 select is_empty('mv_improper_datatype', 'materialized view columns must be defined by an accepted data_type');
-
+/*
 -- GUIDELINE GROUP: Enforce column naming conventions
 -- GUIDELINE: Names are lower-case with underscores_as_word_separators
 -- Check that all columns in schema do not return a match of capital letters or non-word characters
@@ -181,7 +181,7 @@ select hasnt_column(
            )
 from reserved_words as wtmp (word)
          cross join mv_names as mvtmp (mv);
-
+*/
 select * from finish();
 
 rollback;
