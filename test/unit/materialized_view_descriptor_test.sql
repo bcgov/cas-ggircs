@@ -4,7 +4,7 @@ reset client_min_messages;
 
 
 begin;
-select plan(41);
+select plan(42);
 
 select has_materialized_view(
     'ggircs_swrs', 'descriptor',
@@ -119,6 +119,19 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
 $$);
 
 refresh materialized view ggircs_swrs.descriptor with data;
+
+--  Test ghgr_import_id fk relation
+select results_eq(
+    'select ghgr_import.id from ggircs_swrs.descriptor ' ||
+    'join ggircs_swrs.ghgr_import ' ||
+    'on ' ||
+    'descriptor.ghgr_import_id =  ghgr_import.id ' ||
+    $$and class='Amount'$$,
+
+    'select id from ggircs_swrs.ghgr_import',
+
+    'Foreign key ghgr_import_id ggircs_swrs_descriptor reference ggircs_swrs.ghgr_import'
+);
 
 -- test the columns for matview descriptors have been properly parsed from xml
 select results_eq(
