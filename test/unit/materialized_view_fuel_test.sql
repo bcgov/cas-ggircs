@@ -222,6 +222,13 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
                 </Fuel>
               </Fuels>
             </Unit>
+            <Unit>
+              <Fuels>
+                <Fuel>
+                  <FuelType>test</FuelType>
+                </Fuel>
+              </Fuels>
+            </Unit>
           </Units>
         </SubProcess>
       </Process>
