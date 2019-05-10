@@ -21,3 +21,4 @@ table_ignore_organisation [schema_ggircs_swrs] 2019-05-09T00:21:15Z Alec Wenzows
 materialized_view_parent_organisation [table_ghgr_import] 2019-05-08T22:44:21Z Dylan Leard <dylan@button.is> # add materialized view parent_organisation to ggircs_swrs
 materialized_view_contact [table_ghgr_import] 2019-05-08T20:37:31Z Dylan Leard <dylan@button.is> # add materialized view contact to schema ggircs_swrs
 materialized_view_address [table_ghgr_import] 2019-05-03T20:18:07Z Dylan Leard <dylan@button.is> # add materialized view address to schema ggircs_swrs
+materialized_view_descriptor [table_ghgr_import] 2019-05-07T18:18:40Z Hamza Javed <hamzajaved@Hamzas-MacBook-Pro.local> # Add Materialized View for descriptors for activities and subactivities
