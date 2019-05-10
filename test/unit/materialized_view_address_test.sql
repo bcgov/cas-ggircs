@@ -228,11 +228,19 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
     <Facility>
       <Address>
         <PhysicalAddress>
+          <UnitNumber>1</UnitNumber>
+          <StreetNumber>1234</StreetNumber>
+          <StreetNumberSuffix/>
+          <StreetName>00th</StreetName>
+          <StreetType>Avenue</StreetType>
+          <StreetDirection>NW</StreetDirection>
           <Municipality>Fort Nelson</Municipality>
           <ProvTerrState>British Columbia</ProvTerrState>
           <PostalCodeZipCode>H0H 0H0</PostalCodeZipCode>
           <Country>Canada</Country>
           <NationalTopographicalDescription>A-123-B/456-C-00</NationalTopographicalDescription>
+          <AdditionalInformation>INFO</AdditionalInformation>
+          <LandSurveyDescription>OOH shiny!</LandSurveyDescription>
         </PhysicalAddress>
         <MailingAddress>
           <DeliveryMode>Post Office Box</DeliveryMode>
@@ -262,9 +270,36 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
 $$);
 
 -- refresh necessary views with data
+refresh materialized view ggircs_swrs.facility with data;
+refresh materialized view ggircs_swrs.organisation with data;
+refresh materialized view ggircs_swrs.contact with data;
+refresh materialized view ggircs_swrs.parent_organisation with data;
 refresh materialized view ggircs_swrs.address with data;
--- test the columnns for ggircs_swrs.facility have been properly parsed from xml
 
+-- Test the fk relations from address to: facility, organisation, contact, parent_organisation
+select results_eq(
+    'select facility.ghgr_import_id from ggircs_swrs.address ' ||
+    'join ggircs_swrs.facility ' ||
+    'on ' ||
+    'address.ghgr_import_id =  facility.ghgr_import_id',
+
+    'select ghgr_import_id from ggircs_swrs.facility',
+
+    'Foreign key ghgr_import_id in ggircs_swrs_address references ggircs_swrs.facility'
+);
+
+select results_eq(
+    'select organisation.ghgr_import_id from ggircs_swrs.address ' ||
+    'join ggircs_swrs.organisation ' ||
+    'on ' ||
+    'address.ghgr_import_id =  organisation.ghgr_import_id',
+
+    'select ghgr_import_id from ggircs_swrs.organisation',
+
+    'Foreign key ghgr_import_id in ggircs_swrs_address references ggircs_swrs.organisation'
+);
+
+-- test the columnns for ggircs_swrs.address have been properly parsed from xml
 select results_eq(
   'select ghgr_import_id from ggircs_swrs.address',
   'select id from ggircs_swrs.ghgr_import',
@@ -296,12 +331,12 @@ select results_eq(
 -- Physical Address columns
 select results_eq(
   'select physical_address_unit_number from ggircs_swrs.address',
-  ARRAY[null::varchar],
+  ARRAY[1::varchar],
   'ggircs_swrs.address parsed column physical_address_unit_number'
 );
 select results_eq(
   'select physical_address_street_number from ggircs_swrs.address',
-  ARRAY[null::varchar],
+  ARRAY[1234::varchar],
   'ggircs_swrs.address parsed column physical_address_street_number'
 );
 select results_eq(
@@ -311,17 +346,17 @@ select results_eq(
 );
 select results_eq(
   'select physical_address_street_name from ggircs_swrs.address',
-  ARRAY[null::varchar],
+  ARRAY['00th'::varchar],
   'ggircs_swrs.address parsed column physical_address_municipality'
 );
 select results_eq(
   'select physical_address_street_type from ggircs_swrs.address',
-  ARRAY[null::varchar],
+  ARRAY['Avenue'::varchar],
   'ggircs_swrs.address parsed column physical_address_street_type'
 );
 select results_eq(
   'select physical_address_street_direction from ggircs_swrs.address',
-  ARRAY[null::varchar],
+  ARRAY['NW'::varchar],
   'ggircs_swrs.address parsed column physical_address_street_direction'
 );
 select results_eq(
@@ -351,12 +386,12 @@ select results_eq(
 );
 select results_eq(
   'select physical_address_additional_information from ggircs_swrs.address',
-  ARRAY[null::varchar],
+  ARRAY['INFO'::varchar],
   'ggircs_swrs.address parsed column physical_address_additional_information'
 );
 select results_eq(
   'select physical_address_land_survey_description from ggircs_swrs.address',
-  ARRAY[null::varchar],
+  ARRAY['OOH shiny!'::varchar],
   'ggircs_swrs.address parsed column physical_address_land_survey_description'
 );
 
