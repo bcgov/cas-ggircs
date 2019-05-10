@@ -4,7 +4,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(32);
+select plan(29);
 
 select has_materialized_view(
     'ggircs_swrs', 'parent_organisation',
@@ -19,7 +19,6 @@ select has_index(
 select columns_are('ggircs_swrs'::name, 'parent_organisation'::name, array[
     'ghgr_import_id'::name,
     'path_context'::name,
-    'swrs_organisation_id'::name,
     'parent_organisation_idx'::name,
     'percentage_owned'::name,
     'french_trade_name'::name,
@@ -36,11 +35,6 @@ select col_hasnt_default('ggircs_swrs', 'parent_organisation', 'ghgr_import_id',
 select col_type_is(      'ggircs_swrs', 'parent_organisation', 'path_context', 'character varying(1000)', 'parent_organisation.path_context column should be type varchar');
 select col_is_null(      'ggircs_swrs', 'parent_organisation', 'path_context', 'parent_organisation.path_context column should not allow null');
 select col_hasnt_default('ggircs_swrs', 'parent_organisation', 'path_context', 'parent_organisation.path_context column should not have a default');
-
---  select has_column(       'ggircs_swrs', 'parent_organisation', 'swrs_organisation_id', 'parent_organisation.swrs_organisation_id column should exist');
-select col_type_is(      'ggircs_swrs', 'parent_organisation', 'swrs_organisation_id', 'numeric(1000,0)', 'parent_organisation.swrs_organisation_id column should be type numeric');
-select col_is_null(      'ggircs_swrs', 'parent_organisation', 'swrs_organisation_id', 'parent_organisation.swrs_organisation_id column should not allow null');
-select col_hasnt_default('ggircs_swrs', 'parent_organisation', 'swrs_organisation_id', 'parent_organisation.swrs_organisation_id column should not have a default');
 
 --  select has_column(       'ggircs_swrs', 'parent_organisation', 'parent_organisation_idx', 'parent_organisation.parent_organisation_idx column should exist');
 select col_type_is(      'ggircs_swrs', 'parent_organisation', 'parent_organisation_idx', 'integer', 'parent_organisation.parent_organisation_idx column should be type integer');
