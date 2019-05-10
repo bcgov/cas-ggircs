@@ -4,7 +4,9 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
+
 select plan(66);
+
 
 select has_materialized_view(
     'ggircs_swrs', 'emission',
@@ -44,6 +46,7 @@ select columns_are('ggircs_swrs'::name, 'emission'::name, array[
 
 select col_type_is(      'ggircs_swrs', 'emission', 'ghgr_import_id', 'integer', 'emission.ghgr_import_id column should be type integer');
 select col_hasnt_default('ggircs_swrs', 'emission', 'ghgr_import_id', 'emission.ghgr_import_id column should not have a default value');
+
 
 --  select has_column(       'ggircs_swrs', 'emission', 'activity_name', 'emission.activity_id column should exist');
 select col_type_is(      'ggircs_swrs', 'emission', 'activity_name', 'character varying(1000)', 'emission.activity_name column should be type varchar');
@@ -91,6 +94,7 @@ select col_hasnt_default('ggircs_swrs', 'emission', 'substances_idx', 'emission.
 select col_type_is(      'ggircs_swrs', 'emission', 'substance_idx', 'integer', 'emission.substance_idx column should be type integer');
 select col_is_null(      'ggircs_swrs', 'emission', 'substance_idx', 'emission.substance_idx column should not allow null');
 select col_hasnt_default('ggircs_swrs', 'emission', 'substance_idx', 'emission.substance_idx column should not  have a default');
+
 
 -- select col_is_null(      'ggircs_swrs', 'emission', 'fuel_idx', 'emission.fuel_idx column should allow null');
 select col_type_is(      'ggircs_swrs', 'emission', 'fuel_idx', 'integer', 'emission.fuel_idx column should be type integer');
@@ -206,11 +210,13 @@ select results_eq(
   'ggircs_swrs.emission.fuel_idx is extracted'
 );
 
+
 -- Extract emission_idx
 select results_eq(
   'select emission_idx from ggircs_swrs.emission',
    ARRAY[0::integer],
   'ggircs_swrs.emission.emission_idx is extracted'
+
 );
 
 -- Extract emission_type

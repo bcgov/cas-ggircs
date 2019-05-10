@@ -50,17 +50,7 @@ create materialized view ggircs_swrs.fuel as (
              wastewater_processing_factors xml path './WastewaterProcessingFactors',
              measured_conversion_factors xml path './MeasuredConversionFactors'
 
-             -- <Dylan>
-             -- I populated fuel with data and never found measured_conversion_factors that were not null or immediately terminated ie <MeasuredConversionFactors/>
-             --     all rows that are immediately terminated are from very new reports so perhaps it is expected to hold values going forward, but we don't know what the structure will be
-             -- wastewater_processing_factors contains single values:
-             --     <WastewaterProcessingFactors>
-             --         <NotApplicableBOD>true</NotApplicableBOD>
-             --         <NotApplicableCOD>true</NotApplicableCOD>
-             --         <AverageQuarterlyTotalNinInfluent>0</AverageQuarterlyTotalNinInfluent>
-             --         <AverageQuarterlyTotalNinInfluentUnit>g/m3</AverageQuarterlyTotalNinInfluentUnit>
-             --     </WastewaterProcessingFactors>
-             --  Do we want these values pulled into columns in fuel?
+
 
          ) as fuel_details
 ) with no data;
@@ -102,3 +92,4 @@ comment on column ggircs_swrs.fuel.wastewater_processing_factors is 'Details on 
 comment on column ggircs_swrs.fuel.measured_conversion_factors is 'Details on the measured_conversion_factors for this fuel';
 
 commit;
+

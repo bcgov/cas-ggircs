@@ -4,7 +4,9 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
+
 select plan(97);
+
 
 select has_materialized_view(
     'ggircs_swrs', 'fuel',
@@ -17,6 +19,7 @@ select has_index(
 );
 
 select columns_are('ggircs_swrs'::name, 'fuel'::name, array[
+
     'ghgr_import_id'::name,
     'activity_name'::name,
     'sub_activity_name'::name,
@@ -51,9 +54,11 @@ select columns_are('ggircs_swrs'::name, 'fuel'::name, array[
 
 ]);
 
+
 --  select has_column(       'ggircs_swrs', 'fuel', 'ghgr_import_id', 'fuel.ghgr_import_id column should exist');
 select col_type_is(      'ggircs_swrs', 'fuel', 'ghgr_import_id', 'integer', 'fuel.ghgr_import_id column should be type integer');
 select col_hasnt_default('ggircs_swrs', 'fuel', 'ghgr_import_id', 'fuel.ghgr_import_id column should not have a default value');
+
 
 --  select has_column(       'ggircs_swrs', 'fuel', 'activity_name', 'fuel.activity_id column should exist');
 select col_type_is(      'ggircs_swrs', 'fuel', 'activity_name', 'character varying(1000)', 'fuel.activity_name column should be type varchar');
@@ -110,6 +115,7 @@ select col_type_is(      'ggircs_swrs', 'fuel', 'fuel_idx', 'integer', 'fuel.fue
 select col_is_null(      'ggircs_swrs', 'fuel', 'fuel_idx', 'fuel.fuel_idx column should not allow null');
 select col_hasnt_default('ggircs_swrs', 'fuel', 'fuel_idx', 'fuel.fuel_idx column should not  have a default');
 
+
 --  select has_column(       'ggircs_swrs', 'fuel', 'fuel_type', 'fuel.fuel_type column should exist');
 select col_type_is(      'ggircs_swrs', 'fuel', 'fuel_type', 'character varying(1000)', 'fuel.fuel_type column should be type varchar');
 select col_is_null(      'ggircs_swrs', 'fuel', 'fuel_type', 'fuel.fuel_type column should allow null');
@@ -119,6 +125,7 @@ select col_hasnt_default('ggircs_swrs', 'fuel', 'fuel_type', 'fuel.fuel_type col
 select col_type_is(      'ggircs_swrs', 'fuel', 'fuel_classification', 'character varying(1000)', 'fuel.fuel_classification column should be type varchar');
 select col_is_null(      'ggircs_swrs', 'fuel', 'fuel_classification', 'fuel.fuel_classification column should allow null');
 select col_hasnt_default('ggircs_swrs', 'fuel', 'fuel_classification', 'fuel.fuel_classification column should not  have a default');
+
 
 --  select has_column(       'ggircs_swrs', 'fuel', 'fuel_description', 'fuel.fuel_description column should exist');
 select col_type_is(      'ggircs_swrs', 'fuel', 'fuel_description', 'character varying(1000)', 'fuel.fuel_description column should be type varchar');
@@ -140,10 +147,12 @@ select col_type_is(      'ggircs_swrs', 'fuel', 'annual_weighted_avg_carbon_cont
 select col_is_null(      'ggircs_swrs', 'fuel', 'annual_weighted_avg_carbon_content', 'fuel.annual_weighted_avg_carbon_content column should allow null');
 select col_hasnt_default('ggircs_swrs', 'fuel', 'annual_weighted_avg_carbon_content', 'fuel.annual_weighted_avg_carbon_content column should not  have a default');
 
+
 --  select has_column(       'ggircs_swrs', 'fuel', 'annual_weighted_avg_hhv', 'fuel.annual_weighted_avg_hhv column should exist');
 select col_type_is(      'ggircs_swrs', 'fuel', 'annual_weighted_avg_hhv', 'character varying(1000)', 'fuel.annual_weighted_avg_hhv column should be type varchar');
 select col_is_null(      'ggircs_swrs', 'fuel', 'annual_weighted_avg_hhv', 'fuel.units column should allow null');
 select col_hasnt_default('ggircs_swrs', 'fuel', 'annual_weighted_avg_hhv', 'fuel.units column should not  have a default');
+
 
 --  select has_column(       'ggircs_swrs', 'fuel', 'annual_steam_generation', 'fuel.annual_steam_generation column should exist');
 select col_type_is(      'ggircs_swrs', 'fuel', 'annual_steam_generation', 'character varying(1000)', 'fuel.annual_steam_generation column should be type varchar');
@@ -206,7 +215,6 @@ select col_is_null(      'ggircs_swrs', 'fuel', 'measured_conversion_factors', '
 select col_hasnt_default('ggircs_swrs', 'fuel', 'measured_conversion_factors', 'fuel.measured_conversion_factors column should not  have a default');
 
 
--- TODO(wenzowski): check foreign key references
 
 insert into ggircs_swrs.ghgr_import (xml_file) values ($$
   <ActivityData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -264,33 +272,13 @@ select results_eq(
     'Foreign keys ghgr_import_id, process_idx, sub_process_idx, activity_name, units_idx and unit_idx in ggircs_swrs_fuel reference ggircs_swrs.unit'
 );
 
--- TODO(wenzowski): ensure all descriptors are extracted
--- with x as (select id, xml_hunk from ggircs_swrs.fuel)
--- select distinct tags.name
--- from x,
---      xmltable('/Fuel/*' passing xml_hunk columns name text path 'name(.)') as tags
--- order by tags.name;
-
--- AlternativeMethodologyDescription
--- AnnualFuelAmount
--- AnnualSteamGeneration
--- AnnualWeightedAverageCarbonContent
--- AnnualWeightedAverageHighHeatingValue
--- Emissions
--- FuelClassification
--- FuelDescription
--- FuelType
--- FuelUnits
+-- TODO(hamza): extract MeasuredEmission in a better way
 -- MeasuredConversionFactors
 -- MeasuredEmissionFactor
 -- MeasuredEmissionFactorUnitType
 -- MeasuredEmissionFactors
--- OtherFlareDetails
--- Q1
--- Q2
--- Q3
--- Q4
--- WastewaterProcessingFactors
+
 
 select * from finish();
+
 rollback;

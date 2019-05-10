@@ -5,12 +5,14 @@ begin;
 
 -- Emissions from Fuel
 create materialized view ggircs_swrs.emission as (
+
   with x as (
     select ghgr_import.id       as ghgr_import_id,
            ghgr_import.xml_file as source_xml
     from ggircs_swrs.ghgr_import
     order by ghgr_import_id desc
   )
+
   select x.ghgr_import_id,
          emission_details.*
   from x,
@@ -72,5 +74,6 @@ comment on column ggircs_swrs.emission.not_applicable is 'Is the emission applic
 comment on column ggircs_swrs.emission.quantity is 'The quantity of the emission';
 comment on column ggircs_swrs.emission.calculated_quantity is 'The CO2 Equivalent quantity of the emission';
 comment on column ggircs_swrs.emission.emission_category is 'The emissions category';
+
 
 commit;
