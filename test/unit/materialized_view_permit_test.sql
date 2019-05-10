@@ -88,7 +88,7 @@ select results_eq(
     'Foreign key ghgr_import_id in ggircs_swrs_parent_facility references ggircs_swrs.facility'
 );
 
--- TODO: Add a fixture to test the veracity of what is being pulled in to this view from xml
+-- TODO: Add tests on the veracity of what is being pulled in to this view from xml
 
 select * from finish();
 rollback;
