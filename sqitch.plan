@@ -16,3 +16,5 @@ materialized_view_naics [table_ghgr_import] 2019-05-01T23:52:03Z Dylan Leard <dy
 materialized_view_emission [table_ghgr_import] 2019-05-03T17:27:02Z Dylan Leard <dylan@button.is> # add materialized view emission to schema ggircs_swrs
 materialized_view_final_report [materialized_view_report] 2019-05-03T18:47:28Z Dylan Leard <dylan@button.is> # add materialized view final_report to schema ggircs_swrs
 materialized_view_fuel [table_ghgr_import] 2019-05-02T22:17:16Z Dylan Leard <dylan@button.is> # add materialized view fuel to schema ggircs_swrs
+materialized_view_contact [table_ghgr_import] 2019-05-08T20:37:31Z Dylan Leard <dylan@button.is> # add materialized view contact to schema ggircs_swrs
+materialized_view_address [table_ghgr_import] 2019-05-03T20:18:07Z Dylan Leard <dylan@button.is> # add materialized view address to schema ggircs_swrs
