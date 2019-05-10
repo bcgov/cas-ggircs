@@ -146,6 +146,13 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
             </Unit>
           </Units>
         </SubProcess>
+        <SubProcess>
+          <Units>
+            <Unit>
+              <UnitName>Red Herring</UnitName>
+            </Unit>
+          </Units>
+        </SubProcess>
       </Process>
     </ActivityPages>
   </ActivityData>
