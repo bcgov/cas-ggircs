@@ -4,7 +4,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(29);
+select plan(30);
 
 select has_materialized_view(
     'ggircs_swrs', 'parent_organisation',
@@ -73,6 +73,48 @@ select col_hasnt_default('ggircs_swrs', 'parent_organisation', 'website', 'paren
 
 
 refresh materialized view ggircs_swrs.parent_organisation with data;
+insert into ggircs_swrs.ghgr_import (xml_file) values ($$<ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <RegistrationData>
+    <ParentOrganisations>
+      <ParentOrganisation>
+        <Details>
+          <BusinessLegalName>Spectra Energy Facilities Holdings Partnership</BusinessLegalName>
+          <PercentageOwned>99.98</PercentageOwned>
+        </Details>
+        <Address>
+          <MailingAddress>
+            <UnitNumber>1500</UnitNumber>
+            <StreetNumber>500</StreetNumber>
+            <StreetName>4th</StreetName>
+            <StreetType>Avenue</StreetType>
+            <Municipality>Calgary</Municipality>
+            <ProvTerrState>Alberta</ProvTerrState>
+            <PostalCodeZipCode>T2P2V6</PostalCodeZipCode>
+            <Country>Canada</Country>
+          </MailingAddress>
+        </Address>
+      </ParentOrganisation>
+    </ParentOrganisations>
+  </RegistrationData>
+  <ReportDetails>
+    <OrganisationId>5485</OrganisationId>
+  </ReportDetails>
+</ReportData>
+$$);
+
+refresh materialized view ggircs_swrs.organisation with data;
+refresh materialized view ggircs_swrs.parent_organisation with data;
+
+select results_eq(
+    'select organisation.ghgr_import_id from ggircs_swrs.parent_organisation ' ||
+    'join ggircs_swrs.organisation ' ||
+    'on ' ||
+    'parent_organisation.ghgr_import_id = organisation.ghgr_import_id',
+
+    'select ghgr_import_id from ggircs_swrs.organisation',
+
+    'Foreign key ghgr_import_id in ggircs_swrs_parent_organisation references ggircs_swrs.organisation'
+);
 
 -- TODO: Add a fixture to test the veracity of what is being pulled in to this view from xml
 
