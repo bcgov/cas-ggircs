@@ -4,7 +4,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(27);
+select plan(28);
 
 select has_materialized_view(
     'ggircs_swrs', 'activity',
@@ -75,6 +75,16 @@ $$);
 
 -- refresh necessary views with data
 refresh materialized view ggircs_swrs.activity with data;
+
+--  Test ghgr_import_id fk relation
+select results_eq(
+   'select ghgr_import.id from ggircs_swrs.activity ' ||
+   'join ggircs_swrs.ghgr_import ' ||
+   'on ' ||
+   'activity.ghgr_import_id =  ghgr_import.id ',
+   'select id from ggircs_swrs.ghgr_import',
+   'Foreign key ghgr_import_id ggircs_swrs_activity reference ggircs_swrs.ghgr_import'
+);
 
 -- test the columns for matview facility have been properly parsed from xml
 select results_eq(
