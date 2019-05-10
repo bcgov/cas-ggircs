@@ -4,7 +4,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(41);
+select plan(42);
 
 select has_materialized_view(
     'ggircs_swrs', 'contact',
@@ -95,9 +95,46 @@ select col_type_is(      'ggircs_swrs', 'contact', 'language_correspondence', 'c
 select col_is_null(      'ggircs_swrs', 'contact', 'language_correspondence', 'contact.language_correspondence column should not allow null');
 select col_hasnt_default('ggircs_swrs', 'contact', 'language_correspondence', 'contact.language_correspondence column should not have a default');
 
+-- XML fixture for testing
+insert into ggircs_swrs.ghgr_import (xml_file) values ($$<ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <RegistrationData>
+    <Contacts>
+      <Contact>
+        <Details>
+          <ContactType>Operator Contact</ContactType>
+          <GivenName>Simon</GivenName>
+          <FamilyName>Belmont</FamilyName>
+          <TelephoneNumber>1233456789</TelephoneNumber>
+          <FaxNumber>987654321</FaxNumber>
+          <EmailAddress>dead@vampires.com</EmailAddress>
+          <Position>Vampire Hunter</Position>
+          <LanguageCorrespondence>English</LanguageCorrespondence>
+        </Details>
+      </Contact>
+    </Contacts>
+  </RegistrationData>
+  <ReportDetails>
+    <FacilityId>666</FacilityId>
+  </ReportDetails>
+</ReportData>
+$$);
+
+refresh materialized view ggircs_swrs.facility with data;
 refresh materialized view ggircs_swrs.contact with data;
 
--- TODO: Add a fixture to test the veracity of what is being pulled in to this view from xml
+--  Test ghgr_import_id fk relation
+select results_eq(
+   'select facility.ghgr_import_id from ggircs_swrs.contact ' ||
+   'join ggircs_swrs.facility ' ||
+   'on ' ||
+   'contact.ghgr_import_id =  facility.ghgr_import_id ',
+
+   'select ghgr_import_id from ggircs_swrs.facility',
+
+   'Foreign key ghgr_import_id in ggircs_swrs_contact references ggircs_swrs.facility'
+);
+
+-- TODO: tests on the veracity of what is being pulled in to this view from xml
 
 select * from finish();
 rollback;
