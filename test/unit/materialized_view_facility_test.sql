@@ -3,7 +3,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(20);
+select plan(21);
 
 -- Test matview report exists in schema ggircs_swrs
 select has_materialized_view('ggircs_swrs', 'facility', 'Materialized view facility exists');
@@ -56,28 +56,6 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
       </Address>
     </Facility>
   </RegistrationData>
-  <ReportDetails>
-    <FacilityId>666</FacilityId>
-  </ReportDetails>
-</ReportData>
-$$), ($$
-<ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <RegistrationData>
-    <Facility>
-      <Details>
-        <FacilityName>Stark Tower</FacilityName>
-        <RelationshipType>complicated</RelationshipType>
-        <PortabilityIndicator>P</PortabilityIndicator>
-        <Status>Active</Status>
-      </Details>
-      <Address>
-        <GeographicAddress>
-          <Latitude>23.45125</Latitude>
-          <Longitude>-90.59062</Longitude>
-        </GeographicAddress>
-      </Address>
-    </Facility>
-  </RegistrationData>
   <VerifyTombstone>
     <AlwaysSaveToSwimOnCommit>false</AlwaysSaveToSwimOnCommit>
     <Facility>
@@ -103,6 +81,18 @@ $$);
 -- refresh necessary views with data
 refresh materialized view ggircs_swrs.facility with data;
 
+-- Test ghgr_import_id fk relation
+select results_eq(
+    'select ghgr_import.id from ggircs_swrs.facility ' ||
+    'join ggircs_swrs.ghgr_import ' ||
+    'on ' ||
+    'facility.ghgr_import_id =  ghgr_import.id ',
+
+    'select id from ggircs_swrs.ghgr_import',
+
+    'Foreign key ghgr_import_id ggircs_swrs_facility reference ggircs_swrs.ghgr_import'
+);
+
 -- test the columnns for ggircs_swrs.facility have been properly parsed from xml
 select results_eq(
   'select ghgr_import_id from ggircs_swrs.facility',
@@ -111,37 +101,37 @@ select results_eq(
 );
 select results_eq(
   'select swrs_facility_id from ggircs_swrs.facility',
-  ARRAY[666::numeric, 666::numeric],
+  ARRAY[666::numeric],
   'ggircs_swrs.facility parsed column swrs_facility_id'
 );
 select results_eq(
   'select facility_name from ggircs_swrs.facility',
-  ARRAY['Avengers Compound'::varchar, 'Stark Tower'::varchar],
+  ARRAY['Avengers Compound'::varchar],
   'ggircs_swrs.facility parsed column facility_name'
 );
 select results_eq(
   'select relationship_type from ggircs_swrs.facility',
-  ARRAY['rebuilt'::varchar, 'complicated'::varchar],
+  ARRAY['rebuilt'::varchar],
   'ggircs_swrs.facility parsed column relationship_type'
 );
 select results_eq(
   'select portability_indicator from ggircs_swrs.facility',
-  ARRAY['P'::varchar, 'P'::varchar],
+  ARRAY['P'::varchar],
   'ggircs_swrs.facility parsed column portability_indicator'
 );
 select results_eq(
   'select status from ggircs_swrs.facility',
-  ARRAY['Active'::varchar, 'Active'::varchar],
+  ARRAY['Active'::varchar],
   'ggircs_swrs.facility parsed column status'
 );
 select results_eq(
   'select latitude from ggircs_swrs.facility',
-  ARRAY['43.17305'::varchar, '23.45125'::varchar],
+  ARRAY['43.17305'::varchar],
   'ggircs_swrs.facility parsed column latitude'
 );
 select results_eq(
   'select longitude from ggircs_swrs.facility',
-  ARRAY['-77.62479'::varchar, '-90.59062'::varchar],
+  ARRAY['-77.62479'::varchar],
   'ggircs_swrs.facility parsed column longitude'
 );
 
