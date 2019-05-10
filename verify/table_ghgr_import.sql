@@ -1,7 +1,7 @@
--- Verify ggircs:table_ghgr_import on pg
+-- Verify ggircs_swrs:table_ghgr_import on pg
 
-BEGIN;
+begin;
 
 select pg_catalog.has_table_privilege('ggircs_swrs.ghgr_import', 'select');
 
-ROLLBACK;
+rollback;
