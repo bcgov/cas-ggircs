@@ -11,9 +11,9 @@ create materialized view ggircs_swrs.organisation as (
            ghgr_import.xml_file as source_xml,
            ghgr_import.imported_at
     from ggircs_swrs.ghgr_import
-    order by ghgr_import_id desc
+    order by ghgr_import_id asc
   )
-  select row_number() over (order by ghgr_import_id asc)               as id,
+  select
          ghgr_import_id,
          report_details.swrs_organisation_id,
          coalesce(vt_business_legal_name, rd_business_legal_name) as business_legal_name,
@@ -21,13 +21,7 @@ create materialized view ggircs_swrs.organisation as (
          coalesce(vt_french_trade_name, rd_french_trade_name)     as french_trade_name,
          coalesce(vt_cra_business_number, rd_cra_business_number) as cra_business_number,
          coalesce(vt_duns, rd_duns)                               as duns,
-         coalesce(vt_web_site, rd_web_site)                       as website,
-         row_number() over (
-           partition by report_details.swrs_organisation_id
-           order by
-             ghgr_import_id desc,
-             imported_at desc
-           )                                                      as swrs_organisation_history_id
+         coalesce(vt_web_site, rd_web_site)                       as website
   from x,
        xmltable(
            '/ReportData/ReportDetails'
@@ -59,11 +53,9 @@ create materialized view ggircs_swrs.organisation as (
              vt_web_site varchar(1000) path './VerifyTombstone/Organisation/Details/WebSite'
          ) as vt_organisation_details
 ) with no data;
-create unique index ggircs_organisation_primary_key on ggircs_swrs.organisation (id);
-create index ggircs_swrs_organisation_history on ggircs_swrs.organisation (swrs_organisation_history_id);
+create unique index ggircs_organisation_primary_key on ggircs_swrs.organisation (ghgr_import_id, swrs_organisation_id);
 
 comment on materialized view ggircs_swrs.organisation is 'the materialized view housing all report data pertaining to the reporting organisation';
-comment on column ggircs_swrs.organisation.id is 'The primary key for the materialized view';
 comment on column ggircs_swrs.organisation.ghgr_import_id is 'The internal reference to the file imported from ghgr';
 comment on column ggircs_swrs.organisation.swrs_organisation_id is 'The reporting organisation swrs id';
 comment on column ggircs_swrs.organisation.business_legal_name is 'The legal business name of the reporting organisation';
@@ -72,6 +64,5 @@ comment on column ggircs_swrs.organisation.french_trade_name is 'The trade name 
 comment on column ggircs_swrs.organisation.cra_business_number is 'The organisation business number according to cra';
 comment on column ggircs_swrs.organisation.duns is 'The organisation duns number';
 comment on column ggircs_swrs.organisation.website is 'The organisation website address';
-comment on column ggircs_swrs.organisation.swrs_organisation_history_id is 'The id denoting the history attached to the organisation (1=latest)';
 
 commit;
