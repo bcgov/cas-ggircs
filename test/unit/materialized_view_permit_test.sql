@@ -4,7 +4,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(23);
+select plan(20);
 
 select has_materialized_view(
     'ggircs_swrs', 'permit',
@@ -19,7 +19,6 @@ select has_index(
 select columns_are('ggircs_swrs'::name, 'permit'::name, array[
     'ghgr_import_id'::name,
     'path_context'::name,
-    'swrs_facility_id'::name,
     'permit_idx'::name,
     'issuing_agency'::name,
     'issuing_dept_agency_program'::name,
@@ -28,11 +27,6 @@ select columns_are('ggircs_swrs'::name, 'permit'::name, array[
 
 select col_type_is(      'ggircs_swrs', 'permit', 'ghgr_import_id', 'integer', 'permit.ghgr_import_id column should be type integer');
 select col_hasnt_default('ggircs_swrs', 'permit', 'ghgr_import_id', 'permit.ghgr_import_id column should not have a default value');
-
---  select has_column(       'ggircs_swrs', 'permit', 'swrs_facility_id', 'permit.swrs_facility_id column should exist');
-select col_type_is(      'ggircs_swrs', 'permit', 'swrs_facility_id', 'numeric(1000,0)', 'permit.swrs_facility_id column should be type numeric');
-select col_is_null(      'ggircs_swrs', 'permit', 'swrs_facility_id', 'permit.swrs_facility_id column should not allow null');
-select col_hasnt_default('ggircs_swrs', 'permit', 'swrs_facility_id', 'permit.swrs_facility_id column should not have a default');
 
 --  select has_column(       'ggircs_swrs', 'permit', 'path_context', 'permit.path_context column should exist');
 select col_type_is(      'ggircs_swrs', 'permit', 'path_context', 'character varying(1000)', 'permit.path_context column should be type varchar');

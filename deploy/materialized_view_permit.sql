@@ -16,7 +16,6 @@ create materialized view ggircs_swrs.permit as (
            '//Permit'
            passing source_xml
            columns
-                swrs_facility_id numeric(1000,0) path './ancestor-or-self::Permit/ancestor::ReportData/ReportDetails/FacilityId[normalize-space(.)]',
                 path_context varchar(1000) path 'name(./ancestor::VerifyTombstone|./ancestor::RegistrationData)',
                 permit_idx integer path 'string(count(./ancestor-or-self::Permit/preceding-sibling::Permit))' not null,
                 issuing_agency varchar(1000) path'./IssuingAgency[normalize-space(.)]',
@@ -27,11 +26,10 @@ create materialized view ggircs_swrs.permit as (
 ) with no data;
 
 create unique index ggircs_permit_primary_key
-    on ggircs_swrs.permit (ghgr_import_id, swrs_facility_id, path_context, permit_idx);
+    on ggircs_swrs.permit (ghgr_import_id, path_context, permit_idx);
 
 comment on materialized view ggircs_swrs.permit is 'The materialized view housing permit information';
 comment on column ggircs_swrs.permit.ghgr_import_id is 'The foreign key reference to ggircs_swrs.ghgr_import';
-comment on column ggircs_swrs.permit.swrs_facility_id is 'The foreign key reference to ggircs_swrs.facility';
 comment on column ggircs_swrs.permit.path_context is 'The context of the parent path (from VerifyTombstone or RegistrationData';
 comment on column ggircs_swrs.permit.permit_idx is 'The number of preceding Permit siblings before this Permit';
 comment on column ggircs_swrs.permit.issuing_agency is 'The issuing agency for this permit';
