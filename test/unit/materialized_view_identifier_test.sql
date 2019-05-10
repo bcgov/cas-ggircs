@@ -21,7 +21,7 @@ select has_index('ggircs_swrs', 'identifier', 'ggircs_identifier_primary_key', '
 select has_index('ggircs_swrs', 'identifier', 'ggircs_swrs_identifier_history', 'ggircs_swrs.identifier has index: ggircs_swrs_identifier_history');
 
 -- Test unique indicies are defined unique
-select index_is_unique('ggircs_swrs', 'facility', 'ggircs_facility_primary_key', 'Matview report index ggircs_facility_primary_key is unique');
+select index_is_unique('ggircs_swrs', 'identifier', 'ggircs_identifier_primary_key', 'Matview report index ggircs_identifier_primary_key is unique');
 
 -- Test columns in matview report have correct types
 select col_type_is('ggircs_swrs', 'identifier', 'id', 'bigint', 'ggircs_swrs.identifier column id has type bigint');
