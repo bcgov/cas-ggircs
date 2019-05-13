@@ -4,7 +4,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(42);
+select plan(51);
 
 select has_materialized_view(
     'ggircs_swrs', 'contact',
@@ -104,12 +104,16 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$<ReportData xmlns:xsi="
           <ContactType>Operator Contact</ContactType>
           <GivenName>Simon</GivenName>
           <FamilyName>Belmont</FamilyName>
-          <TelephoneNumber>1233456789</TelephoneNumber>
+          <TelephoneNumber>123456789</TelephoneNumber>
           <FaxNumber>987654321</FaxNumber>
+          <ExtensionNumber>1</ExtensionNumber>
           <EmailAddress>dead@vampires.com</EmailAddress>
           <Position>Vampire Hunter</Position>
-          <LanguageCorrespondence>English</LanguageCorrespondence>
+          <LanguageCorrespondence>english</LanguageCorrespondence>
         </Details>
+      </Contact>
+      <Contact>
+        <GivenName>RedHerring</GivenName>
       </Contact>
     </Contacts>
   </RegistrationData>
@@ -127,7 +131,8 @@ select results_eq(
    'select facility.ghgr_import_id from ggircs_swrs.contact ' ||
    'join ggircs_swrs.facility ' ||
    'on ' ||
-   'contact.ghgr_import_id =  facility.ghgr_import_id ',
+   'contact.ghgr_import_id =  facility.ghgr_import_id ' ||
+    'and contact.contact_idx=0',
 
    'select ghgr_import_id from ggircs_swrs.facility',
 
@@ -135,6 +140,60 @@ select results_eq(
 );
 
 -- TODO: tests on the veracity of what is being pulled in to this view from xml
+-- Test the xml imports for ggircs_swrs.contact
+select results_eq(
+    'select contact_type from ggircs_swrs.contact where contact_idx=0',
+    ARRAY['Operator Contact'::varchar],
+    'Column contact_type in ggircs_swrs.contact has correctly parsed the xml'
+);
+
+select results_eq(
+    'select given_name from ggircs_swrs.contact where contact_idx=0',
+    ARRAY['Simon'::varchar],
+    'Column given_name in ggircs_swrs.contact has correctly parsed the xml'
+);
+
+select results_eq(
+    'select family_name from ggircs_swrs.contact where contact_idx=0',
+    ARRAY['Belmont'::varchar],
+    'Column family_name in ggircs_swrs.contact has correctly parsed the xml'
+);
+
+select results_eq(
+    'select telephone_number from ggircs_swrs.contact where contact_idx=0',
+    ARRAY['123456789'::varchar],
+    'Column telephone_number in ggircs_swrs.contact has correctly parsed the xml'
+);
+
+select results_eq(
+    'select fax_number from ggircs_swrs.contact where contact_idx=0',
+    ARRAY['987654321'::varchar],
+    'Column fax_number in ggircs_swrs.contact has correctly parsed the xml'
+);
+
+select results_eq(
+    'select extension_number from ggircs_swrs.contact where contact_idx=0',
+    ARRAY['1'::varchar],
+    'Column extension_number in ggircs_swrs.contact has correctly parsed the xml'
+);
+
+select results_eq(
+    'select email_address from ggircs_swrs.contact where contact_idx=0',
+    ARRAY['dead@vampires.com'::varchar],
+    'Column email_address in ggircs_swrs.contact has correctly parsed the xml'
+);
+
+select results_eq(
+    'select position from ggircs_swrs.contact where contact_idx=0',
+    ARRAY['Vampire Hunter'::varchar],
+    'Column position in ggircs_swrs.contact has correctly parsed the xml'
+);
+
+select results_eq(
+    'select language_correspondence from ggircs_swrs.contact where contact_idx=0',
+    ARRAY['english'::varchar],
+    'Column language_correspondence in ggircs_swrs.contact has correctly parsed the xml'
+);
 
 select * from finish();
 rollback;
