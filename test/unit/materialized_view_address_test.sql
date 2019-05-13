@@ -293,24 +293,24 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
       <Contact>
         <Address>
           <PhysicalAddress>
-            <StreetNumber>125</StreetNumber>
+            <StreetNumber>1</StreetNumber>
             <StreetNumberSuffix/>
             <StreetName>First Street</StreetName>
             <StreetType>Street</StreetType>
             <StreetDirection>Southwest</StreetDirection>
             <Municipality>Calgary</Municipality>
             <ProvTerrState>Alberta</ProvTerrState>
-            <PostalCodeZipCode>T2P3L8</PostalCodeZipCode>
+            <PostalCodeZipCode>HOHOHO</PostalCodeZipCode>
             <Country>Canada</Country>
           </PhysicalAddress>
           <MailingAddress>
-            <StreetNumber>125</StreetNumber>
+            <StreetNumber>1</StreetNumber>
             <StreetName>First Street</StreetName>
             <StreetType>Street</StreetType>
             <StreetDirection>Southwest</StreetDirection>
             <Municipality>Calgary</Municipality>
             <ProvTerrState>Alberta</ProvTerrState>
-            <PostalCodeZipCode>T2P3L8</PostalCodeZipCode>
+            <PostalCodeZipCode>HOHOHO</PostalCodeZipCode>
             <Country>Canada</Country>
             <AdditionalInformation/>
           </MailingAddress>
@@ -331,28 +331,28 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
       <ParentOrganisation>
         <Address>
           <PhysicalAddress>
-            <UnitNumber>1500</UnitNumber>
-            <StreetNumber>500</StreetNumber>
+            <UnitNumber>1</UnitNumber>
+            <StreetNumber>1234</StreetNumber>
             <StreetNumberSuffix/>
             <StreetName>4th</StreetName>
             <StreetType>Avenue</StreetType>
             <Municipality>Calgary</Municipality>
             <ProvTerrState>Alberta</ProvTerrState>
-            <PostalCodeZipCode>T2P2V6</PostalCodeZipCode>
+            <PostalCodeZipCode>HOHOHO</PostalCodeZipCode>
             <Country>Canada</Country>
             <AdditionalInformation/>
             <LandSurveyDescription/>
             <NationalTopographicalDescription/>
           </PhysicalAddress>
           <MailingAddress>
-            <UnitNumber>1500</UnitNumber>
-            <StreetNumber>500</StreetNumber>
+            <UnitNumber>1</UnitNumber>
+            <StreetNumber>1234</StreetNumber>
             <StreetNumberSuffix/>
             <StreetName>4th</StreetName>
             <StreetType>Avenue</StreetType>
             <Municipality>Calgary</Municipality>
             <ProvTerrState>Alberta</ProvTerrState>
-            <PostalCodeZipCode>T2P2V6</PostalCodeZipCode>
+            <PostalCodeZipCode>HOHOHO</PostalCodeZipCode>
             <Country>Canada</Country>
             <AdditionalInformation/>
           </MailingAddress>
@@ -372,7 +372,7 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
   </RegistrationData>
   <ReportDetails>
     <FacilityId>666</FacilityId>
-    <OrganisationId>50804</OrganisationId>
+    <OrganisationId>123</OrganisationId>
   </ReportDetails>
 </ReportData>
 $$);

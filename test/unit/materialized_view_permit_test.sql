@@ -61,7 +61,7 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$<ReportData xmlns:xsi="
         <Permits>
           <Permit>
             <IssuingAgency>BC Ministry of Environment</IssuingAgency>
-            <PermitNumber>PA-14929</PermitNumber>
+            <PermitNumber>AB-12345</PermitNumber>
           </Permit>
         </Permits>
       </Identifiers>
