@@ -4,7 +4,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(21);
+select plan(27);
 
 select has_materialized_view(
     'ggircs_swrs', 'permit',
@@ -61,6 +61,7 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$<ReportData xmlns:xsi="
         <Permits>
           <Permit>
             <IssuingAgency>BC Ministry of Environment</IssuingAgency>
+            <IssuingDeptAgencyProgram>abc</IssuingDeptAgencyProgram>
             <PermitNumber>AB-12345</PermitNumber>
           </Permit>
         </Permits>
@@ -88,7 +89,42 @@ select results_eq(
     'Foreign key ghgr_import_id in ggircs_swrs_parent_facility references ggircs_swrs.facility'
 );
 
--- TODO: Add tests on the veracity of what is being pulled in to this view from xml
+-- XML import tests
+select results_eq(
+    'select ghgr_import_id from ggircs_swrs.permit',
+    'select id from ggircs_swrs.ghgr_import',
+    'column ghgr_import_id in permit correctly parsed xml'
+);
+
+select results_eq(
+    'select path_context from ggircs_swrs.permit',
+    ARRAY['RegistrationData'::varchar],
+    'column path_context in permit correctly parsed xml'
+);
+
+select results_eq(
+    'select permit_idx from ggircs_swrs.permit',
+    ARRAY[0::integer],
+    'column permit_idx in permit correctly parsed xml'
+);
+
+select results_eq(
+    'select issuing_agency from ggircs_swrs.permit',
+    ARRAY['BC Ministry of Environment'::varchar],
+    'column issuing_agency in permit correctly parsed xml'
+);
+
+select results_eq(
+    'select issuing_dept_agency_program from ggircs_swrs.permit',
+    ARRAY['abc'::varchar],
+    'column issuing_dept_agency_program in permit correctly parsed xml'
+);
+
+select results_eq(
+    'select permit_number from ggircs_swrs.permit',
+    ARRAY['AB-12345'::varchar],
+    'column permit_number in permit correctly parsed xml'
+);
 
 select * from finish();
 rollback;

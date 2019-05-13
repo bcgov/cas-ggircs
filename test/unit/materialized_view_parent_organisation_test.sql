@@ -108,8 +108,7 @@ select results_eq(
     'Foreign key ghgr_import_id in ggircs_swrs_parent_organisation references ggircs_swrs.organisation'
 );
 
--- TODO: Add tests on the veracity of what is being pulled in to this view from xml
-
+-- XML import tests
 select results_eq(
     'select ghgr_import_id from ggircs_swrs.parent_organisation',
     'select id from ggircs_swrs.ghgr_import',
