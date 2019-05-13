@@ -83,13 +83,13 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$<ReportData xmlns:xsi="
         </Details>
         <Address>
           <MailingAddress>
-            <UnitNumber>1500</UnitNumber>
-            <StreetNumber>500</StreetNumber>
+            <UnitNumber>1</UnitNumber>
+            <StreetNumber>123</StreetNumber>
             <StreetName>4th</StreetName>
             <StreetType>Avenue</StreetType>
             <Municipality>Calgary</Municipality>
             <ProvTerrState>Alberta</ProvTerrState>
-            <PostalCodeZipCode>T2P2V6</PostalCodeZipCode>
+            <PostalCodeZipCode>HOHOHO</PostalCodeZipCode>
             <Country>Canada</Country>
           </MailingAddress>
         </Address>
@@ -97,7 +97,7 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$<ReportData xmlns:xsi="
     </ParentOrganisations>
   </RegistrationData>
   <ReportDetails>
-    <OrganisationId>5485</OrganisationId>
+    <OrganisationId>1234</OrganisationId>
   </ReportDetails>
 </ReportData>
 $$);
