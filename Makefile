@@ -1,3 +1,5 @@
+# fix needed for these creds needed heregit
+# make test SQITCH_USERNAME=postgres SQITCH_PASSWORD=ggircs_admin PSQL="psql -h localhost -U postgres" PGPASSWORD=ggircs_admin PG_PROVE="pg_prove -h localhost -U postgres"
 PERL=perl
 CPAN=cpan
 SQITCH=sqitch
@@ -5,29 +7,24 @@ GREP=grep
 GIT=git
 AWK=awk
 PSQL=psql -h localhost
-TEST_DB=ggircs_test
+TEST_DB=ggircs_temp #todo: change back to test
 PG_PROVE=pg_prove -h localhost
 DOCKER_SQITCH_IMAGE=wenzowski/sqitch
 DOCKER_SQITCH_TAG=0.9999
 DOCKER_POSTGRES_IMAGE=wenzowski/postgres
 DOCKER_POSTGRES_TAG=11.2
+PGPASSWORD=
+SQITCH_USERNAME=
+SQITCH_PASSWORD=
 
-test:
-	@@$(MAKE) -s $(MAKEFLAGS) createdb;
-	@@$(MAKE) -s $(MAKEFLAGS) deploy;
-	@@$(MAKE) -s $(MAKEFLAGS) revert;
-	@@$(MAKE) -s $(MAKEFLAGS) deploy;
-	@@$(MAKE) -s $(MAKEFLAGS) prove_unit;
-	@@$(MAKE) -s $(MAKEFLAGS) prove_style;
-	@@$(MAKE) -s $(MAKEFLAGS) dropdb;
+.EXPORT_ALL_VARIABLES:
+
+test: dropdb createdb deploy prove_unit
 .PHONY: test
 
-unit: dropdb createdb deploy prove_unit
-.PHONY: unit
-
 deploy: 
-	# Deploy all changes to ${TEST_DB} using sqitch
-	@@sqitch deploy ${TEST_DB};
+	# Deploy all changes to ${TEST_DB} using sqitch.
+	@@${SQITCH} deploy ${TEST_DB};
 .PHONY: deploy
 
 prove_style:
@@ -42,7 +39,7 @@ prove_unit:
 
 revert:
 	# Revert all changes to ${TEST_DB} using sqitch
-	@@sqitch revert -y ${TEST_DB};
+	@@${SQITCH} revert -y ${TEST_DB};
 .PHONY: revert
 
 createdb:
