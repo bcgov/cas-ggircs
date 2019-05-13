@@ -153,6 +153,7 @@ select results_eq(
   array['800855555'::numeric],
   'ggircs_swrs.final_report.swrs_report_id should contain one single value'
 );
+
 select results_eq(
   $$select ghgr_import_id from ggircs_swrs.final_report$$,
   $$select ghgr_import_id from ggircs_swrs.report where status = 'Archived'$$,
