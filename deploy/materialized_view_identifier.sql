@@ -39,3 +39,5 @@ comment on column ggircs_swrs.identifier.identifier_type is 'The type of identif
 comment on column ggircs_swrs.identifier.identifier_value is 'The value of the identifier';
 
 commit;
+
+

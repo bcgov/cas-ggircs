@@ -46,7 +46,7 @@ create materialized view ggircs_swrs.report as (
              status varchar(1000) not null path 'Status|ReportStatus[normalize-space(.)]', -- Unknown, In Progress, Submitted, Archived, Completed
              version varchar(1000) path 'Version[normalize-space(.)]',
              submission_date varchar(1000) path 'SubmissionDate[normalize-space(.)]',
-             last_modified_by varchar(1000) not null path 'LastModifiedBy[normalize-space(.)]',
+             last_modified_by varchar(1000) path 'LastModifiedBy[normalize-space(.)]',
              last_modified_date timestamp with time zone path 'LastModifiedDate[normalize-space(.)]',
              update_comment varchar(1000) path 'UpdateComment[normalize-space(.)]'
          ) as report_status

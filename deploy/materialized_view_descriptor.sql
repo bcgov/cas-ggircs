@@ -28,8 +28,8 @@ create materialized view ggircs_swrs.descriptor as (
              ,parent varchar(1000) path 'name(./parent::*)'
              ,class varchar(1000) path 'name(.)' not null
              ,attribute varchar(1000) path 'name(./@*)' not null
-             ,attr_value varchar(1000) path 'concat(./@*[1]," ",./@*[2]," ",./@*[3]," ",./@*[4]," ",./@*[5]," ",./@*[6])'
-             ,node_value varchar(1000) path 'string(./text())'
+             ,attr_value varchar(10000) path 'concat(./@*[1]," ",./@*[2]," ",./@*[3]," ",./@*[4]," ",./@*[5]," ",./@*[6])'
+             ,node_value varchar(10000) path 'string(./text())'
          ) as depth_four_descriptors
 
   union all
@@ -53,8 +53,8 @@ create materialized view ggircs_swrs.descriptor as (
              ,parent varchar(1000) path 'name(./parent::*)'
              ,class varchar(1000) path 'name(.)' not null
              ,attribute varchar(1000) path 'name(./@*)' not null
-             ,attr_value varchar(1000) path 'concat(./@*[1]," ",./@*[2]," ",./@*[3]," ",./@*[4]," ",./@*[5]," ",./@*[6])'
-             ,node_value varchar(1000) path 'string(./text())'
+             ,attr_value varchar(10000) path 'concat(./@*[1]," ",./@*[2]," ",./@*[3]," ",./@*[4]," ",./@*[5]," ",./@*[6])'
+             ,node_value varchar(10000) path 'string(./text())'
          ) as depth_three_descriptors
 
   union all
@@ -78,8 +78,8 @@ create materialized view ggircs_swrs.descriptor as (
              ,parent varchar(1000) path 'name(./parent::*)'
              ,class varchar(1000) path 'name(.)' not null
              ,attribute varchar(1000) path 'name(./@*)' not null
-             ,attr_value varchar(1000) path 'concat(./@*[1]," ",./@*[2]," ",./@*[3]," ",./@*[4]," ",./@*[5]," ",./@*[6])'
-             ,node_value varchar(1000) path 'string(./text())'
+             ,attr_value varchar(10000) path 'concat(./@*[1]," ",./@*[2]," ",./@*[3]," ",./@*[4]," ",./@*[5]," ",./@*[6])'
+             ,node_value varchar(10000) path 'string(./text())'
          ) as depth_one_descriptors
 )
   with no data;
