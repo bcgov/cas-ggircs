@@ -6,6 +6,7 @@ GIT=git
 AWK=awk
 PSQL=psql -h localhost
 TEST_DB=ggircs_test
+DEV_DB=ggircs_dev
 PG_PROVE=pg_prove -h localhost
 DOCKER_SQITCH_IMAGE=wenzowski/sqitch
 DOCKER_SQITCH_TAG=0.9999
@@ -33,12 +34,17 @@ deploy:
 prove_style:
 	# Run style-related test suite on all objects in db using pg_prove
 	@@${PG_PROVE} -v -d ${TEST_DB} test/style/*_test.sql
-.PHONY: prove
+.PHONY: prove_style
 
 prove_unit:
 	# Run unit test suite using pg_prove
 	@@${PG_PROVE} -v -d ${TEST_DB} test/unit/*_test.sql
-.PHONY: test
+.PHONY: prove_unit
+
+prove_integration:
+	# Run unit test suite using pg_prove
+	@@${PG_PROVE} -v -d ${DEV_DB} test/integration/*_test.sql
+.PHONY: prove_integration
 
 revert:
 	# Revert all changes to ${TEST_DB} using sqitch
