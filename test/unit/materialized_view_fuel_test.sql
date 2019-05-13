@@ -5,7 +5,7 @@ reset client_min_messages;
 
 begin;
 
-select plan(88);
+select plan(128);
 
 
 select has_materialized_view(
@@ -214,11 +214,23 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
                 <Fuel>
                   <FuelType>Natural Gas (Sm^3)</FuelType>
                   <FuelClassification>non-biomass</FuelClassification>
+                  <FuelDescription/>
                   <FuelUnits>Sm^3</FuelUnits>
                   <AnnualFuelAmount>4550520</AnnualFuelAmount>
                   <AnnualWeightedAverageHighHeatingValue>0.0369</AnnualWeightedAverageHighHeatingValue>
                   <AnnualWeightedAverageCarbonContent>0.7192</AnnualWeightedAverageCarbonContent>
+                  <AnnualSteamGeneration>.6</AnnualSteamGeneration>
+                  <AlternativeMethodologyDescription>wordswordswords</AlternativeMethodologyDescription>
+                  <MeasuredEmissionFactor>1</MeasuredEmissionFactor>
+                  <MeasuredEmissionFactorUnitType>red</MeasuredEmissionFactorUnitType>
+                  <OtherFlareDetails>flare!</OtherFlareDetails>
+                  <Q1>1</Q1>
+                  <Q2>2</Q2>
+                  <Q3>3</Q3>
+                  <Q4>4</Q4>
                   <MeasuredEmissionFactors/>
+                  <WastewaterProcessingFactors/>
+                  <MeasuredConversionFactors/>
                 </Fuel>
               </Fuels>
             </Unit>
@@ -234,7 +246,39 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
       </Process>
     </ActivityPages>
   </ActivityData>$$);
-
+/*
+'ghgr_import_id'::name,
+    'activity_name'::name,
+    'sub_activity_name'::name,
+    'unit_name'::name,
+    'sub_unit_name'::name,
+    'process_idx'::name,
+    'sub_process_idx'::name,
+    'units_idx'::name,
+    'unit_idx'::name,
+    'substances_idx'::name,
+    'substance_idx'::name,
+    'fuel_idx'::name,
+    'fuel_type'::name,
+    'fuel_classification'::name,
+    'fuel_description'::name,
+    'fuel_units'::name,
+    'annual_fuel_amount'::name,
+    'annual_weighted_avg_carbon_content'::name,
+    'annual_weighted_avg_hhv'::name,
+    'annual_steam_generation'::name,
+    'alternative_methodology_description'::name,
+    'measured_emission_factor'::name,
+    'measured_emission_factor_unit_type'::name,
+    'other_flare_details'::name,
+    'q1'::name,
+    'q2'::name,
+    'q3'::name,
+    'q4'::name,
+    'measured_emission_factors'::name,
+    'wastewater_processing_factors'::name,
+    'measured_conversion_factors'::name
+*/
 refresh materialized view ggircs_swrs.fuel with data;
 refresh materialized view ggircs_swrs.unit with data;
 
@@ -260,6 +304,194 @@ select results_eq(
 
     'Foreign keys ghgr_import_id, process_idx, sub_process_idx, activity_name, units_idx and unit_idx in ggircs_swrs_fuel reference ggircs_swrs.unit'
 );
+
+-- Test xml column parsing
+select results_eq(
+    'select ghgr_import_id from ggircs_swrs.fuel where fuel_idx=0 and unit_idx=0',
+    'select id from ggircs_swrs.ghgr_import',
+    'column ghgr_import_id in ggircs_swrs.fuel was properly parsed from xml'
+);
+
+select results_eq(
+    'select activity_name from ggircs_swrs.fuel where fuel_idx=0 and unit_idx=0',
+    ARRAY['ActivityPages'::varchar],
+    'column activity_name in ggircs_swrs.fuel was properly parsed from xml'
+);
+
+select results_eq(
+    'select sub_activity_name from ggircs_swrs.fuel where fuel_idx=0 and unit_idx=0',
+    ARRAY['Process'::varchar],
+    'column sub_activity_name in ggircs_swrs.fuel was properly parsed from xml'
+);
+
+select results_eq(
+    'select unit_name from ggircs_swrs.fuel where fuel_idx=0 and unit_idx=0',
+    ARRAY[''::varchar],
+    'column unit_name in ggircs_swrs.fuel was properly parsed from xml'
+);
+
+select results_eq(
+    'select sub_unit_name from ggircs_swrs.fuel where fuel_idx=0 and unit_idx=0',
+    ARRAY[''::varchar],
+    'column sub_unit_name in ggircs_swrs.fuel was properly parsed from xml'
+);
+
+select results_eq(
+    'select process_idx from ggircs_swrs.fuel where fuel_idx=0 and unit_idx=0',
+    ARRAY[0::integer],
+    'column process_idx in ggircs_swrs.fuel was properly parsed from xml'
+);
+
+select results_eq(
+    'select sub_process_idx from ggircs_swrs.fuel where fuel_idx=0 and unit_idx=0',
+    ARRAY[0::integer],
+    'column sub_process_idx in ggircs_swrs.fuel was properly parsed from xml'
+);
+
+select results_eq(
+    'select units_idx from ggircs_swrs.fuel where fuel_idx=0 and unit_idx=0',
+    ARRAY[0::integer],
+    'column unit_idx in ggircs_swrs.fuel was properly parsed from xml'
+);
+
+select results_eq(
+    'select unit_idx from ggircs_swrs.fuel where fuel_idx=0 and unit_idx=0',
+    ARRAY[0::integer],
+    'column units_idx in ggircs_swrs.fuel was properly parsed from xml'
+);
+
+select results_eq(
+    'select substances_idx from ggircs_swrs.fuel where fuel_idx=0 and unit_idx=0',
+    ARRAY[0::integer],
+    'column substances_idx in ggircs_swrs.fuel was properly parsed from xml'
+);
+
+select results_eq(
+    'select substance_idx from ggircs_swrs.fuel where fuel_idx=0 and unit_idx=0',
+    ARRAY[0::integer],
+    'column substance_idx in ggircs_swrs.fuel was properly parsed from xml'
+);
+
+select results_eq(
+    'select fuel_idx from ggircs_swrs.fuel where fuel_idx=0 and unit_idx=0',
+    ARRAY[0::integer],
+    'column fuel_idx in ggircs_swrs.fuel was properly parsed from xml'
+);
+
+select results_eq(
+    'select fuel_type from ggircs_swrs.fuel where fuel_idx=0 and unit_idx=0',
+    ARRAY['Natural Gas (Sm^3)'::varchar],
+    'column fuel_type in ggircs_swrs.fuel was properly parsed from xml'
+);
+
+select results_eq(
+    'select fuel_classification from ggircs_swrs.fuel where fuel_idx=0 and unit_idx=0',
+    ARRAY['non-biomass'::varchar],
+    'column fuel_classification in ggircs_swrs.fuel was properly parsed from xml'
+);
+
+select results_eq(
+    'select fuel_description from ggircs_swrs.fuel where fuel_idx=0 and unit_idx=0',
+    ARRAY[''::varchar],
+    'column fuel_description in ggircs_swrs.fuel was properly parsed from xml'
+);
+
+select results_eq(
+    'select fuel_units from ggircs_swrs.fuel where fuel_idx=0 and unit_idx=0',
+    ARRAY['Sm^3'::varchar],
+    'column fuel_units in ggircs_swrs.fuel was properly parsed from xml'
+);
+
+select results_eq(
+    'select annual_fuel_amount from ggircs_swrs.fuel where fuel_idx=0 and unit_idx=0',
+    ARRAY['4550520'::varchar],
+    'column annual_fuel_amount in ggircs_swrs.fuel was properly parsed from xml'
+);
+
+select results_eq(
+    'select annual_weighted_avg_hhv from ggircs_swrs.fuel where fuel_idx=0 and unit_idx=0',
+    ARRAY['0.0369'::varchar],
+    'column annual_weighted_avg_hhv in ggircs_swrs.fuel was properly parsed from xml'
+);
+
+select results_eq(
+    'select annual_weighted_avg_carbon_content from ggircs_swrs.fuel where fuel_idx=0 and unit_idx=0',
+    ARRAY['0.7192'::varchar],
+    'column annual_weighted_avg_carbon_content in ggircs_swrs.fuel was properly parsed from xml'
+);
+
+select results_eq(
+    'select annual_steam_generation from ggircs_swrs.fuel where fuel_idx=0 and unit_idx=0',
+    ARRAY['.6'::varchar],
+    'column annual_steam_generation in ggircs_swrs.fuel was properly parsed from xml'
+);
+
+select results_eq(
+    'select alternative_methodology_description from ggircs_swrs.fuel where fuel_idx=0 and unit_idx=0',
+    ARRAY['wordswordswords'::varchar],
+    'column alternative_methodology_description in ggircs_swrs.fuel was properly parsed from xml'
+);
+
+select results_eq(
+    'select measured_emission_factor from ggircs_swrs.fuel where fuel_idx=0 and unit_idx=0',
+    ARRAY['1'::varchar],
+    'column measured_emission_factor in ggircs_swrs.fuel was properly parsed from xml'
+);
+
+select results_eq(
+    'select measured_emission_factor_unit_type from ggircs_swrs.fuel where fuel_idx=0 and unit_idx=0',
+    ARRAY['red'::varchar],
+    'column measured_emission_factor_unit_type in ggircs_swrs.fuel was properly parsed from xml'
+);
+
+select results_eq(
+    'select other_flare_details from ggircs_swrs.fuel where fuel_idx=0 and unit_idx=0',
+    ARRAY['flare!'::varchar],
+    'column other_flare_details in ggircs_swrs.fuel was properly parsed from xml'
+);
+
+select results_eq(
+    'select q1 from ggircs_swrs.fuel where fuel_idx=0 and unit_idx=0',
+    ARRAY[1::varchar],
+    'column q1 in ggircs_swrs.fuel was properly parsed from xml'
+);
+
+select results_eq(
+    'select q2 from ggircs_swrs.fuel where fuel_idx=0 and unit_idx=0',
+    ARRAY['2'::varchar],
+    'column q2 in ggircs_swrs.fuel was properly parsed from xml'
+);
+
+select results_eq(
+    'select q3 from ggircs_swrs.fuel where fuel_idx=0 and unit_idx=0',
+    ARRAY['3'::varchar],
+    'column q3 in ggircs_swrs.fuel was properly parsed from xml'
+);
+
+select results_eq(
+    'select q4 from ggircs_swrs.fuel where fuel_idx=0 and unit_idx=0',
+    ARRAY['4'::varchar],
+    'column q4 in ggircs_swrs.fuel was properly parsed from xml'
+);
+
+select results_eq(
+    'select measured_emission_factors::text from ggircs_swrs.fuel where fuel_idx=0 and unit_idx=0',
+    ARRAY['<MeasuredEmissionFactors/>'::text],
+    'column measured_emission_factors in ggircs_swrs.fuel was properly parsed from xml'
+);
+
+select results_eq(
+    'select wastewater_processing_factors::text from ggircs_swrs.fuel where fuel_idx=0 and unit_idx=0',
+    ARRAY['<WastewaterProcessingFactors/>'::text],
+    'column wastewater_processing_factors in ggircs_swrs.fuel was properly parsed from xml'
+);
+
+select results_eq(
+    'select measured_conversion_factors::text from ggircs_swrs.fuel where fuel_idx=0 and unit_idx=0',
+    ARRAY['<MeasuredConversionFactors/>'::text],
+    'column measured_conversion_factors in ggircs_swrs.fuel was properly parsed from xml'
+);
+
 
 -- TODO(hamza): extract MeasuredEmission in a better way
 -- MeasuredConversionFactors
