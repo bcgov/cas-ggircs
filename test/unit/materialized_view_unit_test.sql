@@ -4,7 +4,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(57);
+select plan(75);
 
 select has_materialized_view(
     'ggircs_swrs', 'unit',
@@ -143,6 +143,21 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
             <Unit>
               <UnitName>Burner</UnitName>
               <UnitDesc>Supply heat to bed dryer</UnitDesc>
+              <COGenUnit>
+                <CycleType>1</CycleType>
+                <CogenUnitName>hello</CogenUnitName>
+                <NameplateCapacity>12</NameplateCapacity>
+                <NetPower>100</NetPower>
+                <SteamHeatAcquisitionAcquiredQuantity>5</SteamHeatAcquisitionAcquiredQuantity>
+                <SteamHeatAcquisitionProviderName>steamy</SteamHeatAcquisitionProviderName>
+                <SupplementalFiringPurpose>none</SupplementalFiringPurpose>
+                <ThermalOutputQuantity>10</ThermalOutputQuantity>
+              </COGenUnit>
+              <NonCOGenUnit>
+                <NameplateCapacity>5</NameplateCapacity>
+                <NetPower>4</NetPower>
+                <NonCogenUnitName>noncogen</NonCogenUnitName>
+              </NonCOGenUnit>
             </Unit>
           </Units>
         </SubProcess>
@@ -163,13 +178,6 @@ $$);
 refresh materialized view ggircs_swrs.unit with data;
 refresh materialized view ggircs_swrs.activity with data;
 
--- test the columns for matview facility have been properly parsed from xml
-select results_eq(
-  'select distinct ghgr_import_id from ggircs_swrs.unit',
-  'select id from ggircs_swrs.ghgr_import',
-  'ggircs_swrs.activity.ghgr_import_id relates to ggircs_swrs.ghgr_import.id'
-);
-
 -- test the foreign keys in unit return a value when joined on activity
 select results_eq(
     'select activity.ghgr_import_id from ggircs_swrs.unit ' ||
@@ -185,29 +193,126 @@ select results_eq(
     'Foreign keys ghgr_import_id, process_idx, sub_process_idx and activity_name in ggircs_swrs_unit reference ggircs_swrs.activity'
 );
 
+-- test the columns for matview facility have been properly parsed from xml
+select results_eq(
+  'select distinct ghgr_import_id from ggircs_swrs.unit',
+  'select id from ggircs_swrs.ghgr_import',
+  'ggircs_swrs.activity.ghgr_import_id relates to ggircs_swrs.ghgr_import.id'
+);
+
 select results_eq(
   'select distinct activity_name from ggircs_swrs.unit',
   ARRAY['ActivityPages'::varchar],
   'ggircs_swrs.activity.activity_name is extracted'
 );
--- TODO(wenzowski): continue testing remaining columns
---     'process_idx'::name,
---     'sub_process_idx'::name,
---     'unit_id'::name,
---     'unit_type'::name,
---     'unit_name'::name,
---     'unit_description'::name,
---     'cogen_cycle_type'::name,
---     'cogen_nameplate_capacity'::name,
---     'cogen_net_power'::name,
---     'cogen_steam_heat_acq_name'::name,
---     'cogen_steam_heat_acq_quantity'::name,
---     'cogen_supplemental_firing_purpose'::name,
---     'cogen_thermal_output_quantity'::name,
---     'cogen_unit_name'::name,
---     'non_cogen_nameplate_capacity'::name,
---     'non_cogen_net_power'::name,
---     'non_cogen_unit_name'::name
+
+select results_eq(
+  'select process_idx from ggircs_swrs.unit where sub_process_idx=0 and units_idx=0 and unit_idx=0',
+  ARRAY[0::integer],
+  'ggircs_swrs.activity.process_idx is extracted'
+);
+
+select results_eq(
+  'select sub_process_idx from ggircs_swrs.unit where sub_process_idx=0 and units_idx=0 and unit_idx=0',
+  ARRAY[0::integer],
+  'ggircs_swrs.activity.sub_process_idx is extracted'
+);
+
+select results_eq(
+  'select units_idx from ggircs_swrs.unit where sub_process_idx=0',
+  ARRAY[0::integer],
+  'ggircs_swrs.activity.units_idx is extracted'
+);
+
+select results_eq(
+  'select unit_idx from ggircs_swrs.unit where sub_process_idx=0',
+  ARRAY[0::integer],
+  'ggircs_swrs.activity.unit_idx is extracted'
+);
+
+select results_eq(
+  'select unit_name from ggircs_swrs.unit where sub_process_idx=0',
+  ARRAY['Burner'::varchar],
+  'ggircs_swrs.activity.unit_name is extracted'
+);
+
+select results_eq(
+  'select unit_description from ggircs_swrs.unit where sub_process_idx=0',
+  ARRAY['Supply heat to bed dryer'::varchar],
+  'ggircs_swrs.activity.unit_description is extracted'
+);
+
+select results_eq(
+  'select unit_description from ggircs_swrs.unit where sub_process_idx=0',
+  ARRAY['Supply heat to bed dryer'::varchar],
+  'ggircs_swrs.activity.unit_description is extracted'
+);
+
+select results_eq(
+  'select cogen_cycle_type from ggircs_swrs.unit where sub_process_idx=0',
+  ARRAY[1::varchar],
+  'ggircs_swrs.activity.cogen_cycle_type is extracted'
+);
+
+select results_eq(
+  'select cogen_nameplate_capacity from ggircs_swrs.unit where sub_process_idx=0',
+  ARRAY[12::varchar],
+  'ggircs_swrs.activity.cogen_nameplate_capacity is extracted'
+);
+
+select results_eq(
+  'select cogen_net_power from ggircs_swrs.unit where sub_process_idx=0',
+  ARRAY[100::varchar],
+  'ggircs_swrs.activity.cogen_net_power is extracted'
+);
+
+select results_eq(
+  'select cogen_steam_heat_acq_quantity from ggircs_swrs.unit where sub_process_idx=0',
+  ARRAY[5::varchar],
+  'ggircs_swrs.activity.cogen_steam_heat_acq_quantity is extracted'
+);
+
+select results_eq(
+  'select cogen_steam_heat_acq_name from ggircs_swrs.unit where sub_process_idx=0',
+  ARRAY['steamy'::varchar],
+  'ggircs_swrs.activity.cogen_steam_heat_acq_name is extracted'
+);
+
+select results_eq(
+  'select cogen_supplemental_firing_purpose from ggircs_swrs.unit where sub_process_idx=0',
+  ARRAY['none'::varchar],
+  'ggircs_swrs.activity.cogen_supplemental_firing_purpose is extracted'
+);
+
+select results_eq(
+  'select cogen_thermal_output_quantity from ggircs_swrs.unit where sub_process_idx=0',
+  ARRAY[10::varchar],
+  'ggircs_swrs.activity.cogen_thermal_output_quantity is extracted'
+);
+
+select results_eq(
+  'select cogen_unit_name from ggircs_swrs.unit where sub_process_idx=0',
+  ARRAY['hello'::varchar],
+  'ggircs_swrs.activity.cogen_unit_name is extracted'
+);
+
+select results_eq(
+  'select non_cogen_nameplate_capacity from ggircs_swrs.unit where sub_process_idx=0',
+  ARRAY[5::varchar],
+  'ggircs_swrs.activity.non_cogen_nameplate_capacity is extracted'
+);
+
+select results_eq(
+  'select non_cogen_net_power from ggircs_swrs.unit where sub_process_idx=0',
+  ARRAY[4::varchar],
+  'ggircs_swrs.activity.non_cogen_net_power is extracted'
+);
+
+select results_eq(
+  'select non_cogen_unit_name from ggircs_swrs.unit where sub_process_idx=0',
+  ARRAY['noncogen'::varchar],
+  'ggircs_swrs.activity.non_cogen_unit_name is extracted'
+);
 
 select * from finish();
 rollback;
