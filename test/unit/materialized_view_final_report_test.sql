@@ -136,20 +136,17 @@ on conflict (swrs_organisation_id) do nothing;
 refresh materialized view ggircs_swrs.report with data;
 refresh materialized view ggircs_swrs.final_report with data;
 
--- TODO: revisit after #32 report fixup merged
 -- Test ghgr_import_id fk relation
--- select results_eq(
---     'select report.ghgr_import_id from ggircs_swrs.final_report ' ||
---     'join ggircs_swrs.report ' ||
---     'on (' ||
---     'final_report.ghgr_import_id = report.ghgr_import_id ' ||
---     'and final_report.swrs_report_id = report.swrs_report_id) ' ||
---     $$and report.status='Completed'$$,
---
---     'select ghgr_import_id from ggircs_swrs.report',
---
---     'Foreign key ghgr_import_id in ggircs_swrs_final_report references ggircs_swrs.report'
--- );
+select results_eq(
+    'select report.swrs_report_id from ggircs_swrs.final_report ' ||
+    'join ggircs_swrs.report ' ||
+    'on ' ||
+    'final_report.swrs_report_id = report.swrs_report_id ',
+
+    'select swrs_report_id from ggircs_swrs.report',
+
+    'Foreign key ghgr_import_id in ggircs_swrs_final_report references ggircs_swrs.report'
+);
 
 select results_eq(
   'select swrs_report_id from ggircs_swrs.final_report',
