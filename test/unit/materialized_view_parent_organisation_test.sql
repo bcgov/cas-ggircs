@@ -4,7 +4,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(30);
+select plan(38);
 
 select has_materialized_view(
     'ggircs_swrs', 'parent_organisation',
@@ -78,21 +78,13 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$<ReportData xmlns:xsi="
     <ParentOrganisations>
       <ParentOrganisation>
         <Details>
-          <BusinessLegalName>Spectra Energy Facilities Holdings Partnership</BusinessLegalName>
+          <BusinessLegalName>abc</BusinessLegalName>
           <PercentageOwned>99.98</PercentageOwned>
+          <FrenchTradeName>abc</FrenchTradeName>
+          <EnglishTradeName>abc</EnglishTradeName>
+          <DUNSNumber>1</DUNSNumber>
+          <WebSite>www.hockeyisgood.com</WebSite>
         </Details>
-        <Address>
-          <MailingAddress>
-            <UnitNumber>1</UnitNumber>
-            <StreetNumber>123</StreetNumber>
-            <StreetName>4th</StreetName>
-            <StreetType>Avenue</StreetType>
-            <Municipality>Calgary</Municipality>
-            <ProvTerrState>Alberta</ProvTerrState>
-            <PostalCodeZipCode>HOHOHO</PostalCodeZipCode>
-            <Country>Canada</Country>
-          </MailingAddress>
-        </Address>
       </ParentOrganisation>
     </ParentOrganisations>
   </RegistrationData>
@@ -117,6 +109,54 @@ select results_eq(
 );
 
 -- TODO: Add tests on the veracity of what is being pulled in to this view from xml
+
+select results_eq(
+    'select ghgr_import_id from ggircs_swrs.parent_organisation',
+    'select id from ggircs_swrs.ghgr_import',
+    'column ghgr_import_id in parent_organisation correctly parsed xml'
+);
+
+select results_eq(
+    'select path_context from ggircs_swrs.parent_organisation',
+    ARRAY['RegistrationData'::varchar],
+    'column path_context in parent_organisation correctly parsed xml'
+);
+
+select results_eq(
+    'select parent_organisation_idx from ggircs_swrs.parent_organisation',
+    ARRAY[0::integer],
+    'column parent_organisation_idx in parent_organisation correctly parsed xml'
+);
+
+select results_eq(
+    'select percentage_owned from ggircs_swrs.parent_organisation',
+    ARRAY[99.98::numeric],
+    'column percentage_owned in parent_organisation correctly parsed xml'
+);
+
+select results_eq(
+    'select french_trade_name from ggircs_swrs.parent_organisation',
+    ARRAY['abc'::varchar],
+    'column french_trade_name in parent_organisation correctly parsed xml'
+);
+
+select results_eq(
+    'select english_trade_name from ggircs_swrs.parent_organisation',
+    ARRAY['abc'::varchar],
+    'column french_trade_name in parent_organisation correctly parsed xml'
+);
+
+select results_eq(
+    'select duns from ggircs_swrs.parent_organisation',
+    ARRAY[1::varchar],
+    'column duns in parent_organisation correctly parsed xml'
+);
+
+select results_eq(
+    'select website from ggircs_swrs.parent_organisation',
+    ARRAY['www.hockeyisgood.com'::varchar],
+    'column website in parent_organisation correctly parsed xml'
+);
 
 select * from finish();
 rollback;
