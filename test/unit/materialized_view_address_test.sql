@@ -3,7 +3,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(131);
+select plan(134);
 
 select has_materialized_view(
     'ggircs_swrs', 'address',
@@ -19,6 +19,7 @@ select columns_are('ggircs_swrs'::name, 'address'::name, array[
     'ghgr_import_id'::name,
     'swrs_facility_id'::name,
     'swrs_organisation_id'::name,
+    'path_context'::name,
     'type'::name,
     'contact_idx'::name,
     'parent_organisation_idx'::name,
@@ -67,6 +68,10 @@ select col_hasnt_default('ggircs_swrs', 'address', 'swrs_facility_id', 'address.
 select col_type_is(      'ggircs_swrs', 'address', 'swrs_organisation_id', 'numeric(1000,0)', 'address.swrs_organisation_id column should be type numeric');
 select col_is_null(      'ggircs_swrs', 'address', 'swrs_organisation_id', 'address.swrs_organisation_id column should allow null');
 select col_hasnt_default('ggircs_swrs', 'address', 'swrs_organisation_id', 'address.swrs_organisation_id column should not have a default');
+
+--  select has_column(       'ggircs_swrs', 'address', 'path_context', 'address.path_context column should exist');
+select col_type_is(      'ggircs_swrs', 'address', 'path_context', 'character varying(1000)', 'address.path_context column should be type varchar');
+select col_hasnt_default('ggircs_swrs', 'address', 'path_context', 'address.context column should not have a default');
 
 --  select has_column(       'ggircs_swrs', 'address', 'type', 'address.type column should exist');
 select col_type_is(      'ggircs_swrs', 'address', 'type', 'character varying(1000)', 'address.type column should be type varchar');
@@ -258,7 +263,6 @@ $$);
 
 -- refresh necessary views with data
 refresh materialized view ggircs_swrs.address with data;
-
 -- test the columnns for ggircs_swrs.facility have been properly parsed from xml
 
 select results_eq(
@@ -266,6 +270,12 @@ select results_eq(
   'select id from ggircs_swrs.ghgr_import',
   'ggircs_swrs.address parsed column ghgr_import_id'
 );
+select results_eq(
+  'select path_context from ggircs_swrs.address',
+  ARRAY['RegistrationData'::varchar],
+  'ggircs_swrs.address parsed column path_context'
+);
+
 select results_eq(
   'select type from ggircs_swrs.address',
   ARRAY['Facility'::varchar],
