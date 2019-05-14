@@ -1,4 +1,4 @@
-FROM ubuntu:xenial
+FROM docker.io/ubuntu:xenial
 
 RUN apt-get -qq update && \
     apt-get -qq install -y curl ca-certificates build-essential perl git make wget gawk

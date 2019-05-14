@@ -1,4 +1,4 @@
-FROM postgres:11.2
+FROM docker.io/postgres:11.2
 USER root
 RUN apt-get update && apt-get install -y git make postgresql-server-dev-all postgresql-common
 RUN cpan TAP::Parser::SourceHandler::pgTAP
