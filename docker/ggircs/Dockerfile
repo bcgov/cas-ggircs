@@ -1,7 +1,4 @@
-ARG DOCKER_SQITCH_IMAGE=wenzowski/sqitch
-ARG DOCKER_SQITCH_TAG=0.9999
-
-FROM ${DOCKER_SQITCH_IMAGE}:${DOCKER_SQITCH_TAG}
+FROM cas-ggircs-sqitch:0.9999
 
 USER root
 RUN adduser --disabled-password --shell /bin/bash ggircs
