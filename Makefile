@@ -75,16 +75,16 @@ verify_installed:
 	@@${GIT} --version | ${AWK} '{print $$NF}';
 	# ensure psql is installed
 	@@${PSQL} --version | ${AWK} '{print $$NF}';
-	# ensure the correct role exist in postgres
-ifeq (1,${shell ${PSQL} -qAtc "select count(*) from pg_user where usename='${PG_ROLE}' and usesuper=true"})
-	@@echo 'A postgres role with the name "${PG_ROLE}" must exist and have the SUPERUSER privilege.'
-	@@exit 1
-endif
 .PHONY: verify_installed
 
 verify_ready:
 	# ensure postgres is online
 	@@${PSQL} -tc 'show server_version;' | ${AWK} '{print $$NF}';
+	# ensure the correct role exist in postgres
+ifeq (1,${shell ${PSQL} -qAtc "select count(*) from pg_user where usename='${PG_ROLE}' and usesuper=true"})
+	@@echo 'A postgres role with the name "${PG_ROLE}" must exist and have the SUPERUSER privilege.'
+	@@exit 1
+endif
 .PHONY: verify_ready
 
 verify: verify_installed verify_ready
