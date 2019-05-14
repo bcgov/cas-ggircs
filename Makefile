@@ -1,5 +1,6 @@
 PERL=perl
 CPAN=cpan
+CPANM=cpanm
 SQITCH=sqitch
 GREP=grep
 GIT=git
@@ -7,6 +8,8 @@ AWK=awk
 PSQL=psql -h localhost
 TEST_DB=ggircs_test
 PG_PROVE=pg_prove -h localhost
+PG_SHAREDIR := ${shell pg_config --sharedir}
+PG_ROLE := ${shell whoami}
 DOCKER=docker
 DOCKER_HUB_PREFIX=wenzowski/
 DOCKER_SQITCH_IMAGE=sqitch
@@ -76,20 +79,17 @@ verify_installed:
 	@@${PERL} -V:'install.*'
 	# ensure cpan is defined
 	@@${PERL} -MCPAN -e 'print $$CPAN::VERSION . "\n";'
-	# ensure sqitch is >= 0.97.0
-	@@${PERL} -MApp::Sqitch -e 'print $$App::Sqitch::VERSION . "\n";'
-	@@${PERL} -MApp::Sqitch -e 'if ($$App::Sqitch::VERSION < 0.97) { exit 1 };'
-	# ensure postgres driver is installed
-	@@${PERL} -MDBD::Pg -e 'print $$DBD::Pg::VERSION . "\n";'
-	# ensure pg_prove is >= 3.28
-	@@${PERL} -MTAP::Parser::SourceHandler::pgTAP -e 'print $$TAP::Parser::SourceHandler::pgTAP::VERSION . "\n";'
-	@@${PERL} -MTAP::Parser::SourceHandler::pgTAP -e 'if ($$TAP::Parser::SourceHandler::pgTAP::VERSION < 3.28) { exit 1 };'
 	# ensure awk is installed
 	@@${AWK} --version | ${AWK} '{print $$NF}';
 	# ensure git is installed
 	@@${GIT} --version | ${AWK} '{print $$NF}';
 	# ensure psql is installed
 	@@${PSQL} --version | ${AWK} '{print $$NF}';
+	# ensure the correct role exist in postgres
+ifeq (1,${shell ${PSQL} -qAtc "select count(*) from pg_user where usename='${PG_ROLE}' and usesuper=true"})
+	@@echo 'A postgres role with the name "${PG_ROLE}" must exist and have the SUPERUSER privilege.'
+	@@exit 1
+endif
 .PHONY: verify_installed
 
 verify_ready:
@@ -107,25 +107,31 @@ pgtap:
 		${GIT} checkout v1.0.0;
 
 install_pgtap: pgtap
-	# install pg_prove
-	@@${CPAN} TAP::Parser::SourceHandler::pgTAP
 	# install pgTAP into postgres
 	@@cd pgtap && \
 		$(MAKE) -s $(MAKEFLAGS) && \
-		$(MAKE) -s $(MAKEFLAGS) installcheck && \
-		$(MAKE) -s $(MAKEFLAGS) install;
+		$(MAKE) -s $(MAKEFLAGS) installcheck;
+
+	@@/bin/test -w ${PG_SHAREDIR}/extension && \
+		cd pgtap && $(MAKE) -s $(MAKEFLAGS) install || \
+		echo "FATAL: The current user does not have permission to write to ${PG_SHAREDIR}/extension and install pgTAP." && \
+		echo "It needs to be installed by a user having write access to that directory, e.g. with 'cd pgtap && sudo make install'";	
 .PHONY: install_pgtap
 
-install_sqitch:
-	# install sqitch
-	@@${CPAN} App::Sqitch
-	# install postgres driver for sqitch
-	@@${CPAN} DBD::Pg
-	# install pg_prove
-	@@${CPAN} TAP::Parser::SourceHandler::pgTAP
-.PHONY: install_sqitch
 
-install: install_sqitch install_pgtap
+install_cpanm: 
+ifeq (${shell which ${CPANM}},)
+	# install cpanm
+	@@${CPAN} App:cpanminus
+endif
+.PHONY: install_cpanm
+
+install_cpandeps:
+	# install Perl dependencies from cpanfile
+	${CPANM} --installdeps .
+.PHONY: install_cpandeps
+
+install: install_cpanm install_cpandeps install_pgtap
 .PHONY: install
 
 docker_build_sqitch:
