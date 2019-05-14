@@ -13,7 +13,7 @@ create materialized view ggircs_swrs.measured_emission_factor as (
   select ghgr_import_id, factor_details.*
   from x,
        xmltable(
-           '//MeasuredEmissionFactors'
+           '//MeasuredEmissionFactor'
            passing source_xml
            columns
              activity_name varchar(1000) path 'name(./ancestor::ActivityData/*)' not null,
@@ -26,11 +26,11 @@ create materialized view ggircs_swrs.measured_emission_factor as (
              unit_idx integer path 'string(count(./ancestor::Unit/preceding-sibling::Unit))' not null,
              substances_idx integer path 'string(count(./ancestor::Substance/parent::*/preceding-sibling::*))' not null,
              substance_idx integer path 'string(count(./ancestor::Substance/preceding-sibling::Substance))' not null,
-             fuel_idx integer path 'string(count(../preceding-sibling::Fuel))' not null,
-             measured_emission_factor_idx integer path 'string(count(./MeasuredEmissionFactor/preceding-sibling::MeasuredEmissionFactor))' not null,
-             measured_emission_factor_amount varchar(1000) path './MeasuredEmissionFactor/MeasuredEmissionFactorAmount|../MeasuredEmissionFactor',
-             measured_emission_factor_gas varchar(1000) path './MeasuredEmissionFactor/MeasuredEmissionFactorGas',
-             measured_emission_factor_unit_type varchar(1000) path './MeasuredEmissionFactor/MeasuredEmissionFactorUnitType|../MeasuredEmissionFactorUnitType'
+             fuel_idx integer path 'string(count(./ancestor::Fuel/preceding-sibling::Fuel))' not null,
+             measured_emission_factor_idx integer path 'string(count(./preceding-sibling::MeasuredEmissionFactor))' not null,
+             measured_emission_factor_amount numeric(1000,3) path './MeasuredEmissionFactorAmount|./ancestor::Fuel/MeasuredEmissionFactor',
+             measured_emission_factor_gas varchar(1000) path './MeasuredEmissionFactorGas',
+             measured_emission_factor_unit_type varchar(1000) path './MeasuredEmissionFactorUnitType|./ancestor::Fuel/MeasuredEmissionFactorUnitType'
          ) as factor_details
 ) with no data;
 

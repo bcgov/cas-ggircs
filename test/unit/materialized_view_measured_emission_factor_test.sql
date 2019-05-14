@@ -5,7 +5,7 @@ reset client_min_messages;
 
 begin;
 
-select plan(39);
+select plan(43);
 
 select has_materialized_view(
     'ggircs_swrs', 'measured_emission_factor',
@@ -113,7 +113,9 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
                 <Fuel>
                   <MeasuredEmissionFactors>
                     <MeasuredEmissionFactor>
-                    
+                      <MeasuredEmissionFactorAmount>100</MeasuredEmissionFactorAmount>
+                      <MeasuredEmissionFactorGas>CO2</MeasuredEmissionFactorGas>
+                      <MeasuredEmissionFactorUnitType>g/GJ</MeasuredEmissionFactorUnitType>
                     </MeasuredEmissionFactor>
                   </MeasuredEmissionFactors>
                 </Fuel>
@@ -129,27 +131,49 @@ refresh materialized view ggircs_swrs.fuel with data;
 refresh materialized view ggircs_swrs.measured_emission_factor with data;
 
 -- test foreign keys
+-- measured_emission_factor -> ghgr_import
 select results_eq(
   'select distinct ghgr_import_id from ggircs_swrs.measured_emission_factor',
   'select id from ggircs_swrs.ghgr_import',
   'ggircs_swrs.measured_emission_factor.ghgr_import_id relates to ggircs_swrs.ghgr_import.id'
 );
 
--- select results_eq(
---     'select unit.ghgr_import_id from ggircs_swrs.fuel ' ||
---     'join ggircs_swrs.unit ' ||
---     'on (' ||
---     'fuel.ghgr_import_id =  unit.ghgr_import_id ' ||
---     'and fuel.process_idx = unit.process_idx ' ||
---     'and fuel.sub_process_idx = unit.sub_process_idx ' ||
---     'and fuel.activity_name = unit.activity_name ' ||
---     'and fuel.units_idx = unit.units_idx ' ||
---     'and fuel.unit_idx = unit.unit_idx)',
---
---     'select ghgr_import_id from ggircs_swrs.unit',
---
---     'Foreign keys ghgr_import_id, process_idx, sub_process_idx, activity_name, units_idx and unit_idx in ggircs_swrs_fuel reference ggircs_swrs.unit'
--- );
+-- measured_emission_factor -> fuel
+select results_eq(
+    'select fuel.ghgr_import_id from ggircs_swrs.measured_emission_factor ' ||
+    'join ggircs_swrs.fuel ' ||
+    'on (' ||
+    'measured_emission_factor.ghgr_import_id =  fuel.ghgr_import_id ' ||
+    'and measured_emission_factor.process_idx = fuel.process_idx ' ||
+    'and measured_emission_factor.sub_process_idx = fuel.sub_process_idx ' ||
+    'and measured_emission_factor.activity_name = fuel.activity_name ' ||
+    'and measured_emission_factor.units_idx = fuel.units_idx ' ||
+    'and measured_emission_factor.unit_idx = fuel.unit_idx)' ||
+    'and measured_emission_factor.fuel_idx = fuel.fuel_idx',
+
+    'select ghgr_import_id from ggircs_swrs.fuel',
+
+    'Foreign keys ghgr_import_id, process_idx, sub_process_idx, activity_name, units_idx, unit_idx and fuel.idx in ggircs_swrs_measured_emission_factor reference ggircs_swrs.fuel'
+);
+
+-- test xml imports
+select results_eq(
+  'select measured_emission_factor_amount from ggircs_swrs.measured_emission_factor',
+  ARRAY[100::numeric],
+  'measured_emission_factor parsed column measured_emission_factor_amount from xml'
+);
+
+select results_eq(
+  'select measured_emission_factor_gas from ggircs_swrs.measured_emission_factor',
+  ARRAY['CO2'::varchar],
+  'measured_emission_factor parsed column measured_emission_factor_gas from xml'
+);
+
+select results_eq(
+  'select measured_emission_factor_unit_type from ggircs_swrs.measured_emission_factor',
+  ARRAY['g/GJ'::varchar],
+  'measured_emission_factor parsed column measured_emission_factor_unit_type from xml'
+);
 
 select * from finish();
 
