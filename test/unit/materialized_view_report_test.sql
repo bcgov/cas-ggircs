@@ -3,13 +3,12 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(52);
+select plan(50);
 
 -- Test matview report exists in schema ggircs_swrs
 select has_materialized_view('ggircs_swrs', 'report', 'Materialized view report exists');
 
 -- Test column names in matview report exist and are correct
-select has_column('ggircs_swrs', 'report', 'id', 'Matview report has column: id');
 select has_column('ggircs_swrs', 'report', 'ghgr_import_id', 'Matview report has column: ghgr_import_id');
 select has_column('ggircs_swrs', 'report', 'source_xml', 'Matview report has column: source_xml');
 select has_column('ggircs_swrs', 'report', 'imported_at', 'Matview report has column: imported_at');
@@ -33,7 +32,6 @@ select has_index('ggircs_swrs', 'report', 'ggircs_swrs_report_history', 'Matview
 select index_is_unique('ggircs_swrs', 'report', 'ggircs_report_primary_key', 'Matview report index ggircs_report_primary_key is unique');
 
 -- Test columns in matview report have correct types
-select col_type_is('ggircs_swrs', 'report', 'id', 'bigint', 'Matview report column id has type bigint');
 select col_type_is('ggircs_swrs', 'report', 'ghgr_import_id', 'integer', 'Matview report column ghgr has type integer');
 select col_type_is('ggircs_swrs', 'report', 'source_xml', 'xml', 'Matview report column source_xml has type xml');
 select col_type_is('ggircs_swrs', 'report', 'imported_at', 'timestamp with time zone', 'Matview report column imported_at has type timestamp with time zone');

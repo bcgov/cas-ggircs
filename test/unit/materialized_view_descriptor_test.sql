@@ -19,7 +19,7 @@ select has_index(
 
 select columns_are('ggircs_swrs'::name, 'descriptor'::name, array[
     'ghgr_import_id'::name,
-    'context'::name,
+    'activity_name'::name,
     'process_idx'::name,
     'sub_process_idx'::name,
     'grandparent_idx'::name,
@@ -38,8 +38,8 @@ select columns_are('ggircs_swrs'::name, 'descriptor'::name, array[
 select col_type_is(      'ggircs_swrs', 'descriptor', 'ghgr_import_id', 'integer', 'descriptor.ghgr_import_id column should be type integer');
 select col_hasnt_default('ggircs_swrs', 'descriptor', 'ghgr_import_id', 'descriptor.ghgr_import_id column should not have a default value');
 
-select col_type_is(      'ggircs_swrs', 'descriptor', 'context', 'character varying(1000)', 'descriptor.context column should be type text');
-select col_hasnt_default('ggircs_swrs', 'descriptor', 'context', 'descriptor.context column should not have a default');
+select col_type_is(      'ggircs_swrs', 'descriptor', 'activity_name', 'character varying(1000)', 'descriptor.activity_name column should be type text');
+select col_hasnt_default('ggircs_swrs', 'descriptor', 'activity_name', 'descriptor.activity_name column should not have a default');
 
 --  select col_is_null(      'ggircs_swrs', 'descriptor', 'process_idx', 'descriptor.process_idx column should allow null');
 select col_type_is(      'ggircs_swrs', 'descriptor', 'process_idx', 'integer', 'descriptor.process_idx column should be type integer');
@@ -72,10 +72,10 @@ select col_hasnt_default('ggircs_swrs', 'descriptor', 'class', 'descriptor.class
 select col_type_is(      'ggircs_swrs', 'descriptor', 'attribute', 'character varying(1000)', 'descriptor.attribute column should be type text');
 select col_hasnt_default('ggircs_swrs', 'descriptor', 'attribute', 'descriptor.attribute column should not have a default');
 
-select col_type_is(      'ggircs_swrs', 'descriptor', 'attr_value', 'character varying(1000)', 'descriptor.attr_value column should be type text');
+select col_type_is(      'ggircs_swrs', 'descriptor', 'attr_value', 'character varying(10000)', 'descriptor.attr_value column should be type text');
 select col_hasnt_default('ggircs_swrs', 'descriptor', 'attr_value', 'descriptor.attr_value column should not have a default');
 
-select col_type_is(      'ggircs_swrs', 'descriptor', 'node_value', 'character varying(1000)', 'descriptor.node_value column should be type text');
+select col_type_is(      'ggircs_swrs', 'descriptor', 'node_value', 'character varying(10000)', 'descriptor.node_value column should be type text');
 select col_hasnt_default('ggircs_swrs', 'descriptor', 'node_value', 'descriptor.node_value column should not have a default');
 
 
@@ -161,14 +161,14 @@ select results_eq(
   'ggircs_swrs.descriptor.parent is extracted where class is LimeTypeName'
 );
 
--- test that mutiple contexts are being created based on child of ReportData (e.g. ActivityPages, ProcessFlowDiagram etc.)
+-- test that mutiple activity_names are being created based on child of ReportData (e.g. ActivityPages, ProcessFlowDiagram etc.)
 select results_eq(
-  $$select context from ggircs_swrs.descriptor where class='UploadedFileName' $$,
+  $$select activity_name from ggircs_swrs.descriptor where class='UploadedFileName' $$,
   Array['ProcessFlowDiagram'::varchar],
-  'ggircs_swrs.descriptor.context is extracted where class is UploadedFileName'
+  'ggircs_swrs.descriptor.activity_name is extracted where class is UploadedFileName'
 );
 
--- test that values in the ProcessFlowDiagram context is extracted
+-- test that values in the ProcessFlowDiagram activity_name is extracted
 select results_eq(
   $$select node_value from ggircs_swrs.descriptor where class='UploadedFileName' $$,
   Array['all_our_base.pdf'::varchar],
