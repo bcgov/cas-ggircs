@@ -147,9 +147,84 @@ select results_eq(
   'ggircs_swrs.final_report.ghgr_import_id should refer to the correct version'
 );
 
+delete from ggircs_swrs.ghgr_import where id < 200;
+insert into ggircs_swrs.ghgr_import (imported_at, xml_file) VALUES
+('2018-09-29T11:55:39.423', $$
+<ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ReportDetails>
+    <ReportID>800855555</ReportID>
+    <PrepopReportID></PrepopReportID>
+    <ReportType>R7</ReportType>
+    <FacilityId>666</FacilityId>
+    <OrganisationId>113119</OrganisationId>
+    <ReportingPeriodDuration>1999</ReportingPeriodDuration>
+    <ReportStatus>
+      <Status>Completed</Status>
+      <Version>3</Version>
+      <LastModifiedBy>Donny Donaldson McDonaldface</LastModifiedBy>
+      <LastModifiedDate>2018-09-28T11:55:39.423</LastModifiedDate>
+    </ReportStatus>
+  </ReportDetails>
+</ReportData>
+$$), ('2018-10-15T12:35:27.226', $$
+<ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ReportDetails>
+    <ReportID>800855555</ReportID>
+    <PrepopReportID></PrepopReportID>
+    <ReportType>R7</ReportType>
+    <FacilityId>666</FacilityId>
+    <OrganisationId>113119</OrganisationId>
+    <ReportingPeriodDuration>1999</ReportingPeriodDuration>
+    <ReportStatus>
+      <Status>Submitted</Status>
+      <SubmissionDate>2018-10-14T12:35:27.226</SubmissionDate>
+      <Version>3</Version>
+      <LastModifiedBy>Donny Donaldson McDonaldface</LastModifiedBy>
+      <LastModifiedDate>2018-10-14T12:35:27.226</LastModifiedDate>
+    </ReportStatus>
+  </ReportDetails>
+</ReportData>
+$$), ('2018-11-15T12:35:27.226', $$
+<ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ReportDetails>
+    <ReportID>800855555</ReportID>
+    <PrepopReportID></PrepopReportID>
+    <ReportType>R7</ReportType>
+    <FacilityId>666</FacilityId>
+    <OrganisationId>113119</OrganisationId>
+    <ReportingPeriodDuration>1999</ReportingPeriodDuration>
+    <ReportStatus>
+      <Status>Archived</Status>
+      <SubmissionDate>2018-11-14T12:35:27.226</SubmissionDate>
+      <Version>3</Version>
+      <LastModifiedBy>Donny Donaldson McDonaldface</LastModifiedBy>
+      <LastModifiedDate>2018-11-14T12:35:27.226</LastModifiedDate>
+    </ReportStatus>
+  </ReportDetails>
+</ReportData>
+$$), ('2018-12-15T12:35:27.226', $$
+    <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ReportDetails>
+    <ReportID>12345</ReportID>
+    <PrepopReportID></PrepopReportID>
+    <ReportType>R7</ReportType>
+    <FacilityId>666</FacilityId>
+    <OrganisationId>113119</OrganisationId>
+    <ReportingPeriodDuration>1999</ReportingPeriodDuration>
+    <ReportStatus>
+      <Status>Bad-Data</Status>
+      <SubmissionDate>2018-11-14T12:35:27.226</SubmissionDate>
+      <Version>3</Version>
+      <LastModifiedBy>Donny Donaldson McDonaldface</LastModifiedBy>
+      <LastModifiedDate>2018-11-14T12:35:27.226</LastModifiedDate>
+    </ReportStatus>
+  </ReportDetails>
+</ReportData>
+$$);
+
 -- Test that the ignore_list is properly ignoring reports by swrs_organisation_id
 select is_empty(
-    $$select * from ggircs_swrs.final_report where swrs_report_id =12345 $$,
+    $$select * from ggircs_swrs.final_report where swrs_report_id = 12345 $$,
     'ggircs_swrs.final_report ignored value from table_ignore_organisation'
 );
 
