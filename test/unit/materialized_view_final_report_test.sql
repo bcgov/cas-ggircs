@@ -4,7 +4,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(9);
+select plan(10);
 
 select has_materialized_view(
     'ggircs_swrs', 'final_report',
@@ -83,8 +83,54 @@ $$), ('2018-11-15T12:35:27.226', $$
       <LastModifiedDate>2018-11-14T12:35:27.226</LastModifiedDate>
     </ReportStatus>
   </ReportDetails>
-</ReportData>$$
-);
+</ReportData>
+$$), ('2018-12-15T12:35:27.226', $$
+    <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ReportDetails>
+    <ReportID>12345</ReportID>
+    <PrepopReportID></PrepopReportID>
+    <ReportType>R7</ReportType>
+    <FacilityId>666</FacilityId>
+    <OrganisationId>113119</OrganisationId>
+    <ReportingPeriodDuration>1999</ReportingPeriodDuration>
+    <ReportStatus>
+      <Status>Bad-Data</Status>
+      <SubmissionDate>2018-11-14T12:35:27.226</SubmissionDate>
+      <Version>3</Version>
+      <LastModifiedBy>Donny Donaldson McDonaldface</LastModifiedBy>
+      <LastModifiedDate>2018-11-14T12:35:27.226</LastModifiedDate>
+    </ReportStatus>
+  </ReportDetails>
+</ReportData>
+$$);
+
+
+insert into ggircs_swrs.table_ignore_organisation (swrs_organisation_id)
+values (5367)
+     , (5401)
+     , (6432)
+     , (29004)
+     , (29110)
+     , (40627)
+     , (42118)
+     , (42261)
+     , (42288)
+     , (50606)
+     , (100251)
+     , (100306)
+     , (111616)
+     , (111619)
+     , (111620)
+     , (111911)
+     , (112130)
+     , (112291)
+     , (112466)
+     , (112649)
+     , (112685)
+     , (112706)
+     , (113002)
+     , (113119) --This is the tested organisation_id
+on conflict (swrs_organisation_id) do nothing;
 
 -- Ensure fixture is processed correctly
 refresh materialized view ggircs_swrs.report with data;
@@ -99,6 +145,12 @@ select results_eq(
   $$select ghgr_import_id from ggircs_swrs.final_report$$,
   $$select ghgr_import_id from ggircs_swrs.report where status = 'Archived'$$,
   'ggircs_swrs.final_report.ghgr_import_id should refer to the correct version'
+);
+
+-- Test that the ignore_list is properly ignoring reports by swrs_organisation_id
+select is_empty(
+    $$select * from ggircs_swrs.final_report where swrs_report_id =12345 $$,
+    'ggircs_swrs.final_report ignored value from table_ignore_organisation'
 );
 
 select * from finish();
