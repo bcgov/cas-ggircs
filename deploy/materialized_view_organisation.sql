@@ -13,7 +13,7 @@ create materialized view ggircs_swrs.organisation as (
     from ggircs_swrs.ghgr_import
     order by ghgr_import_id desc
   )
-  select row_number() over (order by ghgr_import_id asc)               as id,
+  select
          ghgr_import_id,
          report_details.swrs_organisation_id,
          coalesce(vt_business_legal_name, rd_business_legal_name) as business_legal_name,
@@ -59,11 +59,10 @@ create materialized view ggircs_swrs.organisation as (
              vt_web_site varchar(1000) path './VerifyTombstone/Organisation/Details/WebSite'
          ) as vt_organisation_details
 ) with no data;
-create unique index ggircs_organisation_primary_key on ggircs_swrs.organisation (id);
+create unique index ggircs_organisation_primary_key on ggircs_swrs.organisation (id_old);
 create index ggircs_swrs_organisation_history on ggircs_swrs.organisation (swrs_organisation_history_id);
 
 comment on materialized view ggircs_swrs.organisation is 'the materialized view housing all report data pertaining to the reporting organisation';
-comment on column ggircs_swrs.organisation.id is 'The primary key for the materialized view';
 comment on column ggircs_swrs.organisation.ghgr_import_id is 'The internal reference to the file imported from ghgr';
 comment on column ggircs_swrs.organisation.swrs_organisation_id is 'The reporting organisation swrs id';
 comment on column ggircs_swrs.organisation.business_legal_name is 'The legal business name of the reporting organisation';

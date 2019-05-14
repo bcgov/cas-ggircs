@@ -13,8 +13,6 @@ create materialized view ggircs_swrs.report as (
     order by ghgr_import_id desc
   )
   select
-    --Todo: use sequence for id
-    row_number() over (order by ghgr_import_id asc) as id,
     ghgr_import_id,
     x.source_xml,
     x.imported_at,
@@ -25,7 +23,7 @@ create materialized view ggircs_swrs.report as (
       order by
         report_status.submission_date desc,
         ghgr_import_id desc
-      )                                      as swrs_report_history_id
+      )                            as swrs_report_history_id
   from x,
        xmltable(
            '/ReportData/ReportDetails'
@@ -53,11 +51,10 @@ create materialized view ggircs_swrs.report as (
 ) with no data;
 
 
-create unique index ggircs_report_primary_key on ggircs_swrs.report (id);
+create unique index ggircs_report_primary_key on ggircs_swrs.report (id_old);
 create index ggircs_swrs_report_history on ggircs_swrs.report (swrs_report_history_id);
 
 comment on materialized view ggircs_swrs.report is 'The materialized view housing all report data, derived from ghgr_import table';
-comment on column ggircs_swrs.report.id is 'The primary key for the materialized view';
 comment on column ggircs_swrs.report.ghgr_import_id is 'The internal primary key for the file';
 comment on column ggircs_swrs.report.source_xml is 'The raw xml file imported from GHGR';
 comment on column ggircs_swrs.report.imported_at is 'The timestamp noting when the file was imported';

@@ -3,13 +3,12 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(34);
+select plan(32);
 
 -- Test matview report exists in schema ggircs_swrs
 select has_materialized_view('ggircs_swrs', 'organisation', 'ggircs_swrs.organisation exists as a materialized view');
 
 -- -- Test column names in matview report exist and are correct
-select has_column('ggircs_swrs', 'organisation', 'id', 'ggircs_swrs.organisation has column: id');
 select has_column('ggircs_swrs', 'organisation', 'ghgr_import_id', 'ggircs_swrs.organisation has column: ghgr_import_id');
 select has_column('ggircs_swrs', 'organisation', 'swrs_organisation_id', 'ggircs_swrs.organisation has column: swrs_organisation_id');
 select has_column('ggircs_swrs', 'organisation', 'business_legal_name', 'ggircs_swrs.organisation has column: business_legal_name');
@@ -28,7 +27,6 @@ select has_index('ggircs_swrs', 'organisation', 'ggircs_swrs_organisation_histor
 select index_is_unique('ggircs_swrs', 'organisation', 'ggircs_organisation_primary_key', 'ggircs_swrs.report index ggircs_organisation_primary_key is unique');
 --
 -- -- Test columns in matview report have correct types
-select col_type_is('ggircs_swrs', 'organisation', 'id', 'bigint', 'ggircs_swrs.organisation column id has type bigint');
 select col_type_is('ggircs_swrs', 'organisation', 'ghgr_import_id', 'integer', 'ggircs_swrs.organisation column ghgr_import_id has type integer');
 select col_type_is('ggircs_swrs', 'organisation', 'swrs_organisation_id', 'numeric(1000,0)', 'ggircs_swrs.organisation column id has type numeric(1000,0)');
 select col_type_is('ggircs_swrs', 'organisation', 'business_legal_name', 'character varying(1000)', 'ggircs_swrs.organisation column business_legal_name has type varchar');
