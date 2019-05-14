@@ -259,3 +259,11 @@ dev_release: import # dev_project
 	# ${OC} set volume dc/${DOCKER_GGIRCS_IMAGE}-${DOCKER_POSTGRES_IMAGE} --add --type=persistentVolumeClaim --mount-path=/var/lib/postgresql/data --claim-size=50Gi
 	# Migrate...
 .PHONY: dev_release
+
+openshift_build:
+	# Configure image streams
+	oc new-build --dry-run=true --strategy=docker --context-dir=docker/sqitch/ --name=cas-ggircs-sqitch https://github.com/bcgov/cas-ggircs.git -o yaml > openshift/cas-ggircs-sqitch.yml
+	oc new-build --dry-run=true --strategy=docker --context-dir=docker/postgres/ --name=cas-ggircs-postgres https://github.com/bcgov/cas-ggircs.git -o yaml > openshift/cas-ggircs-postgres.yml
+	oc apply -f openshift/cas-ggircs-postgres.yml
+	oc apply -f openshift/cas-ggircs-sqitch.yml
+.PHONY: openshift_build
