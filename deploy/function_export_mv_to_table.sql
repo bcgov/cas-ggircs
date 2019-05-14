@@ -56,7 +56,7 @@ $$
       create index ggircs_fuel_unit_index on ggircs.fuel (unit_id);
       update ggircs.fuel set unit_id = unit.id from ggircs.unit
           where fuel.ghgr_import_id = unit.ghgr_import_id and fuel.process_idx = unit.process_idx  and fuel.sub_process_idx = unit.sub_process_idx
-            and fuel.activity_name = unit.activity_name and fuel.units_idx = unit.units_idx nd fuel.unit_idx = unit.unit_idx;
+            and fuel.activity_name = unit.activity_name and fuel.units_idx = unit.units_idx and fuel.unit_idx = unit.unit_idx;
       alter table ggircs.fuel add constraint ggircs_fuel_unit_foreign_key foreign key (unit_id) references ggircs.unit(id);
 
       -- Create FK/PK relation between Unit and Activity
@@ -168,7 +168,7 @@ $$
       alter table ggircs.organisation add column parent_organisation_id int;
       create index ggircs_organisation_parent_organisation_index on ggircs.organisation (parent_organisation_id);
       update ggircs.organisation set parent_organisation_id = parent_organisation.id from ggircs.parent_organisation
-          where parent_organisation.ghgr_import_id = organisation.ghgr_import_id
+          where parent_organisation.ghgr_import_id = organisation.ghgr_import_id;
       alter table ggircs.organisation add constraint ggircs_organisation_parent_organisation_foreign_key foreign key (parent_organisation_id) references ggircs.parent_organisation(id);
 
       
@@ -179,11 +179,4 @@ $$ language plpgsql volatile ;
 
 COMMIT;
 
-select ggircs_swrs.export_mv_to_table();
-
-drop function ggircs_swrs.export_mv_to_table();
-
-
-select * from emission where fuel_id is null;
-select count(ghgr_import_id) from ggircs.emission;
 
