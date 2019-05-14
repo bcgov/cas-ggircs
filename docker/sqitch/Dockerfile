@@ -13,7 +13,7 @@ RUN cpan TAP::Parser::SourceHandler::pgTAP
 
 USER postgres
 WORKDIR /var/lib/postgresql
-COPY Makefile .
+COPY ../../Makefile .
 # RUN make install_sqitch
 RUN make verify_installed && rm Makefile
 
