@@ -170,7 +170,6 @@ postinstall_check:
  	(echo "FATAL: ${SQITCH} version should be at least ${SQITCH_MIN_VERSION}. Make sure the ${SQITCH} executable installed by cpanminus is available has the highest priority in the PATH" && exit 1);
 .PHONY: postinstall_check
 
-install: install_cpanm install_cpandeps postinstall_check install_pgtap 
 .PHONY: install
 
 docker_build_sqitch:
