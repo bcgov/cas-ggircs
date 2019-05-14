@@ -4,7 +4,7 @@
 begin;
 
 create materialized view ggircs_swrs.final_report as (
-  with _report as (
+    with _report as (
     select *,
            row_number() over (
              partition by swrs_report_id
@@ -14,6 +14,9 @@ create materialized view ggircs_swrs.final_report as (
              ) as _history_id
     from ggircs_swrs.report
     where submission_date is not null
+    and ghgr_import_id not in (select report.ghgr_import_id
+                       from ggircs_swrs.table_ignore_organisation
+                       join ggircs_swrs.report on table_ignore_organisation.swrs_organisation_id = report.swrs_organisation_id)
     order by swrs_report_id
   )
   select swrs_report_id, ghgr_import_id
