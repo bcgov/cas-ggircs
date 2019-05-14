@@ -5,7 +5,7 @@ reset client_min_messages;
 
 begin;
 
-select plan(97);
+select plan(88);
 
 
 select has_materialized_view(
@@ -41,14 +41,11 @@ select columns_are('ggircs_swrs'::name, 'fuel'::name, array[
     'annual_weighted_avg_hhv'::name,
     'annual_steam_generation'::name,
     'alternative_methodology_description'::name,
-    'measured_emission_factor'::name,
-    'measured_emission_factor_unit_type'::name,
     'other_flare_details'::name,
     'q1'::name,
     'q2'::name,
     'q3'::name,
     'q4'::name,
-    'measured_emission_factors'::name,
     'wastewater_processing_factors'::name,
     'measured_conversion_factors'::name
 
@@ -164,16 +161,6 @@ select col_type_is(      'ggircs_swrs', 'fuel', 'alternative_methodology_descrip
 select col_is_null(      'ggircs_swrs', 'fuel', 'alternative_methodology_description', 'fuel.alternative_methodology_description column should allow null');
 select col_hasnt_default('ggircs_swrs', 'fuel', 'alternative_methodology_description', 'fuel.alternative_methodology_description column should not  have a default');
 
---  select has_column(       'ggircs_swrs', 'fuel', 'measured_emission_factor', 'fuel.measured_emission_factor column should exist');
-select col_type_is(      'ggircs_swrs', 'fuel', 'measured_emission_factor', 'character varying(1000)', 'fuel.measured_emission_factor column should be type varchar');
-select col_is_null(      'ggircs_swrs', 'fuel', 'measured_emission_factor', 'fuel.measured_emission_factor column should allow null');
-select col_hasnt_default('ggircs_swrs', 'fuel', 'measured_emission_factor', 'fuel.measured_emission_factor column should not  have a default');
-
---  select has_column(       'ggircs_swrs', 'fuel', 'measured_emission_factor_unit_type', 'fuel.measured_emission_factor_unit_type column should exist');
-select col_type_is(      'ggircs_swrs', 'fuel', 'measured_emission_factor_unit_type', 'character varying(1000)', 'fuel.measured_emission_factor_unit_type column should be type varchar');
-select col_is_null(      'ggircs_swrs', 'fuel', 'measured_emission_factor_unit_type', 'fuel.measured_emission_factor_unit_type column should allow null');
-select col_hasnt_default('ggircs_swrs', 'fuel', 'measured_emission_factor_unit_type', 'fuel.measured_emission_factor_unit_type column should not  have a default');
-
 --  select has_column(       'ggircs_swrs', 'fuel', 'other_flare_details', 'fuel.other_flare_details column should exist');
 select col_type_is(      'ggircs_swrs', 'fuel', 'other_flare_details', 'character varying(1000)', 'fuel.other_flare_details column should be type varchar');
 select col_is_null(      'ggircs_swrs', 'fuel', 'other_flare_details', 'fuel.other_flare_details column should allow null');
@@ -198,11 +185,6 @@ select col_hasnt_default('ggircs_swrs', 'fuel', 'q3', 'fuel.q3 column should not
 select col_type_is(      'ggircs_swrs', 'fuel', 'q4', 'character varying(1000)', 'fuel.q4 column should be type varchar');
 select col_is_null(      'ggircs_swrs', 'fuel', 'q4', 'fuel.q4 column should allow null');
 select col_hasnt_default('ggircs_swrs', 'fuel', 'q4', 'fuel.q4 column should not  have a default');
-
---  select has_column(       'ggircs_swrs', 'fuel', 'measured_emission_factors', 'fuel.measured_emission_factors column should exist');
-select col_type_is(      'ggircs_swrs', 'fuel', 'measured_emission_factors', 'xml', 'fuel.measured_emission_factors column should be type xml');
-select col_is_null(      'ggircs_swrs', 'fuel', 'measured_emission_factors', 'fuel.measured_emission_factors column should allow null');
-select col_hasnt_default('ggircs_swrs', 'fuel', 'measured_emission_factors', 'fuel.measured_emission_factors column should not  have a default');
 
 --  select has_column(       'ggircs_swrs', 'fuel', 'wastewater_processing_factors', 'fuel.wastewater_processing_factors column should exist');
 select col_type_is(      'ggircs_swrs', 'fuel', 'wastewater_processing_factors', 'xml', 'fuel.wastewater_processing_factors column should be type xml');
