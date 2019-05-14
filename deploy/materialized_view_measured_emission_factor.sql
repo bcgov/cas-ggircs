@@ -27,7 +27,7 @@ create materialized view ggircs_swrs.measured_emission_factor as (
              substances_idx integer path 'string(count(./ancestor::Substance/parent::*/preceding-sibling::*))' not null,
              substance_idx integer path 'string(count(./ancestor::Substance/preceding-sibling::Substance))' not null,
              fuel_idx integer path 'string(count(../preceding-sibling::Fuel))' not null,
-             measured_emission_factor_idx integer path 'string(count(./MeasuredEmissionFactor/preceding-sibling::MeasuredEmissionFactor)|../MeasuredEmissionFactor)' not null,
+             measured_emission_factor_idx integer path 'string(count(./MeasuredEmissionFactor/preceding-sibling::MeasuredEmissionFactor))' not null,
              measured_emission_factor_amount varchar(1000) path './MeasuredEmissionFactor/MeasuredEmissionFactorAmount|../MeasuredEmissionFactor',
              measured_emission_factor_gas varchar(1000) path './MeasuredEmissionFactor/MeasuredEmissionFactorGas',
              measured_emission_factor_unit_type varchar(1000) path './MeasuredEmissionFactor/MeasuredEmissionFactorUnitType|../MeasuredEmissionFactorUnitType'
