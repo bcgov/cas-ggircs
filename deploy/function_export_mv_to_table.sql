@@ -21,7 +21,9 @@ $$
     mv_array text[] := '{emission, identifier, final_report, ' ||
                         'address, organisation, fuel, unit, descriptor, activity, ' ||
                         'parent_organisation, contact, ' ||
-                        'permit, naics, facility, report}';
+                        'activity, unit, fuel, emission, descriptor, ' ||
+                        'parent_organisation, address, contact, ' ||
+                        'permit, naics, identifier}';
 
   begin
     for i in 1 .. array_upper(mv_array, 1)
@@ -149,12 +151,14 @@ $$
           where activity.ghgr_import_id = facility.ghgr_import_id;
       alter table ggircs.activity add constraint ggircs_activity_facility_foreign_key foreign key (facility_id) references ggircs.facility(id);
  
+ 
       -- Create FK/PK relation between Activity and Report
       alter table ggircs.activity add column report_id int;
       create index ggircs_activity_report_index on ggircs.activity (report_id);
       update ggircs.activity set report_id = report.id from ggircs.report
           where activity.ghgr_import_id = report.ghgr_import_id;
       alter table ggircs.activity add constraint ggircs_activity_report_foreign_key foreign key (report_id) references ggircs.report(id);
+ 
 
       -- Create FK/PK relation between Facility and Report
       alter table ggircs.facility add column report_id int;
@@ -196,7 +200,6 @@ $$
           where contact.ghgr_import_id = facility.ghgr_import_id;
       alter table ggircs.contact add constraint ggircs_contact_facility_foreign_key foreign key (facility_id) references ggircs.facility(id);
  
-
       -- Create FK/PK relation between Identifier and Facility
       alter table ggircs.identifier add column facility_id int;
       create index ggircs_identifier_facility_index on ggircs.identifier (facility_id);
@@ -204,6 +207,7 @@ $$
           where identifier.ghgr_import_id = facility.ghgr_import_id;
       alter table ggircs.identifier add constraint ggircs_identifier_facility_foreign_key foreign key (facility_id) references ggircs.facility(id);
 
+ 
       -- Create FK/PK relation between NAICS and Facility
       alter table ggircs.naics add column facility_id int;
       create index ggircs_naics_facility_index on ggircs.naics (facility_id);
@@ -217,7 +221,6 @@ $$
       update ggircs.permit set facility_id = facility.id from ggircs.facility
           where permit.ghgr_import_id = facility.ghgr_import_id;
       alter table ggircs.permit add constraint ggircs_permit_facility_foreign_key foreign key (facility_id) references ggircs.facility(id);
-
 /*       -- Create FK/PK relation between Contact and Address
       alter table ggircs.contact add column address_id int;
       create index ggircs_contact_address_index on ggircs.contact (address_id);
@@ -229,8 +232,34 @@ $$
       alter table ggircs.contact add constraint ggircs_contact_address_foreign_key foreign key (address_id) references ggircs.address(id);*/
 
 
+      -- Create FK/PK relation between Organisation and Address
+      alter table ggircs.organisation add column address_id int;
+      create index ggircs_organisation_address_index on ggircs.organisation (address_id);
+      update ggircs.organisation set address_id = address.id from ggircs.address
+          where address.ghgr_import_id = organisation.ghgr_import_id
+          and   address.swrs_organisation_id = organisation.swrs_organisation_id;
+      alter table ggircs.organisation add constraint ggircs_organisation_address_foreign_key foreign key (address_id) references ggircs.address(id);
+
+    -- Create FK/PK relation between Organisation and Parent Organisation
+      alter table ggircs.organisation add column parent_organisation_id int;
+      create index ggircs_organisation_parent_organisation_index on ggircs.organisation (parent_organisation_id);
+      update ggircs.organisation set parent_organisation_id = parent_organisation.id from ggircs.parent_organisation
+          where parent_organisation.ghgr_import_id = organisation.ghgr_import_id
+      alter table ggircs.organisation add constraint ggircs_organisation_parent_organisation_foreign_key foreign key (parent_organisation_id) references ggircs.parent_organisation(id);
+
+      
+
   end;
 
 $$ language plpgsql volatile ;
 
 COMMIT;
+
+select ggircs_swrs.export_mv_to_table();
+
+drop function ggircs_swrs.export_mv_to_table();
+
+
+select * from emission where fuel_id is null;
+select count(ghgr_import_id) from ggircs.emission;
+
