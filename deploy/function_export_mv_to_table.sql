@@ -8,6 +8,7 @@
   -- materialized_view_activity materialized_view_unit materialized_view_fuel
   -- materialized_view_emission materialized_view_descriptor
 
+
 BEGIN;
 
 create or replace function ggircs_swrs.export_mv_to_table()
@@ -15,10 +16,15 @@ create or replace function ggircs_swrs.export_mv_to_table()
 $$
 
   declare
-    mv_array text[] := '{report, final_report, facility, organisation, ' ||
-                        'activity, unit, fuel, emission, descriptor, ' ||
-                        'parent_organisation, address, contact, ' ||
-                        'permit, naics, identifier}';
+--     mv_array text[] := '{report, final_report, facility, organisation, ' ||
+--                         'activity, unit, fuel, emission, descriptor, ' ||
+--                         'parent_organisation, address, contact, ' ||
+--                         'permit, naics, identifier}';
+--
+    mv_array text[] := '{identifier, final_report, organisation, ' ||
+                        'emission, fuel, unit, descriptor, activity, ' ||
+                        'parent_organisation, contact, ' ||
+                        'permit, naics, facility, address, report}';
 
   begin
     for i in 1 .. array_upper(mv_array, 1)
@@ -31,7 +37,9 @@ $$
         -- execute 'refresh materialized view ggircs_swrs.' || mv_array[i] || ' with data';
         execute
           'create table ggircs.' || quote_ident(mv_array[i]) ||
-                ' as (select * from ggircs_swrs.' || quote_ident(mv_array[i]) || ' limit 100)';
+                ' as (select x.* from ggircs_swrs.' || quote_ident(mv_array[i]) ||
+                ' as x inner join ggircs_swrs.final_report as final_report ' ||
+                ' on x.ghgr_import_id = final_report.ghgr_import_id)';
         -- execute 'refresh materialized view ggircs_swrs.' || mv_array[i] || ' with no data';
         execute
           'alter table ggircs.' || quote_ident(mv_array[i]) ||
@@ -68,8 +76,7 @@ $$
             and unit.sub_process_idx = activity.sub_process_idx
             and unit.activity_name = activity.activity_name;
       alter table ggircs.unit add constraint ggircs_unit_activity_foreign_key foreign key (activity_id) references ggircs.activity(id);
-      
-      
+
       -- Create FK/PK relation between Descriptor and Activity
       alter table ggircs.descriptor add column activity_id int;
       create index ggircs_descriptor_activity_index on ggircs.descriptor (activity_id);
@@ -171,12 +178,10 @@ $$
           where parent_organisation.ghgr_import_id = organisation.ghgr_import_id;
       alter table ggircs.organisation add constraint ggircs_organisation_parent_organisation_foreign_key foreign key (parent_organisation_id) references ggircs.parent_organisation(id);
 
-      
 
   end;
 
 $$ language plpgsql volatile ;
 
 COMMIT;
-
 
