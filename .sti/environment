@@ -1,4 +1,0 @@
-PERL_MB_OPT="--install_base \"$HOME/extlib/lib/perl5\""
-PERL_MM_OPT="INSTALL_BASE=$HOME/extlib/lib/perl5"
-PERL5LIB="$HOME/extlib/lib/perl5"
-PATH="$HOME/extlib/bin:$PATH"
