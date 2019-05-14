@@ -4,7 +4,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(10);
+select plan(11);
 
 select has_materialized_view(
     'ggircs_swrs', 'final_report',
@@ -77,24 +77,6 @@ $$), ('2018-11-15T12:35:27.226', $$
     <ReportingPeriodDuration>1999</ReportingPeriodDuration>
     <ReportStatus>
       <Status>Archived</Status>
-      <SubmissionDate>2018-11-14T12:35:27.226</SubmissionDate>
-      <Version>3</Version>
-      <LastModifiedBy>Donny Donaldson McDonaldface</LastModifiedBy>
-      <LastModifiedDate>2018-11-14T12:35:27.226</LastModifiedDate>
-    </ReportStatus>
-  </ReportDetails>
-</ReportData>
-$$), ('2018-12-15T12:35:27.226', $$
-    <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <ReportDetails>
-    <ReportID>12345</ReportID>
-    <PrepopReportID></PrepopReportID>
-    <ReportType>R7</ReportType>
-    <FacilityId>666</FacilityId>
-    <OrganisationId>113119</OrganisationId>
-    <ReportingPeriodDuration>1999</ReportingPeriodDuration>
-    <ReportStatus>
-      <Status>Bad-Data</Status>
       <SubmissionDate>2018-11-14T12:35:27.226</SubmissionDate>
       <Version>3</Version>
       <LastModifiedBy>Donny Donaldson McDonaldface</LastModifiedBy>
