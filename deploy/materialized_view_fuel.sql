@@ -38,15 +38,12 @@ create materialized view ggircs_swrs.fuel as (
              annual_weighted_avg_hhv varchar(1000) path './AnnualWeightedAverageHighHeatingValue',
              annual_steam_generation varchar(1000) path './AnnualSteamGeneration',
              alternative_methodology_description varchar(10000) path './AlternativeMethodologyDescription',
-             measured_emission_factor varchar(1000) path './MeasuredEmissionFactor',
-             measured_emission_factor_unit_type varchar(1000) path './MeasuredEmissionFactorUnitType',
              other_flare_details varchar(1000) path './OtherFlareDetails',
              q1 varchar(1000) path './Q1',
              q2 varchar(1000) path './Q2',
              q3 varchar(1000) path './Q3',
              q4 varchar(1000) path './Q4',
 
-             measured_emission_factors xml path './MeasuredEmissionFactors',
              wastewater_processing_factors xml path './WastewaterProcessingFactors',
              measured_conversion_factors xml path './MeasuredConversionFactors'
 
@@ -79,15 +76,12 @@ comment on column ggircs_swrs.fuel.annual_weighted_avg_carbon_content is 'The an
 comment on column ggircs_swrs.fuel.annual_weighted_avg_hhv is 'The annual weight avg of the high heating value of the fuel';
 comment on column ggircs_swrs.fuel.annual_steam_generation is 'The annual steam generation of the fuel';
 comment on column ggircs_swrs.fuel.alternative_methodology_description is 'The description of the fuels alternative methodology';
-comment on column ggircs_swrs.fuel.measured_emission_factor is 'The measured emission factor of the fuel';
-comment on column ggircs_swrs.fuel.measured_emission_factor_unit_type is 'The measured emission factor unit type of the fuel';
 comment on column ggircs_swrs.fuel.other_flare_details is 'The other flare details concerning the fuel';
 comment on column ggircs_swrs.fuel.q1 is 'The fuel used in the first quarter';
 comment on column ggircs_swrs.fuel.q2 is 'The fuel used in the second quarter';
 comment on column ggircs_swrs.fuel.q3 is 'The fuel used in the third quarter';
 comment on column ggircs_swrs.fuel.q4 is 'The fuel used in the fourth quarter';
 
-comment on column ggircs_swrs.fuel.measured_emission_factors is 'Details on the measured emission factors for this fuel';
 comment on column ggircs_swrs.fuel.wastewater_processing_factors is 'Details on the wastewater processing factors for this fuel';
 comment on column ggircs_swrs.fuel.measured_conversion_factors is 'Details on the measured_conversion_factors for this fuel';
 
