@@ -18,6 +18,7 @@ create materialized view ggircs_swrs.address as (
            columns
                 swrs_facility_id numeric(1000,0) path './ancestor::Facility/../../ReportDetails/FacilityId[normalize-space(.)]|./ancestor::Contact/ancestor::ReportData/ReportDetails/FacilityId[normalize-space(.)]',
                 swrs_organisation_id numeric(1000,0) path './ancestor::Organisation/../../ReportDetails/OrganisationId[normalize-space(.)]|./ancestor::ParentOrganisation/ancestor::ReportData/ReportDetails/OrganisationId[normalize-space(.)]',
+                path_context varchar(1000) path 'name(./ancestor::VerifyTombstone|./ancestor::RegistrationData)',
                 type varchar(1000) path 'name(..)',
                 contact_idx integer path 'string(count(./ancestor::Contact/preceding-sibling::Contact))' not null,
                 parent_organisation_idx integer path 'string(count(./ancestor::ParentOrganisation/preceding-sibling::ParentOrganisation))' not null,
@@ -62,6 +63,7 @@ comment on materialized view ggircs_swrs.address is 'The materialized view housi
 comment on column ggircs_swrs.address.ghgr_import_id is 'The foreign key that references ggircs_swrs.ghgr_import';
 comment on column ggircs_swrs.address.swrs_facility_id is 'The foreign key that references ggircs_swrs.facility';
 comment on column ggircs_swrs.address.swrs_organisation_id is 'The foreign key that references ggircs_swrs.organisation';
+comment on column ggircs_swrs.address.path_context is 'The ancestor path context (VerifyTombstone or RegistrationData)';
 comment on column ggircs_swrs.address.type is 'What the address belongs to (facility, organisation, contact)';
 comment on column ggircs_swrs.address.contact_idx is 'The number of preceding Contact siblings before this Contact';
 comment on column ggircs_swrs.address.parent_organisation_idx is 'The number of preceding ParentOrganisation siblings before this ParentOrganisation';
