@@ -3,7 +3,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(32);
+select plan(31);
 
 -- Test matview report exists in schema ggircs_swrs
 select has_materialized_view('ggircs_swrs', 'organisation', 'ggircs_swrs.organisation exists as a materialized view');
@@ -72,7 +72,6 @@ $$);
 refresh materialized view ggircs_swrs.report with data;
 refresh materialized view ggircs_swrs.organisation with data;
 
-select results_eq('select id from ggircs_swrs.organisation', ARRAY[1::bigint], 'ghgr_swrs.organisation is a generated sequence');
 select results_eq('select ghgr_import_id from ggircs_swrs.organisation', 'select id from ggircs_swrs.ghgr_import', 'ghgr_swrs.organisation.ghgr_import_id references ghgr_swrs.ghgr_import.id');
 select results_eq('select swrs_organisation_id from ggircs_swrs.organisation', ARRAY[1337::numeric], 'ghgr_swrs.organisation.swrs_organisation_id parsed from xml');
 select results_eq('select business_legal_name from ggircs_swrs.organisation', ARRAY['Ren and Stimpys House'::varchar(1000)], 'ghgr_swrs.organisation.business_legal_name parsed from xml');

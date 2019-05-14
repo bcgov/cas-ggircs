@@ -3,7 +3,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(50);
+select plan(49);
 
 -- Test matview report exists in schema ggircs_swrs
 select has_materialized_view('ggircs_swrs', 'report', 'Materialized view report exists');
@@ -70,7 +70,6 @@ $$);
 
 -- Ensure fixture is processed correctly
 refresh materialized view ggircs_swrs.report with data;
-select results_eq('select id from ggircs_swrs.report', ARRAY[1::bigint], 'Matview report parsed column id');
 select results_eq('select ghgr_import_id from ggircs_swrs.report', 'select id from ggircs_swrs.ghgr_import', 'Matview report parsed column ghgr_import_id');
 -- TODO(wenzowski): need an xml comparison operator
 select results_eq('select source_xml::text from ggircs_swrs.report', ARRAY[$$
