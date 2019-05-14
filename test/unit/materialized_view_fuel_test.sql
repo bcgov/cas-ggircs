@@ -5,7 +5,7 @@ reset client_min_messages;
 
 begin;
 
-select plan(128);
+select plan(116);
 
 
 select has_materialized_view(
@@ -246,39 +246,7 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
       </Process>
     </ActivityPages>
   </ActivityData>$$);
-/*
-'ghgr_import_id'::name,
-    'activity_name'::name,
-    'sub_activity_name'::name,
-    'unit_name'::name,
-    'sub_unit_name'::name,
-    'process_idx'::name,
-    'sub_process_idx'::name,
-    'units_idx'::name,
-    'unit_idx'::name,
-    'substances_idx'::name,
-    'substance_idx'::name,
-    'fuel_idx'::name,
-    'fuel_type'::name,
-    'fuel_classification'::name,
-    'fuel_description'::name,
-    'fuel_units'::name,
-    'annual_fuel_amount'::name,
-    'annual_weighted_avg_carbon_content'::name,
-    'annual_weighted_avg_hhv'::name,
-    'annual_steam_generation'::name,
-    'alternative_methodology_description'::name,
-    'measured_emission_factor'::name,
-    'measured_emission_factor_unit_type'::name,
-    'other_flare_details'::name,
-    'q1'::name,
-    'q2'::name,
-    'q3'::name,
-    'q4'::name,
-    'measured_emission_factors'::name,
-    'wastewater_processing_factors'::name,
-    'measured_conversion_factors'::name
-*/
+
 refresh materialized view ggircs_swrs.fuel with data;
 refresh materialized view ggircs_swrs.unit with data;
 
@@ -433,18 +401,6 @@ select results_eq(
 );
 
 select results_eq(
-    'select measured_emission_factor from ggircs_swrs.fuel where fuel_idx=0 and unit_idx=0',
-    ARRAY['1'::varchar],
-    'column measured_emission_factor in ggircs_swrs.fuel was properly parsed from xml'
-);
-
-select results_eq(
-    'select measured_emission_factor_unit_type from ggircs_swrs.fuel where fuel_idx=0 and unit_idx=0',
-    ARRAY['red'::varchar],
-    'column measured_emission_factor_unit_type in ggircs_swrs.fuel was properly parsed from xml'
-);
-
-select results_eq(
     'select other_flare_details from ggircs_swrs.fuel where fuel_idx=0 and unit_idx=0',
     ARRAY['flare!'::varchar],
     'column other_flare_details in ggircs_swrs.fuel was properly parsed from xml'
@@ -475,12 +431,6 @@ select results_eq(
 );
 
 select results_eq(
-    'select measured_emission_factors::text from ggircs_swrs.fuel where fuel_idx=0 and unit_idx=0',
-    ARRAY['<MeasuredEmissionFactors/>'::text],
-    'column measured_emission_factors in ggircs_swrs.fuel was properly parsed from xml'
-);
-
-select results_eq(
     'select wastewater_processing_factors::text from ggircs_swrs.fuel where fuel_idx=0 and unit_idx=0',
     ARRAY['<WastewaterProcessingFactors/>'::text],
     'column wastewater_processing_factors in ggircs_swrs.fuel was properly parsed from xml'
@@ -491,14 +441,6 @@ select results_eq(
     ARRAY['<MeasuredConversionFactors/>'::text],
     'column measured_conversion_factors in ggircs_swrs.fuel was properly parsed from xml'
 );
-
-
--- TODO(hamza): extract MeasuredEmission in a better way
--- MeasuredConversionFactors
--- MeasuredEmissionFactor
--- MeasuredEmissionFactorUnitType
--- MeasuredEmissionFactors
-
 
 select * from finish();
 

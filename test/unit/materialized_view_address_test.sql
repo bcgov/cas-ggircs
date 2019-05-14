@@ -3,7 +3,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(230);
+select plan(232);
 
 select has_materialized_view(
     'ggircs_swrs', 'address',
