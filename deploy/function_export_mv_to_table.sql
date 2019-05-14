@@ -8,6 +8,7 @@
   -- materialized_view_activity materialized_view_unit materialized_view_fuel
   -- materialized_view_emission materialized_view_descriptor
 
+select ggircs_swrs.export_mv_to_table();
 
 BEGIN;
 
@@ -17,8 +18,8 @@ $$
 
   declare
 
-    mv_array text[] := '{identifier, final_report, organisation, ' ||
-                        'emission, fuel, unit, descriptor, activity, ' ||
+    mv_array text[] := '{emission, identifier, final_report, ' ||
+                        'organisation, fuel, unit, descriptor, activity, ' ||
                         'parent_organisation, contact, ' ||
                         'permit, naics, facility, address, report}';
 
@@ -42,7 +43,6 @@ $$
           ' add column id int generated always as identity primary key';
 
       end loop;
-
 
       -- Create FK/PK relation between Emission and Fuel
       alter table ggircs.emission add column fuel_id int;
@@ -230,4 +230,3 @@ $$
 $$ language plpgsql volatile ;
 
 COMMIT;
-
