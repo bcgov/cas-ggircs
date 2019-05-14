@@ -48,8 +48,11 @@ comment on column ggircs_swrs.measured_emission_factor.units_idx is 'The number 
 comment on column ggircs_swrs.measured_emission_factor.unit_idx is 'A foreign key reference to ggircs_swrs.unit (partial fk reference)';
 comment on column ggircs_swrs.measured_emission_factor.substances_idx is 'The number of preceding siblings before the Substances';
 comment on column ggircs_swrs.measured_emission_factor.substance_idx is 'The number of preceding siblings before the Substance';
-comment on column ggircs_swrs.measured_emission_factor.fuel_idx is 'The foreign key for fuel';
-comment on column ggircs_swrs.measured_emission_factor.measured_emission_factor_idx is 'The measured emission factor of the fuel';
+comment on column ggircs_swrs.measured_emission_factor.fuel_idx is 'The number of preceding siblings before the fuel';
+comment on column ggircs_swrs.measured_emission_factor.measured_emission_factor_idx is 'The number of preceding siblings before the measured emission factor';
+comment on column ggircs_swrs.measured_emission_factor.measured_emission_factor_amount is 'The amount of the measured_emission';
+comment on column ggircs_swrs.measured_emission_factor.measured_emission_factor_gas is 'The gas type of the measured_emission';
+comment on column ggircs_swrs.measured_emission_factor.measured_emission_factor_unit_type is 'The unit type of the measured_emission';
 comment on column ggircs_swrs.measured_emission_factor.measured_emission_factor_unit_type is 'The measured emission factor unit type of the fuel';
 
 commit;
