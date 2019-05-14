@@ -8,7 +8,7 @@ RUN adduser --disabled-password --shell /bin/bash ggircs
 USER ggircs
 
 WORKDIR /home/ggircs
-COPY ./ ./
+COPY ../../ ./
 RUN sqitch config --local -l
 
 ENTRYPOINT []
