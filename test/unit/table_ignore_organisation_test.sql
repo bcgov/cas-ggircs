@@ -17,7 +17,7 @@ select columns_are('ggircs_swrs'::name, 'table_ignore_organisation'::name, ARRAY
 select col_is_pk('ggircs_swrs', 'table_ignore_organisation', 'swrs_organisation_id', 'Column swrs_organisation_id is Primary Key');
 
 -- Test columns have correct types
-select col_type_is('ggircs_swrs', 'table_ignore_organisation', 'swrs_organisation_id', 'numeric(1000,0)', 'Column swrs_organisation_id has type numeric');
+select col_type_is('ggircs_swrs', 'table_ignore_organisation', 'swrs_organisation_id', 'integer', 'Column swrs_organisation_id has type integer');
 
 -- Test NOT NULL columns have constraint
 select col_not_null('ggircs_swrs', 'table_ignore_organisation', 'swrs_organisation_id', 'Column swrs_organisation_id has NOT NULL constraint');
