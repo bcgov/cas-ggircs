@@ -30,15 +30,15 @@ create materialized view ggircs_swrs.unit as (
              -- cogen_unit xml path './COGenUnit',
              cogen_unit_name varchar(1000) path './COGenUnit/CogenUnitName',
              cogen_cycle_type varchar(1000) path './COGenUnit/CycleType',
-             cogen_nameplate_capacity varchar(1000) path './COGenUnit/NameplateCapacity',
-             cogen_net_power varchar(1000) path './COGenUnit/NetPower',
-             cogen_steam_heat_acq_quantity varchar(1000) path './COGenUnit/SteamHeatAcquisitionAcquiredQuantity',
+             cogen_nameplate_capacity numeric path './COGenUnit/NameplateCapacity',
+             cogen_net_power numeric path './COGenUnit/NetPower',
+             cogen_steam_heat_acq_quantity numeric path './COGenUnit/SteamHeatAcquisitionAcquiredQuantity',
              cogen_steam_heat_acq_name varchar(1000) path './COGenUnit/SteamHeatAcquisitionProviderName',
              cogen_supplemental_firing_purpose varchar(1000) path './COGenUnit/SupplementalFiringPurpose',
-             cogen_thermal_output_quantity varchar(1000) path './COGenUnit/ThermalOutputQuantity',
+             cogen_thermal_output_quantity numeric path './COGenUnit/ThermalOutputQuantity',
              -- non_cogen_unit xml path './NonCOGenUnit'
-             non_cogen_nameplate_capacity varchar(1000) path './NonCOGenUnit/NameplateCapacity',
-             non_cogen_net_power varchar(1000) path './NonCOGenUnit/NetPower',
+             non_cogen_nameplate_capacity numeric path './NonCOGenUnit/NameplateCapacity',
+             non_cogen_net_power numeric path './NonCOGenUnit/NetPower',
              non_cogen_unit_name varchar(1000) path './NonCOGenUnit/NonCogenUnitName'
              -- fuels xml path './Fuels/*' -- implemented as ggircs_swrs.fuel
          ) as unit_details
