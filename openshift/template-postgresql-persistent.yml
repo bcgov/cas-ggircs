@@ -107,7 +107,7 @@ objects:
               secretKeyRef:
                 key: database-name
                 name: ${DATABASE_SERVICE_NAME}
-          image: docker-registry.default.svc:5000/wksv3k-tools/postgres:${POSTGRESQL_VERSION}
+          image: ${POSTGRES_IMAGE}:${POSTGRES_VERSION}
           imagePullPolicy: IfNotPresent
           livenessProbe:
             exec:
@@ -134,7 +134,7 @@ objects:
             privileged: false
           terminationMessagePath: /dev/termination-log
           volumeMounts:
-          - mountPath: /var/lib/pgsql/data
+          - mountPath: /var/lib/postgresql/data
             name: ${DATABASE_SERVICE_NAME}-data
         dnsPolicy: ClusterFirst
         restartPolicy: Always
@@ -149,7 +149,7 @@ objects:
         - postgresql
         from:
           kind: ImageStreamTag
-          name: postgresql:${POSTGRESQL_VERSION}
+          name: ${POSTGRES_IMAGE}:${POSTGRES_VERSION}
           namespace: ${NAMESPACE}
         lastTriggeredImage: ""
       type: ImageChange
@@ -192,8 +192,13 @@ parameters:
   name: VOLUME_CAPACITY
   required: true
   value: 20Gi
+- description: Name of PostgreSQL image to be used (ggircs-postgres for now).
+  displayName: Name of PostgreSQL Image
+  name: POSTGRES_IMAGE
+  required: true
+  value: "ggircs-postgres"
 - description: Version of PostgreSQL image to be used (11.2 for now).
   displayName: Version of PostgreSQL Image
-  name: POSTGRESQL_VERSION
+  name: POSTGRES_VERSION
   required: true
   value: "11.2"

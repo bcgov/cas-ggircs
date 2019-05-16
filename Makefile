@@ -152,6 +152,14 @@ else
 endif
 .PHONY: install_pgtap
 
+install_sqitch:
+	# install postgres driver for sqitch
+	@@${CPAN} DBD::Pg
+	# install sqitch
+	@@${CPAN} App::Sqitch
+	# install pg_prove
+	@@${CPAN} TAP::Parser::SourceHandler::pgTAP
+.PHONY: install_sqitch
 
 install_cpanm: 
 ifeq (${shell which ${CPANM}},)
@@ -234,35 +242,56 @@ import: tools_project docker_push
 	# done.
 .PHONY: import
 
-dev_release: import # dev_project
+# dev_release: import dev_project
+dev_release: dev_project
+	# Allow import of images from tools namespace
+	oc policy add-role-to-group system:image-puller system:serviceaccounts:${OC_DEV_PROJECT} -n ${OC_TOOLS_PROJECT}
+	# oc import-image ${DOCKER_POSTGRES_IMAGE}:${DOCKER_POSTGRES_TAG} --confirm --from=docker-registry.default.svc:5000/${OC_TOOLS_PROJECT}/${DOCKER_POSTGRES_IMAGE}:${DOCKER_POSTGRES_TAG}
 	# Deploy...
-	# oc get --export template postgresql-persistent -n openshift > openshift/template-postgresql-persistent.yml
-	# ${OC} new-app --name=${DOCKER_GGIRCS_IMAGE}-${DOCKER_POSTGRES_IMAGE} --docker-image=docker-registry.default.svc:5000/${OC_TOOLS_PROJECT}/${DOCKER_POSTGRES_IMAGE}:${DOCKER_POSTGRES_TAG} -o yaml > openshift/app-ggircs-postgres.yml
-	# --> Found Docker image d86bc6d (13 minutes old) from docker-registry.default.svc:5000 for "docker-registry.default.svc:5000/wksv3k-tools/postgres:11.2"
-	# 
-	#     * An image stream tag will be created as "ggircs-postgres:11.2" that will track this image
-	#     * This image will be deployed in deployment config "ggircs-postgres"
-	#     * Port 5432/tcp will be load balanced by service "ggircs-postgres"
-	#       * Other containers can access this service through the hostname "ggircs-postgres"
-	#     * This image declares volumes and will default to use non-persistent, host-local storage.
-	#       You can add persistent volumes later by running 'volume dc/ggircs-postgres --add ...'
-	# 
-	# --> Creating resources ...
-	#     imagestream.image.openshift.io "ggircs-postgres" created
-	#     deploymentconfig.apps.openshift.io "ggircs-postgres" created
-	#     service "ggircs-postgres" created
-	# --> Success
-	#     Application is not exposed. You can expose services to the outside world by executing one or more of the commands below:
-	#      'oc expose svc/ggircs-postgres'
-	#     Run 'oc status' to view your app.
-	# ${OC} set volume dc/${DOCKER_GGIRCS_IMAGE}-${DOCKER_POSTGRES_IMAGE} --add --type=persistentVolumeClaim --mount-path=/var/lib/postgresql/data --claim-size=50Gi
+	oc process -f openshift/template-postgresql-persistent.yml NAMESPACE=${OC_TOOLS_PROJECT} POSTGRES_IMAGE=${DOCKER_POSTGRES_IMAGE} POSTGRES_VERSION=${DOCKER_POSTGRES_TAG} | oc apply --wait=true -f-
+	# oc rollout latest dc/postgresql -n ${OC_DEV_PROJECT}
 	# Migrate...
 .PHONY: dev_release
 
+dev_clean: dev_project
+	# Remove all OpenShift resources
+	oc delete secret postgresql --wait=true --ignore-not-found=true
+	oc delete service postgresql --wait=true --ignore-not-found=true
+	oc delete pvc postgresql --wait=true --ignore-not-found=true
+	oc delete dc postgresql --force=true --wait=true --ignore-not-found=true
+.PHONY: dev_clean
+
+new_build: tools_project
+	# Build Dockerfile on OpenShift
+	oc new-build ./docker/sqitch --strategy=docker --name=ggircs-sqitch
+.PHONY: new_build
+# oc get --export template postgresql-persistent -n openshift > openshift/template-postgresql-persistent.yml
+
 openshift_build:
-	# Configure image streams
-	oc new-build --dry-run=true --strategy=docker --context-dir=docker/sqitch/ --name=cas-ggircs-sqitch https://github.com/bcgov/cas-ggircs.git -o yaml > openshift/cas-ggircs-sqitch.yml
-	oc new-build --dry-run=true --strategy=docker --context-dir=docker/postgres/ --name=cas-ggircs-postgres https://github.com/bcgov/cas-ggircs.git -o yaml > openshift/cas-ggircs-postgres.yml
-	oc apply -f openshift/cas-ggircs-postgres.yml
-	oc apply -f openshift/cas-ggircs-sqitch.yml
+	# oc new-app perl:5.26~https://github.com/bcgov/cas-ggircs.git#feature/deploy -o yaml > openshift/cas-ggircs.yml
+	oc apply -f openshift/cas-ggircs.yml
 .PHONY: openshift_build
+# Configure image streams
+# oc new-build --dry-run=true --strategy=docker --context-dir=docker/sqitch/ --name=cas-ggircs-sqitch https://github.com/bcgov/cas-ggircs.git -o yaml > openshift/cas-ggircs-sqitch.yml
+# oc new-build --dry-run=true --strategy=docker --context-dir=docker/postgres/ --name=cas-ggircs-postgres https://github.com/bcgov/cas-ggircs.git -o yaml > openshift/cas-ggircs-postgres.yml
+# oc apply -f openshift/cas-ggircs-postgres.yml
+# oc apply -f openshift/cas-ggircs-sqitch.yml
+# oc start-build cas-ggircs-postgres --commit=$$(git rev-parse --verify HEAD)
+# oc start-build cas-ggircs-sqitch --commit=$$(git rev-parse --verify HEAD)
+
+s2i_build:
+	# localy build COMMITTED CHANGES ONLY
+	# @see https://github.com/sclorg/s2i-perl-container
+	# @see https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/building_running_and_managing_containers/using_red_hat_universal_base_images_standard_minimal_and_runtimes
+	s2i build https://github.com/bcgov/cas-ggircs.git -r $$(git rev-parse --verify HEAD) registry.access.redhat.com/ubi8/perl-526 cas-ggircs
+.PHONY: s2i_build
+
+push:
+	# copy data to remote
+	oc rsync data cas-ggircs-5-c46gh:/opt/app-root/src/
+	psql -c "\copy ggircs_swrs.ghgr_import from './data/select_t_REPORT_ID__t_XML_FILE__t_WHEN_C.csv' with (format csv)";
+.PHONY: push
+
+rsh:
+	oc exec -it cas-ggircs-5-c46gh -- bash
+.PHONY: rsh

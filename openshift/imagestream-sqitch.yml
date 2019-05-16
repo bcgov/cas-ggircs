@@ -1,58 +1,73 @@
-apiVersion: image.openshift.io/v1
-kind: ImageStream
-metadata:
-  annotations:
-    openshift.io/image.dockerRepositoryCheck: 2019-05-09T20:15:08Z
-  creationTimestamp: 2019-05-09T18:22:44Z
-  generation: 7
-  name: sqitch
-  namespace: wksv3k-tools
-  resourceVersion: "769746681"
-  selfLink: /apis/image.openshift.io/v1/namespaces/wksv3k-tools/imagestreams/sqitch
-  uid: 706b9e7a-7287-11e9-9558-0050568379a2
-spec:
+apiVersion: v1
+items:
+- apiVersion: image.openshift.io/v1
+  generation: 0
+  image:
+    dockerImageLayers: null
+    dockerImageMetadata:
+      ContainerConfig: {}
+      Created: null
+      Id: ""
+      apiVersion: "1.0"
+      kind: DockerImage
+    dockerImageMetadataVersion: "1.0"
+    metadata:
+      creationTimestamp: null
+  kind: ImageStreamTag
   lookupPolicy:
     local: false
-  tags:
-  - annotations: null
+  metadata:
+    creationTimestamp: null
+    labels:
+      build: cas-ggircs
+    name: cas-ggircs:latest
+  tag:
     from:
       kind: DockerImage
-      name: docker.io/wenzowski/sqitch:0.9999
-    generation: 0
+      name: cas-ggircs:latest
+    generation: null
     importPolicy: {}
-    name: "0.9999"
+    name: latest
     referencePolicy:
-      type: Source
-status:
-  dockerImageRepository: docker-registry.default.svc:5000/wksv3k-tools/sqitch
-  tags:
-  - items:
-    - created: 2019-05-09T20:15:08Z
-      dockerImageReference: docker.io/wenzowski/sqitch@sha256:8d0142a9f4f133b2d365f3a49f82919761497cd3558dbd0435f70112b739542d
-      generation: 7
-      image: sha256:8d0142a9f4f133b2d365f3a49f82919761497cd3558dbd0435f70112b739542d
-    - created: 2019-05-09T19:38:29Z
-      dockerImageReference: docker.io/wenzowski/sqitch@sha256:08c812aef752c9ac11e413f216f8f365ef713f5fb6e59652e4b308a1512e8fa4
-      generation: 6
-      image: sha256:08c812aef752c9ac11e413f216f8f365ef713f5fb6e59652e4b308a1512e8fa4
-    - created: 2019-05-09T19:36:19Z
-      dockerImageReference: docker.io/wenzowski/sqitch@sha256:d299a56491c5defcee804ea92f73730fdf2df202023db73003520a754c3c7c18
-      generation: 5
-      image: sha256:d299a56491c5defcee804ea92f73730fdf2df202023db73003520a754c3c7c18
-    - created: 2019-05-09T19:12:05Z
-      dockerImageReference: docker.io/wenzowski/sqitch@sha256:dc66a25b0486edc0943a269726dd73756ba2f0a85cbe0649b2def5b3c14e03e8
-      generation: 4
-      image: sha256:dc66a25b0486edc0943a269726dd73756ba2f0a85cbe0649b2def5b3c14e03e8
-    - created: 2019-05-09T18:50:56Z
-      dockerImageReference: docker.io/wenzowski/sqitch@sha256:9c7ecbbb2c8225413972219a61d82c5bb85bfb77f77d3921c049ee1d8be35924
-      generation: 3
-      image: sha256:9c7ecbbb2c8225413972219a61d82c5bb85bfb77f77d3921c049ee1d8be35924
-    - created: 2019-05-09T18:37:09Z
-      dockerImageReference: docker.io/wenzowski/sqitch@sha256:96706f60a22ea92f3c26ba5569981da6ac46b3c2fc7329baf4c2d5ede71cae17
-      generation: 2
-      image: sha256:96706f60a22ea92f3c26ba5569981da6ac46b3c2fc7329baf4c2d5ede71cae17
-    - created: 2019-05-09T18:22:44Z
-      dockerImageReference: docker.io/wenzowski/sqitch@sha256:671449dfd37c283529226876abefce8fe7ac3fe3a05ce39d77fa4641be457565
-      generation: 1
-      image: sha256:671449dfd37c283529226876abefce8fe7ac3fe3a05ce39d77fa4641be457565
-    tag: "0.9999"
+      type: ""
+- apiVersion: build.openshift.io/v1
+  kind: BuildConfig
+  metadata:
+    creationTimestamp: null
+    labels:
+      build: cas-ggircs
+    name: cas-ggircs
+  spec:
+    nodeSelector: null
+    output:
+      to:
+        kind: ImageStreamTag
+        name: cas-ggircs:latest
+    postCommit: {}
+    resources: {}
+    source:
+      git:
+        ref: feature/deploy
+        uri: git@github.com:bcgov/cas-ggircs.git
+      type: Git
+    strategy:
+      dockerStrategy:
+        from:
+          kind: ImageStreamTag
+          name: ubuntu:xenial
+          namespace: wksv3k-tools
+      type: Docker
+    triggers:
+    - github:
+        secret: gj4_eyWNM-_1Pu7BMpeO
+      type: GitHub
+    - generic:
+        secret: 7EeUGDch7nXMLFuoTcfm
+      type: Generic
+    - type: ConfigChange
+    - imageChange: {}
+      type: ImageChange
+  status:
+    lastVersion: 0
+kind: List
+metadata: {}
