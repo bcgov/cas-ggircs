@@ -247,8 +247,6 @@ $$
           where parent_organisation.ghgr_import_id = organisation.ghgr_import_id;
       alter table ggircs.organisation add constraint ggircs_organisation_parent_organisation_foreign_key foreign key (parent_organisation_id) references ggircs.parent_organisation(id);
 
-      
-
   end;
 
 $$ language plpgsql volatile ;
