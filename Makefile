@@ -134,7 +134,7 @@ install_pgtap: pgtap
 
 ifeq (error,${shell /bin/test -w ${PG_SHAREDIR}/extension || echo error})
 	@@echo "FATAL: The current user does not have permission to write to ${PG_SHAREDIR}/extension and install pgTAP.\
-	It needs to be installed by a user having write access to that directory, e.g. with 'cd pgtap && sudo make install'" && exit 1
+	It needs to be installed by a user having write access to that directory, e.g. with 'sudo make -C pgtap install'" && exit 1
 else
 	@@$(MAKE) -C pgtap -s $(MAKEFLAGS) install
 endif
