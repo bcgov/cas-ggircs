@@ -18,7 +18,7 @@ $$
 
   declare
 
-    mv_array text[] := '{report, organisation, facility, ' ||
+       mv_array text[] := '{report, organisation, facility, ' ||
                        'activity, unit, identifier, naics, emission, ' ||
                        'final_report, fuel, permit, parent_organisation, contact, ' ||
                        'address, descriptor}';
@@ -34,9 +34,9 @@ $$
         -- execute 'refresh materialized view ggircs_swrs.' || mv_array[i] || ' with data';
         execute
           'create table ggircs.' || quote_ident(mv_array[i]) ||
-                ' as select * from ggircs_swrs.' || quote_ident(mv_array[i]) || '';
---                 ' as x inner join ggircs_swrs.final_report as final_report ' ||
---                 ' on x.ghgr_import_id = final_report.ghgr_import_id)';
+                ' as (select x.* from ggircs_swrs.' || quote_ident(mv_array[i]) ||
+                ' as x inner join ggircs_swrs.final_report as final_report ' ||
+                ' on x.ghgr_import_id = final_report.ghgr_import_id)';
         -- execute 'refresh materialized view ggircs_swrs.' || mv_array[i] || ' with no data';
         execute
           'alter table ggircs.' || quote_ident(mv_array[i]) ||
