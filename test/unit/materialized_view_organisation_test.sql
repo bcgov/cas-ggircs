@@ -29,7 +29,7 @@ select index_is_unique('ggircs_swrs', 'organisation', 'ggircs_organisation_prima
 --
 -- -- Test columns in matview report have correct types
 select col_type_is('ggircs_swrs', 'organisation', 'ghgr_import_id', 'integer', 'ggircs_swrs.organisation column ghgr_import_id has type integer');
-select col_type_is('ggircs_swrs', 'organisation', 'swrs_organisation_id', 'numeric(1000,0)', 'ggircs_swrs.organisation column id has type numeric(1000,0)');
+select col_type_is('ggircs_swrs', 'organisation', 'swrs_organisation_id', 'integer', 'ggircs_swrs.organisation column id has type numeric(1000,0)');
 select col_type_is('ggircs_swrs', 'organisation', 'business_legal_name', 'character varying(1000)', 'ggircs_swrs.organisation column business_legal_name has type varchar');
 select col_type_is('ggircs_swrs', 'organisation', 'english_trade_name', 'character varying(1000)', 'ggircs_swrs.organisation column english_trade_name has type varchar');
 select col_type_is('ggircs_swrs', 'organisation', 'french_trade_name', 'character varying(1000)', 'ggircs_swrs.organisation column french_trade_name has type varchar');
@@ -84,7 +84,7 @@ select results_eq(
 );
 
 select results_eq('select ghgr_import_id from ggircs_swrs.organisation', 'select id from ggircs_swrs.ghgr_import', 'ghgr_swrs.organisation.ghgr_import_id references ghgr_swrs.ghgr_import.id');
-select results_eq('select swrs_organisation_id from ggircs_swrs.organisation', ARRAY[1337::numeric], 'ghgr_swrs.organisation.swrs_organisation_id parsed from xml');
+select results_eq('select swrs_organisation_id from ggircs_swrs.organisation', ARRAY[1337::integer], 'ghgr_swrs.organisation.swrs_organisation_id parsed from xml');
 select results_eq('select business_legal_name from ggircs_swrs.organisation', ARRAY['Ren and Stimpys House'::varchar(1000)], 'ghgr_swrs.organisation.business_legal_name parsed from xml');
 select results_eq('select english_trade_name from ggircs_swrs.organisation', ARRAY[''::varchar], 'ghgr_swrs.organisation.english_trade_name parsed from xml');
 select results_eq('select french_trade_name from ggircs_swrs.organisation', ARRAY[''::varchar], 'ghgr_swrs.organisation.french_trade_name parsed from xml');

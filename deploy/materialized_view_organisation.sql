@@ -27,7 +27,7 @@ create materialized view ggircs_swrs.organisation as (
            '/ReportData/ReportDetails'
            passing source_xml
            columns
-             swrs_organisation_id numeric(1000,0) not null path 'OrganisationId[normalize-space(.)]'
+             swrs_organisation_id integer not null path 'OrganisationId[normalize-space(.)]'
          ) as report_details,
        xmltable(
            '/ReportData'
