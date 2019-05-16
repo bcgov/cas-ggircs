@@ -51,8 +51,8 @@ create materialized view ggircs_swrs.address as (
                 mailing_address_country varchar(1000) path './MailingAddress/Country[normalize-space(.)]',
                 mailing_address_additional_information varchar(10000) path './MailingAddress/AdditionalInformation[normalize-space(.)]',
 
-                geographic_address_latitude varchar(1000) path './GeographicAddress/Latitude[normalize-space(.)]',
-                geographic_address_longitude varchar(1000) path './GeographicAddress/Longitude[normalize-space(.)]'
+                geographic_address_latitude numeric path './GeographicAddress/Latitude[normalize-space(.)]',
+                geographic_address_longitude numeric path './GeographicAddress/Longitude[normalize-space(.)]'
          ) as address_details
 ) with no data;
 
