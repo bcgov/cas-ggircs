@@ -1,23 +1,24 @@
 PERL=perl
 RSYNC=rsync
-PERL_VERSION:=${shell ${PERL} -e 'print substr($$^V, 1)'}
+PERL_VERSION=${shell ${PERL} -e 'print substr($$^V, 1)'}
 PERL_MIN_VERSION=5.10
 CPAN=cpan
 CPANM=cpanm
 SQITCH=sqitch
+SQITCH_VERSION=${word 3,${shell ${SQITCH} --version}}
 SQITCH_MIN_VERSION=0.97
 GREP=grep
 GIT=git
 AWK=awk
 PSQL=psql -h localhost
 # "psql --version" prints "psql (PostgreSQL) XX.XX"
-PSQL_VERSION:=${word 3,${shell ${PSQL} --version}}
-PG_SERVER_VERSION:=${strip ${shell ${PSQL} -tc 'show server_version;' || echo error}}
+PSQL_VERSION=${word 3,${shell ${PSQL} --version}}
+PG_SERVER_VERSION=${strip ${shell ${PSQL} -tc 'show server_version;' || echo error}}
 PG_MIN_VERSION=9.1
 TEST_DB=ggircs_test
 PG_PROVE=pg_prove -h localhost
-PG_SHAREDIR := ${shell pg_config --sharedir}
-PG_ROLE := ${shell whoami}
+PG_SHAREDIR=${shell pg_config --sharedir}
+PG_ROLE=${shell whoami}
 DOCKER_SQITCH_TAG=0.9999
 DOCKER_POSTGRES_IMAGE=wenzowski/postgres
 DOCKER_POSTGRES_TAG=11.2
@@ -155,7 +156,7 @@ install_cpandeps:
 .PHONY: install_cpandeps
 
 postinstall_check:
-	@@printf '%s\n%s\n' "${SQITCH_MIN_VERSION}" $$(echo $$(${SQITCH} --version) | cut -d " " -f 3) | sort -CV ||\
+	@@printf '%s\n%s\n' "${SQITCH_MIN_VERSION}" "${SQITCH_VERSION}" | sort -CV ||\
  	(echo "FATAL: ${SQITCH} version should be at least ${SQITCH_MIN_VERSION}. Make sure the ${SQITCH} executable installed by cpanminus is available has the highest priority in the PATH" && exit 1);
 .PHONY: postinstall_check
 
