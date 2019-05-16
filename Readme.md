@@ -11,7 +11,6 @@ GGIRCS
 > In terminal:
   - Run `make verify` to ensure minimum required versions of all dependencies are installed and postgres is online
   - Run `make install` to set up a development environment
-  - If needed, create a test database using `$ createdb ggircs_test`
   - Run `make test` to execute all pgTAP-based tests against a `ggircs_test` database
   - If needed, create a development database using `$ createdb ggircs_dev`
   - Run `sqitch deploy` to deploy to a `ggircs_dev` database
