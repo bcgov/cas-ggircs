@@ -10,7 +10,7 @@
 
 select ggircs_swrs.export_mv_to_table();
 
-BEGIN;
+begin;
 
 create or replace function ggircs_swrs.export_mv_to_table()
   returns void as
@@ -253,6 +253,6 @@ $$
 
 $$ language plpgsql volatile ;
 
-COMMIT;
+commit;
 
 
