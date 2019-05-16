@@ -1741,7 +1741,35 @@ select isnt_empty('select * from ggircs.contact', 'there is data in ggircs.conta
 select isnt_empty('select * from ggircs.address', 'there is data in ggircs.address');
 select isnt_empty('select * from ggircs.descriptor', 'there is data in ggircs.descriptor');
 
--- select results_eq('select * from ggircs_swrs.report', 'select * from ggircs.report', 'data in ggircs_swrs.report == ggircs_report');
+select isnt_empty('select * from ggircs_swrs.final_report', 'there is data in ggircs_swrs.final_report');
+
+select set_eq('select * from ggircs_swrs.emission',
+
+              $$select ghgr_import_id,
+                activity_name,
+                sub_activity_name,
+                unit_name,
+                sub_unit_name,
+                process_idx,
+                sub_process_idx,
+                units_idx,
+                unit_idx,
+                substances_idx,
+                substance_idx,
+                fuel_idx,
+                fuel_name,
+                emissions_idx,
+                emission_idx,
+                emission_type,
+                gas_type,
+                methodology,
+                not_applicable,
+                quantity,
+                calculated_quantity,
+                emission_category
+               from ggircs.emission$$,
+
+              'data in ggircs_swrs.emission == ggircs.emission');
 
 select * from finish();
 rollback;
