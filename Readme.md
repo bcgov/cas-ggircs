@@ -9,14 +9,15 @@ GGIRCS
 ------------
 > Clone repository
 > In terminal:
-  - If needed, run `make install` to set up a development environment on OS X
   - Run `make verify` to ensure minimum required versions of all dependencies are installed and postgres is online
+  - Run `make install` to set up a development environment
   - Run `make test` to execute all pgTAP-based tests against a `ggircs_test` database
+  - If needed, create a development database using `$ createdb ggircs_dev`
   - Run `sqitch deploy` to deploy to a `ggircs_dev` database
 
 ## Using Sqitch
 ------------
-If you're new to Sqitch, the best place to start is with [the tutuorial](https://github.com/sqitchers/sqitch/blob/master/lib/sqitchtutorial.pod) and other [docs](https://sqitch.org/docs/).
+If you're new to Sqitch, the best place to start is with [the tutorial](https://github.com/sqitchers/sqitch/blob/master/lib/sqitchtutorial.pod) and other [docs](https://sqitch.org/docs/).
 
 > **Add Schema**
 > - sqitch add schema_[schema_name]
@@ -28,9 +29,11 @@ If you're new to Sqitch, the best place to start is with [the tutuorial](https:/
 ------------
 1. [PostgreSQL](http://www.postgresql.org/)
 
-    10 or higher recommended. Usually available via your distribution's
-    package system. Binaries and source are also available
-    [for download](http://www.postgresql.org/download/).
+- 10 or higher recommended. Usually available via your distribution's package system. Binaries and source are also available [for download](http://www.postgresql.org/download/).
+
+- A role with the following options must be created:
+    - The role name is your current user name (`$ whoami`)
+    - The role has the SUPERUSER option
 
 2. [Git](http://git-scm.com)
 
@@ -38,41 +41,9 @@ If you're new to Sqitch, the best place to start is with [the tutuorial](https:/
     package system. Binaries and source are also available
     [for download](http://git-scm.com/downloads).
 
-3. [pgTAP](http://pgtap.org/)
-
-    0.92.0 or higher recommended. Download
-    [from PGXN](http://pgxn.org/dist/pgtap/) and consult its
-    [`README.md`](https://github.com/theory/pgtap/blob/master/README.md) for
-    build instructions. Also available in some packaging systems.
-
 4. [Perl](http://perl.org/)
 
     5.10.0 or higher. Included in most Unix distributions and on OS X. Windows
     users can install
     [ActivePerl](http://www.activestate.com/activeperl/downloads).
 
-5. [`pg_prove`](http://pgtap.org/pg_prove.html)
-
-    3.28 or higher recommended. Available in some packaging systems.
-    Otherwise, Download via CPAN:
-
-        cpan TAP::Parser::SourceHandler::pgTAP
-
-    ActivePerl users can use PPI:
-
-        ppm install TAP-Parser-SourceHandler-pgTAP
-
-6. [Sqitch](http://sqitch.org/)
-
-    0.97.0 or higher recommended. Install via CPAN:
-
-        cpan App::Sqitch DBD::Pg
-
-    ActivePerl users should use PPI:
-
-        ppi App-Sqitch
-
-    [Homebrew](http://brew.sh) users can use the Sqitch Tap:
-
-        brew tap sqitchers/sqitch
-        brew install sqitch --with-postgres-suppor
