@@ -67,6 +67,7 @@ objects:
   metadata:
     name: ${DATABASE_SERVICE_NAME}
   spec:
+    storageClassName: gluster-file-db
     accessModes:
     - ReadWriteOnce
     resources:
@@ -129,6 +130,10 @@ objects:
           resources:
             limits:
               memory: ${MEMORY_LIMIT}
+              cpu: ${CPU_LIMIT}
+            requests:
+              cpu: 100m
+              memory: 256Mi
           securityContext:
             capabilities: {}
             privileged: false
@@ -160,7 +165,12 @@ parameters:
   displayName: Memory Limit
   name: MEMORY_LIMIT
   required: true
-  value: 512Mi
+  value: 32Gi
+- description: Maximum amount of CPU the container can use.
+  displayName: CPU Limit
+  name: CPU_LIMIT
+  required: true
+  value: 4000m
 - description: The OpenShift Namespace where the ImageStream resides.
   displayName: Namespace
   name: NAMESPACE
@@ -196,7 +206,7 @@ parameters:
   displayName: Name of PostgreSQL Image
   name: POSTGRES_IMAGE
   required: true
-  value: "ggircs-postgres"
+  value: "cas-postgres"
 - description: Version of PostgreSQL image to be used (11.2 for now).
   displayName: Version of PostgreSQL Image
   name: POSTGRES_VERSION

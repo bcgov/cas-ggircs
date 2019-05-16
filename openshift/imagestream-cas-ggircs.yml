@@ -1,0 +1,51 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"build.openshift.io/v1","kind":"BuildConfig","metadata":{"annotations":{"openshift.io/generated-by":"OpenShiftNewBuild"},"creationTimestamp":null,"labels":{"build":"cas-ggircs"},"name":"cas-ggircs","namespace":"wksv3k-tools"},"spec":{"nodeSelector":null,"output":{"to":{"kind":"ImageStreamTag","name":"cas-ggircs:latest"}},"postCommit":{},"resources":{},"source":{"git":{"ref":"feature/deploy","uri":"https://github.com/bcgov/cas-ggircs.git"},"type":"Git"},"strategy":{"sourceStrategy":{"from":{"kind":"ImageStreamTag","name":"perl:5.26","namespace":"wksv3k-tools"}},"type":"Source"},"triggers":[{"github":{"secret":"wPhtzBb2MtnZe7cCSklw"},"type":"GitHub"},{"generic":{"secret":"cKRqirix1ERySbJmlDiK"},"type":"Generic"},{"type":"ConfigChange"},{"imageChange":{},"type":"ImageChange"}]},"status":{"lastVersion":0}}
+    openshift.io/generated-by: OpenShiftNewBuild
+  creationTimestamp: 2019-05-16T20:58:27Z
+  labels:
+    build: cas-ggircs
+  name: cas-ggircs
+  namespace: wksv3k-tools
+  resourceVersion: "779373669"
+  selfLink: /apis/build.openshift.io/v1/namespaces/wksv3k-tools/buildconfigs/cas-ggircs
+  uid: 5a7ca736-781d-11e9-9e56-005056832285
+spec:
+  failedBuildsHistoryLimit: 5
+  nodeSelector: null
+  output:
+    to:
+      kind: ImageStreamTag
+      name: cas-ggircs:latest
+  postCommit: {}
+  resources: {}
+  runPolicy: Serial
+  source:
+    git:
+      ref: feature/deploy
+      uri: https://github.com/bcgov/cas-ggircs.git
+    type: Git
+  strategy:
+    sourceStrategy:
+      from:
+        kind: ImageStreamTag
+        name: perl:5.26
+        namespace: wksv3k-tools
+    type: Source
+  successfulBuildsHistoryLimit: 5
+  triggers:
+  - github:
+      secret: wPhtzBb2MtnZe7cCSklw
+    type: GitHub
+  - generic:
+      secret: cKRqirix1ERySbJmlDiK
+    type: Generic
+  - type: ConfigChange
+  - imageChange:
+      lastTriggeredImageID: docker-registry.default.svc:5000/openshift/perl@sha256:32456e743a929894f32aa7319401399c32cd9043391a1a4ed348b49455626555
+    type: ImageChange
+status:
+  lastVersion: 1

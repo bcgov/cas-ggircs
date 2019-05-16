@@ -25,13 +25,14 @@ DOCKER_SQITCH_IMAGE=sqitch
 DOCKER_SQITCH_TAG=0.9999
 DOCKER_GGIRCS_IMAGE=ggircs
 DOCKER_GGIRCS_TAG=latest
-DOCKER_POSTGRES_IMAGE=postgres
-DOCKER_POSTGRES_TAG=11.2
-OC:=oc
-OC_DEV_PROJECT:=wksv3k-dev
-OC_TEST_PROJECT:=wksv3k-test
-OC_PROD_PROJECT:=wksv3k-prod
-OC_TOOLS_PROJECT:=wksv3k-tools
+DOCKER_POSTGRES_IMAGE=postgresql
+DOCKER_POSTGRES_TAG=10
+OC=oc
+OC_DEV_PROJECT=wksv3k-dev
+OC_TEST_PROJECT=wksv3k-test
+OC_PROD_PROJECT=wksv3k-prod
+OC_TOOLS_PROJECT=wksv3k-tools
+OC_REGISTRY=docker-registry.default.svc:5000
 
 test:
 	@@${MAKE} -s ${MAKEFLAGS} createdb;
@@ -231,53 +232,56 @@ dev_project: whoami
 	@@${OC} project ${OC_DEV_PROJECT}
 .PHONY: tools_project
 
-import: tools_project docker_push
-	# Import prebuilt images from docker.io to openshift...
-	#   - sqitch
-	@@${OC} import-image docker.io/${DOCKER_HUB_PREFIX}${DOCKER_SQITCH_IMAGE}:${DOCKER_SQITCH_TAG} --confirm -o yaml > openshift/imagestream-sqitch.yml
-	#   - ggircs
-	@@${OC} import-image docker.io/${DOCKER_HUB_PREFIX}${DOCKER_GGIRCS_IMAGE}:${DOCKER_GGIRCS_TAG} --confirm -o yaml > openshift/imagestream-ggircs.yml
-	#   - postgres
-	@@${OC} import-image docker.io/${DOCKER_HUB_PREFIX}${DOCKER_POSTGRES_IMAGE}:${DOCKER_POSTGRES_TAG} --confirm -o yaml > openshift/imagestream-postgres.yml
-	# done.
-.PHONY: import
+# Configure image streams
+# oc start-build cas-ggircs-postgres --commit=$$(git rev-parse --verify HEAD)
+# oc start-build cas-ggircs-sqitch --commit=$$(git rev-parse --verify HEAD)
+release_tools: tools_project
+	@@${OC} get is/perl || ${OC} import-image perl:5.26 --from='${OC_REGISTRY}/openshift/perl:5.26' --confirm
+	@@${OC} get is/cas-postgres || ${OC} import-image cas-postgres:${DOCKER_POSTGRES_TAG} --from='docker-registry.default.svc:5000/openshift/${DOCKER_POSTGRES_IMAGE}:${DOCKER_POSTGRES_TAG}' --confirm
+	@@${OC} get bc/cas-ggircs || ${OC} new-build perl:5.26~https://github.com/bcgov/cas-ggircs.git#feature/deploy
+	# Imported images to openshift...
+	#   - perl
+	#   - cas-postgres
+	#   - cas-ggircs
 
-# dev_release: import dev_project
-dev_release: dev_project
+clean_tools: tools_project
+	# Purge images from openshift...
+	#   - perl
+	@@${OC} delete is/perl --wait=true --ignore-not-found=true
+	#   - cas-postgres
+	@@${OC} delete is/cas-postgres --wait=true --ignore-not-found=true
+	#   - cas-ggircs
+	@@${OC} delete bc/cas-ggircs --wait=true --ignore-not-found=true
+	@@${OC} delete is/cas-ggircs --wait=true --ignore-not-found=true
+
+release_dev: release_tools dev_project
 	# Allow import of images from tools namespace
-	oc policy add-role-to-group system:image-puller system:serviceaccounts:${OC_DEV_PROJECT} -n ${OC_TOOLS_PROJECT}
-	# oc import-image ${DOCKER_POSTGRES_IMAGE}:${DOCKER_POSTGRES_TAG} --confirm --from=docker-registry.default.svc:5000/${OC_TOOLS_PROJECT}/${DOCKER_POSTGRES_IMAGE}:${DOCKER_POSTGRES_TAG}
+	@@${OC} policy add-role-to-group system:image-puller system:serviceaccounts:${OC_DEV_PROJECT} -n ${OC_TOOLS_PROJECT}
+	# Import images from tools
+	${OC} get is/cas-postgres || ${OC} import-image cas-postgres:${DOCKER_POSTGRES_TAG} --from='${OC_REGISTRY}/${OC_TOOLS_PROJECT}/cas-postgres:${DOCKER_POSTGRES_TAG}' --confirm
+	${OC} get is/cas-ggircs || ${OC} import-image cas-ggircs:latest --from='${OC_REGISTRY}/${OC_TOOLS_PROJECT}/cas-ggircs:latest' --confirm
 	# Deploy...
-	oc process -f openshift/template-postgresql-persistent.yml NAMESPACE=${OC_TOOLS_PROJECT} POSTGRES_IMAGE=${DOCKER_POSTGRES_IMAGE} POSTGRES_VERSION=${DOCKER_POSTGRES_TAG} | oc apply --wait=true -f-
+	${OC} process -f openshift/template-postgresql-persistent.yml NAMESPACE=${OC_DEV_PROJECT} POSTGRES_VERSION=${DOCKER_POSTGRES_TAG} | oc apply --wait=true -f-
 	# oc rollout latest dc/postgresql -n ${OC_DEV_PROJECT}
 	# Migrate...
 .PHONY: dev_release
 
-dev_clean: dev_project
-	# Remove all OpenShift resources
-	oc delete secret postgresql --wait=true --ignore-not-found=true
-	oc delete service postgresql --wait=true --ignore-not-found=true
-	oc delete pvc postgresql --wait=true --ignore-not-found=true
-	oc delete dc postgresql --force=true --wait=true --ignore-not-found=true
-.PHONY: dev_clean
-
-new_build: tools_project
-	# Build Dockerfile on OpenShift
-	oc new-build ./docker/sqitch --strategy=docker --name=ggircs-sqitch
-.PHONY: new_build
-# oc get --export template postgresql-persistent -n openshift > openshift/template-postgresql-persistent.yml
+clean_dev: dev_project
+	# Purge images from openshift...
+	#   - perl
+	@@${OC} delete is/perl --wait=true --ignore-not-found=true
+	#   - cas-postgres
+	@@${OC} delete is/cas-postgres --wait=true --ignore-not-found=true
+	#   - cas-ggircs
+	@@${OC} delete is/cas-ggircs --wait=true --ignore-not-found=true
+	# Remove deployments from OpenShift...
+	#   - postgresql
+	@@${OC} delete dc/postgresql --wait=true --ignore-not-found=true
 
 openshift_build:
 	# oc new-app perl:5.26~https://github.com/bcgov/cas-ggircs.git#feature/deploy -o yaml > openshift/cas-ggircs.yml
-	oc apply -f openshift/cas-ggircs.yml
+	# oc apply -f openshift/cas-ggircs.yml
 .PHONY: openshift_build
-# Configure image streams
-# oc new-build --dry-run=true --strategy=docker --context-dir=docker/sqitch/ --name=cas-ggircs-sqitch https://github.com/bcgov/cas-ggircs.git -o yaml > openshift/cas-ggircs-sqitch.yml
-# oc new-build --dry-run=true --strategy=docker --context-dir=docker/postgres/ --name=cas-ggircs-postgres https://github.com/bcgov/cas-ggircs.git -o yaml > openshift/cas-ggircs-postgres.yml
-# oc apply -f openshift/cas-ggircs-postgres.yml
-# oc apply -f openshift/cas-ggircs-sqitch.yml
-# oc start-build cas-ggircs-postgres --commit=$$(git rev-parse --verify HEAD)
-# oc start-build cas-ggircs-sqitch --commit=$$(git rev-parse --verify HEAD)
 
 s2i_build:
 	# localy build COMMITTED CHANGES ONLY
