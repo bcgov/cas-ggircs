@@ -8,7 +8,7 @@
   -- materialized_view_activity materialized_view_unit materialized_view_fuel
   -- materialized_view_emission materialized_view_descriptor
 
-select ggircs_swrs.export_mv_to_table();
+-- select ggircs_swrs.export_mv_to_table();
 
 BEGIN;
 
