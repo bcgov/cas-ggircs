@@ -5,6 +5,7 @@ PERL_MIN_VERSION=5.10
 CPAN=cpan
 CPANM=cpanm
 SQITCH=sqitch
+SQITCH_MIN_VERSION=0.97
 GREP=grep
 GIT=git
 AWK=awk
@@ -163,7 +164,12 @@ install_cpandeps:
 	${CPANM} --installdeps .
 .PHONY: install_cpandeps
 
-install: install_cpanm install_cpandeps install_pgtap
+postinstall_check:
+	@@printf '%s\n%s\n' "${SQITCH_MIN_VERSION}" $$(echo $$(${SQITCH} --version) | cut -d " " -f 3) | sort -CV ||\
+ 	(echo "FATAL: ${SQITCH} version should be at least ${SQITCH_MIN_VERSION}. Make sure the ${SQITCH} executable installed by cpanminus is available has the highest priority in the PATH" && exit 1);
+.PHONY: postinstall_check
+
+install: install_cpanm install_cpandeps postinstall_check install_pgtap 
 .PHONY: install
 
 docker_build_sqitch:
