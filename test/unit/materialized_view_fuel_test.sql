@@ -135,24 +135,24 @@ select col_is_null(      'ggircs_swrs', 'fuel', 'fuel_units', 'fuel.units column
 select col_hasnt_default('ggircs_swrs', 'fuel', 'fuel_units', 'fuel.units column should not  have a default');
 
 --  select has_column(       'ggircs_swrs', 'fuel', 'annual_fuel_amount', 'fuel.annual_fuel_amount column should exist');
-select col_type_is(      'ggircs_swrs', 'fuel', 'annual_fuel_amount', 'character varying(1000)', 'fuel.annual_fuel_amount column should be type varchar');
+select col_type_is(      'ggircs_swrs', 'fuel', 'annual_fuel_amount', 'numeric', 'fuel.annual_fuel_amount column should be type numeric');
 select col_is_null(      'ggircs_swrs', 'fuel', 'annual_fuel_amount', 'fuel.units column should allow null');
 select col_hasnt_default('ggircs_swrs', 'fuel', 'annual_fuel_amount', 'fuel.units column should not  have a default');
 
 --  select has_column(       'ggircs_swrs', 'fuel', 'annual_weighted_avg_carbon_content', 'fuel.annual_weighted_avg_carbon_content column should exist');
-select col_type_is(      'ggircs_swrs', 'fuel', 'annual_weighted_avg_carbon_content', 'character varying(1000)', 'fuel.annual_weighted_avg_carbon_content column should be type varchar');
+select col_type_is(      'ggircs_swrs', 'fuel', 'annual_weighted_avg_carbon_content', 'numeric', 'fuel.annual_weighted_avg_carbon_content column should be type numeric');
 select col_is_null(      'ggircs_swrs', 'fuel', 'annual_weighted_avg_carbon_content', 'fuel.annual_weighted_avg_carbon_content column should allow null');
 select col_hasnt_default('ggircs_swrs', 'fuel', 'annual_weighted_avg_carbon_content', 'fuel.annual_weighted_avg_carbon_content column should not  have a default');
 
 
 --  select has_column(       'ggircs_swrs', 'fuel', 'annual_weighted_avg_hhv', 'fuel.annual_weighted_avg_hhv column should exist');
-select col_type_is(      'ggircs_swrs', 'fuel', 'annual_weighted_avg_hhv', 'character varying(1000)', 'fuel.annual_weighted_avg_hhv column should be type varchar');
+select col_type_is(      'ggircs_swrs', 'fuel', 'annual_weighted_avg_hhv', 'numeric', 'fuel.annual_weighted_avg_hhv column should be type numeric');
 select col_is_null(      'ggircs_swrs', 'fuel', 'annual_weighted_avg_hhv', 'fuel.units column should allow null');
 select col_hasnt_default('ggircs_swrs', 'fuel', 'annual_weighted_avg_hhv', 'fuel.units column should not  have a default');
 
 
 --  select has_column(       'ggircs_swrs', 'fuel', 'annual_steam_generation', 'fuel.annual_steam_generation column should exist');
-select col_type_is(      'ggircs_swrs', 'fuel', 'annual_steam_generation', 'character varying(1000)', 'fuel.annual_steam_generation column should be type varchar');
+select col_type_is(      'ggircs_swrs', 'fuel', 'annual_steam_generation', 'numeric', 'fuel.annual_steam_generation column should be type numeric');
 select col_is_null(      'ggircs_swrs', 'fuel', 'annual_steam_generation', 'fuel.annual_steam_generation column should allow null');
 select col_hasnt_default('ggircs_swrs', 'fuel', 'annual_steam_generation', 'fuel.annual_steam_generation column should not  have a default');
 
@@ -167,22 +167,22 @@ select col_is_null(      'ggircs_swrs', 'fuel', 'other_flare_details', 'fuel.oth
 select col_hasnt_default('ggircs_swrs', 'fuel', 'other_flare_details', 'fuel.other_flare_details column should not  have a default');
 
 --  select has_column(       'ggircs_swrs', 'fuel', 'q1', 'fuel.q1 column should exist');
-select col_type_is(      'ggircs_swrs', 'fuel', 'q1', 'character varying(1000)', 'fuel.q1 column should be type varchar');
+select col_type_is(      'ggircs_swrs', 'fuel', 'q1', 'numeric', 'fuel.q1 column should be type numeric');
 select col_is_null(      'ggircs_swrs', 'fuel', 'q1', 'fuel.q1 column should allow null');
 select col_hasnt_default('ggircs_swrs', 'fuel', 'q1', 'fuel.q1 column should not  have a default');
 
 --  select has_column(       'ggircs_swrs', 'fuel', 'q2', 'fuel.q2 column should exist');
-select col_type_is(      'ggircs_swrs', 'fuel', 'q2', 'character varying(1000)', 'fuel.q2 column should be type varchar');
+select col_type_is(      'ggircs_swrs', 'fuel', 'q2', 'numeric', 'fuel.q2 column should be type numeric');
 select col_is_null(      'ggircs_swrs', 'fuel', 'q2', 'fuel.q2 column should allow null');
 select col_hasnt_default('ggircs_swrs', 'fuel', 'q2', 'fuel.q2 column should not  have a default');
 
 --  select has_column(       'ggircs_swrs', 'fuel', 'q3', 'fuel.q3 column should exist');
-select col_type_is(      'ggircs_swrs', 'fuel', 'q3', 'character varying(1000)', 'fuel.q3 column should be type varchar');
+select col_type_is(      'ggircs_swrs', 'fuel', 'q3', 'numeric', 'fuel.q3 column should be type numeric');
 select col_is_null(      'ggircs_swrs', 'fuel', 'q3', 'fuel.q3 column should allow null');
 select col_hasnt_default('ggircs_swrs', 'fuel', 'q3', 'fuel.q3 column should not  have a default');
 
 --  select has_column(       'ggircs_swrs', 'fuel', 'q4', 'fuel.q4 column should exist');
-select col_type_is(      'ggircs_swrs', 'fuel', 'q4', 'character varying(1000)', 'fuel.q4 column should be type varchar');
+select col_type_is(      'ggircs_swrs', 'fuel', 'q4', 'numeric', 'fuel.q4 column should be type numeric');
 select col_is_null(      'ggircs_swrs', 'fuel', 'q4', 'fuel.q4 column should allow null');
 select col_hasnt_default('ggircs_swrs', 'fuel', 'q4', 'fuel.q4 column should not  have a default');
 
@@ -372,25 +372,25 @@ select results_eq(
 
 select results_eq(
     'select annual_fuel_amount from ggircs_swrs.fuel where fuel_idx=0 and unit_idx=0',
-    ARRAY['4550520'::varchar],
+    ARRAY['4550520'::numeric],
     'column annual_fuel_amount in ggircs_swrs.fuel was properly parsed from xml'
 );
 
 select results_eq(
     'select annual_weighted_avg_hhv from ggircs_swrs.fuel where fuel_idx=0 and unit_idx=0',
-    ARRAY['0.0369'::varchar],
+    ARRAY['0.0369'::numeric],
     'column annual_weighted_avg_hhv in ggircs_swrs.fuel was properly parsed from xml'
 );
 
 select results_eq(
     'select annual_weighted_avg_carbon_content from ggircs_swrs.fuel where fuel_idx=0 and unit_idx=0',
-    ARRAY['0.7192'::varchar],
+    ARRAY['0.7192'::numeric],
     'column annual_weighted_avg_carbon_content in ggircs_swrs.fuel was properly parsed from xml'
 );
 
 select results_eq(
     'select annual_steam_generation from ggircs_swrs.fuel where fuel_idx=0 and unit_idx=0',
-    ARRAY['.6'::varchar],
+    ARRAY['.6'::numeric],
     'column annual_steam_generation in ggircs_swrs.fuel was properly parsed from xml'
 );
 
@@ -408,25 +408,25 @@ select results_eq(
 
 select results_eq(
     'select q1 from ggircs_swrs.fuel where fuel_idx=0 and unit_idx=0',
-    ARRAY[1::varchar],
+    ARRAY[1::numeric],
     'column q1 in ggircs_swrs.fuel was properly parsed from xml'
 );
 
 select results_eq(
     'select q2 from ggircs_swrs.fuel where fuel_idx=0 and unit_idx=0',
-    ARRAY['2'::varchar],
+    ARRAY['2'::numeric],
     'column q2 in ggircs_swrs.fuel was properly parsed from xml'
 );
 
 select results_eq(
     'select q3 from ggircs_swrs.fuel where fuel_idx=0 and unit_idx=0',
-    ARRAY['3'::varchar],
+    ARRAY['3'::numeric],
     'column q3 in ggircs_swrs.fuel was properly parsed from xml'
 );
 
 select results_eq(
     'select q4 from ggircs_swrs.fuel where fuel_idx=0 and unit_idx=0',
-    ARRAY['4'::varchar],
+    ARRAY['4'::numeric],
     'column q4 in ggircs_swrs.fuel was properly parsed from xml'
 );
 
