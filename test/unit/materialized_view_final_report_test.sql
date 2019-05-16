@@ -22,7 +22,7 @@ select columns_are('ggircs_swrs'::name, 'final_report'::name, array[
 ]);
 
 --  select has_column(       'ggircs_swrs', 'final_report', 'swrs_report_id', 'final_report.swrs_report_id column should exist');
-select col_type_is(      'ggircs_swrs', 'final_report', 'swrs_report_id', 'numeric(1000,0)', 'final_report.swrs_report_id column should be type bigint');
+select col_type_is(      'ggircs_swrs', 'final_report', 'swrs_report_id', 'integer', 'final_report.swrs_report_id column should be type bigint');
 select col_hasnt_default('ggircs_swrs', 'final_report', 'swrs_report_id', 'final_report.swrs_report_id column should not have a default value');
 
 --  select has_column(       'ggircs_swrs', 'final_report', 'ghgr_import_id', 'final_report.ghgr_import_id column should exist');
@@ -132,7 +132,7 @@ select results_eq(
 
 select results_eq(
   'select swrs_report_id from ggircs_swrs.final_report',
-  array['800855555'::numeric],
+  array['800855555'::integer],
   'ggircs_swrs.final_report.swrs_report_id should contain one single value'
 );
 
