@@ -1746,6 +1746,7 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
 
 $$);
 
+-- Refresh all materialized views
 refresh materialized view ggircs_swrs.report with data;
 refresh materialized view ggircs_swrs.organisation with data;
 refresh materialized view ggircs_swrs.facility with data;
@@ -1767,6 +1768,7 @@ select ggircs_swrs.export_mv_to_table();
 -- Function export_mv_to_table exists
 select has_function( 'ggircs_swrs', 'export_mv_to_table', 'Schema ggircs_swrs has function export_mv_to_table()' );
 
+-- All tables created by the function exist in schema ggircs
 select tables_are('ggircs'::name, ARRAY[
     'report'::name,
     'organisation'::name,
@@ -1791,6 +1793,7 @@ select tables_are('ggircs'::name, ARRAY[
                              descriptor $$
 );
 
+-- All tables in schema ggircs have data
 select isnt_empty('select * from ggircs.report', 'there is data in ggircs.report');
 select isnt_empty('select * from ggircs.organisation', 'there is data in ggircs.organisation');
 select isnt_empty('select * from ggircs.facility', 'there is data in ggircs.facility');
@@ -1807,6 +1810,7 @@ select isnt_empty('select * from ggircs.contact', 'there is data in ggircs.conta
 select isnt_empty('select * from ggircs.address', 'there is data in ggircs.address');
 select isnt_empty('select * from ggircs.descriptor', 'there is data in ggircs.descriptor');
 
+-- Data in ggircs_swrs.emission == data in ggircs.emission
 select results_eq('select * from ggircs_swrs.emission order by process_idx, sub_process_idx, units_idx, unit_idx, substances_idx, substance_idx, fuel_idx, emissions_idx, emission_idx asc',
 
               $$select
