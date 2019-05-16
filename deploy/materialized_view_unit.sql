@@ -67,6 +67,4 @@ comment on column ggircs_swrs.unit.non_cogen_nameplate_capacity is 'The nameplat
 comment on column ggircs_swrs.unit.non_cogen_net_power is 'The net power of the non-cogen unit';
 comment on column ggircs_swrs.unit.non_cogen_unit_name is 'The name of the non-cogen unit';
 
-
-
 commit;

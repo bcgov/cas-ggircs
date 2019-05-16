@@ -60,12 +60,12 @@ select col_type_is(      'ggircs_swrs', 'address', 'ghgr_import_id', 'integer', 
 select col_hasnt_default('ggircs_swrs', 'address', 'ghgr_import_id', 'address.ghgr_import_id column should not have a default value');
 
 --  select has_column(       'ggircs_swrs', 'address', 'swrs_facility_id', 'address.swrs_facility_id column should exist');
-select col_type_is(      'ggircs_swrs', 'address', 'swrs_facility_id', 'numeric(1000,0)', 'address.swrs_facility_id column should be type numeric');
+select col_type_is(      'ggircs_swrs', 'address', 'swrs_facility_id', 'integer', 'address.swrs_facility_id column should be type numeric');
 select col_is_null(      'ggircs_swrs', 'address', 'swrs_facility_id', 'address.swrs_facility_id column should allow null');
 select col_hasnt_default('ggircs_swrs', 'address', 'swrs_facility_id', 'address.swrs_facility_id column should not have a default');
 
 --  select has_column(       'ggircs_swrs', 'address', 'swrs_organisation_id', 'address.swrs_organisation_id column should exist');
-select col_type_is(      'ggircs_swrs', 'address', 'swrs_organisation_id', 'numeric(1000,0)', 'address.swrs_organisation_id column should be type numeric');
+select col_type_is(      'ggircs_swrs', 'address', 'swrs_organisation_id', 'integer', 'address.swrs_organisation_id column should be type numeric');
 select col_is_null(      'ggircs_swrs', 'address', 'swrs_organisation_id', 'address.swrs_organisation_id column should allow null');
 select col_hasnt_default('ggircs_swrs', 'address', 'swrs_organisation_id', 'address.swrs_organisation_id column should not have a default');
 
@@ -480,13 +480,15 @@ select results_eq(
 );
 select results_eq(
   $$select swrs_facility_id from ggircs_swrs.address where address.type='Facility'$$,
-  ARRAY[666::numeric],
+  ARRAY[666::integer],
+  'select swrs_facility_id from ggircs_swrs.address',
   'ggircs_swrs.address parsed column swrs_facility_id'
 );
 -- test that the swrs_organisation_id is null when getting address from the context of facility
 select results_eq(
   $$select swrs_organisation_id from ggircs_swrs.address where address.type='Facility'$$,
-  ARRAY[null::numeric],
+  'select swrs_organisation_id from ggircs_swrs.address',
+  ARRAY[null::integer],
   'ggircs_swrs.address parsed column swrs_organisation_id'
 );
 
