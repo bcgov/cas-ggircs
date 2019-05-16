@@ -134,20 +134,20 @@ verify: verify_installed verify_pg_server
 pgtap:
 	# clone the source for pgTAP
 	@@${GIT} clone https://github.com/theory/pgtap.git && \
-		cd pgtap && \
+		pushd pgtap && \
 		${GIT} checkout v1.0.0;
 
-#use pushd/popd
 install_pgtap: pgtap
-	# install pgTAP into postgres
-	@@cd pgtap && \
-		$(MAKE) -s $(MAKEFLAGS) && \
-		$(MAKE) -s $(MAKEFLAGS) installcheck;
+	${info install pgTAP into postgres}
+	@@$(MAKE) -C pgtap -s $(MAKEFLAGS)
+	@@$(MAKE) -C pgtap -s $(MAKEFLAGS) installcheck
 
-	@@/bin/test -w ${PG_SHAREDIR}/extension && \
-		cd pgtap && $(MAKE) -s $(MAKEFLAGS) install || \
-		${error The current user does not have permission to write to ${PG_SHAREDIR}/extension and install pgTAP.\
-		It needs to be installed by a user having write access to that directory, e.g. with 'cd pgtap && sudo make install'}	
+ifeq (error,${shell /bin/test -w ${PG_SHAREDIR}/extension || echo error})
+	@@echo "FATAL: The current user does not have permission to write to ${PG_SHAREDIR}/extension and install pgTAP.\
+	It needs to be installed by a user having write access to that directory, e.g. with 'cd pgtap && sudo make install'" && exit 1
+else
+	@@$(MAKE) -C pgtap -s $(MAKEFLAGS) install
+endif
 .PHONY: install_pgtap
 
 
