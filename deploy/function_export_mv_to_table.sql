@@ -44,23 +44,43 @@ $$
 
       end loop;
 
-      raise notice 'Exporting non_attributable_emission';
 
-      execute
-          'drop table if exists ggircs.non_attributable_emission';
+    /** ggircs_swrs.emission split into: ggircs.non_attributable_emission && ggircs_attributable_emission **/
+    raise notice 'Exporting non_attributable_emission';
 
-      execute
-          'create table ggircs.non_attributable_emission ' ||
-          'as (select x.* from ggircs_swrs.emission ' ||
-          'as x inner join ggircs_swrs.final_report as final_report ' ||
-          'on x.ghgr_import_id = final_report.ghgr_import_id ' ||
-          'join ggircs_swrs.facility as facility ' ||
-          'on x.ghgr_import_id = facility.ghgr_import_id ' ||
-          'and x.gas_type = ''CO2bioC'' '
-          'and facility.facility_type = ''EIO'' )';
+    execute
+      'drop table if exists ggircs.non_attributable_emission';
 
-      execute 'alter table ggircs.non_attributable_emission add column id int generated always as identity primary key';
+    execute
+      'create table ggircs.non_attributable_emission ' ||
+      'as (select x.* from ggircs_swrs.emission ' ||
+      'as x inner join ggircs_swrs.final_report as final_report ' ||
+      'on x.ghgr_import_id = final_report.ghgr_import_id ' ||
+      'join ggircs_swrs.facility as facility ' ||
+      'on x.ghgr_import_id = facility.ghgr_import_id ' ||
+      'and x.gas_type = ''CO2bioC'' '
+      'and facility.facility_type = ''EIO'' )';
 
+    execute 'alter table ggircs.non_attributable_emission add column id int generated always as identity primary key';
+
+    raise notice 'Exporting attributable_emission';
+
+    execute
+      'drop table if exists ggircs.attributable_emission';
+
+    execute
+      'create table ggircs.attributable_emission ' ||
+      'as (select x.* from ggircs_swrs.emission ' ||
+      'as x inner join ggircs_swrs.final_report as final_report ' ||
+      'on x.ghgr_import_id = final_report.ghgr_import_id ' ||
+      'join ggircs_swrs.facility as facility ' ||
+      'on x.ghgr_import_id = facility.ghgr_import_id ' ||
+      'and x.gas_type != ''CO2bioC'' '
+      'and facility.facility_type != ''EIO'' )';
+
+    execute 'alter table ggircs.attributable_emission add column id int generated always as identity primary key';
+
+    
 
       -- Create FK/PK relation between Emission and Fuel
       alter table ggircs.emission add column fuel_id int;

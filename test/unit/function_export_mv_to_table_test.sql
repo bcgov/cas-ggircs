@@ -1830,7 +1830,7 @@ select has_fk('ggircs', 'descriptor', 'ggircs_descriptor has foreign key constra
 
 
 select has_fk('ggircs', 'non_attributable_emission', 'ggircs.non_attributable_emissions has foreign key constraint(s)');
-select * from ggircs.non_attributable_emission;
+select * from ggircs.attributable_emission;
 
 -- Test validity of FK relations
 -- Emission -> Fuel
