@@ -158,6 +158,82 @@ $$
             and fuel.activity_name = unit.activity_name and fuel.units_idx = unit.units_idx and fuel.unit_idx = unit.unit_idx;
       alter table ggircs.fuel add constraint ggircs_fuel_unit_foreign_key foreign key (unit_id) references ggircs.unit(id);
 
+
+
+
+     -- Create FK/PK relation between Attributable_Emission and Fuel
+      alter table ggircs.attributable_emission add column fuel_id int;
+      create index ggircs_attributable_emission_fuel_index on ggircs.attributable_emission (fuel_id);
+      update ggircs.attributable_emission set fuel_id = fuel.id from ggircs.fuel
+          where attributable_emission.ghgr_import_id = fuel.ghgr_import_id 
+            and attributable_emission.process_idx = fuel.process_idx  
+            and attributable_emission.sub_process_idx = fuel.sub_process_idx
+            and attributable_emission.activity_name = fuel.activity_name  
+            and attributable_emission.sub_activity_name = fuel.sub_activity_name  
+            and attributable_emission.unit_name = fuel.unit_name
+            and attributable_emission.sub_unit_name = fuel.sub_unit_name 
+            and attributable_emission.substance_idx = fuel.substance_idx 
+            and attributable_emission.substances_idx = fuel.substances_idx
+            and attributable_emission.sub_unit_name = fuel.sub_unit_name
+            and attributable_emission.units_idx = fuel.units_idx 
+            and attributable_emission.unit_idx = fuel.unit_idx
+            and attributable_emission.fuel_idx = fuel.fuel_idx;
+      alter table ggircs.attributable_emission add constraint ggircs_attributable_emission_fuel_foreign_key foreign key (fuel_id) references ggircs.fuel(id);
+      
+      -- Create FK/PK relation between Attributable_Emission and Unit
+      alter table ggircs.attributable_emission add column unit_id int;
+      create index ggircs_attributable_emission_unit_index on ggircs.attributable_emission (unit_id);
+      update ggircs.attributable_emission set unit_id = unit.id from ggircs.unit
+          where attributable_emission.ghgr_import_id = unit.ghgr_import_id 
+            and attributable_emission.process_idx = unit.process_idx  
+            and attributable_emission.sub_process_idx = unit.sub_process_idx
+            and attributable_emission.activity_name = unit.activity_name
+            and attributable_emission.units_idx = unit.units_idx 
+            and attributable_emission.unit_idx = unit.unit_idx;
+      alter table ggircs.attributable_emission add constraint ggircs_attributable_emission_unit_foreign_key foreign key (unit_id) references ggircs.unit(id);
+
+      -- Create FK/PK relation between Attributable_Emission and Activity
+      alter table ggircs.attributable_emission add column activity_id int;
+      create index ggircs_attributable_emission_activity_index on ggircs.attributable_emission (activity_id);
+      update ggircs.attributable_emission set activity_id = activity.id from ggircs.activity
+          where attributable_emission.ghgr_import_id = activity.ghgr_import_id 
+            and attributable_emission.process_idx = activity.process_idx  
+            and attributable_emission.sub_process_idx = activity.sub_process_idx
+            and attributable_emission.activity_name = activity.activity_name;
+      alter table ggircs.attributable_emission add constraint ggircs_attributable_emission_activity_foreign_key foreign key (activity_id) references ggircs.activity(id);
+
+     -- Create FK/PK relation between Attributable_Emission and Facility
+      alter table ggircs.attributable_emission add column facility_id int;
+      create index ggircs_attributable_emission_facility_index on ggircs.attributable_emission (facility_id);
+      update ggircs.attributable_emission set facility_id = facility.id from ggircs.facility
+          where attributable_emission.ghgr_import_id = facility.ghgr_import_id;
+      alter table ggircs.attributable_emission add constraint ggircs_attributable_emission_facility_foreign_key foreign key (facility_id) references ggircs.facility(id);
+ 
+      -- Create FK/PK relation between Attributable_Emission and Report
+      alter table ggircs.attributable_emission add column report_id int;
+      create index ggircs_attributable_emission_report_index on ggircs.attributable_emission (report_id);
+      update ggircs.attributable_emission set report_id = report.id from ggircs.report
+          where attributable_emission.ghgr_import_id = report.ghgr_import_id;
+      alter table ggircs.attributable_emission add constraint ggircs_attributable_emission_report_foreign_key foreign key (report_id) references ggircs.report(id);
+
+      -- Create FK/PK relation between Attributable_Emission and Organisation
+      alter table ggircs.attributable_emission add column organisation_id int;
+      create index ggircs_attributable_emission_organisation_index on ggircs.attributable_emission (organisation_id);
+      update ggircs.attributable_emission set organisation_id = organisation.id from ggircs.organisation
+          where attributable_emission.ghgr_import_id = organisation.ghgr_import_id;
+      alter table ggircs.attributable_emission add constraint ggircs_attributable_emission_organisation_foreign_key foreign key (organisation_id) references ggircs.organisation(id);
+
+      -- Create FK/PK relation between Attributable_Emission and NAICS
+      alter table ggircs.attributable_emission add column naics_id int;
+      create index ggircs_attributable_emission_naics_index on ggircs.attributable_emission (naics_id);
+      update ggircs.attributable_emission set naics_id = naics.id from ggircs.naics
+          where attributable_emission.ghgr_import_id = naics.ghgr_import_id
+          and naics.path_context = 'RegistrationData';
+      alter table ggircs.attributable_emission add constraint ggircs_attributable_emission_naics_foreign_key foreign key (naics_id) references ggircs.naics(id);
+
+
+
+
       -- Create FK/PK relation between Unit and Activity
       alter table ggircs.unit add column activity_id int;
       create index ggircs_unit_activity_index on ggircs.unit (activity_id);

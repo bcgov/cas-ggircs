@@ -1364,6 +1364,12 @@ select isnt_empty('select * from ggircs.contact', 'there is data in ggircs.conta
 select isnt_empty('select * from ggircs.address', 'there is data in ggircs.address');
 select isnt_empty('select * from ggircs.descriptor', 'there is data in ggircs.descriptor');
 
+-- attributable_emission has no data (from EIO facility)
+select is_empty('select * from ggircs.attributable_emission', 'there is data in ggircs.attributable_emission');
+
+-- NA emission contains no data other than CO2bioC
+select is_empty($$select * from ggircs.non_attributable_emission where gas_type != 'CO2bioC'$$, 'there is no data in NA emission that is not CO2bioC');
+
 -- Data in ggircs_swrs.report === data in ggircs_report
 select results_eq($$select
                       ghgr_import_id,
@@ -3161,6 +3167,12 @@ select ggircs_swrs.export_mv_to_table();
 
 
 -- Test LFO Facility / Attributable Emisisons
+
+-- attributable_emission has data
+select isnt_empty('select * from ggircs.attributable_emission', 'attributable_emission has data');
+-- No CO2bioC
+select is_empty($$select * from ggircs.attributable_emission where gas_type='CO2bioC'$$, 'CO2bioC emissions are not in attributable_emission');
+
 -- Attr Emission -> Fuel
 select results_eq(
     $$select fuel.ghgr_import_id from ggircs.attributable_emission
