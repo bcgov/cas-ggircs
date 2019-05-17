@@ -1089,7 +1089,8 @@ select has_function( 'ggircs_swrs', 'export_mv_to_table', 'Schema ggircs_swrs ha
 select tables_are('ggircs'::name, ARRAY[
     'report'::name,
     'organisation'::name,
-    'facility'::name,
+    'single_facility'::name,
+    'lfo_facility'::name,
     'activity'::name,
     'unit'::name,
     'identifier'::name,
@@ -1105,7 +1106,7 @@ select tables_are('ggircs'::name, ARRAY[
     'descriptor'::name
     ],
     $$Schema ggircs has tables [
-                             report, organisation, facility, activity,
+                             report, organisation, single_facility, lfo_facility, activity,
                              unit, identifier, naics. non_attributable_emission, attributable_emission, final_report,
                              fuel, permit, parent_organisation, contact, address
                              descriptor $$
@@ -1114,7 +1115,8 @@ select tables_are('ggircs'::name, ARRAY[
 -- Test all tables have primary key
 select has_pk('ggircs', 'report', 'ggircs_report has primary key');
 select has_pk('ggircs', 'organisation', 'ggircs_organisation has primary key');
-select has_pk('ggircs', 'facility', 'ggircs_facility has primary key');
+select has_pk('ggircs', 'single_facility', 'ggircs.signle_facility has primary key');
+select has_pk('ggircs', 'lfo_facility', 'ggircs.lfo_facility has primary key');
 select has_pk('ggircs', 'activity', 'ggircs_activity has primary key');
 select has_pk('ggircs', 'unit', 'ggircs_unit has primary key');
 select has_pk('ggircs', 'identifier', 'ggircs_identifier has primary key');
@@ -1131,7 +1133,8 @@ select has_pk('ggircs', 'descriptor', 'ggircs_descriptor has primary key');
 -- Test tables have foreign key constraints (No FK constraints: report, final_report, parent_organisation)
 -- select has_fk('ggircs', 'report', 'ggircs_report has foreign key constraint(s)');
 select has_fk('ggircs', 'organisation', 'ggircs_organisation has foreign key constraint(s)');
-select has_fk('ggircs', 'facility', 'ggircs_facility has foreign key constraint(s)');
+select has_fk('ggircs', 'single_facility', 'ggircs_single_facility has foreign key constraint(s)');
+select has_fk('ggircs', 'lfo_facility', 'ggircs_lfo_facility has foreign key constraint(s)');
 select has_fk('ggircs', 'activity', 'ggircs_activity has foreign key constraint(s)');
 select has_fk('ggircs', 'unit', 'ggircs_unit has foreign key constraint(s)');
 select has_fk('ggircs', 'identifier', 'ggircs_identifier has foreign key constraint(s)');
@@ -1205,16 +1208,16 @@ select results_eq(
 
 -- Activity -> Facility
 select results_eq(
-    $$select facility.ghgr_import_id from ggircs.activity
-      join ggircs.facility
+    $$select single_facility.ghgr_import_id from ggircs.activity
+      join ggircs.single_facility
       on
-        activity.facility_id = facility.id
-        and activity.facility_id = 1 limit 1
+        activity.single_facility_id = single_facility.id
+        and activity.single_facility_id = 1 limit 1
     $$,
 
-    'select ghgr_import_id from ggircs.facility where id=1 limit 1',
+    'select ghgr_import_id from ggircs.single_facility where id=1 limit 1',
 
-    'Foreign key facility_id in ggircs.activity references ggircs.facility.id'
+    'Foreign key single_facility_id in ggircs.activity references ggircs.single_facility.id'
 );
 
 -- Activity -> Report
@@ -1233,86 +1236,86 @@ select results_eq(
 
 -- Facility -> Report
 select results_eq(
-    $$select report.ghgr_import_id from ggircs.facility
+    $$select report.ghgr_import_id from ggircs.single_facility
       join ggircs.report
       on
-        facility.report_id = report.id
-        and facility.report_id = 1 limit 1
+        single_facility.report_id = report.id
+        and single_facility.report_id = 1 limit 1
     $$,
 
     'select ghgr_import_id from ggircs.report where id=1 limit 1',
 
-    'Foreign key report_id in ggircs.facility references ggircs.report.id'
+    'Foreign key report_id in ggircs.single_facility references ggircs.report.id'
 );
 
 -- Address -> Facility
 select results_eq(
-    $$select facility.ghgr_import_id from ggircs.address
-      join ggircs.facility
+    $$select single_facility.ghgr_import_id from ggircs.address
+      join ggircs.single_facility
       on
-        address.facility_id = facility.id
+        address.single_facility_id = single_facility.id
         limit 1
     $$,
 -- --
-    'select ghgr_import_id from ggircs.facility where id=1 limit 1',
+    'select ghgr_import_id from ggircs.single_facility where id=1 limit 1',
 -- --
-    'Foreign key facility_id in ggircs.address references ggircs.facility.id'
+    'Foreign key single_facility_id in ggircs.address references ggircs.single_facility.id'
 );
 
 -- Contact -> Facility
 select results_eq(
-    $$select facility.ghgr_import_id from ggircs.contact
-      join ggircs.facility
+    $$select single_facility.ghgr_import_id from ggircs.contact
+      join ggircs.single_facility
       on
-        contact.facility_id = facility.id
-        and contact.facility_id = 1 limit 1
+        contact.single_facility_id = single_facility.id
+        and contact.single_facility_id = 1 limit 1
     $$,
 
-    'select ghgr_import_id from ggircs.facility where id=1 limit 1',
+    'select ghgr_import_id from ggircs.single_facility where id=1 limit 1',
 
-    'Foreign key facility_id in ggircs.contact references ggircs.facility.id'
+    'Foreign key single_facility_id in ggircs.contact references ggircs.single_facility.id'
 );
 
 -- Identifier -> Facility
 select results_eq(
-    $$select facility.ghgr_import_id from ggircs.identifier
-      join ggircs.facility
+    $$select single_facility.ghgr_import_id from ggircs.identifier
+      join ggircs.single_facility
       on
-        identifier.facility_id = facility.id
-        and identifier.facility_id = 1 limit 1
+        identifier.single_facility_id = single_facility.id
+        and identifier.single_facility_id = 1 limit 1
     $$,
 
-    'select ghgr_import_id from ggircs.facility where id=1 limit 1',
+    'select ghgr_import_id from ggircs.single_facility where id=1 limit 1',
 
-    'Foreign key facility_id in ggircs.identifier references ggircs.facility.id'
+    'Foreign key single_facility_id in ggircs.identifier references ggircs.single_facility.id'
 );
 
 -- NAICS -> Facility
 select results_eq(
-    $$select facility.ghgr_import_id from ggircs.naics
-      join ggircs.facility
+    $$select single_facility.ghgr_import_id from ggircs.naics
+      join ggircs.single_facility
       on
-        naics.facility_id = facility.id
-        and naics.facility_id = 1 limit 1
+        naics.single_facility_id = single_facility.id
+        and naics.single_facility_id = 1 limit 1
     $$,
 
-    'select ghgr_import_id from ggircs.facility where id=1 limit 1',
+    'select ghgr_import_id from ggircs.single_facility where id=1 limit 1',
 
-    'Foreign key facility_id in ggircs.naics references ggircs.facility.id'
+    'Foreign key single_facility_id in ggircs.naics references ggircs.single_facility.id'
 );
 
 -- Permit -> Facility
 select results_eq(
-    $$select facility.ghgr_import_id from ggircs.permit
-      join ggircs.facility
+    $$select single_facility.ghgr_import_id from ggircs.permit
+      join ggircs.single_facility
       on
-        permit.facility_id = facility.id
-        and permit.facility_id = 1 limit 1
+        permit.single_facility_id = single_facility.id
+        and permit.single_facility_id = 1 limit 1
     $$,
 
-    'select ghgr_import_id from ggircs.facility where id=1 limit 1',
+    'select ghgr_import_id from ggircs.single_facility where id=1 limit 1',
 
-    'Foreign key facility_id in ggircs.permit references ggircs.facility.id'
+    'Foreign key single_facility_id in ggircs.permit references ggircs.single_facility.id'
 );
 
 -- Address -> Organisation
@@ -1346,7 +1349,7 @@ select results_eq(
 -- All tables in schema ggircs have data
 select isnt_empty('select * from ggircs.report', 'there is data in ggircs.report');
 select isnt_empty('select * from ggircs.organisation', 'there is data in ggircs.organisation');
-select isnt_empty('select * from ggircs.facility', 'there is data in ggircs.facility');
+select isnt_empty('select * from ggircs.single_facility', 'there is data in ggircs.facility');
 select isnt_empty('select * from ggircs.activity', 'there is data in ggircs.activity');
 select isnt_empty('select * from ggircs.unit', 'there is data in ggircs.unit');
 select isnt_empty('select * from ggircs.identifier', 'there is data in ggircs.identifier');
@@ -1444,7 +1447,8 @@ select results_eq($$select
                       status,
                       latitude,
                       longitude
-                  from ggircs_swrs.facility$$,
+                  from ggircs_swrs.facility where facility.facility_type !='LFO'
+                  $$,
 
                  $$select
                       ghgr_import_id,
@@ -1456,9 +1460,9 @@ select results_eq($$select
                       status,
                       latitude,
                       longitude
-                  from ggircs.facility$$,
+                  from ggircs.single_facility$$,
 
-    'data in ggircs_swrs.facility === ggircs.facility');
+    'data in ggircs_swrs.single_facility === ggircs.single_facility');
 
 -- Data in ggircs_swrs.activity === data in ggircs.activity
 select results_eq($$select
@@ -3169,6 +3173,9 @@ select isnt_empty('select * from ggircs.attributable_emission', 'attributable_em
 -- No CO2bioC
 select is_empty($$select * from ggircs.attributable_emission where gas_type='CO2bioC'$$, 'CO2bioC emissions are not in attributable_emission');
 
+-- lfo_facility has data
+select isnt_empty('select * from ggircs.attributable_emission', 'attributable_emission has data');
+
 -- FK tests
 -- Attr Emission -> Fuel
 select results_eq(
@@ -3182,6 +3189,20 @@ select results_eq(
     'select ghgr_import_id from ggircs.fuel limit 1',
 
     'Foreign key fuel_id in ggircs.attributable_emission references ggircs.fuel.id'
+);
+
+-- Activity -> LFO Facility
+select results_eq(
+    $$select lfo_facility.ghgr_import_id from ggircs.activity
+      join ggircs.lfo_facility
+      on
+        activity.lfo_facility_id = lfo_facility.id
+        and activity.lfo_facility_id = 1 limit 1
+    $$,
+
+    'select ghgr_import_id from ggircs.lfo_facility where id=1 limit 1',
+
+    'Foreign key lfo_facility_id in ggircs.activity references ggircs.lfo_facility.id'
 );
 
 select * from finish();
