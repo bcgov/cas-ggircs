@@ -7,11 +7,11 @@ create materialized view ggircs_swrs.final_report as (
     with _report as (
     select *,
            row_number() over (
-             partition by swrs_report_id
+             partition by swrs_facility_id, reporting_period_duration
              order by
-               submission_date desc,
-               ghgr_import_id desc
-             ) as _history_id
+               swrs_report_id desc,
+               submission_date desc
+               ) as _history_id
     from ggircs_swrs.report
     where submission_date is not null
     and ghgr_import_id not in (select report.ghgr_import_id
@@ -32,3 +32,5 @@ comment on column ggircs_swrs.final_report.swrs_report_id is 'The foreign key re
 comment on column ggircs_swrs.final_report.ghgr_import_id is 'The foreign key referencing ggircs_swrs.ghgr_import.id';
 
 commit;
+
+
