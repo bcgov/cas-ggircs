@@ -25,7 +25,7 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
           <StreetName>A Drive</StreetName>
           <StreetType>Drive</StreetType>
           <StreetDirection>North</StreetDirection>
-          <Municipality>Port Alice</Municipality>
+          <Municipality>Funky Town</Municipality>
           <ProvTerrState>British Columbia</ProvTerrState>
           <PostalCodeZipCode>H0H0H0</PostalCodeZipCode>
           <Country>Canada</Country>
@@ -37,7 +37,7 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
           <StreetNumberSuffix/>
           <StreetName>A Drive</StreetName>
           <StreetType>Drive</StreetType>
-          <Municipality>Port Alice</Municipality>
+          <Municipality>Funky Town</Municipality>
           <ProvTerrState>British Columbia</ProvTerrState>
           <PostalCodeZipCode>H0H0H0</PostalCodeZipCode>
           <Country>Canada</Country>
@@ -90,7 +90,7 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
           <StreetNumber>123</StreetNumber>
           <StreetName>A Drive</StreetName>
           <StreetType>Drive</StreetType>
-          <Municipality>Port Alice</Municipality>
+          <Municipality>Funky Town</Municipality>
           <ProvTerrState>British Columbia</ProvTerrState>
           <PostalCodeZipCode>H0H0H0</PostalCodeZipCode>
           <Country>Canada</Country>
@@ -101,7 +101,7 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
           <StreetNumber>300</StreetNumber>
           <StreetName>A Drive</StreetName>
           <StreetType>Drive</StreetType>
-          <Municipality>Port Alice</Municipality>
+          <Municipality>Funky Town</Municipality>
           <ProvTerrState>British Columbia</ProvTerrState>
           <PostalCodeZipCode>H0H0H0</PostalCodeZipCode>
           <Country>Canada</Country>
@@ -228,7 +228,7 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
           <StreetNumber>00</StreetNumber>
           <StreetName>A Drive</StreetName>
           <StreetType>Drive</StreetType>
-          <Municipality>Port Alice</Municipality>
+          <Municipality>Funky Town</Municipality>
           <ProvTerrState>British Columbia</ProvTerrState>
           <PostalCodeZipCode>H0H0H0</PostalCodeZipCode>
           <Country>Canada</Country>
@@ -261,7 +261,7 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
           <StreetNumber>1</StreetNumber>
           <StreetName>A Drive</StreetName>
           <StreetType>Drive</StreetType>
-          <Municipality>Port Alice</Municipality>
+          <Municipality>Funky Town</Municipality>
           <ProvTerrState>British Columbia</ProvTerrState>
           <PostalCodeZipCode>H0H0H0</PostalCodeZipCode>
           <Country>Canada</Country>
@@ -285,7 +285,7 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
         <Address>
           <MailingAddress>
             <POBoxNumber>00</POBoxNumber>
-            <Municipality>Port Alice</Municipality>
+            <Municipality>Funky Town</Municipality>
             <ProvTerrState>British Columbia</ProvTerrState>
             <PostalCodeZipCode>H0H0H0</PostalCodeZipCode>
             <Country>Canada</Country>
@@ -304,7 +304,7 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
         <Address>
           <MailingAddress>
             <POBoxNumber>00</POBoxNumber>
-            <Municipality>Port Alice</Municipality>
+            <Municipality>Funky Town</Municipality>
             <ProvTerrState>British Columbia</ProvTerrState>
             <PostalCodeZipCode>H0H0H0</PostalCodeZipCode>
             <Country>Canada</Country>
@@ -323,7 +323,7 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
         <Address>
           <MailingAddress>
             <POBoxNumber>00</POBoxNumber>
-            <Municipality>Port Alice</Municipality>
+            <Municipality>Funky Town</Municipality>
             <ProvTerrState>British Columbia</ProvTerrState>
             <PostalCodeZipCode>H0H0H0</PostalCodeZipCode>
             <Country>Canada</Country>
