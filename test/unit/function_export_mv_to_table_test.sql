@@ -1793,6 +1793,42 @@ select tables_are('ggircs'::name, ARRAY[
                              descriptor $$
 );
 
+-- Test all tables have primary key
+select has_pk('ggircs', 'report', 'ggircs_report has primary key');
+select has_pk('ggircs', 'organisation', 'ggircs_organisation has primary key');
+select has_pk('ggircs', 'facility', 'ggircs_facility has primary key');
+select has_pk('ggircs', 'activity', 'ggircs_activity has primary key');
+select has_pk('ggircs', 'unit', 'ggircs_unit has primary key');
+select has_pk('ggircs', 'identifier', 'ggircs_identifier has primary key');
+select has_pk('ggircs', 'naics', 'ggircs_naics has primary key');
+select has_pk('ggircs', 'emission', 'ggircs_emission has primary key');
+select has_pk('ggircs', 'final_report', 'ggircs_final_report has primary key');
+select has_pk('ggircs', 'fuel', 'ggircs_fuel has primary key');
+select has_pk('ggircs', 'permit', 'ggircs_permit has primary key');
+select has_pk('ggircs', 'parent_organisation', 'ggircs_parent_organisation has primary key');
+select has_pk('ggircs', 'contact', 'ggircs_contact has primary key');
+select has_pk('ggircs', 'address', 'ggircs_address has primary key');
+select has_pk('ggircs', 'descriptor', 'ggircs_descriptor has primary key');
+
+-- Test tables have foreign key constraints (No FK constraints: report, final_report, parent_organisation, address)
+-- select has_fk('ggircs', 'report', 'ggircs_report has foreign key constraint(s)');
+select has_fk('ggircs', 'organisation', 'ggircs_organisation has foreign key constraint(s)');
+select has_fk('ggircs', 'facility', 'ggircs_facility has foreign key constraint(s)');
+select has_fk('ggircs', 'activity', 'ggircs_activity has foreign key constraint(s)');
+select has_fk('ggircs', 'unit', 'ggircs_unit has foreign key constraint(s)');
+select has_fk('ggircs', 'identifier', 'ggircs_identifier has foreign key constraint(s)');
+select has_fk('ggircs', 'naics', 'ggircs_naics has foreign key constraint(s)');
+select has_fk('ggircs', 'emission', 'ggircs_emission has foreign key constraint(s)');
+-- select has_fk('ggircs', 'final_report', 'ggircs_final_report has foreign key constraint(s)');
+select has_fk('ggircs', 'fuel', 'ggircs_fuel has foreign key constraint(s)');
+select has_fk('ggircs', 'permit', 'ggircs_permit has foreign key constraint(s)');
+-- select has_fk('ggircs', 'parent_organisation', 'ggircs_parent_organisation has foreign key constraint(s)');
+select has_fk('ggircs', 'contact', 'ggircs_contact has foreign key constraint(s)');
+-- select has_fk('ggircs', 'address', 'ggircs_address has foreign key constraint(s)');
+select has_fk('ggircs', 'descriptor', 'ggircs_descriptor has foreign key constraint(s)');
+
+
+
 -- All tables in schema ggircs have data
 select isnt_empty('select * from ggircs.report', 'there is data in ggircs.report');
 select isnt_empty('select * from ggircs.organisation', 'there is data in ggircs.organisation');
