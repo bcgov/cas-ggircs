@@ -2034,12 +2034,60 @@ select results_eq(
 
               'data in ggircs_swrs.identifier === ggircs.identifier');
 
+-- Data in ggircs_swrs.naics === data in ggircs.naics
+select results_eq(
+              $$select
+                  ghgr_import_id,
+                  swrs_facility_id,
+                  path_context,
+                  naics_code_idx,
+                  naics_classification,
+                  naics_code,
+                  naics_priority
+                from ggircs_swrs.naics
+                order by
+                    ghgr_import_id,
+                    swrs_facility_id,
+                    path_context,
+                    naics_code_idx
+                 asc
+              $$,
 
+              $$select
+                  ghgr_import_id,
+                  swrs_facility_id,
+                  path_context,
+                  naics_code_idx,
+                  naics_classification,
+                  naics_code,
+                  naics_priority
+                from ggircs.naics
+                order by
+                    ghgr_import_id,
+                    swrs_facility_id,
+                    path_context,
+                    naics_code_idx
+                 asc
+              $$,
+
+              'data in ggircs_swrs.naics === ggircs.naics');
 
 
 
 -- Data in ggircs_swrs.emission === data in ggircs.emission
-select results_eq('select * from ggircs_swrs.emission order by process_idx, sub_process_idx, units_idx, unit_idx, substances_idx, substance_idx, fuel_idx, emissions_idx, emission_idx asc',
+select results_eq(
+              $$select * from ggircs_swrs.emission
+              order by
+                process_idx,
+                sub_process_idx,
+                units_idx,
+                unit_idx,
+                substances_idx,
+                substance_idx,
+                fuel_idx,
+                emissions_idx,
+                emission_idx asc
+              $$,
 
               $$select
                   ghgr_import_id,
