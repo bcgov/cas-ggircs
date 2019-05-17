@@ -19,7 +19,7 @@ $$
   declare
 
     mv_array text[] := '{emission, identifier, final_report, ' ||
-                        'organisation, address, fuel, unit, descriptor, activity, ' ||
+                        'address, organisation, fuel, unit, descriptor, activity, ' ||
                         'parent_organisation, contact, ' ||
                         'permit, naics, facility, report}';
 

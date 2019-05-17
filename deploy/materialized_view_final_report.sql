@@ -14,6 +14,7 @@ create materialized view ggircs_swrs.final_report as (
                ) as _history_id
     from ggircs_swrs.report
     where submission_date is not null
+      and report_type != 'SaleClosePurchase'
     and ghgr_import_id not in (select report.ghgr_import_id
                        from ggircs_swrs.table_ignore_organisation
                        join ggircs_swrs.report on table_ignore_organisation.swrs_organisation_id = report.swrs_organisation_id)
