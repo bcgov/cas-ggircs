@@ -44,6 +44,24 @@ $$
 
       end loop;
 
+      raise notice 'Exporting non_attributable_emission';
+
+      execute
+          'drop table if exists ggircs.non_attributable_emission';
+
+      execute
+          'create table ggircs.non_attributable_emission ' ||
+          'as (select x.* from ggircs_swrs.emission ' ||
+          'as x inner join ggircs_swrs.final_report as final_report ' ||
+          'on x.ghgr_import_id = final_report.ghgr_import_id ' ||
+          'join ggircs_swrs.facility as facility ' ||
+          'on x.ghgr_import_id = facility.ghgr_import_id ' ||
+          'and x.gas_type = ''CO2bioC'' '
+          'and facility.facility_type = ''EIO'' )';
+
+      execute 'alter table ggircs.non_attributable_emission add column id int generated always as identity primary key';
+
+
       -- Create FK/PK relation between Emission and Fuel
       alter table ggircs.emission add column fuel_id int;
       create index ggircs_emission_fuel_index on ggircs.emission (fuel_id);
@@ -187,7 +205,6 @@ $$
           where identifier.ghgr_import_id = facility.ghgr_import_id;
       alter table ggircs.identifier add constraint ggircs_identifier_facility_foreign_key foreign key (facility_id) references ggircs.facility(id);
 
- 
       -- Create FK/PK relation between NAICS and Facility
       alter table ggircs.naics add column facility_id int;
       create index ggircs_naics_facility_index on ggircs.naics (facility_id);
@@ -210,7 +227,6 @@ $$
           and address.type = 'Organisation';
       alter table ggircs.address add constraint ggircs_address_organisation_foreign_key foreign key (organisation_id) references ggircs.organisation(id);
 
-
       -- Create FK/PK relation between Address and parent_organisation
       alter table ggircs.address add column parent_organisation_id int;
       create index ggircs_address_parent_organisation_index on ggircs.address (parent_organisation_id);
@@ -220,13 +236,6 @@ $$
       and address.parent_organisation_idx = parent_organisation.parent_organisation_idx;
       alter table ggircs.address add constraint ggircs_address_parent_organisation_foreign_key foreign key (parent_organisation_id) references ggircs.parent_organisation(id);
 
-
-
-
-
-
- 
- 
 /*       -- Create FK/PK relation between Contact and Address
       alter table ggircs.contact add column address_id int;
       create index ggircs_contact_address_index on ggircs.contact (address_id);

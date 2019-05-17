@@ -1778,6 +1778,7 @@ select tables_are('ggircs'::name, ARRAY[
     'identifier'::name,
     'naics'::name,
     'emission'::name,
+    'non_attributable_emission'::name,
     'final_report'::name,
     'fuel'::name,
     'permit'::name,
@@ -1826,6 +1827,10 @@ select has_fk('ggircs', 'permit', 'ggircs_permit has foreign key constraint(s)')
 select has_fk('ggircs', 'contact', 'ggircs_contact has foreign key constraint(s)');
 -- select has_fk('ggircs', 'address', 'ggircs_address has foreign key constraint(s)');
 select has_fk('ggircs', 'descriptor', 'ggircs_descriptor has foreign key constraint(s)');
+
+
+select has_fk('ggircs', 'non_attributable_emission', 'ggircs.non_attributable_emissions has foreign key constraint(s)');
+select * from ggircs.non_attributable_emission;
 
 -- Test validity of FK relations
 -- Emission -> Fuel
