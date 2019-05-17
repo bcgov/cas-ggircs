@@ -1837,7 +1837,7 @@ select results_eq(
         and emission.fuel_id = 1 limit 1
     $$,
 
-    'select ghgr_import_id from ggircs.fuel where id=1',
+    'select ghgr_import_id from ggircs.fuel where id=1 limit 1',
 
     'Foreign key fuel_id in ggircs.emission references ggircs.fuel.id'
 );
@@ -1851,12 +1851,52 @@ select results_eq(
         and fuel.unit_id = 1 limit 1
     $$,
 
-    'select ghgr_import_id from ggircs.unit where id=1',
+    'select ghgr_import_id from ggircs.unit where id=1 limit 1',
 
-    'Foreign key unit_id in ggircs.emission references ggircs.fuel'
+    'Foreign key unit_id in ggircs.fuel references ggircs.unit.id'
 );
 
+-- Unit -> Activity
+select results_eq(
+    $$select activity.ghgr_import_id from ggircs.unit
+      join ggircs.activity
+      on
+        unit.activity_id = activity.id
+        and unit.activity_id = 1 limit 1
+    $$,
 
+    'select ghgr_import_id from ggircs.activity where id=1 limit 1',
+
+    'Foreign key unit_id in ggircs.unit references ggircs.activity.id'
+);
+
+-- Descriptor -> Activity
+select results_eq(
+    $$select activity.ghgr_import_id from ggircs.descriptor
+      join ggircs.activity
+      on
+        descriptor.activity_id = activity.id
+        and descriptor.activity_id = 16 limit 1
+    $$,
+
+    'select ghgr_import_id from ggircs.activity where id=16 limit 1',
+
+    'Foreign key activity_id in ggircs.descriptor references ggircs.activity.id'
+);
+
+-- Activity -> Facility
+select results_eq(
+    $$select facility.ghgr_import_id from ggircs.activity
+      join ggircs.facility
+      on
+        activity.facility_id = facility.id
+        and activity.facility_id = 1 limit 1
+    $$,
+
+    'select ghgr_import_id from ggircs.facility where id=1 limit 1',
+
+    'Foreign key facility_id in ggircs.activity references ggircs.facility.id'
+);
 
 
 -- All tables in schema ggircs have data
