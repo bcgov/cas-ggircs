@@ -1827,6 +1827,33 @@ select has_fk('ggircs', 'contact', 'ggircs_contact has foreign key constraint(s)
 -- select has_fk('ggircs', 'address', 'ggircs_address has foreign key constraint(s)');
 select has_fk('ggircs', 'descriptor', 'ggircs_descriptor has foreign key constraint(s)');
 
+-- Test validity of FK relations
+-- Emission -> Fuel
+select results_eq(
+    $$select fuel.ghgr_import_id from ggircs.emission
+      join ggircs.fuel
+      on
+        emission.ghgr_import_id = fuel.ghgr_import_id
+        and emission.process_idx = fuel.process_idx
+        and emission.sub_process_idx = fuel.sub_process_idx
+        and emission.activity_name = fuel.activity_name
+        and emission.sub_activity_name = fuel.sub_activity_name
+        and emission.unit_name = fuel.unit_name
+        and emission.sub_unit_name = fuel.sub_unit_name
+        and emission.substance_idx = fuel.substance_idx
+        and emission.substances_idx = fuel.substances_idx
+        and emission.sub_unit_name = fuel.sub_unit_name
+        and emission.units_idx = fuel.units_idx
+        and emission.unit_idx = fuel.unit_idx
+        and emission.fuel_idx = fuel.fuel_idx limit 1
+    $$,
+
+    'select ghgr_import_id from ggircs.fuel where fuel_idx=0 limit 1',
+
+    'Foreign keys ghgr_import_id, fuel_idx in ggircs.emission reference ggircs.fuel'
+);
+
+
 
 
 -- All tables in schema ggircs have data
