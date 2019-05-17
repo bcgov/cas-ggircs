@@ -2128,5 +2128,318 @@ select results_eq(
 
               'data in ggircs_swrs.emission === ggircs.emission');
 
+select results_eq(
+    'select ghgr_import_id, swrs_report_id from ggircs_swrs.final_report order by ghgr_import_id asc',
+    'select ghgr_import_id, swrs_report_id from ggircs.final_report order by ghgr_import_id asc',
+    'data in ggircs_swrs.emission === ggircs.emission'
+);
+
+-- Data in ggircs_swrs.fuel === data in ggircs.fuel
+select results_eq(
+              $$select
+                  ghgr_import_id,
+                  activity_name,
+                  sub_activity_name,
+                  unit_name,
+                  sub_unit_name,
+                  process_idx,
+                  sub_process_idx,
+                  units_idx,
+                  unit_idx,
+                  substances_idx,
+                  substance_idx,
+                  fuel_idx,
+                  fuel_type,
+                  fuel_classification,
+                  fuel_description,
+                  fuel_units,
+                  annual_fuel_amount,
+                  annual_weighted_avg_carbon_content,
+                  annual_weighted_avg_hhv,
+                  annual_steam_generation,
+                  alternative_methodology_description,
+                  other_flare_details,
+                  q1,
+                  q2,
+                  q3,
+                  q4,
+                  wastewater_processing_factors::text,
+                  measured_conversion_factors::text
+                from ggircs_swrs.fuel
+                order by
+                    process_idx,
+                    sub_process_idx,
+                    units_idx,
+                    unit_idx,
+                    substances_idx,
+                    substance_idx,
+                    fuel_idx
+                 asc
+              $$,
+
+              $$select
+                  ghgr_import_id,
+                  activity_name,
+                  sub_activity_name,
+                  unit_name,
+                  sub_unit_name,
+                  process_idx,
+                  sub_process_idx,
+                  units_idx,
+                  unit_idx,
+                  substances_idx,
+                  substance_idx,
+                  fuel_idx,
+                  fuel_type,
+                  fuel_classification,
+                  fuel_description,
+                  fuel_units,
+                  annual_fuel_amount,
+                  annual_weighted_avg_carbon_content,
+                  annual_weighted_avg_hhv,
+                  annual_steam_generation,
+                  alternative_methodology_description,
+                  other_flare_details,
+                  q1,
+                  q2,
+                  q3,
+                  q4,
+                  wastewater_processing_factors::text,
+                  measured_conversion_factors::text
+                from ggircs.fuel
+                order by
+                    process_idx,
+                    sub_process_idx,
+                    units_idx,
+                    unit_idx,
+                    substances_idx,
+                    substance_idx,
+                    fuel_idx
+                 asc
+              $$,
+
+              'data in ggircs_swrs.fuel === ggircs.fuel');
+
+-- Data in ggircs_swrs.permit === data in ggircs.permit
+select results_eq(
+              $$select
+                  ghgr_import_id,
+                  path_context,
+                  permit_idx,
+                  issuing_agency,
+                  issuing_dept_agency_program,
+                  permit_number
+                from ggircs_swrs.permit
+                order by
+                  ghgr_import_id,
+                  path_context
+                 asc
+              $$,
+
+              $$select
+                  ghgr_import_id,
+                  path_context,
+                  permit_idx,
+                  issuing_agency,
+                  issuing_dept_agency_program,
+                  permit_number
+                from ggircs.permit
+                order by
+                  ghgr_import_id,
+                  path_context
+                 asc
+              $$,
+
+              'data in ggircs_swrs.permit === ggircs.permit');
+
+-- Data in ggircs_swrs.parent_organisation === data in ggircs.parent_organisation
+select results_eq(
+              $$select
+                  ghgr_import_id,
+                  path_context,
+                  parent_organisation_idx,
+                  percentage_owned,
+                  french_trade_name,
+                  english_trade_name,
+                  duns,
+                  business_legal_name,
+                  website
+                from ggircs_swrs.parent_organisation
+                order by
+                  ghgr_import_id,
+                  path_context,
+                  parent_organisation_idx
+                 asc
+              $$,
+
+              $$select
+                  ghgr_import_id,
+                  path_context,
+                  parent_organisation_idx,
+                  percentage_owned,
+                  french_trade_name,
+                  english_trade_name,
+                  duns,
+                  business_legal_name,
+                  website
+                from ggircs.parent_organisation
+                order by
+                  ghgr_import_id,
+                  path_context,
+                  parent_organisation_idx
+                 asc
+              $$,
+
+              'data in ggircs_swrs.parent_organisation === ggircs.parent_organisation');
+
+-- Data in ggircs_swrs.contact === data in ggircs.contact
+select results_eq(
+              $$select
+                  ghgr_import_id,
+                  path_context,
+                  contact_idx,
+                  contact_type,
+                  given_name,
+                  family_name,
+                  initials,
+                  telephone_number,
+                  extension_number,
+                  fax_number,
+                  email_address,
+                  position,
+                  language_correspondence
+                from ggircs_swrs.contact
+                order by
+                  ghgr_import_id,
+                  path_context,
+                  contact_idx
+                 asc
+              $$,
+
+              $$select
+                  ghgr_import_id,
+                  path_context,
+                  contact_idx,
+                  contact_type,
+                  given_name,
+                  family_name,
+                  initials,
+                  telephone_number,
+                  extension_number,
+                  fax_number,
+                  email_address,
+                  position,
+                  language_correspondence
+                from ggircs.contact
+                order by
+                  ghgr_import_id,
+                  path_context,
+                  contact_idx
+                 asc
+              $$,
+
+              'data in ggircs_swrs.contact === ggircs.contact');
+
+-- Data in ggircs_swrs.address === data in ggircs.address
+select results_eq(
+              $$select
+                  ghgr_import_id,
+                  swrs_facility_id,
+                  swrs_organisation_id,
+                  path_context,
+                  type,
+                  contact_idx,
+                  parent_organisation_idx,
+                  physical_address_municipality,
+                  physical_address_unit_number,
+                  physical_address_street_number,
+                  physical_address_street_number_suffix,
+                  physical_address_street_name,
+                  physical_address_street_type,
+                  physical_address_street_direction,
+                  physical_address_prov_terr_state,
+                  physical_address_postal_code_zip_code,
+                  physical_address_country,
+                  physical_address_national_topographical_description,
+                  physical_address_additional_information,
+                  physical_address_land_survey_description,
+                  mailing_address_delivery_mode,
+                  mailing_address_po_box_number,
+                  mailing_address_unit_number,
+                  mailing_address_rural_route_number,
+                  mailing_address_street_number,
+                  mailing_address_street_number_suffix,
+                  mailing_address_street_name,
+                  mailing_address_street_type,
+                  mailing_address_street_direction,
+                  mailing_address_municipality,
+                  mailing_address_prov_terr_state,
+                  mailing_address_postal_code_zip_code,
+                  mailing_address_country,
+                  mailing_address_additional_information,
+                  geographic_address_latitude,
+                  geographic_address_longitude
+                from ggircs_swrs.address
+                order by
+                  ghgr_import_id,
+                  swrs_facility_id,
+                  swrs_organisation_id,
+                  path_context,
+                  contact_idx,
+                  parent_organisation_idx
+                 asc
+              $$,
+
+              $$select
+                  ghgr_import_id,
+                  swrs_facility_id,
+                  swrs_organisation_id,
+                  path_context,
+                  type,
+                  contact_idx,
+                  parent_organisation_idx,
+                  physical_address_municipality,
+                  physical_address_unit_number,
+                  physical_address_street_number,
+                  physical_address_street_number_suffix,
+                  physical_address_street_name,
+                  physical_address_street_type,
+                  physical_address_street_direction,
+                  physical_address_prov_terr_state,
+                  physical_address_postal_code_zip_code,
+                  physical_address_country,
+                  physical_address_national_topographical_description,
+                  physical_address_additional_information,
+                  physical_address_land_survey_description,
+                  mailing_address_delivery_mode,
+                  mailing_address_po_box_number,
+                  mailing_address_unit_number,
+                  mailing_address_rural_route_number,
+                  mailing_address_street_number,
+                  mailing_address_street_number_suffix,
+                  mailing_address_street_name,
+                  mailing_address_street_type,
+                  mailing_address_street_direction,
+                  mailing_address_municipality,
+                  mailing_address_prov_terr_state,
+                  mailing_address_postal_code_zip_code,
+                  mailing_address_country,
+                  mailing_address_additional_information,
+                  geographic_address_latitude,
+                  geographic_address_longitude
+                from ggircs_swrs.address
+                order by
+                  ghgr_import_id,
+                  swrs_facility_id,
+                  swrs_organisation_id,
+                  path_context,
+                  contact_idx,
+                  parent_organisation_idx
+                 asc
+              $$,
+
+              'data in ggircs_swrs.address === ggircs.address');
+
+
 select * from finish();
 rollback;
