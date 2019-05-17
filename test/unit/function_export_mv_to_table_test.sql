@@ -184,7 +184,7 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
     <ReportID>1234</ReportID>
     <ReportType>R1</ReportType>
     <FacilityId>0000</FacilityId>
-    <FacilityType>SFO</FacilityType>
+    <FacilityType>EIO</FacilityType>
     <OrganisationId>0000</OrganisationId>
     <ReportingPeriodDuration>2012</ReportingPeriodDuration>
     <ReportStatus>
@@ -1777,8 +1777,8 @@ select tables_are('ggircs'::name, ARRAY[
     'unit'::name,
     'identifier'::name,
     'naics'::name,
-    'emission'::name,
     'non_attributable_emission'::name,
+    'attributable_emission'::name,
     'final_report'::name,
     'fuel'::name,
     'permit'::name,
@@ -1789,7 +1789,7 @@ select tables_are('ggircs'::name, ARRAY[
     ],
     $$Schema ggircs has tables [
                              report, organisation, facility, activity,
-                             unit, identifier, naics. emission, final_report,
+                             unit, identifier, naics. non_attributable_emission, attributable_emission, final_report,
                              fuel, permit, parent_organisation, contact, address
                              descriptor $$
 );
@@ -1802,7 +1802,7 @@ select has_pk('ggircs', 'activity', 'ggircs_activity has primary key');
 select has_pk('ggircs', 'unit', 'ggircs_unit has primary key');
 select has_pk('ggircs', 'identifier', 'ggircs_identifier has primary key');
 select has_pk('ggircs', 'naics', 'ggircs_naics has primary key');
-select has_pk('ggircs', 'emission', 'ggircs_emission has primary key');
+select has_pk('ggircs', 'non_attributable_emission', 'ggircs_non_attributable_emission has primary key');
 select has_pk('ggircs', 'final_report', 'ggircs_final_report has primary key');
 select has_pk('ggircs', 'fuel', 'ggircs_fuel has primary key');
 select has_pk('ggircs', 'permit', 'ggircs_permit has primary key');
@@ -1819,7 +1819,7 @@ select has_fk('ggircs', 'activity', 'ggircs_activity has foreign key constraint(
 select has_fk('ggircs', 'unit', 'ggircs_unit has foreign key constraint(s)');
 select has_fk('ggircs', 'identifier', 'ggircs_identifier has foreign key constraint(s)');
 select has_fk('ggircs', 'naics', 'ggircs_naics has foreign key constraint(s)');
-select has_fk('ggircs', 'emission', 'ggircs_emission has foreign key constraint(s)');
+
 -- select has_fk('ggircs', 'final_report', 'ggircs_final_report has foreign key constraint(s)');
 select has_fk('ggircs', 'fuel', 'ggircs_fuel has foreign key constraint(s)');
 select has_fk('ggircs', 'permit', 'ggircs_permit has foreign key constraint(s)');
@@ -1833,18 +1833,18 @@ select has_fk('ggircs', 'non_attributable_emission', 'ggircs.non_attributable_em
 select * from ggircs.attributable_emission;
 
 -- Test validity of FK relations
--- Emission -> Fuel
+-- NA Emission -> Fuel
 select results_eq(
-    $$select fuel.ghgr_import_id from ggircs.emission
+    $$select fuel.ghgr_import_id from ggircs.non_attributable_emission
       join ggircs.fuel
       on
-        emission.fuel_id = fuel.id
-        and emission.fuel_id = 1 limit 1
+        non_attributable_emission.fuel_id = fuel.id
+        limit 1
     $$,
 
-    'select ghgr_import_id from ggircs.fuel where id=1 limit 1',
+    'select ghgr_import_id from ggircs.fuel limit 1',
 
-    'Foreign key fuel_id in ggircs.emission references ggircs.fuel.id'
+    'Foreign key fuel_id in ggircs.non_attributable_emission references ggircs.fuel.id'
 );
 
 -- Fuel -> Unit
@@ -2041,7 +2041,7 @@ select isnt_empty('select * from ggircs.activity', 'there is data in ggircs.acti
 select isnt_empty('select * from ggircs.unit', 'there is data in ggircs.unit');
 select isnt_empty('select * from ggircs.identifier', 'there is data in ggircs.identifier');
 select isnt_empty('select * from ggircs.naics', 'there is data in ggircs.naics');
-select isnt_empty('select * from ggircs.emission', 'there is data in ggircs.emission');
+select isnt_empty('select * from ggircs.non_attributable_emission', 'there is data in ggircs.non_attributable_emission');
 select isnt_empty('select * from ggircs.final_report', 'there is data in ggircs.final_report');
 select isnt_empty('select * from ggircs.fuel', 'there is data in ggircs.fuel');
 select isnt_empty('select * from ggircs.permit', 'there is data in ggircs.permit');
@@ -2312,11 +2312,36 @@ select results_eq(
 
               'data in ggircs_swrs.naics === ggircs.naics');
 
-
-
--- Data in ggircs_swrs.emission === data in ggircs.emission
+-- Data in ggircs_swrs.emission (no CO2bioC gastype/ EIO facility) === data in ggircs.non_attributable_emission
 select results_eq(
-              $$select * from ggircs_swrs.emission
+              $$select
+                emission.ghgr_import_id,
+                activity_name,
+                sub_activity_name,
+                unit_name,
+                sub_unit_name,
+                process_idx,
+                sub_process_idx,
+                units_idx,
+                unit_idx,
+                substances_idx,
+                substance_idx,
+                fuel_idx,
+                fuel_name,
+                emissions_idx,
+                emission_idx,
+                emission_type,
+                gas_type,
+                methodology,
+                not_applicable,
+                quantity,
+                calculated_quantity,
+                emission_category
+              from ggircs_swrs.emission
+                join ggircs_swrs.facility
+                on emission.ghgr_import_id = facility.ghgr_import_id
+                and emission.gas_type='CO2bioC'
+                and facility.facility_type='EIO'
               order by
                 process_idx,
                 sub_process_idx,
@@ -2352,7 +2377,7 @@ select results_eq(
                   quantity,
                   calculated_quantity,
                   emission_category
-                from ggircs.emission
+                from ggircs.non_attributable_emission
                 order by
                     process_idx,
                     sub_process_idx,
@@ -2366,7 +2391,7 @@ select results_eq(
                  asc
               $$,
 
-              'data in ggircs_swrs.emission === ggircs.emission');
+              'data in ggircs_swrs.non_attributable_emission === ggircs.non_attributable_emission');
 
 select results_eq(
     'select ghgr_import_id, swrs_report_id from ggircs_swrs.final_report order by ghgr_import_id asc',
