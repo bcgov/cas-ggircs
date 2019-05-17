@@ -189,7 +189,6 @@ $$
           and address.type = 'ParentOrganisation'
           and address.parent_organisation_idx = parent_organisation.parent_organisation_idx;
       alter table ggircs.address add constraint ggircs_address_parent_organisation_foreign_key foreign key (parent_organisation_id) references ggircs.parent_organisation(id);
-
       
      -- Create FK/PK relation between Contact and Facility
       alter table ggircs.contact add column facility_id int;
@@ -219,6 +218,32 @@ $$
       update ggircs.permit set facility_id = facility.id from ggircs.facility
           where permit.ghgr_import_id = facility.ghgr_import_id;
       alter table ggircs.permit add constraint ggircs_permit_facility_foreign_key foreign key (facility_id) references ggircs.facility(id);
+ 
+      -- Create FK/PK relation between Address and Organisation
+      alter table ggircs.address add column organisation_id int;
+      create index ggircs_address_organisation_index on ggircs.address (organisation_id);
+      update ggircs.address set organisation_id = organisation.id from ggircs.organisation
+          where address.ghgr_import_id = organisation.ghgr_import_id
+          and address.type = 'Organisation';
+      alter table ggircs.address add constraint ggircs_address_organisation_foreign_key foreign key (organisation_id) references ggircs.organisation(id);
+
+
+      -- Create FK/PK relation between Address and Parent parent_organisation
+      alter table ggircs.address add column parent_organisation_id int;
+      create index ggircs_address_parent_organisation_index on ggircs.address (parent_organisation_id);
+      update ggircs.address set parent_organisation_id = parent_organisation.id from ggircs.parent_organisation
+        where address.ghgr_import_id = parent_organisation.ghgr_import_id
+      and address.type = 'ParentOrganisation'
+      and address.parent_organisation_idx = parent_organisation.parent_organisation_idx;
+      alter table ggircs.address add constraint ggircs_address_parent_organisation_foreign_key foreign key (parent_organisation_id) references ggircs.parent_organisation(id);
+
+
+
+
+
+
+ 
+ 
 /*       -- Create FK/PK relation between Contact and Address
       alter table ggircs.contact add column address_id int;
       create index ggircs_contact_address_index on ggircs.contact (address_id);
@@ -228,6 +253,22 @@ $$
           and   address.contact_idx = contact.contact_idx
       ;
       alter table ggircs.contact add constraint ggircs_contact_address_foreign_key foreign key (address_id) references ggircs.address(id);*/
+
+
+      -- Create FK/PK relation between Organisation and Address
+      alter table ggircs.organisation add column address_id int;
+      create index ggircs_organisation_address_index on ggircs.organisation (address_id);
+      update ggircs.organisation set address_id = address.id from ggircs.address
+          where address.ghgr_import_id = organisation.ghgr_import_id
+          and   address.swrs_organisation_id = organisation.swrs_organisation_id;
+      alter table ggircs.organisation add constraint ggircs_organisation_address_foreign_key foreign key (address_id) references ggircs.address(id);
+
+    -- Create FK/PK relation between Organisation and Parent Organisation
+      alter table ggircs.organisation add column parent_organisation_id int;
+      create index ggircs_organisation_parent_organisation_index on ggircs.organisation (parent_organisation_id);
+      update ggircs.organisation set parent_organisation_id = parent_organisation.id from ggircs.parent_organisation
+          where parent_organisation.ghgr_import_id = organisation.ghgr_import_id;
+      alter table ggircs.organisation add constraint ggircs_organisation_parent_organisation_foreign_key foreign key (parent_organisation_id) references ggircs.parent_organisation(id);
 
   end;
 

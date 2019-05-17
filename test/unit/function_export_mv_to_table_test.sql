@@ -315,7 +315,7 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
         <Details>
           <ContactType>Person Who Prepared Report</ContactType>
           <GivenName>Buddy</GivenName>
-          <TelephoneNumber>2502843331</TelephoneNumber>
+          <TelephoneNumber>12345</TelephoneNumber>
           <ExtensionNumber>1</ExtensionNumber>
           <EmailAddress>abc@abc.ca</EmailAddress>
           <Position>Environmental Manager</Position>
@@ -1898,6 +1898,107 @@ select results_eq(
     'Foreign key facility_id in ggircs.activity references ggircs.facility.id'
 );
 
+-- Activity -> Report
+select results_eq(
+    $$select report.ghgr_import_id from ggircs.activity
+      join ggircs.report
+      on
+        activity.report_id = report.id
+        and activity.report_id = 1 limit 1
+    $$,
+
+    'select ghgr_import_id from ggircs.report where id=1 limit 1',
+
+    'Foreign key report_id in ggircs.activity references ggircs.report.id'
+);
+
+-- Facility -> Report
+select results_eq(
+    $$select report.ghgr_import_id from ggircs.facility
+      join ggircs.report
+      on
+        facility.report_id = report.id
+        and facility.report_id = 1 limit 1
+    $$,
+
+    'select ghgr_import_id from ggircs.report where id=1 limit 1',
+
+    'Foreign key report_id in ggircs.facility references ggircs.report.id'
+);
+
+-- Address -> Facility
+select results_eq(
+    $$select facility.ghgr_import_id from ggircs.address
+      join ggircs.facility
+      on
+        address.facility_id = facility.id
+        limit 1
+    $$,
+-- --
+    'select ghgr_import_id from ggircs.facility where id=1 limit 1',
+-- --
+    'Foreign key facility_id in ggircs.address references ggircs.facility.id'
+);
+
+-- Contact -> Facility
+select results_eq(
+    $$select facility.ghgr_import_id from ggircs.contact
+      join ggircs.facility
+      on
+        contact.facility_id = facility.id
+        and contact.facility_id = 1 limit 1
+    $$,
+
+    'select ghgr_import_id from ggircs.facility where id=1 limit 1',
+
+    'Foreign key facility_id in ggircs.contact references ggircs.facility.id'
+);
+
+-- Identifier -> Facility
+select results_eq(
+    $$select facility.ghgr_import_id from ggircs.identifier
+      join ggircs.facility
+      on
+        identifier.facility_id = facility.id
+        and identifier.facility_id = 1 limit 1
+    $$,
+
+    'select ghgr_import_id from ggircs.facility where id=1 limit 1',
+
+    'Foreign key facility_id in ggircs.identifier references ggircs.facility.id'
+);
+
+-- NAICS -> Facility
+select results_eq(
+    $$select facility.ghgr_import_id from ggircs.naics
+      join ggircs.facility
+      on
+        naics.facility_id = facility.id
+        and naics.facility_id = 1 limit 1
+    $$,
+
+    'select ghgr_import_id from ggircs.facility where id=1 limit 1',
+
+    'Foreign key facility_id in ggircs.naics references ggircs.facility.id'
+);
+
+-- Permit -> Facility
+select results_eq(
+    $$select facility.ghgr_import_id from ggircs.permit
+      join ggircs.facility
+      on
+        permit.facility_id = facility.id
+        and permit.facility_id = 1 limit 1
+    $$,
+
+    'select ghgr_import_id from ggircs.facility where id=1 limit 1',
+
+    'Foreign key facility_id in ggircs.permit references ggircs.facility.id'
+);
+
+
+
+
 
 -- All tables in schema ggircs have data
 select isnt_empty('select * from ggircs.report', 'there is data in ggircs.report');
@@ -2490,6 +2591,7 @@ select results_eq(
                   ghgr_import_id,
                   swrs_facility_id,
                   swrs_organisation_id,
+                  type,
                   path_context,
                   contact_idx,
                   parent_organisation_idx
@@ -2538,6 +2640,7 @@ select results_eq(
                   ghgr_import_id,
                   swrs_facility_id,
                   swrs_organisation_id,
+                  type,
                   path_context,
                   contact_idx,
                   parent_organisation_idx
