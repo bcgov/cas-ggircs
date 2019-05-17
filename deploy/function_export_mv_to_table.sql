@@ -228,7 +228,7 @@ $$
       alter table ggircs.address add constraint ggircs_address_organisation_foreign_key foreign key (organisation_id) references ggircs.organisation(id);
 
 
-      -- Create FK/PK relation between Address and Parent parent_organisation
+      -- Create FK/PK relation between Address and parent_organisation
       alter table ggircs.address add column parent_organisation_id int;
       create index ggircs_address_parent_organisation_index on ggircs.address (parent_organisation_id);
       update ggircs.address set parent_organisation_id = parent_organisation.id from ggircs.parent_organisation
