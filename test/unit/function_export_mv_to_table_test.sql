@@ -1996,6 +1996,34 @@ select results_eq(
     'Foreign key facility_id in ggircs.permit references ggircs.facility.id'
 );
 
+-- Address -> Organisation
+select results_eq(
+    $$select organisation.ghgr_import_id from ggircs.address
+      join ggircs.organisation
+      on
+        address.organisation_id = organisation.id
+        and address.organisation_id = 1 limit 1
+    $$,
+
+    'select ghgr_import_id from ggircs.organisation where id=1 limit 1',
+
+    'Foreign key organisation_id in ggircs.address references ggircs.organisation.id'
+);
+
+-- Address -> Organisation
+select results_eq(
+    $$select parent_organisation.ghgr_import_id from ggircs.address
+      join ggircs.parent_organisation
+      on
+        address.parent_organisation_id = parent_organisation.id
+        and address.parent_organisation_id = 1 limit 1
+    $$,
+
+    'select ghgr_import_id from ggircs.parent_organisation where id=1 limit 1',
+
+    'Foreign key parent_organisation_id in ggircs.address references ggircs.parent_organisation.id'
+);
+
 
 
 
