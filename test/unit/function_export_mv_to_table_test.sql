@@ -1343,10 +1343,6 @@ select results_eq(
     'Foreign key parent_organisation_id in ggircs.address references ggircs.parent_organisation.id'
 );
 
-
-
-
-
 -- All tables in schema ggircs have data
 select isnt_empty('select * from ggircs.report', 'there is data in ggircs.report');
 select isnt_empty('select * from ggircs.organisation', 'there is data in ggircs.organisation');
@@ -3173,6 +3169,7 @@ select isnt_empty('select * from ggircs.attributable_emission', 'attributable_em
 -- No CO2bioC
 select is_empty($$select * from ggircs.attributable_emission where gas_type='CO2bioC'$$, 'CO2bioC emissions are not in attributable_emission');
 
+-- FK tests
 -- Attr Emission -> Fuel
 select results_eq(
     $$select fuel.ghgr_import_id from ggircs.attributable_emission
