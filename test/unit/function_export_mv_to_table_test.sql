@@ -1851,6 +1851,31 @@ select results_eq($$select
 
     'data in ggircs_swrs.report === ggircs.report');
 
+-- Data in ggircs_swrs.organisation === data in ggircs.organisation
+select results_eq($$select
+                      ghgr_import_id,
+                      swrs_organisation_id,
+                      business_legal_name,
+                      english_trade_name,
+                      french_trade_name,
+                      cra_business_number,
+                      duns,
+                      website
+                  from ggircs_swrs.organisation$$,
+
+                 $$select
+                      ghgr_import_id,
+                      swrs_organisation_id,
+                      business_legal_name,
+                      english_trade_name,
+                      french_trade_name,
+                      cra_business_number,
+                      duns,
+                      website
+                  from ggircs.organisation$$,
+
+    'data in ggircs_swrs.organisation === ggircs.organisation');
+
 -- Data in ggircs_swrs.emission === data in ggircs.emission
 select results_eq('select * from ggircs_swrs.emission order by process_idx, sub_process_idx, units_idx, unit_idx, substances_idx, substance_idx, fuel_idx, emissions_idx, emission_idx asc',
 
