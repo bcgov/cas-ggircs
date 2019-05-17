@@ -3205,5 +3205,89 @@ select results_eq(
     'Foreign key lfo_facility_id in ggircs.activity references ggircs.lfo_facility.id'
 );
 
+-- Facility -> Report
+select results_eq(
+    $$select report.ghgr_import_id from ggircs.lfo_facility
+      join ggircs.report
+      on
+        lfo_facility.report_id = report.id
+        and lfo_facility.report_id = 1 limit 1
+    $$,
+
+    'select ghgr_import_id from ggircs.report where id=1 limit 1',
+
+    'Foreign key report_id in ggircs.lfo_facility references ggircs.report.id'
+);
+
+-- Address -> Facility
+select results_eq(
+    $$select lfo_facility.ghgr_import_id from ggircs.address
+      join ggircs.lfo_facility
+      on
+        address.lfo_facility_id = lfo_facility.id
+        limit 1
+    $$,
+-- --
+    'select ghgr_import_id from ggircs.lfo_facility where id=1 limit 1',
+-- --
+    'Foreign key lfo_facility_id in ggircs.address references ggircs.lfo_facility.id'
+);
+
+-- Contact -> Facility
+select results_eq(
+    $$select lfo_facility.ghgr_import_id from ggircs.contact
+      join ggircs.lfo_facility
+      on
+        contact.lfo_facility_id = lfo_facility.id
+        and contact.lfo_facility_id = 1 limit 1
+    $$,
+
+    'select ghgr_import_id from ggircs.lfo_facility where id=1 limit 1',
+
+    'Foreign key lfo_facility_id in ggircs.contact references ggircs.lfo_facility.id'
+);
+
+-- Identifier -> Facility
+select results_eq(
+    $$select lfo_facility.ghgr_import_id from ggircs.identifier
+      join ggircs.lfo_facility
+      on
+        identifier.lfo_facility_id = lfo_facility.id
+        and identifier.lfo_facility_id = 1 limit 1
+    $$,
+
+    'select ghgr_import_id from ggircs.lfo_facility where id=1 limit 1',
+
+    'Foreign key lfo_facility_id in ggircs.identifier references ggircs.lfo_facility.id'
+);
+
+-- NAICS -> Facility
+select results_eq(
+    $$select lfo_facility.ghgr_import_id from ggircs.naics
+      join ggircs.lfo_facility
+      on
+        naics.lfo_facility_id = lfo_facility.id
+        and naics.lfo_facility_id = 1 limit 1
+    $$,
+
+    'select ghgr_import_id from ggircs.lfo_facility where id=1 limit 1',
+
+    'Foreign key lfo_facility_id in ggircs.naics references ggircs.lfo_facility.id'
+);
+
+-- Permit -> Facility
+select results_eq(
+    $$select lfo_facility.ghgr_import_id from ggircs.permit
+      join ggircs.lfo_facility
+      on
+        permit.lfo_facility_id = lfo_facility.id
+        and permit.lfo_facility_id = 1 limit 1
+    $$,
+
+    'select ghgr_import_id from ggircs.lfo_facility where id=1 limit 1',
+
+    'Foreign key lfo_facility_id in ggircs.permit references ggircs.lfo_facility.id'
+);
+
 select * from finish();
 rollback;
