@@ -22,7 +22,7 @@ select columns_are('ggircs_swrs'::name, 'activity'::name, array[
     'sub_process_idx'::name,
     'activity_name'::name,
     'process_name'::name,
-    'subprocess_name'::name,
+    'sub_process_name'::name,
     'information_requirement'::name
 ]);
 
@@ -50,10 +50,10 @@ select col_type_is(      'ggircs_swrs', 'activity', 'process_name', 'character v
 select col_is_null(      'ggircs_swrs', 'activity', 'process_name', 'activity.process_name column should allow null');
 select col_hasnt_default('ggircs_swrs', 'activity', 'process_name', 'activity.process_name column should not  have a default');
 
---  select has_column(       'ggircs_swrs', 'activity', 'subprocess_name', 'activity.subprocess_name column should exist');
-select col_type_is(      'ggircs_swrs', 'activity', 'subprocess_name', 'character varying(1000)', 'activity.subprocess_name column should be type text');
-select col_is_null(      'ggircs_swrs', 'activity', 'subprocess_name', 'activity.subprocess_name column should allow null');
-select col_hasnt_default('ggircs_swrs', 'activity', 'subprocess_name', 'activity.subprocess_name column should not have a default value');
+--  select has_column(       'ggircs_swrs', 'activity', 'sub_process_name', 'activity.sub_process_name column should exist');
+select col_type_is(      'ggircs_swrs', 'activity', 'sub_process_name', 'character varying(1000)', 'activity.sub_process_name column should be type text');
+select col_is_null(      'ggircs_swrs', 'activity', 'sub_process_name', 'activity.sub_process_name column should allow null');
+select col_hasnt_default('ggircs_swrs', 'activity', 'sub_process_name', 'activity.sub_process_name column should not have a default value');
 
 --  select has_column(       'ggircs_swrs', 'activity', 'information_requirement', 'activity.information_requirement column should exist');
 select col_type_is(      'ggircs_swrs', 'activity', 'information_requirement', 'character varying(1000)', 'activity.information_requirement column should be type text');
@@ -113,9 +113,9 @@ select results_eq(
   'ggircs_swrs.activity.process_name is extracted'
 );
 select results_eq(
-  'select subprocess_name from ggircs_swrs.activity',
+  'select sub_process_name from ggircs_swrs.activity',
   ARRAY['(a) general stationary combustion, useful energy'::varchar(1000)],
-  'ggircs_swrs.activity.subprocess_name is extracted'
+  'ggircs_swrs.activity.sub_process_name is extracted'
 );
 select results_eq(
   'select information_requirement from ggircs_swrs.activity',

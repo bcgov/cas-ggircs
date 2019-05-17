@@ -1876,6 +1876,60 @@ select results_eq($$select
 
     'data in ggircs_swrs.organisation === ggircs.organisation');
 
+-- Data in ggircs_swrs.facility === data in ggircs.facility
+select results_eq($$select
+                      ghgr_import_id,
+                      swrs_facility_id,
+                      facility_name,
+                      facility_type,
+                      relationship_type,
+                      portability_indicator,
+                      status,
+                      latitude,
+                      longitude
+                  from ggircs_swrs.facility$$,
+
+                 $$select
+                      ghgr_import_id,
+                      swrs_facility_id,
+                      facility_name,
+                      facility_type,
+                      relationship_type,
+                      portability_indicator,
+                      status,
+                      latitude,
+                      longitude
+                  from ggircs.facility$$,
+
+    'data in ggircs_swrs.facility === ggircs.facility');
+
+-- Data in ggircs_swrs.activity === data in ggircs.activity
+select results_eq($$select
+                      ghgr_import_id,
+                      process_idx,
+                      sub_process_idx,
+                      activity_name,
+                      process_name,
+                      sub_process_name,
+                      information_requirement
+                  from ggircs_swrs.activity
+                  order by ghgr_import_id, process_idx, sub_process_idx, activity_name asc
+                  $$,
+
+                 $$select
+                      ghgr_import_id,
+                      process_idx,
+                      sub_process_idx,
+                      activity_name,
+                      process_name,
+                      sub_process_name,
+                      information_requirement
+                  from ggircs.activity
+                  order by ghgr_import_id, process_idx, sub_process_idx, activity_name asc
+                  $$,
+
+    'data in ggircs_swrs.activity === ggircs.activity');
+
 -- Data in ggircs_swrs.emission === data in ggircs.emission
 select results_eq('select * from ggircs_swrs.emission order by process_idx, sub_process_idx, units_idx, unit_idx, substances_idx, substance_idx, fuel_idx, emissions_idx, emission_idx asc',
 
