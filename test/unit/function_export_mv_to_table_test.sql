@@ -1930,6 +1930,114 @@ select results_eq($$select
 
     'data in ggircs_swrs.activity === ggircs.activity');
 
+-- Data in ggircs_swrs.unit === data in ggircs.unit
+select results_eq(
+              $$select
+                  ghgr_import_id,
+                  activity_name,
+                  process_idx,
+                  sub_process_idx,
+                  units_idx,
+                  unit_idx,
+                  unit_name,
+                  unit_description,
+                  cogen_unit_name,
+                  cogen_cycle_type,
+                  cogen_nameplate_capacity,
+                  cogen_net_power,
+                  cogen_steam_heat_acq_quantity,
+                  cogen_steam_heat_acq_name,
+                  cogen_supplemental_firing_purpose,
+                  cogen_thermal_output_quantity,
+                  non_cogen_nameplate_capacity,
+                  non_cogen_net_power,
+                  non_cogen_unit_name
+
+                from ggircs_swrs.unit
+                order by
+                    ghgr_import_id,
+                    activity_name,
+                    process_idx,
+                    sub_process_idx,
+                    units_idx,
+                    unit_idx
+                 asc
+              $$,
+
+              $$select
+                  ghgr_import_id,
+                  activity_name,
+                  process_idx,
+                  sub_process_idx,
+                  units_idx,
+                  unit_idx,
+                  unit_name,
+                  unit_description,
+                  cogen_unit_name,
+                  cogen_cycle_type,
+                  cogen_nameplate_capacity,
+                  cogen_net_power,
+                  cogen_steam_heat_acq_quantity,
+                  cogen_steam_heat_acq_name,
+                  cogen_supplemental_firing_purpose,
+                  cogen_thermal_output_quantity,
+                  non_cogen_nameplate_capacity,
+                  non_cogen_net_power,
+                  non_cogen_unit_name
+
+                from ggircs.unit
+                order by
+                    ghgr_import_id,
+                    activity_name,
+                    process_idx,
+                    sub_process_idx,
+                    units_idx,
+                    unit_idx
+                 asc
+              $$,
+
+              'data in ggircs_swrs.unit === ggircs.unit');
+
+-- Data in ggircs_swrs.identifier === data in ggircs.identifier
+select results_eq(
+              $$select
+                  ghgr_import_id,
+                  swrs_facility_id,
+                  path_context,
+                  identifier_idx,
+                  identifier_type,
+                  identifier_value
+                from ggircs_swrs.identifier
+                order by
+                    ghgr_import_id,
+                    swrs_facility_id,
+                    path_context,
+                    identifier_idx
+                 asc
+              $$,
+
+              $$select
+                  ghgr_import_id,
+                  swrs_facility_id,
+                  path_context,
+                  identifier_idx,
+                  identifier_type,
+                  identifier_value
+                from ggircs.identifier
+                order by
+                    ghgr_import_id,
+                    swrs_facility_id,
+                    path_context,
+                    identifier_idx
+                 asc
+              $$,
+
+              'data in ggircs_swrs.identifier === ggircs.identifier');
+
+
+
+
+
 -- Data in ggircs_swrs.emission === data in ggircs.emission
 select results_eq('select * from ggircs_swrs.emission order by process_idx, sub_process_idx, units_idx, unit_idx, substances_idx, substance_idx, fuel_idx, emissions_idx, emission_idx asc',
 
