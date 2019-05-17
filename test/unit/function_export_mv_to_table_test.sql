@@ -2427,7 +2427,7 @@ select results_eq(
                   mailing_address_additional_information,
                   geographic_address_latitude,
                   geographic_address_longitude
-                from ggircs_swrs.address
+                from ggircs.address
                 order by
                   ghgr_import_id,
                   swrs_facility_id,
@@ -2440,6 +2440,65 @@ select results_eq(
 
               'data in ggircs_swrs.address === ggircs.address');
 
+-- Data in ggircs_swrs.descriptor === data in ggircs.descriptor
+select results_eq(
+              $$select
+                    ghgr_import_id,
+                    process_idx,
+                    sub_process_idx,
+                    grandparent_idx,
+                    parent_idx,
+                    class_idx,
+                    grandparent,
+                    parent,
+                    class,
+                    attribute,
+                    attr_value,
+                    node_value
+                from ggircs_swrs.descriptor
+                order by
+                  ghgr_import_id,
+                  process_idx,
+                  sub_process_idx,
+                  grandparent_idx,
+                  parent_idx,
+                  class_idx,
+                  grandparent,
+                  parent,
+                  class,
+                  node_value
+                 asc
+              $$,
+
+              $$select
+                    ghgr_import_id,
+                    process_idx,
+                    sub_process_idx,
+                    grandparent_idx,
+                    parent_idx,
+                    class_idx,
+                    grandparent,
+                    parent,
+                    class,
+                    attribute,
+                    attr_value,
+                    node_value
+                from ggircs.descriptor
+                order by
+                  ghgr_import_id,
+                  process_idx,
+                  sub_process_idx,
+                  grandparent_idx,
+                  parent_idx,
+                  class_idx,
+                  grandparent,
+                  parent,
+                  class,
+                  node_value
+                 asc
+              $$,
+
+              'data in ggircs_swrs.descriptor === ggircs.descriptor');
 
 select * from finish();
 rollback;
