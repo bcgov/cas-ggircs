@@ -1810,9 +1810,9 @@ select has_pk('ggircs', 'contact', 'ggircs_contact has primary key');
 select has_pk('ggircs', 'address', 'ggircs_address has primary key');
 select has_pk('ggircs', 'descriptor', 'ggircs_descriptor has primary key');
 
--- Test tables have foreign key constraints (No FK constraints: report, final_report, parent_organisation, address)
+-- Test tables have foreign key constraints (No FK constraints: report, organisation, final_report, parent_organisation, address)
 -- select has_fk('ggircs', 'report', 'ggircs_report has foreign key constraint(s)');
-select has_fk('ggircs', 'organisation', 'ggircs_organisation has foreign key constraint(s)');
+-- select has_fk('ggircs', 'organisation', 'ggircs_organisation has foreign key constraint(s)');
 select has_fk('ggircs', 'facility', 'ggircs_facility has foreign key constraint(s)');
 select has_fk('ggircs', 'activity', 'ggircs_activity has foreign key constraint(s)');
 select has_fk('ggircs', 'unit', 'ggircs_unit has foreign key constraint(s)');
@@ -1833,24 +1833,27 @@ select results_eq(
     $$select fuel.ghgr_import_id from ggircs.emission
       join ggircs.fuel
       on
-        emission.ghgr_import_id = fuel.ghgr_import_id
-        and emission.process_idx = fuel.process_idx
-        and emission.sub_process_idx = fuel.sub_process_idx
-        and emission.activity_name = fuel.activity_name
-        and emission.sub_activity_name = fuel.sub_activity_name
-        and emission.unit_name = fuel.unit_name
-        and emission.sub_unit_name = fuel.sub_unit_name
-        and emission.substance_idx = fuel.substance_idx
-        and emission.substances_idx = fuel.substances_idx
-        and emission.sub_unit_name = fuel.sub_unit_name
-        and emission.units_idx = fuel.units_idx
-        and emission.unit_idx = fuel.unit_idx
-        and emission.fuel_idx = fuel.fuel_idx limit 1
+        emission.fuel_id = fuel.id
+        and emission.fuel_id = 1 limit 1
     $$,
 
-    'select ghgr_import_id from ggircs.fuel where fuel_idx=0 limit 1',
+    'select ghgr_import_id from ggircs.fuel where id=1',
 
-    'Foreign keys ghgr_import_id, fuel_idx in ggircs.emission reference ggircs.fuel'
+    'Foreign key fuel_id in ggircs.emission references ggircs.fuel.id'
+);
+
+-- Fuel -> Unit
+select results_eq(
+    $$select fuel.ghgr_import_id from ggircs.fuel
+      join ggircs.unit
+      on
+        fuel.unit_id = unit.id
+        and fuel.unit_id = 1 limit 1
+    $$,
+
+    'select ghgr_import_id from ggircs.unit where id=1',
+
+    'Foreign key unit_id in ggircs.emission references ggircs.fuel'
 );
 
 
