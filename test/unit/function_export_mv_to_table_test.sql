@@ -1810,7 +1810,48 @@ select isnt_empty('select * from ggircs.contact', 'there is data in ggircs.conta
 select isnt_empty('select * from ggircs.address', 'there is data in ggircs.address');
 select isnt_empty('select * from ggircs.descriptor', 'there is data in ggircs.descriptor');
 
--- Data in ggircs_swrs.emission == data in ggircs.emission
+-- Data in ggircs_swrs.report === data in ggircs_report
+select results_eq($$select
+                      ghgr_import_id,
+                      source_xml::text,
+                      imported_at,
+                      swrs_report_id,
+                      prepop_report_id,
+                      report_type,
+                      swrs_facility_id,
+                      swrs_organisation_id,
+                      reporting_period_duration,
+                      status,
+                      version,
+                      submission_date,
+                      last_modified_by,
+                      last_modified_date,
+                      update_comment,
+                      swrs_report_history_id
+                  from ggircs_swrs.report$$,
+
+                 $$select
+                      ghgr_import_id,
+                      source_xml::text,
+                      imported_at,
+                      swrs_report_id,
+                      prepop_report_id,
+                      report_type,
+                      swrs_facility_id,
+                      swrs_organisation_id,
+                      reporting_period_duration,
+                      status,
+                      version,
+                      submission_date,
+                      last_modified_by,
+                      last_modified_date,
+                      update_comment,
+                      swrs_report_history_id
+                  from ggircs.report$$,
+
+    'data in ggircs_swrs.report === ggircs.report');
+
+-- Data in ggircs_swrs.emission === data in ggircs.emission
 select results_eq('select * from ggircs_swrs.emission order by process_idx, sub_process_idx, units_idx, unit_idx, substances_idx, substance_idx, fuel_idx, emissions_idx, emission_idx asc',
 
               $$select
@@ -1850,7 +1891,7 @@ select results_eq('select * from ggircs_swrs.emission order by process_idx, sub_
                  asc
               $$,
 
-              'data in ggircs_swrs.emission == ggircs.emission');
+              'data in ggircs_swrs.emission === ggircs.emission');
 
 select * from finish();
 rollback;
