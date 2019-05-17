@@ -1811,26 +1811,23 @@ select has_pk('ggircs', 'contact', 'ggircs_contact has primary key');
 select has_pk('ggircs', 'address', 'ggircs_address has primary key');
 select has_pk('ggircs', 'descriptor', 'ggircs_descriptor has primary key');
 
--- Test tables have foreign key constraints (No FK constraints: report, organisation, final_report, parent_organisation, address)
+-- Test tables have foreign key constraints (No FK constraints: report, final_report, parent_organisation)
 -- select has_fk('ggircs', 'report', 'ggircs_report has foreign key constraint(s)');
--- select has_fk('ggircs', 'organisation', 'ggircs_organisation has foreign key constraint(s)');
+select has_fk('ggircs', 'organisation', 'ggircs_organisation has foreign key constraint(s)');
 select has_fk('ggircs', 'facility', 'ggircs_facility has foreign key constraint(s)');
 select has_fk('ggircs', 'activity', 'ggircs_activity has foreign key constraint(s)');
 select has_fk('ggircs', 'unit', 'ggircs_unit has foreign key constraint(s)');
 select has_fk('ggircs', 'identifier', 'ggircs_identifier has foreign key constraint(s)');
 select has_fk('ggircs', 'naics', 'ggircs_naics has foreign key constraint(s)');
-
+select has_fk('ggircs', 'non_attributable_emission', 'ggircs.non_attributable_emissions has foreign key constraint(s)');
 -- select has_fk('ggircs', 'final_report', 'ggircs_final_report has foreign key constraint(s)');
 select has_fk('ggircs', 'fuel', 'ggircs_fuel has foreign key constraint(s)');
 select has_fk('ggircs', 'permit', 'ggircs_permit has foreign key constraint(s)');
 -- select has_fk('ggircs', 'parent_organisation', 'ggircs_parent_organisation has foreign key constraint(s)');
 select has_fk('ggircs', 'contact', 'ggircs_contact has foreign key constraint(s)');
--- select has_fk('ggircs', 'address', 'ggircs_address has foreign key constraint(s)');
+select has_fk('ggircs', 'address', 'ggircs_address has foreign key constraint(s)');
 select has_fk('ggircs', 'descriptor', 'ggircs_descriptor has foreign key constraint(s)');
 
-
-select has_fk('ggircs', 'non_attributable_emission', 'ggircs.non_attributable_emissions has foreign key constraint(s)');
-select * from ggircs.attributable_emission;
 
 -- Test validity of FK relations
 -- NA Emission -> Fuel
