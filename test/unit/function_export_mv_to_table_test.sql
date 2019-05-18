@@ -1103,7 +1103,8 @@ select tables_are('ggircs'::name, ARRAY[
     'parent_organisation'::name,
     'contact'::name,
     'address'::name,
-    'descriptor'::name
+    'descriptor'::name,
+    'additional_reportable_activity'::name
     ],
     $$Schema ggircs has tables [
                              report, organisation, single_facility, lfo_facility, activity,
@@ -1129,6 +1130,7 @@ select has_pk('ggircs', 'parent_organisation', 'ggircs_parent_organisation has p
 select has_pk('ggircs', 'contact', 'ggircs_contact has primary key');
 select has_pk('ggircs', 'address', 'ggircs_address has primary key');
 select has_pk('ggircs', 'descriptor', 'ggircs_descriptor has primary key');
+select has_pk('ggircs', 'activity', 'ggircs_additional_reportable_activity has primary key');
 
 -- Test tables have foreign key constraints (No FK constraints: report, final_report, parent_organisation)
 -- select has_fk('ggircs', 'report', 'ggircs_report has foreign key constraint(s)');
@@ -1147,7 +1149,6 @@ select has_fk('ggircs', 'permit', 'ggircs_permit has foreign key constraint(s)')
 select has_fk('ggircs', 'contact', 'ggircs_contact has foreign key constraint(s)');
 select has_fk('ggircs', 'address', 'ggircs_address has foreign key constraint(s)');
 select has_fk('ggircs', 'descriptor', 'ggircs_descriptor has foreign key constraint(s)');
-
 
 -- Test validity of FK relations
 -- NA Emission -> Fuel
@@ -1362,6 +1363,7 @@ select isnt_empty('select * from ggircs.parent_organisation', 'there is data in 
 select isnt_empty('select * from ggircs.contact', 'there is data in ggircs.contact');
 select isnt_empty('select * from ggircs.address', 'there is data in ggircs.address');
 select isnt_empty('select * from ggircs.descriptor', 'there is data in ggircs.descriptor');
+select isnt_empty('select * from ggircs.additional_reportable_activity', 'there is data in ggircs.additional_reportable_activity');
 
 -- attributable_emission has no data (from EIO facility)
 select is_empty('select * from ggircs.attributable_emission', 'there is data in ggircs.attributable_emission');
@@ -2391,7 +2393,7 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
   <ActivityData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <ActivityPages>
       <Process ProcessName="ElectricityGeneration">
-        <SubProcess SubprocessName="Emissions from fuel combustion for electricity generation" InformationRequirement="Required">
+        <SubProcess SubprocessName="Additional reportable information" InformationRequirement="Required">
           <Units UnitType="Cogen Units">
             <Unit>
               <COGenUnit>

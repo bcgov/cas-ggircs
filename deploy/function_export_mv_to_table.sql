@@ -109,6 +109,28 @@ $$
 
     execute 'alter table ggircs.single_facility add column id int generated always as identity primary key';
 
+    /** Create additional_reportable_activity table**/
+
+    raise notice 'Exporting additional_reportable_activity';
+
+    execute
+      'drop table if exists ggircs.additional_reportable_activity';
+
+    execute
+      'create table ggircs.additional_reportable_activity ' ||
+      'as (select x.* from ggircs_swrs.activity ' ||
+      'as x inner join ggircs_swrs.final_report as final_report ' ||
+      'on x.ghgr_import_id = final_report.ghgr_import_id ' ||
+      'and x.sub_process_name in  (''Additional Reportable Information as per WCI.352(i)(1)-(12)'',' ||
+                                   '''Additional Reportable Information as per WCI.352(i)(13)'', ' ||
+                                   '''Additional Reportable Information as per WCI.362(g)(21)'', ' ||
+                                   '''Additional information for cement and lime production facilities only (not aggregated in totals)'', ' ||
+                                   '''Additional information for cement and lime production facilities only (not aggregated intotals)'', ' ||
+                                   '''Additional information required when other activities selected are Activities in Table 2 rows 2, 4, 5 , or 6'', ' ||
+                                   '''Additional reportable information'') )';
+
+    execute 'alter table ggircs.additional_reportable_activity add column id int generated always as identity primary key';
+
       -- Create FK/PK relation between Non-Attributable_Emission and Fuel
       alter table ggircs.non_attributable_emission add column fuel_id int;
       create index ggircs_non_attributable_emission_fuel_index on ggircs.non_attributable_emission (fuel_id);
