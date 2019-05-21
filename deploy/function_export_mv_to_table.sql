@@ -98,7 +98,9 @@ $$
     execute 'update ggircs.lfo_facility as lfo set bcghgid = ggircs_swrs.identifier.identifier_value ' ||
             'from ggircs.lfo_facility inner join ggircs_swrs.identifier ' ||
             'on ggircs.lfo_facility.ghgr_import_id = ggircs_swrs.identifier.ghgr_import_id ' ||
-            'and ggircs_swrs.identifier.identifier_type = ''BCGHGID'' ';
+            'and ggircs_swrs.identifier.identifier_type = ''BCGHGID'' ' ||
+            'and ggircs_swrs.identifier.identifier_value is not null ' ||
+            'and ggircs_swrs.identifier.identifier_value != '''' ';
 
     execute 'alter table ggircs.lfo_facility add column id int generated always as identity primary key';
     
@@ -114,12 +116,14 @@ $$
       'on x.ghgr_import_id = final_report.ghgr_import_id ' ||
       'and x.facility_type != ''LFO'' )';
 
-    -- Add BCGHGID column to lfo_facility
+    -- Add BCGHGID column to single_facility
     execute 'alter table ggircs.single_facility add column bcghgid varchar(1000)';
     execute 'update ggircs.single_facility as single set bcghgid = ggircs_swrs.identifier.identifier_value ' ||
             'from ggircs.single_facility inner join ggircs_swrs.identifier ' ||
             'on ggircs.single_facility.ghgr_import_id = ggircs_swrs.identifier.ghgr_import_id ' ||
-            'and ggircs_swrs.identifier.identifier_type = ''BCGHGID'' ';
+            'and ggircs_swrs.identifier.identifier_type = ''BCGHGID'' ' ||
+            'and ggircs_swrs.identifier.identifier_value is not null ' ||
+            'and ggircs_swrs.identifier.identifier_value != '''' ';
 
     execute 'alter table ggircs.single_facility add column id int generated always as identity primary key';
 

@@ -56,7 +56,7 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
         <IdentifierList>
           <Identifier>
             <IdentifierType>BCGHGID</IdentifierType>
-            <IdentifierValue>123456</IdentifierValue>
+            <IdentifierValue>RD_123456</IdentifierValue>
           </Identifier>
           <Identifier>
             <IdentifierType>GHGRP Identification Number</IdentifierType>
@@ -218,7 +218,7 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
             </Identifier>
             <Identifier>
               <IdentifierType>BCGHGID</IdentifierType>
-              <IdentifierValue>12345</IdentifierValue>
+              <IdentifierValue>VT_12345</IdentifierValue>
             </Identifier>
           </IdentifierList>
           <NAICSCodeList>
@@ -412,7 +412,7 @@ $$), ($$
         <IdentifierList>
           <Identifier>
             <IdentifierType>BCGHGID</IdentifierType>
-            <IdentifierValue>123456</IdentifierValue>
+            <IdentifierValue>RD_123456</IdentifierValue>
           </Identifier>
           <Identifier>
             <IdentifierType>GHGRP Identification Number</IdentifierType>
@@ -574,7 +574,7 @@ $$), ($$
             </Identifier>
             <Identifier>
               <IdentifierType>BCGHGID</IdentifierType>
-              <IdentifierValue>12345</IdentifierValue>
+              <IdentifierValue></IdentifierValue>
             </Identifier>
           </IdentifierList>
           <NAICSCodeList>
