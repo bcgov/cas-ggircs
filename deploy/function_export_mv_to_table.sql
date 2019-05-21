@@ -317,7 +317,7 @@ $$
           where activity.ghgr_import_id = lfo_facility.ghgr_import_id;
       alter table ggircs.activity add constraint ggircs_activity_lfo_facility_foreign_key foreign key (lfo_facility_id) references ggircs.lfo_facility(id);
 
-      -- Create FK/PK relation between Facility and Report
+      -- Create FK/PK relation between Facility and Organisation
       alter table ggircs.lfo_facility add column organisation_id int;
       create index ggircs_lfo_facility_organisation_index on ggircs.lfo_facility (organisation_id);
       update ggircs.lfo_facility set organisation_id = organisation.id from ggircs.organisation
@@ -389,7 +389,7 @@ $$
           where activity.ghgr_import_id = single_facility.ghgr_import_id;
       alter table ggircs.activity add constraint ggircs_activity_single_facility_foreign_key foreign key (single_facility_id) references ggircs.single_facility(id);
       
-      -- Create FK/PK relation between Facility and Report
+      -- Create FK/PK relation between Facility and Organisation
       alter table ggircs.single_facility add column organisation_id int;
       create index ggircs_single_facility_organisation_index on ggircs.single_facility (organisation_id);
       update ggircs.single_facility set organisation_id = organisation.id from ggircs.organisation
