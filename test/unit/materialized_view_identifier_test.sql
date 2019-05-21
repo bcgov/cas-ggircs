@@ -3,7 +3,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(21);
+select plan(17);
 
 -- Test matview report exists in schema ggircs_swrs
 select has_materialized_view('ggircs_swrs', 'identifier', 'Materialized view facility exists');
@@ -41,7 +41,7 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
         <IdentifierList>
           <Identifier>
             <IdentifierType>BCGHGID</IdentifierType>
-            <IdentifierValue>R0B0T2</IdentifierValue>
+            <IdentifierValue>R0B0T1</IdentifierValue>
           </Identifier>
           <Identifier>
             <IdentifierType>GHGRP Identification Number</IdentifierType>
@@ -58,78 +58,7 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
     <ProgramID>1234</ProgramID>
   </OperationalWorkerReport>
 </ReportData>
-$$);
-
--- refresh necessary views with data
-refresh materialized view ggircs_swrs.facility with data;
-refresh materialized view ggircs_swrs.identifier with data;
-
--- test the fk join on facility
-select results_eq(
-    'select facility.ghgr_import_id from ggircs_swrs.identifier ' ||
-    'join ggircs_swrs.facility ' ||
-    'on ' ||
-    'identifier.ghgr_import_id =  facility.ghgr_import_id '||
-    'and identifier_idx=0',
-
-    'select ghgr_import_id from ggircs_swrs.facility',
-
-    'Foreign keys ghgr_import_idin ggircs_swrs_identifier reference ggircs_swrs.facility'
-);
-
-
--- test the columnns for ggircs_swrs.identifier have been properly parsed from xml
-select results_eq(
-  'select ghgr_import_id from ggircs_swrs.identifier where identifier_idx=0',
-  'select id from ggircs_swrs.ghgr_import',
-  'ggircs_swrs.identifier parsed column ghgr_import_id'
-);
-
-select results_eq(
-  'select swrs_facility_id from ggircs_swrs.identifier where identifier_idx=0',
-  ARRAY[666::numeric],
-  'ggircs_swrs.identifier parsed column swrs_facility_id'
-);
-
-select results_eq(
-  'select path_context from ggircs_swrs.identifier where identifier_idx=0',
-  ARRAY['RegistrationData'::varchar],
-  'ggircs_swrs.identifier parsed column path_context'
-);
-
-select results_eq(
-  'select identifier_idx from ggircs_swrs.identifier where identifier_idx=0',
-  ARRAY[0::integer],
-  'ggircs_swrs.identifier parsed column identifier_idx'
-);
-
--- Test that if the identifier type = 'BCGHGID' that the value is grabbed from ProgramID in OperationalWorkerReport
-
-select results_eq(
-  'select identifier_type from ggircs_swrs.identifier where identifier_idx=0',
-  ARRAY['BCGHGID'::varchar],
-  'ggircs_swrs.identifier parsed column identifier_type'
-);
-select results_eq(
-  'select identifier_value from ggircs_swrs.identifier where identifier_idx=0',
-  ARRAY['1234'::varchar],
-  'ggircs_swrs.identifier parsed column identifier_value'
-);
-
--- Test that the identifier value is not affected if identifier_type is not 'BCGHGID'
-select results_eq(
-  'select identifier_type from ggircs_swrs.identifier where identifier_idx=1',
-  ARRAY['GHGRP Identification Number'::varchar],
-  'ggircs_swrs.identifier parsed column identifier_type'
-);
-select results_eq(
-  'select identifier_value from ggircs_swrs.identifier where identifier_idx=1',
-  ARRAY['R0B0T2'::varchar],
-  'ggircs_swrs.identifier parsed column identifier_value'
-);
-
-delete from ggircs_swrs.ghgr_import where id < 20;
-insert into ggircs_swrs.ghgr_import (xml_file) values ($$
+$$), ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <RegistrationData>
     <Facility>
@@ -137,7 +66,7 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
         <IdentifierList>
           <Identifier>
             <IdentifierType>BCGHGID</IdentifierType>
-            <IdentifierValue>R0B0T2</IdentifierValue>
+            <IdentifierValue>R0B0T3</IdentifierValue>
           </Identifier>
         </IdentifierList>
       </Identifiers>
@@ -149,18 +78,63 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
 </ReportData>
 $$);
 
-refresh materialized view ggircs_swrs.identifier;
+-- refresh necessary views with data
+refresh materialized view ggircs_swrs.identifier with data;
 
--- Test that when OperationalWorkerReport/ProgramID does not exist, the value for BCGHGID is taken from <IdentifierValue>
+-- test the columnns for ggircs_swrs.identifier have been properly parsed from xml
 select results_eq(
-  'select identifier_type from ggircs_swrs.identifier where identifier_idx=0',
-  ARRAY['BCGHGID'::varchar],
+  'select distinct(ghgr_import_id) from ggircs_swrs.identifier order by ghgr_import_id',
+  'select id from ggircs_swrs.ghgr_import order by id',
+  'ggircs_swrs.identifier references column ghgr_import_id'
+);
+
+select results_eq(
+  'select swrs_facility_id from ggircs_swrs.identifier',
+  ARRAY[666::numeric, 666::numeric, 666::numeric],
+  'ggircs_swrs.identifier parsed column swrs_facility_id'
+);
+
+select results_eq(
+  'select path_context from ggircs_swrs.identifier',
+  ARRAY['RegistrationData'::varchar, 'RegistrationData'::varchar, 'RegistrationData'::varchar],
+  'ggircs_swrs.identifier parsed column path_context'
+);
+
+select results_eq(
+  'select identifier_idx from ggircs_swrs.identifier',
+  ARRAY[0::integer, 1::integer, 0::integer],
+  'ggircs_swrs.identifier parsed column identifier_idx'
+);
+
+select results_eq(
+  'select identifier_type from ggircs_swrs.identifier',
+  ARRAY['BCGHGID'::varchar, 'GHGRP Identification Number'::varchar, 'BCGHGID'::varchar],
   'ggircs_swrs.identifier parsed column identifier_type'
 );
+
+-- The identifier value should be overridden if identifier_type is 'BCGHGID' and ProgramID is not null (1234)
+-- The identifier value should not be overridden if identifier_type is not 'BCGHGID' (R0B0T2)
+-- The identifier value should not be overridden if identifier_type is 'BCGHGID' and ProgramID is null (R0B0T3)
 select results_eq(
   'select identifier_value from ggircs_swrs.identifier',
-  ARRAY['R0B0T2'::varchar],
+  ARRAY['1234'::varchar, 'R0B0T2'::varchar, 'R0B0T3'::varchar],
   'ggircs_swrs.identifier parsed column identifier_value'
+);
+
+-- refresh necessary views with data
+refresh materialized view ggircs_swrs.facility with data;
+
+-- test the fk join on facility
+select results_eq(
+  $$
+    select facility.ghgr_import_id from ggircs_swrs.identifier
+    join ggircs_swrs.facility
+    on identifier.ghgr_import_id = facility.ghgr_import_id
+    and identifier_idx=0
+    order by facility.ghgr_import_id
+  $$,
+  'select ghgr_import_id from ggircs_swrs.facility order by ghgr_import_id',
+  'Foreign keys ghgr_import_idin ggircs_swrs_identifier reference ggircs_swrs.facility'
 );
 
 select finish();
