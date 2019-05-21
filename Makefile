@@ -83,32 +83,32 @@ dropdb:
 
 define check_file_in_path
 	${if ${shell which ${word 1,${1}}}, 
-		${info Found ${word 1,${1}}}, 
-		${error No ${word 1,${1}} in path.}
+		${info ✓ Found ${word 1,${1}}}, 
+		${error ✖ No ${word 1,${1}} in path.}
 	}
 endef
 
 define check_min_version_num
 	${if ${shell printf '%s\n%s\n' "${3}" "${2}" | sort -CV || echo error},
-		${error ${word 1,${1}} version needs to be at least ${3}.},
-		${info ${word 1,${1}} version is at least ${3}.}
+		${error ✖ ${word 1,${1}} version needs to be at least ${3}.},
+		${info ✓ ${word 1,${1}} version is at least ${3}.}
 	}
 endef
 
-
+.PHONY: verify_installed
 verify_installed:
 	$(call check_file_in_path,${PERL})
-	${call check_min_version_num,${PERL},${PERL_VERSION},${PERL_MIN_VERSION}}
+	$(call check_min_version_num,${PERL},${PERL_VERSION},${PERL_MIN_VERSION})
 
 	$(call check_file_in_path,${CPAN})
 	$(call check_file_in_path,${GIT})
 	$(call check_file_in_path,${RSYNC})
 
 	$(call check_file_in_path,${PSQL})
-	${call check_min_version_num,${PSQL},${PSQL_VERSION},${PG_MIN_VERSION}}
+	$(call check_min_version_num,${PSQL},${PSQL_VERSION},${PG_MIN_VERSION})
 	@@echo ✓ External dependencies are installed
-.PHONY: verify_installed
 
+.PHONY: verify_pg_server
 verify_pg_server:
 ifeq (error,${PG_SERVER_VERSION})
 	${error Error while connecting to postgres server}
@@ -129,9 +129,15 @@ else
 endif
 
 	@@echo ✓ PostgreSQL server is ready
-.PHONY: verify_ready
 
+.PHONY: verify
 verify: verify_installed verify_pg_server
+
+.PHONY: verify_ready
+verify_ready:
+	# ensure postgres is online
+	@@${PSQL} -tc 'show server_version;' | ${AWK} '{print $$NF}';
+
 .PHONY: verify
 verify: verify_installed verify_ready
 
@@ -153,7 +159,6 @@ ifeq (error,${shell /bin/test -w ${PG_SHAREDIR}/extension || echo error})
 else
 	@@$(MAKE) -C pgtap -s $(MAKEFLAGS) install
 endif
-.PHONY: install_pgtap
 
 .PHONY: install_sqitch
 install_sqitch:
@@ -164,22 +169,22 @@ install_sqitch:
 	# install pg_prove
 	@@${CPAN} TAP::Parser::SourceHandler::pgTAP
 
+.PHONY: install_cpanm
 install_cpanm: 
 ifeq (${shell which ${CPANM}},)
 	# install cpanm
 	@@${CPAN} App:cpanminus
 endif
-.PHONY: install_cpanm
 
+.PHONY: install_cpandeps
 install_cpandeps:
 	# install Perl dependencies from cpanfile
 	${CPANM} --installdeps .
-.PHONY: install_cpandeps
 
+.PHONY: postinstall_check
 postinstall_check:
 	@@printf '%s\n%s\n' "${SQITCH_MIN_VERSION}" "${SQITCH_VERSION}" | sort -CV ||\
  	(echo "FATAL: ${SQITCH} version should be at least ${SQITCH_MIN_VERSION}. Make sure the ${SQITCH} executable installed by cpanminus is available has the highest priority in the PATH" && exit 1);
-.PHONY: postinstall_check
 
 .PHONY: install
 install: install_cpanm install_cpandeps postinstall_check install_pgtap 
