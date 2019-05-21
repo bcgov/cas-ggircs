@@ -34,6 +34,7 @@ OC_PROD_PROJECT=wksv3k-prod
 OC_TOOLS_PROJECT=wksv3k-tools
 OC_REGISTRY=docker-registry.default.svc:5000
 
+.PHONY: test
 test:
 	@@${MAKE} -s ${MAKEFLAGS} createdb;
 	@@${MAKE} -s ${MAKEFLAGS} deploy;
@@ -42,44 +43,43 @@ test:
 	@@${MAKE} -s ${MAKEFLAGS} prove_unit;
 	@@${MAKE} -s ${MAKEFLAGS} prove_style;
 	@@${MAKE} -s ${MAKEFLAGS} dropdb;
-.PHONY: test
 
-unit: dropdb createdb deploy prove_unit
 .PHONY: unit
+unit: dropdb createdb deploy prove_unit
 
+.PHONY: deploy
 deploy: 
 	# Deploy all changes to ${TEST_DB} using sqitch
 	@@${SQITCH} deploy ${TEST_DB};
-.PHONY: deploy
 
+.PHONY: prove_style
 prove_style:
 	# Run style-related test suite on all objects in db using pg_prove
 	@@${PG_PROVE} -v -d ${TEST_DB} test/style/*_test.sql
-.PHONY: prove
 
+.PHONY: prove_unit
 prove_unit:
 	# Run unit test suite using pg_prove
 	@@${PG_PROVE} -v -d ${TEST_DB} test/unit/*_test.sql
-.PHONY: test
 
+.PHONY: revert
 revert:
 	# Revert all changes to ${TEST_DB} using sqitch
 	@@${SQITCH} revert -y ${TEST_DB};
-.PHONY: revert
 
+.PHONY: createdb
 createdb:
 	# Ensure the ${TEST_DB} database exists
 	-@@${PSQL} -tc "SELECT 1 FROM pg_database WHERE datname = '${TEST_DB}'" | \
 		${GREP} -q 1 || \
 		${PSQL} -c "CREATE DATABASE ${TEST_DB}";
-.PHONY: createdb
 
+.PHONY: dropdb
 dropdb:
 	# Drop the ${TEST_DB} database
 	-@@${PSQL} -tc "SELECT 1 FROM pg_database WHERE datname = '${TEST_DB}'" | \
 		${GREP} -q 0 || \
 		${PSQL} -c "DROP DATABASE ${TEST_DB}";
-.PHONY: dropdb
 
 define check_file_in_path
 	${if ${shell which ${word 1,${1}}}, 
@@ -133,6 +133,7 @@ endif
 
 verify: verify_installed verify_pg_server
 .PHONY: verify
+verify: verify_installed verify_ready
 
 pgtap:
 	# clone the source for pgTAP
@@ -140,6 +141,7 @@ pgtap:
 		pushd pgtap && \
 		${GIT} checkout v1.0.0;
 
+.PHONY: install_pgtap
 install_pgtap: pgtap
 	${info install pgTAP into postgres}
 	@@$(MAKE) -C pgtap -s $(MAKEFLAGS)
@@ -153,6 +155,7 @@ else
 endif
 .PHONY: install_pgtap
 
+.PHONY: install_sqitch
 install_sqitch:
 	# install postgres driver for sqitch
 	@@${CPAN} DBD::Pg
@@ -160,7 +163,6 @@ install_sqitch:
 	@@${CPAN} App::Sqitch
 	# install pg_prove
 	@@${CPAN} TAP::Parser::SourceHandler::pgTAP
-.PHONY: install_sqitch
 
 install_cpanm: 
 ifeq (${shell which ${CPANM}},)
@@ -180,62 +182,25 @@ postinstall_check:
 .PHONY: postinstall_check
 
 .PHONY: install
+install: install_cpanm install_cpandeps postinstall_check install_pgtap 
 
-docker_build_sqitch:
-	# rebuild sqitch
-	@@${DOCKER} build -t docker.io/${DOCKER_HUB_PREFIX}${DOCKER_SQITCH_IMAGE}:${DOCKER_SQITCH_TAG} -f docker/sqitch/Dockerfile .
-.PHONY: docker_build_sqitch
-
-docker_push_sqitch: docker_build_sqitch
-	# push sqitch
-	@@${DOCKER} push docker.io/${DOCKER_HUB_PREFIX}${DOCKER_SQITCH_IMAGE}:${DOCKER_SQITCH_TAG}
-.PHONY: docker_push_sqitch
-
-docker_build_ggircs:
-	# rebuild ggircs
-	@@${DOCKER} build -t docker.io/${DOCKER_HUB_PREFIX}${DOCKER_GGIRCS_IMAGE}:${DOCKER_GGIRCS_TAG} -f docker/ggircs/Dockerfile .
-.PHONY: docker_build_ggircs
-
-docker_push_ggircs: docker_build_ggircs
-	# push ggircs
-	@@${DOCKER} push docker.io/${DOCKER_HUB_PREFIX}${DOCKER_GGIRCS_IMAGE}:${DOCKER_GGIRCS_TAG}
-.PHONY: docker_push_ggircs
-
-docker_build_postgres:
-	# rebuild postgres
-	@@${DOCKER} build -t docker.io/${DOCKER_HUB_PREFIX}${DOCKER_POSTGRES_IMAGE}:${DOCKER_POSTGRES_TAG} -f docker/postgres/Dockerfile .
-.PHONY: docker_build_postgres
-
-docker_push_postgres: docker_build_postgres
-	# push postgres
-	@@${DOCKER} push docker.io/${DOCKER_HUB_PREFIX}${DOCKER_POSTGRES_IMAGE}:${DOCKER_POSTGRES_TAG}
-.PHONY: docker_push_postgres
-
-docker_build: docker_build_sqitch docker_build_ggircs docker_build_postgres
-.PHONY: docker_build
-
-docker_push: docker_push_sqitch docker_push_ggircs docker_push_postgres
-.PHONY: docker_push
-
+.PHONY: whoami
 whoami:
 	# Ensure the openshift client has a valid access token
 	@@${OC} whoami
-.PHONY: whoami
 
+.PHONY: tools_project
 tools_project: whoami
 	# Ensure the openshift client is using the correct project namespace
 	@@${OC} project ${OC_TOOLS_PROJECT}
-.PHONY: tools_project
 
+.PHONY: dev_project
 dev_project: whoami
 	# Ensure the openshift client is using the correct project namespace
 	@@${OC} project ${OC_DEV_PROJECT}
-.PHONY: tools_project
 
-# Configure image streams
-# oc start-build cas-ggircs-postgres --commit=$$(git rev-parse --verify HEAD)
-# oc start-build cas-ggircs-sqitch --commit=$$(git rev-parse --verify HEAD)
-release_tools: tools_project
+.PHONY: deploy_tools
+deploy_tools: tools_project
 	@@${OC} get is/perl || ${OC} import-image perl:5.26 --from='${OC_REGISTRY}/openshift/perl:5.26' --confirm
 	@@${OC} get is/cas-postgres || ${OC} import-image cas-postgres:${DOCKER_POSTGRES_TAG} --from='docker-registry.default.svc:5000/openshift/${DOCKER_POSTGRES_IMAGE}:${DOCKER_POSTGRES_TAG}' --confirm
 	@@${OC} get bc/cas-ggircs || ${OC} new-build perl:5.26~https://github.com/bcgov/cas-ggircs.git#feature/deploy
@@ -244,6 +209,7 @@ release_tools: tools_project
 	#   - cas-postgres
 	#   - cas-ggircs
 
+.PHONY: clean_tools
 clean_tools: tools_project
 	# Purge images from openshift...
 	#   - perl
@@ -254,7 +220,8 @@ clean_tools: tools_project
 	@@${OC} delete bc/cas-ggircs --wait=true --ignore-not-found=true
 	@@${OC} delete is/cas-ggircs --wait=true --ignore-not-found=true
 
-release_dev: release_tools dev_project
+.PHONY: deploy_dev
+deploy_dev: deploy_tools dev_project
 	# Allow import of images from tools namespace
 	@@${OC} policy add-role-to-group system:image-puller system:serviceaccounts:${OC_DEV_PROJECT} -n ${OC_TOOLS_PROJECT}
 	# Import images from tools
@@ -264,8 +231,8 @@ release_dev: release_tools dev_project
 	${OC} process -f openshift/template-postgresql-persistent.yml NAMESPACE=${OC_DEV_PROJECT} POSTGRES_VERSION=${DOCKER_POSTGRES_TAG} | oc apply --wait=true -f-
 	# oc rollout latest dc/postgresql -n ${OC_DEV_PROJECT}
 	# Migrate...
-.PHONY: dev_release
 
+.PHONY: clean_dev
 clean_dev: dev_project
 	# Purge images from openshift...
 	#   - perl
@@ -278,24 +245,28 @@ clean_dev: dev_project
 	#   - postgresql
 	@@${OC} delete dc/postgresql --wait=true --ignore-not-found=true
 
-openshift_build:
-	# oc new-app perl:5.26~https://github.com/bcgov/cas-ggircs.git#feature/deploy -o yaml > openshift/cas-ggircs.yml
-	# oc apply -f openshift/cas-ggircs.yml
 .PHONY: openshift_build
+openshift_build:
+	oc new-app --dry-run perl:5.26~https://github.com/bcgov/cas-ggircs.git#feature/deploy -o yaml > openshift/cas-ggircs.yml
+	oc apply -f openshift/cas-ggircs.yml
 
+.PHONY: s2i_build
 s2i_build:
 	# localy build COMMITTED CHANGES ONLY
 	# @see https://github.com/sclorg/s2i-perl-container
 	# @see https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/building_running_and_managing_containers/using_red_hat_universal_base_images_standard_minimal_and_runtimes
 	s2i build https://github.com/bcgov/cas-ggircs.git -r $$(git rev-parse --verify HEAD) registry.access.redhat.com/ubi8/perl-526 cas-ggircs
-.PHONY: s2i_build
 
+.PHONY: push
 push:
 	# copy data to remote
 	oc rsync data cas-ggircs-5-c46gh:/opt/app-root/src/
 	psql -c "\copy ggircs_swrs.ghgr_import from './data/select_t_REPORT_ID__t_XML_FILE__t_WHEN_C.csv' with (format csv)";
-.PHONY: push
 
+.PHONY: rsh
 rsh:
 	oc exec -it cas-ggircs-5-c46gh -- bash
-.PHONY: rsh
+
+# Configure image streams
+# oc start-build cas-ggircs-postgres --commit=$$(git rev-parse --verify HEAD)
+# oc start-build cas-ggircs-sqitch --commit=$$(git rev-parse --verify HEAD)
