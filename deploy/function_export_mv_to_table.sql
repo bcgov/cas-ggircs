@@ -131,7 +131,7 @@ $$
 
     execute 'alter table ggircs.additional_reportable_activity add column id int generated always as identity primary key';
 
-    /** NON-Attributable Emisison FKs**/
+    /** NON-Attributable Emission FKs**/
       -- Create FK/PK relation between Non-Attributable_Emission and Activity
       alter table ggircs.non_attributable_emission add column activity_id int;
       create index ggircs_non_attributable_emission_activity_index on ggircs.non_attributable_emission (activity_id);
