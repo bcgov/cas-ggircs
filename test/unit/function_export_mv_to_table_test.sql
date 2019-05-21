@@ -1355,6 +1355,20 @@ select results_eq(
     'Foreign key parent_organisation_id in ggircs.address references ggircs.parent_organisation.id'
 );
 
+-- Contact -> Address
+select results_eq(
+    $$select address.ghgr_import_id from ggircs.contact
+      join ggircs.address
+      on
+        contact.address_id = address.id
+        limit 1
+    $$,
+
+    'select ghgr_import_id from ggircs.address limit 1',
+
+    'Foreign key address_id in ggircs.contact references ggircs.address.id'
+);
+
 -- All tables in schema ggircs have data
 select isnt_empty('select * from ggircs.report', 'there is data in ggircs.report');
 select isnt_empty('select * from ggircs.organisation', 'there is data in ggircs.organisation');

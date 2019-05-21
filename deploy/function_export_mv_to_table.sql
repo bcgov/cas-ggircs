@@ -407,7 +407,7 @@ $$
       and address.parent_organisation_idx = parent_organisation.parent_organisation_idx;
       alter table ggircs.address add constraint ggircs_address_parent_organisation_foreign_key foreign key (parent_organisation_id) references ggircs.parent_organisation(id);
 
-      /*       -- Create FK/PK relation between Contact and Address
+      -- Create FK/PK relation between Contact and Address
       alter table ggircs.contact add column address_id int;
       create index ggircs_contact_address_index on ggircs.contact (address_id);
       update ggircs.contact set address_id = address.id from ggircs.address
@@ -415,7 +415,7 @@ $$
           and   address.type = 'Contact'
           and   address.contact_idx = contact.contact_idx
       ;
-      alter table ggircs.contact add constraint ggircs_contact_address_foreign_key foreign key (address_id) references ggircs.address(id);*/
+      alter table ggircs.contact add constraint ggircs_contact_address_foreign_key foreign key (address_id) references ggircs.address(id);
 
       -- Create FK/PK relation between Descriptor and Activity
       alter table ggircs.descriptor add column activity_id int;
