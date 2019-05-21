@@ -42,7 +42,7 @@ select col_is_null(      'ggircs_swrs', 'parent_organisation', 'parent_organisat
 select col_hasnt_default('ggircs_swrs', 'parent_organisation', 'parent_organisation_idx', 'parent_organisation.parent_organisation_idx column should not have a default');
 
 --  select has_column(       'ggircs_swrs', 'parent_organisation', 'percentage_owned', 'parent_organisation.percentage_owned column should exist');
-select col_type_is(      'ggircs_swrs', 'parent_organisation', 'percentage_owned', 'numeric(1000,2)', 'parent_organisation.percentage_owned column should be type numeric');
+select col_type_is(      'ggircs_swrs', 'parent_organisation', 'percentage_owned', 'numeric', 'parent_organisation.percentage_owned column should be type numeric');
 select col_is_null(      'ggircs_swrs', 'parent_organisation', 'percentage_owned', 'parent_organisation.percentage_owned column should not allow null');
 select col_hasnt_default('ggircs_swrs', 'parent_organisation', 'percentage_owned', 'parent_organisation.percentage_owned column should not have a default');
 

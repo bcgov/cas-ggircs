@@ -29,13 +29,13 @@ select index_is_unique('ggircs_swrs', 'facility', 'ggircs_facility_primary_key',
 
 -- Test columns in matview report have correct types
 select col_type_is('ggircs_swrs', 'facility', 'ghgr_import_id', 'integer', 'ggircs_swrs.facility column _ghgr_import_id has type integer');
-select col_type_is('ggircs_swrs', 'facility', 'swrs_facility_id', 'numeric(1000,0)', 'ggircs_swrs.facility column swrs_facility_id has type numeric');
+select col_type_is('ggircs_swrs', 'facility', 'swrs_facility_id', 'integer', 'ggircs_swrs.facility column swrs_facility_id has type numeric');
 select col_type_is('ggircs_swrs', 'facility', 'facility_name', 'character varying(1000)', 'ggircs_swrs.facility column facility_name has type varchar');
 select col_type_is('ggircs_swrs', 'facility', 'relationship_type', 'character varying(1000)', 'ggircs_swrs.facility column relationship_type has type varchar');
 select col_type_is('ggircs_swrs', 'facility', 'portability_indicator', 'character varying(1000)', 'ggircs_swrs.facility column portability_indicator has type varchar');
 select col_type_is('ggircs_swrs', 'facility', 'status', 'character varying(1000)', 'ggircs_swrs.facility column status has type varchar');
-select col_type_is('ggircs_swrs', 'facility', 'latitude', 'character varying(1000)', 'ggircs_swrs.facility column latitude has type varchar');
-select col_type_is('ggircs_swrs', 'facility', 'longitude', 'character varying(1000)', 'ggircs_swrs.facility column longitude has type varchar');
+select col_type_is('ggircs_swrs', 'facility', 'latitude', 'numeric', 'ggircs_swrs.facility column latitude has type varchar');
+select col_type_is('ggircs_swrs', 'facility', 'longitude', 'numeric', 'ggircs_swrs.facility column longitude has type varchar');
 
 -- insert necessary data into table ghgr_import
 insert into ggircs_swrs.ghgr_import (xml_file) values ($$
@@ -124,7 +124,7 @@ select results_eq(
 );
 select results_eq(
   'select swrs_facility_id from ggircs_swrs.facility',
-  ARRAY[666::numeric, 123::numeric],
+  ARRAY[666::integer, 123::integer],
   'ggircs_swrs.facility parsed column swrs_facility_id'
 );
 select results_eq(
@@ -149,12 +149,12 @@ select results_eq(
 );
 select results_eq(
   'select latitude from ggircs_swrs.facility',
-  ARRAY['43.17305'::varchar, '23.45125'::varchar],
+  ARRAY['43.17305'::numeric, '23.45125'::numeric],
   'ggircs_swrs.facility parsed column latitude'
 );
 select results_eq(
   'select longitude from ggircs_swrs.facility',
-  ARRAY['-77.62479'::varchar, '-90.59062'::varchar],
+  ARRAY['-77.62479'::numeric, '-90.59062'::numeric],
   'ggircs_swrs.facility parsed column longitude'
 );
 

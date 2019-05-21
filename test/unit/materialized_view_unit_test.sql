@@ -83,12 +83,12 @@ select col_is_null(      'ggircs_swrs', 'unit', 'cogen_cycle_type', 'unit.cogen_
 select col_hasnt_default('ggircs_swrs', 'unit', 'cogen_cycle_type', 'unit.cogen_cycle_type column should not have a default value');
 
 --  select has_column(       'ggircs_swrs', 'unit', 'cogen_nameplate_capacity', 'unit.cogen_nameplate_capacity column should exist');
-select col_type_is(      'ggircs_swrs', 'unit', 'cogen_nameplate_capacity', 'character varying(1000)', 'unit.cogen_nameplate_capacity column should be type varchar');
+select col_type_is(      'ggircs_swrs', 'unit', 'cogen_nameplate_capacity', 'numeric', 'unit.cogen_nameplate_capacity column should be type numeric');
 select col_is_null(      'ggircs_swrs', 'unit', 'cogen_nameplate_capacity', 'unit.cogen_nameplate_capacity column should allow null');
 select col_hasnt_default('ggircs_swrs', 'unit', 'cogen_nameplate_capacity', 'unit.cogen_nameplate_capacity column should not have a default value');
 
 --  select has_column(       'ggircs_swrs', 'unit', 'cogen_net_power', 'unit.cogen_net_power column should exist');
-select col_type_is(      'ggircs_swrs', 'unit', 'cogen_net_power', 'character varying(1000)', 'unit.cogen_net_power column should be type varchar');
+select col_type_is(      'ggircs_swrs', 'unit', 'cogen_net_power', 'numeric', 'unit.cogen_net_power column should be type numeric');
 select col_is_null(      'ggircs_swrs', 'unit', 'cogen_net_power', 'unit.cogen_net_power column should allow null');
 select col_hasnt_default('ggircs_swrs', 'unit', 'cogen_net_power', 'unit.cogen_net_power column should not have a default value');
 
@@ -98,7 +98,7 @@ select col_is_null(      'ggircs_swrs', 'unit', 'cogen_steam_heat_acq_name', 'un
 select col_hasnt_default('ggircs_swrs', 'unit', 'cogen_steam_heat_acq_name', 'unit.cogen_steam_heat_acq_name column should not have a default value');
 
 --  select has_column(       'ggircs_swrs', 'unit', 'cogen_steam_heat_acq_quantity', 'unit.cogen_steam_heat_acq_quantity column should exist');
-select col_type_is(      'ggircs_swrs', 'unit', 'cogen_steam_heat_acq_quantity', 'character varying(1000)', 'unit.cogen_steam_heat_acq_quantity column should be type varchar');
+select col_type_is(      'ggircs_swrs', 'unit', 'cogen_steam_heat_acq_quantity', 'numeric', 'unit.cogen_steam_heat_acq_quantity column should be type numeric');
 select col_is_null(      'ggircs_swrs', 'unit', 'cogen_steam_heat_acq_quantity', 'unit.cogen_steam_heat_acq_quantity column should allow null');
 select col_hasnt_default('ggircs_swrs', 'unit', 'cogen_steam_heat_acq_quantity', 'unit.cogen_steam_heat_acq_quantity column should not have a default value');
 
@@ -108,7 +108,7 @@ select col_is_null(      'ggircs_swrs', 'unit', 'cogen_supplemental_firing_purpo
 select col_hasnt_default('ggircs_swrs', 'unit', 'cogen_supplemental_firing_purpose', 'unit.cogen_supplemental_firing_purpose column should not have a default value');
 
 --  select has_column(       'ggircs_swrs', 'unit', 'cogen_thermal_output_quantity', 'unit.cogen_thermal_output_quantity column should exist');
-select col_type_is(      'ggircs_swrs', 'unit', 'cogen_thermal_output_quantity', 'character varying(1000)', 'unit.cogen_thermal_output_quantity column should be type varchar');
+select col_type_is(      'ggircs_swrs', 'unit', 'cogen_thermal_output_quantity', 'numeric', 'unit.cogen_thermal_output_quantity column should be type numeric');
 select col_is_null(      'ggircs_swrs', 'unit', 'cogen_thermal_output_quantity', 'unit.cogen_thermal_output_quantity column should allow null');
 select col_hasnt_default('ggircs_swrs', 'unit', 'cogen_thermal_output_quantity', 'unit.cogen_thermal_output_quantity column should not have a default value');
 
@@ -118,12 +118,12 @@ select col_is_null(      'ggircs_swrs', 'unit', 'cogen_unit_name', 'unit.cogen_u
 select col_hasnt_default('ggircs_swrs', 'unit', 'cogen_unit_name', 'unit.cogen_unit_name column should not have a default value');
 
 --  select has_column(       'ggircs_swrs', 'unit', 'non_cogen_nameplate_capacity', 'unit.non_cogen_nameplate_capacity column should exist');
-select col_type_is(      'ggircs_swrs', 'unit', 'non_cogen_nameplate_capacity', 'character varying(1000)', 'unit.non_cogen_nameplate_capacity column should be type varchar');
+select col_type_is(      'ggircs_swrs', 'unit', 'non_cogen_nameplate_capacity', 'numeric', 'unit.non_cogen_nameplate_capacity column should be type varchar');
 select col_is_null(      'ggircs_swrs', 'unit', 'non_cogen_nameplate_capacity', 'unit.non_cogen_nameplate_capacity column should allow null');
 select col_hasnt_default('ggircs_swrs', 'unit', 'non_cogen_nameplate_capacity', 'unit.non_cogen_nameplate_capacity column should not have a default value');
 
 --  select has_column(       'ggircs_swrs', 'unit', 'non_cogen_net_power', 'unit.non_cogen_net_power column should exist');
-select col_type_is(      'ggircs_swrs', 'unit', 'non_cogen_net_power', 'character varying(1000)', 'unit.non_cogen_net_power column should be type varchar');
+select col_type_is(      'ggircs_swrs', 'unit', 'non_cogen_net_power', 'numeric', 'unit.non_cogen_net_power column should be type varchar');
 select col_is_null(      'ggircs_swrs', 'unit', 'non_cogen_net_power', 'unit.non_cogen_net_power column should allow null');
 select col_hasnt_default('ggircs_swrs', 'unit', 'non_cogen_net_power', 'unit.non_cogen_net_power column should not have a default value');
 
@@ -256,19 +256,19 @@ select results_eq(
 
 select results_eq(
   'select cogen_nameplate_capacity from ggircs_swrs.unit where sub_process_idx=0',
-  ARRAY[12::varchar],
+  ARRAY[12::numeric],
   'ggircs_swrs.activity.cogen_nameplate_capacity is extracted'
 );
 
 select results_eq(
   'select cogen_net_power from ggircs_swrs.unit where sub_process_idx=0',
-  ARRAY[100::varchar],
+  ARRAY[100::numeric],
   'ggircs_swrs.activity.cogen_net_power is extracted'
 );
 
 select results_eq(
   'select cogen_steam_heat_acq_quantity from ggircs_swrs.unit where sub_process_idx=0',
-  ARRAY[5::varchar],
+  ARRAY[5::numeric],
   'ggircs_swrs.activity.cogen_steam_heat_acq_quantity is extracted'
 );
 
@@ -286,7 +286,7 @@ select results_eq(
 
 select results_eq(
   'select cogen_thermal_output_quantity from ggircs_swrs.unit where sub_process_idx=0',
-  ARRAY[10::varchar],
+  ARRAY[10::numeric],
   'ggircs_swrs.activity.cogen_thermal_output_quantity is extracted'
 );
 
@@ -298,13 +298,13 @@ select results_eq(
 
 select results_eq(
   'select non_cogen_nameplate_capacity from ggircs_swrs.unit where sub_process_idx=0',
-  ARRAY[5::varchar],
+  ARRAY[5::numeric],
   'ggircs_swrs.activity.non_cogen_nameplate_capacity is extracted'
 );
 
 select results_eq(
   'select non_cogen_net_power from ggircs_swrs.unit where sub_process_idx=0',
-  ARRAY[4::varchar],
+  ARRAY[4::numeric],
   'ggircs_swrs.activity.non_cogen_net_power is extracted'
 );
 

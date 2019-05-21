@@ -19,7 +19,7 @@ create materialized view ggircs_swrs.naics as (
            '//NAICSCode'
            passing x.source_xml
            columns
-             swrs_facility_id numeric(1000,0) path '//FacilityId[normalize-space(.)]',
+             swrs_facility_id integer path '//FacilityId[normalize-space(.)]',
              path_context varchar(1000) path 'name(./ancestor::VerifyTombstone|./ancestor::RegistrationData)',
              naics_code_idx integer path 'string(count(./preceding-sibling::NAICSCode))' not null,
              naics_classification varchar(1000) path './NAICSClassification[normalize-space(.)]',

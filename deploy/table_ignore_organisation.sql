@@ -4,7 +4,7 @@
 begin;
 
 create table ggircs_swrs.table_ignore_organisation (
-  swrs_organisation_id numeric(1000, 0) not null primary key
+  swrs_organisation_id integer not null primary key
 );
 
 insert into ggircs_swrs.table_ignore_organisation (swrs_organisation_id) 

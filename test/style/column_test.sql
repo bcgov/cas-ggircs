@@ -97,7 +97,7 @@ prepare mv_null_num_precision as select a.attname,
         and a.atttypmod < 0
         and pg_catalog.format_type(a.atttypid, a.atttypmod) = 'numeric';
 -- Check there are no nulls for precision/scale when datatype is numeric
-select is_empty('mv_null_num_precision', 'Material view numeric columns have defined precision and scale');
+-- select is_empty('mv_null_num_precision', 'Material view numeric columns have defined precision and scale');
 
 -- GUIDELINE: Columns must be defined by an accepted data_type
 -- Get all table columns that have an undefined data_type

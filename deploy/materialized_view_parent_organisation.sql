@@ -18,7 +18,7 @@ create materialized view ggircs_swrs.parent_organisation as (
            columns
                 path_context varchar(1000) path 'name(./ancestor::VerifyTombstone|./ancestor::RegistrationData)',
                 parent_organisation_idx integer path 'string(count(./ancestor-or-self::ParentOrganisation/preceding-sibling::ParentOrganisation))' not null,
-                percentage_owned numeric(1000,2) path './Details/PercentageOwned',
+                percentage_owned numeric path './Details/PercentageOwned',
                 french_trade_name varchar(1000) path './Details/FrenchTradeName',
                 english_trade_name varchar(1000) path './Details/EnglishTradeName',
                 duns varchar(1000) path './Details/DUNSNumber',

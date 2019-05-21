@@ -28,7 +28,7 @@ select index_is_unique('ggircs_swrs', 'naics', 'ggircs_naics_primary_key', 'ggir
 
 -- -- Test columns in matview report have correct types
 select col_type_is('ggircs_swrs', 'naics', 'ghgr_import_id', 'integer', 'ggircs_swrs.naics.facility_id has type integer');
-select col_type_is('ggircs_swrs', 'naics', 'swrs_facility_id', 'numeric(1000,0)', 'ggircs_swrs.naics.swrs_facility_id has type numeric');
+select col_type_is('ggircs_swrs', 'naics', 'swrs_facility_id', 'integer', 'ggircs_swrs.naics.swrs_facility_id has type numeric');
 select col_type_is('ggircs_swrs', 'naics', 'path_context', 'character varying(1000)', 'ggircs_swrs.naics.path_context has type varchar');
 select col_type_is('ggircs_swrs', 'naics', 'naics_code_idx', 'integer', 'ggircs_swrs.naics.naics_code_idx has type integer');
 select col_type_is('ggircs_swrs', 'naics', 'naics_classification', 'character varying(1000)', 'ggircs_swrs.naics.naics_classification has type varchar');
@@ -82,7 +82,7 @@ select results_eq(
 
 select results_eq(
   'select swrs_facility_id from ggircs_swrs.naics',
-  ARRAY[666::numeric],
+  ARRAY[666::integer],
   'ggircs_swrs.naics parsed column swrs_facility_id'
 );
 

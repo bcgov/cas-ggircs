@@ -60,12 +60,12 @@ select col_type_is(      'ggircs_swrs', 'address', 'ghgr_import_id', 'integer', 
 select col_hasnt_default('ggircs_swrs', 'address', 'ghgr_import_id', 'address.ghgr_import_id column should not have a default value');
 
 --  select has_column(       'ggircs_swrs', 'address', 'swrs_facility_id', 'address.swrs_facility_id column should exist');
-select col_type_is(      'ggircs_swrs', 'address', 'swrs_facility_id', 'numeric(1000,0)', 'address.swrs_facility_id column should be type numeric');
+select col_type_is(      'ggircs_swrs', 'address', 'swrs_facility_id', 'integer', 'address.swrs_facility_id column should be type numeric');
 select col_is_null(      'ggircs_swrs', 'address', 'swrs_facility_id', 'address.swrs_facility_id column should allow null');
 select col_hasnt_default('ggircs_swrs', 'address', 'swrs_facility_id', 'address.swrs_facility_id column should not have a default');
 
 --  select has_column(       'ggircs_swrs', 'address', 'swrs_organisation_id', 'address.swrs_organisation_id column should exist');
-select col_type_is(      'ggircs_swrs', 'address', 'swrs_organisation_id', 'numeric(1000,0)', 'address.swrs_organisation_id column should be type numeric');
+select col_type_is(      'ggircs_swrs', 'address', 'swrs_organisation_id', 'integer', 'address.swrs_organisation_id column should be type numeric');
 select col_is_null(      'ggircs_swrs', 'address', 'swrs_organisation_id', 'address.swrs_organisation_id column should allow null');
 select col_hasnt_default('ggircs_swrs', 'address', 'swrs_organisation_id', 'address.swrs_organisation_id column should not have a default');
 
@@ -212,12 +212,12 @@ select col_hasnt_default('ggircs_swrs', 'address', 'mailing_address_additional_i
 
 --  Geographic Address Columns
 --  select has_column(       'ggircs_swrs', 'address', 'geographic_address_latitude', 'address.geographic_address_latitude column should exist');
-select col_type_is(      'ggircs_swrs', 'address', 'geographic_address_latitude', 'character varying(1000)', 'address.geographic_address_latitude column should be type varchar');
+select col_type_is(      'ggircs_swrs', 'address', 'geographic_address_latitude', 'numeric', 'address.geographic_address_latitude column should be type varchar');
 select col_is_null(      'ggircs_swrs', 'address', 'geographic_address_latitude', 'address.geographic_address_latitude column should allow null');
 select col_hasnt_default('ggircs_swrs', 'address', 'geographic_address_latitude', 'address.geographic_address_latitude column should not have a default');
 
 --  select has_column(       'ggircs_swrs', 'address', 'geographic_address_longitude', 'address.geographic_address_longitude column should exist');
-select col_type_is(      'ggircs_swrs', 'address', 'geographic_address_longitude', 'character varying(1000)', 'address.geographic_address_longitude column should be type varchar');
+select col_type_is(      'ggircs_swrs', 'address', 'geographic_address_longitude', 'numeric', 'address.geographic_address_longitude column should be type varchar');
 select col_is_null(      'ggircs_swrs', 'address', 'geographic_address_longitude', 'address.geographic_address_longitude column should allow null');
 select col_hasnt_default('ggircs_swrs', 'address', 'geographic_address_longitude', 'address.geographic_address_longitude column should not have a default');
 
@@ -480,13 +480,13 @@ select results_eq(
 );
 select results_eq(
   $$select swrs_facility_id from ggircs_swrs.address where address.type='Facility'$$,
-  ARRAY[666::numeric],
+  ARRAY[666::integer],
   'ggircs_swrs.address parsed column swrs_facility_id'
 );
 -- test that the swrs_organisation_id is null when getting address from the context of facility
 select results_eq(
   $$select swrs_organisation_id from ggircs_swrs.address where address.type='Facility'$$,
-  ARRAY[null::numeric],
+  ARRAY[null::integer],
   'ggircs_swrs.address parsed column swrs_organisation_id'
 );
 
@@ -632,12 +632,12 @@ select results_eq(
 -- Geographic Address columns
 select results_eq(
   $$select geographic_address_latitude from ggircs_swrs.address where address.type='Facility'$$,
-  ARRAY['23.45125'::varchar],
+  ARRAY[23.45125::numeric],
   'ggircs_swrs.address parsed column geographic_address_latitude'
 );
 select results_eq(
   $$select geographic_address_longitude from ggircs_swrs.address where address.type='Facility'$$,
-  ARRAY['-90.59062'::varchar],
+  ARRAY[-90.59062::numeric],
   'ggircs_swrs.address parsed column geographic_address_longitude'
 );
 
@@ -657,13 +657,13 @@ select results_eq(
 -- test that the swrs_facility_id is null when getting address from the context of organisation
 select results_eq(
   $$select swrs_facility_id from ggircs_swrs.address where address.type='Organisation'$$,
-  ARRAY[null::numeric],
+  ARRAY[null::integer],
   'ggircs_swrs.address parsed column swrs_organisation_id'
 );
 
 select results_eq(
   $$select swrs_organisation_id from ggircs_swrs.address where address.type='Organisation'$$,
-  ARRAY[123::numeric],
+  ARRAY[123::integer],
   'ggircs_swrs.address parsed column swrs_organisation_id'
 );
 
@@ -809,12 +809,12 @@ select results_eq(
 -- Geographic Address columns
 select results_eq(
   $$select geographic_address_latitude from ggircs_swrs.address where address.type='Organisation'$$,
-  ARRAY['23.45125'::varchar],
+  ARRAY[23.45125::numeric],
   'ggircs_swrs.address parsed column geographic_address_latitude'
 );
 select results_eq(
   $$select geographic_address_longitude from ggircs_swrs.address where address.type='Organisation'$$,
-  ARRAY['-90.59062'::varchar],
+  ARRAY[-90.59062::numeric],
   'ggircs_swrs.address parsed column geographic_address_longitude'
 );
 
@@ -834,14 +834,14 @@ select results_eq(
 
 select results_eq(
   $$select swrs_facility_id from ggircs_swrs.address where address.type='Contact' and address.contact_idx=0$$,
-  ARRAY[666::numeric],
+  ARRAY[666::integer],
   'ggircs_swrs.address parsed column swrs_contact_id'
 );
 
 -- test that the swrs_organisation_id is null when getting address from the context of contact
 select results_eq(
   $$select swrs_organisation_id from ggircs_swrs.address where address.type='Contact' and address.contact_idx=0$$,
-  ARRAY[null::numeric],
+  ARRAY[null::integer],
   'ggircs_swrs.address parsed column swrs_organisation_id'
 );
 
@@ -999,13 +999,13 @@ select results_eq(
 );
 select results_eq(
   $$select swrs_facility_id from ggircs_swrs.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0$$,
-  ARRAY[null::numeric],
+  ARRAY[null::integer],
   'ggircs_swrs.address parsed column swrs_parent_organisation_id'
 );
 -- test that the swrs_organisation_id is null when getting address from the context of parent_organisation
 select results_eq(
   $$select swrs_organisation_id from ggircs_swrs.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0$$,
-  ARRAY[123::numeric],
+  ARRAY[123::integer],
   'ggircs_swrs.address parsed column swrs_organisation_id'
 );
 
