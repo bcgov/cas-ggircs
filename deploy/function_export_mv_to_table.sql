@@ -132,6 +132,16 @@ $$
     execute 'alter table ggircs.additional_reportable_activity add column id int generated always as identity primary key';
 
     /** NON-Attributable Emisison FKs**/
+    -- Create FK/PK relation between Non-Attributable_Emission and Activity
+      alter table ggircs.non_attributable_emission add column activity_id int;
+      create index ggircs_non_attributable_emission_activity_index on ggircs.non_attributable_emission (activity_id);
+      update ggircs.non_attributable_emission set activity_id = activity.id from ggircs.activity
+          where non_attributable_emission.ghgr_import_id = activity.ghgr_import_id
+            and non_attributable_emission.process_idx = activity.process_idx
+            and non_attributable_emission.sub_process_idx = activity.sub_process_idx
+            and non_attributable_emission.activity_name = activity.activity_name;
+      alter table ggircs.non_attributable_emission add constraint ggircs_non_attributable_emission_activity_foreign_key foreign key (activity_id) references ggircs.activity(id);
+
       -- Create FK/PK relation between Non-Attributable_Emission and Fuel
       alter table ggircs.non_attributable_emission add column fuel_id int;
       create index ggircs_non_attributable_emission_fuel_index on ggircs.non_attributable_emission (fuel_id);
@@ -150,7 +160,29 @@ $$
             and non_attributable_emission.unit_idx = fuel.unit_idx
             and non_attributable_emission.fuel_idx = fuel.fuel_idx;
       alter table ggircs.non_attributable_emission add constraint ggircs_non_attributable_emission_fuel_foreign_key foreign key (fuel_id) references ggircs.fuel(id);
-      
+
+      -- Create FK/PK relation between Non-Attributable_Emission and NAICS
+      alter table ggircs.non_attributable_emission add column naics_id int;
+      create index ggircs_non_attributable_emission_naics_index on ggircs.non_attributable_emission (naics_id);
+      update ggircs.non_attributable_emission set naics_id = naics.id from ggircs.naics
+          where non_attributable_emission.ghgr_import_id = naics.ghgr_import_id
+          and naics.path_context = 'RegistrationData';
+      alter table ggircs.non_attributable_emission add constraint ggircs_non_attributable_emission_naics_foreign_key foreign key (naics_id) references ggircs.naics(id);
+
+      -- Create FK/PK relation between Non-Attributable_Emission and Organisation
+      alter table ggircs.non_attributable_emission add column organisation_id int;
+      create index ggircs_non_attributable_emission_organisation_index on ggircs.non_attributable_emission (organisation_id);
+      update ggircs.non_attributable_emission set organisation_id = organisation.id from ggircs.organisation
+          where non_attributable_emission.ghgr_import_id = organisation.ghgr_import_id;
+      alter table ggircs.non_attributable_emission add constraint ggircs_non_attributable_emission_organisation_foreign_key foreign key (organisation_id) references ggircs.organisation(id);
+
+      -- Create FK/PK relation between Non-Attributable_Emission and Report
+      alter table ggircs.non_attributable_emission add column report_id int;
+      create index ggircs_non_attributable_emission_report_index on ggircs.non_attributable_emission (report_id);
+      update ggircs.non_attributable_emission set report_id = report.id from ggircs.report
+          where non_attributable_emission.ghgr_import_id = report.ghgr_import_id;
+      alter table ggircs.non_attributable_emission add constraint ggircs_non_attributable_emission_report_foreign_key foreign key (report_id) references ggircs.report(id);
+
       -- Create FK/PK relation between Non-Attributable_Emission and Unit
       alter table ggircs.non_attributable_emission add column unit_id int;
       create index ggircs_non_attributable_emission_unit_index on ggircs.non_attributable_emission (unit_id);
@@ -163,39 +195,17 @@ $$
             and non_attributable_emission.unit_idx = unit.unit_idx;
       alter table ggircs.non_attributable_emission add constraint ggircs_non_attributable_emission_unit_foreign_key foreign key (unit_id) references ggircs.unit(id);
 
-      -- Create FK/PK relation between Non-Attributable_Emission and Activity
-      alter table ggircs.non_attributable_emission add column activity_id int;
-      create index ggircs_non_attributable_emission_activity_index on ggircs.non_attributable_emission (activity_id);
-      update ggircs.non_attributable_emission set activity_id = activity.id from ggircs.activity
-          where non_attributable_emission.ghgr_import_id = activity.ghgr_import_id 
-            and non_attributable_emission.process_idx = activity.process_idx  
-            and non_attributable_emission.sub_process_idx = activity.sub_process_idx
-            and non_attributable_emission.activity_name = activity.activity_name;
-      alter table ggircs.non_attributable_emission add constraint ggircs_non_attributable_emission_activity_foreign_key foreign key (activity_id) references ggircs.activity(id);
- 
-      -- Create FK/PK relation between Non-Attributable_Emission and Report
-      alter table ggircs.non_attributable_emission add column report_id int;
-      create index ggircs_non_attributable_emission_report_index on ggircs.non_attributable_emission (report_id);
-      update ggircs.non_attributable_emission set report_id = report.id from ggircs.report
-          where non_attributable_emission.ghgr_import_id = report.ghgr_import_id;
-      alter table ggircs.non_attributable_emission add constraint ggircs_non_attributable_emission_report_foreign_key foreign key (report_id) references ggircs.report(id);
-
-      -- Create FK/PK relation between Non-Attributable_Emission and Organisation
-      alter table ggircs.non_attributable_emission add column organisation_id int;
-      create index ggircs_non_attributable_emission_organisation_index on ggircs.non_attributable_emission (organisation_id);
-      update ggircs.non_attributable_emission set organisation_id = organisation.id from ggircs.organisation
-          where non_attributable_emission.ghgr_import_id = organisation.ghgr_import_id;
-      alter table ggircs.non_attributable_emission add constraint ggircs_non_attributable_emission_organisation_foreign_key foreign key (organisation_id) references ggircs.organisation(id);
-
-      -- Create FK/PK relation between Non-Attributable_Emission and NAICS
-      alter table ggircs.non_attributable_emission add column naics_id int;
-      create index ggircs_non_attributable_emission_naics_index on ggircs.non_attributable_emission (naics_id);
-      update ggircs.non_attributable_emission set naics_id = naics.id from ggircs.naics
-          where non_attributable_emission.ghgr_import_id = naics.ghgr_import_id
-          and naics.path_context = 'RegistrationData';
-      alter table ggircs.non_attributable_emission add constraint ggircs_non_attributable_emission_naics_foreign_key foreign key (naics_id) references ggircs.naics(id);
-
     /** Attributable Emission FKs**/
+      -- Create FK/PK relation between Attributable_Emission and Activity
+      alter table ggircs.attributable_emission add column activity_id int;
+      create index ggircs_attributable_emission_activity_index on ggircs.attributable_emission (activity_id);
+      update ggircs.attributable_emission set activity_id = activity.id from ggircs.activity
+          where attributable_emission.ghgr_import_id = activity.ghgr_import_id
+            and attributable_emission.process_idx = activity.process_idx
+            and attributable_emission.sub_process_idx = activity.sub_process_idx
+            and attributable_emission.activity_name = activity.activity_name;
+      alter table ggircs.attributable_emission add constraint ggircs_attributable_emission_activity_foreign_key foreign key (activity_id) references ggircs.activity(id);
+
       -- Create FK/PK relation between Attributable_Emission and Fuel
       alter table ggircs.attributable_emission add column fuel_id int;
       create index ggircs_attributable_emission_fuel_index on ggircs.attributable_emission (fuel_id);
@@ -214,6 +224,28 @@ $$
             and attributable_emission.unit_idx = fuel.unit_idx
             and attributable_emission.fuel_idx = fuel.fuel_idx;
       alter table ggircs.attributable_emission add constraint ggircs_attributable_emission_fuel_foreign_key foreign key (fuel_id) references ggircs.fuel(id);
+
+      -- Create FK/PK relation between Attributable_Emission and NAICS
+      alter table ggircs.attributable_emission add column naics_id int;
+      create index ggircs_attributable_emission_naics_index on ggircs.attributable_emission (naics_id);
+      update ggircs.attributable_emission set naics_id = naics.id from ggircs.naics
+          where attributable_emission.ghgr_import_id = naics.ghgr_import_id
+          and naics.path_context = 'RegistrationData';
+      alter table ggircs.attributable_emission add constraint ggircs_attributable_emission_naics_foreign_key foreign key (naics_id) references ggircs.naics(id);
+
+      -- Create FK/PK relation between Attributable_Emission and Organisation
+      alter table ggircs.attributable_emission add column organisation_id int;
+      create index ggircs_attributable_emission_organisation_index on ggircs.attributable_emission (organisation_id);
+      update ggircs.attributable_emission set organisation_id = organisation.id from ggircs.organisation
+          where attributable_emission.ghgr_import_id = organisation.ghgr_import_id;
+      alter table ggircs.attributable_emission add constraint ggircs_attributable_emission_organisation_foreign_key foreign key (organisation_id) references ggircs.organisation(id);
+
+      -- Create FK/PK relation between Attributable_Emission and Report
+      alter table ggircs.attributable_emission add column report_id int;
+      create index ggircs_attributable_emission_report_index on ggircs.attributable_emission (report_id);
+      update ggircs.attributable_emission set report_id = report.id from ggircs.report
+          where attributable_emission.ghgr_import_id = report.ghgr_import_id;
+      alter table ggircs.attributable_emission add constraint ggircs_attributable_emission_report_foreign_key foreign key (report_id) references ggircs.report(id);
       
       -- Create FK/PK relation between Attributable_Emission and Unit
       alter table ggircs.attributable_emission add column unit_id int;
@@ -226,38 +258,6 @@ $$
             and attributable_emission.units_idx = unit.units_idx 
             and attributable_emission.unit_idx = unit.unit_idx;
       alter table ggircs.attributable_emission add constraint ggircs_attributable_emission_unit_foreign_key foreign key (unit_id) references ggircs.unit(id);
-
-      -- Create FK/PK relation between Attributable_Emission and Activity
-      alter table ggircs.attributable_emission add column activity_id int;
-      create index ggircs_attributable_emission_activity_index on ggircs.attributable_emission (activity_id);
-      update ggircs.attributable_emission set activity_id = activity.id from ggircs.activity
-          where attributable_emission.ghgr_import_id = activity.ghgr_import_id 
-            and attributable_emission.process_idx = activity.process_idx  
-            and attributable_emission.sub_process_idx = activity.sub_process_idx
-            and attributable_emission.activity_name = activity.activity_name;
-      alter table ggircs.attributable_emission add constraint ggircs_attributable_emission_activity_foreign_key foreign key (activity_id) references ggircs.activity(id);
- 
-      -- Create FK/PK relation between Attributable_Emission and Report
-      alter table ggircs.attributable_emission add column report_id int;
-      create index ggircs_attributable_emission_report_index on ggircs.attributable_emission (report_id);
-      update ggircs.attributable_emission set report_id = report.id from ggircs.report
-          where attributable_emission.ghgr_import_id = report.ghgr_import_id;
-      alter table ggircs.attributable_emission add constraint ggircs_attributable_emission_report_foreign_key foreign key (report_id) references ggircs.report(id);
-
-      -- Create FK/PK relation between Attributable_Emission and Organisation
-      alter table ggircs.attributable_emission add column organisation_id int;
-      create index ggircs_attributable_emission_organisation_index on ggircs.attributable_emission (organisation_id);
-      update ggircs.attributable_emission set organisation_id = organisation.id from ggircs.organisation
-          where attributable_emission.ghgr_import_id = organisation.ghgr_import_id;
-      alter table ggircs.attributable_emission add constraint ggircs_attributable_emission_organisation_foreign_key foreign key (organisation_id) references ggircs.organisation(id);
-
-      -- Create FK/PK relation between Attributable_Emission and NAICS
-      alter table ggircs.attributable_emission add column naics_id int;
-      create index ggircs_attributable_emission_naics_index on ggircs.attributable_emission (naics_id);
-      update ggircs.attributable_emission set naics_id = naics.id from ggircs.naics
-          where attributable_emission.ghgr_import_id = naics.ghgr_import_id
-          and naics.path_context = 'RegistrationData';
-      alter table ggircs.attributable_emission add constraint ggircs_attributable_emission_naics_foreign_key foreign key (naics_id) references ggircs.naics(id);
 
       /** LFO FACILITY FKs**/
       -- Create FK/PK relation between Attributable_Emission and Facility
