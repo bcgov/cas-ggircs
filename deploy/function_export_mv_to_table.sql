@@ -426,8 +426,7 @@ $$
       update ggircs.contact set address_id = address.id from ggircs.address
           where address.ghgr_import_id = contact.ghgr_import_id
           and   address.type = 'Contact'
-          and   address.contact_idx = contact.contact_idx
-      ;
+          and   address.contact_idx = contact.contact_idx;
       alter table ggircs.contact add constraint ggircs_contact_address_foreign_key foreign key (address_id) references ggircs.address(id);
 
       -- Create FK/PK relation between Descriptor and Activity
@@ -470,5 +469,3 @@ $$
 $$ language plpgsql volatile ;
 
 commit;
-
-
