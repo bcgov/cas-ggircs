@@ -1340,7 +1340,7 @@ select results_eq(
     'Foreign key organisation_id in ggircs.address references ggircs.organisation.id'
 );
 
--- Address -> Organisation
+-- Address -> Parent Organisation
 select results_eq(
     $$select parent_organisation.ghgr_import_id from ggircs.address
       join ggircs.parent_organisation

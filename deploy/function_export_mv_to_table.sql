@@ -435,14 +435,6 @@ $$
             and fuel.activity_name = unit.activity_name and fuel.units_idx = unit.units_idx and fuel.unit_idx = unit.unit_idx;
       alter table ggircs.fuel add constraint ggircs_fuel_unit_foreign_key foreign key (unit_id) references ggircs.unit(id);
 
-      -- Create FK/PK relation between Organisation and Address
-      alter table ggircs.organisation add column address_id int;
-      create index ggircs_organisation_address_index on ggircs.organisation (address_id);
-      update ggircs.organisation set address_id = address.id from ggircs.address
-          where address.ghgr_import_id = organisation.ghgr_import_id
-          and   address.swrs_organisation_id = organisation.swrs_organisation_id;
-      alter table ggircs.organisation add constraint ggircs_organisation_address_foreign_key foreign key (address_id) references ggircs.address(id);
-
     -- Create FK/PK relation between Organisation and Parent Organisation
       alter table ggircs.organisation add column parent_organisation_id int;
       create index ggircs_organisation_parent_organisation_index on ggircs.organisation (parent_organisation_id);
