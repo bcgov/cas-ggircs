@@ -1087,6 +1087,7 @@ refresh materialized view ggircs_swrs.contact with data;
 refresh materialized view ggircs_swrs.address with data;
 refresh materialized view ggircs_swrs.descriptor with data;
 
+-- Run table export function
 select ggircs_swrs.export_mv_to_table();
 
 -- Function export_mv_to_table exists
@@ -1214,7 +1215,7 @@ select results_eq(
     'Foreign key activity_id in ggircs.descriptor references ggircs.activity.id'
 );
 
--- Activity -> Facility
+-- Activity -> Single Facility
 select results_eq(
     $$select single_facility.ghgr_import_id from ggircs.activity
       join ggircs.single_facility
@@ -1242,7 +1243,7 @@ select results_eq(
     'Foreign key report_id in ggircs.activity references ggircs.report.id'
 );
 
--- Facility -> Report
+-- Single Facility -> Report
 select results_eq(
     $$select report.ghgr_import_id from ggircs.single_facility
       join ggircs.report
@@ -1256,7 +1257,7 @@ select results_eq(
     'Foreign key report_id in ggircs.single_facility references ggircs.report.id'
 );
 
--- Address -> Facility
+-- Address -> Single Facility
 select results_eq(
     $$select single_facility.ghgr_import_id from ggircs.address
       join ggircs.single_facility
@@ -1270,7 +1271,7 @@ select results_eq(
     'Foreign key single_facility_id in ggircs.address references ggircs.single_facility.id'
 );
 
--- Contact -> Facility
+-- Contact -> Single Facility
 select results_eq(
     $$select single_facility.ghgr_import_id from ggircs.contact
       join ggircs.single_facility
@@ -1284,7 +1285,7 @@ select results_eq(
     'Foreign key single_facility_id in ggircs.contact references ggircs.single_facility.id'
 );
 
--- Identifier -> Facility
+-- Identifier -> Single Facility
 select results_eq(
     $$select single_facility.ghgr_import_id from ggircs.identifier
       join ggircs.single_facility
@@ -1298,7 +1299,7 @@ select results_eq(
     'Foreign key single_facility_id in ggircs.identifier references ggircs.single_facility.id'
 );
 
--- NAICS -> Facility
+-- NAICS -> Single Facility
 select results_eq(
     $$select single_facility.ghgr_import_id from ggircs.naics
       join ggircs.single_facility
@@ -1312,7 +1313,7 @@ select results_eq(
     'Foreign key single_facility_id in ggircs.naics references ggircs.single_facility.id'
 );
 
--- Permit -> Facility
+-- Permit -> Single Facility
 select results_eq(
     $$select single_facility.ghgr_import_id from ggircs.permit
       join ggircs.single_facility
@@ -1357,7 +1358,7 @@ select results_eq(
 -- All tables in schema ggircs have data
 select isnt_empty('select * from ggircs.report', 'there is data in ggircs.report');
 select isnt_empty('select * from ggircs.organisation', 'there is data in ggircs.organisation');
-select isnt_empty('select * from ggircs.single_facility', 'there is data in ggircs.facility');
+select isnt_empty('select * from ggircs.single_facility', 'there is data in ggircs.single_facility');
 select isnt_empty('select * from ggircs.activity', 'there is data in ggircs.activity');
 select isnt_empty('select * from ggircs.unit', 'there is data in ggircs.unit');
 select isnt_empty('select * from ggircs.identifier', 'there is data in ggircs.identifier');
@@ -1375,6 +1376,7 @@ select isnt_empty('select * from ggircs.additional_reportable_activity', 'there 
 -- NA emission contains no data other than CO2bioC
 select is_empty($$select * from ggircs.non_attributable_emission where gas_type != 'CO2bioC'$$, 'there is no data in NA emission that is not CO2bioC');
 
+/** Test data transferred from ggircs_swrs to ggircs properly **/
 -- Data in ggircs_swrs.report === data in ggircs_report
 select results_eq($$select
                       ghgr_import_id,
@@ -2094,6 +2096,7 @@ select results_eq(
 
               'data in ggircs_swrs.descriptor === ggircs.descriptor');
 
+-- Test LFO Facility / Attributable Emisisons with an altered fixture (FacilityType=LFO)
 delete from ggircs_swrs.ghgr_import where id < 10;
 insert into ggircs_swrs.ghgr_import (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -3152,8 +3155,6 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
 </ReportData>
 $$);
 
--- Test LFO Facility / Attributable Emisisons
-
 -- Refresh all materialized views
 refresh materialized view ggircs_swrs.report with data;
 refresh materialized view ggircs_swrs.organisation with data;
@@ -3171,18 +3172,19 @@ refresh materialized view ggircs_swrs.contact with data;
 refresh materialized view ggircs_swrs.address with data;
 refresh materialized view ggircs_swrs.descriptor with data;
 
+-- Run table export function
 select ggircs_swrs.export_mv_to_table();
 
 -- attributable_emission has data
 select isnt_empty('select * from ggircs.attributable_emission', 'attributable_emission has data');
--- No CO2bioC
+-- No CO2bioC in attributable_emission
 select is_empty($$select * from ggircs.attributable_emission where gas_type='CO2bioC'$$, 'CO2bioC emissions are not in attributable_emission');
 
 -- lfo_facility has data
-select isnt_empty('select * from ggircs.attributable_emission', 'attributable_emission has data');
+select isnt_empty('select * from ggircs.lfo_facility', 'lfo_facility has data');
 
 -- FK tests
--- Attr Emission -> Fuel
+-- Attributable Emission -> Fuel
 select results_eq(
     $$select fuel.ghgr_import_id from ggircs.attributable_emission
       join ggircs.fuel
@@ -3224,7 +3226,7 @@ select results_eq(
     'Foreign key report_id in ggircs.lfo_facility references ggircs.report.id'
 );
 
--- Address -> Facility
+-- Address -> LFO Facility
 select results_eq(
     $$select lfo_facility.ghgr_import_id from ggircs.address
       join ggircs.lfo_facility
@@ -3238,7 +3240,7 @@ select results_eq(
     'Foreign key lfo_facility_id in ggircs.address references ggircs.lfo_facility.id'
 );
 
--- Contact -> Facility
+-- Contact -> LFO Facility
 select results_eq(
     $$select lfo_facility.ghgr_import_id from ggircs.contact
       join ggircs.lfo_facility
@@ -3252,7 +3254,7 @@ select results_eq(
     'Foreign key lfo_facility_id in ggircs.contact references ggircs.lfo_facility.id'
 );
 
--- Identifier -> Facility
+-- Identifier -> LFO Facility
 select results_eq(
     $$select lfo_facility.ghgr_import_id from ggircs.identifier
       join ggircs.lfo_facility
@@ -3266,7 +3268,7 @@ select results_eq(
     'Foreign key lfo_facility_id in ggircs.identifier references ggircs.lfo_facility.id'
 );
 
--- NAICS -> Facility
+-- NAICS -> LFO Facility
 select results_eq(
     $$select lfo_facility.ghgr_import_id from ggircs.naics
       join ggircs.lfo_facility
@@ -3280,7 +3282,7 @@ select results_eq(
     'Foreign key lfo_facility_id in ggircs.naics references ggircs.lfo_facility.id'
 );
 
--- Permit -> Facility
+-- Permit -> LFO Facility
 select results_eq(
     $$select lfo_facility.ghgr_import_id from ggircs.permit
       join ggircs.lfo_facility
