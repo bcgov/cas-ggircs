@@ -808,6 +808,48 @@ select has_fk('ggircs', 'contact', 'ggircs_contact has foreign key constraint(s)
 select has_fk('ggircs', 'address', 'ggircs_address has foreign key constraint(s)');
 select has_fk('ggircs', 'descriptor', 'ggircs_descriptor has foreign key constraint(s)');
 
+-- All tables in schema ggircs have data
+select isnt_empty('select * from ggircs.report', 'there is data in ggircs.report');
+select isnt_empty('select * from ggircs.organisation', 'there is data in ggircs.organisation');
+select isnt_empty('select * from ggircs.single_facility', 'there is data in ggircs.single_facility');
+select isnt_empty('select * from ggircs.lfo_facility', 'lfo_facility has data');
+select isnt_empty('select * from ggircs.activity', 'there is data in ggircs.activity');
+select isnt_empty('select * from ggircs.unit', 'there is data in ggircs.unit');
+select isnt_empty('select * from ggircs.identifier', 'there is data in ggircs.identifier');
+select isnt_empty('select * from ggircs.naics', 'there is data in ggircs.naics');
+select isnt_empty('select * from ggircs.non_attributable_emission', 'there is data in ggircs.non_attributable_emission');
+select isnt_empty('select * from ggircs.attributable_emission', 'attributable_emission has data');
+select isnt_empty('select * from ggircs.final_report', 'there is data in ggircs.final_report');
+select isnt_empty('select * from ggircs.fuel', 'there is data in ggircs.fuel');
+select isnt_empty('select * from ggircs.permit', 'there is data in ggircs.permit');
+select isnt_empty('select * from ggircs.parent_organisation', 'there is data in ggircs.parent_organisation');
+select isnt_empty('select * from ggircs.contact', 'there is data in ggircs.contact');
+select isnt_empty('select * from ggircs.address', 'there is data in ggircs.address');
+select isnt_empty('select * from ggircs.descriptor', 'there is data in ggircs.descriptor');
+select isnt_empty('select * from ggircs.additional_reportable_activity', 'there is data in ggircs.additional_reportable_activity');
+
+-- NA emission contains no data other than CO2bioC gas_type or emissions in non EIO facility types
+select is_empty($$select * from ggircs.non_attributable_emission
+                  join ggircs.single_facility
+                  on non_attributable_emission.single_facility_id = single_facility.id
+                  and (gas_type = 'C02bioC' or facility_type != 'EIO')$$,
+
+                'there is no data in NA emission that is not CO2bioC'
+               );
+
+-- No CO2bioC in attributable_emission
+select is_empty($$select * from ggircs.attributable_emission where gas_type='CO2bioC'$$, 'CO2bioC emissions are not in attributable_emission');
+
+-- No data in attributable emission from EIO facilities
+select is_empty($$select * from ggircs.attributable_emission
+                  join ggircs.single_facility
+                  on attributable_emission.single_facility_id = single_facility.id
+                  and facility_type = 'EIO'$$,
+
+                'there is no data in attributable emissions from facility_type EIO'
+               );
+
+
 -- Test validity of FK relations
 -- NA Emission -> Fuel
 select results_eq(
@@ -900,10 +942,6 @@ select results_eq(
 
     'Foreign key organisation_id in ggircs.single_facility references ggircs.organisation.id'
 );
-
-select ghgr_import_id from ggircs.organisation;
-select facility_name from ggircs.single_facility;
-select ghgr_import_id from ggircs.single_facility;
 
 -- Single Facility -> Report
 select results_eq(
@@ -1035,32 +1073,112 @@ select results_eq(
     'Foreign key parent_organisation_id in ggircs.organisation references ggircs.parent_organisation.id'
 );
 
--- All tables in schema ggircs have data
-select isnt_empty('select * from ggircs.report', 'there is data in ggircs.report');
-select isnt_empty('select * from ggircs.organisation', 'there is data in ggircs.organisation');
-select isnt_empty('select * from ggircs.single_facility', 'there is data in ggircs.single_facility');
-select isnt_empty('select * from ggircs.activity', 'there is data in ggircs.activity');
-select isnt_empty('select * from ggircs.unit', 'there is data in ggircs.unit');
-select isnt_empty('select * from ggircs.identifier', 'there is data in ggircs.identifier');
-select isnt_empty('select * from ggircs.naics', 'there is data in ggircs.naics');
-select isnt_empty('select * from ggircs.non_attributable_emission', 'there is data in ggircs.non_attributable_emission');
-select isnt_empty('select * from ggircs.final_report', 'there is data in ggircs.final_report');
-select isnt_empty('select * from ggircs.fuel', 'there is data in ggircs.fuel');
-select isnt_empty('select * from ggircs.permit', 'there is data in ggircs.permit');
-select isnt_empty('select * from ggircs.parent_organisation', 'there is data in ggircs.parent_organisation');
-select isnt_empty('select * from ggircs.contact', 'there is data in ggircs.contact');
-select isnt_empty('select * from ggircs.address', 'there is data in ggircs.address');
-select isnt_empty('select * from ggircs.descriptor', 'there is data in ggircs.descriptor');
-select isnt_empty('select * from ggircs.additional_reportable_activity', 'there is data in ggircs.additional_reportable_activity');
+/** Test LFO Facility / Attributable Emisisons FK relations **/
+-- Attributable Emission -> Fuel
+select results_eq(
+    $$select fuel.fuel_type from ggircs.attributable_emission
+      join ggircs.fuel
+      on
+        attributable_emission.fuel_id = fuel.id
+    $$,
 
--- NA emission contains no data other than CO2bioC in non EIO facility types
-select is_empty($$select * from ggircs.non_attributable_emission
-                  join ggircs.single_facility
-                  on non_attributable_emission.single_facility_id = single_facility.id
-                  and (gas_type = 'C02bioC' or facility_type != 'EIO')$$,
+    'select fuel_type from ggircs.fuel where ghgr_import_id = 2 and fuel_idx = 1',
 
-                'there is no data in NA emission that is not CO2bioC'
-               );
+    'Foreign key fuel_id in ggircs.attributable_emission references ggircs.fuel.id'
+);
+
+select gas_type from ggircs.attributable_emission;
+
+-- Activity -> LFO Facility
+select results_eq(
+    $$select distinct(lfo_facility.ghgr_import_id) from ggircs.activity
+      join ggircs.lfo_facility
+      on
+        activity.lfo_facility_id = lfo_facility.id
+    $$,
+
+    'select ghgr_import_id from ggircs.lfo_facility',
+
+    'Foreign key lfo_facility_id in ggircs.activity references ggircs.lfo_facility.id'
+);
+
+-- LFO Facility -> Report
+select results_eq(
+    $$select report.swrs_facility_id from ggircs.lfo_facility
+      join ggircs.report
+      on
+        lfo_facility.report_id = report.id
+    $$,
+
+    'select swrs_facility_id from ggircs.report where ghgr_import_id = 2',
+
+    'Foreign key report_id in ggircs.lfo_facility references ggircs.report.id'
+);
+
+-- Address -> LFO Facility
+select results_eq(
+    $$select distinct(lfo_facility.ghgr_import_id) from ggircs.address
+      join ggircs.lfo_facility
+      on
+        address.lfo_facility_id = lfo_facility.id
+    $$,
+-- --
+    'select ghgr_import_id from ggircs.lfo_facility',
+-- --
+    'Foreign key lfo_facility_id in ggircs.address references ggircs.lfo_facility.id'
+);
+
+-- Contact -> LFO Facility
+select results_eq(
+    $$select distinct(lfo_facility.ghgr_import_id) from ggircs.contact
+      join ggircs.lfo_facility
+      on
+        contact.lfo_facility_id = lfo_facility.id
+    $$,
+
+    'select ghgr_import_id from ggircs.lfo_facility',
+
+    'Foreign key lfo_facility_id in ggircs.contact references ggircs.lfo_facility.id'
+);
+
+-- Identifier -> LFO Facility
+select results_eq(
+    $$select distinct(lfo_facility.ghgr_import_id) from ggircs.identifier
+      join ggircs.lfo_facility
+      on
+        identifier.lfo_facility_id = lfo_facility.id
+    $$,
+
+    'select ghgr_import_id from ggircs.lfo_facility',
+
+    'Foreign key lfo_facility_id in ggircs.identifier references ggircs.lfo_facility.id'
+);
+
+-- NAICS -> LFO Facility
+select results_eq(
+    $$select distinct(lfo_facility.ghgr_import_id) from ggircs.naics
+      join ggircs.lfo_facility
+      on
+        naics.lfo_facility_id = lfo_facility.id
+    $$,
+
+    'select ghgr_import_id from ggircs.lfo_facility',
+
+    'Foreign key lfo_facility_id in ggircs.naics references ggircs.lfo_facility.id'
+);
+
+-- Permit -> LFO Facility
+select results_eq(
+    $$select lfo_facility.ghgr_import_id from ggircs.permit
+      join ggircs.lfo_facility
+      on
+        permit.lfo_facility_id = lfo_facility.id
+    $$,
+
+    'select ghgr_import_id from ggircs.lfo_facility where id=1 limit 1',
+
+    'Foreign key lfo_facility_id in ggircs.permit references ggircs.lfo_facility.id'
+);
 
 /** Test data transferred from ggircs_swrs to ggircs properly **/
 -- Data in ggircs_swrs.report === data in ggircs_report
@@ -1793,122 +1911,6 @@ select results_eq(
               $$,
 
               'data in ggircs_swrs.descriptor === ggircs.descriptor');
-
-/** Test LFO Facility / Attributable Emisisons **/
--- attributable_emission has data
-select isnt_empty('select * from ggircs.attributable_emission', 'attributable_emission has data');
--- No CO2bioC in attributable_emission
-select is_empty($$select * from ggircs.attributable_emission where gas_type='CO2bioC'$$, 'CO2bioC emissions are not in attributable_emission');
-
--- lfo_facility has data
-select isnt_empty('select * from ggircs.lfo_facility', 'lfo_facility has data');
-
--- FK tests
--- Attributable Emission -> Fuel
-select results_eq(
-    $$select fuel.fuel_type from ggircs.attributable_emission
-      join ggircs.fuel
-      on
-        attributable_emission.fuel_id = fuel.id
-    $$,
-
-    'select fuel_type from ggircs.fuel where ghgr_import_id = 2 and fuel_idx = 1',
-
-    'Foreign key fuel_id in ggircs.attributable_emission references ggircs.fuel.id'
-);
-
-select gas_type from ggircs.attributable_emission;
-
--- Activity -> LFO Facility
-select results_eq(
-    $$select distinct(lfo_facility.ghgr_import_id) from ggircs.activity
-      join ggircs.lfo_facility
-      on
-        activity.lfo_facility_id = lfo_facility.id
-    $$,
-
-    'select ghgr_import_id from ggircs.lfo_facility',
-
-    'Foreign key lfo_facility_id in ggircs.activity references ggircs.lfo_facility.id'
-);
-
--- LFO Facility -> Report
-select results_eq(
-    $$select report.swrs_facility_id from ggircs.lfo_facility
-      join ggircs.report
-      on
-        lfo_facility.report_id = report.id
-    $$,
-
-    'select swrs_facility_id from ggircs.report where ghgr_import_id = 2',
-
-    'Foreign key report_id in ggircs.lfo_facility references ggircs.report.id'
-);
-
--- Address -> LFO Facility
-select results_eq(
-    $$select distinct(lfo_facility.ghgr_import_id) from ggircs.address
-      join ggircs.lfo_facility
-      on
-        address.lfo_facility_id = lfo_facility.id
-    $$,
--- --
-    'select ghgr_import_id from ggircs.lfo_facility',
--- --
-    'Foreign key lfo_facility_id in ggircs.address references ggircs.lfo_facility.id'
-);
-
--- Contact -> LFO Facility
-select results_eq(
-    $$select distinct(lfo_facility.ghgr_import_id) from ggircs.contact
-      join ggircs.lfo_facility
-      on
-        contact.lfo_facility_id = lfo_facility.id
-    $$,
-
-    'select ghgr_import_id from ggircs.lfo_facility',
-
-    'Foreign key lfo_facility_id in ggircs.contact references ggircs.lfo_facility.id'
-);
-
--- Identifier -> LFO Facility
-select results_eq(
-    $$select distinct(lfo_facility.ghgr_import_id) from ggircs.identifier
-      join ggircs.lfo_facility
-      on
-        identifier.lfo_facility_id = lfo_facility.id
-    $$,
-
-    'select ghgr_import_id from ggircs.lfo_facility',
-
-    'Foreign key lfo_facility_id in ggircs.identifier references ggircs.lfo_facility.id'
-);
-
--- NAICS -> LFO Facility
-select results_eq(
-    $$select distinct(lfo_facility.ghgr_import_id) from ggircs.naics
-      join ggircs.lfo_facility
-      on
-        naics.lfo_facility_id = lfo_facility.id
-    $$,
-
-    'select ghgr_import_id from ggircs.lfo_facility',
-
-    'Foreign key lfo_facility_id in ggircs.naics references ggircs.lfo_facility.id'
-);
-
--- Permit -> LFO Facility
-select results_eq(
-    $$select lfo_facility.ghgr_import_id from ggircs.permit
-      join ggircs.lfo_facility
-      on
-        permit.lfo_facility_id = lfo_facility.id
-    $$,
-
-    'select ghgr_import_id from ggircs.lfo_facility where id=1 limit 1',
-
-    'Foreign key lfo_facility_id in ggircs.permit references ggircs.lfo_facility.id'
-);
 
 select * from finish();
 rollback;
