@@ -201,8 +201,9 @@ dev_project: whoami
 
 .PHONY: deploy_tools
 deploy_tools: tools_project
+	# @@${OC} get is/perl || ${OC} create -f openshift/is-perl.yml --save-config=true
 	@@${OC} get is/perl || ${OC} import-image perl:5.26 --from='${OC_REGISTRY}/openshift/perl:5.26' --confirm
-	@@${OC} get is/cas-postgres || ${OC} import-image cas-postgres:${DOCKER_POSTGRES_TAG} --from='docker-registry.default.svc:5000/openshift/${DOCKER_POSTGRES_IMAGE}:${DOCKER_POSTGRES_TAG}' --confirm
+	@@${OC} get is/cas-postgres || ${OC} import-image cas-postgres:${DOCKER_POSTGRES_TAG} --from='${OC_REGISTRY}/openshift/${DOCKER_POSTGRES_IMAGE}:${DOCKER_POSTGRES_TAG}' --confirm
 	@@${OC} get bc/cas-ggircs || ${OC} new-build perl:5.26~https://github.com/bcgov/cas-ggircs.git#feature/deploy
 	# Imported images to openshift...
 	#   - perl
@@ -228,7 +229,7 @@ deploy_dev: deploy_tools dev_project
 	${OC} get is/cas-postgres || ${OC} import-image cas-postgres:${DOCKER_POSTGRES_TAG} --from='${OC_REGISTRY}/${OC_TOOLS_PROJECT}/cas-postgres:${DOCKER_POSTGRES_TAG}' --confirm
 	${OC} get is/cas-ggircs || ${OC} import-image cas-ggircs:latest --from='${OC_REGISTRY}/${OC_TOOLS_PROJECT}/cas-ggircs:latest' --confirm
 	# Deploy...
-	${OC} process -f openshift/template-postgresql-persistent.yml NAMESPACE=${OC_DEV_PROJECT} POSTGRES_VERSION=${DOCKER_POSTGRES_TAG} | oc apply --wait=true -f-
+	${OC} process -f openshift/template-postgresql-persistent.yml POSTGRES_NAMESPACE=${OC_DEV_PROJECT} POSTGRES_VERSION=${DOCKER_POSTGRES_TAG} | oc apply --wait=true -f-
 	# oc rollout latest dc/postgresql -n ${OC_DEV_PROJECT}
 	# Migrate...
 

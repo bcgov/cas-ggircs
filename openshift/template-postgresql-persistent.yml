@@ -31,6 +31,25 @@ metadata:
   name: postgresql-persistent
   selfLink: /apis/template.openshift.io/v1/namespaces/openshift/templates/postgresql-persistent
 objects:
+- apiVersion: image.openshift.io/v1
+  kind: ImageStream
+  metadata:
+    name: perl
+  spec:
+    lookupPolicy:
+      local: true
+    tags:
+    - annotations: null
+      from:
+        kind: DockerImage
+        name: ${PERL_IMAGE}:${PERL_VERSION}
+      generation: 1
+      importPolicy:
+        scheduled: true
+      name: "5.26"
+      referencePolicy:
+        type: Source
+  status: {}
 - apiVersion: v1
   kind: Secret
   metadata:
@@ -155,7 +174,7 @@ objects:
         from:
           kind: ImageStreamTag
           name: ${POSTGRES_IMAGE}:${POSTGRES_VERSION}
-          namespace: ${NAMESPACE}
+          namespace: ${POSTGRES_NAMESPACE}
         lastTriggeredImage: ""
       type: ImageChange
     - type: ConfigChange
@@ -171,10 +190,6 @@ parameters:
   name: CPU_LIMIT
   required: true
   value: 4000m
-- description: The OpenShift Namespace where the ImageStream resides.
-  displayName: Namespace
-  name: NAMESPACE
-  value: openshift
 - description: The name of the OpenShift Service exposed for the database.
   displayName: Database Service Name
   name: DATABASE_SERVICE_NAME
@@ -212,3 +227,18 @@ parameters:
   name: POSTGRES_VERSION
   required: true
   value: "11.2"
+- description: The OpenShift Namespace where the Postgres ImageStream resides.
+  displayName: Postgres Namespace
+  name: POSTGRES_NAMESPACE
+  required: true
+  value: "openshift"
+- description: Name of Perl image to be used (perl for now).
+  displayName: Name of Perl Image
+  name: PERL_IMAGE
+  required: true
+  value: "registry.redhat.io/rhscl/perl-526-rhel7"
+- description: Version of Perl image to be used (latest for now).
+  displayName: Version of Perl Image
+  name: PERL_VERSION
+  required: true
+  value: "latest"
