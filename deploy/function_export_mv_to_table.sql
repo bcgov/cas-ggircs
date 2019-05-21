@@ -58,8 +58,8 @@ $$
       'on x.ghgr_import_id = final_report.ghgr_import_id ' ||
       'join ggircs_swrs.facility as facility ' ||
       'on x.ghgr_import_id = facility.ghgr_import_id ' ||
-      'and x.gas_type = ''CO2bioC'' '
-      'and facility.facility_type = ''EIO'' )';
+      'and (x.gas_type = ''CO2bioC'' ' ||
+      'or facility.facility_type = ''EIO'' ))';
 
     execute 'alter table ggircs.non_attributable_emission add column id int generated always as identity primary key';
 
