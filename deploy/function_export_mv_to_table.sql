@@ -93,6 +93,13 @@ $$
       'on x.ghgr_import_id = final_report.ghgr_import_id ' ||
       'and x.facility_type = ''LFO'' )';
 
+    -- Add BCGHGID column to lfo_facility
+    execute 'alter table ggircs.lfo_facility add column bcghgid varchar(1000)';
+    execute 'update ggircs.lfo_facility as lfo set bcghgid = ggircs_swrs.identifier.identifier_value ' ||
+            'from ggircs.lfo_facility inner join ggircs_swrs.identifier ' ||
+            'on ggircs.lfo_facility.ghgr_import_id = ggircs_swrs.identifier.ghgr_import_id ' ||
+            'and ggircs_swrs.identifier.identifier_type = ''BCGHGID'' ';
+
     execute 'alter table ggircs.lfo_facility add column id int generated always as identity primary key';
     
     raise notice 'Exporting single_facility';
@@ -106,6 +113,13 @@ $$
       'as x inner join ggircs_swrs.final_report as final_report ' ||
       'on x.ghgr_import_id = final_report.ghgr_import_id ' ||
       'and x.facility_type != ''LFO'' )';
+
+    -- Add BCGHGID column to lfo_facility
+    execute 'alter table ggircs.single_facility add column bcghgid varchar(1000)';
+    execute 'update ggircs.single_facility as single set bcghgid = ggircs_swrs.identifier.identifier_value ' ||
+            'from ggircs.single_facility inner join ggircs_swrs.identifier ' ||
+            'on ggircs.single_facility.ghgr_import_id = ggircs_swrs.identifier.ghgr_import_id ' ||
+            'and ggircs_swrs.identifier.identifier_type = ''BCGHGID'' ';
 
     execute 'alter table ggircs.single_facility add column id int generated always as identity primary key';
 
