@@ -1058,6 +1058,13 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
           <PulpAndPaperCarbonates/>
         </SubProcess>
       </Process>
+      <Process>
+        <SubProcess SubprocessName="Additional Reportable Information as per WCI.352(i)(1)-(12)" InformationRequirement="MandatoryAdditional">
+          <Amount AmtDomain="PulpAndPaperBlackLiquor" AmtAction="Combusted" AmtPeriod="Annual">168389</Amount>
+          <PercentSolidsByWeight>53</PercentSolidsByWeight>
+          <PulpAndPaperCarbonates/>
+        </SubProcess>
+      </Process>
     </ActivityPages>
   </ActivityData>
 </ReportData>
@@ -1364,9 +1371,6 @@ select isnt_empty('select * from ggircs.contact', 'there is data in ggircs.conta
 select isnt_empty('select * from ggircs.address', 'there is data in ggircs.address');
 select isnt_empty('select * from ggircs.descriptor', 'there is data in ggircs.descriptor');
 select isnt_empty('select * from ggircs.additional_reportable_activity', 'there is data in ggircs.additional_reportable_activity');
-
--- attributable_emission has no data (from EIO facility)
-select is_empty('select * from ggircs.attributable_emission', 'there is data in ggircs.attributable_emission');
 
 -- NA emission contains no data other than CO2bioC
 select is_empty($$select * from ggircs.non_attributable_emission where gas_type != 'CO2bioC'$$, 'there is no data in NA emission that is not CO2bioC');
@@ -2393,7 +2397,7 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
   <ActivityData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <ActivityPages>
       <Process ProcessName="ElectricityGeneration">
-        <SubProcess SubprocessName="Additional reportable information" InformationRequirement="Required">
+        <SubProcess SubprocessName="Emissions from fuel combustion for electricity generation" InformationRequirement="Required">
           <Units UnitType="Cogen Units">
             <Unit>
               <COGenUnit>
@@ -3148,6 +3152,8 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
 </ReportData>
 $$);
 
+-- Test LFO Facility / Attributable Emisisons
+
 -- Refresh all materialized views
 refresh materialized view ggircs_swrs.report with data;
 refresh materialized view ggircs_swrs.organisation with data;
@@ -3166,9 +3172,6 @@ refresh materialized view ggircs_swrs.address with data;
 refresh materialized view ggircs_swrs.descriptor with data;
 
 select ggircs_swrs.export_mv_to_table();
-
-
--- Test LFO Facility / Attributable Emisisons
 
 -- attributable_emission has data
 select isnt_empty('select * from ggircs.attributable_emission', 'attributable_emission has data');

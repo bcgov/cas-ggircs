@@ -15,7 +15,7 @@ begin;
 create or replace function ggircs_swrs.export_mv_to_table()
   returns void as
 $$
-
+  /** Create all tables from materialized views that are not being split up **/
   declare
 
        mv_array text[] := '{report, organisation, ' ||
@@ -131,6 +131,7 @@ $$
 
     execute 'alter table ggircs.additional_reportable_activity add column id int generated always as identity primary key';
 
+    /** NON-Attributable Emisison FKs**/
       -- Create FK/PK relation between Non-Attributable_Emission and Fuel
       alter table ggircs.non_attributable_emission add column fuel_id int;
       create index ggircs_non_attributable_emission_fuel_index on ggircs.non_attributable_emission (fuel_id);
@@ -194,15 +195,8 @@ $$
           and naics.path_context = 'RegistrationData';
       alter table ggircs.non_attributable_emission add constraint ggircs_non_attributable_emission_naics_foreign_key foreign key (naics_id) references ggircs.naics(id);
 
-      -- Create FK/PK relation between Fuel and Unit
-      alter table ggircs.fuel add column unit_id int;
-      create index ggircs_fuel_unit_index on ggircs.fuel (unit_id);
-      update ggircs.fuel set unit_id = unit.id from ggircs.unit
-          where fuel.ghgr_import_id = unit.ghgr_import_id and fuel.process_idx = unit.process_idx  and fuel.sub_process_idx = unit.sub_process_idx
-            and fuel.activity_name = unit.activity_name and fuel.units_idx = unit.units_idx and fuel.unit_idx = unit.unit_idx;
-      alter table ggircs.fuel add constraint ggircs_fuel_unit_foreign_key foreign key (unit_id) references ggircs.unit(id);
-
-     -- Create FK/PK relation between Attributable_Emission and Fuel
+    /** Attributable Emission FKs**/
+      -- Create FK/PK relation between Attributable_Emission and Fuel
       alter table ggircs.attributable_emission add column fuel_id int;
       create index ggircs_attributable_emission_fuel_index on ggircs.attributable_emission (fuel_id);
       update ggircs.attributable_emission set fuel_id = fuel.id from ggircs.fuel
@@ -264,6 +258,14 @@ $$
           where attributable_emission.ghgr_import_id = naics.ghgr_import_id
           and naics.path_context = 'RegistrationData';
       alter table ggircs.attributable_emission add constraint ggircs_attributable_emission_naics_foreign_key foreign key (naics_id) references ggircs.naics(id);
+
+      -- Create FK/PK relation between Fuel and Unit
+      alter table ggircs.fuel add column unit_id int;
+      create index ggircs_fuel_unit_index on ggircs.fuel (unit_id);
+      update ggircs.fuel set unit_id = unit.id from ggircs.unit
+          where fuel.ghgr_import_id = unit.ghgr_import_id and fuel.process_idx = unit.process_idx  and fuel.sub_process_idx = unit.sub_process_idx
+            and fuel.activity_name = unit.activity_name and fuel.units_idx = unit.units_idx and fuel.unit_idx = unit.unit_idx;
+      alter table ggircs.fuel add constraint ggircs_fuel_unit_foreign_key foreign key (unit_id) references ggircs.unit(id);
 
       -- Create FK/PK relation between Unit and Activity
       alter table ggircs.unit add column activity_id int;
@@ -336,7 +338,6 @@ $$
       alter table ggircs.organisation add constraint ggircs_organisation_parent_organisation_foreign_key foreign key (parent_organisation_id) references ggircs.parent_organisation(id);
     
     /** LFO FACILITY FKs**/
-
       -- Create FK/PK relation between Attributable_Emission and Facility
       alter table ggircs.attributable_emission add column lfo_facility_id int;
       create index ggircs_attributable_emission_lfo_facility_index on ggircs.attributable_emission (lfo_facility_id);
