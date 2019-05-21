@@ -259,85 +259,7 @@ $$
           and naics.path_context = 'RegistrationData';
       alter table ggircs.attributable_emission add constraint ggircs_attributable_emission_naics_foreign_key foreign key (naics_id) references ggircs.naics(id);
 
-      -- Create FK/PK relation between Fuel and Unit
-      alter table ggircs.fuel add column unit_id int;
-      create index ggircs_fuel_unit_index on ggircs.fuel (unit_id);
-      update ggircs.fuel set unit_id = unit.id from ggircs.unit
-          where fuel.ghgr_import_id = unit.ghgr_import_id and fuel.process_idx = unit.process_idx  and fuel.sub_process_idx = unit.sub_process_idx
-            and fuel.activity_name = unit.activity_name and fuel.units_idx = unit.units_idx and fuel.unit_idx = unit.unit_idx;
-      alter table ggircs.fuel add constraint ggircs_fuel_unit_foreign_key foreign key (unit_id) references ggircs.unit(id);
-
-      -- Create FK/PK relation between Unit and Activity
-      alter table ggircs.unit add column activity_id int;
-      create index ggircs_unit_activity_index on ggircs.unit (activity_id);
-      update ggircs.unit set activity_id = activity.id from ggircs.activity
-          where unit.ghgr_import_id = activity.ghgr_import_id
-            and unit.process_idx = activity.process_idx
-            and unit.sub_process_idx = activity.sub_process_idx
-            and unit.activity_name = activity.activity_name;
-      alter table ggircs.unit add constraint ggircs_unit_activity_foreign_key foreign key (activity_id) references ggircs.activity(id);
-
-      -- Create FK/PK relation between Descriptor and Activity
-      alter table ggircs.descriptor add column activity_id int;
-      create index ggircs_descriptor_activity_index on ggircs.descriptor (activity_id);
-      update ggircs.descriptor set activity_id = activity.id from ggircs.activity
-          where descriptor.ghgr_import_id = activity.ghgr_import_id
-            and descriptor.process_idx = activity.process_idx
-            and descriptor.sub_process_idx = activity.sub_process_idx
-            and descriptor.activity_name = activity.activity_name;
-      alter table ggircs.descriptor add constraint ggircs_descriptor_activity_foreign_key foreign key (activity_id) references ggircs.activity(id);
- 
-      -- Create FK/PK relation between Activity and Report
-      alter table ggircs.activity add column report_id int;
-      create index ggircs_activity_report_index on ggircs.activity (report_id);
-      update ggircs.activity set report_id = report.id from ggircs.report
-          where activity.ghgr_import_id = report.ghgr_import_id;
-      alter table ggircs.activity add constraint ggircs_activity_report_foreign_key foreign key (report_id) references ggircs.report(id);
- 
-      -- Create FK/PK relation between Address and Organisation
-      alter table ggircs.address add column organisation_id int;
-      create index ggircs_address_organisation_index on ggircs.address (organisation_id);
-      update ggircs.address set organisation_id = organisation.id from ggircs.organisation
-          where address.ghgr_import_id = organisation.ghgr_import_id
-          and address.type = 'Organisation';
-      alter table ggircs.address add constraint ggircs_address_organisation_foreign_key foreign key (organisation_id) references ggircs.organisation(id);
-
-      -- Create FK/PK relation between Address and parent_organisation
-      alter table ggircs.address add column parent_organisation_id int;
-      create index ggircs_address_parent_organisation_index on ggircs.address (parent_organisation_id);
-      update ggircs.address set parent_organisation_id = parent_organisation.id from ggircs.parent_organisation
-        where address.ghgr_import_id = parent_organisation.ghgr_import_id
-      and address.type = 'ParentOrganisation'
-      and address.parent_organisation_idx = parent_organisation.parent_organisation_idx;
-      alter table ggircs.address add constraint ggircs_address_parent_organisation_foreign_key foreign key (parent_organisation_id) references ggircs.parent_organisation(id);
-
-/*       -- Create FK/PK relation between Contact and Address
-      alter table ggircs.contact add column address_id int;
-      create index ggircs_contact_address_index on ggircs.contact (address_id);
-      update ggircs.contact set address_id = address.id from ggircs.address
-          where address.ghgr_import_id = contact.ghgr_import_id
-          and   address.type = 'Contact'
-          and   address.contact_idx = contact.contact_idx
-      ;
-      alter table ggircs.contact add constraint ggircs_contact_address_foreign_key foreign key (address_id) references ggircs.address(id);*/
-
-
-      -- Create FK/PK relation between Organisation and Address
-      alter table ggircs.organisation add column address_id int;
-      create index ggircs_organisation_address_index on ggircs.organisation (address_id);
-      update ggircs.organisation set address_id = address.id from ggircs.address
-          where address.ghgr_import_id = organisation.ghgr_import_id
-          and   address.swrs_organisation_id = organisation.swrs_organisation_id;
-      alter table ggircs.organisation add constraint ggircs_organisation_address_foreign_key foreign key (address_id) references ggircs.address(id);
-
-    -- Create FK/PK relation between Organisation and Parent Organisation
-      alter table ggircs.organisation add column parent_organisation_id int;
-      create index ggircs_organisation_parent_organisation_index on ggircs.organisation (parent_organisation_id);
-      update ggircs.organisation set parent_organisation_id = parent_organisation.id from ggircs.parent_organisation
-          where parent_organisation.ghgr_import_id = organisation.ghgr_import_id;
-      alter table ggircs.organisation add constraint ggircs_organisation_parent_organisation_foreign_key foreign key (parent_organisation_id) references ggircs.parent_organisation(id);
-    
-    /** LFO FACILITY FKs**/
+      /** LFO FACILITY FKs**/
       -- Create FK/PK relation between Attributable_Emission and Facility
       alter table ggircs.attributable_emission add column lfo_facility_id int;
       create index ggircs_attributable_emission_lfo_facility_index on ggircs.attributable_emission (lfo_facility_id);
@@ -359,14 +281,14 @@ $$
           where address.ghgr_import_id = lfo_facility.ghgr_import_id
           and address.type = 'Facility';
       alter table ggircs.address add constraint ggircs_address_lfo_facility_foreign_key foreign key (lfo_facility_id) references ggircs.lfo_facility(id);
-      
+
      -- Create FK/PK relation between Contact and Facility
       alter table ggircs.contact add column lfo_facility_id int;
       create index ggircs_contact_lfo_facility_index on ggircs.contact (lfo_facility_id);
       update ggircs.contact set lfo_facility_id = lfo_facility.id from ggircs.lfo_facility
           where contact.ghgr_import_id = lfo_facility.ghgr_import_id;
       alter table ggircs.contact add constraint ggircs_contact_lfo_facility_foreign_key foreign key (lfo_facility_id) references ggircs.lfo_facility(id);
- 
+
       -- Create FK/PK relation between Identifier and Facility
       alter table ggircs.identifier add column lfo_facility_id int;
       create index ggircs_identifier_lfo_facility_index on ggircs.identifier (lfo_facility_id);
@@ -380,14 +302,14 @@ $$
       update ggircs.naics set lfo_facility_id = lfo_facility.id from ggircs.lfo_facility
           where naics.ghgr_import_id = lfo_facility.ghgr_import_id;
       alter table ggircs.naics add constraint ggircs_naics_lfo_facility_foreign_key foreign key (lfo_facility_id) references ggircs.lfo_facility(id);
-      
+
       -- Create FK/PK relation between Permit and Facility
       alter table ggircs.permit add column lfo_facility_id int;
       create index ggircs_permit_lfo_facility_index on ggircs.permit (lfo_facility_id);
       update ggircs.permit set lfo_facility_id = lfo_facility.id from ggircs.lfo_facility
           where permit.ghgr_import_id = lfo_facility.ghgr_import_id;
       alter table ggircs.permit add constraint ggircs_permit_lfo_facility_foreign_key foreign key (lfo_facility_id) references ggircs.lfo_facility(id);
-      
+
       -- Create FK/PK relation between Activity and Facility
       alter table ggircs.activity add column lfo_facility_id int;
       create index ggircs_activity_lfo_facility_index on ggircs.activity (lfo_facility_id);
@@ -402,7 +324,7 @@ $$
       update ggircs.non_attributable_emission set single_facility_id = single_facility.id from ggircs.single_facility
           where non_attributable_emission.ghgr_import_id = single_facility.ghgr_import_id;
       alter table ggircs.non_attributable_emission add constraint ggircs_non_attributable_emission_single_facility_foreign_key foreign key (single_facility_id) references ggircs.single_facility(id);
-      
+
       -- Create FK/PK relation between Attributable_Emission and Facility
       alter table ggircs.attributable_emission add column single_facility_id int;
       create index ggircs_attributable_emission_facility_index on ggircs.attributable_emission (single_facility_id);
@@ -424,14 +346,14 @@ $$
           where address.ghgr_import_id = single_facility.ghgr_import_id
           and address.type = 'Facility';
       alter table ggircs.address add constraint ggircs_address_single_facility_foreign_key foreign key (single_facility_id) references ggircs.single_facility(id);
-      
+
      -- Create FK/PK relation between Contact and Facility
       alter table ggircs.contact add column single_facility_id int;
       create index ggircs_contact_single_facility_index on ggircs.contact (single_facility_id);
       update ggircs.contact set single_facility_id = single_facility.id from ggircs.single_facility
           where contact.ghgr_import_id = single_facility.ghgr_import_id;
       alter table ggircs.contact add constraint ggircs_contact_single_facility_foreign_key foreign key (single_facility_id) references ggircs.single_facility(id);
- 
+
       -- Create FK/PK relation between Identifier and Facility
       alter table ggircs.identifier add column single_facility_id int;
       create index ggircs_identifier_single_facility_index on ggircs.identifier (single_facility_id);
@@ -445,20 +367,98 @@ $$
       update ggircs.naics set single_facility_id = single_facility.id from ggircs.single_facility
           where naics.ghgr_import_id = single_facility.ghgr_import_id;
       alter table ggircs.naics add constraint ggircs_naics_single_facility_foreign_key foreign key (single_facility_id) references ggircs.single_facility(id);
-      
+
       -- Create FK/PK relation between Permit and Facility
       alter table ggircs.permit add column single_facility_id int;
       create index ggircs_permit_single_facility_index on ggircs.permit (single_facility_id);
       update ggircs.permit set single_facility_id = single_facility.id from ggircs.single_facility
           where permit.ghgr_import_id = single_facility.ghgr_import_id;
       alter table ggircs.permit add constraint ggircs_permit_single_facility_foreign_key foreign key (single_facility_id) references ggircs.single_facility(id);
-      
+
       -- Create FK/PK relation between Activity and Facility
       alter table ggircs.activity add column single_facility_id int;
       create index ggircs_activity_single_facility_index on ggircs.activity (single_facility_id);
       update ggircs.activity set single_facility_id = single_facility.id from ggircs.single_facility
           where activity.ghgr_import_id = single_facility.ghgr_import_id;
       alter table ggircs.activity add constraint ggircs_activity_single_facility_foreign_key foreign key (single_facility_id) references ggircs.single_facility(id);
+
+    /** Remaining FK's **/
+      -- Create FK/PK relation between Activity and Report
+      alter table ggircs.activity add column report_id int;
+      create index ggircs_activity_report_index on ggircs.activity (report_id);
+      update ggircs.activity set report_id = report.id from ggircs.report
+          where activity.ghgr_import_id = report.ghgr_import_id;
+      alter table ggircs.activity add constraint ggircs_activity_report_foreign_key foreign key (report_id) references ggircs.report(id);
+
+      -- Create FK/PK relation between Address and Organisation
+      alter table ggircs.address add column organisation_id int;
+      create index ggircs_address_organisation_index on ggircs.address (organisation_id);
+      update ggircs.address set organisation_id = organisation.id from ggircs.organisation
+          where address.ghgr_import_id = organisation.ghgr_import_id
+          and address.type = 'Organisation';
+      alter table ggircs.address add constraint ggircs_address_organisation_foreign_key foreign key (organisation_id) references ggircs.organisation(id);
+
+      -- Create FK/PK relation between Address and parent_organisation
+      alter table ggircs.address add column parent_organisation_id int;
+      create index ggircs_address_parent_organisation_index on ggircs.address (parent_organisation_id);
+      update ggircs.address set parent_organisation_id = parent_organisation.id from ggircs.parent_organisation
+        where address.ghgr_import_id = parent_organisation.ghgr_import_id
+      and address.type = 'ParentOrganisation'
+      and address.parent_organisation_idx = parent_organisation.parent_organisation_idx;
+      alter table ggircs.address add constraint ggircs_address_parent_organisation_foreign_key foreign key (parent_organisation_id) references ggircs.parent_organisation(id);
+
+      /*       -- Create FK/PK relation between Contact and Address
+      alter table ggircs.contact add column address_id int;
+      create index ggircs_contact_address_index on ggircs.contact (address_id);
+      update ggircs.contact set address_id = address.id from ggircs.address
+          where address.ghgr_import_id = contact.ghgr_import_id
+          and   address.type = 'Contact'
+          and   address.contact_idx = contact.contact_idx
+      ;
+      alter table ggircs.contact add constraint ggircs_contact_address_foreign_key foreign key (address_id) references ggircs.address(id);*/
+
+      -- Create FK/PK relation between Descriptor and Activity
+      alter table ggircs.descriptor add column activity_id int;
+      create index ggircs_descriptor_activity_index on ggircs.descriptor (activity_id);
+      update ggircs.descriptor set activity_id = activity.id from ggircs.activity
+          where descriptor.ghgr_import_id = activity.ghgr_import_id
+            and descriptor.process_idx = activity.process_idx
+            and descriptor.sub_process_idx = activity.sub_process_idx
+            and descriptor.activity_name = activity.activity_name;
+      alter table ggircs.descriptor add constraint ggircs_descriptor_activity_foreign_key foreign key (activity_id) references ggircs.activity(id);
+
+      -- Create FK/PK relation between Fuel and Unit
+      alter table ggircs.fuel add column unit_id int;
+      create index ggircs_fuel_unit_index on ggircs.fuel (unit_id);
+      update ggircs.fuel set unit_id = unit.id from ggircs.unit
+          where fuel.ghgr_import_id = unit.ghgr_import_id and fuel.process_idx = unit.process_idx  and fuel.sub_process_idx = unit.sub_process_idx
+            and fuel.activity_name = unit.activity_name and fuel.units_idx = unit.units_idx and fuel.unit_idx = unit.unit_idx;
+      alter table ggircs.fuel add constraint ggircs_fuel_unit_foreign_key foreign key (unit_id) references ggircs.unit(id);
+
+      -- Create FK/PK relation between Organisation and Address
+      alter table ggircs.organisation add column address_id int;
+      create index ggircs_organisation_address_index on ggircs.organisation (address_id);
+      update ggircs.organisation set address_id = address.id from ggircs.address
+          where address.ghgr_import_id = organisation.ghgr_import_id
+          and   address.swrs_organisation_id = organisation.swrs_organisation_id;
+      alter table ggircs.organisation add constraint ggircs_organisation_address_foreign_key foreign key (address_id) references ggircs.address(id);
+
+    -- Create FK/PK relation between Organisation and Parent Organisation
+      alter table ggircs.organisation add column parent_organisation_id int;
+      create index ggircs_organisation_parent_organisation_index on ggircs.organisation (parent_organisation_id);
+      update ggircs.organisation set parent_organisation_id = parent_organisation.id from ggircs.parent_organisation
+          where parent_organisation.ghgr_import_id = organisation.ghgr_import_id;
+      alter table ggircs.organisation add constraint ggircs_organisation_parent_organisation_foreign_key foreign key (parent_organisation_id) references ggircs.parent_organisation(id);
+
+      -- Create FK/PK relation between Unit and Activity
+      alter table ggircs.unit add column activity_id int;
+      create index ggircs_unit_activity_index on ggircs.unit (activity_id);
+      update ggircs.unit set activity_id = activity.id from ggircs.activity
+          where unit.ghgr_import_id = activity.ghgr_import_id
+            and unit.process_idx = activity.process_idx
+            and unit.sub_process_idx = activity.sub_process_idx
+            and unit.activity_name = activity.activity_name;
+      alter table ggircs.unit add constraint ggircs_unit_activity_foreign_key foreign key (activity_id) references ggircs.activity(id);
 
   end;
 
