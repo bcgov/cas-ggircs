@@ -110,7 +110,6 @@ $$
     execute 'alter table ggircs.single_facility add column id int generated always as identity primary key';
 
     /** Create additional_reportable_activity table**/
-
     raise notice 'Exporting additional_reportable_activity';
 
     execute

@@ -849,7 +849,6 @@ select is_empty($$select * from ggircs.attributable_emission
                 'there is no data in attributable emissions from facility_type EIO'
                );
 
-
 -- Test validity of FK relations
 -- NA Emission -> Fuel
 select results_eq(
