@@ -132,7 +132,7 @@ $$
     execute 'alter table ggircs.additional_reportable_activity add column id int generated always as identity primary key';
 
     /** NON-Attributable Emisison FKs**/
-    -- Create FK/PK relation between Non-Attributable_Emission and Activity
+      -- Create FK/PK relation between Non-Attributable_Emission and Activity
       alter table ggircs.non_attributable_emission add column activity_id int;
       create index ggircs_non_attributable_emission_activity_index on ggircs.non_attributable_emission (activity_id);
       update ggircs.non_attributable_emission set activity_id = activity.id from ggircs.activity
@@ -259,7 +259,7 @@ $$
             and attributable_emission.unit_idx = unit.unit_idx;
       alter table ggircs.attributable_emission add constraint ggircs_attributable_emission_unit_foreign_key foreign key (unit_id) references ggircs.unit(id);
 
-      /** LFO FACILITY FKs**/
+    /** LFO FACILITY FKs**/
       -- Create FK/PK relation between Attributable_Emission and Facility
       alter table ggircs.attributable_emission add column lfo_facility_id int;
       create index ggircs_attributable_emission_lfo_facility_index on ggircs.attributable_emission (lfo_facility_id);
