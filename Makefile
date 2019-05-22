@@ -19,85 +19,96 @@ TEST_DB=ggircs_test
 PG_PROVE=pg_prove -h localhost
 PG_SHAREDIR=${shell pg_config --sharedir}
 PG_ROLE=${shell whoami}
+DOCKER=docker
+DOCKER_HUB_PREFIX=wenzowski/
+DOCKER_SQITCH_IMAGE=sqitch
 DOCKER_SQITCH_TAG=0.9999
-DOCKER_POSTGRES_IMAGE=wenzowski/postgres
-DOCKER_POSTGRES_TAG=11.2
+DOCKER_GGIRCS_IMAGE=ggircs
+DOCKER_GGIRCS_TAG=latest
+DOCKER_POSTGRES_IMAGE=postgresql
+DOCKER_POSTGRES_TAG=10
+OC=oc
+OC_DEV_PROJECT=wksv3k-dev
+OC_TEST_PROJECT=wksv3k-test
+OC_PROD_PROJECT=wksv3k-prod
+OC_TOOLS_PROJECT=wksv3k-tools
+OC_REGISTRY=docker-registry.default.svc:5000
 
-test:
-	@@$(MAKE) -s $(MAKEFLAGS) createdb;
-	@@$(MAKE) -s $(MAKEFLAGS) deploy;
-	@@$(MAKE) -s $(MAKEFLAGS) revert;
-	@@$(MAKE) -s $(MAKEFLAGS) deploy;
-	@@$(MAKE) -s $(MAKEFLAGS) prove_unit;
-	@@$(MAKE) -s $(MAKEFLAGS) prove_style;
-	@@$(MAKE) -s $(MAKEFLAGS) dropdb;
 .PHONY: test
+test:
+	@@${MAKE} -s ${MAKEFLAGS} createdb;
+	@@${MAKE} -s ${MAKEFLAGS} deploy;
+	@@${MAKE} -s ${MAKEFLAGS} revert;
+	@@${MAKE} -s ${MAKEFLAGS} deploy;
+	@@${MAKE} -s ${MAKEFLAGS} prove_unit;
+	@@${MAKE} -s ${MAKEFLAGS} prove_style;
+	@@${MAKE} -s ${MAKEFLAGS} dropdb;
 
-unit: dropdb createdb deploy prove_unit
 .PHONY: unit
+unit: dropdb createdb deploy prove_unit
 
+.PHONY: deploy
 deploy: 
 	# Deploy all changes to ${TEST_DB} using sqitch
-	@@sqitch deploy ${TEST_DB};
-.PHONY: deploy
+	@@${SQITCH} deploy ${TEST_DB};
 
+.PHONY: prove_style
 prove_style:
 	# Run style-related test suite on all objects in db using pg_prove
 	@@${PG_PROVE} -v -d ${TEST_DB} test/style/*_test.sql
-.PHONY: prove
 
+.PHONY: prove_unit
 prove_unit:
 	# Run unit test suite using pg_prove
 	@@${PG_PROVE} -v -d ${TEST_DB} test/unit/*_test.sql
-.PHONY: test
 
+.PHONY: revert
 revert:
 	# Revert all changes to ${TEST_DB} using sqitch
-	@@sqitch revert -y ${TEST_DB};
-.PHONY: revert
+	@@${SQITCH} revert -y ${TEST_DB};
 
+.PHONY: createdb
 createdb:
 	# Ensure the ${TEST_DB} database exists
 	-@@${PSQL} -tc "SELECT 1 FROM pg_database WHERE datname = '${TEST_DB}'" | \
 		${GREP} -q 1 || \
 		${PSQL} -c "CREATE DATABASE ${TEST_DB}";
-.PHONY: createdb
 
+.PHONY: dropdb
 dropdb:
 	# Drop the ${TEST_DB} database
 	-@@${PSQL} -tc "SELECT 1 FROM pg_database WHERE datname = '${TEST_DB}'" | \
 		${GREP} -q 0 || \
 		${PSQL} -c "DROP DATABASE ${TEST_DB}";
-.PHONY: dropdb
 
 define check_file_in_path
 	${if ${shell which ${word 1,${1}}}, 
-		${info Found ${word 1,${1}}}, 
-		${error No ${word 1,${1}} in path.}
+		${info ✓ Found ${word 1,${1}}}, 
+		${error ✖ No ${word 1,${1}} in path.}
 	}
 endef
 
 define check_min_version_num
 	${if ${shell printf '%s\n%s\n' "${3}" "${2}" | sort -CV || echo error},
-		${error ${word 1,${1}} version needs to be at least ${3}.},
-		${info ${word 1,${1}} version is at least ${3}.}
+		${error ✖ ${word 1,${1}} version needs to be at least ${3}.},
+		${info ✓ ${word 1,${1}} version is at least ${3}.}
 	}
 endef
 
-
+.PHONY: verify_installed
 verify_installed:
 	$(call check_file_in_path,${PERL})
-	${call check_min_version_num,${PERL},${PERL_VERSION},${PERL_MIN_VERSION}}
+	$(call check_min_version_num,${PERL},${PERL_VERSION},${PERL_MIN_VERSION})
 
 	$(call check_file_in_path,${CPAN})
 	$(call check_file_in_path,${GIT})
 	$(call check_file_in_path,${RSYNC})
 
 	$(call check_file_in_path,${PSQL})
-	${call check_min_version_num,${PSQL},${PSQL_VERSION},${PG_MIN_VERSION}}
+	$(call check_min_version_num,${PSQL},${PSQL_VERSION},${PG_MIN_VERSION})
 	@@echo ✓ External dependencies are installed
-.PHONY: verify_installed
 
+.PHONY: verify_pg_server
 verify_pg_server:
 ifeq (error,${PG_SERVER_VERSION})
 	${error Error while connecting to postgres server}
@@ -118,10 +129,17 @@ else
 endif
 
 	@@echo ✓ PostgreSQL server is ready
-.PHONY: verify_ready
 
-verify: verify_installed verify_pg_server
 .PHONY: verify
+verify: verify_installed verify_pg_server
+
+.PHONY: verify_ready
+verify_ready:
+	# ensure postgres is online
+	@@${PSQL} -tc 'show server_version;' | ${AWK} '{print $$NF}';
+
+.PHONY: verify
+verify: verify_installed verify_ready
 
 pgtap:
 	# clone the source for pgTAP
@@ -129,6 +147,7 @@ pgtap:
 		pushd pgtap && \
 		${GIT} checkout v1.0.0;
 
+.PHONY: install_pgtap
 install_pgtap: pgtap
 	${info install pgTAP into postgres}
 	@@$(MAKE) -C pgtap -s $(MAKEFLAGS)
@@ -140,51 +159,82 @@ ifeq (error,${shell /bin/test -w ${PG_SHAREDIR}/extension || echo error})
 else
 	@@$(MAKE) -C pgtap -s $(MAKEFLAGS) install
 endif
-.PHONY: install_pgtap
 
+.PHONY: install_sqitch
+install_sqitch:
+	# install postgres driver for sqitch
+	@@${CPAN} DBD::Pg
+	# install sqitch
+	@@${CPAN} App::Sqitch
+	# install pg_prove
+	@@${CPAN} TAP::Parser::SourceHandler::pgTAP
 
+.PHONY: install_cpanm
 install_cpanm: 
 ifeq (${shell which ${CPANM}},)
 	# install cpanm
 	@@${CPAN} App:cpanminus
 endif
-.PHONY: install_cpanm
 
+.PHONY: install_cpandeps
 install_cpandeps:
 	# install Perl dependencies from cpanfile
 	${CPANM} --installdeps .
-.PHONY: install_cpandeps
 
+.PHONY: postinstall_check
 postinstall_check:
 	@@printf '%s\n%s\n' "${SQITCH_MIN_VERSION}" "${SQITCH_VERSION}" | sort -CV ||\
  	(echo "FATAL: ${SQITCH} version should be at least ${SQITCH_MIN_VERSION}. Make sure the ${SQITCH} executable installed by cpanminus is available has the highest priority in the PATH" && exit 1);
-.PHONY: postinstall_check
 
-install: install_cpanm install_cpandeps postinstall_check install_pgtap 
 .PHONY: install
+install: install_cpanm install_cpandeps postinstall_check install_pgtap 
 
-docker_build_sqitch:
-	# rebuild sqitch
-	@@docker build --no-cache -t ${DOCKER_SQITCH_IMAGE}:${DOCKER_SQITCH_TAG} -f docker/sqitch/Dockerfile .
-.PHONY: docker_build_sqitch
+.PHONY: whoami
+whoami:
+	# Ensure the openshift client has a valid access token
+	@@${OC} whoami
 
-docker_push_sqitch: docker_build_sqitch
-	# push sqitch
-	@@docker push ${DOCKER_SQITCH_IMAGE}:${DOCKER_SQITCH_TAG}
-.PHONY: docker_push_sqitch
+.PHONY: tools_project
+tools_project: whoami
+	# Ensure the openshift client is using the correct project namespace
+	@@${OC} project ${OC_TOOLS_PROJECT}
 
-docker_build_postgres:
-	# rebuild postgres
-	@@docker build --no-cache -t ${DOCKER_POSTGRES_IMAGE}:${DOCKER_POSTGRES_TAG} -f docker/postgres/Dockerfile .
-.PHONY: docker_build_postgres
+.PHONY: dev_project
+dev_project: whoami
+	# Ensure the openshift client is using the correct project namespace
+	@@${OC} project ${OC_DEV_PROJECT}
 
-docker_push_postgres: docker_build_postgres
-	# push postgres
-	@@docker push ${DOCKER_POSTGRES_IMAGE}:${DOCKER_POSTGRES_TAG}
-.PHONY: docker_push_postgres
+.PHONY: deploy_tools
+deploy_tools: tools_project
+	# Add all image streams and build in the tools project
+	@@${OC} process -f openshift/cas-ggircs-build-config-template.yml | oc apply --wait=true -f-
 
-docker_build: docker_build_sqitch docker_build_postgres
-.PHONY: docker_build
+.PHONY: deploy_dev
+deploy_dev: deploy_tools dev_project
+	# Allow import of images from tools namespace
+	@@${OC} policy add-role-to-group system:image-puller system:serviceaccounts:${OC_DEV_PROJECT} -n ${OC_TOOLS_PROJECT}
+	# Deploy...
+	@@${OC} process -f openshift/cas-ggircs-deploy-config-template.yml | oc apply --wait=true -f-
+	# Migrate...
+	# TODO(wenzowski): automatically run a `sqitch deploy`
 
-docker_push: docker_push_sqitch docker_push_postgres
-.PHONY: docker_push
+.PHONY: s2i_build
+s2i_build:
+	# localy build COMMITTED CHANGES ONLY
+	# @see https://github.com/sclorg/s2i-perl-container
+	# @see https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/building_running_and_managing_containers/using_red_hat_universal_base_images_standard_minimal_and_runtimes
+	s2i build https://github.com/bcgov/cas-ggircs.git -r $$(git rev-parse --verify HEAD) registry.access.redhat.com/ubi8/perl-526 cas-ggircs
+
+.PHONY: push
+push:
+	# copy data to remote
+	oc rsync data cas-ggircs-5-c46gh:/opt/app-root/src/
+	psql -c "\copy ggircs_swrs.ghgr_import from './data/select_t_REPORT_ID__t_XML_FILE__t_WHEN_C.csv' with (format csv)";
+
+.PHONY: rsh
+rsh:
+	oc exec -it cas-ggircs-5-c46gh -- bash
+
+# Configure image streams
+# oc start-build cas-ggircs-postgres --commit=$$(git rev-parse --verify HEAD)
+# oc start-build cas-ggircs-sqitch --commit=$$(git rev-parse --verify HEAD)
