@@ -63,7 +63,7 @@ objects:
         memory: 256Mi
     source:
       git:
-        ref: feature/deploy
+        ref: master
         uri: https://github.com/bcgov/cas-ggircs.git
       type: Git
     strategy:
