@@ -720,10 +720,12 @@ $$), ($$
 </ReportData>
 $$);
 
--- Refresh all materialized views
-select ggircs_swrs.refresh_materialized_views();
 -- Run table export function
 select ggircs_swrs.export_mv_to_table();
+
+-- Refresh all materialized views
+select ggircs_swrs.refresh_materialized_views();
+
 
 -- Function export_mv_to_table exists
 select has_function( 'ggircs_swrs', 'export_mv_to_table', 'Schema ggircs_swrs has function export_mv_to_table()' );
