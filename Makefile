@@ -1,13 +1,24 @@
 PERL=perl
+RSYNC=rsync
+PERL_VERSION=${shell ${PERL} -e 'print substr($$^V, 1)'}
+PERL_MIN_VERSION=5.10
 CPAN=cpan
+CPANM=cpanm
 SQITCH=sqitch
+SQITCH_VERSION=${word 3,${shell ${SQITCH} --version}}
+SQITCH_MIN_VERSION=0.97
 GREP=grep
 GIT=git
 AWK=awk
 PSQL=psql -h localhost
+# "psql --version" prints "psql (PostgreSQL) XX.XX"
+PSQL_VERSION=${word 3,${shell ${PSQL} --version}}
+PG_SERVER_VERSION=${strip ${shell ${PSQL} -tc 'show server_version;' || echo error}}
+PG_MIN_VERSION=9.1
 TEST_DB=ggircs_test
 PG_PROVE=pg_prove -h localhost
-DOCKER_SQITCH_IMAGE=wenzowski/sqitch
+PG_SHAREDIR=${shell pg_config --sharedir}
+PG_ROLE=${shell whoami}
 DOCKER_SQITCH_TAG=0.9999
 DOCKER_POSTGRES_IMAGE=wenzowski/postgres
 DOCKER_POSTGRES_TAG=11.2
@@ -59,64 +70,97 @@ dropdb:
 		${PSQL} -c "DROP DATABASE ${TEST_DB}";
 .PHONY: dropdb
 
+define check_file_in_path
+	${if ${shell which ${word 1,${1}}}, 
+		${info Found ${word 1,${1}}}, 
+		${error No ${word 1,${1}} in path.}
+	}
+endef
+
+define check_min_version_num
+	${if ${shell printf '%s\n%s\n' "${3}" "${2}" | sort -CV || echo error},
+		${error ${word 1,${1}} version needs to be at least ${3}.},
+		${info ${word 1,${1}} version is at least ${3}.}
+	}
+endef
+
+
 verify_installed:
-	# ensure perl >= 5.10.0
-	@@${PERL} -e 'print $$] . "\n";'
-	@@${PERL} -e 'if ($$] < 5.010001) { exit 1 }'
-	# show all perl install paths
-	@@${PERL} -V:'install.*'
-	# ensure cpan is defined
-	@@${PERL} -MCPAN -e 'print $$CPAN::VERSION . "\n";'
-	# ensure sqitch is >= 0.97.0
-	@@${PERL} -MApp::Sqitch -e 'print $$App::Sqitch::VERSION . "\n";'
-	@@${PERL} -MApp::Sqitch -e 'if ($$App::Sqitch::VERSION < 0.97) { exit 1 };'
-	# ensure postgres driver is installed
-	@@${PERL} -MDBD::Pg -e 'print $$DBD::Pg::VERSION . "\n";'
-	# ensure pg_prove is >= 3.28
-	@@${PERL} -MTAP::Parser::SourceHandler::pgTAP -e 'print $$TAP::Parser::SourceHandler::pgTAP::VERSION . "\n";'
-	@@${PERL} -MTAP::Parser::SourceHandler::pgTAP -e 'if ($$TAP::Parser::SourceHandler::pgTAP::VERSION < 3.28) { exit 1 };'
-	# ensure awk is installed
-	@@${AWK} --version | ${AWK} '{print $$NF}';
-	# ensure git is installed
-	@@${GIT} --version | ${AWK} '{print $$NF}';
-	# ensure psql is installed
-	@@${PSQL} --version | ${AWK} '{print $$NF}';
+	$(call check_file_in_path,${PERL})
+	${call check_min_version_num,${PERL},${PERL_VERSION},${PERL_MIN_VERSION}}
+
+	$(call check_file_in_path,${CPAN})
+	$(call check_file_in_path,${GIT})
+	$(call check_file_in_path,${RSYNC})
+
+	$(call check_file_in_path,${PSQL})
+	${call check_min_version_num,${PSQL},${PSQL_VERSION},${PG_MIN_VERSION}}
+	@@echo ✓ External dependencies are installed
 .PHONY: verify_installed
 
-verify_ready:
-	# ensure postgres is online
-	@@${PSQL} -tc 'show server_version;' | ${AWK} '{print $$NF}';
+verify_pg_server:
+ifeq (error,${PG_SERVER_VERSION})
+	${error Error while connecting to postgres server}
+else
+	${info postgres is online}
+endif
+
+ifneq (${PSQL_VERSION}, ${PG_SERVER_VERSION})
+	${error psql version (${PSQL_VERSION}) does not match the server version (${PG_SERVER_VERSION}) }
+else
+	${info psql and server versions match}
+endif
+	
+ifeq (0,${shell ${PSQL} -qAtc "select count(*) from pg_user where usename='${PG_ROLE}' and usesuper=true"})
+	${error A postgres role with the name "${PG_ROLE}" must exist and have the SUPERUSER privilege.}
+else
+	${info postgres role "${PG_ROLE}" has appropriate privileges}
+endif
+
+	@@echo ✓ PostgreSQL server is ready
 .PHONY: verify_ready
 
-verify: verify_installed verify_ready
+verify: verify_installed verify_pg_server
 .PHONY: verify
 
 pgtap:
 	# clone the source for pgTAP
 	@@${GIT} clone https://github.com/theory/pgtap.git && \
-		cd pgtap && \
+		pushd pgtap && \
 		${GIT} checkout v1.0.0;
 
 install_pgtap: pgtap
-	# install pg_prove
-	@@${CPAN} TAP::Parser::SourceHandler::pgTAP
-	# install pgTAP into postgres
-	@@cd pgtap && \
-		$(MAKE) -s $(MAKEFLAGS) && \
-		$(MAKE) -s $(MAKEFLAGS) installcheck && \
-		$(MAKE) -s $(MAKEFLAGS) install;
+	${info install pgTAP into postgres}
+	@@$(MAKE) -C pgtap -s $(MAKEFLAGS)
+	@@$(MAKE) -C pgtap -s $(MAKEFLAGS) installcheck
+
+ifeq (error,${shell /bin/test -w ${PG_SHAREDIR}/extension || echo error})
+	@@echo "FATAL: The current user does not have permission to write to ${PG_SHAREDIR}/extension and install pgTAP.\
+ It needs to be installed by a user having write access to that directory, e.g. with 'sudo make -C pgtap install'" && exit 1
+else
+	@@$(MAKE) -C pgtap -s $(MAKEFLAGS) install
+endif
 .PHONY: install_pgtap
 
-install_sqitch:
-	# install sqitch
-	@@${CPAN} App::Sqitch
-	# install postgres driver for sqitch
-	@@${CPAN} DBD::Pg
-	# install pg_prove
-	@@${CPAN} TAP::Parser::SourceHandler::pgTAP
-.PHONY: install_sqitch
 
-install: install_sqitch install_pgtap
+install_cpanm: 
+ifeq (${shell which ${CPANM}},)
+	# install cpanm
+	@@${CPAN} App:cpanminus
+endif
+.PHONY: install_cpanm
+
+install_cpandeps:
+	# install Perl dependencies from cpanfile
+	${CPANM} --installdeps .
+.PHONY: install_cpandeps
+
+postinstall_check:
+	@@printf '%s\n%s\n' "${SQITCH_MIN_VERSION}" "${SQITCH_VERSION}" | sort -CV ||\
+ 	(echo "FATAL: ${SQITCH} version should be at least ${SQITCH_MIN_VERSION}. Make sure the ${SQITCH} executable installed by cpanminus is available has the highest priority in the PATH" && exit 1);
+.PHONY: postinstall_check
+
+install: install_cpanm install_cpandeps postinstall_check install_pgtap 
 .PHONY: install
 
 docker_build_sqitch:
