@@ -206,55 +206,17 @@ dev_project: whoami
 
 .PHONY: deploy_tools
 deploy_tools: tools_project
-	# @@${OC} get is/perl || ${OC} create -f openshift/is-perl.yml --save-config=true
-	@@${OC} get is/perl || ${OC} import-image perl:5.26 --from='${OC_REGISTRY}/openshift/perl:5.26' --confirm
-	@@${OC} get is/cas-postgres || ${OC} import-image cas-postgres:${DOCKER_POSTGRES_TAG} --from='${OC_REGISTRY}/openshift/${DOCKER_POSTGRES_IMAGE}:${DOCKER_POSTGRES_TAG}' --confirm
-	@@${OC} get bc/cas-ggircs || ${OC} new-build perl:5.26~https://github.com/bcgov/cas-ggircs.git#feature/deploy
-	# Imported images to openshift...
-	#   - perl
-	#   - cas-postgres
-	#   - cas-ggircs
-
-.PHONY: clean_tools
-clean_tools: tools_project
-	# Purge images from openshift...
-	#   - perl
-	@@${OC} delete is/perl --wait=true --ignore-not-found=true
-	#   - cas-postgres
-	@@${OC} delete is/cas-postgres --wait=true --ignore-not-found=true
-	#   - cas-ggircs
-	@@${OC} delete bc/cas-ggircs --wait=true --ignore-not-found=true
-	@@${OC} delete is/cas-ggircs --wait=true --ignore-not-found=true
+	# Add all image streams and build in the tools project
+	@@${OC} process -f openshift/cas-ggircs-build-config-template.yml | oc apply --wait=true -f-
 
 .PHONY: deploy_dev
 deploy_dev: deploy_tools dev_project
 	# Allow import of images from tools namespace
 	@@${OC} policy add-role-to-group system:image-puller system:serviceaccounts:${OC_DEV_PROJECT} -n ${OC_TOOLS_PROJECT}
-	# Import images from tools
-	${OC} get is/cas-postgres || ${OC} import-image cas-postgres:${DOCKER_POSTGRES_TAG} --from='${OC_REGISTRY}/${OC_TOOLS_PROJECT}/cas-postgres:${DOCKER_POSTGRES_TAG}' --confirm
-	${OC} get is/cas-ggircs || ${OC} import-image cas-ggircs:latest --from='${OC_REGISTRY}/${OC_TOOLS_PROJECT}/cas-ggircs:latest' --confirm
 	# Deploy...
-	${OC} process -f openshift/template-postgresql-persistent.yml POSTGRES_NAMESPACE=${OC_DEV_PROJECT} POSTGRES_VERSION=${DOCKER_POSTGRES_TAG} | oc apply --wait=true -f-
-	# oc rollout latest dc/postgresql -n ${OC_DEV_PROJECT}
+	@@${OC} process -f openshift/cas-ggircs-deploy-config-template.yml | oc apply --wait=true -f-
 	# Migrate...
-
-.PHONY: clean_dev
-clean_dev: dev_project
-	# Purge images from openshift...
-	#   - perl
-	@@${OC} delete is/perl --wait=true --ignore-not-found=true
-	#   - cas-postgres
-	@@${OC} delete is/cas-postgres --wait=true --ignore-not-found=true
-	#   - cas-ggircs
-	@@${OC} delete is/cas-ggircs --wait=true --ignore-not-found=true
-	# Remove deployments from OpenShift...
-	#   - postgresql
-	@@${OC} delete dc/postgresql --wait=true --ignore-not-found=true
-
-.PHONY: openshift_build
-openshift_build:
-	oc new-app --dry-run perl:5.26~https://github.com/bcgov/cas-ggircs.git#feature/deploy -o yaml > openshift/cas-ggircs.yml
-	oc apply -f openshift/cas-ggircs.yml
+	# TODO(wenzowski): automatically run a `sqitch deploy`
 
 .PHONY: s2i_build
 s2i_build:
