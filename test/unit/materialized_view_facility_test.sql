@@ -34,8 +34,8 @@ select col_type_is('ggircs_swrs', 'facility', 'facility_name', 'character varyin
 select col_type_is('ggircs_swrs', 'facility', 'relationship_type', 'character varying(1000)', 'ggircs_swrs.facility column relationship_type has type varchar');
 select col_type_is('ggircs_swrs', 'facility', 'portability_indicator', 'character varying(1000)', 'ggircs_swrs.facility column portability_indicator has type varchar');
 select col_type_is('ggircs_swrs', 'facility', 'status', 'character varying(1000)', 'ggircs_swrs.facility column status has type varchar');
-select col_type_is('ggircs_swrs', 'facility', 'latitude', 'numeric', 'ggircs_swrs.facility column latitude has type varchar');
-select col_type_is('ggircs_swrs', 'facility', 'longitude', 'numeric', 'ggircs_swrs.facility column longitude has type varchar');
+select col_type_is('ggircs_swrs', 'facility', 'latitude', 'character varying(1000)', 'ggircs_swrs.facility column latitude has type varchar');
+select col_type_is('ggircs_swrs', 'facility', 'longitude', 'character varying(1000)', 'ggircs_swrs.facility column longitude has type varchar');
 
 -- insert necessary data into table ghgr_import
 insert into ggircs_swrs.ghgr_import (xml_file) values ($$
@@ -149,12 +149,12 @@ select results_eq(
 );
 select results_eq(
   'select latitude from ggircs_swrs.facility',
-  ARRAY['43.17305'::numeric, '23.45125'::numeric],
+  ARRAY['43.17305'::varchar, '23.45125'::varchar],
   'ggircs_swrs.facility parsed column latitude'
 );
 select results_eq(
   'select longitude from ggircs_swrs.facility',
-  ARRAY['-77.62479'::numeric, '-90.59062'::numeric],
+  ARRAY['-77.62479'::varchar, '-90.59062'::varchar],
   'ggircs_swrs.facility parsed column longitude'
 );
 

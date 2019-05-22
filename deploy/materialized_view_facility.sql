@@ -38,8 +38,8 @@ create materialized view ggircs_swrs.facility as (
              relationship_type varchar(1000) path './RegistrationData/Facility/Details/RelationshipType',
              portability_indicator varchar(1000) path './RegistrationData/Facility/Details/PortabilityIndicator',
              status varchar(1000) path './RegistrationData/Facility/Details/Status',
-             latitude numeric path './RegistrationData/Facility/Address/GeographicAddress/Latitude',
-             longitude numeric path './RegistrationData/Facility/Address/GeographicAddress/Longitude'
+             latitude varchar(1000) path './RegistrationData/Facility/Address/GeographicAddress/Latitude',
+             longitude varchar(1000) path './RegistrationData/Facility/Address/GeographicAddress/Longitude'
          ) as rd_facility_details,
 
        xmltable(
@@ -50,8 +50,8 @@ create materialized view ggircs_swrs.facility as (
              relationship_type varchar(1000) path './VerifyTombstone/Facility/Details/RelationshipType',
              portability_indicator varchar(1000) path './VerifyTombstone/Facility/Details/PortabilityIndicator',
              status varchar(1000) path './VerifyTombstone/Facility/Details/Status',
-             latitude numeric path './VerifyTombstone/Facility/Address/GeographicalAddress/Latitude',
-             longitude numeric path './VerifyTombstone/Facility/Address/GeographicalAddress/Longitude'
+             latitude varchar(1000) path './VerifyTombstone/Facility/Address/GeographicalAddress/Latitude',
+             longitude varchar(1000) path './VerifyTombstone/Facility/Address/GeographicalAddress/Longitude'
          ) as vt_facility_details
   order by ghgr_import_id desc
 ) with no data;
