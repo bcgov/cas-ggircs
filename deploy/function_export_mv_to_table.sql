@@ -13,9 +13,8 @@
 
 begin;
 
-select ggircs_swrs.refresh_materialized_views();
-
 create or replace function ggircs_swrs.export_mv_to_table()
+
   returns void as
 $$
   /** Create all tables from materialized views that are not being split up **/
@@ -27,6 +26,7 @@ $$
                        'address, descriptor}';
 
   begin
+    perform ggircs_swrs.refresh_materialized_views();
     for i in 1 .. array_upper(mv_array, 1)
       loop
 
@@ -483,6 +483,26 @@ $$
             and unit.sub_process_idx = activity.sub_process_idx
             and unit.activity_name = activity.activity_name;
       alter table ggircs.unit add constraint ggircs_unit_activity_foreign_key foreign key (activity_id) references ggircs.activity(id);
+
+
+  refresh materialized view ggircs_swrs.report with no data;
+  refresh materialized view ggircs_swrs.final_report with no data;
+  refresh materialized view ggircs_swrs.facility with no data;
+  refresh materialized view ggircs_swrs.organisation with no data;
+  refresh materialized view ggircs_swrs.activity with no data;
+  refresh materialized view ggircs_swrs.unit with no data;
+  refresh materialized view ggircs_swrs.fuel with no data;
+  refresh materialized view ggircs_swrs.emission with no data;
+  refresh materialized view ggircs_swrs.measured_emission_factor with no data;
+  refresh materialized view ggircs_swrs.descriptor with no data;
+  refresh materialized view ggircs_swrs.address with no data;
+  refresh materialized view ggircs_swrs.identifier with no data;
+  refresh materialized view ggircs_swrs.naics with no data;
+  refresh materialized view ggircs_swrs.contact with no data;
+  refresh materialized view ggircs_swrs.permit with no data;
+  refresh materialized view ggircs_swrs.parent_organisation with no data;
+  refresh materialized view ggircs_swrs.flat with no data;
+
 
   end;
 
