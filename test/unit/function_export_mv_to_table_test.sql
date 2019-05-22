@@ -715,6 +715,13 @@ $$), ($$
           <PulpAndPaperCarbonates/>
         </SubProcess>
       </Process>
+      <Process>
+        <SubProcess SubprocessName="activity test" InformationRequirement="MandatoryAdditional">
+          <Amount AmtDomain="PulpAndPaperBlackLiquor" AmtAction="Combusted" AmtPeriod="Annual">168389</Amount>
+          <PercentSolidsByWeight>53</PercentSolidsByWeight>
+          <PulpAndPaperCarbonates/>
+        </SubProcess>
+      </Process>
     </ActivityPages>
   </ActivityData>
 </ReportData>
@@ -889,20 +896,22 @@ select results_eq(
     'Foreign key unit_id in ggircs.unit references ggircs.activity.id'
 );
 
-select activity_id from ggircs.descriptor;
+select ghgr_import_id, process_idx, sub_process_idx, grandparent, parent, activity_name, activity_id, attribute, attr_value, node_value from ggircs.descriptor;
 select fuel_type from ggircs.fuel limit 1;
-select id from ggircs.activity;
+select ghgr_import_id, process_idx, sub_process_idx, activity_name, sub_process_name from ggircs.activity;
+select fuel_type from ggircs.fuel limit 1;
+select ghgr_import_id, process_idx, sub_process_idx, activity_name, sub_process_name from ggircs.additional_reportable_activity;
 
+select * from ggircs_swrs.final_report;
 -- Descriptor -> Activity
 select results_eq(
     $$select distinct(activity.ghgr_import_id) from ggircs.descriptor
       join ggircs.activity
       on
         descriptor.activity_id = activity.id
-        order by activity.ghgr_import_id
     $$,
 
-    'select distinct(ghgr_import_id) from ggircs.activity order by ghgr_import_id',
+    $$select distinct(ghgr_import_id) from ggircs.activity where activity.sub_process_name ='activity test'$$,
 
     'Foreign key activity_id in ggircs.descriptor references ggircs.activity.id'
 );
