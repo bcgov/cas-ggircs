@@ -795,7 +795,7 @@ select has_pk('ggircs', 'parent_organisation', 'ggircs_parent_organisation has p
 select has_pk('ggircs', 'contact', 'ggircs_contact has primary key');
 select has_pk('ggircs', 'address', 'ggircs_address has primary key');
 select has_pk('ggircs', 'descriptor', 'ggircs_descriptor has primary key');
-select has_pk('ggircs', 'activity', 'ggircs_additional_reportable_activity has primary key');
+select has_pk('ggircs', 'additional_reportable_activity', 'ggircs_additional_reportable_activity has primary key');
 
 -- Test tables have foreign key constraints (No FK constraints: report, final_report, parent_organisation)
 -- select has_fk('ggircs', 'report', 'ggircs_report has foreign key constraint(s)');
@@ -803,6 +803,7 @@ select has_fk('ggircs', 'organisation', 'ggircs_organisation has foreign key con
 select has_fk('ggircs', 'single_facility', 'ggircs_single_facility has foreign key constraint(s)');
 select has_fk('ggircs', 'lfo_facility', 'ggircs_lfo_facility has foreign key constraint(s)');
 select has_fk('ggircs', 'activity', 'ggircs_activity has foreign key constraint(s)');
+select has_fk('ggircs', 'additional_reportable_activity', 'ggircs_activity has foreign key constraint(s)');
 select has_fk('ggircs', 'unit', 'ggircs_unit has foreign key constraint(s)');
 select has_fk('ggircs', 'identifier', 'ggircs_identifier has foreign key constraint(s)');
 select has_fk('ggircs', 'naics', 'ggircs_naics has foreign key constraint(s)');

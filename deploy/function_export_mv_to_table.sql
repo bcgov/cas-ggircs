@@ -499,7 +499,7 @@ $$
           where descriptor.ghgr_import_id = additional_reportable_activity.ghgr_import_id
             and descriptor.process_idx = additional_reportable_activity.process_idx
             and descriptor.sub_process_idx = additional_reportable_activity.sub_process_idx
-            and descriptor.additional_reportable_activity_name = additional_reportable_activity.additional_reportable_activity_name;
+            and descriptor.activity_name = additional_reportable_activity.activity_name;
       alter table ggircs.descriptor add constraint ggircs_descriptor_additional_reportable_activity_foreign_key foreign key (additional_reportable_activity_id) references ggircs.additional_reportable_activity(id);
 
       -- Create FK/PK relation between Unit and Activity
@@ -509,7 +509,7 @@ $$
           where unit.ghgr_import_id = additional_reportable_activity.ghgr_import_id
             and unit.process_idx = additional_reportable_activity.process_idx
             and unit.sub_process_idx = additional_reportable_activity.sub_process_idx
-            and unit.additional_reportable_activity_name = additional_reportable_activity.additional_reportable_activity_name;
+            and unit.activity_name = additional_reportable_activity.activity_name;
       alter table ggircs.unit add constraint ggircs_unit_additional_reportable_activity_foreign_key foreign key (additional_reportable_activity_id) references ggircs.additional_reportable_activity(id);
 
     /** Remaining FK's **/
