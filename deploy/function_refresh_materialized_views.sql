@@ -27,6 +27,6 @@ begin
   refresh materialized view ggircs_swrs.flat;
 end
 
-$$ language plpgsql stable ;
+$$ language plpgsql volatile ;
 
 commit;
