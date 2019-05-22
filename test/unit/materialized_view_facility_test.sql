@@ -88,8 +88,8 @@ $$), ($$
       </Details>
       <Address>
         <GeographicalAddress>
-          <Latitude>43.17305</Latitude>
-          <Longitude>-77.62479</Longitude>
+          <Latitude>-43.17305</Latitude>
+          <Longitude>54 12</Longitude>
         </GeographicalAddress>
       </Address>
     </Facility>
@@ -149,12 +149,12 @@ select results_eq(
 );
 select results_eq(
   'select latitude from ggircs_swrs.facility',
-  ARRAY['43.17305'::numeric, '23.45125'::numeric],
+  ARRAY['-43.17305'::numeric, '23.45125'::numeric],
   'ggircs_swrs.facility parsed column latitude'
 );
 select results_eq(
   'select longitude from ggircs_swrs.facility',
-  ARRAY['-77.62479'::numeric, '-90.59062'::numeric],
+  ARRAY[54::numeric, '-90.59062'::numeric],
   'ggircs_swrs.facility parsed column longitude'
 );
 

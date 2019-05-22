@@ -225,8 +225,8 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
                   <MeasuredEmissionFactorUnitType>red</MeasuredEmissionFactorUnitType>
                   <OtherFlareDetails>flare!</OtherFlareDetails>
                   <Q1>1</Q1>
-                  <Q2>2</Q2>
-                  <Q3>3</Q3>
+                  <Q2></Q2>
+                  <Q3/>
                   <Q4>4</Q4>
                   <MeasuredEmissionFactors/>
                   <WastewaterProcessingFactors/>
@@ -414,13 +414,13 @@ select results_eq(
 
 select results_eq(
     'select q2 from ggircs_swrs.fuel where fuel_idx=0 and unit_idx=0',
-    ARRAY['2'::numeric],
+    ARRAY[null::numeric],
     'column q2 in ggircs_swrs.fuel was properly parsed from xml'
 );
 
 select results_eq(
     'select q3 from ggircs_swrs.fuel where fuel_idx=0 and unit_idx=0',
-    ARRAY['3'::numeric],
+    ARRAY[null::numeric],
     'column q3 in ggircs_swrs.fuel was properly parsed from xml'
 );
 

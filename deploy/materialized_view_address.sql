@@ -10,7 +10,43 @@ create materialized view ggircs_swrs.address as (
     from ggircs_swrs.ghgr_import as _ghgr_import
     order by ghgr_import_id asc
   )
-  select ghgr_import_id, address_details.*
+  select ghgr_import_id,
+         address_details.swrs_facility_id,
+         swrs_organisation_id,
+         path_context,
+         type,
+         contact_idx,
+         parent_organisation_idx,
+         physical_address_municipality,
+         physical_address_unit_number,
+         physical_address_street_number,
+         physical_address_street_number_suffix,
+         physical_address_street_name,
+         physical_address_street_type,
+         physical_address_street_direction,
+         physical_address_prov_terr_state,
+         physical_address_postal_code_zip_code,
+         physical_address_country,
+         physical_address_national_topographical_description,
+         physical_address_additional_information,
+         physical_address_land_survey_description,
+         mailing_address_delivery_mode,
+         mailing_address_po_box_number,
+         mailing_address_unit_number,
+         mailing_address_rural_route_number,
+         mailing_address_street_number,
+         mailing_address_street_number_suffix,
+         mailing_address_street_name,
+         mailing_address_street_type,
+         mailing_address_street_direction,
+         mailing_address_municipality,
+         mailing_address_prov_terr_state,
+         mailing_address_postal_code_zip_code,
+         mailing_address_country,
+         mailing_address_additional_information,
+         substring(geographic_address_latitude from '-*[0-9]+\.*[0-9]+')::numeric as geographic_address_latitude,
+         substring(geographic_address_longitude from '-*[0-9]+\.*[0-9]+')::numeric as geographic_address_longitude
+
   from x,
        xmltable(
            '//Address[not(ancestor::Stack)]'
@@ -51,8 +87,8 @@ create materialized view ggircs_swrs.address as (
                 mailing_address_country varchar(1000) path './MailingAddress/Country[normalize-space(.)]',
                 mailing_address_additional_information varchar(10000) path './MailingAddress/AdditionalInformation[normalize-space(.)]',
 
-                geographic_address_latitude numeric path './GeographicAddress/Latitude[normalize-space(.)]',
-                geographic_address_longitude numeric path './GeographicAddress/Longitude[normalize-space(.)]'
+                geographic_address_latitude varchar(1000) path './GeographicAddress/Latitude[normalize-space(.)]',
+                geographic_address_longitude varchar(1000) path './GeographicAddress/Longitude[normalize-space(.)]'
          ) as address_details
 ) with no data;
 
