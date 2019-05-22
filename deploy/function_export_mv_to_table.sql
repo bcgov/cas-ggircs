@@ -31,13 +31,13 @@ $$
 
         execute
           'drop table if exists ggircs.' || quote_ident(mv_array[i]) || ' cascade';
-        -- execute 'refresh materialized view ggircs_swrs.' || mv_array[i] || ' with data';
+           execute 'refresh materialized view ggircs_swrs.' || mv_array[i] || ' with data';
         execute
           'create table ggircs.' || quote_ident(mv_array[i]) ||
                 ' as (select x.* from ggircs_swrs.' || quote_ident(mv_array[i]) ||
                 ' as x inner join ggircs_swrs.final_report as final_report ' ||
                 ' on x.ghgr_import_id = final_report.ghgr_import_id)';
-        -- execute 'refresh materialized view ggircs_swrs.' || mv_array[i] || ' with no data';
+           execute 'refresh materialized view ggircs_swrs.' || mv_array[i] || ' with no data';
         execute
           'alter table ggircs.' || quote_ident(mv_array[i]) ||
           ' add column id int generated always as identity primary key';
@@ -50,6 +50,8 @@ $$
 
     execute
       'drop table if exists ggircs.non_attributable_emission';
+
+    execute 'refresh materialized view ggircs_swrs.emission with data';
 
     execute
       'create table ggircs.non_attributable_emission ' ||
@@ -80,11 +82,15 @@ $$
 
     execute 'alter table ggircs.attributable_emission add column id int generated always as identity primary key';
 
+    execute 'refresh materialized view ggircs_swrs.emission with no data';
     /** ggircs_swrs.facility split into: ggircs.lfo_facility && ggircs.single_facility**/
     raise notice 'Exporting lfo_facility';
 
+
     execute
       'drop table if exists ggircs.lfo_facility';
+
+    execute 'refresh materialized view ggircs_swrs.facility with data';
 
     execute
       'create table ggircs.lfo_facility ' ||
@@ -127,8 +133,12 @@ $$
 
     execute 'alter table ggircs.single_facility add column id int generated always as identity primary key';
 
+    execute 'refresh materialized view ggircs_swrs.facility with no data';
+
     /** Create additional_reportable_activity table**/
     raise notice 'Exporting additional_reportable_activity';
+
+    -- execute 'refresh materialized view ggircs_swrs.activity with data';
 
     execute
       'drop table if exists ggircs.additional_reportable_activity';
@@ -147,6 +157,7 @@ $$
                                    '''Additional reportable information'') )';
 
     execute 'alter table ggircs.additional_reportable_activity add column id int generated always as identity primary key';
+    execute 'refresh materialized view ggircs_swrs.activity with no data';
 
     /** NON-Attributable Emission FKs**/
       -- Create FK/PK relation between Non-Attributable_Emission and Activity

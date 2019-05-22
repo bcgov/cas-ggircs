@@ -6,7 +6,7 @@ begin;
 create or replace function ggircs_swrs.refresh_materialized_views()
   returns void as
 $$
-  
+
 begin
   refresh materialized view ggircs_swrs.report;
   refresh materialized view ggircs_swrs.final_report;
