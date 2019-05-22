@@ -212,12 +212,12 @@ select col_hasnt_default('ggircs_swrs', 'address', 'mailing_address_additional_i
 
 --  Geographic Address Columns
 --  select has_column(       'ggircs_swrs', 'address', 'geographic_address_latitude', 'address.geographic_address_latitude column should exist');
-select col_type_is(      'ggircs_swrs', 'address', 'geographic_address_latitude', 'numeric', 'address.geographic_address_latitude column should be type varchar');
+select col_type_is(      'ggircs_swrs', 'address', 'geographic_address_latitude', 'character varying(1000)', 'address.geographic_address_latitude column should be type varchar');
 select col_is_null(      'ggircs_swrs', 'address', 'geographic_address_latitude', 'address.geographic_address_latitude column should allow null');
 select col_hasnt_default('ggircs_swrs', 'address', 'geographic_address_latitude', 'address.geographic_address_latitude column should not have a default');
 
 --  select has_column(       'ggircs_swrs', 'address', 'geographic_address_longitude', 'address.geographic_address_longitude column should exist');
-select col_type_is(      'ggircs_swrs', 'address', 'geographic_address_longitude', 'numeric', 'address.geographic_address_longitude column should be type varchar');
+select col_type_is(      'ggircs_swrs', 'address', 'geographic_address_longitude', 'character varying(1000)', 'address.geographic_address_longitude column should be type varchar');
 select col_is_null(      'ggircs_swrs', 'address', 'geographic_address_longitude', 'address.geographic_address_longitude column should allow null');
 select col_hasnt_default('ggircs_swrs', 'address', 'geographic_address_longitude', 'address.geographic_address_longitude column should not have a default');
 
@@ -632,12 +632,12 @@ select results_eq(
 -- Geographic Address columns
 select results_eq(
   $$select geographic_address_latitude from ggircs_swrs.address where address.type='Facility'$$,
-  ARRAY[23.45125::numeric],
+  ARRAY[23.45125::varchar],
   'ggircs_swrs.address parsed column geographic_address_latitude'
 );
 select results_eq(
   $$select geographic_address_longitude from ggircs_swrs.address where address.type='Facility'$$,
-  ARRAY[-90.59062::numeric],
+  ARRAY['-90.59062'::varchar],
   'ggircs_swrs.address parsed column geographic_address_longitude'
 );
 
@@ -809,12 +809,12 @@ select results_eq(
 -- Geographic Address columns
 select results_eq(
   $$select geographic_address_latitude from ggircs_swrs.address where address.type='Organisation'$$,
-  ARRAY[23.45125::numeric],
+  ARRAY[23.45125::varchar],
   'ggircs_swrs.address parsed column geographic_address_latitude'
 );
 select results_eq(
   $$select geographic_address_longitude from ggircs_swrs.address where address.type='Organisation'$$,
-  ARRAY[-90.59062::numeric],
+  ARRAY['-90.59062'::varchar],
   'ggircs_swrs.address parsed column geographic_address_longitude'
 );
 
