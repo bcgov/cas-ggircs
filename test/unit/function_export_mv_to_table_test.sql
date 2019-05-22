@@ -897,13 +897,19 @@ select results_eq(
     'Foreign key unit_id in ggircs.unit references ggircs.activity.id'
 );
 
-select ghgr_import_id, process_idx, sub_process_idx, grandparent, parent, activity_name, activity_id, attribute, attr_value, node_value from ggircs.descriptor;
-select fuel_type from ggircs.fuel limit 1;
-select ghgr_import_id, process_idx, sub_process_idx, activity_name, sub_process_name from ggircs.activity;
-select fuel_type from ggircs.fuel limit 1;
-select ghgr_import_id, process_idx, sub_process_idx, activity_name, sub_process_name from ggircs.additional_reportable_activity;
+-- Unit -> Additional Reportable Activity
+select results_eq(
+    $$select distinct(additional_reportable_activity.ghgr_import_id) from ggircs.unit
+      join ggircs.additional_reportable_activity
+      on
+        unit.activity_id = additional_reportable_activity.id
+    $$,
 
-select * from ggircs_swrs.final_report;
+    'select distinct(ghgr_import_id) from ggircs.additional_reportable_activity',
+
+    'Foreign key unit_id in ggircs.unit references ggircs.additional_reportable_activity.id'
+);
+
 -- Descriptor -> Activity
 select results_eq(
     $$select distinct(activity.ghgr_import_id) from ggircs.descriptor
@@ -915,6 +921,19 @@ select results_eq(
     $$select distinct(ghgr_import_id) from ggircs.activity where activity.sub_process_name ='activity test'$$,
 
     'Foreign key activity_id in ggircs.descriptor references ggircs.activity.id'
+);
+
+-- Descriptor -> Additional Reportable Activity
+select results_eq(
+    $$select distinct(additional_reportable_activity.ghgr_import_id) from ggircs.descriptor
+      join ggircs.additional_reportable_activity
+      on
+        descriptor.additional_reportable_activity_id = additional_reportable_activity.id
+    $$,
+
+    $$select distinct(ghgr_import_id) from ggircs.additional_reportable_activity where additional_reportable_activity.sub_process_name !='additional_reportable_activity test'$$,
+
+    'Foreign key additional_reportable_activity_id in ggircs.descriptor references ggircs.additional_reportable_activity.id'
 );
 
 -- Activity -> Single Facility
@@ -930,6 +949,19 @@ select results_eq(
     'Foreign key single_facility_id in ggircs.activity references ggircs.single_facility.id'
 );
 
+-- Addtional Reportable Activity -> Single Facility
+select results_eq(
+    $$select distinct(single_facility.ghgr_import_id) from ggircs.additional_reportable_activity
+      join ggircs.single_facility
+      on
+        additional_reportable_activity.single_facility_id = single_facility.id
+    $$,
+
+    'select distinct(ghgr_import_id) from ggircs.single_facility',
+
+    'Foreign key single_facility_id in ggircs.additional_reportable_activity references ggircs.single_facility.id'
+);
+
 -- Activity -> Report
 select results_eq(
     $$select distinct(report.ghgr_import_id) from ggircs.activity
@@ -942,6 +974,20 @@ select results_eq(
     'select distinct(ghgr_import_id) from ggircs.report order by ghgr_import_id asc',
 
     'Foreign key report_id in ggircs.activity references ggircs.report.id'
+);
+
+-- Additional Reportable Activity -> Report
+select results_eq(
+    $$select distinct(report.ghgr_import_id) from ggircs.additional_reportable_activity
+      join ggircs.report
+      on
+        additional_reportable_activity.report_id = report.id
+        order by report.ghgr_import_id asc
+    $$,
+
+    'select distinct(ghgr_import_id) from ggircs.report order by ghgr_import_id asc',
+
+    'Foreign key report_id in ggircs.additional_reportable_activity references ggircs.report.id'
 );
 
 -- Single Facility -> Organisation
@@ -1114,6 +1160,19 @@ select results_eq(
     'select ghgr_import_id from ggircs.lfo_facility',
 
     'Foreign key lfo_facility_id in ggircs.activity references ggircs.lfo_facility.id'
+);
+
+-- Additional Reportable Activity -> LFO Facility
+select results_eq(
+    $$select distinct(lfo_facility.ghgr_import_id) from ggircs.additional_reportable_activity
+      join ggircs.lfo_facility
+      on
+        additional_reportable_activity.lfo_facility_id = lfo_facility.id
+    $$,
+
+    'select ghgr_import_id from ggircs.lfo_facility',
+
+    'Foreign key lfo_facility_id in ggircs.additional_reportable_activity references ggircs.lfo_facility.id'
 );
 
 -- LFO Facility -> Report
