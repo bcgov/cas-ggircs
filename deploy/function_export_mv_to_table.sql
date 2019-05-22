@@ -22,6 +22,25 @@ $$
                        'address, descriptor}';
 
   begin
+
+  refresh materialized view ggircs_swrs.report with data;
+  refresh materialized view ggircs_swrs.final_report with data;
+  refresh materialized view ggircs_swrs.facility with data;
+  refresh materialized view ggircs_swrs.organisation with data;
+  refresh materialized view ggircs_swrs.activity with data;
+  refresh materialized view ggircs_swrs.unit with data;
+  refresh materialized view ggircs_swrs.fuel with data;
+  refresh materialized view ggircs_swrs.emission with data;
+  refresh materialized view ggircs_swrs.measured_emission_factor with data;
+  refresh materialized view ggircs_swrs.descriptor with data;
+  refresh materialized view ggircs_swrs.address with data;
+  refresh materialized view ggircs_swrs.identifier with data;
+  refresh materialized view ggircs_swrs.naics with data;
+  refresh materialized view ggircs_swrs.contact with data;
+  refresh materialized view ggircs_swrs.permit with data;
+  refresh materialized view ggircs_swrs.parent_organisation with data;
+  refresh materialized view ggircs_swrs.flat with data;
+
     for i in 1 .. array_upper(mv_array, 1)
       loop
 
@@ -29,13 +48,12 @@ $$
 
         execute
           'drop table if exists ggircs.' || quote_ident(mv_array[i]) || ' cascade';
-        -- execute 'refresh materialized view ggircs_swrs.' || mv_array[i] || ' with data';
+      --  execute 'refresh materialized view ggircs_swrs.' || mv_array[i] || ' with data';
         execute
           'create table ggircs.' || quote_ident(mv_array[i]) ||
                 ' as (select x.* from ggircs_swrs.' || quote_ident(mv_array[i]) ||
                 ' as x inner join ggircs_swrs.final_report as final_report ' ||
                 ' on x.ghgr_import_id = final_report.ghgr_import_id)';
-        -- execute 'refresh materialized view ggircs_swrs.' || mv_array[i] || ' with no data';
         execute
           'alter table ggircs.' || quote_ident(mv_array[i]) ||
           ' add column id int generated always as identity primary key';
@@ -102,7 +120,7 @@ $$
             and emission.unit_idx = fuel.unit_idx
             and emission.fuel_idx = fuel.fuel_idx;
       alter table ggircs.emission add constraint ggircs_emission_fuel_foreign_key foreign key (fuel_id) references ggircs.fuel(id);
--- --
+
       -- Create FK/PK relation between_Emission and NAICS
       alter table ggircs.emission add column naics_id int;
       create index ggircs_emission_naics_index on ggircs.emission (naics_id);
@@ -110,21 +128,21 @@ $$
           where emission.ghgr_import_id = naics.ghgr_import_id
           and naics.path_context = 'RegistrationData';
       alter table ggircs.emission add constraint ggircs_emission_naics_foreign_key foreign key (naics_id) references ggircs.naics(id);
--- --
+
       -- Create FK/PK relation between_Emission and Organisation
       alter table ggircs.emission add column organisation_id int;
       create index ggircs_emission_organisation_index on ggircs.emission (organisation_id);
       update ggircs.emission set organisation_id = organisation.id from ggircs.organisation
           where emission.ghgr_import_id = organisation.ghgr_import_id;
       alter table ggircs.emission add constraint ggircs_emission_organisation_foreign_key foreign key (organisation_id) references ggircs.organisation(id);
--- --
+
       -- Create FK/PK relation between_Emission and Report
       alter table ggircs.emission add column report_id int;
       create index ggircs_emission_report_index on ggircs.emission (report_id);
       update ggircs.emission set report_id = report.id from ggircs.report
           where emission.ghgr_import_id = report.ghgr_import_id;
       alter table ggircs.emission add constraint ggircs_emission_report_foreign_key foreign key (report_id) references ggircs.report(id);
--- --
+
       -- Create FK/PK relation between_Emission and Unit
       alter table ggircs.emission add column unit_id int;
       create index ggircs_emission_unit_index on ggircs.emission (unit_id);
@@ -341,6 +359,25 @@ $$
             and unit.sub_process_idx = activity.sub_process_idx
             and unit.activity_name = activity.activity_name;
       alter table ggircs.unit add constraint ggircs_unit_activity_foreign_key foreign key (activity_id) references ggircs.activity(id);
+
+      -- Todo: Write as a function
+      refresh materialized view ggircs_swrs.report with no data;
+      refresh materialized view ggircs_swrs.final_report with no data;
+      refresh materialized view ggircs_swrs.facility with no data;
+      refresh materialized view ggircs_swrs.organisation with no data;
+      refresh materialized view ggircs_swrs.activity with no data;
+      refresh materialized view ggircs_swrs.unit with no data;
+      refresh materialized view ggircs_swrs.fuel with no data;
+      refresh materialized view ggircs_swrs.emission with no data;
+      refresh materialized view ggircs_swrs.measured_emission_factor with no data;
+      refresh materialized view ggircs_swrs.descriptor with no data;
+      refresh materialized view ggircs_swrs.address with no data;
+      refresh materialized view ggircs_swrs.identifier with no data;
+      refresh materialized view ggircs_swrs.naics with no data;
+      refresh materialized view ggircs_swrs.contact with no data;
+      refresh materialized view ggircs_swrs.permit with no data;
+      refresh materialized view ggircs_swrs.parent_organisation with no data;
+      refresh materialized view ggircs_swrs.flat with no data;
 
   end;
 

@@ -720,6 +720,9 @@ $$), ($$
 </ReportData>
 $$);
 
+-- Run table export function
+select ggircs_swrs.export_mv_to_table();
+
 -- Refresh all materialized views
 refresh materialized view ggircs_swrs.report with data;
 refresh materialized view ggircs_swrs.organisation with data;
@@ -737,8 +740,7 @@ refresh materialized view ggircs_swrs.contact with data;
 refresh materialized view ggircs_swrs.address with data;
 refresh materialized view ggircs_swrs.descriptor with data;
 
--- Run table export function
-select ggircs_swrs.export_mv_to_table();
+
 
 -- Function export_mv_to_table exists
 select has_function( 'ggircs_swrs', 'export_mv_to_table', 'Schema ggircs_swrs has function export_mv_to_table()' );
