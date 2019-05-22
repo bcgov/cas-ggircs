@@ -889,15 +889,20 @@ select results_eq(
     'Foreign key unit_id in ggircs.unit references ggircs.activity.id'
 );
 
+select activity_id from ggircs.descriptor;
+select fuel_type from ggircs.fuel limit 1;
+select id from ggircs.activity;
+
 -- Descriptor -> Activity
 select results_eq(
     $$select distinct(activity.ghgr_import_id) from ggircs.descriptor
       join ggircs.activity
       on
         descriptor.activity_id = activity.id
+        order by activity.ghgr_import_id
     $$,
 
-    'select distinct(ghgr_import_id) from ggircs.activity',
+    'select distinct(ghgr_import_id) from ggircs.activity order by ghgr_import_id',
 
     'Foreign key activity_id in ggircs.descriptor references ggircs.activity.id'
 );

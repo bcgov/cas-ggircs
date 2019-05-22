@@ -19,7 +19,7 @@ $$
   declare
 
        mv_array text[] := '{report, organisation, ' ||
-                       'activity, unit, identifier, naics, ' ||
+                       'unit, identifier, naics, ' ||
                        'final_report, fuel, permit, parent_organisation, contact, ' ||
                        'address, descriptor}';
 
@@ -155,6 +155,27 @@ $$
                                    '''Additional reportable information'') )';
 
     execute 'alter table ggircs.additional_reportable_activity add column id int generated always as identity primary key';
+    
+    /** Create activity table **/
+    raise notice 'Exporting activity';
+
+    execute
+      'drop table if exists ggircs.activity';
+
+    execute
+      'create table ggircs.activity ' ||
+      'as (select x.* from ggircs_swrs.activity ' ||
+      'as x inner join ggircs_swrs.final_report as final_report ' ||
+      'on x.ghgr_import_id = final_report.ghgr_import_id ' ||
+      'and x.sub_process_name not in  (''Additional Reportable Information as per WCI.352(i)(1)-(12)'',' ||
+                                   '''Additional Reportable Information as per WCI.352(i)(13)'', ' ||
+                                   '''Additional Reportable Information as per WCI.362(g)(21)'', ' ||
+                                   '''Additional information for cement and lime production facilities only (not aggregated in totals)'', ' ||
+                                   '''Additional information for cement and lime production facilities only (not aggregated intotals)'', ' ||
+                                   '''Additional information required when other activities selected are Activities in Table 2 rows 2, 4, 5 , or 6'', ' ||
+                                   '''Additional reportable information'') )';
+
+    execute 'alter table ggircs.activity add column id int generated always as identity primary key';
 
     /** NON-Attributable Emission FKs**/
       -- Create FK/PK relation between Non-Attributable_Emission and Activity
