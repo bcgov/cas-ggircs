@@ -34,7 +34,6 @@ $$
 
         execute
           'drop table if exists ggircs.' || quote_ident(mv_array[i]) || ' cascade';
---            execute 'refresh materialized view ggircs_swrs.' || mv_array[i] || ' with data';
         execute
           'create table ggircs.' || quote_ident(mv_array[i]) ||
                 ' as (select x.* from ggircs_swrs.' || quote_ident(mv_array[i]) ||
@@ -52,8 +51,6 @@ $$
 
     execute
       'drop table if exists ggircs.non_attributable_emission';
-
-    execute 'refresh materialized view ggircs_swrs.emission with data';
 
     execute
       'create table ggircs.non_attributable_emission ' ||
@@ -90,8 +87,6 @@ $$
 
     execute
       'drop table if exists ggircs.lfo_facility';
-
-    execute 'refresh materialized view ggircs_swrs.facility with data';
 
     execute
       'create table ggircs.lfo_facility ' ||
@@ -136,8 +131,6 @@ $$
 
     /** Create additional_reportable_activity table**/
     raise notice 'Exporting additional_reportable_activity';
-
-    -- execute 'refresh materialized view ggircs_swrs.activity with data';
 
     execute
       'drop table if exists ggircs.additional_reportable_activity';
