@@ -44,15 +44,6 @@ $$
 
   end loop;
 
-    -- Add BCGHGID column to naics
-    execute 'alter table ggircs.naics add column bcghgid varchar(1000)';
-    execute 'update ggircs.naics as lfo set bcghgid = ggircs_swrs.identifier.identifier_value ' ||
-            'from ggircs.naics inner join ggircs_swrs.identifier ' ||
-            'on ggircs.naics.ghgr_import_id = ggircs_swrs.identifier.ghgr_import_id ' ||
-            'and ggircs_swrs.identifier.identifier_type = ''BCGHGID'' ' ||
-            'and ggircs_swrs.identifier.identifier_value is not null ' ||
-            'and ggircs_swrs.identifier.identifier_value != '''' ';
-
     /** ggircs_swrs.emission split into: ggircs.non_attributable_emission && ggircs_attributable_emission **/
     raise notice 'Exporting non_attributable_emission';
 
@@ -110,8 +101,24 @@ $$
             'and ggircs_swrs.identifier.identifier_value is not null ' ||
             'and ggircs_swrs.identifier.identifier_value != '''' ';
 
+    -- Add naics code column to lfo_facility
+    execute 'alter table ggircs.lfo_facility add column naics_code varchar(1000)';
+    execute 'update ggircs.lfo_facility as lfo set naics_code = ggircs_swrs.naics.naics_code ' ||
+            'from ggircs.lfo_facility inner join ggircs_swrs.naics ' ||
+            'on ggircs.lfo_facility.ghgr_import_id = ggircs_swrs.naics.ghgr_import_id ' ||
+            'and ggircs_swrs.naics.naics_code is not null ' ||
+            'and ggircs_swrs.naics.naics_code != '''' ';
+
+    -- Add naics classification column to lfo_facility
+    execute 'alter table ggircs.lfo_facility add column naics_classification varchar(1000)';
+    execute 'update ggircs.lfo_facility as lfo set naics_classification = ggircs_swrs.naics.naics_classification ' ||
+            'from ggircs.lfo_facility inner join ggircs_swrs.naics ' ||
+            'on ggircs.lfo_facility.ghgr_import_id = ggircs_swrs.naics.ghgr_import_id ' ||
+            'and ggircs_swrs.naics.naics_classification is not null ' ||
+            'and ggircs_swrs.naics.naics_classification != '''' ';
+
     execute 'alter table ggircs.lfo_facility add column id int generated always as identity primary key';
-    
+
     raise notice 'Exporting single_facility';
 
     execute
@@ -132,6 +139,22 @@ $$
             'and ggircs_swrs.identifier.identifier_type = ''BCGHGID'' ' ||
             'and ggircs_swrs.identifier.identifier_value is not null ' ||
             'and ggircs_swrs.identifier.identifier_value != '''' ';
+
+    -- Add naics code column to single_facility
+    execute 'alter table ggircs.single_facility add column naics_code varchar(1000)';
+    execute 'update ggircs.single_facility as lfo set naics_code = ggircs_swrs.naics.naics_code ' ||
+            'from ggircs.single_facility inner join ggircs_swrs.naics ' ||
+            'on ggircs.single_facility.ghgr_import_id = ggircs_swrs.naics.ghgr_import_id ' ||
+            'and ggircs_swrs.naics.naics_code is not null ' ||
+            'and ggircs_swrs.naics.naics_code != '''' ';
+
+    -- Add naics classification column to single_facility
+    execute 'alter table ggircs.single_facility add column naics_classification varchar(1000)';
+    execute 'update ggircs.single_facility as lfo set naics_classification = ggircs_swrs.naics.naics_classification ' ||
+            'from ggircs.single_facility inner join ggircs_swrs.naics ' ||
+            'on ggircs.single_facility.ghgr_import_id = ggircs_swrs.naics.ghgr_import_id ' ||
+            'and ggircs_swrs.naics.naics_classification is not null ' ||
+            'and ggircs_swrs.naics.naics_classification != '''' ';
 
     execute 'alter table ggircs.single_facility add column id int generated always as identity primary key';
 
