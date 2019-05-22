@@ -4,7 +4,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(93);
+select * from no_plan();
 
 insert into ggircs_swrs.ghgr_import (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -1300,7 +1300,7 @@ select results_eq($$select
 
     'data in ggircs_swrs.single_facility === ggircs.single_facility');
 
--- Data in ggircs_swrs.activity === data in ggircs.activity
+-- Data in ggircs_swrs.activity(minus additional_reportable_activity data) === data in ggircs.activity
 select results_eq($$select
                       ghgr_import_id,
                       process_idx,
@@ -1335,6 +1335,42 @@ select results_eq($$select
                   $$,
 
     'data in ggircs_swrs.activity === ggircs.activity');
+
+-- Data in ggircs_swrs.activity(additional_reportable_activity data) === data in ggircs.additional_reportable_activity
+select results_eq($$select
+                      ghgr_import_id,
+                      process_idx,
+                      sub_process_idx,
+                      activity_name,
+                      process_name,
+                      sub_process_name,
+                      information_requirement
+                  from ggircs_swrs.activity
+                  where sub_process_name in (
+                    'Additional Reportable Information as per WCI.352(i)(1)-(12)',
+                    'Additional Reportable Information as per WCI.352(i)(13)',
+                    'Additional Reportable Information as per WCI.362(g)(21)',
+                    'Additional information for cement and lime production facilities only (not aggregated in totals)',
+                    'Additional information for cement and lime production facilities only (not aggregated intotals)',
+                    'Additional information required when other activities selected are Activities in Table 2 rows 2, 4, 5 , or 6',
+                    'Additional reportable information'
+                  )
+                  order by ghgr_import_id, process_idx, sub_process_idx, activity_name asc
+                  $$,
+
+                 $$select
+                      ghgr_import_id,
+                      process_idx,
+                      sub_process_idx,
+                      activity_name,
+                      process_name,
+                      sub_process_name,
+                      information_requirement
+                  from ggircs.additional_reportable_activity
+                  order by ghgr_import_id, process_idx, sub_process_idx, activity_name asc
+                  $$,
+
+    'data in ggircs_swrs.activity === ggircs.additional_reportable_activity');
 
 -- Data in ggircs_swrs.unit === data in ggircs.unit
 select results_eq(
