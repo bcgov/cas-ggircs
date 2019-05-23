@@ -48,7 +48,7 @@ $$
 
         execute
           'drop table if exists ggircs.' || quote_ident(mv_array[i]) || ' cascade';
-      --  execute 'refresh materialized view ggircs_swrs.' || mv_array[i] || ' with data';
+--       execute 'refresh materialized view ggircs_swrs.' || mv_array[i] || ' with data';
         execute
           'create table ggircs.' || quote_ident(mv_array[i]) ||
                 ' as (select x.* from ggircs_swrs.' || quote_ident(mv_array[i]) ||
