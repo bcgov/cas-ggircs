@@ -208,6 +208,12 @@ define build
 	$(call oc_process,imagestream/cas-ggircs-postgres,)
 	$(call oc_process,imagestream/cas-ggircs,)
 	$(call oc_process,buildconfig/cas-ggircs,GIT_BRANCH=${GIT_BRANCH})
+	$(call oc_process,imagestream/cas-ggircs-metabase-builder,)
+	$(call oc_process,buildconfig/cas-ggircs-metabase-builder,GIT_BRANCH=${GIT_BRANCH})
+	$(call oc_process,imagestream/cas-ggircs-metabase-build,)
+	$(call oc_process,buildconfig/cas-ggircs-metabase-build,GIT_BRANCH=${GIT_BRANCH})
+	$(call oc_process,imagestream/cas-ggircs-metabase,)
+	$(call oc_process,buildconfig/cas-ggircs-metabase,GIT_BRANCH=${GIT_BRANCH})
 endef
 
 define deploy

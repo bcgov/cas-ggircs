@@ -1,0 +1,6 @@
+#!/bin/bash
+
+git clone --depth 1 https://github.com/bcgov/cas-ggircs-metabase
+pushd cas-metabase
+./bin/build
+popd
