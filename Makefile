@@ -10,7 +10,7 @@ SQITCH_MIN_VERSION=0.97
 GREP=grep
 GIT=git
 GIT_BRANCH=${shell ${GIT} rev-parse --abbrev-ref HEAD}
-GIT_SHA=${git rev-parse --short HEAD}
+GIT_SHA=${shell ${GIT} rev-parse --short HEAD}
 AWK=awk
 PSQL=psql -h localhost
 # "psql --version" prints "psql (PostgreSQL) XX.XX"
