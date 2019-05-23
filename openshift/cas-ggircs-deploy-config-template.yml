@@ -12,11 +12,9 @@ objects:
     lookupPolicy:
       local: true
     tags:
-    - annotations: null
-      from:
+    - from:
         kind: DockerImage
         name: docker-registry.default.svc:5000/wksv3k-tools/${POSTGRES_IMAGE}:${POSTGRES_VERSION}
-      generation: 1
       importPolicy:
         scheduled: true
       name: ${POSTGRES_VERSION}
@@ -32,11 +30,9 @@ objects:
     lookupPolicy:
       local: true
     tags:
-    - annotations: null
-      from:
+    - from:
         kind: DockerImage
         name: docker-registry.default.svc:5000/wksv3k-tools/cas-ggircs:latest
-      generation: 1
       importPolicy:
         scheduled: true
       name: latest
@@ -52,11 +48,9 @@ objects:
     lookupPolicy:
       local: true
     tags:
-    - annotations: null
-      from:
+    - from:
         kind: DockerImage
         name: docker-registry.default.svc:5000/wksv3k-tools/metabase-dev:latest
-      generation: 1
       importPolicy:
         scheduled: true
       name: latest
@@ -236,7 +230,7 @@ objects:
             privileged: false
           terminationMessagePath: /dev/termination-log
           volumeMounts:
-          - mountPath: /var/lib/postgresql/data
+          - mountPath: /var/lib/pgsql/data
             name: cas-ggircs-postgres
           - mountPath: /opt/app-root/src/data
             name: cas-ggircs-data
