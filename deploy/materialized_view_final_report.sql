@@ -10,7 +10,8 @@ create materialized view ggircs_swrs.final_report as (
              partition by swrs_facility_id, reporting_period_duration
              order by
                swrs_report_id desc,
-               submission_date desc
+               submission_date desc,
+               imported_at desc
                ) as _history_id
     from ggircs_swrs.report
     where submission_date is not null
