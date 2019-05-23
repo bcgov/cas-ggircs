@@ -60,6 +60,23 @@ $$
 
       end loop;
 
+      -- add column bcghgid to facility
+      execute $a$ alter table ggircs.facility add column bcghgid varchar(1000)$a$;
+      execute
+          $a$ with x as (select i.ghgr_import_id, i.swrs_facility_id, i.identifier_value as bcghgid,
+                row_number() over (
+                   partition by i.swrs_facility_id, i.ghgr_import_id
+                   order by i.ghgr_import_id desc
+                ) as _index
+                from ggircs.facility
+                inner join ggircs_swrs.identifier i on facility.ghgr_import_id = i.ghgr_import_id
+                where identifier_type = 'BCGHGID'
+                and identifier_value is not null
+                and identifier_value != ''
+              )
+              update ggircs.facility as f set bcghgid = x.bcghgid from x where f.ghgr_import_id = x.ghgr_import_id $a$;
+
+    -- add table attributable_emission
     raise notice 'Exporting attributable_emission';
 
     execute
