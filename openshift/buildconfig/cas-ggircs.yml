@@ -10,7 +10,7 @@ objects:
     output:
       to:
         kind: ImageStreamTag
-        name: cas-ggircs:${GIT_BRANCH}
+        name: cas-ggircs:${GIT_SHA}
     resources:
       limits:
         cpu: "4"
@@ -20,7 +20,7 @@ objects:
         memory: 256Mi
     source:
       git:
-        ref: ${GIT_BRANCH}
+        ref: ${GIT_SHA}
         uri: https://github.com/bcgov/cas-ggircs.git
       type: Git
     strategy:
@@ -48,8 +48,7 @@ parameters:
   required: true
   value: "latest"
 
-- description: Git source code branch currently deployed.
-  displayName: Git Branch
-  name: GIT_BRANCH
+- description: Git source code commit currently deployed.
+  displayName: Git Short sha
+  name: GIT_SHA
   required: true
-

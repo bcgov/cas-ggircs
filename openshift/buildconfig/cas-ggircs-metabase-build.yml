@@ -10,7 +10,7 @@ objects:
     output:
       to:
         kind: ImageStreamTag
-        name: cas-ggircs-metabase-build:${GIT_BRANCH}
+        name: cas-ggircs-metabase-build:${GIT_SHA}
     resources:
       limits:
         cpu: "4"
@@ -20,13 +20,13 @@ objects:
         memory: 256Mi
     source:
       git:
-        ref: master
+        ref: ${GIT_SHA}
         uri: https://github.com/bcgov/cas-ggircs-metabase.git
     strategy:
       sourceStrategy:
         from:
           kind: ImageStreamTag
-          name: cas-ggircs-metabase-builder:latest
+          name: cas-ggircs-metabase-builder:${GIT_SHA}
       type: Source
     triggers:
     - type: ConfigChange
@@ -41,7 +41,7 @@ objects:
 
 parameters:
 
-- description: Git source code branch currently deployed.
-  displayName: Git Branch
-  name: GIT_BRANCH
+- description: Git source code commit currently deployed.
+  displayName: Git Short sha
+  name: GIT_SHA
   required: true

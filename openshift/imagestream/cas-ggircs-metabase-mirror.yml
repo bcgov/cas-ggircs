@@ -14,11 +14,16 @@ objects:
     tags:
     - from:
         kind: DockerImage
-        name: docker-registry.default.svc:5000/wksv3k-tools/cas-ggircs-metabase:latest
+        name: docker-registry.default.svc:5000/wksv3k-tools/cas-ggircs-metabase:${GIT_SHA}
       importPolicy:
         scheduled: true
       name: latest
       referencePolicy:
         type: Source
   status: {}
+
+- description: Git source code commit currently deployed.
+  displayName: Git Short sha
+  name: GIT_SHA
+  required: true
 
