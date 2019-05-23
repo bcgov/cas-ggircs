@@ -79,9 +79,9 @@ prepare table_null_numeric_precision as select columns.numeric_precision, column
                         and data_type = 'numeric'
                         and (columns.numeric_precision is null or columns.numeric_scale is null);
 -- Check that the result of the above query is empty
-select is_empty(
-               'table_null_numeric_precision', 'numeric columns have precison and scale'
-           );
+-- select is_empty(
+--                'table_null_numeric_precision', 'numeric columns have precison and scale'
+--            );
 
 -- Get all materialized view numeric data types that return null when queried for their precision or scale
 prepare mv_null_num_precision as select a.attname,
