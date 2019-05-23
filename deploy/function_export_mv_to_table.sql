@@ -573,6 +573,15 @@ $function$
         perform ggircs_swrs.refresh_materialized_views(quote_ident(mv_array[i]), 'with no data');
       end loop;
 
+      -- Create FK/PK relation between fuel and ggircs_swrs.fuel_mapping
+      alter table ggircs.fuel add column fuel_mapping_id int;
+      create index ggircs_fuel_fuel_mapping_index on ggircs.fuel (fuel_mapping_id);
+      update ggircs.fuel set fuel_mapping_id = fuel_mapping.id from ggircs_swrs.fuel_mapping
+          where fuel.fuel_type = fuel_mapping.fuel_type;
+      alter table ggircs.fuel add constraint ggircs_swrs_fuel_fuel_mapping_foreign_key foreign key (fuel_mapping_id) references ggircs_swrs.fuel_mapping(id);
+
+    perform ggircs_swrs.refresh_materialized_views(false);
+
   end;
 
 $function$ language plpgsql volatile ;
