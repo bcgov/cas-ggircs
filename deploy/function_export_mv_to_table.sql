@@ -580,6 +580,7 @@ $function$
           where fuel.fuel_type = fuel_mapping.fuel_type;
       alter table ggircs.fuel add constraint ggircs_swrs_fuel_fuel_mapping_foreign_key foreign key (fuel_mapping_id) references ggircs_swrs.fuel_mapping(id);
 
+
     for i in 1 .. array_upper(mv_array, 1)
       loop
         perform ggircs_swrs.refresh_materialized_views(quote_ident(mv_array[i]), 'with no data');
