@@ -4,7 +4,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(93);
+select plan(95);
 
 insert into ggircs_swrs.ghgr_import (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -724,8 +724,10 @@ $$);
 select ggircs_swrs.export_mv_to_table();
 
 -- Refresh all materialized views
-select ggircs_swrs.refresh_materialized_views();
+select ggircs_swrs.refresh_materialized_views(true);
 
+-- Function has populated materialized views
+select isnt_empty('select * from ggircs_swrs.report', 'refresh_materialized_views(true) has populated materialized views');
 
 -- Function export_mv_to_table exists
 select has_function( 'ggircs_swrs', 'export_mv_to_table', 'Schema ggircs_swrs has function export_mv_to_table()' );
@@ -1897,6 +1899,11 @@ select results_eq(
               $$,
 
               'data in ggircs_swrs.descriptor === ggircs.descriptor');
+
+  select ggircs_swrs.refresh_materialized_views(false);
+
+  -- Function has cleared materialized views
+  select is_empty('select * from ggircs_swrs.report where false', 'refresh_materialized_views(false) has cleared materialized views');
 
 select * from finish();
 rollback;
