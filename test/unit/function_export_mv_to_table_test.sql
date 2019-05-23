@@ -4,7 +4,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(77);
+select plan(80);
 
 insert into ggircs_swrs.ghgr_import (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -820,6 +820,11 @@ select isnt_empty('select * from ggircs.parent_organisation', 'there is data in 
 select isnt_empty('select * from ggircs.contact', 'there is data in ggircs.contact');
 select isnt_empty('select * from ggircs.address', 'there is data in ggircs.address');
 select isnt_empty('select * from ggircs.descriptor', 'there is data in ggircs.descriptor');
+
+-- Facility has new columns bcghgid, naics_code, naics_classification
+SELECT has_column( 'ggircs', 'facility', 'bcghgid', 'ggircs.facility has column bcghgid');
+SELECT has_column( 'ggircs', 'facility', 'naics_code', 'ggircs.facility has column naics_code');
+SELECT has_column( 'ggircs', 'facility', 'naics_classification', 'ggircs.facility has column naics_classification');
 
 -- No CO2bioC in attributable_emission
 select is_empty($$select * from ggircs.attributable_emission where gas_type='CO2bioC'$$, 'CO2bioC emissions are not in attributable_emission');
