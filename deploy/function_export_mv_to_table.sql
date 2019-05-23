@@ -76,6 +76,37 @@ $$
               )
               update ggircs.facility as f set bcghgid = x.bcghgid from x where f.ghgr_import_id = x.ghgr_import_id $a$;
 
+      -- add column naics_code to facility
+      execute $a$ alter table ggircs.facility add column naics_code varchar(1000)$a$;
+      execute
+          $a$ with x as (select n.ghgr_import_id, n.swrs_facility_id, n.naics_code as naics_code,
+                row_number() over (
+                   partition by n.swrs_facility_id, n.ghgr_import_id
+                   order by n.ghgr_import_id desc
+                ) as _index
+                from ggircs.facility
+                inner join ggircs_swrs.naics n on facility.ghgr_import_id = n.ghgr_import_id
+              )
+              update ggircs.facility as f set naics_code = x.naics_code
+              from x where f.ghgr_import_id = x.ghgr_import_id;
+          $a$;
+
+       -- add column naics_classification to facility
+       execute $a$ alter table ggircs.facility add column naics_classification varchar(1000)$a$;
+      execute
+          $a$ with x as (select n.ghgr_import_id, n.swrs_facility_id, n.path_context, n.naics_classification as naics_classification,
+                row_number() over (
+                   partition by n.swrs_facility_id, n.ghgr_import_id
+                   order by n.ghgr_import_id desc
+                ) as _index
+                from ggircs.facility
+                inner join ggircs_swrs.naics n on facility.ghgr_import_id = n.ghgr_import_id
+              )
+              update ggircs.facility as f set naics_classification = x.naics_classification
+              from x where f.ghgr_import_id = x.ghgr_import_id
+              and x.path_context = 'RegistrationData'
+          $a$;
+
     -- add table attributable_emission
     raise notice 'Exporting attributable_emission';
 

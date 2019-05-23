@@ -73,7 +73,7 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
         </IdentifierList>
         <NAICSCodeList>
           <NAICSCode>
-            <NAICSClassification>Chemical Pulp Mills </NAICSClassification>
+
             <Code>123456</Code>
             <NaicsPriority>Primary</NaicsPriority>
           </NAICSCode>
@@ -739,8 +739,6 @@ refresh materialized view ggircs_swrs.parent_organisation with data;
 refresh materialized view ggircs_swrs.contact with data;
 refresh materialized view ggircs_swrs.address with data;
 refresh materialized view ggircs_swrs.descriptor with data;
-
-
 
 -- Function export_mv_to_table exists
 select has_function( 'ggircs_swrs', 'export_mv_to_table', 'Schema ggircs_swrs has function export_mv_to_table()' );
