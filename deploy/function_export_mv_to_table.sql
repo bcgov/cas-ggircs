@@ -23,23 +23,7 @@ $$
 
   begin
 
-  refresh materialized view ggircs_swrs.report with data;
-  refresh materialized view ggircs_swrs.final_report with data;
-  refresh materialized view ggircs_swrs.facility with data;
-  refresh materialized view ggircs_swrs.organisation with data;
-  refresh materialized view ggircs_swrs.activity with data;
-  refresh materialized view ggircs_swrs.unit with data;
-  refresh materialized view ggircs_swrs.fuel with data;
-  refresh materialized view ggircs_swrs.emission with data;
-  refresh materialized view ggircs_swrs.measured_emission_factor with data;
-  refresh materialized view ggircs_swrs.descriptor with data;
-  refresh materialized view ggircs_swrs.address with data;
-  refresh materialized view ggircs_swrs.identifier with data;
-  refresh materialized view ggircs_swrs.naics with data;
-  refresh materialized view ggircs_swrs.contact with data;
-  refresh materialized view ggircs_swrs.permit with data;
-  refresh materialized view ggircs_swrs.parent_organisation with data;
-  refresh materialized view ggircs_swrs.flat with data;
+    perform ggircs_swrs.refresh_materialized_views(true);
 
     for i in 1 .. array_upper(mv_array, 1)
       loop
@@ -378,6 +362,8 @@ $$
       refresh materialized view ggircs_swrs.permit with no data;
       refresh materialized view ggircs_swrs.parent_organisation with no data;
       refresh materialized view ggircs_swrs.flat with no data;
+
+    perform ggircs_swrs.refresh_materialized_views(false);
 
   end;
 
