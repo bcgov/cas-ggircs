@@ -3,6 +3,7 @@
 
 begin;
 
+-- Paramater 'data' is a boolean passed in as true to refresh with data or false to refresh with no data
 create or replace function ggircs_swrs.refresh_materialized_views(data boolean)
   returns void as
 $$
