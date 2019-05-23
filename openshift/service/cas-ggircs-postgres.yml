@@ -1,0 +1,24 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+objects:
+
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      template.openshift.io/expose-uri: postgres://{.spec.clusterIP}:{.spec.ports[?(.name=="cas-ggircs-postgres")].port}
+    name: cas-ggircs-postgres
+  spec:
+    ports:
+    - name: cas-ggircs-postgres
+      nodePort: 0
+      port: 5432
+      protocol: TCP
+      targetPort: 5432
+    selector:
+      name: cas-ggircs-postgres
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+

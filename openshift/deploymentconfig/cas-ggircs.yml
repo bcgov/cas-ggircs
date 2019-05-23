@@ -1,0 +1,94 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+labels:
+  template: deploy-template
+objects:
+
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    annotations:
+      template.alpha.openshift.io/wait-for-ready: "true"
+    name: cas-ggircs
+  spec:
+    replicas: 1
+    selector:
+      name: cas-ggircs
+    strategy:
+      type: Rolling
+    template:
+      metadata:
+        labels:
+          name: cas-ggircs
+      spec:
+        containers:
+        - capabilities: {}
+          env:
+          - name: SQITCH_TARGET
+            value: "db:pg:"
+          - name: PGUSER
+            valueFrom:
+              secretKeyRef:
+                key: database-user
+                name: cas-ggircs-postgres
+          - name: PGPASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: database-password
+                name: cas-ggircs-postgres
+          - name: PGDATABASE
+            valueFrom:
+              secretKeyRef:
+                key: database-name
+                name: cas-ggircs-postgres
+          - name: PGPORT
+            value: "5432"
+          - name: PGHOST
+            value: cas-ggircs-postgres
+          - name: SQITCH_FULLNAME
+            value: OpenShift Deployer
+          - name: SQITCH_EMAIL
+            value: deployer@pathfinder.gov.bc.ca
+          image: cas-ggircs-mirror:latest
+          imagePullPolicy: IfNotPresent
+          name: cas-ggircs
+          resources:
+            limits:
+              cpu: 1000m
+              memory: 128Mi
+            requests:
+              cpu: 100m
+              memory: 64Mi
+          securityContext:
+            capabilities: {}
+            privileged: false
+          terminationMessagePath: /dev/termination-log
+          volumeMounts:
+          - mountPath: /opt/app-root/src/data
+            name: cas-ggircs-data
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        volumes:
+        - name: cas-ggircs-data
+          persistentVolumeClaim:
+            claimName: cas-ggircs-data
+    triggers:
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+        - cas-ggircs
+        from:
+          kind: ImageStreamTag
+          name: cas-ggircs-mirror:latest
+        lastTriggeredImage: ""
+      type: ImageChange
+    - type: ConfigChange
+  status: {}
+
+parameters:
+- description: Version of PostgreSQL image to be used (10 for now).
+  displayName: Version of PostgreSQL Image
+  name: POSTGRES_VERSION
+  required: true
+  value: "latest"
+

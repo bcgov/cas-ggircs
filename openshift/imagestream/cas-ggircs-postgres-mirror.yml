@@ -1,0 +1,32 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+labels:
+  template: deploy-template
+objects:
+
+- apiVersion: image.openshift.io/v1
+  kind: ImageStream
+  metadata:
+    name: cas-ggircs-postgres-mirror
+  spec:
+    lookupPolicy:
+      local: true
+    tags:
+    - from:
+        kind: DockerImage
+        name: docker-registry.default.svc:5000/wksv3k-tools/cas-ggircs-postgres:${POSTGRES_VERSION}
+      importPolicy:
+        scheduled: true
+      name: ${POSTGRES_VERSION}
+      referencePolicy:
+        type: Source
+  status: {}
+
+parameters:
+
+- description: Version of PostgreSQL image to be used (10 for now).
+  displayName: Version of PostgreSQL Image
+  name: POSTGRES_VERSION
+  required: true
+  value: "latest"
+

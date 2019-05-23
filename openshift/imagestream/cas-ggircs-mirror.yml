@@ -1,0 +1,28 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+objects:
+
+- apiVersion: image.openshift.io/v1
+  kind: ImageStream
+  metadata:
+    name: cas-ggircs-mirror
+  spec:
+    lookupPolicy:
+      local: true
+    tags:
+    - from:
+        kind: DockerImage
+        name: docker-registry.default.svc:5000/wksv3k-tools/cas-ggircs:${GIT_BRANCH}
+      name: ${GIT_BRANCH}
+    - from:
+        kind: DockerImage
+        name: docker-registry.default.svc:5000/wksv3k-tools/cas-ggircs:${GIT_BRANCH}
+      name: latest
+  status: {}
+
+parameters:
+- description: Git source code branch currently deployed.
+  displayName: Git Branch
+  name: GIT_BRANCH
+  required: true
+

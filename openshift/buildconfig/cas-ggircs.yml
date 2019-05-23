@@ -1,0 +1,55 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+objects:
+
+- apiVersion: build.openshift.io/v1
+  kind: BuildConfig
+  metadata:
+    name: cas-ggircs
+  spec:
+    output:
+      to:
+        kind: ImageStreamTag
+        name: cas-ggircs:${GIT_BRANCH}
+    resources:
+      limits:
+        cpu: "4"
+        memory: 8Gi
+      requests:
+        cpu: 100m
+        memory: 256Mi
+    source:
+      git:
+        ref: ${GIT_BRANCH}
+        uri: https://github.com/bcgov/cas-ggircs.git
+      type: Git
+    strategy:
+      sourceStrategy:
+        from:
+          kind: ImageStreamTag
+          name: cas-ggircs-perl:${PERL_VERSION}
+      type: Source
+    triggers:
+    - github:
+        secret: cas-ggircs-github-trigger
+      type: GitHub
+    - generic:
+        secret: cas-ggircs-generic-trigger
+      type: Generic
+    - type: ConfigChange
+    - imageChange:
+      type: ImageChange
+
+parameters:
+
+- description: Version of Perl image to be used (latest for now).
+  displayName: Version of Perl Image
+  name: PERL_VERSION
+  required: true
+  value: "latest"
+
+- description: Git source code branch currently deployed.
+  displayName: Git Branch
+  name: GIT_BRANCH
+  required: true
+
