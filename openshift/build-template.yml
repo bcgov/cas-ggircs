@@ -1,8 +1,9 @@
 apiVersion: template.openshift.io/v1
 kind: Template
 labels:
-  template: cas-ggircs-build-config-template
+  template: build-template
 objects:
+
 - apiVersion: image.openshift.io/v1
   kind: ImageStream
   metadata:
@@ -22,6 +23,7 @@ objects:
       referencePolicy:
         type: Source
   status: {}
+
 - apiVersion: image.openshift.io/v1
   kind: ImageStream
   metadata:
@@ -41,10 +43,12 @@ objects:
       referencePolicy:
         type: Source
   status: {}
+
 - apiVersion: image.openshift.io/v1
   kind: ImageStream
   metadata:
     name: cas-ggircs
+
 - apiVersion: build.openshift.io/v1
   kind: BuildConfig
   metadata:
@@ -82,22 +86,27 @@ objects:
     - type: ConfigChange
     - imageChange:
       type: ImageChange
+
 parameters:
+
 - description: Name of Perl image to be used (perl-526-rhel7 for now).
   displayName: Name of Perl Image
   name: PERL_IMAGE
   required: true
   value: "registry.access.redhat.com/rhscl/perl-526-rhel7"
+
 - description: Version of Perl image to be used (latest for now).
   displayName: Version of Perl Image
   name: PERL_VERSION
   required: true
   value: "latest"
+
 - description: Name of Postgres image to be used (postgresql-10-rhel7 for now).
   displayName: Name of Postgres Image
   name: POSTGRES_IMAGE
   required: true
   value: "registry.access.redhat.com/rhscl/postgresql-10-rhel7"
+
 - description: Version of Postgres image to be used (latest for now).
   displayName: Version of Postgres Image
   name: POSTGRES_VERSION

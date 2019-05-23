@@ -207,14 +207,17 @@ dev_project: whoami
 .PHONY: deploy_tools
 deploy_tools: tools_project
 	# Add all image streams and build in the tools project
-	@@${OC} process -f openshift/cas-ggircs-build-config-template.yml | oc apply --wait=true -f-
+	@@${OC} process -f openshift/build-template.yml | oc apply --wait=true -f-
 
 .PHONY: deploy_dev
 deploy_dev: deploy_tools dev_project
 	# Allow import of images from tools namespace
 	@@${OC} policy add-role-to-group system:image-puller system:serviceaccounts:${OC_DEV_PROJECT} -n ${OC_TOOLS_PROJECT}
+	# Configure...
+	${OC} get secret cas-ggircs-postgres &>/dev/null \
+		|| ${OC} process -f openshift/config-template.yml | oc apply --wait=true -f-
 	# Deploy...
-	@@${OC} process -f openshift/cas-ggircs-deploy-config-template.yml | oc apply --wait=true -f-
+	@@${OC} process -f openshift/deploy-template.yml | oc apply --wait=true -f-
 	# Migrate...
 	# TODO(wenzowski): automatically run a `sqitch deploy`
 
