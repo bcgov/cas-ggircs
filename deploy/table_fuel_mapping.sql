@@ -32,4 +32,8 @@ comment on column ggircs_swrs.fuel_mapping.cta_rate_45_tCO2e is 'CTA rate at $45
 comment on column ggircs_swrs.fuel_mapping.cta_rate_50_tCO2e is 'CTA rate at $50/tCO2e';
 comment on column ggircs_swrs.fuel_mapping.cta_rate_units is 'The units of measure';
 
+-- todo: Find a better way to do this?
+-- Add mapping data from csv file residing in test/fixture)
+copy ggircs_swrs.fuel_mapping(fuel_type, n_fuel_type,state, carbon_taxed, cta_mapping, cta_rate_30_tCO2e, cta_rate_35_tCO2e, cta_rate_40_tCO2e, cta_rate_45_tCO2e, cta_rate_50_tCO2e, cta_rate_units) from '/home/dleard/Button/cas-ggircs/data/fuel_mapping.csv' with (format csv);
+
 commit;

@@ -1398,15 +1398,17 @@ select results_eq(
     'Foreign key naics_mapping_id references ggircs.swrs.naics_mapping.id'
 -- ggircs.fuel -> ggircs_swrs.fuel_mapping
 select results_eq(
-    $$select distinct(ggircs_swrs.fuel_mapping.fuel_type, ggircs_swrs.fuel_mapping.carbon_taxed) from ggircs.fuel
+    $$select distinct( ggircs_swrs.fuel_mapping.fuel_type) from ggircs.fuel
       join ggircs_swrs.fuel_mapping
       on
         fuel.fuel_mapping_id = fuel_mapping.id
     $$,
 
-    $$select fuel_type, carbon_taxed from ggircs_swrs.fuel_mapping where fuel_type in ('Wood Waste', 'Residual Fuel Oil (#5 &amp; 6)')$$,
+    $$select fuel_type from ggircs_swrs.fuel_mapping
+      where fuel_type in ('Residual Fuel Oil (#5 & 6)', 'Wood Waste')
+    $$,
 
-    'Foreign key facility_id in ggircs.permit references ggircs.facility.id'
+    'Foreign key fuel_mapping_id references ggircs.swrs.fuel_mapping.id'
 );
 
 -- Permit -> Facility
