@@ -15,11 +15,7 @@ create table ggircs_swrs.fuel_mapping (
   cta_rate_40_tCO2e numeric,
   cta_rate_45_tCO2e numeric,
   cta_rate_50_tCO2e numeric,
-<<<<<<< b9dbf30de21b7af15210ea79fd121a63a1504089
   cta_rate_units varchar(1000)
-=======
-  cta_rate_units varchar
->>>>>>> added deploy, revert verify for fuel mapping
 
 );
 comment on table  ggircs_swrs.fuel_mapping is 'The fuel mapping table that maps fuel type with carbon tax rates';
