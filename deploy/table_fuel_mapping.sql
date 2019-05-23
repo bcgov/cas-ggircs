@@ -20,11 +20,11 @@ create table ggircs_swrs.fuel_mapping (
 );
 comment on table  ggircs_swrs.fuel_mapping is 'The fuel mapping table that maps fuel type with carbon tax rates';
 comment on column ggircs_swrs.fuel_mapping.id is 'The internal primary key for the mapping';
-comment on column ggircs_swrs.fuel_mapping.fuel_type is 'The type of fuel';
-comment on column ggircs_swrs.fuel_mapping.n_fuel_type is 'The type of fuel';
+comment on column ggircs_swrs.fuel_mapping.fuel_type is 'The type of fuel (from GHGR), Foreign key to fuel';
+comment on column ggircs_swrs.fuel_mapping.n_fuel_type is 'The type of fuel (Normalized)';
 comment on column ggircs_swrs.fuel_mapping.state is 'The state of the fuel (gas, liquid, solid)';
 comment on column ggircs_swrs.fuel_mapping.carbon_taxed is 'Is the fuel carbon taxed';
-comment on column ggircs_swrs.fuel_mapping.cta_mapping is 'What maps this fuel to the carbon tax';
+comment on column ggircs_swrs.fuel_mapping.cta_mapping is 'Generalized high-level fuel type';
 comment on column ggircs_swrs.fuel_mapping.cta_rate_30_tCO2e is 'CTA rate at $30/tCO2e';
 comment on column ggircs_swrs.fuel_mapping.cta_rate_35_tCO2e is 'CTA rate at $35/tCO2e';
 comment on column ggircs_swrs.fuel_mapping.cta_rate_40_tCO2e is 'CTA rate at $40/tCO2e';
