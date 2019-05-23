@@ -215,9 +215,13 @@ define deploy
 	@@${OC} policy add-role-to-group system:image-puller system:serviceaccounts:${OC_PROJECT} -n ${OC_TOOLS_PROJECT}
 	# Configure...
 	@@${OC} get secret cas-ggircs-postgres &>/dev/null \
-		|| ${OC} process -f openshift/secret/cas-ggircs-postgres.yml | ${OC} apply --wait=true -f-
+		|| ${OC} process -f openshift/secret/cas-ggircs-postgres.yml \
+		GGIRCS_DATABASE=ggircs_${OC_PROJECT} \
+		| ${OC} apply --wait=true -f-
 	@@${OC} get secret cas-ggircs-metabase-postgres &>/dev/null \
-		|| ${OC} process -f openshift/secret/cas-ggircs-metabase-postgres.yml | ${OC} apply --wait=true -f-
+		|| ${OC} process -f openshift/secret/cas-ggircs-metabase-postgres.yml \
+		METABASE_DATABASE=metabase_${OC_PROJECT} \
+		| ${OC} apply --wait=true -f-
 	# Deploy...
 	$(call oc_process,imagestream/cas-ggircs-metabase-mirror,)
 	$(call oc_process,imagestream/cas-ggircs-postgres-mirror,)
@@ -280,6 +284,26 @@ push:
 .PHONY: rsh
 rsh:
 	oc exec -it cas-ggircs-5-c46gh -- bash
+
+.PHONY: refresh
+refresh:
+	parallel -P8 'oc exec cas-ggircs-1-5ssz8 -- psql -c "refresh materialized view ggircs_swrs.{} with data;"' ::: \
+		report \
+		final_report \
+		facility \
+		organisation \
+		activity unit \
+		fuel \
+		emission \
+		measured_emission_factor \
+		descriptor \
+		address \
+		identifier \
+		naics \
+		contact \
+		permit \
+		parent_organisation \
+		flat
 
 # Configure image streams
 # oc start-build cas-ggircs-postgres --commit=$$(git rev-parse --verify HEAD)
