@@ -4,7 +4,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(79);
+select plan(84);
 
 insert into ggircs_swrs.ghgr_import (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -308,6 +308,18 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
                   <FuelUnits>bone dry tonnes</FuelUnits>
                   <AnnualFuelAmount>0</AnnualFuelAmount>
                   <AnnualSteamGeneration>290471000</AnnualSteamGeneration>
+                  <MeasuredEmissionFactors>
+                    <MeasuredEmissionFactor>
+                      <MeasuredEmissionFactorGas>CO2</MeasuredEmissionFactorGas>
+                      <MeasuredEmissionFactorAmount>50000</MeasuredEmissionFactorAmount>
+                      <MeasuredEmissionFactorUnitType>g/GJ</MeasuredEmissionFactorUnitType>
+                    </MeasuredEmissionFactor>
+                    <MeasuredEmissionFactor>
+                      <MeasuredEmissionFactorGas>CH4</MeasuredEmissionFactorGas>
+                      <MeasuredEmissionFactorAmount>0.966</MeasuredEmissionFactorAmount>
+                      <MeasuredEmissionFactorUnitType>g/GJ</MeasuredEmissionFactorUnitType>
+                    </MeasuredEmissionFactor>
+                  </MeasuredEmissionFactors>
                   <Emissions>
                     <Emission>
                       <Groups>
@@ -664,6 +676,18 @@ $$), ($$
                   <FuelUnits>bone dry tonnes</FuelUnits>
                   <AnnualFuelAmount>0</AnnualFuelAmount>
                   <AnnualSteamGeneration>290471000</AnnualSteamGeneration>
+                  <MeasuredEmissionFactors>
+                    <MeasuredEmissionFactor>
+                      <MeasuredEmissionFactorGas>CO2</MeasuredEmissionFactorGas>
+                      <MeasuredEmissionFactorAmount>50000</MeasuredEmissionFactorAmount>
+                      <MeasuredEmissionFactorUnitType>g/GJ</MeasuredEmissionFactorUnitType>
+                    </MeasuredEmissionFactor>
+                    <MeasuredEmissionFactor>
+                      <MeasuredEmissionFactorGas>CH4</MeasuredEmissionFactorGas>
+                      <MeasuredEmissionFactorAmount>0.966</MeasuredEmissionFactorAmount>
+                      <MeasuredEmissionFactorUnitType>g/GJ</MeasuredEmissionFactorUnitType>
+                    </MeasuredEmissionFactor>
+                  </MeasuredEmissionFactors>
                   <Emissions>
                     <Emission>
                       <Groups>
@@ -752,13 +776,14 @@ select tables_are('ggircs'::name, ARRAY[
     'parent_organisation'::name,
     'contact'::name,
     'address'::name,
-    'descriptor'::name
+    'descriptor'::name,
+    'measured_emission_factor'::name
     ],
     $$Schema ggircs has tables [
                              report, organisation, facility, activity,
                              unit, identifier, naics. emission, attributable_emission, final_report,
                              fuel, permit, parent_organisation, contact, address
-                             descriptor $$
+                             descriptor, measured_emission_factor $$
 );
 
 -- Test all tables have primary key
@@ -777,6 +802,8 @@ select has_pk('ggircs', 'parent_organisation', 'ggircs_parent_organisation has p
 select has_pk('ggircs', 'contact', 'ggircs_contact has primary key');
 select has_pk('ggircs', 'address', 'ggircs_address has primary key');
 select has_pk('ggircs', 'descriptor', 'ggircs_descriptor has primary key');
+select has_pk('ggircs', 'measured_emission_factor', 'ggircs_measured_emission_factor has primary key');
+
 
 -- Test tables have foreign key constraints (No FK constraints: report, final_report, parent_organisation)
 -- select has_fk('ggircs', 'report', 'ggircs_report has foreign key constraint(s)');
@@ -794,6 +821,7 @@ select has_fk('ggircs', 'permit', 'ggircs_permit has foreign key constraint(s)')
 select has_fk('ggircs', 'contact', 'ggircs_contact has foreign key constraint(s)');
 select has_fk('ggircs', 'address', 'ggircs_address has foreign key constraint(s)');
 select has_fk('ggircs', 'descriptor', 'ggircs_descriptor has foreign key constraint(s)');
+select has_fk('ggircs', 'measured_emission_factor', 'ggircs_measured_emission_factor has foreign key constraint(s)');
 
 -- All tables in schema ggircs have data
 select isnt_empty('select * from ggircs.report', 'there is data in ggircs.report');
@@ -812,6 +840,7 @@ select isnt_empty('select * from ggircs.parent_organisation', 'there is data in 
 select isnt_empty('select * from ggircs.contact', 'there is data in ggircs.contact');
 select isnt_empty('select * from ggircs.address', 'there is data in ggircs.address');
 select isnt_empty('select * from ggircs.descriptor', 'there is data in ggircs.descriptor');
+select isnt_empty('select * from ggircs.measured_emission_factor', 'there is data in ggircs.measured_emission_factor');
 
 -- No CO2bioC in attributable_emission
 select is_empty($$select * from ggircs.attributable_emission where gas_type='CO2bioC'$$, 'CO2bioC emissions are not in attributable_emission');
@@ -1045,6 +1074,19 @@ select results_eq(
     'select ghgr_import_id from ggircs.facility order by ghgr_import_id',
 
     'Foreign key facility_id in ggircs.permit references ggircs.facility.id'
+);
+
+-- Measured Emission Factor -> Fuel
+select results_eq(
+    $$select distinct(fuel.ghgr_import_id) from ggircs.measured_emission_factor
+      join ggircs.fuel
+      on
+        measured_emission_factor.fuel_id = fuel.id
+    $$,
+
+    'select distinct(ghgr_import_id) from ggircs.fuel',
+
+    'Foreign key fuel_id in ggircs.measured_emission_factor references ggircs.fuel.id'
 );
 
 /** Test data transferred from ggircs_swrs to ggircs properly **/
@@ -1747,6 +1789,72 @@ select results_eq(
               $$,
 
               'data in ggircs_swrs.descriptor === ggircs.descriptor');
+
+
+-- Data in ggircs_swrs.measured_emission_factor === data in ggircs.measured_emission_factor
+select results_eq(
+              $$select
+                ghgr_import_id,
+                activity_name,
+                sub_activity_name,
+                unit_name,
+                sub_unit_name,
+                process_idx,
+                sub_process_idx,
+                units_idx,
+                unit_idx,
+                substances_idx,
+                substance_idx,
+                fuel_idx,
+                measured_emission_factor_idx
+                measured_emission_factor_amount,
+                measured_emission_factor_gas,
+                measured_emission_factor_unit_type
+              from ggircs_swrs.measured_emission_factor
+              order by
+                ghgr_import_id,
+                process_idx,
+                sub_process_idx,
+                units_idx,
+                unit_idx,
+                substances_idx,
+                substance_idx,
+                fuel_idx,
+                measured_emission_factor_idx
+              $$,
+
+              $$select
+                  ghgr_import_id,
+                  activity_name,
+                  sub_activity_name,
+                  unit_name,
+                  sub_unit_name,
+                  process_idx,
+                  sub_process_idx,
+                  units_idx,
+                  unit_idx,
+                  substances_idx,
+                  substance_idx,
+                  fuel_idx,
+                  measured_emission_factor_idx
+                  measured_emission_factor_amount,
+                  measured_emission_factor_gas,
+                  measured_emission_factor_unit_type
+                from ggircs.measured_emission_factor
+                order by
+                    ghgr_import_id,
+                    process_idx,
+                    sub_process_idx,
+                    units_idx,
+                    unit_idx,
+                    substances_idx,
+                    substance_idx,
+                    fuel_idx,
+                    measured_emission_factor_idx
+                 asc
+              $$,
+
+              'data in ggircs_swrs.measured_emission_factor === ggircs.measured_emission_factor');
 
   select ggircs_swrs.refresh_materialized_views(false);
 
