@@ -78,13 +78,15 @@ refresh materialized view ggircs_swrs.activity with data;
 
 --  Test ghgr_import_id fk relation
 select results_eq(
-   'select ghgr_import.id from ggircs_swrs.activity ' ||
-   'join ggircs_swrs.ghgr_import ' ||
-   'on ' ||
-   'activity.ghgr_import_id =  ghgr_import.id ',
+   $$select ghgr_import.id from ggircs_swrs.activity
+   join ggircs_swrs.ghgr_import
+   on
+   activity.ghgr_import_id =  ghgr_import.id$$,
+
    'select id from ggircs_swrs.ghgr_import',
+
    'Foreign key ghgr_import_id ggircs_swrs_activity reference ggircs_swrs.ghgr_import'
-);
+   );
 
 -- test the columns for matview facility have been properly parsed from xml
 select results_eq(
