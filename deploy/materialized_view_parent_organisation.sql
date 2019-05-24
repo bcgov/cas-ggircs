@@ -36,4 +36,3 @@ comment on column ggircs_swrs.parent_organisation.business_legal_name is 'The le
 comment on column ggircs_swrs.parent_organisation.website is 'The website for this parent organisation';
 
 commit;
-
