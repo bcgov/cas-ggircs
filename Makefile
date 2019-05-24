@@ -218,6 +218,7 @@ endef
 
 define deploy
 	# Allow import of images from tools namespace
+	# This will fail if you're not an admin of the project
 	@@${OC} policy add-role-to-group system:image-puller system:serviceaccounts:${OC_PROJECT} -n ${OC_TOOLS_PROJECT}
 	# Configure...
 	@@${OC} get secret cas-ggircs-postgres &>/dev/null \
