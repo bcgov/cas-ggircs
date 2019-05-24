@@ -7,7 +7,7 @@ mv /tmp/src $HOME/src
 
 # restore build artifacts
 if [ "$(ls /tmp/artifacts/ 2>/dev/null)" ]; then
-    ls -l /tmp/artifacts
+    echo ls -l /tmp/artifacts
     mv /tmp/artifacts/* $HOME/.
     mv $HOME/node_modules $HOME/src/node_modules
     mv $HOME/resources/modules $HOME/src/resources/modules
