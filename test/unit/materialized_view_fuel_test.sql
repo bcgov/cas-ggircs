@@ -258,15 +258,15 @@ select results_eq(
 );
 
 select results_eq(
-    'select unit.ghgr_import_id from ggircs_swrs.fuel ' ||
-    'join ggircs_swrs.unit ' ||
-    'on (' ||
-    'fuel.ghgr_import_id =  unit.ghgr_import_id ' ||
-    'and fuel.process_idx = unit.process_idx ' ||
-    'and fuel.sub_process_idx = unit.sub_process_idx ' ||
-    'and fuel.activity_name = unit.activity_name ' ||
-    'and fuel.units_idx = unit.units_idx ' ||
-    'and fuel.unit_idx = unit.unit_idx)',
+    $$select unit.ghgr_import_id from ggircs_swrs.fuel
+    join ggircs_swrs.unit
+    on (
+    fuel.ghgr_import_id =  unit.ghgr_import_id
+    and fuel.process_idx = unit.process_idx
+    and fuel.sub_process_idx = unit.sub_process_idx
+    and fuel.activity_name = unit.activity_name
+    and fuel.units_idx = unit.units_idx
+    and fuel.unit_idx = unit.unit_idx)$$,
 
     'select ghgr_import_id from ggircs_swrs.unit',
 
