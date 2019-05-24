@@ -1,6 +1,18 @@
 #!/bin/bash
 
-git clone --depth 1 https://github.com/bcgov/cas-ggircs-metabase
-pushd cas-ggircs-metabase
+# restore build artifacts
+if [ "$(ls /tmp/artifacts/ 2>/dev/null)" ]; then
+    mv /tmp/artifacts/* $HOME/.
+fi
+
+# move the application source
+mv /tmp/src $HOME/src
+
+# build application artifacts
+pushd ${HOME}/src
+pwd
+ls -al .
 ./bin/build
 popd
+
+mv ${HOME}/src/target/uberjar/metabase.jar $HOME
