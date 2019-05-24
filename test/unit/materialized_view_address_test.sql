@@ -413,10 +413,11 @@ refresh materialized view ggircs_swrs.address with data;
 
 -- Test the fk relation from address to: facility
 select results_eq(
-    'select facility.ghgr_import_id from ggircs_swrs.address ' ||
-    'join ggircs_swrs.facility ' ||
-    'on ' ||
-    $$address.ghgr_import_id =  facility.ghgr_import_id and address.type ='Facility' $$,
+    $$
+    select facility.ghgr_import_id from ggircs_swrs.address
+    join ggircs_swrs.facility
+    on
+    address.ghgr_import_id =  facility.ghgr_import_id and address.type ='Facility' $$,
 
     'select ghgr_import_id from ggircs_swrs.facility',
 
@@ -425,10 +426,10 @@ select results_eq(
 
 -- Test the fk relation from address to organisation
 select results_eq(
-    'select organisation.ghgr_import_id from ggircs_swrs.address ' ||
-    'join ggircs_swrs.organisation ' ||
-    'on ' ||
-    $$address.ghgr_import_id =  organisation.ghgr_import_id and address.type='Organisation'$$,
+    $$select organisation.ghgr_import_id from ggircs_swrs.address
+    join ggircs_swrs.organisation
+    on
+    address.ghgr_import_id =  organisation.ghgr_import_id and address.type='Organisation'$$,
 
     'select ghgr_import_id from ggircs_swrs.organisation',
 
@@ -437,13 +438,13 @@ select results_eq(
 
 -- Test the fk relation from address to contact
 select results_eq(
-    'select contact.ghgr_import_id from ggircs_swrs.address ' ||
-    'join ggircs_swrs.contact ' ||
-    'on (' ||
-    'address.ghgr_import_id = contact.ghgr_import_id ' ||
-    'and address.contact_idx = contact.contact_idx) ' ||
-    $$and address.type='Contact' $$ ||
-    $$and address.contact_idx= 0$$,
+    $$select contact.ghgr_import_id from ggircs_swrs.address
+    join ggircs_swrs.contact
+    on (
+    address.ghgr_import_id = contact.ghgr_import_id
+    and address.contact_idx = contact.contact_idx)
+    and address.type='Contact'
+    and address.contact_idx= 0$$,
 
     'select ghgr_import_id from ggircs_swrs.contact where contact.contact_idx= 0',
 
@@ -452,13 +453,13 @@ select results_eq(
 
 -- Test the fk relation from address to parent_organisation
 select results_eq(
-    'select parent_organisation.ghgr_import_id from ggircs_swrs.address ' ||
-    'join ggircs_swrs.parent_organisation ' ||
-    'on (' ||
-    'address.ghgr_import_id = parent_organisation.ghgr_import_id ' ||
-    'and address.parent_organisation_idx = parent_organisation.parent_organisation_idx) ' ||
-    $$and address.type='ParentOrganisation' $$ ||
-    $$and address.parent_organisation_idx= 0$$,
+    $$select parent_organisation.ghgr_import_id from ggircs_swrs.address
+    join ggircs_swrs.parent_organisation
+    on (
+    address.ghgr_import_id = parent_organisation.ghgr_import_id
+    and address.parent_organisation_idx = parent_organisation.parent_organisation_idx)
+    and address.type='ParentOrganisation'
+    and address.parent_organisation_idx = 0 $$,
 
     'select ghgr_import_id from ggircs_swrs.parent_organisation where parent_organisation.parent_organisation_idx= 0',
 
