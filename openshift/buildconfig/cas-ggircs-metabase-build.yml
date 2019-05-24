@@ -10,7 +10,7 @@ objects:
     output:
       to:
         kind: ImageStreamTag
-        name: cas-ggircs-metabase-build:${GIT_SHA}
+        name: cas-ggircs-metabase-build:${GIT_BRANCH_NORM}
     resources:
       limits:
         cpu: "4"
@@ -26,7 +26,7 @@ objects:
       sourceStrategy:
         from:
           kind: ImageStreamTag
-          name: cas-ggircs-metabase-builder:${GIT_SHA}
+          name: cas-ggircs-metabase-builder:${GIT_BRANCH_NORM}
         incremental: true
       type: Source
     triggers:
@@ -41,8 +41,7 @@ objects:
       type: GitHub
 
 parameters:
-
-- description: Git source code commit currently deployed.
-  displayName: Git Short sha
-  name: GIT_SHA
+- description: Git source code branch currently deployed, where slashes are replaced by dashes, to be able to use it in image tags.
+  displayName: Git branch (normalized)
+  name: GIT_BRANCH_NORM
   required: true

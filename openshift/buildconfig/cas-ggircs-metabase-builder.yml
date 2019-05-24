@@ -10,7 +10,7 @@ objects:
     output:
       to:
         kind: ImageStreamTag
-        name: cas-ggircs-metabase-builder:${GIT_SHA}
+        name: cas-ggircs-metabase-builder:${GIT_BRANCH_NORM}
     resources:
       limits:
         cpu: "4"
@@ -20,7 +20,7 @@ objects:
         memory: 256Mi
     source:
       git:
-        ref: ${GIT_SHA}
+        ref: ${GIT_BRANCH}
         uri: https://github.com/bcgov/cas-ggircs.git
       contextDir: docker/metabase-builder
     strategy:
@@ -35,8 +35,11 @@ objects:
       type: GitHub
 
 parameters:
-
-- description: Git source code commit currently deployed.
-  displayName: Git Short sha
-  name: GIT_SHA
+- description: Git source code branch currently deployed.
+  displayName: Git branch
+  name: GIT_BRANCH
+  required: true
+- description: Git source code branch currently deployed, where slashes are replaced by dashes, to be able to use it in image tags.
+  displayName: Git branch (normalized)
+  name: GIT_BRANCH_NORM
   required: true
