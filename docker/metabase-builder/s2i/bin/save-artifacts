@@ -2,6 +2,6 @@
 
 pushd ${HOME}
 
-tar cf - .m2 metabase.jar build-git-sha node_modules
+tar cf - .m2 metabase.jar build-git-sha node_modules modules
 
 popd
