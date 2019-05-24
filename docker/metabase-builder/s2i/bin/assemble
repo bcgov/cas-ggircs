@@ -9,11 +9,12 @@ mv /tmp/src $HOME/src
 if [ "$(ls /tmp/artifacts/ 2>/dev/null)" ]; then
     mv /tmp/artifacts/* $HOME/.
     mv $HOME/node_modules $HOME/src/node_modules
+    mv $HOME/resources/modules $HOME/src/resources/modules
 fi
 
 pushd ${HOME}/src
 # build application artifacts
-if [[ ! -f GIT_SHA_FILE || $(< ${GIT_SHA_FILE}) != $(git rev-parse --short HEAD) ]] then
+if [[ ! -f GIT_SHA_FILE || $(< ${GIT_SHA_FILE}) != $(git rev-parse --short HEAD) ]]; then
     # move the previous node modules
     mv ${HOME}/node_modules ${HOME}/src/node_modules
     ./bin/build
