@@ -122,11 +122,11 @@ refresh materialized view ggircs_swrs.descriptor with data;
 
 --  Test ghgr_import_id fk relation
 select results_eq(
-    'select ghgr_import.id from ggircs_swrs.descriptor ' ||
-    'join ggircs_swrs.ghgr_import ' ||
-    'on ' ||
-    'descriptor.ghgr_import_id =  ghgr_import.id ' ||
-    $$and class='Amount'$$,
+    $$select ghgr_import.id from ggircs_swrs.descriptor
+    join ggircs_swrs.ghgr_import
+    on
+    descriptor.ghgr_import_id =  ghgr_import.id
+    and class='Amount'$$,
 
     'select id from ggircs_swrs.ghgr_import',
 
