@@ -29,7 +29,7 @@ objects:
           name: cas-ggircs-metabase-build:${GIT_SHA}
         paths:
         - destinationDir: .
-          sourcePath: /opt/app-root/src/cas-ggircs-metabase/target/uberjar/metabase.jar
+          sourcePath: /opt/app-root/src/metabase.jar
     strategy:
       type: Docker
     triggers:

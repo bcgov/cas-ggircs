@@ -6,6 +6,8 @@ LABEL io.openshift.expose-services="3000:http"
 
 RUN yum install -y git java-1.8.0-openjdk-devel && yum clean all
 
-COPY ./metabase.jar .
+RUN ls -al
+
+RUN pwd
 
 ENTRYPOINT ["java", "-jar", "metabase.jar"]
