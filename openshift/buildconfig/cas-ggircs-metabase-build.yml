@@ -27,6 +27,7 @@ objects:
         from:
           kind: ImageStreamTag
           name: cas-ggircs-metabase-builder:${GIT_SHA}
+        incremental: true
       type: Source
     triggers:
     - type: ConfigChange
