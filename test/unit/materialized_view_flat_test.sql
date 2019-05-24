@@ -72,10 +72,10 @@ refresh materialized view ggircs_swrs.flat with data;
 -- test the fk relation to ghgr_import
 --  Test ghgr_import_id fk relation
 select results_eq(
-    'select ghgr_import.id from ggircs_swrs.flat ' ||
-    'join ggircs_swrs.ghgr_import ' ||
-    'on ' ||
-    'flat.ghgr_import_id =  ghgr_import.id limit 1',
+    $$select ghgr_import.id from ggircs_swrs.flat
+    join ggircs_swrs.ghgr_import
+    on
+    flat.ghgr_import_id =  ghgr_import.id limit 1 $$,
 
     'select id from ggircs_swrs.ghgr_import',
 
