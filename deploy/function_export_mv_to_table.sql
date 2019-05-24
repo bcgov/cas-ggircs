@@ -19,7 +19,7 @@ $$
        mv_array text[] := '{report, organisation, facility, ' ||
                        'activity, unit, identifier, naics, emission, ' ||
                        'final_report, fuel, permit, parent_organisation, contact, ' ||
-                       'address, descriptor}';
+                       'address, descriptor, measured_emission_factor}';
 
   -- Function refresh_materialized_views(data boolean) must be run before this function
   begin
@@ -343,24 +343,24 @@ $$
             and unit.activity_name = activity.activity_name;
       alter table ggircs.unit add constraint ggircs_unit_activity_foreign_key foreign key (activity_id) references ggircs.activity(id);
 
-      -- Todo: Write as a function
-      refresh materialized view ggircs_swrs.report with no data;
-      refresh materialized view ggircs_swrs.final_report with no data;
-      refresh materialized view ggircs_swrs.facility with no data;
-      refresh materialized view ggircs_swrs.organisation with no data;
-      refresh materialized view ggircs_swrs.activity with no data;
-      refresh materialized view ggircs_swrs.unit with no data;
-      refresh materialized view ggircs_swrs.fuel with no data;
-      refresh materialized view ggircs_swrs.emission with no data;
-      refresh materialized view ggircs_swrs.measured_emission_factor with no data;
-      refresh materialized view ggircs_swrs.descriptor with no data;
-      refresh materialized view ggircs_swrs.address with no data;
-      refresh materialized view ggircs_swrs.identifier with no data;
-      refresh materialized view ggircs_swrs.naics with no data;
-      refresh materialized view ggircs_swrs.contact with no data;
-      refresh materialized view ggircs_swrs.permit with no data;
-      refresh materialized view ggircs_swrs.parent_organisation with no data;
-      refresh materialized view ggircs_swrs.flat with no data;
+      -- Create FK/PK relation between Measured_Emission_Factor and Fuel
+      alter table ggircs.measured_emission_factor add column fuel_id int;
+      create index ggircs_measured_emission_factor_fuel_index on ggircs.measured_emission_factor (fuel_id);
+      update ggircs.measured_emission_factor set fuel_id = fuel.id from ggircs.fuel
+          where measured_emission_factor.ghgr_import_id = fuel.ghgr_import_id
+            and measured_emission_factor.process_idx = fuel.process_idx
+            and measured_emission_factor.sub_process_idx = fuel.sub_process_idx
+            and measured_emission_factor.activity_name = fuel.activity_name
+            and measured_emission_factor.sub_activity_name = fuel.sub_activity_name
+            and measured_emission_factor.unit_name = fuel.unit_name
+            and measured_emission_factor.sub_unit_name = fuel.sub_unit_name
+            and measured_emission_factor.substance_idx = fuel.substance_idx
+            and measured_emission_factor.substances_idx = fuel.substances_idx
+            and measured_emission_factor.sub_unit_name = fuel.sub_unit_name
+            and measured_emission_factor.units_idx = fuel.units_idx
+            and measured_emission_factor.unit_idx = fuel.unit_idx
+            and measured_emission_factor.fuel_idx = fuel.fuel_idx;
+      alter table ggircs.measured_emission_factor add constraint ggircs_measured_emission_factor_fuel_foreign_key foreign key (fuel_id) references ggircs.fuel(id);
 
     perform ggircs_swrs.refresh_materialized_views(false);
 
