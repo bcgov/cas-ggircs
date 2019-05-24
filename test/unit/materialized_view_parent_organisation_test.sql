@@ -98,10 +98,10 @@ refresh materialized view ggircs_swrs.organisation with data;
 refresh materialized view ggircs_swrs.parent_organisation with data;
 
 select results_eq(
-    'select organisation.ghgr_import_id from ggircs_swrs.parent_organisation ' ||
-    'join ggircs_swrs.organisation ' ||
-    'on ' ||
-    'parent_organisation.ghgr_import_id = organisation.ghgr_import_id',
+     $$select organisation.ghgr_import_id from ggircs_swrs.parent_organisation
+     join ggircs_swrs.organisation
+     on
+     parent_organisation.ghgr_import_id = organisation.ghgr_import_id$$,
 
     'select ghgr_import_id from ggircs_swrs.organisation',
 
