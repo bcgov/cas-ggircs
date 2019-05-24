@@ -183,12 +183,12 @@ refresh materialized view ggircs_swrs.emission with data;
 
 --  Test ghgr_import_id fk relation
 select results_eq(
-    'select fuel.ghgr_import_id from ggircs_swrs.emission ' ||
-    'join ggircs_swrs.fuel ' ||
-    'on ' ||
-    'emission.ghgr_import_id =  fuel.ghgr_import_id ' ||
-    'and emission.fuel_idx = fuel.fuel_idx ' ||
-    'and emission.emission_idx=0',
+    $$select fuel.ghgr_import_id from ggircs_swrs.emission
+    join ggircs_swrs.fuel
+    on
+    emission.ghgr_import_id =  fuel.ghgr_import_id
+    and emission.fuel_idx = fuel.fuel_idx
+    and emission.emission_idx=0$$,
 
     'select ghgr_import_id from ggircs_swrs.fuel',
 
