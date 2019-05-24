@@ -120,10 +120,10 @@ refresh materialized view ggircs_swrs.final_report with data;
 
 -- Test ghgr_import_id fk relation
 select results_eq(
-    'select report.swrs_report_id from ggircs_swrs.final_report ' ||
-    'join ggircs_swrs.report ' ||
-    'on ' ||
-    'final_report.swrs_report_id = report.swrs_report_id ',
+    $$select report.swrs_report_id from ggircs_swrs.final_report
+    join ggircs_swrs.report
+    on
+    final_report.swrs_report_id = report.swrs_report_id $$,
 
     'select swrs_report_id from ggircs_swrs.report',
 
