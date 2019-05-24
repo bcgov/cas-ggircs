@@ -4,17 +4,11 @@
 begin;
 
 create materialized view ggircs_swrs.measured_emission_factor as (
-  with x as (
-    select ghgr_import.id as ghgr_import_id,
-           ghgr_import.xml_file as source_xml
-    from ggircs_swrs.ghgr_import
-    order by ghgr_import_id desc
-  )
-  select ghgr_import_id, factor_details.*
-  from x,
+  select id as ghgr_import_id, factor_details.*
+  from ggircs_swrs.ghgr_import,
        xmltable(
            '//MeasuredEmissionFactor'
-           passing source_xml
+           passing xml_file
            columns
              activity_name varchar(1000) path 'name(./ancestor::ActivityData/*)' not null,
              sub_activity_name varchar(1000) path 'name(./ancestor::ActivityData/*/*)' not null,

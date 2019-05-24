@@ -5,29 +5,22 @@
 begin;
 
 create materialized view ggircs_swrs.report as (
-  with x as (
-    select id          as ghgr_import_id,
-           xml_file    as source_xml,
-           imported_at as imported_at
-    from ggircs_swrs.ghgr_import
-    order by ghgr_import_id desc
-  )
   select
-    ghgr_import_id,
-    x.source_xml,
-    x.imported_at,
+    id as ghgr_import_id,
+    xml_file as source_xml,
+    imported_at,
     report_details.*,
     report_status.*,
     row_number() over (
       partition by report_details.swrs_report_id
       order by
         report_status.submission_date desc,
-        ghgr_import_id desc
+        id desc
       )                            as swrs_report_history_id
-  from x,
+  from ggircs_swrs.ghgr_import,
        xmltable(
            '/ReportData/ReportDetails'
-           passing source_xml
+           passing xml_file
            columns
              swrs_report_id integer path 'ReportID[normalize-space(.)]' not null,
              prepop_report_id integer path 'PrepopReportID[normalize-space(.)]',
@@ -39,7 +32,7 @@ create materialized view ggircs_swrs.report as (
 
        xmltable(
            '/ReportData/ReportDetails/ReportStatus'
-           passing source_xml
+           passing xml_file
            columns
              status varchar(1000) path 'Status|ReportStatus[normalize-space(.)]' not null, -- Unknown, In Progress, Submitted, Archived, Completed
              version varchar(1000) path 'Version[normalize-space(.)]',

@@ -6,17 +6,11 @@ begin;
 -- Fuels from Units
 -- todo: explore any other attributes for units
 create materialized view ggircs_swrs.fuel as (
-  with x as (
-    select ghgr_import.id as ghgr_import_id,
-           ghgr_import.xml_file as source_xml
-    from ggircs_swrs.ghgr_import
-    order by ghgr_import_id desc
-  )
-  select ghgr_import_id, fuel_details.*
-  from x,
+  select id as ghgr_import_id, fuel_details.*
+  from ggircs_swrs.ghgr_import,
        xmltable(
            '//Fuel'
-           passing source_xml
+           passing xml_file
            columns
              activity_name varchar(1000) path 'name(./ancestor::ActivityData/*)' not null,
              sub_activity_name varchar(1000) path 'name(./ancestor::ActivityData/*/*)' not null,
@@ -43,12 +37,8 @@ create materialized view ggircs_swrs.fuel as (
              q2 numeric path './Q2[normalize-space(.)]',
              q3 numeric path './Q3[normalize-space(.)]',
              q4 numeric path './Q4[normalize-space(.)]',
-
              wastewater_processing_factors xml path './WastewaterProcessingFactors',
              measured_conversion_factors xml path './MeasuredConversionFactors'
-
-
-
          ) as fuel_details
 ) with no data;
 

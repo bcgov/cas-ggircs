@@ -4,26 +4,18 @@
 begin;
 
 create materialized view ggircs_swrs.flat as (
-  with x as (
-    select
-           ghgr_import.id as ghgr_import_id,
-           ghgr_import.xml_file as source_xml,
-           ghgr_import.imported_at
-    from ggircs_swrs.ghgr_import
-    order by ghgr_import_id desc
-  )
-  select ghgr_import_id,
+  select id as ghgr_import_id,
          row_number() over (
-           partition by ghgr_import_id
+           partition by id
            order by
-             ghgr_import_id desc,
+             id desc,
              imported_at desc
            ) as element_id,
          report_flat.*
-  from x,
+  from ggircs_swrs.ghgr_import,
        xmltable(
            '//*[./text()[normalize-space(.)] | ./@*[not(name()="xsi:nil") and not(text()="true")]]'
-           passing source_xml
+           passing xml_file
            columns
              swrs_report_id numeric(1000,0) path '//ReportID[normalize-space(.)]' not null,
              class varchar(10000) path 'name(.)' not null,
@@ -31,7 +23,7 @@ create materialized view ggircs_swrs.flat as (
              value varchar(10000) path 'concat(./text()[normalize-space(.)], ./@*[1])' not null,
              context varchar(10000) path 'concat( (./ancestor::*/@*)[1], "/", (./ancestor::*/@*)[2], "/", (./ancestor::*/@*)[3] )' not null
          ) as report_flat
-  order by ghgr_import_id desc, element_id asc
+  order by id desc, element_id asc
 ) with no data;
 create unique index ggircs_flat_primary_key on ggircs_swrs.flat (ghgr_import_id, element_id);
 create index ggircs_flat_report on ggircs_swrs.flat (ghgr_import_id);

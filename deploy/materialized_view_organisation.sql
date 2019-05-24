@@ -5,16 +5,8 @@
 begin;
 
 create materialized view ggircs_swrs.organisation as (
-  with x as (
-    select
-           ghgr_import.id as ghgr_import_id,
-           ghgr_import.xml_file as source_xml,
-           ghgr_import.imported_at
-    from ggircs_swrs.ghgr_import
-    order by ghgr_import_id asc
-  )
   select
-         ghgr_import_id,
+         id as ghgr_import_id,
          report_details.swrs_organisation_id,
          coalesce(vt_business_legal_name, rd_business_legal_name) as business_legal_name,
          coalesce(vt_english_trade_name, rd_english_trade_name)   as english_trade_name,
@@ -22,16 +14,16 @@ create materialized view ggircs_swrs.organisation as (
          coalesce(vt_cra_business_number, rd_cra_business_number) as cra_business_number,
          coalesce(vt_duns, rd_duns)                               as duns,
          coalesce(vt_web_site, rd_web_site)                       as website
-  from x,
+  from ggircs_swrs.ghgr_import,
        xmltable(
            '/ReportData/ReportDetails'
-           passing source_xml
+           passing xml_file
            columns
              swrs_organisation_id integer not null path 'OrganisationId[normalize-space(.)]'
          ) as report_details,
        xmltable(
            '/ReportData'
-           passing source_xml
+           passing xml_file
            columns
              rd_business_legal_name varchar(1000) path './RegistrationData/Organisation/Details/BusinessLegalName',
              rd_english_trade_name varchar(1000) path './RegistrationData/Organisation/Details/EnglishTradeName',
@@ -40,10 +32,9 @@ create materialized view ggircs_swrs.organisation as (
              rd_duns varchar(1000) path './RegistrationData/Organisation/Details/DUNSNumber',
              rd_web_site varchar(1000) path './RegistrationData/Organisation/Details/WebSite'
          ) as rd_organisation_details,
-
        xmltable(
            '/ReportData'
-           passing source_xml --/ReportData/VerifyTombstone/Organisation/Details/DUNSNumber
+           passing xml_file --/ReportData/VerifyTombstone/Organisation/Details/DUNSNumber
            columns
              vt_business_legal_name varchar(1000) path './VerifyTombstone/Organisation/Details/BusinessLegalName',
              vt_english_trade_name varchar(1000) path './VerifyTombstone/Organisation/Details/EnglishTradeName',

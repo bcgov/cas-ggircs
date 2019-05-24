@@ -4,17 +4,11 @@
 begin;
 
 create materialized view ggircs_swrs.parent_organisation as (
-  with x as (
-    select _ghgr_import.xml_file as source_xml,
-           _ghgr_import.id         as ghgr_import_id
-    from ggircs_swrs.ghgr_import as _ghgr_import
-    order by ghgr_import_id asc
-  )
-  select ghgr_import_id, parent_organisation_details.*
-  from x,
+  select id as ghgr_import_id, parent_organisation_details.*
+  from ggircs_swrs.ghgr_import,
        xmltable(
            '//ParentOrganisation'
-           passing source_xml
+           passing xml_file
            columns
                 path_context varchar(1000) path 'name(./ancestor::VerifyTombstone|./ancestor::RegistrationData)',
                 parent_organisation_idx integer path 'string(count(./ancestor-or-self::ParentOrganisation/preceding-sibling::ParentOrganisation))' not null,
@@ -24,7 +18,6 @@ create materialized view ggircs_swrs.parent_organisation as (
                 duns varchar(1000) path './Details/DUNSNumber',
                 business_legal_name varchar(1000) path './Details/BusinessLegalName|./LegalName',
                 website varchar(1000) path './Details/WebSite'
-
          ) as parent_organisation_details
 ) with no data;
 

@@ -4,13 +4,7 @@
 begin;
 
 create materialized view ggircs_swrs.address as (
-  with x as (
-    select _ghgr_import.xml_file as source_xml,
-           _ghgr_import.id         as ghgr_import_id
-    from ggircs_swrs.ghgr_import as _ghgr_import
-    order by ghgr_import_id asc
-  )
-  select ghgr_import_id,
+  select id as ghgr_import_id,
          address_details.swrs_facility_id,
          swrs_organisation_id,
          path_context,
@@ -47,10 +41,10 @@ create materialized view ggircs_swrs.address as (
          substring(geographic_address_latitude from '-*[0-9]+\.*[0-9]+')::numeric as geographic_address_latitude,
          substring(geographic_address_longitude from '-*[0-9]+\.*[0-9]+')::numeric as geographic_address_longitude
 
-  from x,
+  from ggircs_swrs.ghgr_import,
        xmltable(
            '//Address[not(ancestor::Stack)]'
-           passing source_xml
+           passing xml_file
            columns
                 swrs_facility_id integer path './ancestor::Facility/../../ReportDetails/FacilityId[normalize-space(.)]|./ancestor::Contact/ancestor::ReportData/ReportDetails/FacilityId[normalize-space(.)]',
                 swrs_organisation_id integer path './ancestor::Organisation/../../ReportDetails/OrganisationId[normalize-space(.)]|./ancestor::ParentOrganisation/ancestor::ReportData/ReportDetails/OrganisationId[normalize-space(.)]',

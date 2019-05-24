@@ -6,19 +6,12 @@ begin;
 -- Units from SubActivity
 -- todo: explore any other attributes for units
 create materialized view ggircs_swrs.unit as (
-  with x as (
-    select ghgr_import.id       as ghgr_import_id,
-           ghgr_import.xml_file as source_xml
-    from ggircs_swrs.ghgr_import
-    order by ghgr_import_id desc
-  )
-  select ghgr_import_id,
+  select id as ghgr_import_id,
          unit_details.*
-
-  from x,
+  from ggircs_swrs.ghgr_import,
        xmltable(
            '//Unit'
-           passing source_xml
+           passing xml_file
            columns
              activity_name varchar(1000) path 'name(./ancestor::Process/parent::*)' not null,
              process_idx integer path 'string(count(./ancestor::Process/preceding-sibling::Process))' not null,

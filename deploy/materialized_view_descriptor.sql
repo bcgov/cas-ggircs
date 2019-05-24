@@ -4,19 +4,14 @@
 BEGIN;
 
 create materialized view ggircs_swrs.descriptor as (
-  with x as (
-    select ghgr_import.id       as ghgr_import_id,
-           ghgr_import.xml_file as source_xml
-    from ggircs_swrs.ghgr_import
-  )
-  select ghgr_import_id,
+  select id as ghgr_import_id,
          depth_four_descriptors.*
-  from x,
+  from ggircs_swrs.ghgr_import,
        xmltable(
            '(
        //Process/SubProcess/child::*[not(self::Units)]/child::*/child::*/child::*/*
    )[./text()[normalize-space(.)]/parent::* or ./@*]'
-           passing source_xml
+           passing xml_file
            columns
              process_idx integer path 'string(count(./ancestor::Process/preceding-sibling::Process))' not null
              ,sub_process_idx integer path 'string(count(./ancestor::SubProcess/preceding-sibling::SubProcess))' not null
@@ -34,14 +29,14 @@ create materialized view ggircs_swrs.descriptor as (
 
   union all
 
-  select ghgr_import_id,
+  select id as ghgr_import_id,
          depth_three_descriptors.*
-  from x,
+  from ggircs_swrs.ghgr_import,
        xmltable(
            '(
        //SubProcess/child::*[not(self::Units)]/child::*/*
    )[./text()[normalize-space(.)]/parent::* or ./@*]'
-           passing source_xml
+           passing xml_file
            columns
              process_idx integer path 'string(count(./ancestor::Process/preceding-sibling::Process))' not null
              ,sub_process_idx integer path 'string(count(./ancestor::SubProcess/preceding-sibling::SubProcess))' not null
@@ -59,14 +54,14 @@ create materialized view ggircs_swrs.descriptor as (
 
   union all
 
-  select ghgr_import_id,
+  select id as ghgr_import_id,
          depth_one_descriptors.*
-  from x,
+  from ggircs_swrs.ghgr_import,
        xmltable(
            '(
        //SubProcess/child::*[not(self::Units)] | //SubProcess/child::*[not(self::Units)]/*
    )[./text()[normalize-space(.)]/parent::* or ./@*]'
-           passing source_xml
+           passing xml_file
            columns
              process_idx integer path 'string(count(./ancestor::Process/preceding-sibling::Process))' not null
              ,sub_process_idx integer path 'string(count(./ancestor::SubProcess/preceding-sibling::SubProcess))' not null

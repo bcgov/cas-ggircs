@@ -4,24 +4,17 @@
 begin;
 
 create materialized view ggircs_swrs.permit as (
-  with x as (
-    select _ghgr_import.xml_file as source_xml,
-           _ghgr_import.id         as ghgr_import_id
-    from ggircs_swrs.ghgr_import as _ghgr_import
-    order by ghgr_import_id asc
-  )
-  select ghgr_import_id, permit_details.*
-  from x,
+  select id as ghgr_import_id, permit_details.*
+  from ggircs_swrs.ghgr_import,
        xmltable(
            '//Permit'
-           passing source_xml
+           passing xml_file
            columns
                 path_context varchar(1000) path 'name(./ancestor::VerifyTombstone|./ancestor::RegistrationData)',
                 permit_idx integer path 'string(count(./ancestor-or-self::Permit/preceding-sibling::Permit))' not null,
                 issuing_agency varchar(1000) path'./IssuingAgency[normalize-space(.)]',
                 issuing_dept_agency_program varchar(1000) path'./IssuingDeptAgencyProgram[normalize-space(.)]',
                 permit_number varchar(1000) path'./PermitNumber[normalize-space(.)]'
-
          ) as permit_details
 ) with no data;
 

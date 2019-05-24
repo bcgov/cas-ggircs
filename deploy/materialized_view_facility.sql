@@ -5,17 +5,9 @@ begin;
 
 create materialized view ggircs_swrs.facility as (
   -- Select the XML reports from ghgr_imports table and get the Facility ID and Report ID from reports table
-  with x as (
-    select _ghgr_import.id               as ghgr_import_id,
-           _ghgr_import.xml_file     as source_xml,
-           _ghgr_import.imported_at  as imported_at
-    from ggircs_swrs.ghgr_import as _ghgr_import
-    order by _ghgr_import.id desc
-  )
-       -- Walk the XML to extract facility details
-       -- coalesce results from VerifyTombstone (vt) and RegistrationData (rd)
-
-  select x.ghgr_import_id,
+  -- Walk the XML to extract facility details
+  -- coalesce results from VerifyTombstone (vt) and RegistrationData (rd)
+  select id as ghgr_import_id,
          rd_facility_details.swrs_facility_id,
          coalesce(vt_facility_details.facility_name, rd_facility_details.facility_name) as facility_name,
          rd_facility_details.facility_type,
@@ -27,10 +19,10 @@ create materialized view ggircs_swrs.facility as (
          substring(coalesce(vt_facility_details.latitude, rd_facility_details.latitude) from '-*[0-9]+\.*[0-9]+')::numeric   as latitude,
          substring(coalesce(vt_facility_details.longitude, rd_facility_details.longitude) from '-*[0-9]+\.*[0-9]+')::numeric as longitude
 
-  from x,
+  from ggircs_swrs.ghgr_import,
        xmltable(
            '/ReportData'
-           passing source_xml
+           passing xml_file
            columns
              swrs_facility_id integer path '//FacilityId',
              facility_name varchar(1000) path './RegistrationData/Facility/Details/FacilityName',
@@ -44,7 +36,7 @@ create materialized view ggircs_swrs.facility as (
 
        xmltable(
            '/ReportData'
-           passing source_xml
+           passing xml_file
            columns
              facility_name varchar(1000) path './VerifyTombstone/Facility/Details/FacilityName',
              relationship_type varchar(1000) path './VerifyTombstone/Facility/Details/RelationshipType',
