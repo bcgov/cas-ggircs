@@ -1,7 +1,7 @@
 #!/bin/bash
 
-pushd ${HOME}
+pushd ${HOME} > /dev/null
 
 tar cf - .m2 metabase.jar build-git-sha node_modules modules
 
-popd
+popd > /dev/null
