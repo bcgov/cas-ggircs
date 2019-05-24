@@ -208,13 +208,13 @@ define build
 	$(call oc_process,imagestream/cas-ggircs-perl,)
 	$(call oc_process,imagestream/cas-ggircs-postgres,)
 	$(call oc_process,imagestream/cas-ggircs,)
-	$(call oc_process,buildconfig/cas-ggircs,GIT_BRANCH=${GIT_BRANCH},GIT_BRANCH_NORM=${GIT_BRANCH_NORM})
+	$(call oc_process,buildconfig/cas-ggircs,GIT_BRANCH=${GIT_BRANCH} GIT_BRANCH_NORM=${GIT_BRANCH_NORM})
 	$(call oc_process,imagestream/cas-ggircs-metabase-builder,)
-	$(call oc_process,buildconfig/cas-ggircs-metabase-builder,GIT_BRANCH=${GIT_BRANCH},GIT_BRANCH_NORM=${GIT_BRANCH_NORM})
+	$(call oc_process,buildconfig/cas-ggircs-metabase-builder,GIT_BRANCH=${GIT_BRANCH} GIT_BRANCH_NORM=${GIT_BRANCH_NORM})
 	$(call oc_process,imagestream/cas-ggircs-metabase-build,)
-	$(call oc_process,buildconfig/cas-ggircs-metabase-build,GIT_BRANCH=${GIT_BRANCH},GIT_BRANCH_NORM=${GIT_BRANCH_NORM})
+	$(call oc_process,buildconfig/cas-ggircs-metabase-build,GIT_BRANCH_NORM=${GIT_BRANCH_NORM})
 	$(call oc_process,imagestream/cas-ggircs-metabase,)
-	$(call oc_process,buildconfig/cas-ggircs-metabase,GIT_BRANCH=${GIT_BRANCH},GIT_BRANCH_NORM=${GIT_BRANCH_NORM})
+	$(call oc_process,buildconfig/cas-ggircs-metabase,GIT_BRANCH=${GIT_BRANCH} GIT_BRANCH_NORM=${GIT_BRANCH_NORM})
 endef
 
 define deploy
@@ -231,9 +231,9 @@ define deploy
 		METABASE_DATABASE=metabase_${OC_PROJECT} \
 		| ${OC} apply --wait=true -f-
 	# Deploy...
-	$(call oc_process,imagestream/cas-ggircs-metabase-mirror,GIT_BRANCH=${GIT_BRANCH},GIT_BRANCH_NORM=${GIT_BRANCH_NORM})
+	$(call oc_process,imagestream/cas-ggircs-metabase-mirror,GIT_BRANCH_NORM=${GIT_BRANCH_NORM})
 	$(call oc_process,imagestream/cas-ggircs-postgres-mirror,)
-	$(call oc_process,imagestream/cas-ggircs-mirror,GIT_BRANCH=${GIT_BRANCH},GIT_BRANCH_NORM=${GIT_BRANCH_NORM})
+	$(call oc_process,imagestream/cas-ggircs-mirror,GIT_BRANCH_NORM=${GIT_BRANCH_NORM})
 	$(call oc_process,persistentvolumeclaim/cas-ggircs-data,)
 	$(call oc_process,persistentvolumeclaim/cas-ggircs-metabase-postgres,)
 	$(call oc_process,persistentvolumeclaim/cas-ggircs-postgres,)
