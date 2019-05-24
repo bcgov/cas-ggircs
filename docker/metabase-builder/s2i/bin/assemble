@@ -1,18 +1,25 @@
 #!/bin/bash
 
-# restore build artifacts
-if [ "$(ls /tmp/artifacts/ 2>/dev/null)" ]; then
-    mv /tmp/artifacts/* $HOME/.
-fi
+GIT_SHA_FILE=${HOME}/build-git-sha
 
 # move the application source
 mv /tmp/src $HOME/src
 
-# build application artifacts
+# restore build artifacts
+if [ "$(ls /tmp/artifacts/ 2>/dev/null)" ]; then
+    mv /tmp/artifacts/* $HOME/.
+    mv $HOME/node_modules $HOME/src/node_modules
+fi
+
 pushd ${HOME}/src
-pwd
-ls -al .
-./bin/build
+# build application artifacts
+if [[ ! -f GIT_SHA_FILE || $(< ${GIT_SHA_FILE}) != $(git rev-parse --short HEAD) ]] then
+    # move the previous node modules
+    mv ${HOME}/node_modules ${HOME}/src/node_modules
+    ./bin/build
+    mv ${HOME}/src/target/uberjar/metabase.jar $HOME
+    git rev-parse --short HEAD > ${GIT_SHA_FILE}
+    mv node_modules ${HOME}
+fi
 popd
 
-mv ${HOME}/src/target/uberjar/metabase.jar $HOME
