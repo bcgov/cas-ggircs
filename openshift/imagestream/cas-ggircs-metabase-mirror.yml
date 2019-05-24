@@ -22,6 +22,7 @@ objects:
         type: Source
   status: {}
 
+parameters:
 - description: Git source code commit currently deployed.
   displayName: Git Short sha
   name: GIT_SHA
