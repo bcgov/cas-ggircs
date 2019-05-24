@@ -28,7 +28,7 @@ objects:
           kind: ImageStreamTag
           name: cas-ggircs-metabase-build:${GIT_BRANCH_NORM}
         paths:
-        - destinationDir: .
+        - destinationDir: docker/metabase
           sourcePath: /opt/app-root/src/metabase.jar
     strategy:
       type: Docker
