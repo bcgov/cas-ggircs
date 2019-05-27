@@ -21,6 +21,3 @@ pushd ${HOME}/src > /dev/null
 #     echo "Metabase revision unchanged, nothing to compile"
 #fi
 popd > /dev/null
-# No need to push the sources
-rm -rf ${HOME}/src/
-
