@@ -279,6 +279,20 @@ $$
           where facility.ghgr_import_id = organisation.ghgr_import_id;
       alter table ggircs.facility add constraint ggircs_facility_organisation_foreign_key foreign key (organisation_id) references ggircs.organisation(id);
     
+      -- Create FK/PK relation between Facility and Identifier
+      alter table ggircs.facility add column identifier_id int;
+      create index ggircs_facility_identifier_index on ggircs.facility (identifier_id);
+      update ggircs.facility set identifier_id = identifier.id from ggircs.identifier
+          where facility.ghgr_import_id = identifier.ghgr_import_id;
+      alter table ggircs.facility add constraint ggircs_facility_identifier_foreign_key foreign key (identifier_id) references ggircs.identifier(id);
+
+      -- Create FK/PK relation between Facility and Naics
+      alter table ggircs.facility add column naics_id int;
+      create index ggircs_facility_naics_index on ggircs.facility (naics_id);
+      update ggircs.facility set naics_id = naics.id from ggircs.naics
+          where facility.ghgr_import_id = naics.ghgr_import_id;
+      alter table ggircs.facility add constraint ggircs_facility_naics_foreign_key foreign key (naics_id) references ggircs.naics(id);
+
     /** Remaining FK's **/
       -- Create FK/PK relation between Activity and Report
       alter table ggircs.activity add column report_id int;

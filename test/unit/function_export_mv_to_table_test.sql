@@ -4,7 +4,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(83);
+select plan(85);
 
 insert into ggircs_swrs.ghgr_import (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -1080,6 +1080,37 @@ select results_eq(
     'select ghgr_import_id from ggircs.facility order by ghgr_import_id',
 
     'Foreign key facility_id in ggircs.permit references ggircs.facility.id'
+);
+
+-- Facility -> Identifier
+select results_eq(
+    $$
+    select identifier.identifier_value as bcghgid from ggircs.facility
+    join ggircs.identifier
+    on
+      facility.identifier_id = identifier.id
+      and identifier.identifier_type = 'BCGHGID'
+      and path_context = 'RegistrationData'
+    $$,
+
+    $$ select identifier_value from ggircs.identifier where identifier_type = 'BCGHGID' and path_context = 'RegistrationData' $$,
+
+    'Foreign key identifier_id in ggircs.facility references ggircs.identifier.id'
+);
+
+-- Facility -> Naics
+select results_eq(
+    $$
+    select naics.naics_code, naics_classification from ggircs.facility
+    join ggircs.naics
+    on
+      facility.naics_id = naics.id
+      and path_context = 'RegistrationData'
+    $$,
+
+    $$ select naics_code, naics_classification from ggircs.naics where path_context = 'RegistrationData' $$,
+
+    'Foreign key naics_id in ggircs.facility references ggircs.naics.id'
 );
 
 -- Measured Emission Factor -> Fuel
