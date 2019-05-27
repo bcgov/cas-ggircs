@@ -72,10 +72,12 @@ refresh materialized view ggircs_swrs.flat with data;
 -- test the fk relation to ghgr_import
 --  Test ghgr_import_id fk relation
 select results_eq(
-    $$select ghgr_import.id from ggircs_swrs.flat
+    $$
+    select ghgr_import.id from ggircs_swrs.flat
     join ggircs_swrs.ghgr_import
     on
-    flat.ghgr_import_id =  ghgr_import.id limit 1 $$,
+    flat.ghgr_import_id =  ghgr_import.id limit 1
+    $$,
 
     'select id from ggircs_swrs.ghgr_import',
 
@@ -83,7 +85,10 @@ select results_eq(
 );
 
 -- test the columnns for matview facility have been properly parsed from xml
-select results_eq('select * from ggircs_swrs.flat', $$
+select results_eq(
+  'select * from ggircs_swrs.flat',
+
+  $$
   with _flat as (
     select * from (
       values
@@ -97,7 +102,9 @@ select results_eq('select * from ggircs_swrs.flat', $$
     as flat (element_id, class, attr, value, context)
   )
   select ghgr_import.id, _flat.* from _flat, ggircs_swrs.ghgr_import;
-$$, 'ggircs_swrs.flat() should return all xml nodes with values as rows');
+  $$,
+
+  'ggircs_swrs.flat() should return all xml nodes with values as rows');
 
 select finish();
 rollback;
