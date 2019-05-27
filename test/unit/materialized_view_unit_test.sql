@@ -180,13 +180,15 @@ refresh materialized view ggircs_swrs.activity with data;
 
 -- test the foreign keys in unit return a value when joined on activity
 select results_eq(
-    $$select activity.ghgr_import_id from ggircs_swrs.unit
+    $$
+    select activity.ghgr_import_id from ggircs_swrs.unit
      join ggircs_swrs.activity
      on (
      unit.ghgr_import_id =  activity.ghgr_import_id
      and unit.process_idx = activity.process_idx
      and unit.sub_process_idx = activity.sub_process_idx
-     and unit.activity_name = activity.activity_name)$$,
+     and unit.activity_name = activity.activity_name)
+    $$,
 
     'select ghgr_import_id from ggircs_swrs.activity',
 
