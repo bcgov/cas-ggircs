@@ -1,7 +1,8 @@
 #!/bin/bash
 
+# tar must be the only program writing to stdout
 pushd ${HOME} > /dev/null
 
-tar cf - .m2 metabase.jar build-git-sha node_modules modules
+tar cf - .m2 metabase.jar build-git-sha src/node_modules src/resources/modules modules/drivers/*/target
 
 popd > /dev/null
