@@ -122,11 +122,13 @@ refresh materialized view ggircs_swrs.descriptor with data;
 
 --  Test ghgr_import_id fk relation
 select results_eq(
-    $$select ghgr_import.id from ggircs_swrs.descriptor
+    $$
+    select ghgr_import.id from ggircs_swrs.descriptor
     join ggircs_swrs.ghgr_import
     on
     descriptor.ghgr_import_id =  ghgr_import.id
-    and class='Amount'$$,
+    and class='Amount'
+    $$,
 
     'select id from ggircs_swrs.ghgr_import',
 
@@ -142,77 +144,77 @@ select results_eq(
 
 -- test that root level descriptors being extracted
 select results_eq(
-  $$select node_value from ggircs_swrs.descriptor where class='NumberOfTimesMissingDataProcedures' $$,
+  $$ select node_value from ggircs_swrs.descriptor where class='NumberOfTimesMissingDataProcedures' $$,
   Array['40'::varchar],
   'ggircs_swrs.descriptor.node_value is extracted where class is NumberOfTimesMissingDataProcedures'
 );
 
 -- test that medium level descriptors being extracted
 select results_eq(
-  $$select node_value from ggircs_swrs.descriptor where class='LimeTypeName' $$,
+  $$ select node_value from ggircs_swrs.descriptor where class='LimeTypeName' $$,
   Array['Quicklime'::varchar],
   'ggircs_swrs.descriptor.node_value is extracted where class is LimeTypeName'
 );
 
 -- test that medium level descriptors have the right parent
 select results_eq(
-  $$select parent from ggircs_swrs.descriptor where class='LimeTypeName' $$,
+  $$ select parent from ggircs_swrs.descriptor where class='LimeTypeName' $$,
   Array['LimeMonthlyDetails'::varchar],
   'ggircs_swrs.descriptor.parent is extracted where class is LimeTypeName'
 );
 
 -- test that mutiple activity_names are being created based on child of ReportData (e.g. ActivityPages, ProcessFlowDiagram etc.)
 select results_eq(
-  $$select activity_name from ggircs_swrs.descriptor where class='UploadedFileName' $$,
+  $$ select activity_name from ggircs_swrs.descriptor where class='UploadedFileName' $$,
   Array['ProcessFlowDiagram'::varchar],
   'ggircs_swrs.descriptor.activity_name is extracted where class is UploadedFileName'
 );
 
 -- test that values in the ProcessFlowDiagram activity_name is extracted
 select results_eq(
-  $$select node_value from ggircs_swrs.descriptor where class='UploadedFileName' $$,
+  $$ select node_value from ggircs_swrs.descriptor where class='UploadedFileName' $$,
   Array['all_our_base.pdf'::varchar],
   'ggircs_swrs.descriptor.node_value is extracted where class is UploadedFileName'
 );
 
 -- test that process_idx is being generated properly when multiple preciding siblings
 select results_eq(
-  $$select process_idx from ggircs_swrs.descriptor where class='UploadedFileName' $$,
+  $$ select process_idx from ggircs_swrs.descriptor where class='UploadedFileName' $$,
   Array[1::integer],
   'ggircs_swrs.descriptor.process_idx is extracted where class is UploadedFileName'
 );
 
 -- test that sub_process_idx is being generated properly when multiple preciding siblings
 select results_eq(
-  $$select sub_process_idx from ggircs_swrs.descriptor where class='UploadedFileName' $$,
+  $$ select sub_process_idx from ggircs_swrs.descriptor where class='UploadedFileName' $$,
   Array[1::integer],
   'ggircs_swrs.descriptor.sub_process_idx is extracted where class is UploadedFileName'
 );
 
 -- test that parent_idx is being generated properly when multiple preciding siblings
 select results_eq(
-  $$select parent_idx from ggircs_swrs.descriptor where class='LimeTypeName' $$,
+  $$ select parent_idx from ggircs_swrs.descriptor where class='LimeTypeName' $$,
   Array[0::integer],
   'ggircs_swrs.descriptor.process_idx is extracted where class is LimeTypeName'
 );
 
 -- test that grandparent_idx is being generated properly when multiple preciding siblings
 select results_eq(
-  $$select grandparent_idx from ggircs_swrs.descriptor where class='LimeTypeName' $$,
+  $$ select grandparent_idx from ggircs_swrs.descriptor where class='LimeTypeName' $$,
   Array[1::integer],
   'ggircs_swrs.descriptor.process_idx is extracted where class is LimeTypeName'
 );
 
 -- test that sub_process_idx is being generated properly when multiple preciding siblings
 select results_eq(
-  $$select sub_process_idx from ggircs_swrs.descriptor where class='UploadedFileName' $$,
+  $$ select sub_process_idx from ggircs_swrs.descriptor where class='UploadedFileName' $$,
   Array[1::integer],
   'ggircs_swrs.descriptor.sub_process_idx is extracted where class is UploadedFileName'
 );
 
 -- test that multi-attribute concatenation is working
 select results_eq(
-  $$select node_value from ggircs_swrs.descriptor where attr_value like '%Lime Produced Monthly%' $$,
+  $$ select node_value from ggircs_swrs.descriptor where attr_value like '%Lime Produced Monthly%' $$,
   Array['2918.22'::varchar],
   'ggircs_swrs.descriptor.sub_process_idx is extracted where class is Lime Produced Monthly'
 );
