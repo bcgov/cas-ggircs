@@ -12,14 +12,16 @@ begin;
 
 create or replace function ggircs_swrs.export_mv_to_table()
   returns void as
-$$
+$function$
   /** Create all tables from materialized views that are not being split up **/
   declare
 
-       mv_array text[] := $a${report, organisation, facility,
-                       activity, unit, identifier, naics, emission,
-                       final_report, fuel, permit, parent_organisation, contact,
-                       address, descriptor, measured_emission_factor}$a$;
+       mv_array text[] := $$
+                          {report, organisation, facility,
+                          activity, unit, identifier, naics, emission,
+                          final_report, fuel, permit, parent_organisation, contact,
+                          address, descriptor, measured_emission_factor}
+                          $$;
 
   begin
 
@@ -40,8 +42,8 @@ $$
         execute
           'create table ggircs.' || quote_ident(mv_array[i]) ||
                  ' as (select x.* from ggircs_swrs.' || quote_ident(mv_array[i]) ||
-                 $a$ as x inner join ggircs_swrs.final_report as final_report
-                 on x.ghgr_import_id = final_report.ghgr_import_id)$a$;
+                 $$ as x inner join ggircs_swrs.final_report as final_report
+                 on x.ghgr_import_id = final_report.ghgr_import_id)$$;
         execute
           'alter table ggircs.' || quote_ident(mv_array[i]) ||
           ' add column id int generated always as identity primary key';
@@ -55,7 +57,8 @@ $$
 
     execute
 
-          $a$create table ggircs.attributable_emission
+          $$
+          create table ggircs.attributable_emission
           as (select x.* from ggircs_swrs.emission
           as x inner join ggircs_swrs.final_report as final_report
           on x.ghgr_import_id = final_report.ghgr_import_id
@@ -76,7 +79,7 @@ $$
                                    'Additional information for cement and lime production facilities only (not aggregated intotals)',
                                    'Additional information required when other activities selected are Activities in Table 2 rows 2, 4, 5 , or 6',
                                    'Additional reportable information')
-          )$a$;
+          )$$;
 
     execute 'alter table ggircs.attributable_emission add column id int generated always as identity primary key';
     
@@ -392,6 +395,6 @@ $$
 
   end;
 
-$$ language plpgsql volatile ;
+$function$ language plpgsql volatile ;
 
 commit;
