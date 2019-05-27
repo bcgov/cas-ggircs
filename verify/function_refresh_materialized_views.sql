@@ -2,6 +2,6 @@
 
 begin;
 
-select pg_get_functiondef('ggircs_swrs.refresh_materialized_views(boolean)'::regprocedure);
+select pg_get_functiondef('ggircs_swrs.refresh_materialized_views(text, text)'::regprocedure);
 
 rollback;
