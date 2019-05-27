@@ -285,25 +285,25 @@ push:
 rsh:
 	oc exec -it cas-ggircs-5-c46gh -- bash
 
-.PHONY: refresh
-refresh:
-	parallel -P8 'oc exec cas-ggircs-1-5ssz8 -- psql -c "refresh materialized view ggircs_swrs.{} with data;"' ::: \
-		report \
-		final_report \
-		facility \
-		organisation \
-		activity unit \
-		fuel \
-		emission \
-		measured_emission_factor \
-		descriptor \
-		address \
-		identifier \
-		naics \
-		contact \
-		permit \
-		parent_organisation \
-		flat
+# .PHONY: refresh
+# refresh:
+# 	parallel -P8 'oc exec cas-ggircs-1-5ssz8 -- psql -c "refresh materialized view ggircs_swrs.{} with data;"' ::: \
+# 		report \
+# 		final_report \
+# 		facility \
+# 		organisation \
+# 		activity unit \
+# 		fuel \
+# 		emission \
+# 		measured_emission_factor \
+# 		descriptor \
+# 		address \
+# 		identifier \
+# 		naics \
+# 		contact \
+# 		permit \
+# 		parent_organisation \
+# 		flat
 
 # Configure image streams
 # oc start-build cas-ggircs-postgres --commit=$$(git rev-parse --verify HEAD)
