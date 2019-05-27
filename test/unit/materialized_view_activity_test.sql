@@ -78,10 +78,12 @@ refresh materialized view ggircs_swrs.activity with data;
 
 --  Test ghgr_import_id fk relation
 select results_eq(
-   $$select ghgr_import.id from ggircs_swrs.activity
+   $$
+   select ghgr_import.id from ggircs_swrs.activity
    join ggircs_swrs.ghgr_import
    on
-   activity.ghgr_import_id =  ghgr_import.id$$,
+   activity.ghgr_import_id =  ghgr_import.id
+   $$,
 
    'select id from ggircs_swrs.ghgr_import',
 

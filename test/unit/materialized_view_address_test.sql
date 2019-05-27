@@ -417,7 +417,8 @@ select results_eq(
     select facility.ghgr_import_id from ggircs_swrs.address
     join ggircs_swrs.facility
     on
-    address.ghgr_import_id =  facility.ghgr_import_id and address.type ='Facility' $$,
+    address.ghgr_import_id =  facility.ghgr_import_id and address.type ='Facility'
+    $$,
 
     'select ghgr_import_id from ggircs_swrs.facility',
 
@@ -426,10 +427,12 @@ select results_eq(
 
 -- Test the fk relation from address to organisation
 select results_eq(
-    $$select organisation.ghgr_import_id from ggircs_swrs.address
+    $$
+    select organisation.ghgr_import_id from ggircs_swrs.address
     join ggircs_swrs.organisation
     on
-    address.ghgr_import_id =  organisation.ghgr_import_id and address.type='Organisation'$$,
+    address.ghgr_import_id =  organisation.ghgr_import_id and address.type='Organisation'
+    $$,
 
     'select ghgr_import_id from ggircs_swrs.organisation',
 
@@ -438,13 +441,15 @@ select results_eq(
 
 -- Test the fk relation from address to contact
 select results_eq(
-    $$select contact.ghgr_import_id from ggircs_swrs.address
+    $$
+    select contact.ghgr_import_id from ggircs_swrs.address
     join ggircs_swrs.contact
     on (
     address.ghgr_import_id = contact.ghgr_import_id
     and address.contact_idx = contact.contact_idx)
     and address.type='Contact'
-    and address.contact_idx= 0$$,
+    and address.contact_idx = 0
+    $$,
 
     'select ghgr_import_id from ggircs_swrs.contact where contact.contact_idx= 0',
 
@@ -453,13 +458,15 @@ select results_eq(
 
 -- Test the fk relation from address to parent_organisation
 select results_eq(
-    $$select parent_organisation.ghgr_import_id from ggircs_swrs.address
+    $$
+    select parent_organisation.ghgr_import_id from ggircs_swrs.address
     join ggircs_swrs.parent_organisation
     on (
     address.ghgr_import_id = parent_organisation.ghgr_import_id
     and address.parent_organisation_idx = parent_organisation.parent_organisation_idx)
     and address.type='ParentOrganisation'
-    and address.parent_organisation_idx = 0 $$,
+    and address.parent_organisation_idx = 0
+    $$,
 
     'select ghgr_import_id from ggircs_swrs.parent_organisation where parent_organisation.parent_organisation_idx= 0',
 
@@ -469,175 +476,175 @@ select results_eq(
 
 -- test the columnns for ggircs_swrs.address have been properly parsed from xml when context is 'Facility'
 select results_eq(
-  $$select ghgr_import_id from ggircs_swrs.address where address.type='Facility'$$,
+  $$ select ghgr_import_id from ggircs_swrs.address where address.type='Facility' $$,
   'select id from ggircs_swrs.ghgr_import',
   'ggircs_swrs.address parsed column ghgr_import_id'
 );
 
 select results_eq(
-  $$select type from ggircs_swrs.address where address.type='Facility'$$,
+  $$ select type from ggircs_swrs.address where address.type='Facility' $$,
   ARRAY['Facility'::varchar],
   'ggircs_swrs.address parsed column type'
 );
 select results_eq(
-  $$select swrs_facility_id from ggircs_swrs.address where address.type='Facility'$$,
+  $$ select swrs_facility_id from ggircs_swrs.address where address.type='Facility' $$,
   ARRAY[666::integer],
   'ggircs_swrs.address parsed column swrs_facility_id'
 );
 -- test that the swrs_organisation_id is null when getting address from the context of facility
 select results_eq(
-  $$select swrs_organisation_id from ggircs_swrs.address where address.type='Facility'$$,
+  $$ select swrs_organisation_id from ggircs_swrs.address where address.type='Facility' $$,
   ARRAY[null::integer],
   'ggircs_swrs.address parsed column swrs_organisation_id'
 );
 
 -- Physical Address columns
 select results_eq(
-  $$select physical_address_unit_number from ggircs_swrs.address where address.type='Facility'$$,
+  $$ select physical_address_unit_number from ggircs_swrs.address where address.type='Facility' $$,
   ARRAY[1::varchar],
   'ggircs_swrs.address parsed column physical_address_unit_number'
 );
 select results_eq(
-  $$select physical_address_street_number from ggircs_swrs.address where address.type='Facility'$$,
+  $$ select physical_address_street_number from ggircs_swrs.address where address.type='Facility' $$,
   ARRAY[1234::varchar],
   'ggircs_swrs.address parsed column physical_address_street_number'
 );
 select results_eq(
-  $$select physical_address_street_number_suffix from ggircs_swrs.address where address.type='Facility'$$,
+  $$ select physical_address_street_number_suffix from ggircs_swrs.address where address.type='Facility' $$,
   ARRAY[null::varchar],
   'ggircs_swrs.address parsed column physical_address_street_number_suffix'
 );
 select results_eq(
-  $$select physical_address_street_name from ggircs_swrs.address where address.type='Facility'$$,
+  $$ select physical_address_street_name from ggircs_swrs.address where address.type='Facility' $$,
   ARRAY['00th'::varchar],
   'ggircs_swrs.address parsed column physical_address_municipality'
 );
 select results_eq(
-  $$select physical_address_street_type from ggircs_swrs.address where address.type='Facility'$$,
+  $$ select physical_address_street_type from ggircs_swrs.address where address.type='Facility' $$,
   ARRAY['Avenue'::varchar],
   'ggircs_swrs.address parsed column physical_address_street_type'
 );
 select results_eq(
-  $$select physical_address_street_direction from ggircs_swrs.address where address.type='Facility'$$,
+  $$ select physical_address_street_direction from ggircs_swrs.address where address.type='Facility' $$,
   ARRAY['NW'::varchar],
   'ggircs_swrs.address parsed column physical_address_street_direction'
 );
 select results_eq(
-  $$select physical_address_municipality from ggircs_swrs.address where address.type='Facility'$$,
+  $$ select physical_address_municipality from ggircs_swrs.address where address.type='Facility' $$,
   ARRAY['Fort Nelson'::varchar],
   'ggircs_swrs.address parsed column physical_address_municipality'
 );
 select results_eq(
-  $$select physical_address_prov_terr_state from ggircs_swrs.address where address.type='Facility'$$,
+  $$ select physical_address_prov_terr_state from ggircs_swrs.address where address.type='Facility' $$,
   ARRAY['British Columbia'::varchar],
   'ggircs_swrs.address parsed column physical_address_prov_terr_state'
 );
 select results_eq(
-  $$select physical_address_postal_code_zip_code from ggircs_swrs.address where address.type='Facility'$$,
+  $$ select physical_address_postal_code_zip_code from ggircs_swrs.address where address.type='Facility' $$,
   ARRAY['H0H 0H0'::varchar],
   'ggircs_swrs.address parsed column physical_address_postal_code_zip_code'
 );
 select results_eq(
-  $$select physical_address_country from ggircs_swrs.address where address.type='Facility'$$,
+  $$ select physical_address_country from ggircs_swrs.address where address.type='Facility' $$,
   ARRAY['Canada'::varchar],
   'ggircs_swrs.address parsed column physical_address_country'
 );
 select results_eq(
-  $$select physical_address_national_topographical_description from ggircs_swrs.address where address.type='Facility'$$,
+  $$ select physical_address_national_topographical_description from ggircs_swrs.address where address.type='Facility' $$,
   ARRAY['A-123-B/456-C-00'::varchar],
   'ggircs_swrs.address parsed column physical_address_national_topographical_description'
 );
 select results_eq(
-  $$select physical_address_additional_information from ggircs_swrs.address where address.type='Facility'$$,
+  $$ select physical_address_additional_information from ggircs_swrs.address where address.type='Facility' $$,
   ARRAY['INFO'::varchar],
   'ggircs_swrs.address parsed column physical_address_additional_information'
 );
 select results_eq(
-  $$select physical_address_land_survey_description from ggircs_swrs.address where address.type='Facility'$$,
+  $$ select physical_address_land_survey_description from ggircs_swrs.address where address.type='Facility' $$,
   ARRAY['OOH shiny!'::varchar],
   'ggircs_swrs.address parsed column physical_address_land_survey_description'
 );
 
 -- Mailing Address Columns
 select results_eq(
-  $$select mailing_address_delivery_mode from ggircs_swrs.address where address.type='Facility'$$,
+  $$ select mailing_address_delivery_mode from ggircs_swrs.address where address.type='Facility' $$,
   ARRAY['Post Office Box'::varchar],
   'ggircs_swrs.address parsed column mailing_address_delivery_mode'
 );
 select results_eq(
-  $$select mailing_address_po_box_number from ggircs_swrs.address where address.type='Facility'$$,
+  $$ select mailing_address_po_box_number from ggircs_swrs.address where address.type='Facility' $$,
   ARRAY['0000'::varchar],
   'ggircs_swrs.address parsed column mailing_address_po_box_number'
 );
 select results_eq(
-  $$select mailing_address_unit_number from ggircs_swrs.address where address.type='Facility'$$,
+  $$ select mailing_address_unit_number from ggircs_swrs.address where address.type='Facility' $$,
   ARRAY['1'::varchar],
   'ggircs_swrs.address parsed column mailing_address_unit_number'
 );
 select results_eq(
-  $$select mailing_address_rural_route_number from ggircs_swrs.address where address.type='Facility'$$,
+  $$ select mailing_address_rural_route_number from ggircs_swrs.address where address.type='Facility' $$,
   ARRAY['321'::varchar],
   'ggircs_swrs.address parsed column mailing_address_rural_route_number'
 );
 select results_eq(
-  $$select mailing_address_street_number from ggircs_swrs.address where address.type='Facility'$$,
+  $$ select mailing_address_street_number from ggircs_swrs.address where address.type='Facility' $$,
   ARRAY[1234::varchar],
   'ggircs_swrs.address parsed column mailing_address_street_number'
 );
 select results_eq(
-  $$select mailing_address_street_number_suffix from ggircs_swrs.address where address.type='Facility'$$,
+  $$ select mailing_address_street_number_suffix from ggircs_swrs.address where address.type='Facility' $$,
   ARRAY[null::varchar],
   'ggircs_swrs.address parsed column mailing_address_street_number_suffix'
 );
 select results_eq(
-  $$select mailing_address_street_name from ggircs_swrs.address where address.type='Facility'$$,
+  $$ select mailing_address_street_name from ggircs_swrs.address where address.type='Facility' $$,
   ARRAY['00th'::varchar],
   'ggircs_swrs.address parsed column mailing_address_street_name'
 );
 select results_eq(
-  $$select mailing_address_street_type from ggircs_swrs.address where address.type='Facility'$$,
+  $$ select mailing_address_street_type from ggircs_swrs.address where address.type='Facility' $$,
   ARRAY['Avenue'::varchar],
   'ggircs_swrs.address parsed column mailing_address_street_type'
 );
 select results_eq(
-  $$select mailing_address_street_direction from ggircs_swrs.address where address.type='Facility'$$,
+  $$ select mailing_address_street_direction from ggircs_swrs.address where address.type='Facility' $$,
   ARRAY['West'::varchar],
   'ggircs_swrs.address parsed column mailing_address_street_direction'
 );
 select results_eq(
-  $$select mailing_address_municipality from ggircs_swrs.address where address.type='Facility'$$,
+  $$ select mailing_address_municipality from ggircs_swrs.address where address.type='Facility' $$,
   ARRAY['Fort Nelson'::varchar],
   'ggircs_swrs.address parsed column mailing_address_municipality'
 );
 select results_eq(
-  $$select mailing_address_prov_terr_state from ggircs_swrs.address where address.type='Facility'$$,
+  $$ select mailing_address_prov_terr_state from ggircs_swrs.address where address.type='Facility' $$,
   ARRAY['British Columbia'::varchar],
   'ggircs_swrs.address parsed column mailing_address_prov_terr_state'
 );
 select results_eq(
-  $$select mailing_address_postal_code_zip_code from ggircs_swrs.address where address.type='Facility'$$,
+  $$ select mailing_address_postal_code_zip_code from ggircs_swrs.address where address.type='Facility' $$,
   ARRAY['H0H 0H0'::varchar],
   'ggircs_swrs.address parsed column mailing_address_postal_code_zip_code'
 );
 select results_eq(
-  $$select mailing_address_country from ggircs_swrs.address where address.type='Facility'$$,
+  $$ select mailing_address_country from ggircs_swrs.address where address.type='Facility' $$,
   ARRAY['Canada'::varchar],
   'ggircs_swrs.address parsed column mailing_address_country'
 );
 select results_eq(
-  $$select mailing_address_additional_information from ggircs_swrs.address where address.type='Facility'$$,
+  $$ select mailing_address_additional_information from ggircs_swrs.address where address.type='Facility' $$,
   ARRAY['The site is located at A-123-B-456-C-789'::varchar],
   'ggircs_swrs.address parsed column mailing_address_additional_information'
 );
 
 -- Geographic Address columns
 select results_eq(
-  $$select geographic_address_latitude from ggircs_swrs.address where address.type='Facility'$$,
+  $$ select geographic_address_latitude from ggircs_swrs.address where address.type='Facility' $$,
   ARRAY[23.45125::numeric],
   'ggircs_swrs.address parsed column geographic_address_latitude'
 );
 select results_eq(
-  $$select geographic_address_longitude from ggircs_swrs.address where address.type='Facility'$$,
+  $$ select geographic_address_longitude from ggircs_swrs.address where address.type='Facility' $$,
   ARRAY[-90.59062::numeric],
   'ggircs_swrs.address parsed column geographic_address_longitude'
 );
@@ -646,175 +653,175 @@ select results_eq(
 
 -- test the columnns for ggircs_swrs.address have been properly parsed from xml when context is 'Organisation'
 select results_eq(
-  $$select ghgr_import_id from ggircs_swrs.address where address.type='Organisation'$$,
+  $$ select ghgr_import_id from ggircs_swrs.address where address.type='Organisation' $$,
   'select id from ggircs_swrs.ghgr_import',
   'ggircs_swrs.address parsed column ghgr_import_id'
 );
 select results_eq(
-  $$select type from ggircs_swrs.address where address.type='Organisation'$$,
+  $$ select type from ggircs_swrs.address where address.type='Organisation' $$,
   ARRAY['Organisation'::varchar],
   'ggircs_swrs.address parsed column type'
 );
 -- test that the swrs_facility_id is null when getting address from the context of organisation
 select results_eq(
-  $$select swrs_facility_id from ggircs_swrs.address where address.type='Organisation'$$,
+  $$ select swrs_facility_id from ggircs_swrs.address where address.type='Organisation' $$,
   ARRAY[null::integer],
   'ggircs_swrs.address parsed column swrs_organisation_id'
 );
 
 select results_eq(
-  $$select swrs_organisation_id from ggircs_swrs.address where address.type='Organisation'$$,
+  $$ select swrs_organisation_id from ggircs_swrs.address where address.type='Organisation' $$,
   ARRAY[123::integer],
   'ggircs_swrs.address parsed column swrs_organisation_id'
 );
 
 -- Physical Address columns
 select results_eq(
-  $$select physical_address_unit_number from ggircs_swrs.address where address.type='Organisation'$$,
+  $$ select physical_address_unit_number from ggircs_swrs.address where address.type='Organisation' $$,
   ARRAY[4321::varchar],
   'ggircs_swrs.address parsed column physical_address_unit_number'
 );
 select results_eq(
-  $$select physical_address_street_number from ggircs_swrs.address where address.type='Organisation'$$,
+  $$ select physical_address_street_number from ggircs_swrs.address where address.type='Organisation' $$,
   ARRAY[100::varchar],
   'ggircs_swrs.address parsed column physical_address_street_number'
 );
 select results_eq(
-  $$select physical_address_street_number_suffix from ggircs_swrs.address where address.type='Organisation'$$,
+  $$ select physical_address_street_number_suffix from ggircs_swrs.address where address.type='Organisation' $$,
   ARRAY[null::varchar],
   'ggircs_swrs.address parsed column physical_address_street_number_suffix'
 );
 select results_eq(
-  $$select physical_address_street_name from ggircs_swrs.address where address.type='Organisation'$$,
+  $$ select physical_address_street_name from ggircs_swrs.address where address.type='Organisation' $$,
   ARRAY['111th Street West'::varchar],
   'ggircs_swrs.address parsed column physical_address_street_name'
 );
 select results_eq(
-  $$select physical_address_street_type from ggircs_swrs.address where address.type='Organisation'$$,
+  $$ select physical_address_street_type from ggircs_swrs.address where address.type='Organisation' $$,
   ARRAY['Street'::varchar],
   'ggircs_swrs.address parsed column physical_address_street_type'
 );
 select results_eq(
-  $$select physical_address_street_direction from ggircs_swrs.address where address.type='Organisation'$$,
+  $$ select physical_address_street_direction from ggircs_swrs.address where address.type='Organisation' $$,
   ARRAY['West'::varchar],
   'ggircs_swrs.address parsed column physical_address_street_direction'
 );
 select results_eq(
-  $$select physical_address_municipality from ggircs_swrs.address where address.type='Organisation'$$,
+  $$ select physical_address_municipality from ggircs_swrs.address where address.type='Organisation' $$,
   ARRAY['Funkytown'::varchar],
   'ggircs_swrs.address parsed column physical_address_municipality'
 );
 select results_eq(
-  $$select physical_address_prov_terr_state from ggircs_swrs.address where address.type='Organisation'$$,
+  $$ select physical_address_prov_terr_state from ggircs_swrs.address where address.type='Organisation' $$,
   ARRAY['Funky'::varchar],
   'ggircs_swrs.address parsed column physical_address_prov_terr_state'
 );
 select results_eq(
-  $$select physical_address_postal_code_zip_code from ggircs_swrs.address where address.type='Organisation'$$,
+  $$ select physical_address_postal_code_zip_code from ggircs_swrs.address where address.type='Organisation' $$,
   ARRAY['H0H0H0'::varchar],
   'ggircs_swrs.address parsed column physical_address_postal_code_zip_code'
 );
 select results_eq(
-  $$select physical_address_country from ggircs_swrs.address where address.type='Organisation'$$,
+  $$ select physical_address_country from ggircs_swrs.address where address.type='Organisation' $$,
   ARRAY['Canada'::varchar],
   'ggircs_swrs.address parsed column physical_address_country'
 );
 select results_eq(
-  $$select physical_address_national_topographical_description from ggircs_swrs.address where address.type='Organisation'$$,
+  $$ select physical_address_national_topographical_description from ggircs_swrs.address where address.type='Organisation' $$,
   ARRAY['A-123-B/456-C-00'::varchar],
   'ggircs_swrs.address parsed column physical_address_national_topographical_description'
 );
 select results_eq(
-  $$select physical_address_additional_information from ggircs_swrs.address where address.type='Organisation'$$,
+  $$ select physical_address_additional_information from ggircs_swrs.address where address.type='Organisation' $$,
   ARRAY['INFO'::varchar],
   'ggircs_swrs.address parsed column physical_address_additional_information'
 );
 select results_eq(
-  $$select physical_address_land_survey_description from ggircs_swrs.address where address.type='Organisation'$$,
+  $$ select physical_address_land_survey_description from ggircs_swrs.address where address.type='Organisation' $$,
   ARRAY['OOH shiny!'::varchar],
   'ggircs_swrs.address parsed column physical_address_land_survey_description'
 );
 
 -- Mailing Address Columns
 select results_eq(
-  $$select mailing_address_delivery_mode from ggircs_swrs.address where address.type='Organisation'$$,
+  $$ select mailing_address_delivery_mode from ggircs_swrs.address where address.type='Organisation' $$,
   ARRAY['General Delivery'::varchar],
   'ggircs_swrs.address parsed column mailing_address_delivery_mode'
 );
 select results_eq(
-  $$select mailing_address_po_box_number from ggircs_swrs.address where address.type='Organisation'$$,
+  $$ select mailing_address_po_box_number from ggircs_swrs.address where address.type='Organisation' $$,
   ARRAY['0000'::varchar],
   'ggircs_swrs.address parsed column mailing_address_po_box_number'
 );
 select results_eq(
-  $$select mailing_address_unit_number from ggircs_swrs.address where address.type='Organisation'$$,
+  $$ select mailing_address_unit_number from ggircs_swrs.address where address.type='Organisation' $$,
   ARRAY['00'::varchar],
   'ggircs_swrs.address parsed column mailing_address_unit_number'
 );
 select results_eq(
-  $$select mailing_address_rural_route_number from ggircs_swrs.address where address.type='Organisation'$$,
+  $$ select mailing_address_rural_route_number from ggircs_swrs.address where address.type='Organisation' $$,
   ARRAY['321'::varchar],
   'ggircs_swrs.address parsed column mailing_address_rural_route_number'
 );
 select results_eq(
-  $$select mailing_address_street_number from ggircs_swrs.address where address.type='Organisation'$$,
+  $$ select mailing_address_street_number from ggircs_swrs.address where address.type='Organisation' $$,
   ARRAY[100::varchar],
   'ggircs_swrs.address parsed column mailing_address_street_number'
 );
 select results_eq(
-  $$select mailing_address_street_number_suffix from ggircs_swrs.address where address.type='Organisation'$$,
+  $$ select mailing_address_street_number_suffix from ggircs_swrs.address where address.type='Organisation' $$,
   ARRAY['B'::varchar],
   'ggircs_swrs.address parsed column mailing_address_street_number_suffix'
 );
 select results_eq(
-  $$select mailing_address_street_name from ggircs_swrs.address where address.type='Organisation'$$,
+  $$ select mailing_address_street_name from ggircs_swrs.address where address.type='Organisation' $$,
   ARRAY['111th Street West'::varchar],
   'ggircs_swrs.address parsed column mailing_address_street_name'
 );
 select results_eq(
-  $$select mailing_address_street_type from ggircs_swrs.address where address.type='Organisation'$$,
+  $$ select mailing_address_street_type from ggircs_swrs.address where address.type='Organisation' $$,
   ARRAY['Street'::varchar],
   'ggircs_swrs.address parsed column mailing_address_street_type'
 );
 select results_eq(
-  $$select mailing_address_street_direction from ggircs_swrs.address where address.type='Organisation'$$,
+  $$ select mailing_address_street_direction from ggircs_swrs.address where address.type='Organisation' $$,
   ARRAY['West'::varchar],
   'ggircs_swrs.address parsed column mailing_address_street_direction'
 );
 select results_eq(
-  $$select mailing_address_municipality from ggircs_swrs.address where address.type='Organisation'$$,
+  $$ select mailing_address_municipality from ggircs_swrs.address where address.type='Organisation' $$,
   ARRAY['Funkytown'::varchar],
   'ggircs_swrs.address parsed column mailing_address_municipality'
 );
 select results_eq(
-  $$select mailing_address_prov_terr_state from ggircs_swrs.address where address.type='Organisation'$$,
+  $$ select mailing_address_prov_terr_state from ggircs_swrs.address where address.type='Organisation' $$,
   ARRAY['Funky'::varchar],
   'ggircs_swrs.address parsed column mailing_address_prov_terr_state'
 );
 select results_eq(
-  $$select mailing_address_postal_code_zip_code from ggircs_swrs.address where address.type='Organisation'$$,
+  $$ select mailing_address_postal_code_zip_code from ggircs_swrs.address where address.type='Organisation' $$,
   ARRAY['H0H0H0'::varchar],
   'ggircs_swrs.address parsed column mailing_address_postal_code_zip_code'
 );
 select results_eq(
-  $$select mailing_address_country from ggircs_swrs.address where address.type='Organisation'$$,
+  $$ select mailing_address_country from ggircs_swrs.address where address.type='Organisation' $$,
   ARRAY['Canada'::varchar],
   'ggircs_swrs.address parsed column mailing_address_country'
 );
 select results_eq(
-  $$select mailing_address_additional_information from ggircs_swrs.address where address.type='Organisation'$$,
+  $$ select mailing_address_additional_information from ggircs_swrs.address where address.type='Organisation' $$,
   ARRAY[null::varchar],
   'ggircs_swrs.address parsed column mailing_address_additional_information'
 );
 
 -- Geographic Address columns
 select results_eq(
-  $$select geographic_address_latitude from ggircs_swrs.address where address.type='Organisation'$$,
+  $$ select geographic_address_latitude from ggircs_swrs.address where address.type='Organisation' $$,
   ARRAY[23.45125::numeric],
   'ggircs_swrs.address parsed column geographic_address_latitude'
 );
 select results_eq(
-  $$select geographic_address_longitude from ggircs_swrs.address where address.type='Organisation'$$,
+  $$ select geographic_address_longitude from ggircs_swrs.address where address.type='Organisation' $$,
   ARRAY[-90.59062::numeric],
   'ggircs_swrs.address parsed column geographic_address_longitude'
 );
@@ -823,164 +830,164 @@ select results_eq(
 
 -- test the columnns for ggircs_swrs.address have been properly parsed from xml when context is 'Contact'
 select results_eq(
-  $$select ghgr_import_id from ggircs_swrs.address where address.type='Contact' and address.contact_idx=0$$,
+  $$ select ghgr_import_id from ggircs_swrs.address where address.type='Contact' and address.contact_idx=0 $$,
   'select id from ggircs_swrs.ghgr_import',
   'ggircs_swrs.address parsed column ghgr_import_id'
 );
 select results_eq(
-  $$select type from ggircs_swrs.address where address.type='Contact' and address.contact_idx=0$$,
+  $$ select type from ggircs_swrs.address where address.type='Contact' and address.contact_idx=0 $$,
   ARRAY['Contact'::varchar],
   'ggircs_swrs.address parsed column type'
 );
 
 select results_eq(
-  $$select swrs_facility_id from ggircs_swrs.address where address.type='Contact' and address.contact_idx=0$$,
+  $$ select swrs_facility_id from ggircs_swrs.address where address.type='Contact' and address.contact_idx=0 $$,
   ARRAY[666::integer],
   'ggircs_swrs.address parsed column swrs_contact_id'
 );
 
 -- test that the swrs_organisation_id is null when getting address from the context of contact
 select results_eq(
-  $$select swrs_organisation_id from ggircs_swrs.address where address.type='Contact' and address.contact_idx=0$$,
+  $$ select swrs_organisation_id from ggircs_swrs.address where address.type='Contact' and address.contact_idx=0 $$,
   ARRAY[null::integer],
   'ggircs_swrs.address parsed column swrs_organisation_id'
 );
 
 -- Physical Address columns
 select results_eq(
-  $$select physical_address_unit_number from ggircs_swrs.address where address.type='Contact' and address.contact_idx=0$$,
+  $$ select physical_address_unit_number from ggircs_swrs.address where address.type='Contact' and address.contact_idx=0 $$,
   ARRAY[1::varchar],
   'ggircs_swrs.address parsed column physical_address_unit_number'
 );
 select results_eq(
-  $$select physical_address_street_number from ggircs_swrs.address where address.type='Contact' and address.contact_idx=0$$,
+  $$ select physical_address_street_number from ggircs_swrs.address where address.type='Contact' and address.contact_idx=0 $$,
   ARRAY[1234::varchar],
   'ggircs_swrs.address parsed column physical_address_street_number'
 );
 select results_eq(
-  $$select physical_address_street_number_suffix from ggircs_swrs.address where address.type='Contact' and address.contact_idx=0$$,
+  $$ select physical_address_street_number_suffix from ggircs_swrs.address where address.type='Contact' and address.contact_idx=0 $$,
   ARRAY[null::varchar],
   'ggircs_swrs.address parsed column physical_address_street_number_suffix'
 );
 select results_eq(
-  $$select physical_address_street_name from ggircs_swrs.address where address.type='Contact' and address.contact_idx=0$$,
+  $$ select physical_address_street_name from ggircs_swrs.address where address.type='Contact' and address.contact_idx=0 $$,
   ARRAY['00th'::varchar],
   'ggircs_swrs.address parsed column physical_address_municipality'
 );
 select results_eq(
-  $$select physical_address_street_type from ggircs_swrs.address where address.type='Contact' and address.contact_idx=0$$,
+  $$ select physical_address_street_type from ggircs_swrs.address where address.type='Contact' and address.contact_idx=0 $$,
   ARRAY['Avenue'::varchar],
   'ggircs_swrs.address parsed column physical_address_street_type'
 );
 select results_eq(
-  $$select physical_address_street_direction from ggircs_swrs.address where address.type='Contact' and address.contact_idx=0$$,
+  $$ select physical_address_street_direction from ggircs_swrs.address where address.type='Contact' and address.contact_idx=0 $$,
   ARRAY['NW'::varchar],
   'ggircs_swrs.address parsed column physical_address_street_direction'
 );
 select results_eq(
-  $$select physical_address_municipality from ggircs_swrs.address where address.type='Contact' and address.contact_idx=0$$,
+  $$ select physical_address_municipality from ggircs_swrs.address where address.type='Contact' and address.contact_idx=0 $$,
   ARRAY['Fort Nelson'::varchar],
   'ggircs_swrs.address parsed column physical_address_municipality'
 );
 select results_eq(
-  $$select physical_address_prov_terr_state from ggircs_swrs.address where address.type='Contact' and address.contact_idx=0$$,
+  $$ select physical_address_prov_terr_state from ggircs_swrs.address where address.type='Contact' and address.contact_idx=0 $$,
   ARRAY['British Columbia'::varchar],
   'ggircs_swrs.address parsed column physical_address_prov_terr_state'
 );
 select results_eq(
-  $$select physical_address_postal_code_zip_code from ggircs_swrs.address where address.type='Contact' and address.contact_idx=0$$,
+  $$ select physical_address_postal_code_zip_code from ggircs_swrs.address where address.type='Contact' and address.contact_idx=0 $$,
   ARRAY['H0H 0H0'::varchar],
   'ggircs_swrs.address parsed column physical_address_postal_code_zip_code'
 );
 select results_eq(
-  $$select physical_address_country from ggircs_swrs.address where address.type='Contact' and address.contact_idx=0$$,
+  $$ select physical_address_country from ggircs_swrs.address where address.type='Contact' and address.contact_idx=0 $$,
   ARRAY['Canada'::varchar],
   'ggircs_swrs.address parsed column physical_address_country'
 );
 select results_eq(
-  $$select physical_address_national_topographical_description from ggircs_swrs.address where address.type='Contact' and address.contact_idx=0$$,
+  $$ select physical_address_national_topographical_description from ggircs_swrs.address where address.type='Contact' and address.contact_idx=0 $$,
   ARRAY['A-123-B/456-C-00'::varchar],
   'ggircs_swrs.address parsed column physical_address_national_topographical_description'
 );
 select results_eq(
-  $$select physical_address_additional_information from ggircs_swrs.address where address.type='Contact' and address.contact_idx=0$$,
+  $$ select physical_address_additional_information from ggircs_swrs.address where address.type='Contact' and address.contact_idx=0 $$,
   ARRAY['INFO'::varchar],
   'ggircs_swrs.address parsed column physical_address_additional_information'
 );
 select results_eq(
-  $$select physical_address_land_survey_description from ggircs_swrs.address where address.type='Contact' and address.contact_idx=0$$,
+  $$ select physical_address_land_survey_description from ggircs_swrs.address where address.type='Contact' and address.contact_idx=0 $$,
   ARRAY['OOH shiny!'::varchar],
   'ggircs_swrs.address parsed column physical_address_land_survey_description'
 );
 
 -- Mailing Address Columns
 select results_eq(
-  $$select mailing_address_delivery_mode from ggircs_swrs.address where address.type='Contact' and address.contact_idx=0$$,
+  $$ select mailing_address_delivery_mode from ggircs_swrs.address where address.type='Contact' and address.contact_idx=0 $$,
   ARRAY['Post Office Box'::varchar],
   'ggircs_swrs.address parsed column mailing_address_delivery_mode'
 );
 select results_eq(
-  $$select mailing_address_po_box_number from ggircs_swrs.address where address.type='Contact' and address.contact_idx=0$$,
+  $$ select mailing_address_po_box_number from ggircs_swrs.address where address.type='Contact' and address.contact_idx=0 $$,
   ARRAY['0000'::varchar],
   'ggircs_swrs.address parsed column mailing_address_po_box_number'
 );
 select results_eq(
-  $$select mailing_address_unit_number from ggircs_swrs.address where address.type='Contact' and address.contact_idx=0$$,
+  $$ select mailing_address_unit_number from ggircs_swrs.address where address.type='Contact' and address.contact_idx=0 $$,
   ARRAY['1'::varchar],
   'ggircs_swrs.address parsed column mailing_address_unit_number'
 );
 select results_eq(
-  $$select mailing_address_rural_route_number from ggircs_swrs.address where address.type='Contact' and address.contact_idx=0$$,
+  $$ select mailing_address_rural_route_number from ggircs_swrs.address where address.type='Contact' and address.contact_idx=0 $$,
   ARRAY['321'::varchar],
   'ggircs_swrs.address parsed column mailing_address_rural_route_number'
 );
 select results_eq(
-  $$select mailing_address_street_number from ggircs_swrs.address where address.type='Contact' and address.contact_idx=0$$,
+  $$ select mailing_address_street_number from ggircs_swrs.address where address.type='Contact' and address.contact_idx=0 $$,
   ARRAY[1234::varchar],
   'ggircs_swrs.address parsed column mailing_address_street_number'
 );
 select results_eq(
-  $$select mailing_address_street_number_suffix from ggircs_swrs.address where address.type='Contact' and address.contact_idx=0$$,
+  $$ select mailing_address_street_number_suffix from ggircs_swrs.address where address.type='Contact' and address.contact_idx=0 $$,
   ARRAY[null::varchar],
   'ggircs_swrs.address parsed column mailing_address_street_number_suffix'
 );
 select results_eq(
-  $$select mailing_address_street_name from ggircs_swrs.address where address.type='Contact' and address.contact_idx=0$$,
+  $$ select mailing_address_street_name from ggircs_swrs.address where address.type='Contact' and address.contact_idx=0 $$,
   ARRAY['00th'::varchar],
   'ggircs_swrs.address parsed column mailing_address_street_name'
 );
 select results_eq(
-  $$select mailing_address_street_type from ggircs_swrs.address where address.type='Contact' and address.contact_idx=0$$,
+  $$ select mailing_address_street_type from ggircs_swrs.address where address.type='Contact' and address.contact_idx=0 $$,
   ARRAY['Avenue'::varchar],
   'ggircs_swrs.address parsed column mailing_address_street_type'
 );
 select results_eq(
-  $$select mailing_address_street_direction from ggircs_swrs.address where address.type='Contact' and address.contact_idx=0$$,
+  $$ select mailing_address_street_direction from ggircs_swrs.address where address.type='Contact' and address.contact_idx=0 $$,
   ARRAY['West'::varchar],
   'ggircs_swrs.address parsed column mailing_address_street_direction'
 );
 select results_eq(
-  $$select mailing_address_municipality from ggircs_swrs.address where address.type='Contact' and address.contact_idx=0$$,
+  $$ select mailing_address_municipality from ggircs_swrs.address where address.type='Contact' and address.contact_idx=0 $$,
   ARRAY['Fort Nelson'::varchar],
   'ggircs_swrs.address parsed column mailing_address_municipality'
 );
 select results_eq(
-  $$select mailing_address_prov_terr_state from ggircs_swrs.address where address.type='Contact' and address.contact_idx=0$$,
+  $$ select mailing_address_prov_terr_state from ggircs_swrs.address where address.type='Contact' and address.contact_idx=0 $$,
   ARRAY['British Columbia'::varchar],
   'ggircs_swrs.address parsed column mailing_address_prov_terr_state'
 );
 select results_eq(
-  $$select mailing_address_postal_code_zip_code from ggircs_swrs.address where address.type='Contact' and address.contact_idx=0$$,
+  $$ select mailing_address_postal_code_zip_code from ggircs_swrs.address where address.type='Contact' and address.contact_idx=0 $$,
   ARRAY['H0H 0H0'::varchar],
   'ggircs_swrs.address parsed column mailing_address_postal_code_zip_code'
 );
 select results_eq(
-  $$select mailing_address_country from ggircs_swrs.address where address.type='Contact' and address.contact_idx=0$$,
+  $$ select mailing_address_country from ggircs_swrs.address where address.type='Contact' and address.contact_idx=0 $$,
   ARRAY['Canada'::varchar],
   'ggircs_swrs.address parsed column mailing_address_country'
 );
 select results_eq(
-  $$select mailing_address_additional_information from ggircs_swrs.address where address.type='Contact' and address.contact_idx=0$$,
+  $$ select mailing_address_additional_information from ggircs_swrs.address where address.type='Contact' and address.contact_idx=0 $$,
   ARRAY['The site is located at A-123-B-456-C-789'::varchar],
   'ggircs_swrs.address parsed column mailing_address_additional_information'
 );
@@ -989,162 +996,162 @@ select results_eq(
 
 -- test the columnns for ggircs_swrs.address have been properly parsed from xml when context is 'ParentOrganisation'
 select results_eq(
-  $$select ghgr_import_id from ggircs_swrs.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0$$,
+  $$ select ghgr_import_id from ggircs_swrs.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0 $$,
   'select id from ggircs_swrs.ghgr_import',
   'ggircs_swrs.address parsed column ghgr_import_id'
 );
 select results_eq(
-  $$select type from ggircs_swrs.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0$$,
+  $$ select type from ggircs_swrs.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0 $$,
   ARRAY['ParentOrganisation'::varchar],
   'ggircs_swrs.address parsed column type'
 );
 select results_eq(
-  $$select swrs_facility_id from ggircs_swrs.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0$$,
+  $$ select swrs_facility_id from ggircs_swrs.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0 $$,
   ARRAY[null::integer],
   'ggircs_swrs.address parsed column swrs_parent_organisation_id'
 );
 -- test that the swrs_organisation_id is null when getting address from the context of parent_organisation
 select results_eq(
-  $$select swrs_organisation_id from ggircs_swrs.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0$$,
+  $$ select swrs_organisation_id from ggircs_swrs.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0 $$,
   ARRAY[123::integer],
   'ggircs_swrs.address parsed column swrs_organisation_id'
 );
 
 -- Physical Address columns
 select results_eq(
-  $$select physical_address_unit_number from ggircs_swrs.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0$$,
+  $$ select physical_address_unit_number from ggircs_swrs.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0 $$,
   ARRAY[1::varchar],
   'ggircs_swrs.address parsed column physical_address_unit_number'
 );
 select results_eq(
-  $$select physical_address_street_number from ggircs_swrs.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0$$,
+  $$ select physical_address_street_number from ggircs_swrs.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0 $$,
   ARRAY[1234::varchar],
   'ggircs_swrs.address parsed column physical_address_street_number'
 );
 select results_eq(
-  $$select physical_address_street_number_suffix from ggircs_swrs.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0$$,
+  $$ select physical_address_street_number_suffix from ggircs_swrs.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0 $$,
   ARRAY[null::varchar],
   'ggircs_swrs.address parsed column physical_address_street_number_suffix'
 );
 select results_eq(
-  $$select physical_address_street_name from ggircs_swrs.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0$$,
+  $$ select physical_address_street_name from ggircs_swrs.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0 $$,
   ARRAY['00th'::varchar],
   'ggircs_swrs.address parsed column physical_address_municipality'
 );
 select results_eq(
-  $$select physical_address_street_type from ggircs_swrs.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0$$,
+  $$ select physical_address_street_type from ggircs_swrs.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0 $$,
   ARRAY['Avenue'::varchar],
   'ggircs_swrs.address parsed column physical_address_street_type'
 );
 select results_eq(
-  $$select physical_address_street_direction from ggircs_swrs.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0$$,
+  $$ select physical_address_street_direction from ggircs_swrs.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0 $$,
   ARRAY['NW'::varchar],
   'ggircs_swrs.address parsed column physical_address_street_direction'
 );
 select results_eq(
-  $$select physical_address_municipality from ggircs_swrs.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0$$,
+  $$ select physical_address_municipality from ggircs_swrs.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0 $$,
   ARRAY['Fort Nelson'::varchar],
   'ggircs_swrs.address parsed column physical_address_municipality'
 );
 select results_eq(
-  $$select physical_address_prov_terr_state from ggircs_swrs.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0$$,
+  $$ select physical_address_prov_terr_state from ggircs_swrs.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0 $$,
   ARRAY['British Columbia'::varchar],
   'ggircs_swrs.address parsed column physical_address_prov_terr_state'
 );
 select results_eq(
-  $$select physical_address_postal_code_zip_code from ggircs_swrs.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0$$,
+  $$ select physical_address_postal_code_zip_code from ggircs_swrs.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0 $$,
   ARRAY['H0H 0H0'::varchar],
   'ggircs_swrs.address parsed column physical_address_postal_code_zip_code'
 );
 select results_eq(
-  $$select physical_address_country from ggircs_swrs.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0$$,
+  $$ select physical_address_country from ggircs_swrs.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0 $$,
   ARRAY['Canada'::varchar],
   'ggircs_swrs.address parsed column physical_address_country'
 );
 select results_eq(
-  $$select physical_address_national_topographical_description from ggircs_swrs.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0$$,
+  $$ select physical_address_national_topographical_description from ggircs_swrs.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0 $$,
   ARRAY['A-123-B/456-C-00'::varchar],
   'ggircs_swrs.address parsed column physical_address_national_topographical_description'
 );
 select results_eq(
-  $$select physical_address_additional_information from ggircs_swrs.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0$$,
+  $$ select physical_address_additional_information from ggircs_swrs.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0 $$,
   ARRAY['INFO'::varchar],
   'ggircs_swrs.address parsed column physical_address_additional_information'
 );
 select results_eq(
-  $$select physical_address_land_survey_description from ggircs_swrs.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0$$,
+  $$ select physical_address_land_survey_description from ggircs_swrs.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0 $$,
   ARRAY['OOH shiny!'::varchar],
   'ggircs_swrs.address parsed column physical_address_land_survey_description'
 );
 
 -- Mailing Address Columns
 select results_eq(
-  $$select mailing_address_delivery_mode from ggircs_swrs.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0$$,
+  $$ select mailing_address_delivery_mode from ggircs_swrs.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0 $$,
   ARRAY['Post Office Box'::varchar],
   'ggircs_swrs.address parsed column mailing_address_delivery_mode'
 );
 select results_eq(
-  $$select mailing_address_po_box_number from ggircs_swrs.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0$$,
+  $$ select mailing_address_po_box_number from ggircs_swrs.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0 $$,
   ARRAY['0000'::varchar],
   'ggircs_swrs.address parsed column mailing_address_po_box_number'
 );
 select results_eq(
-  $$select mailing_address_unit_number from ggircs_swrs.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0$$,
+  $$ select mailing_address_unit_number from ggircs_swrs.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0 $$,
   ARRAY['1'::varchar],
   'ggircs_swrs.address parsed column mailing_address_unit_number'
 );
 select results_eq(
-  $$select mailing_address_rural_route_number from ggircs_swrs.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0$$,
+  $$ select mailing_address_rural_route_number from ggircs_swrs.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0 $$,
   ARRAY['321'::varchar],
   'ggircs_swrs.address parsed column mailing_address_rural_route_number'
 );
 select results_eq(
-  $$select mailing_address_street_number from ggircs_swrs.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0$$,
+  $$ select mailing_address_street_number from ggircs_swrs.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0 $$,
   ARRAY[1234::varchar],
   'ggircs_swrs.address parsed column mailing_address_street_number'
 );
 select results_eq(
-  $$select mailing_address_street_number_suffix from ggircs_swrs.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0$$,
+  $$ select mailing_address_street_number_suffix from ggircs_swrs.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0 $$,
   ARRAY[null::varchar],
   'ggircs_swrs.address parsed column mailing_address_street_number_suffix'
 );
 select results_eq(
-  $$select mailing_address_street_name from ggircs_swrs.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0$$,
+  $$ select mailing_address_street_name from ggircs_swrs.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0 $$,
   ARRAY['00th'::varchar],
   'ggircs_swrs.address parsed column mailing_address_street_name'
 );
 select results_eq(
-  $$select mailing_address_street_type from ggircs_swrs.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0$$,
+  $$ select mailing_address_street_type from ggircs_swrs.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0 $$,
   ARRAY['Avenue'::varchar],
   'ggircs_swrs.address parsed column mailing_address_street_type'
 );
 select results_eq(
-  $$select mailing_address_street_direction from ggircs_swrs.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0$$,
+  $$ select mailing_address_street_direction from ggircs_swrs.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0 $$,
   ARRAY['West'::varchar],
   'ggircs_swrs.address parsed column mailing_address_street_direction'
 );
 select results_eq(
-  $$select mailing_address_municipality from ggircs_swrs.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0$$,
+  $$ select mailing_address_municipality from ggircs_swrs.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0 $$,
   ARRAY['Fort Nelson'::varchar],
   'ggircs_swrs.address parsed column mailing_address_municipality'
 );
 select results_eq(
-  $$select mailing_address_prov_terr_state from ggircs_swrs.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0$$,
+  $$ select mailing_address_prov_terr_state from ggircs_swrs.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0 $$,
   ARRAY['British Columbia'::varchar],
   'ggircs_swrs.address parsed column mailing_address_prov_terr_state'
 );
 select results_eq(
-  $$select mailing_address_postal_code_zip_code from ggircs_swrs.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0$$,
+  $$ select mailing_address_postal_code_zip_code from ggircs_swrs.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0 $$,
   ARRAY['H0H 0H0'::varchar],
   'ggircs_swrs.address parsed column mailing_address_postal_code_zip_code'
 );
 select results_eq(
-  $$select mailing_address_country from ggircs_swrs.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0$$,
+  $$ select mailing_address_country from ggircs_swrs.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0 $$,
   ARRAY['Canada'::varchar],
   'ggircs_swrs.address parsed column mailing_address_country'
 );
 select results_eq(
-  $$select mailing_address_additional_information from ggircs_swrs.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0$$,
+  $$ select mailing_address_additional_information from ggircs_swrs.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0 $$,
   ARRAY['The site is located at A-123-B-456-C-789'::varchar],
   'ggircs_swrs.address parsed column mailing_address_additional_information'
 );
