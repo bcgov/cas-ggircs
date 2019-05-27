@@ -20,7 +20,7 @@ objects:
         memory: 256Mi
     source:
       git:
-        ref: master
+        ref: bcgov
         uri: https://github.com/bcgov/cas-ggircs-metabase.git
     strategy:
       sourceStrategy:

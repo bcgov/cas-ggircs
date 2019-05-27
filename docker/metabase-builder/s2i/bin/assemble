@@ -9,15 +9,14 @@ mv /tmp/src $HOME/src
 if [[ -d /tmp/artifacts/ ]]; then
     echo "Restoring build artifacts"
     cp -rl /tmp/artifacts/. $HOME
-    ls -al $HOME
 fi
 
 pushd ${HOME}/src > /dev/null
 # build application artifacts
-#if [[ ! -f ${GIT_SHA_FILE} || $(< ${GIT_SHA_FILE}) != $(git rev-parse --short HEAD) ]]; then
+if [[ ! -f ${GIT_SHA_FILE} || $(< ${GIT_SHA_FILE}) != $(git rev-parse --short HEAD) ]]; then
     ./bin/build
     git rev-parse --short HEAD > ${GIT_SHA_FILE}
-# else 
-#     echo "Metabase revision unchanged, nothing to compile"
-#fi
+else 
+    echo "Metabase revision unchanged, nothing to compile"
+fi
 popd > /dev/null
