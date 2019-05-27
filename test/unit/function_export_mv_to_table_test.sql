@@ -4,7 +4,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(85);
+select plan(86);
 
 insert into ggircs_swrs.ghgr_import (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -865,6 +865,19 @@ select results_eq(
     'Foreign key fuel_id in ggircs.emission references ggircs.fuel.id'
 );
 
+-- Emission -> Naics
+select results_eq(
+    $$select naics.naics_code from ggircs.emission
+      join ggircs.naics
+      on
+        emission.naics_id = naics.id
+    $$,
+
+    'select naics_code from ggircs.naics',
+
+    'Foreign key naics_id in ggircs.emission references ggircs.naics.id'
+);
+
 -- Fuel -> Unit
 select results_eq(
     $$select distinct(fuel.ghgr_import_id) from ggircs.fuel
@@ -1090,10 +1103,9 @@ select results_eq(
     on
       facility.identifier_id = identifier.id
       and identifier.identifier_type = 'BCGHGID'
-      and path_context = 'RegistrationData'
     $$,
 
-    $$ select identifier_value from ggircs.identifier where identifier_type = 'BCGHGID' and path_context = 'RegistrationData' $$,
+    ARRAY['VT_12345'::varchar, 'RD_123456'::varchar],
 
     'Foreign key identifier_id in ggircs.facility references ggircs.identifier.id'
 );
@@ -1105,7 +1117,6 @@ select results_eq(
     join ggircs.naics
     on
       facility.naics_id = naics.id
-      and path_context = 'RegistrationData'
     $$,
 
     $$ select naics_code, naics_classification from ggircs.naics where path_context = 'RegistrationData' $$,
