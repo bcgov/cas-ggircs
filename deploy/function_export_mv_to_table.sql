@@ -21,12 +21,17 @@ $$
                        'final_report, fuel, permit, parent_organisation, contact, ' ||
                        'address, descriptor, measured_emission_factor}';
 
-  -- Function refresh_materialized_views(data boolean) must be run before this function
   begin
 
+    -- Refresh materialized views
     for i in 1 .. array_upper(mv_array, 1)
       loop
+        perform ggircs_swrs.refresh_materialized_views(quote_ident(mv_array[i]), 'with data');
+      end loop;
 
+    -- Create tables
+    for i in 1 .. array_upper(mv_array, 1)
+      loop
         raise notice 'Exporting: %', mv_array[i];
 
         execute
@@ -362,7 +367,10 @@ $$
             and measured_emission_factor.fuel_idx = fuel.fuel_idx;
       alter table ggircs.measured_emission_factor add constraint ggircs_measured_emission_factor_fuel_foreign_key foreign key (fuel_id) references ggircs.fuel(id);
 
-    perform ggircs_swrs.refresh_materialized_views(false);
+    for i in 1 .. array_upper(mv_array, 1)
+      loop
+        perform ggircs_swrs.refresh_materialized_views(quote_ident(mv_array[i]), 'with no data');
+      end loop;
 
   end;
 
