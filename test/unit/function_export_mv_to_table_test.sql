@@ -4,7 +4,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(84);
+select plan(83);
 
 insert into ggircs_swrs.ghgr_import (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -744,17 +744,23 @@ $$), ($$
 </ReportData>
 $$);
 
--- Refresh all materialized views
-select ggircs_swrs.refresh_materialized_views(true);
-
--- Function has populated materialized views
-select isnt_empty('select * from ggircs_swrs.report', 'refresh_materialized_views(true) has populated matviews');
-
 -- Run table export function
 select ggircs_swrs.export_mv_to_table();
 
 -- Refresh all materialized views (run again so materialized views are populated for data equality tests below)
-select ggircs_swrs.refresh_materialized_views(true);
+do
+$do$
+   declare mv_array text[] := $${report, organisation, facility,
+                       activity, unit, identifier, naics, emission,
+                       final_report, fuel, permit, parent_organisation, contact,
+                       address, descriptor, measured_emission_factor}$$;
+    begin
+      for i in 1 .. array_upper(mv_array, 1)
+          loop
+            perform ggircs_swrs.refresh_materialized_views(quote_ident(mv_array[i]), 'with data');
+          end loop;
+    end
+$do$;
 
 -- Function export_mv_to_table exists
 select has_function( 'ggircs_swrs', 'export_mv_to_table', 'Schema ggircs_swrs has function export_mv_to_table()' );
@@ -1165,8 +1171,6 @@ select results_eq($$select
                   $$,
 
     'data in ggircs_swrs.organisation === ggircs.organisation');
-
-select * from ggircs_swrs.organisation;
 
 -- Data in ggircs_swrs.activity === data in ggircs.activity
 select results_eq($$select
@@ -1856,7 +1860,22 @@ select results_eq(
 
               'data in ggircs_swrs.measured_emission_factor === ggircs.measured_emission_factor');
 
-  select ggircs_swrs.refresh_materialized_views(false);
+  -- refresh views with no data
+  do
+    $do$
+      declare mv_array text[] := $$
+                       {report, organisation, facility,
+                       activity, unit, identifier, naics, emission,
+                       final_report, fuel, permit, parent_organisation, contact,
+                       address, descriptor, measured_emission_factor}
+                       $$;
+      begin
+        for i in 1 .. array_upper(mv_array, 1)
+          loop
+            perform ggircs_swrs.refresh_materialized_views(quote_ident(mv_array[i]), 'with no data');
+          end loop;
+      end
+    $do$;
 
   -- Refresh function has cleared materialized views
   select is_empty('select * from ggircs_swrs.report where false', 'refresh_materialized_views(false) has cleared materialized views');
