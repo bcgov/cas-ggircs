@@ -37,8 +37,11 @@ objects:
     - generic:
         secret: cas-ggircs-metabase-generic-trigger
       type: Generic
-    - imageChange:
-      type: ImageChange
+    - type: ImageChange
+      imageChange:
+        from:
+          kind: ImageStreamTag
+          name: cas-ggircs-metabase-build:${GIT_BRANCH_NORM}
     - github:
         secret: cas-ggircs-metabase-github-trigger
       type: GitHub
