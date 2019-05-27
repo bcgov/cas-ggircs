@@ -4,16 +4,11 @@
 begin;
 
 create materialized view ggircs_swrs.activity as (
-  with x as (
-    select ghgr_import.id as ghgr_import_id,
-           ghgr_import.xml_file as source_xml
-    from ggircs_swrs.ghgr_import
-  )
-  select x.ghgr_import_id, activity_details.*
-  from x,
+  select id as ghgr_import_id, activity_details.*
+  from ggircs_swrs.ghgr_import,
        xmltable(
            '//SubProcess'
-           passing x.source_xml
+           passing xml_file
            columns
              process_idx integer path 'string(count(./ancestor::Process/preceding-sibling::Process))' not null,
              sub_process_idx integer path 'string(count(./preceding-sibling::SubProcess))' not null,

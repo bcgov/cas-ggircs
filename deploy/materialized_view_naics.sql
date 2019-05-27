@@ -4,20 +4,13 @@
 begin;
 
 create materialized view ggircs_swrs.naics as (
-  with x as (
-    select _ghgr_import.xml_file as source_xml,
-           _ghgr_import.id         as ghgr_import_id,
-           _ghgr_import.imported_at
-    from ggircs_swrs.ghgr_import as _ghgr_import
-    order by _ghgr_import.id asc
-  )
   select
-         ghgr_import_id,
+         id as ghgr_import_id,
          naics.*
-  from x,
+  from ggircs_swrs.ghgr_import,
        xmltable(
            '//NAICSCode'
-           passing x.source_xml
+           passing xml_file
            columns
              swrs_facility_id integer path '//FacilityId[normalize-space(.)]',
              path_context varchar(1000) path 'name(./ancestor::VerifyTombstone|./ancestor::RegistrationData)',

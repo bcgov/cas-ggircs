@@ -4,25 +4,18 @@
 begin;
 
 create materialized view ggircs_swrs.identifier as (
-  with import_xml as (
-    select _ghgr_import.xml_file as source_xml,
-           _ghgr_import.id         as ghgr_import_id,
-           _ghgr_import.imported_at
-    from ggircs_swrs.ghgr_import as _ghgr_import
-    order by _ghgr_import.id asc
-  )
   select
-         ghgr_import_id,
+         id as ghgr_import_id,
          swrs_identifier.swrs_facility_id,
          swrs_identifier.path_context,
          swrs_identifier.identifier_idx,
          swrs_identifier.identifier_type,
          -- coalesce needed for getting the bcghgid value from ProgramID if exists, otherwise from IdentifierValue
          coalesce(swrs_identifier.identifier_value, swrs_identifier.idv2) as identifier_value
-  from import_xml,
+  from ggircs_swrs.ghgr_import,
        xmltable(
            '//Identifier'
-           passing import_xml.source_xml
+           passing xml_file
            columns
              swrs_facility_id numeric(1000,0) path '//FacilityId[normalize-space(.)]' not null,
              path_context varchar(1000) path 'name(./ancestor::VerifyTombstone|./ancestor::RegistrationData)',
