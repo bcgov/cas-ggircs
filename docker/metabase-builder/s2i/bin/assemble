@@ -8,8 +8,8 @@ mv /tmp/src $HOME/src
 # restore build artifacts
 if [[ -d /tmp/artifacts/ ]]; then
     echo "Restoring build artifacts"
-    ls -al /tmp/artifacts/
-    cp -rl /tmp/artifacts/ $HOME
+    cp -rl /tmp/artifacts/. $HOME
+    ls -al $HOME
 fi
 
 pushd ${HOME}/src > /dev/null
