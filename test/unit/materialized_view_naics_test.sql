@@ -63,10 +63,12 @@ refresh materialized view ggircs_swrs.naics with data;
 
 --  Test the foreign key join on facility
 select results_eq(
-    $$select facility.ghgr_import_id from ggircs_swrs.naics
+    $$
+    select facility.ghgr_import_id from ggircs_swrs.naics
     join ggircs_swrs.facility
     on
-    naics.ghgr_import_id = facility.ghgr_import_id $$,
+    naics.ghgr_import_id = facility.ghgr_import_id
+    $$,
 
     'select ghgr_import_id from ggircs_swrs.facility',
 
