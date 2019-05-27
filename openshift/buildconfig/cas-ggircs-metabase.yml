@@ -29,7 +29,7 @@ objects:
           name: cas-ggircs-metabase-build:${GIT_BRANCH_NORM}
         paths:
         - destinationDir: docker/metabase
-          sourcePath: /opt/app-root/src/metabase.jar
+          sourcePath: /opt/app-root/src/src/target/uberjar/metabase.jar
     strategy:
       type: Docker
     triggers:

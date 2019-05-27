@@ -2,7 +2,7 @@
 
 # tar must be the only program writing to stdout
 pushd ${HOME} > /dev/null
-
-tar cf - .m2 metabase.jar build-git-sha src/node_modules src/resources/modules modules/drivers/*/target
+shopt -s extglob
+tar cf - .m2 build-git-sha src/node_modules src/resources/modules src/modules/drivers/*/target src/target
 
 popd > /dev/null
