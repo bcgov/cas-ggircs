@@ -73,10 +73,12 @@ refresh materialized view ggircs_swrs.organisation with data;
 
 --  Test ghgr_import_id fk relation
 select results_eq(
-    $$select ghgr_import.id from ggircs_swrs.organisation
+    $$
+    select ghgr_import.id from ggircs_swrs.organisation
     join ggircs_swrs.ghgr_import
     on
-    organisation.ghgr_import_id =  ghgr_import.id $$,
+    organisation.ghgr_import_id =  ghgr_import.id
+    $$,
 
     'select id from ggircs_swrs.ghgr_import',
 
