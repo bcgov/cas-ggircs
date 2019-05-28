@@ -1,0 +1,22 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+objects:
+
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: cas-ggircs-metabase-postgres
+  spec:
+    storageClassName: gluster-file-db
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: ${VOLUME_CAPACITY}
+
+parameters:
+- description: Volume space available for data, e.g. 512Mi, 2Gi.
+  displayName: Volume Capacity
+  name: VOLUME_CAPACITY
+  required: true
+  value: 20Gi

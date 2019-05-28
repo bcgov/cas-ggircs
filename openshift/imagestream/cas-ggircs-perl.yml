@@ -1,0 +1,36 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+objects:
+
+- apiVersion: image.openshift.io/v1
+  kind: ImageStream
+  metadata:
+    name: cas-ggircs-perl
+  spec:
+    lookupPolicy:
+      local: true
+    tags:
+    - from:
+        kind: DockerImage
+        name: ${PERL_IMAGE}:${PERL_VERSION}
+      name: ${PERL_VERSION}
+    - from:
+        kind: DockerImage
+        name: ${PERL_IMAGE}:${PERL_VERSION}
+      name: latest
+  status: {}
+
+parameters:
+
+- description: Name of Perl image to be used.
+  displayName: Name of Perl Image
+  name: PERL_IMAGE
+  required: true
+  value: "registry.access.redhat.com/rhscl/perl-526-rhel7"
+
+- description: Version of Perl image to be used.
+  displayName: Version of Perl Image
+  name: PERL_VERSION
+  required: true
+  value: "5.26-41"
+

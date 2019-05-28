@@ -9,6 +9,8 @@ SQITCH_VERSION=${word 3,${shell ${SQITCH} --version}}
 SQITCH_MIN_VERSION=0.97
 GREP=grep
 GIT=git
+GIT_BRANCH=${shell ${GIT} rev-parse --abbrev-ref HEAD}
+GIT_SHA=${git rev-parse --short HEAD}
 AWK=awk
 PSQL=psql -h localhost
 # "psql --version" prints "psql (PostgreSQL) XX.XX"
@@ -28,6 +30,7 @@ DOCKER_GGIRCS_TAG=latest
 DOCKER_POSTGRES_IMAGE=postgresql
 DOCKER_POSTGRES_TAG=10
 OC=oc
+OC_PROJECT= # overridden as needed
 OC_DEV_PROJECT=wksv3k-dev
 OC_TEST_PROJECT=wksv3k-test
 OC_PROD_PROJECT=wksv3k-prod
@@ -170,7 +173,7 @@ install_sqitch:
 	@@${CPAN} TAP::Parser::SourceHandler::pgTAP
 
 .PHONY: install_cpanm
-install_cpanm: 
+install_cpanm:
 ifeq (${shell which ${CPANM}},)
 	# install cpanm
 	@@${CPAN} App:cpanminus
@@ -187,36 +190,83 @@ postinstall_check:
  	(echo "FATAL: ${SQITCH} version should be at least ${SQITCH_MIN_VERSION}. Make sure the ${SQITCH} executable installed by cpanminus is available has the highest priority in the PATH" && exit 1);
 
 .PHONY: install
-install: install_cpanm install_cpandeps postinstall_check install_pgtap 
+install: install_cpanm install_cpandeps postinstall_check install_pgtap
 
-.PHONY: whoami
-whoami:
-	# Ensure the openshift client has a valid access token
-	@@${OC} whoami
+define switch_project
+	@@echo ✓ logged in as: $(shell ${OC} whoami)
+	@@${OC} project ${OC_PROJECT} >/dev/null
+	@@echo ✓ switched project to: ${OC_PROJECT}
+endef
 
-.PHONY: tools_project
-tools_project: whoami
-	# Ensure the openshift client is using the correct project namespace
-	@@${OC} project ${OC_TOOLS_PROJECT}
+define oc_process
+	@@${OC} process -f openshift/${1}.yml ${2} | ${OC} apply --wait=true -f-
+endef
 
-.PHONY: dev_project
-dev_project: whoami
-	# Ensure the openshift client is using the correct project namespace
-	@@${OC} project ${OC_DEV_PROJECT}
+define build
+	@@echo Add all image streams and build in the tools project...
+	$(call oc_process,imagestream/cas-ggircs-perl,)
+	$(call oc_process,imagestream/cas-ggircs-postgres,)
+	$(call oc_process,imagestream/cas-ggircs,)
+	$(call oc_process,buildconfig/cas-ggircs,GIT_BRANCH=${GIT_BRANCH})
+endef
 
-.PHONY: deploy_tools
-deploy_tools: tools_project
-	# Add all image streams and build in the tools project
-	@@${OC} process -f openshift/cas-ggircs-build-config-template.yml | oc apply --wait=true -f-
-
-.PHONY: deploy_dev
-deploy_dev: deploy_tools dev_project
+define deploy
 	# Allow import of images from tools namespace
-	@@${OC} policy add-role-to-group system:image-puller system:serviceaccounts:${OC_DEV_PROJECT} -n ${OC_TOOLS_PROJECT}
+	@@${OC} policy add-role-to-group system:image-puller system:serviceaccounts:${OC_PROJECT} -n ${OC_TOOLS_PROJECT}
+	# Configure...
+	@@${OC} get secret cas-ggircs-postgres &>/dev/null \
+		|| ${OC} process -f openshift/secret/cas-ggircs-postgres.yml \
+		GGIRCS_DATABASE=ggircs_${OC_PROJECT} \
+		| ${OC} apply --wait=true -f-
+	@@${OC} get secret cas-ggircs-metabase-postgres &>/dev/null \
+		|| ${OC} process -f openshift/secret/cas-ggircs-metabase-postgres.yml \
+		METABASE_DATABASE=metabase_${OC_PROJECT} \
+		| ${OC} apply --wait=true -f-
 	# Deploy...
-	@@${OC} process -f openshift/cas-ggircs-deploy-config-template.yml | oc apply --wait=true -f-
+	$(call oc_process,imagestream/cas-ggircs-metabase-mirror,)
+	$(call oc_process,imagestream/cas-ggircs-postgres-mirror,)
+	$(call oc_process,imagestream/cas-ggircs-mirror,GIT_BRANCH=${GIT_BRANCH})
+	$(call oc_process,persistentvolumeclaim/cas-ggircs-data,)
+	$(call oc_process,persistentvolumeclaim/cas-ggircs-metabase-postgres,)
+	$(call oc_process,persistentvolumeclaim/cas-ggircs-postgres,)
+	$(call oc_process,deploymentconfig/cas-ggircs-postgres,)
+	$(call oc_process,deploymentconfig/cas-ggircs-metabase-postgres,)
+	$(call oc_process,deploymentconfig/cas-ggircs-metabase,)
+	$(call oc_process,deploymentconfig/cas-ggircs,)
+	$(call oc_process,service/cas-ggircs-postgres,)
+	$(call oc_process,service/cas-ggircs-metabase-postgres,)
+	$(call oc_process,service/cas-ggircs-metabase,)
+	$(call oc_process,route/cas-ggircs-metabase,OC_PROJECT=${OC_PROJECT})
 	# Migrate...
 	# TODO(wenzowski): automatically run a `sqitch deploy`
+endef
+
+.PHONY: deploy_tools
+deploy_tools: OC_PROJECT=${OC_TOOLS_PROJECT}
+deploy_tools:
+	$(call switch_project)
+	$(call build)
+
+.PHONY: deploy_dev
+deploy_dev: OC_PROJECT=${OC_DEV_PROJECT}
+deploy_dev: deploy_tools
+	$(call switch_project)
+	$(call deploy)
+
+.PHONY: deploy_test
+deploy_test: OC_PROJECT=${OC_TEST_PROJECT}
+deploy_test: deploy_tools
+	$(call switch_project)
+	$(call deploy)
+
+.PHONY: clean_test
+clean_test: OC_PROJECT=${OC_TEST_PROJECT}
+clean_test:
+	$(call switch_project)
+	@@${OC} delete all --all
+	@@${OC} delete persistentvolumeclaim/cas-ggircs-data --ignore-not-found=true --wait=true
+	@@${OC} delete persistentvolumeclaim/cas-ggircs-metabase-postgres --ignore-not-found=true --wait=true
+	@@${OC} delete persistentvolumeclaim/cas-ggircs-postgres --ignore-not-found=true --wait=true
 
 .PHONY: s2i_build
 s2i_build:
@@ -234,6 +284,26 @@ push:
 .PHONY: rsh
 rsh:
 	oc exec -it cas-ggircs-5-c46gh -- bash
+
+# .PHONY: refresh
+# refresh:
+# 	parallel -P8 'oc exec cas-ggircs-1-5ssz8 -- psql -c "refresh materialized view ggircs_swrs.{} with data;"' ::: \
+# 		report \
+# 		final_report \
+# 		facility \
+# 		organisation \
+# 		activity unit \
+# 		fuel \
+# 		emission \
+# 		measured_emission_factor \
+# 		descriptor \
+# 		address \
+# 		identifier \
+# 		naics \
+# 		contact \
+# 		permit \
+# 		parent_organisation \
+# 		flat
 
 # Configure image streams
 # oc start-build cas-ggircs-postgres --commit=$$(git rev-parse --verify HEAD)

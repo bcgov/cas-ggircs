@@ -1,0 +1,113 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+labels:
+  template: deploy-template
+objects:
+
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    annotations:
+      template.alpha.openshift.io/wait-for-ready: "true"
+    name: cas-ggircs-postgres
+  spec:
+    replicas: 1
+    selector:
+      name: cas-ggircs-postgres
+    strategy:
+      type: Recreate
+    template:
+      metadata:
+        labels:
+          name: cas-ggircs-postgres
+      spec:
+        containers:
+        - capabilities: {}
+          env:
+          - name: POSTGRESQL_USER
+            valueFrom:
+              secretKeyRef:
+                key: database-user
+                name: cas-ggircs-postgres
+          - name: POSTGRESQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: database-password
+                name: cas-ggircs-postgres
+          - name: POSTGRESQL_DATABASE
+            valueFrom:
+              secretKeyRef:
+                key: database-name
+                name: cas-ggircs-postgres
+          - name: POSTGRESQL_MAX_CONNECTIONS
+            value: '1000'
+          - name: POSTGRESQL_MAX_PREPARED_TRANSACTIONS
+            value: '1000'
+          - name: POSTGRESQL_SHARED_BUFFERS
+            value: 2GB
+          - name: POSTGRESQL_EFFECTIVE_CACHE_SIZE
+            value: 8GB
+          image: cas-ggircs-postgres-mirror:${POSTGRES_VERSION}
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            exec:
+              command:
+              - /usr/libexec/check-container
+              - --live
+            initialDelaySeconds: 120
+            timeoutSeconds: 10
+          name: cas-ggircs-postgres
+          ports:
+          - containerPort: 5432
+            protocol: TCP
+          readinessProbe:
+            exec:
+              command:
+              - /usr/libexec/check-container
+            initialDelaySeconds: 5
+            timeoutSeconds: 1
+          resources:
+            limits:
+              memory: 16Gi
+              cpu: 8000m
+            requests:
+              cpu: 100m
+              memory: 256Mi
+          securityContext:
+            capabilities: {}
+            privileged: false
+          terminationMessagePath: /dev/termination-log
+          volumeMounts:
+          - mountPath: /var/lib/pgsql/data
+            name: cas-ggircs-postgres
+          - mountPath: /opt/app-root/src/data
+            name: cas-ggircs-data
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        volumes:
+        - name: cas-ggircs-postgres
+          persistentVolumeClaim:
+            claimName: cas-ggircs-postgres
+        - name: cas-ggircs-data
+          persistentVolumeClaim:
+            claimName: cas-ggircs-data
+    triggers:
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+        - cas-ggircs-postgres
+        from:
+          kind: ImageStreamTag
+          name: cas-ggircs-postgres-mirror:${POSTGRES_VERSION}
+        lastTriggeredImage: ""
+      type: ImageChange
+    - type: ConfigChange
+  status: {}
+
+parameters:
+- description: Version of PostgreSQL image to be used (10 for now).
+  displayName: Version of PostgreSQL Image
+  name: POSTGRES_VERSION
+  required: true
+  value: "latest"
+
