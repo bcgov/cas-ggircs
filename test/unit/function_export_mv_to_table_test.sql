@@ -1465,7 +1465,7 @@ select results_eq(
 select results_eq(
     'select ghgr_import_id, swrs_report_id from ggircs_swrs.final_report order by ghgr_import_id asc',
     'select ghgr_import_id, swrs_report_id from ggircs.final_report order by ghgr_import_id asc',
-    'data in ggircs_swrs.emission === ggircs.emission'
+    'data in ggircs_swrs.final_report === ggircs.final_report'
 );
 
 -- Data in ggircs_swrs.fuel === data in ggircs.fuel
@@ -1920,7 +1920,7 @@ select results_eq(
     $do$;
 
   -- Refresh function has cleared materialized views
-  select is_empty('select * from ggircs_swrs.report where false', 'refresh_materialized_views(false) has cleared materialized views');
+  select is_empty('select * from ggircs_swrs.report where false', 'refresh_materialized_views() has cleared materialized views');
 
 select * from finish();
 rollback;
