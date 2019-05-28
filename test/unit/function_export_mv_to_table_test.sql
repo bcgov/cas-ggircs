@@ -4,7 +4,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(83);
+select plan(86);
 
 insert into ggircs_swrs.ghgr_import (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -865,6 +865,19 @@ select results_eq(
     'Foreign key fuel_id in ggircs.emission references ggircs.fuel.id'
 );
 
+-- Emission -> Naics
+select results_eq(
+    $$select naics.naics_code from ggircs.emission
+      join ggircs.naics
+      on
+        emission.naics_id = naics.id
+    $$,
+
+    'select naics_code from ggircs.naics',
+
+    'Foreign key naics_id in ggircs.emission references ggircs.naics.id'
+);
+
 -- Fuel -> Unit
 select results_eq(
     $$select distinct(fuel.ghgr_import_id) from ggircs.fuel
@@ -1080,6 +1093,35 @@ select results_eq(
     'select ghgr_import_id from ggircs.facility order by ghgr_import_id',
 
     'Foreign key facility_id in ggircs.permit references ggircs.facility.id'
+);
+
+-- Facility -> Identifier
+select results_eq(
+    $$
+    select identifier.identifier_value as bcghgid from ggircs.facility
+    join ggircs.identifier
+    on
+      facility.identifier_id = identifier.id
+      and identifier.identifier_type = 'BCGHGID'
+    $$,
+
+    ARRAY['VT_12345'::varchar, 'RD_123456'::varchar],
+
+    'Foreign key identifier_id in ggircs.facility references ggircs.identifier.id'
+);
+
+-- Facility -> Naics
+select results_eq(
+    $$
+    select naics.naics_code, naics_classification from ggircs.facility
+    join ggircs.naics
+    on
+      facility.naics_id = naics.id
+    $$,
+
+    $$ select naics_code, naics_classification from ggircs.naics where path_context = 'RegistrationData' $$,
+
+    'Foreign key naics_id in ggircs.facility references ggircs.naics.id'
 );
 
 -- Measured Emission Factor -> Fuel
@@ -1423,7 +1465,7 @@ select results_eq(
 select results_eq(
     'select ghgr_import_id, swrs_report_id from ggircs_swrs.final_report order by ghgr_import_id asc',
     'select ghgr_import_id, swrs_report_id from ggircs.final_report order by ghgr_import_id asc',
-    'data in ggircs_swrs.emission === ggircs.emission'
+    'data in ggircs_swrs.final_report === ggircs.final_report'
 );
 
 -- Data in ggircs_swrs.fuel === data in ggircs.fuel
@@ -1878,7 +1920,7 @@ select results_eq(
     $do$;
 
   -- Refresh function has cleared materialized views
-  select is_empty('select * from ggircs_swrs.report where false', 'refresh_materialized_views(false) has cleared materialized views');
+  select is_empty('select * from ggircs_swrs.report where false', 'refresh_materialized_views() has cleared materialized views');
 
 select * from finish();
 rollback;
