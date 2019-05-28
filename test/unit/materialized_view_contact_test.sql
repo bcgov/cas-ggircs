@@ -128,11 +128,13 @@ refresh materialized view ggircs_swrs.contact with data;
 
 --  Test ghgr_import_id fk relation
 select results_eq(
-   'select facility.ghgr_import_id from ggircs_swrs.contact ' ||
-   'join ggircs_swrs.facility ' ||
-   'on ' ||
-   'contact.ghgr_import_id =  facility.ghgr_import_id ' ||
-    'and contact.contact_idx=0',
+   $$
+   select facility.ghgr_import_id from ggircs_swrs.contact
+   join ggircs_swrs.facility
+   on
+   contact.ghgr_import_id =  facility.ghgr_import_id
+   and contact.contact_idx=0
+   $$,
 
    'select ghgr_import_id from ggircs_swrs.facility',
 

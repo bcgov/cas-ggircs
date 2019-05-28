@@ -120,10 +120,12 @@ refresh materialized view ggircs_swrs.final_report with data;
 
 -- Test ghgr_import_id fk relation
 select results_eq(
-    'select report.swrs_report_id from ggircs_swrs.final_report ' ||
-    'join ggircs_swrs.report ' ||
-    'on ' ||
-    'final_report.swrs_report_id = report.swrs_report_id ',
+    $$
+    select report.swrs_report_id from ggircs_swrs.final_report
+    join ggircs_swrs.report
+    on
+    final_report.swrs_report_id = report.swrs_report_id
+    $$,
 
     'select swrs_report_id from ggircs_swrs.report',
 
@@ -137,8 +139,8 @@ select results_eq(
 );
 
 select results_eq(
-  $$select ghgr_import_id from ggircs_swrs.final_report$$,
-  $$select ghgr_import_id from ggircs_swrs.report where status = 'Archived'$$,
+  'select ghgr_import_id from ggircs_swrs.final_report',
+  $$ select ghgr_import_id from ggircs_swrs.report where status = 'Archived' $$,
   'ggircs_swrs.final_report.ghgr_import_id should refer to the correct version'
 );
 
@@ -219,7 +221,7 @@ $$);
 
 -- Test that the ignore_list is properly ignoring reports by swrs_organisation_id
 select is_empty(
-    $$select * from ggircs_swrs.final_report where swrs_report_id = 12345 $$,
+    'select * from ggircs_swrs.final_report where swrs_report_id = 12345',
     'ggircs_swrs.final_report ignored value from table_ignore_organisation'
 );
 

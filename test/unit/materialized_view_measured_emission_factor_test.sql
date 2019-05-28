@@ -140,16 +140,18 @@ select results_eq(
 
 -- measured_emission_factor -> fuel
 select results_eq(
-    'select fuel.ghgr_import_id from ggircs_swrs.measured_emission_factor ' ||
-    'join ggircs_swrs.fuel ' ||
-    'on (' ||
-    'measured_emission_factor.ghgr_import_id =  fuel.ghgr_import_id ' ||
-    'and measured_emission_factor.process_idx = fuel.process_idx ' ||
-    'and measured_emission_factor.sub_process_idx = fuel.sub_process_idx ' ||
-    'and measured_emission_factor.activity_name = fuel.activity_name ' ||
-    'and measured_emission_factor.units_idx = fuel.units_idx ' ||
-    'and measured_emission_factor.unit_idx = fuel.unit_idx)' ||
-    'and measured_emission_factor.fuel_idx = fuel.fuel_idx',
+    $$
+    select fuel.ghgr_import_id from ggircs_swrs.measured_emission_factor
+    join ggircs_swrs.fuel
+    on (
+    measured_emission_factor.ghgr_import_id =  fuel.ghgr_import_id
+    and measured_emission_factor.process_idx = fuel.process_idx
+    and measured_emission_factor.sub_process_idx = fuel.sub_process_idx
+    and measured_emission_factor.activity_name = fuel.activity_name
+    and measured_emission_factor.units_idx = fuel.units_idx
+    and measured_emission_factor.unit_idx = fuel.unit_idx)
+    and measured_emission_factor.fuel_idx = fuel.fuel_idx
+    $$,
 
     'select ghgr_import_id from ggircs_swrs.fuel',
 

@@ -79,10 +79,12 @@ refresh materialized view ggircs_swrs.facility with data;
 refresh materialized view ggircs_swrs.permit with data;
 
 select results_eq(
-    'select facility.swrs_facility_id from ggircs_swrs.permit ' ||
-    'join ggircs_swrs.facility ' ||
-    'on ' ||
-    'permit.ghgr_import_id = facility.ghgr_import_id',
+     $$
+     select facility.swrs_facility_id from ggircs_swrs.permit
+     join ggircs_swrs.facility
+     on
+     permit.ghgr_import_id = facility.ghgr_import_id
+     $$,
 
     'select swrs_facility_id from ggircs_swrs.facility',
 

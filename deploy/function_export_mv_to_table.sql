@@ -12,14 +12,16 @@ begin;
 
 create or replace function ggircs_swrs.export_mv_to_table()
   returns void as
-$$
+$function$
   /** Create all tables from materialized views that are not being split up **/
   declare
 
-       mv_array text[] := '{report, organisation, facility, ' ||
-                       'activity, unit, identifier, naics, emission, ' ||
-                       'final_report, fuel, permit, parent_organisation, contact, ' ||
-                       'address, descriptor, measured_emission_factor}';
+       mv_array text[] := $$
+                          {report, organisation, facility,
+                          activity, unit, identifier, naics, emission,
+                          final_report, fuel, permit, parent_organisation, contact,
+                          address, descriptor, measured_emission_factor}
+                          $$;
 
   begin
 
@@ -39,9 +41,9 @@ $$
 
         execute
           'create table ggircs.' || quote_ident(mv_array[i]) ||
-                ' as (select x.* from ggircs_swrs.' || quote_ident(mv_array[i]) ||
-                ' as x inner join ggircs_swrs.final_report as final_report ' ||
-                ' on x.ghgr_import_id = final_report.ghgr_import_id)';
+                 ' as (select x.* from ggircs_swrs.' || quote_ident(mv_array[i]) ||
+                 $$ as x inner join ggircs_swrs.final_report as final_report
+                 on x.ghgr_import_id = final_report.ghgr_import_id)$$;
         execute
           'alter table ggircs.' || quote_ident(mv_array[i]) ||
           ' add column id int generated always as identity primary key';
@@ -55,27 +57,29 @@ $$
 
     execute
 
-          'create table ggircs.attributable_emission ' ||
-          'as (select x.* from ggircs_swrs.emission ' ||
-          'as x inner join ggircs_swrs.final_report as final_report ' ||
-          'on x.ghgr_import_id = final_report.ghgr_import_id ' ||
-          'join ggircs_swrs.facility as facility ' ||
-          'on x.ghgr_import_id = facility.ghgr_import_id ' ||
-          'join ggircs_swrs.activity as activity ' ||
-          'on x.ghgr_import_id = activity.ghgr_import_id ' ||
-          'and x.process_idx = activity.process_idx ' ||
-          'and x.sub_process_idx = activity.sub_process_idx ' ||
-          'and x.activity_name = activity.activity_name ' ||
-          'and x.gas_type != ''CO2bioC'' '||
-          'and facility.facility_type != ''EIO'' '||
-          'and facility.facility_type != ''LFO'' '||
-          'and activity.sub_process_name not in  (''Additional Reportable Information as per WCI.352(i)(1)-(12)'',' ||
-                                   '''Additional Reportable Information as per WCI.352(i)(13)'', ' ||
-                                   '''Additional Reportable Information as per WCI.362(g)(21)'', ' ||
-                                   '''Additional information for cement and lime production facilities only (not aggregated in totals)'', ' ||
-                                   '''Additional information for cement and lime production facilities only (not aggregated intotals)'', ' ||
-                                   '''Additional information required when other activities selected are Activities in Table 2 rows 2, 4, 5 , or 6'', ' ||
-                                   '''Additional reportable information'') )';
+          $$
+          create table ggircs.attributable_emission
+          as (select x.* from ggircs_swrs.emission
+          as x inner join ggircs_swrs.final_report as final_report
+          on x.ghgr_import_id = final_report.ghgr_import_id
+          join ggircs_swrs.facility as facility
+          on x.ghgr_import_id = facility.ghgr_import_id
+          join ggircs_swrs.activity as activity
+          on x.ghgr_import_id = activity.ghgr_import_id
+          and x.process_idx = activity.process_idx
+          and x.sub_process_idx = activity.sub_process_idx
+          and x.activity_name = activity.activity_name
+          and x.gas_type != 'CO2bioC'
+          and facility.facility_type != 'EIO'
+          and facility.facility_type != 'LFO'
+          and activity.sub_process_name not in  ('Additional Reportable Information as per WCI.352(i)(1)-(12)',
+                                   'Additional Reportable Information as per WCI.352(i)(13)',
+                                   'Additional Reportable Information as per WCI.362(g)(21)',
+                                   'Additional information for cement and lime production facilities only (not aggregated in totals)',
+                                   'Additional information for cement and lime production facilities only (not aggregated intotals)',
+                                   'Additional information required when other activities selected are Activities in Table 2 rows 2, 4, 5 , or 6',
+                                   'Additional reportable information')
+          )$$;
 
     execute 'alter table ggircs.attributable_emission add column id int generated always as identity primary key';
     
@@ -391,6 +395,6 @@ $$
 
   end;
 
-$$ language plpgsql volatile ;
+$function$ language plpgsql volatile ;
 
 commit;

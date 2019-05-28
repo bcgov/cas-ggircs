@@ -7,7 +7,6 @@ begin;
 
 select plan(67);
 
-
 select has_materialized_view(
     'ggircs_swrs', 'emission',
     'ggircs_swrs.emission should be a materialized view'
@@ -183,12 +182,14 @@ refresh materialized view ggircs_swrs.emission with data;
 
 --  Test ghgr_import_id fk relation
 select results_eq(
-    'select fuel.ghgr_import_id from ggircs_swrs.emission ' ||
-    'join ggircs_swrs.fuel ' ||
-    'on ' ||
-    'emission.ghgr_import_id =  fuel.ghgr_import_id ' ||
-    'and emission.fuel_idx = fuel.fuel_idx ' ||
-    'and emission.emission_idx=0',
+    $$
+    select fuel.ghgr_import_id from ggircs_swrs.emission
+    join ggircs_swrs.fuel
+    on
+    emission.ghgr_import_id =  fuel.ghgr_import_id
+    and emission.fuel_idx = fuel.fuel_idx
+    and emission.emission_idx=0
+    $$,
 
     'select ghgr_import_id from ggircs_swrs.fuel',
 
@@ -197,35 +198,35 @@ select results_eq(
 
 -- test the columns for matview facility have been properly parsed from xml
 select results_eq(
-  $$select ghgr_import_id from ggircs_swrs.emission where fuel_idx=0 and emission_idx=0$$,
+  $$ select ghgr_import_id from ggircs_swrs.emission where fuel_idx=0 and emission_idx=0 $$,
   'select id from ggircs_swrs.ghgr_import',
   'ggircs_swrs.emission.ghgr_import_id relates to ggircs_swrs.ghgr_import.id'
 );
 
 -- Extract process_idx
 select results_eq(
-  $$select process_idx from ggircs_swrs.emission where fuel_idx=0 and emission_idx=0$$,
+  $$ select process_idx from ggircs_swrs.emission where fuel_idx=0 and emission_idx=0 $$,
    ARRAY[0::integer],
   'ggircs_swrs.emission.process_idx is extracted'
 );
 
 -- Extract sub_process_idx
 select results_eq(
-  $$select sub_process_idx from ggircs_swrs.emission where fuel_idx=0 and emission_idx=0$$,
+  $$ select sub_process_idx from ggircs_swrs.emission where fuel_idx=0 and emission_idx=0 $$,
    ARRAY[0::integer],
   'ggircs_swrs.emission.sub_process_idx is extracted'
 );
 
 -- Extract unit_idx
 select results_eq(
-  $$select unit_idx from ggircs_swrs.emission where fuel_idx=0 and emission_idx=0$$,
+  $$ select unit_idx from ggircs_swrs.emission where fuel_idx=0 and emission_idx=0 $$,
    ARRAY[0::integer],
   'ggircs_swrs.emission.unit_idx is extracted'
 );
 
 -- Extract fuel_idx
 select results_eq(
-  $$select fuel_idx from ggircs_swrs.emission where fuel_idx=0 and emission_idx=0$$,
+  $$ select fuel_idx from ggircs_swrs.emission where fuel_idx=0 and emission_idx=0 $$,
    ARRAY[0::integer],
   'ggircs_swrs.emission.fuel_idx is extracted'
 );
@@ -233,7 +234,7 @@ select results_eq(
 
 -- Extract emission_idx
 select results_eq(
-  $$select emission_idx from ggircs_swrs.emission where fuel_idx=0 and emission_idx=0$$,
+  $$ select emission_idx from ggircs_swrs.emission where fuel_idx=0 and emission_idx=0 $$,
    ARRAY[0::integer],
   'ggircs_swrs.emission.emission_idx is extracted'
 
@@ -241,49 +242,49 @@ select results_eq(
 
 -- Extract emission_type
 select results_eq(
-  $$select emission_type from ggircs_swrs.emission where fuel_idx=0 and emission_idx=0$$,
+  $$ select emission_type from ggircs_swrs.emission where fuel_idx=0 and emission_idx=0 $$,
    ARRAY['Combustion: Field gas or Process Vent Gas'::varchar(1000)],
   'ggircs_swrs.emission.emission_type is extracted'
 );
 
 -- Extract gas_type
 select results_eq(
-  $$select gas_type from ggircs_swrs.emission where fuel_idx=0 and emission_idx=0$$,
+  $$ select gas_type from ggircs_swrs.emission where fuel_idx=0 and emission_idx=0 $$,
    ARRAY['CO2nonbio'::varchar(1000)],
   'ggircs_swrs.emission.gas_type is extracted'
 );
 
 -- Extract methodology
 select results_eq(
-  $$select methodology from ggircs_swrs.emission where fuel_idx=0 and emission_idx=0$$,
+  $$ select methodology from ggircs_swrs.emission where fuel_idx=0 and emission_idx=0 $$,
    ARRAY['Methodology 2 (measured HHV/Steam)'::varchar(1000)],
   'ggircs_swrs.emission.methodology is extracted'
 );
 
 -- Extract not_applicable
   select results_eq(
-  $$select not_applicable from ggircs_swrs.emission where fuel_idx=0 and emission_idx=0$$,
+  $$ select not_applicable from ggircs_swrs.emission where fuel_idx=0 and emission_idx=0 $$,
    ARRAY['false'::bool],
   'ggircs_swrs.emission.not_applicable is extracted'
 );
 
 -- Extract quantity
   select results_eq(
-  $$select quantity from ggircs_swrs.emission where fuel_idx=0 and emission_idx=0$$,
+  $$ select quantity from ggircs_swrs.emission where fuel_idx=0 and emission_idx=0 $$,
    ARRAY[28215::numeric(1000,0)],
   'ggircs_swrs.emission.quantity is extracted'
 );
 
 -- Extract calculated_quantity
   select results_eq(
-  $$select calculated_quantity from ggircs_swrs.emission where fuel_idx=0 and emission_idx=0$$,
+  $$ select calculated_quantity from ggircs_swrs.emission where fuel_idx=0 and emission_idx=0 $$,
    ARRAY[28215::numeric(1000,0)],
   'ggircs_swrs.emission.calculated_quantity is extracted'
 );
 
 -- Extract emission_category
 select results_eq(
-  $$select emission_category::varchar from ggircs_swrs.emission where fuel_idx=0 and emission_idx=0$$,
+  $$ select emission_category::varchar from ggircs_swrs.emission where fuel_idx=0 and emission_idx=0 $$,
    ARRAY['BC_ScheduleB_GeneralStationaryCombustionEmissions'::varchar(1000)],
   'ggircs_swrs.emission.emission_category is extracted'
 );

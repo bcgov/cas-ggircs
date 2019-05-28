@@ -105,11 +105,13 @@ refresh materialized view ggircs_swrs.facility with data;
 
 -- Test ghgr_import_id fk relation
 select results_eq(
-    $$ select ghgr_import.id from ggircs_swrs.facility
+    $$
+    select ghgr_import.id from ggircs_swrs.facility
     join ggircs_swrs.ghgr_import
     on
     facility.ghgr_import_id =  ghgr_import.id
-    order by ghgr_import.id desc limit 1$$,
+    order by ghgr_import.id desc limit 1
+    $$,
 
     'select id from ggircs_swrs.ghgr_import order by id desc limit 1',
 
