@@ -5,12 +5,12 @@ objects:
 - apiVersion: build.openshift.io/v1
   kind: BuildConfig
   metadata:
-    name: cas-ggircs
+    name: cas-ggircs-metabase-build
   spec:
     output:
       to:
         kind: ImageStreamTag
-        name: cas-ggircs:${GIT_BRANCH_NORM}
+        name: cas-ggircs-metabase-build:${GIT_BRANCH_NORM}
     resources:
       limits:
         cpu: "4"
@@ -20,37 +20,27 @@ objects:
         memory: 256Mi
     source:
       git:
-        ref: ${GIT_BRANCH}
-        uri: https://github.com/bcgov/cas-ggircs.git
-      type: Git
+        ref: bcgov
+        uri: https://github.com/bcgov/cas-ggircs-metabase.git
     strategy:
       sourceStrategy:
         from:
           kind: ImageStreamTag
-          name: cas-ggircs-perl:${PERL_VERSION}
+          name: cas-ggircs-metabase-builder:${GIT_BRANCH_NORM}
+        incremental: true
       type: Source
     triggers:
-    - github:
-        secret: cas-ggircs-github-trigger
-      type: GitHub
-    - generic:
-        secret: cas-ggircs-generic-trigger
-      type: Generic
     - type: ConfigChange
-    - imageChange:
-      type: ImageChange
+    - generic:
+        secret: cas-ggircs-metabase-generic-trigger
+      type: Generic
+    - type: ImageChange
+      imageChange: {}
+    - github:
+        secret: cas-ggircs-metabase-github-trigger
+      type: GitHub
 
 parameters:
-
-- description: Version of Perl image to be used (latest for now).
-  displayName: Version of Perl Image
-  name: PERL_VERSION
-  required: true
-  value: "latest"
-- description: Git source code branch currently deployed.
-  displayName: Git branch
-  name: GIT_BRANCH
-  required: true
 - description: Git source code branch currently deployed, where slashes are replaced by dashes, to be able to use it in image tags.
   displayName: Git branch (normalized)
   name: GIT_BRANCH_NORM

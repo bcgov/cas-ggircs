@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# tar must be the only program writing to stdout
+pushd ${HOME} > /dev/null
+shopt -s extglob
+tar cf - .m2 build-git-sha src/node_modules src/resources/modules\
+ src/modules/drivers/*/target src/target src/pom.xml
+
+popd > /dev/null

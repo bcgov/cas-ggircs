@@ -5,12 +5,12 @@ objects:
 - apiVersion: build.openshift.io/v1
   kind: BuildConfig
   metadata:
-    name: cas-ggircs
+    name: cas-ggircs-metabase-builder
   spec:
     output:
       to:
         kind: ImageStreamTag
-        name: cas-ggircs:${GIT_BRANCH_NORM}
+        name: cas-ggircs-metabase-builder:${GIT_BRANCH_NORM}
     resources:
       limits:
         cpu: "4"
@@ -22,31 +22,19 @@ objects:
       git:
         ref: ${GIT_BRANCH}
         uri: https://github.com/bcgov/cas-ggircs.git
-      type: Git
+      contextDir: docker/metabase-builder
     strategy:
-      sourceStrategy:
-        from:
-          kind: ImageStreamTag
-          name: cas-ggircs-perl:${PERL_VERSION}
-      type: Source
+      type: Docker
     triggers:
-    - github:
-        secret: cas-ggircs-github-trigger
-      type: GitHub
-    - generic:
-        secret: cas-ggircs-generic-trigger
-      type: Generic
     - type: ConfigChange
-    - imageChange:
-      type: ImageChange
+    - generic:
+        secret: cas-ggircs-metabase-builder-generic-trigger
+      type: Generic
+    - github:
+        secret: cas-ggircs-metabase-builder-github-trigger
+      type: GitHub
 
 parameters:
-
-- description: Version of Perl image to be used (latest for now).
-  displayName: Version of Perl Image
-  name: PERL_VERSION
-  required: true
-  value: "latest"
 - description: Git source code branch currently deployed.
   displayName: Git branch
   name: GIT_BRANCH
