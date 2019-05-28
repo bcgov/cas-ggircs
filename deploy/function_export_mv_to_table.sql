@@ -583,9 +583,11 @@ $function$
       -- Create cte rate mapping
       alter table ggircs.fuel add column rate_id int;
       with x as (
-          select fuel.ghgr_import_id, reporting_period_duration as rpd from ggircs.fuel as fuel
+          select fuel.ghgr_import_id, reporting_period_duration, as rpd fuel_mapping.fuel_type from ggircs.fuel as fuel
           join ggircs.report as report
           on fuel.ghgr_import_id = report.ghgr_import_id
+          join ggircs_swrs.fuel_mapping as mapping
+          on fuel.fuel_type = mapping.fuel_type
           )
       update ggircs.fuel set rate_id = (
           case
