@@ -16,7 +16,7 @@ create materialized view ggircs_swrs.naics as (
              path_context varchar(1000) path 'name(./ancestor::VerifyTombstone|./ancestor::RegistrationData)',
              naics_code_idx integer path 'string(count(./preceding-sibling::NAICSCode))' not null,
              naics_classification varchar(1000) path './NAICSClassification[normalize-space(.)]',
-             naics_code varchar(1000) path './Code[normalize-space(.)]',
+             naics_code integer path './Code[normalize-space(.)]',
              naics_priority varchar(1000) path './NaicsPriority[normalize-space(.)][contains(., "Primary")]|./ActivityPercentage[normalize-space(.)][contains(., "100")]'
          ) as naics
 ) with no data;
