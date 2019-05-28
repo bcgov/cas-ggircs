@@ -13,8 +13,8 @@ create table ggircs_swrs.naics_mapping (
 comment on table  ggircs_swrs.naics_mapping is 'The fuel mapping table that maps naics codes with hhw and irc categories';
 comment on column ggircs_swrs.naics_mapping.id is 'The internal primary key for the mapping';
 comment on column ggircs_swrs.naics_mapping.naics_code is 'The naics code';
-comment on column ggircs_swrs.naics_mapping.naics_code is 'The higher level (hhw) category definition';
-comment on column ggircs_swrs.naics_mapping.naics_code is 'The lower level irc category definition';
+comment on column ggircs_swrs.naics_mapping.hhw_category is 'The higher level (hhw) category definition';
+comment on column ggircs_swrs.naics_mapping.irc_category is 'The lower level irc category definition';
 
 INSERT INTO ggircs_swrs.naics_mapping (naics_code, hhw_category, irc_category) VALUES (111419, 'Agriculture', 'Food Industry');
 INSERT INTO ggircs_swrs.naics_mapping (naics_code, hhw_category, irc_category) VALUES (221111, 'Electricity and Heat Supply', 'Electricity and Heat Supply');
