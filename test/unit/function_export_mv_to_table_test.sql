@@ -158,7 +158,7 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
     <FacilityId>0000</FacilityId>
     <FacilityType>EIO</FacilityType>
     <OrganisationId>0000</OrganisationId>
-    <ReportingPeriodDuration>2012</ReportingPeriodDuration>
+    <ReportingPeriodDuration>2019</ReportingPeriodDuration>
     <ReportStatus>
       <Status>Submitted</Status>
       <SubmissionDate>2013-03-27T19:25:55.32</SubmissionDate>
