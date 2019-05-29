@@ -762,6 +762,16 @@ $do$
     end
 $do$;
 
+with x as (
+select carbon_tax_rate as ctr, co2e_conversion_rate as ccr
+from ggircs_swrs.carbon_tax_rate_mapping
+join ggircs_swrs.fuel_mapping
+on fuel_mapping.fuel_type = 'Biodiesel (100)'
+and rate_start_date > '2019-03-31'
+and rate_end_date < '2020-04-01')
+select x.ctr as tax_rate, x.ccr as conversion_rate, x.ctr * x.ccr as result from x;
+
+
 -- Function export_mv_to_table exists
 select has_function( 'ggircs_swrs', 'export_mv_to_table', 'Schema ggircs_swrs has function export_mv_to_table()' );
 
