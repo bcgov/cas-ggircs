@@ -158,7 +158,7 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
     <FacilityId>0000</FacilityId>
     <FacilityType>EIO</FacilityType>
     <OrganisationId>0000</OrganisationId>
-    <ReportingPeriodDuration>2019</ReportingPeriodDuration>
+    <ReportingPeriodDuration>2017</ReportingPeriodDuration>
     <ReportStatus>
       <Status>Submitted</Status>
       <SubmissionDate>2013-03-27T19:25:55.32</SubmissionDate>
@@ -789,13 +789,15 @@ on fuel.fuel_mapping_id = fmap.id;
 select '   ';
 select '-----------------------------------';
 
-select fuel.fuel_type, ' --- ', reporting_period_duration,' --- ', map1.*, ' --- ', map2.* from ggircs.fuel
-join ggircs_swrs.carbon_tax_rate_mapping as map1
-on fuel.rate_jan_id = map1.id
-join ggircs_swrs.carbon_tax_rate_mapping as map2
-on fuel.rate_apr_id = map2.id
-join ggircs.report as report
-on fuel.ghgr_import_id = report.ghgr_import_id;
+-- select fuel.fuel_type, ' --- ', reporting_period_duration,' --- ', map1.*, ' --- ', map2.* from ggircs.fuel
+-- join ggircs_swrs.carbon_tax_rate_mapping as map1
+-- on fuel.rate_jan_id = map1.id
+-- join ggircs_swrs.carbon_tax_rate_mapping as map2
+-- on fuel.rate_apr_id = map2.id
+-- join ggircs.report as report
+-- on fuel.ghgr_import_id = report.ghgr_import_id;
+
+select * from ggircs.pro_rated_carbon_rate;
 
 select * from blah;
 
