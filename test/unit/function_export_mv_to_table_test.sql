@@ -761,10 +761,29 @@ $do$
           end loop;
     end
 $do$;
+select '-----------------------------------';
+select '-----------------------------------';
+select 'Before April 1st of Reporting Year:';
+select '-----------------------------------';
 
-select distinct(mapping.*) from ggircs.fuel
+select distinct(mapping.*, reporting_period_duration) from ggircs.fuel
 join ggircs_swrs.carbon_tax_rate_mapping as mapping
-on fuel.rate_jan_id = mapping.id;
+on fuel.rate_jan_id = mapping.id
+join ggircs.report as report
+on fuel.ghgr_import_id = report.ghgr_import_id ;
+
+select '-----------------------------------';
+select 'After April 1st of Reporting Year:';
+select '-----------------------------------';
+
+select distinct(mapping.*, reporting_period_duration) from ggircs.fuel
+join ggircs_swrs.carbon_tax_rate_mapping as mapping
+on fuel.rate_apr_id = mapping.id
+join ggircs.report as report
+on fuel.ghgr_import_id = report.ghgr_import_id ;
+
+select '-----------------------------------';
+select '-----------------------------------';
 
 select * from blah;
 
