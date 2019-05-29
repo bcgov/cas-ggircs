@@ -36,7 +36,9 @@ create or replace view ggircs.pro_rated_carbon_rate as
            case
                when x.rpd <= 2017 then 0
                when x.rpd > 2021 then concat((x.rpd)::text, '-04-01')::date - concat((x.rpd)::text, '-01-01')::date
-               else x.start - concat((x.rpd-1)::text, '-01-01')::date
+               else (select rate_start_date
+                     from ggircs_swrs.carbon_tax_rate_mapping
+                     where id = x.id+1) - concat((x.rpd)::text, '-01-01')::date
            end as start_duration,
 
            case
