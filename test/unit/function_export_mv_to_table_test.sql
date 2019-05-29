@@ -762,28 +762,40 @@ $do$
     end
 $do$;
 select '-----------------------------------';
-select '-----------------------------------';
+select '';
 select 'Before April 1st of Reporting Year:';
 select '-----------------------------------';
 
-select distinct(mapping.*, reporting_period_duration) from ggircs.fuel
+select fuel.fuel_type, ' --- ', mapping.*, ' --- ', reporting_period_duration, ' --- ', fmap.carbon_taxed, fmap.co2e_conversion_rate, ' --CALCULATED: ', (mapping.carbon_tax_rate * fmap.co2e_conversion_rate) from ggircs.fuel
 join ggircs_swrs.carbon_tax_rate_mapping as mapping
 on fuel.rate_jan_id = mapping.id
 join ggircs.report as report
-on fuel.ghgr_import_id = report.ghgr_import_id ;
+on fuel.ghgr_import_id = report.ghgr_import_id
+join ggircs_swrs.fuel_mapping as fmap
+on fuel.fuel_mapping_id = fmap.id;
 
-select '-----------------------------------';
+select '   ';
 select 'After April 1st of Reporting Year:';
 select '-----------------------------------';
 
-select distinct(mapping.*, reporting_period_duration) from ggircs.fuel
+select fuel.fuel_type, ' --- ', mapping.*, ' --- ', reporting_period_duration, ' --- ', fmap.carbon_taxed, fmap.co2e_conversion_rate, ' --CALCULATED: ', (mapping.carbon_tax_rate * fmap.co2e_conversion_rate) from ggircs.fuel
 join ggircs_swrs.carbon_tax_rate_mapping as mapping
 on fuel.rate_apr_id = mapping.id
 join ggircs.report as report
-on fuel.ghgr_import_id = report.ghgr_import_id ;
+on fuel.ghgr_import_id = report.ghgr_import_id
+join ggircs_swrs.fuel_mapping as fmap
+on fuel.fuel_mapping_id = fmap.id;
 
+select '   ';
 select '-----------------------------------';
-select '-----------------------------------';
+
+select fuel.fuel_type, ' --- ', reporting_period_duration,' --- ', map1.*, ' --- ', map2.* from ggircs.fuel
+join ggircs_swrs.carbon_tax_rate_mapping as map1
+on fuel.rate_jan_id = map1.id
+join ggircs_swrs.carbon_tax_rate_mapping as map2
+on fuel.rate_apr_id = map2.id
+join ggircs.report as report
+on fuel.ghgr_import_id = report.ghgr_import_id;
 
 select * from blah;
 
