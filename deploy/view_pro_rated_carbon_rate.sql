@@ -22,35 +22,37 @@ create or replace view ggircs.pro_rated_carbon_rate as
            x.fuel_type as fuel_type,
            case
                when x.rpd <= 2017 then 0
-               when x.rpd > 2021 then 50
+               when x.rpd > 2021 then (select carbon_tax_rate from ggircs_swrs.carbon_tax_rate_mapping where id = (select max(id) from ggircs_swrs.carbon_tax_rate_mapping))
                else x.rate
            end as start_rate,
 
            case
                when x.rpd < 2017 then 0
                when x.rpd = 2017 then 30
-               when x.rpd > 2021 then 50
+               when x.rpd > 2021 then (select carbon_tax_rate from ggircs_swrs.carbon_tax_rate_mapping where id = (select max(id) from ggircs_swrs.carbon_tax_rate_mapping))
                else (select carbon_tax_rate from ggircs_swrs.carbon_tax_rate_mapping where id = x.id+1)
            end as end_rate,
 
            case
                when x.rpd <= 2017 then 0
-               when x.rpd > 2021 then 0
+               when x.rpd > 2021 then concat((x.rpd)::text, '-04-01')::date - concat((x.rpd)::text, '-01-01')::date
                else x.start - concat((x.rpd-1)::text, '-01-01')::date
            end as start_duration,
 
            case
                when x.rpd < 2017 then 0
                when x.rpd = 2017 then '2017-12-31'::date - '2017-04-01'::date
-               when x.rpd > 2021 then concat((x.rpd)::text, '-12-31')::date - concat((x.rpd)::text, '-01-01')::date
+               when x.rpd > 2021 then concat((x.rpd)::text, '-12-31')::date - concat((x.rpd)::text, '-04-01')::date
                else concat((x.rpd)::text, '-12-31')::date - (select rate_start_date
                                                              from ggircs_swrs.carbon_tax_rate_mapping
                                                              where id = x.id+1)
            end as end_duration,
 
-           concat((x.rpd)::text, '-12-31')::date - concat((x.rpd)::text, '-01-01')::date as year_length
+           concat((x.rpd)::text, '-12-31')::date - concat((x.rpd)::text, '-01-01')::date as year_length,
+           row_number() over (partition by fuel_type, rpd order by rpd desc) as rn
     from x)
-    select y.reporting_year,
+    select
+           y.reporting_year,
            y.fuel_type,
            y.year_length,
            y.start_rate,
@@ -58,6 +60,6 @@ create or replace view ggircs.pro_rated_carbon_rate as
            y.end_rate,
            y.end_duration,
            ((y.start_rate * y.start_duration) + (y.end_rate * y.end_duration)) / y.year_length as pro_rated_carbon_tax_rate
-    from y
+    from y where y.rn = 1
 ;
 commit;

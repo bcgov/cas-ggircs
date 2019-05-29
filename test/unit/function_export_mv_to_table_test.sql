@@ -158,7 +158,7 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
     <FacilityId>0000</FacilityId>
     <FacilityType>EIO</FacilityType>
     <OrganisationId>0000</OrganisationId>
-    <ReportingPeriodDuration>2017</ReportingPeriodDuration>
+    <ReportingPeriodDuration>2025</ReportingPeriodDuration>
     <ReportStatus>
       <Status>Submitted</Status>
       <SubmissionDate>2013-03-27T19:25:55.32</SubmissionDate>
@@ -526,7 +526,7 @@ $$), ($$
     <FacilityId>0001</FacilityId>
     <FacilityType>ABC</FacilityType>
     <OrganisationId>0000</OrganisationId>
-    <ReportingPeriodDuration>2012</ReportingPeriodDuration>
+    <ReportingPeriodDuration>2020</ReportingPeriodDuration>
     <ReportStatus>
       <Status>Submitted</Status>
       <SubmissionDate>2013-03-28T19:25:55.32</SubmissionDate>
@@ -761,30 +761,30 @@ $do$
           end loop;
     end
 $do$;
-select '-----------------------------------';
-select '';
-select 'Before April 1st of Reporting Year:';
-select '-----------------------------------';
-
-select fuel.fuel_type, ' --- ', mapping.*, ' --- ', reporting_period_duration, ' --- ', fmap.carbon_taxed, fmap.co2e_conversion_rate, ' --CALCULATED: ', (mapping.carbon_tax_rate * fmap.co2e_conversion_rate) from ggircs.fuel
-join ggircs_swrs.carbon_tax_rate_mapping as mapping
-on fuel.rate_jan_id = mapping.id
-join ggircs.report as report
-on fuel.ghgr_import_id = report.ghgr_import_id
-join ggircs_swrs.fuel_mapping as fmap
-on fuel.fuel_mapping_id = fmap.id;
-
-select '   ';
-select 'After April 1st of Reporting Year:';
-select '-----------------------------------';
-
-select fuel.fuel_type, ' --- ', mapping.*, ' --- ', reporting_period_duration, ' --- ', fmap.carbon_taxed, fmap.co2e_conversion_rate, ' --CALCULATED: ', (mapping.carbon_tax_rate * fmap.co2e_conversion_rate) from ggircs.fuel
-join ggircs_swrs.carbon_tax_rate_mapping as mapping
-on fuel.rate_apr_id = mapping.id
-join ggircs.report as report
-on fuel.ghgr_import_id = report.ghgr_import_id
-join ggircs_swrs.fuel_mapping as fmap
-on fuel.fuel_mapping_id = fmap.id;
+-- select '-----------------------------------';
+-- select '';
+-- select 'Before April 1st of Reporting Year:';
+-- select '-----------------------------------';
+--
+-- select fuel.fuel_type, ' --- ', mapping.*, ' --- ', reporting_period_duration, ' --- ', fmap.carbon_taxed, fmap.co2e_conversion_rate, ' --CALCULATED: ', (mapping.carbon_tax_rate * fmap.co2e_conversion_rate) from ggircs.fuel
+-- join ggircs_swrs.carbon_tax_rate_mapping as mapping
+-- on fuel.rate_jan_id = mapping.id
+-- join ggircs.report as report
+-- on fuel.ghgr_import_id = report.ghgr_import_id
+-- join ggircs_swrs.fuel_mapping as fmap
+-- on fuel.fuel_mapping_id = fmap.id;
+--
+-- select '   ';
+-- select 'After April 1st of Reporting Year:';
+-- select '-----------------------------------';
+--
+-- select fuel.fuel_type, ' --- ', mapping.*, ' --- ', reporting_period_duration, ' --- ', fmap.carbon_taxed, fmap.co2e_conversion_rate, ' --CALCULATED: ', (mapping.carbon_tax_rate * fmap.co2e_conversion_rate) from ggircs.fuel
+-- join ggircs_swrs.carbon_tax_rate_mapping as mapping
+-- on fuel.rate_apr_id = mapping.id
+-- join ggircs.report as report
+-- on fuel.ghgr_import_id = report.ghgr_import_id
+-- join ggircs_swrs.fuel_mapping as fmap
+-- on fuel.fuel_mapping_id = fmap.id;
 
 select '   ';
 select '-----------------------------------';
@@ -798,6 +798,7 @@ select '-----------------------------------';
 -- on fuel.ghgr_import_id = report.ghgr_import_id;
 
 select * from ggircs.pro_rated_carbon_rate;
+select '-----------------------------------';
 
 select * from blah;
 
