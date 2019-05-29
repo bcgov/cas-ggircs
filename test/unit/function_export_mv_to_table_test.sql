@@ -4,7 +4,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(86);
+select plan(93);
 
 insert into ggircs_swrs.ghgr_import (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -1146,6 +1146,97 @@ select results_eq(
     'select distinct(ghgr_import_id) from ggircs.fuel',
 
     'Foreign key fuel_id in ggircs.measured_emission_factor references ggircs.fuel.id'
+);
+
+-- Address -> Report
+select results_eq(
+    $$
+    select distinct(report.ghgr_import_id) from ggircs.address
+    join ggircs.report
+    on address.report_id = report.id
+    $$,
+
+    'select distinct(ghgr_import_id) from ggircs.report',
+
+    'Foreign key report_id in ggircs.address references ggircs.report.id'
+);
+
+-- Contact -> Report
+select results_eq(
+    $$
+    select distinct(report.ghgr_import_id) from ggircs.contact
+    join ggircs.report
+    on contact.report_id = report.id
+    $$,
+
+    'select distinct(ghgr_import_id) from ggircs.report',
+
+    'Foreign key report_id in ggircs.contact references ggircs.report.id'
+);
+
+-- Parent Organisation -> Report
+select results_eq(
+    $$
+    select distinct(report.ghgr_import_id) from ggircs.parent_organisation
+    join ggircs.report
+    on parent_organisation.report_id = report.id
+    $$,
+
+    'select distinct(ghgr_import_id) from ggircs.report',
+
+    'Foreign key report_id in ggircs.parent_organisation references ggircs.report.id'
+);
+
+-- Descriptor -> Report
+select results_eq(
+    $$
+    select distinct(report.ghgr_import_id) from ggircs.descriptor
+    join ggircs.report
+    on descriptor.report_id = report.id
+    $$,
+
+    'select distinct(ghgr_import_id) from ggircs.report',
+
+    'Foreign key report_id in ggircs.descriptor references ggircs.report.id'
+);
+
+-- Fuel -> Report
+select results_eq(
+    $$
+    select distinct(report.ghgr_import_id) from ggircs.fuel
+    join ggircs.report
+    on fuel.report_id = report.id
+    $$,
+
+    'select distinct(ghgr_import_id) from ggircs.report',
+
+    'Foreign key report_id in ggircs.fuel references ggircs.report.id'
+);
+
+-- Naics -> Report
+select results_eq(
+    $$
+    select distinct(report.ghgr_import_id) from ggircs.naics
+    join ggircs.report
+    on naics.report_id = report.id
+    $$,
+
+    'select distinct(ghgr_import_id) from ggircs.report',
+
+    'Foreign key report_id in ggircs.naics references ggircs.report.id'
+);
+
+-- Identifier -> Report
+select results_eq(
+    $$
+    select distinct(report.ghgr_import_id) from ggircs.identifier
+    join ggircs.report
+    on identifier.report_id = report.id
+    $$,
+
+    'select distinct(ghgr_import_id) from ggircs.report',
+
+    'Foreign key report_id in ggircs.identifier references ggircs.report.id'
 );
 
 /** Test data transferred from ggircs_swrs to ggircs properly **/

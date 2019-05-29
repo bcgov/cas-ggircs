@@ -308,6 +308,55 @@ $function$
           where activity.ghgr_import_id = report.ghgr_import_id;
       alter table ggircs.activity add constraint ggircs_activity_report_foreign_key foreign key (report_id) references ggircs.report(id);
 
+      -- Create FK/PK relation between Address and Report
+      alter table ggircs.address add column report_id int;
+      create index ggircs_address_report_index on ggircs.address (report_id);
+      update ggircs.address set report_id = report.id from ggircs.report
+          where address.ghgr_import_id = report.ghgr_import_id;
+      alter table ggircs.address add constraint ggircs_address_report_foreign_key foreign key (report_id) references ggircs.report(id);
+
+      -- Create FK/PK relation between Contact and Report
+      alter table ggircs.contact add column report_id int;
+      create index ggircs_contact_report_index on ggircs.contact (report_id);
+      update ggircs.contact set report_id = report.id from ggircs.report
+          where contact.ghgr_import_id = report.ghgr_import_id;
+      alter table ggircs.contact add constraint ggircs_contact_report_foreign_key foreign key (report_id) references ggircs.report(id);
+
+      -- Create FK/PK relation between Parent Organisation and Report
+      alter table ggircs.parent_organisation add column report_id int;
+      create index ggircs_parent_organisation_report_index on ggircs.parent_organisation (report_id);
+      update ggircs.parent_organisation set report_id = report.id from ggircs.report
+          where parent_organisation.ghgr_import_id = report.ghgr_import_id;
+      alter table ggircs.parent_organisation add constraint ggircs_parent_organisation_report_foreign_key foreign key (report_id) references ggircs.report(id);
+
+      -- Create FK/PK relation between Descriptor and Report
+      alter table ggircs.descriptor add column report_id int;
+      create index ggircs_descriptor_report_index on ggircs.descriptor (report_id);
+      update ggircs.descriptor set report_id = report.id from ggircs.report
+          where descriptor.ghgr_import_id = report.ghgr_import_id;
+      alter table ggircs.descriptor add constraint ggircs_descriptor_report_foreign_key foreign key (report_id) references ggircs.report(id);
+
+      -- Create FK/PK relation between Fuel and Report
+      alter table ggircs.fuel add column report_id int;
+      create index ggircs_fuel_report_index on ggircs.fuel (report_id);
+      update ggircs.fuel set report_id = report.id from ggircs.report
+          where fuel.ghgr_import_id = report.ghgr_import_id;
+      alter table ggircs.fuel add constraint ggircs_fuel_report_foreign_key foreign key (report_id) references ggircs.report(id);
+
+      -- Create FK/PK relation between Naics and Report
+      alter table ggircs.naics add column report_id int;
+      create index ggircs_naics_report_index on ggircs.naics (report_id);
+      update ggircs.naics set report_id = report.id from ggircs.report
+          where naics.ghgr_import_id = report.ghgr_import_id;
+      alter table ggircs.naics add constraint ggircs_naics_report_foreign_key foreign key (report_id) references ggircs.report(id);
+
+      -- Create FK/PK relation between Identifier and Report
+      alter table ggircs.identifier add column report_id int;
+      create index ggircs_identifier_report_index on ggircs.identifier (report_id);
+      update ggircs.identifier set report_id = report.id from ggircs.report
+          where identifier.ghgr_import_id = report.ghgr_import_id;
+      alter table ggircs.identifier add constraint ggircs_identifier_report_foreign_key foreign key (report_id) references ggircs.report(id);
+
       -- Create FK/PK relation between Address and Organisation
       alter table ggircs.address add column organisation_id int;
       create index ggircs_address_organisation_index on ggircs.address (organisation_id);
