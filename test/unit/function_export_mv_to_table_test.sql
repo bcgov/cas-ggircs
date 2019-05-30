@@ -801,6 +801,9 @@ select * from ggircs.pro_rated_carbon_rate;
 select '-----------------------------------';
 select * from ggircs.pro_rated_implied_emission_factor;
 
+select '-----------------------------------';
+select * from ggircs.carbon_tax_calculation;
+
 select * from blah;
 
 --

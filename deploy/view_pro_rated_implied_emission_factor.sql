@@ -11,7 +11,8 @@ create or replace view ggircs.pro_rated_implied_emission_factor as
                ief.start_date                   as start,
                ief.end_date                     as end,
                ief.implied_emission_factor      as implied_emission_factor,
-               ief.id                           as id
+               ief.id                           as id,
+               ief.fuel_mapping_id              as fuel_mapping_id
         from ggircs_swrs.fuel
                  join ggircs_swrs.report as report
                       on fuel.ghgr_import_id = report.ghgr_import_id
@@ -20,8 +21,10 @@ create or replace view ggircs.pro_rated_implied_emission_factor as
                  join ggircs_swrs.implied_emission_factor as ief
                       on fuel_mapping_id = fmap.id
     ), y as (
-    select x.rpd as reporting_year,
+    select x.id as id,
+           x.rpd as reporting_year,
            x.fuel_type as fuel_type,
+           x.fuel_mapping_id,
            case
                when x.rpd <= 2017 then 0
                when x.rpd > 2021
@@ -75,6 +78,7 @@ create or replace view ggircs.pro_rated_implied_emission_factor as
     select
            y.reporting_year,
            y.fuel_type,
+           y.fuel_mapping_id,
            y.year_length,
            y.start_rate,
            y.start_duration,
