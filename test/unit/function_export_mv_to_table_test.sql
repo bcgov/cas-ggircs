@@ -776,7 +776,7 @@ select '-----------------------------------';
 select (year, fuel_type, round(pro_rated_ctr::numeric, 3), round(pro_rated_ief::numeric, 3), amount, round(calculated_carbon_tax::numeric, 2)) from ggircs.carbon_tax_calculation;
 select '-----------------------------------';
 select '-----------------------------------';
-select * from blah;
+-- select * from blah;
 
 -- Function export_mv_to_table exists
 select has_function( 'ggircs_swrs', 'export_mv_to_table', 'Schema ggircs_swrs has function export_mv_to_table()' );

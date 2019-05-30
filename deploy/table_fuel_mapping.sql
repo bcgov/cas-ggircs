@@ -13,6 +13,7 @@ create table ggircs_swrs.fuel_mapping (
   cta_rate_units varchar(1000)
 
 );
+
 comment on table  ggircs_swrs.fuel_mapping is 'The fuel mapping table that maps fuel type with carbon tax rates';
 comment on column ggircs_swrs.fuel_mapping.id is 'The internal primary key for the mapping';
 comment on column ggircs_swrs.fuel_mapping.fuel_type is 'The type of fuel (from GHGR), Foreign key to fuel';
