@@ -24,13 +24,31 @@ create or replace view ggircs.pro_rated_implied_emission_factor as
            x.fuel_type as fuel_type,
            case
                when x.rpd <= 2017 then 0
-               when x.rpd > 2021 then (select implied_emission_factor from ggircs_swrs.implied_emission_factor where id = (select max(id) from ggircs_swrs.implied_emission_factor))
+               when x.rpd > 2021
+               then (select implied_emission_factor
+                       from ggircs_swrs.implied_emission_factor
+                       where id = (
+                           select max(ief.id)
+                           from ggircs_swrs.implied_emission_factor as ief
+                           join ggircs_swrs.fuel_mapping as fm
+                           on ief.fuel_mapping_id = fm.id
+                           and fm.fuel_type = x.fuel_type)
+                       )
                else x.implied_emission_factor
            end as start_rate,
 
            case
                when x.rpd < 2017 then 0
-               when x.rpd > 2021 then (select implied_emission_factor from ggircs_swrs.implied_emission_factor where id = (select max(id) from ggircs_swrs.implied_emission_factor))
+               when x.rpd > 2021
+                 then (select implied_emission_factor
+                       from ggircs_swrs.implied_emission_factor
+                       where id = (
+                           select max(ief.id)
+                           from ggircs_swrs.implied_emission_factor as ief
+                           join ggircs_swrs.fuel_mapping as fm
+                           on ief.fuel_mapping_id = fm.id
+                           and fm.fuel_type = x.fuel_type)
+                       )
                else (select implied_emission_factor from ggircs_swrs.implied_emission_factor where id = x.id+1)
            end as end_rate,
 
