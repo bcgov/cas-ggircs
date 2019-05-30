@@ -437,6 +437,13 @@ $function$
             and measured_emission_factor.fuel_idx = fuel.fuel_idx;
       alter table ggircs.measured_emission_factor add constraint ggircs_measured_emission_factor_fuel_foreign_key foreign key (fuel_id) references ggircs.fuel(id);
 
+    -- Create FK/PK relation between naics and ggircs_swrs.naics_mapping
+      alter table ggircs.naics add column naics_mapping_id int;
+      create index ggircs_naics_naics_mapping_index on ggircs.naics (naics_mapping_id);
+      update ggircs.naics set naics_mapping_id = naics_mapping.id from ggircs_swrs.naics_mapping
+          where naics.naics_code = naics_mapping.naics_code;
+      alter table ggircs.naics add constraint ggircs_swrs_naics_naics_mapping_foreign_key foreign key (naics_mapping_id) references ggircs_swrs.naics_mapping(id);
+
     for i in 1 .. array_upper(mv_array, 1)
       loop
         perform ggircs_swrs.refresh_materialized_views(quote_ident(mv_array[i]), 'with no data');

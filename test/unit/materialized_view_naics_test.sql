@@ -32,7 +32,7 @@ select col_type_is('ggircs_swrs', 'naics', 'swrs_facility_id', 'integer', 'ggirc
 select col_type_is('ggircs_swrs', 'naics', 'path_context', 'character varying(1000)', 'ggircs_swrs.naics.path_context has type varchar');
 select col_type_is('ggircs_swrs', 'naics', 'naics_code_idx', 'integer', 'ggircs_swrs.naics.naics_code_idx has type integer');
 select col_type_is('ggircs_swrs', 'naics', 'naics_classification', 'character varying(1000)', 'ggircs_swrs.naics.naics_classification has type varchar');
-select col_type_is('ggircs_swrs', 'naics', 'naics_code', 'character varying(1000)', 'ggircs_swrs.naics.naics_code has type varchar');
+select col_type_is('ggircs_swrs', 'naics', 'naics_code', 'integer', 'ggircs_swrs.naics.naics_code has type integer');
 select col_type_is('ggircs_swrs', 'naics', 'naics_priority', 'character varying(1000)', 'ggircs_swrs.naics.naics_priority has type varchar');
 
 -- insert necessary data into table ghgr_import
@@ -107,7 +107,7 @@ select results_eq(
 );
 select results_eq(
   'select naics_code from ggircs_swrs.naics',
-  ARRAY[123456::varchar],
+  ARRAY[123456::integer],
   'ggircs_swrs.naics parsed column naics_code'
 );
 select results_eq(

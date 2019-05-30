@@ -4,7 +4,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(93);
+select plan(94);
 
 insert into ggircs_swrs.ghgr_import (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -74,7 +74,7 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
         <NAICSCodeList>
           <NAICSCode>
             <NAICSClassification>Chemical Pulp Mills </NAICSClassification>
-            <Code>123456</Code>
+            <Code>721310</Code>
             <NaicsPriority>Primary</NaicsPriority>
           </NAICSCode>
         </NAICSCodeList>
@@ -223,7 +223,7 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
           </IdentifierList>
           <NAICSCodeList>
             <NAICSCode>
-              <Code>123456</Code>
+              <Code>721310</Code>
             </NAICSCode>
           </NAICSCodeList>
         </Identifiers>
@@ -442,7 +442,7 @@ $$), ($$
         <NAICSCodeList>
           <NAICSCode>
             <NAICSClassification>Chemical Pulp Mills </NAICSClassification>
-            <Code>123456</Code>
+            <Code>321111</Code>
             <NaicsPriority>Primary</NaicsPriority>
           </NAICSCode>
         </NAICSCodeList>
@@ -591,7 +591,7 @@ $$), ($$
           </IdentifierList>
           <NAICSCodeList>
             <NAICSCode>
-              <Code>123456</Code>
+              <Code>321111</Code>
             </NAICSCode>
           </NAICSCodeList>
         </Identifiers>
@@ -867,15 +867,16 @@ select results_eq(
     'Foreign key fuel_id in ggircs.emission references ggircs.fuel.id'
 );
 
+
 -- Emission -> Naics
 select results_eq(
-    $$select naics.naics_code from ggircs.emission
+    $$select distinct(naics.naics_code) from ggircs.emission
       join ggircs.naics
       on
         emission.naics_id = naics.id
     $$,
 
-    'select naics_code from ggircs.naics',
+    'select distinct(naics_code) from ggircs.naics order by naics_code',
 
     'Foreign key naics_id in ggircs.emission references ggircs.naics.id'
 );
@@ -1228,7 +1229,7 @@ select results_eq(
 
 -- Identifier -> Report
 select results_eq(
-    $$
+               $$
     select distinct(report.ghgr_import_id) from ggircs.identifier
     join ggircs.report
     on identifier.report_id = report.id
@@ -1237,6 +1238,22 @@ select results_eq(
     'select distinct(ghgr_import_id) from ggircs.report',
 
     'Foreign key report_id in ggircs.identifier references ggircs.report.id'
+);
+
+-- Naics -> ggircs_swrs.naics_mapping
+select results_eq(
+    $$
+    select distinct(ggircs_swrs.naics_mapping.naics_code, ggircs_swrs.naics_mapping.irc_category) from ggircs.naics
+    join ggircs_swrs.naics_mapping
+    on naics.naics_mapping_id = naics_mapping.id
+    $$,
+
+    $$
+    select distinct(naics_code, irc_category) from ggircs_swrs.naics_mapping
+    where naics_code in (321111, 721310)
+    $$,
+
+    'Foreign key naics_mapping_id references ggircs.swrs.naics_mapping.id'
 );
 
 /** Test data transferred from ggircs_swrs to ggircs properly **/
