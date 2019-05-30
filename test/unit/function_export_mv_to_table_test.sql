@@ -761,61 +761,22 @@ $do$
           end loop;
     end
 $do$;
--- select '-----------------------------------';
--- select '';
--- select 'Before April 1st of Reporting Year:';
--- select '-----------------------------------';
---
--- select fuel.fuel_type, ' --- ', mapping.*, ' --- ', reporting_period_duration, ' --- ', fmap.carbon_taxed, fmap.co2e_conversion_rate, ' --CALCULATED: ', (mapping.carbon_tax_rate * fmap.co2e_conversion_rate) from ggircs.fuel
--- join ggircs_swrs.carbon_tax_rate_mapping as mapping
--- on fuel.rate_jan_id = mapping.id
--- join ggircs.report as report
--- on fuel.ghgr_import_id = report.ghgr_import_id
--- join ggircs_swrs.fuel_mapping as fmap
--- on fuel.fuel_mapping_id = fmap.id;
---
--- select '   ';
--- select 'After April 1st of Reporting Year:';
--- select '-----------------------------------';
---
--- select fuel.fuel_type, ' --- ', mapping.*, ' --- ', reporting_period_duration, ' --- ', fmap.carbon_taxed, fmap.co2e_conversion_rate, ' --CALCULATED: ', (mapping.carbon_tax_rate * fmap.co2e_conversion_rate) from ggircs.fuel
--- join ggircs_swrs.carbon_tax_rate_mapping as mapping
--- on fuel.rate_apr_id = mapping.id
--- join ggircs.report as report
--- on fuel.ghgr_import_id = report.ghgr_import_id
--- join ggircs_swrs.fuel_mapping as fmap
--- on fuel.fuel_mapping_id = fmap.id;
 
-select '   ';
 select '-----------------------------------';
 
--- select fuel.fuel_type, ' --- ', reporting_period_duration,' --- ', map1.*, ' --- ', map2.* from ggircs.fuel
--- join ggircs_swrs.carbon_tax_rate_mapping as map1
--- on fuel.rate_jan_id = map1.id
--- join ggircs_swrs.carbon_tax_rate_mapping as map2
--- on fuel.rate_apr_id = map2.id
--- join ggircs.report as report
--- on fuel.ghgr_import_id = report.ghgr_import_id;
 
 select * from ggircs.pro_rated_carbon_rate;
 select '-----------------------------------';
 select * from ggircs.pro_rated_implied_emission_factor;
-
 select '-----------------------------------';
-select * from ggircs.carbon_tax_calculation;
+select '-----------------------------------';
 
+select 'Reporting Year, Fuel Type, Pro-Rated Carbon Rate, Pro-Rated Implied Emission Factor, Fuel Amount, Calculated Carbon Tax';
+select '-----------------------------------';
+select (year, fuel_type, round(pro_rated_ctr::numeric, 2), round(pro_rated_ief::numeric, 2), amount, round(calculated_carbon_tax::numeric, 2)) from ggircs.carbon_tax_calculation;
+select '-----------------------------------';
+select '-----------------------------------';
 select * from blah;
-
---
--- with x as (
--- select carbon_tax_rate as ctr, co2e_conversion_rate as ccr
--- from ggircs_swrs.carbon_tax_rate_mapping
--- join ggircs_swrs.fuel_mapping
--- on fuel_mapping.fuel_type = 'Biodiesel (100)'
--- and rate_start_date > '2019-03-31'
--- and rate_end_date < '2020-04-01')
--- select x.ctr as tax_rate, x.ccr as conversion_rate, x.ctr * x.ccr as result from x;
-
 
 -- Function export_mv_to_table exists
 select has_function( 'ggircs_swrs', 'export_mv_to_table', 'Schema ggircs_swrs has function export_mv_to_table()' );

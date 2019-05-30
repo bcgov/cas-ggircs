@@ -23,10 +23,11 @@ create or replace view ggircs.carbon_tax_calculation as
                     and report.reporting_period_duration = ief.reporting_year
 
     )
-    select x.fuel_type,
-           x.pro_rated_ctr,
-           x.pro_rated_ief,
-           x.amount,
+    select x.rpd as year,
+           x.fuel_type as fuel_type,
+           x.pro_rated_ctr as pro_rated_ctr,
+           x.pro_rated_ief as pro_rated_ief,
+           x.amount as amount,
            (x.amount * x.pro_rated_ctr * x.pro_rated_ief) as calculated_carbon_tax
     from x
 ;
