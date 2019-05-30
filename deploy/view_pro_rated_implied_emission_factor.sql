@@ -1,9 +1,6 @@
 -- Deploy ggircs:view_pro_rated_implied_emission_factor to pg
 -- requires: schema_ggircs
 
-refresh materialized view ggircs_swrs.report;
-refresh materialized view ggircs_swrs.fuel;
-
 begin;
 
 create or replace view ggircs.pro_rated_implied_emission_factor as
