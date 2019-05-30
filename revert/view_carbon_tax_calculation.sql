@@ -1,7 +1,7 @@
 -- Revert ggircs:view_carbon_tax_calculation from pg
 
-BEGIN;
+begin;
 
--- XXX Add DDLs here.
+drop view if exists ggircs.carbon_tax_calculation;
 
-COMMIT;
+commit;

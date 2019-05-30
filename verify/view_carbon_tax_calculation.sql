@@ -2,6 +2,4 @@
 
 begin;
 
-drop view if exists ggircs.carbon_tax_calculation;
-
 commit;
