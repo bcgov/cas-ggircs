@@ -40,7 +40,7 @@ select col_type_is('ggircs_swrs', 'report', 'prepop_report_id', 'integer', 'Matv
 select col_type_is('ggircs_swrs', 'report', 'report_type', 'character varying(1000)', 'Matview report column report_type has type character varying(1000)');
 select col_type_is('ggircs_swrs', 'report', 'swrs_facility_id', 'integer', 'Matview report column swrs_facility_id has type integer');
 select col_type_is('ggircs_swrs', 'report', 'swrs_organisation_id', 'integer', 'Matview report column swrs_organisation_id has type integer');
-select col_type_is('ggircs_swrs', 'report', 'reporting_period_duration', 'integer', 'Matview report column reporting_period_duration has type numeric(1000,0)');
+select col_type_is('ggircs_swrs', 'report', 'reporting_period_duration', 'character varying(1000)', 'Matview report column reporting_period_duration has type numeric(1000,0)');
 select col_type_is('ggircs_swrs', 'report', 'status', 'character varying(1000)', 'Matview report column status has type character varying(1000)');
 select col_type_is('ggircs_swrs', 'report', 'version', 'character varying(1000)', 'Matview report column version has type character varying(1000)');
 select col_type_is('ggircs_swrs', 'report', 'submission_date', 'timestamp with time zone', 'Matview report column submission_date has type character varying(1000)');
@@ -96,7 +96,7 @@ select results_eq('select prepop_report_id from ggircs_swrs.report', ARRAY[null:
 select results_eq('select report_type from ggircs_swrs.report', ARRAY['R7'::varchar], 'Matview report parsed column report_type');
 select results_eq('select swrs_facility_id from ggircs_swrs.report', ARRAY[666::integer], 'Matview report parsed column swrs_facility_id');
 select results_eq('select swrs_organisation_id from ggircs_swrs.report', ARRAY[1337::integer], 'Matview report parsed column swrs_organisation_id');
-select results_eq('select reporting_period_duration from ggircs_swrs.report', ARRAY[1999::integer], 'Matview report parsed column reporting_period_duration');
+select results_eq('select reporting_period_duration from ggircs_swrs.report', ARRAY[1999::varchar], 'Matview report parsed column reporting_period_duration');
 select results_eq('select status from ggircs_swrs.report', ARRAY['In Progress'::varchar], 'Matview report parsed column status');
 select results_eq('select version from ggircs_swrs.report', ARRAY[3::varchar], 'Matview report parsed column version');
 select results_eq('select submission_date from ggircs_swrs.report', ARRAY[null::timestamptz], 'Matview report parsed column submission_date');

@@ -27,7 +27,7 @@ create materialized view ggircs_swrs.report as (
              report_type varchar(1000) path 'ReportType[normalize-space(.)]' not null,
              swrs_facility_id integer path 'FacilityId[normalize-space(.)]' not null,
              swrs_organisation_id integer path 'OrganisationId[normalize-space(.)]' not null,
-             reporting_period_duration integer path 'ReportingPeriodDuration[normalize-space(.)]' not null
+             reporting_period_duration varchar(1000) path 'ReportingPeriodDuration[normalize-space(.)]' not null
          ) as report_details,
 
        xmltable(
