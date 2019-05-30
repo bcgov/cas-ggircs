@@ -4,7 +4,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(93);
+select plan(94);
 
 insert into ggircs_swrs.ghgr_import (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -1229,7 +1229,7 @@ select results_eq(
 
 -- Identifier -> Report
 select results_eq(
-    $$
+               $$
     select distinct(report.ghgr_import_id) from ggircs.identifier
     join ggircs.report
     on identifier.report_id = report.id
@@ -1238,6 +1238,8 @@ select results_eq(
     'select distinct(ghgr_import_id) from ggircs.report',
 
     'Foreign key report_id in ggircs.identifier references ggircs.report.id'
+);
+
 -- Naics -> ggircs_swrs.naics_mapping
 select results_eq(
     $$
