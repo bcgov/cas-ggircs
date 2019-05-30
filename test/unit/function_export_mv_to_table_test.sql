@@ -773,7 +773,7 @@ select '-----------------------------------';
 
 select 'Reporting Year, Fuel Type, Pro-Rated Carbon Rate, Pro-Rated Implied Emission Factor, Fuel Amount, Calculated Carbon Tax';
 select '-----------------------------------';
-select (year, fuel_type, round(pro_rated_ctr::numeric, 2), round(pro_rated_ief::numeric, 2), amount, round(calculated_carbon_tax::numeric, 2)) from ggircs.carbon_tax_calculation;
+select (year, fuel_type, round(pro_rated_ctr::numeric, 3), round(pro_rated_ief::numeric, 3), amount, round(calculated_carbon_tax::numeric, 2)) from ggircs.carbon_tax_calculation;
 select '-----------------------------------';
 select '-----------------------------------';
 select * from blah;
