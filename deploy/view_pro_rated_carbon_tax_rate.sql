@@ -6,7 +6,7 @@ begin;
 create or replace view ggircs.pro_rated_carbon_tax_rate as
     with x as (
         select fuel.fuel_type                   as fuel_type,
-               report.reporting_period_duration as rpd,
+               report.reporting_period_duration::integer as rpd,
                ctr.rate_start_date              as start,
                ctr.rate_end_date                as end,
                ctr.carbon_tax_rate              as rate,
@@ -15,10 +15,10 @@ create or replace view ggircs.pro_rated_carbon_tax_rate as
                  join ggircs_swrs.report as report
                       on fuel.ghgr_import_id = report.ghgr_import_id
                  join ggircs_swrs.carbon_tax_rate_mapping as ctr
-                      on concat((report.reporting_period_duration - 1)::text, '-04-01')::date >= ctr.rate_start_date
+                      on concat((report.reporting_period_duration::integer - 1)::text, '-04-01')::date >= ctr.rate_start_date
                       and concat(report.reporting_period_duration::text, '-03-31')::date <= ctr.rate_end_date
     ), y as (
-    select x.rpd as reporting_year,
+    select x.rpd::integer as reporting_year,
            x.fuel_type as fuel_type,
            case
                when x.rpd <= 2017 then 0

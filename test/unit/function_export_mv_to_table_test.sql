@@ -767,11 +767,11 @@ select '-----------------------------------';
 
 select * from ggircs.pro_rated_carbon_tax_rate;
 select '-----------------------------------';
-select * from ggircs.pro_rated_implied_emission_factor;
+-- select * from ggircs.pro_rated_implied_emission_factor;
 select '-----------------------------------';
 select '-----------------------------------';
 
-select 'Reporting Year, Fuel Type, Pro-Rated Carbon Rate, Pro-Rated Implied Emission Factor, Fuel Amount, Calculated Carbon Tax';
+-- select 'Reporting Year, Fuel Type, Pro-Rated Carbon Rate, Pro-Rated Implied Emission Factor, Fuel Amount, Calculated Carbon Tax';
 select '-----------------------------------';
 select (year, fuel_type, round(pro_rated_ctr::numeric, 3), round(pro_rated_ief::numeric, 3), amount, round(calculated_carbon_tax::numeric, 2)) from ggircs.carbon_tax_calculation;
 select '-----------------------------------';
@@ -1400,18 +1400,18 @@ select results_eq(
 
 -- Naics -> ggircs_swrs.naics_mapping
 select results_eq(
-    $$
+               $$
     select distinct(ggircs_swrs.naics_mapping.naics_code, ggircs_swrs.naics_mapping.irc_category) from ggircs.naics
     join ggircs_swrs.naics_mapping
     on naics.naics_mapping_id = naics_mapping.id
     $$,
-
-    $$
+               $$
     select distinct(naics_code, irc_category) from ggircs_swrs.naics_mapping
     where naics_code in (321111, 721310)
     $$,
+               'Foreign key naics_mapping_id references ggircs.swrs.naics_mapping.id'
+);
 
-    'Foreign key naics_mapping_id references ggircs.swrs.naics_mapping.id'
 -- ggircs.fuel -> ggircs_swrs.fuel_mapping
 select results_eq(
     $$select distinct( ggircs_swrs.fuel_mapping.fuel_type) from ggircs.fuel

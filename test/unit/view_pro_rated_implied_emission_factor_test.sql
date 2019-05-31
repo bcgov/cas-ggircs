@@ -154,7 +154,7 @@ select results_eq(
     'select reporting_year from ggircs.pro_rated_implied_emission_factor order by reporting_year',
 
     $$
-    select reporting_period_duration
+    select reporting_period_duration::integer
     from ggircs_swrs.fuel as fuel
     join ggircs_swrs.report as report
     on report.ghgr_import_id = fuel.ghgr_import_id
@@ -185,11 +185,10 @@ select results_eq(
     'select fuel_mapping_id from ggircs.pro_rated_implied_emission_factor order by fuel_mapping_id',
 
     $$
-    select reporting_period_duration
+    select fm.id
     from ggircs_swrs.fuel as fuel
-    join ggircs_swrs.report as report
-    on report.ghgr_import_id = fuel.ghgr_import_id
-    order by reporting_period_duration
+    join ggircs_swrs.fuel_mapping as fm
+    on fuel.fuel_type = fm.fuel_type
     $$,
 
     'pro_rated_implied_emission_factor properly selects the reporting year'

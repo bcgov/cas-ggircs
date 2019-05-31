@@ -6,7 +6,7 @@ begin;
 create or replace view ggircs.pro_rated_implied_emission_factor as
     with x as (
         select fuel.fuel_type                   as fuel_type,
-               report.reporting_period_duration as rpd,
+               report.reporting_period_duration::integer as rpd,
                fmap.id                           as fmap_id,
                ief.start_date                   as start,
                ief.end_date                     as end,

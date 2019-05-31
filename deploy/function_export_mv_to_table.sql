@@ -583,7 +583,7 @@ $function$
       -- Create FK/PK relation between fuel and carbon_tax_rate_mapping (before Apr 1 reporting yr)
         alter table ggircs.fuel add column rate_jan_id int;
          with x as (
-          select fuel.ghgr_import_id, reporting_period_duration as rpd, mapping.fuel_type from ggircs.fuel as fuel
+          select fuel.ghgr_import_id, reporting_period_duration::integer as rpd, mapping.fuel_type from ggircs.fuel as fuel
           join ggircs.report as report
           on fuel.ghgr_import_id = report.ghgr_import_id
           join ggircs_swrs.fuel_mapping as mapping
