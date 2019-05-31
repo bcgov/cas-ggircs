@@ -23,6 +23,12 @@ select columns_are('ggircs'::name, 'carbon_tax_calculation'::name, array[
 select col_type_is('ggircs', 'carbon_tax_calculation', 'year', 'integer', 'pro_rated_carbon_tax_rate.reporting_year column should be type integer');
 select col_hasnt_default('ggircs', 'carbon_tax_calculation', 'year', 'pro_rated_carbon_tax_rate.reporting_year column should not have a default value');
 
+select col_type_is('ggircs', 'carbon_tax_calculation', 'fuel_type', 'character varying(1000)', 'pro_rated_carbon_tax_rate.fuel_type column should be type varchar');
+select col_hasnt_default('ggircs', 'carbon_tax_calculation', 'fuel_type', 'pro_rated_carbon_tax_rate.fuel_type column should not have a default value');
+
+select col_type_is('ggircs', 'carbon_tax_calculation', 'calculated_carbon_tax', 'numeric', 'pro_rated_carbon_tax_rate.calculated_carbon_tax column should be type numeric');
+select col_hasnt_default('ggircs', 'carbon_tax_calculation', 'calculated_carbon_tax', 'pro_rated_carbon_tax_rate.calculated_carbon_tax column should not have a default value');
+
 -- XML fixture for testing
 insert into ggircs_swrs.ghgr_import (xml_file) values ($$<ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <ReportDetails>
@@ -119,7 +125,6 @@ $$);
 
 refresh materialized view ggircs_swrs.report with data;
 refresh materialized view ggircs_swrs.fuel with data;
-
 
 select * from finish();
 rollback;
