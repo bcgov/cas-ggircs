@@ -18,7 +18,7 @@ select * from no_plan();
 
 -- GUIDELINE: All tables should have descriptions
 -- Check all tables for an existing description (regex '.+')
-with tnames as (select table_name from information_schema.tables where table_schema like 'ggircs%')
+with tnames as (select table_name from information_schema.tables where table_schema like 'ggircs%' and table_type != 'VIEW')
 select matches(
                obj_description(tbl::regclass, 'pg_class'),
                '.+',
@@ -62,7 +62,7 @@ drop table csv_import_fixture;
 
 -- GUIDELINE: All tables must have a unique primary key
 -- pg_TAP built in test functuon for checking all tables in schema have a primary key
-with tnames as (select table_name from information_schema.tables where table_schema like 'ggircs_%')
+with tnames as (select table_name from information_schema.tables where table_schema like 'ggircs_%' and table_type != 'VIEW')
 select has_pk(
                tbl, format('Table has primary key. Violation: %I', tbl)
            )
