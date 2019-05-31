@@ -15,7 +15,7 @@ create or replace view ggircs.carbon_tax_calculation as
                     on fuel.fuel_type = fm.fuel_type
                 join ggircs_swrs.report as report
                     on fuel.ghgr_import_id = report.ghgr_import_id
-                join ggircs.pro_rated_carbon_rate as ctr
+                join ggircs.pro_rated_carbon_tax_rate as ctr
                     on fuel.fuel_type = ctr.fuel_type
                     and report.reporting_period_duration = ctr.reporting_year
                 join ggircs.pro_rated_implied_emission_factor as ief

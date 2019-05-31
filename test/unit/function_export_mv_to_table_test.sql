@@ -765,7 +765,7 @@ $do$;
 select '-----------------------------------';
 
 
-select * from ggircs.pro_rated_carbon_rate;
+select * from ggircs.pro_rated_carbon_tax_rate;
 select '-----------------------------------';
 select * from ggircs.pro_rated_implied_emission_factor;
 select '-----------------------------------';

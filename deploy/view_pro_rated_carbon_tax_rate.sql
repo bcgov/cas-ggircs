@@ -3,7 +3,7 @@
 
 begin;
 
-create or replace view ggircs.pro_rated_carbon_rate as
+create or replace view ggircs.pro_rated_carbon_tax_rate as
     with x as (
         select fuel.fuel_type                   as fuel_type,
                report.reporting_period_duration as rpd,
