@@ -597,40 +597,6 @@ $function$
            end
           ) from x where fuel.ghgr_import_id = x.ghgr_import_id;
 
-      -- Create FK/PK relation between fuel and carbon_tax_rate_mapping (after Apr 1 reporting yr)
---         alter table ggircs.fuel add column rate_apr_id int;
---          with x as (
---           select fuel.ghgr_import_id, reporting_period_duration as rpd, mapping.fuel_type from ggircs.fuel as fuel
---           join ggircs.report as report
---           on fuel.ghgr_import_id = report.ghgr_import_id
---           join ggircs_swrs.fuel_mapping as mapping
---           on fuel.fuel_type = mapping.fuel_type
---           ), y as (select * from ggircs_swrs.carbon_tax_rate_mapping)
---         update ggircs.fuel set rate_apr_id = (
---           case
---             when concat(x.rpd::text, '-03-31')::date <= (select min(rate_end_date) from y) then (select id from y order by rate_start_date asc limit 1)
---             when concat(x.rpd::text, '-04-01')::date > (select max(rate_start_date) from y) then (select id from y order by rate_start_date desc limit 1)
---             else (select id from y where rate_start_date = concat(x.rpd::text,'-04-01')::date)
---            end
---           ) from x where fuel.ghgr_import_id = x.ghgr_import_id;
-
-      -- Create cte rate mapping
---       alter table ggircs.fuel add column rate_id int;
---       with x as (
---           select fuel.ghgr_import_id, reporting_period_duration, as rpd fuel_mapping.fuel_type from ggircs.fuel as fuel
---           join ggircs.report as report
---           on fuel.ghgr_import_id = report.ghgr_import_id
---           join ggircs_swrs.fuel_mapping as mapping
---           on fuel.fuel_type = mapping.fuel_type
---           )
---       update ggircs.fuel set rate_id = (
---           case
---             when x.rpd < 2017 then (select id where rate_table.year = null)
---             when x.rpd >= (select max(year) from table.year) then (select id order by table.year desc limit 1)
---             else (select id where rate_table.year = x.rpd)
---            end
---           ) from x where fuel.ghgr_import_id = x.ghgr_import_id;
-
     for i in 1 .. array_upper(mv_array, 1)
       loop
         perform ggircs_swrs.refresh_materialized_views(quote_ident(mv_array[i]), 'with no data');
