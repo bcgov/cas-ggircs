@@ -191,7 +191,58 @@ select results_eq(
     on fuel.fuel_type = fm.fuel_type
     $$,
 
-    'pro_rated_implied_emission_factor properly selects the reporting year'
+    'pro_rated_implied_emission_factor properly selects the fuel_mapping_id for the given fuel'
+);
+
+select results_eq(
+    $$ select year_length from ggircs.pro_rated_implied_emission_factor where fuel_type = 'Wood Waste' $$,
+
+    $$
+    with x as (
+    select reporting_period_duration as rpd, fuel_type
+    from ggircs_swrs.fuel as fuel
+    join ggircs_swrs.report as report
+    on report.ghgr_import_id = fuel.ghgr_import_id
+    )
+    select concat((x.rpd::integer)::text, '-12-31')::date - concat((x.rpd::integer)::text, '-01-01')::date as year_length
+    from x where x.fuel_type = 'Wood Waste'
+    $$,
+
+    'pro_rated_implied_emission_factor properly selects the length of the reporting year in days'
+);
+
+select results_eq(
+    $$ select start_rate from ggircs.pro_rated_implied_emission_factor order by start_rate $$,
+
+    ARRAY[0.315, 0.3151111111, null, null],
+
+    'pro_rated_implied_emission_factor properly selects the rate for the beginning of the year before the rate hike'
+);
+
+select results_eq(
+    $$ select start_duration from ggircs.pro_rated_implied_emission_factor order by start_duration $$,
+
+    ARRAY[90, 90, 91, 91],
+
+    'pro_rated_implied_emission_factor properly selects the length of year before the rate hike'
+);
+
+select results_eq(
+    $$ select end_duration from ggircs.pro_rated_implied_emission_factor order by end_duration $$,
+
+    ARRAY[274, 274, 274, 274],
+
+    'pro_rated_implied_emission_factor properly selects the length of year after the rate hike'
+);
+
+select results_eq(
+    $$ select pro_rated_implied_emission_factor from ggircs.pro_rated_implied_emission_factor order by pro_rated_implied_emission_factor $$,
+
+    $$
+    select ((y.start_rate * y.start_duration) + (y.end_rate * y.end_duration)) / y.year_length as pro_rated_implied_emission_factor from ggircs.pro_rated_implied_emission_factor y
+    $$,
+
+    'pro_rated_implied_emission_factor properly pro-rates the implied emission factor'
 );
 
 select * from finish();

@@ -15,7 +15,7 @@ comment on table  ggircs_swrs.implied_emission_factor is 'The implied emission f
 comment on column ggircs_swrs.implied_emission_factor.id is 'The internal primary key';
 comment on column ggircs_swrs.implied_emission_factor.implied_emission_factor is 'The ministry-defined implied emission factor pertaining to a specific fuel type';
 comment on column ggircs_swrs.implied_emission_factor.start_date is 'The date on which the implied emission factor came into effect';
-comment on column ggircs_swrs.implied_emission_factor. end_date is 'The date on which the implied emission factor stops/stopped being used';
+comment on column ggircs_swrs.implied_emission_factor.end_date is 'The date on which the implied emission factor stops/stopped being used';
 comment on column ggircs_swrs.implied_emission_factor.fuel_mapping_id is 'The foreign key reference to the fuel mapping table';
 
 alter table ggircs_swrs.implied_emission_factor
