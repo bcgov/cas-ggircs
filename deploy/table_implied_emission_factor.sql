@@ -11,6 +11,16 @@ create table ggircs_swrs.implied_emission_factor (
   fuel_mapping_id integer
 );
 
+comment on table  ggircs_swrs.implied_emission_factor is 'The implied emission factor table contains the implied factor to be multiplied by the carbon tax rate for each fuel';
+comment on column ggircs_swrs.implied_emission_factor.id is 'The internal primary key';
+comment on column ggircs_swrs.implied_emission_factor.implied_emission_factor is 'The ministry-defined implied emission factor pertaining to a specific fuel type';
+comment on column ggircs_swrs.implied_emission_factor.start_date is 'The date on which the implied emission factor came into effect';
+comment on column ggircs_swrs.implied_emission_factor. end_date is 'The date on which the implied emission factor stops/stopped being used';
+comment on column ggircs_swrs.implied_emission_factor.fuel_mapping_id is 'The foreign key reference to the fuel mapping table';
+
+alter table ggircs_swrs.implied_emission_factor
+    add constraint ggircs_swrs_implied_emission_factor_fuel_mapping_foreign_key foreign key (fuel_mapping_id) references ggircs_swrs.fuel_mapping(id);
+
 INSERT INTO ggircs_swrs.implied_emission_factor (implied_emission_factor, start_date, end_date, fuel_mapping_id) VALUES (null, '0001-01-01', '2017-03-31', 1);
 INSERT INTO ggircs_swrs.implied_emission_factor (implied_emission_factor, start_date, end_date, fuel_mapping_id) VALUES (null, '2017-04-01', '2018-03-31', 1);
 INSERT INTO ggircs_swrs.implied_emission_factor (implied_emission_factor, start_date, end_date, fuel_mapping_id) VALUES (null, '2018-04-01', '2019-03-31', 1);
