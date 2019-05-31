@@ -9,7 +9,12 @@ create materialized view ggircs_swrs.report as (
     id as ghgr_import_id,
     xml_file as source_xml,
     imported_at,
-    report_details.*,
+    report_details.swrs_report_id,
+    report_details.prepop_report_id,
+    report_details.report_type,
+    report_details.swrs_facility_id,
+    report_details.swrs_organisation_id,
+    (regexp_matches(report_details.reporting_period_duration, '\d\d\d\d'))[1]::varchar(1000) as reporting_period_duration,
     report_status.*,
     row_number() over (
       partition by report_details.swrs_report_id
@@ -27,7 +32,7 @@ create materialized view ggircs_swrs.report as (
              report_type varchar(1000) path 'ReportType[normalize-space(.)]' not null,
              swrs_facility_id integer path 'FacilityId[normalize-space(.)]' not null,
              swrs_organisation_id integer path 'OrganisationId[normalize-space(.)]' not null,
-             reporting_period_duration integer path 'ReportingPeriodDuration[normalize-space(.)]' not null
+             reporting_period_duration varchar(1000) path 'ReportingPeriodDuration[normalize-space(.)]' not null
          ) as report_details,
 
        xmltable(
