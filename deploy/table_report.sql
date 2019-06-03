@@ -23,7 +23,7 @@ create table ggircs.report
     swrs_report_history_id    integer
 );
 
-comment on table ggircs.report is 'The materialized view housing all report data, derived from ghgr_import table';
+comment on table ggircs.report is 'The table housing all report data, derived from ghgr_import table';
 comment on column ggircs.report.ghgr_import_id is 'The internal primary key for the file';
 comment on column ggircs.report.source_xml is 'The raw xml file imported from GHGR';
 comment on column ggircs.report.imported_at is 'The timestamp noting when the file was imported';
