@@ -28,3 +28,8 @@ comment on column ggircs.organisation.duns is 'The organisation duns number';
 comment on column ggircs.organisation.website is 'The organisation website address';
 
 commit;
+
+-- refresh materialized view ggircs_swrs.organisation;
+-- INSERT INTO ggircs.organisation (ghgr_import_id, swrs_organisation_id, business_legal_name, english_trade_name, french_trade_name, cra_business_number, duns, website)
+-- SELECT ghgr_import_id, swrs_organisation_id, business_legal_name, english_trade_name, french_trade_name, cra_business_number, duns, website
+-- FROM ggircs_swrs.organisation;
