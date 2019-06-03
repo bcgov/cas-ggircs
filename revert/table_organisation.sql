@@ -5,4 +5,3 @@ begin;
 drop table ggircs.organisation;
 
 commit;
-s

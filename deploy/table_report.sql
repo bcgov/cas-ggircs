@@ -25,6 +25,7 @@ create table ggircs.report
 );
 
 comment on table ggircs.report is 'The table housing all report data, derived from ghgr_import table';
+comment on column ggircs.report.id is 'The primary key';
 comment on column ggircs.report.ghgr_import_id is 'The internal primary key for the file';
 comment on column ggircs.report.source_xml is 'The raw xml file imported from GHGR';
 comment on column ggircs.report.imported_at is 'The timestamp noting when the file was imported';
