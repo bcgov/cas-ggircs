@@ -5,7 +5,8 @@ begin;
 
 create table ggircs.report
 (
-    ghgr_import_id            integer primary key,
+    id                        int generated always as identity primary key,
+    ghgr_import_id            integer,
     source_xml                xml,
     imported_at               timestamptz,
     swrs_report_id            integer not null,
