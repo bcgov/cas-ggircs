@@ -17,7 +17,7 @@ create materialized view ggircs_swrs.identifier as (
            '//Identifier'
            passing xml_file
            columns
-             swrs_facility_id numeric(1000,0) path '//FacilityId[normalize-space(.)]' not null,
+             swrs_facility_id integer path '//FacilityId[normalize-space(.)]' not null,
              path_context varchar(1000) path 'name(./ancestor::VerifyTombstone|./ancestor::RegistrationData)',
              identifier_idx integer path 'string(count(./ancestor-or-self::Identifier/preceding-sibling::Identifier))' not null,
              identifier_type varchar(1000) path './IdentifierType[normalize-space(.)]' not null,

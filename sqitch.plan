@@ -33,3 +33,4 @@ table_activity [schema_ggircs] 2019-06-04T17:24:09Z Dylan Leard <dylan@button.is
 table_unit [schema_ggircs] 2019-06-04T17:29:28Z Dylan Leard <dylan@button.is> # add table unit to schema ggircs
 table_identifier [schema_ggircs] 2019-06-04T17:35:55Z Dylan Leard <dylan@button.is> # add table identifier to schema ggircs
 table_naics [schema_ggircs] 2019-06-04T17:41:34Z Dylan Leard <dylan@button.is> # add table naics to schema ggircs
+table_emission [schema_ggircs] 2019-06-04T17:46:17Z Dylan Leard <dylan@button.is> # add table emission to schema ggircs
