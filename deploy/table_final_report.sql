@@ -5,7 +5,7 @@ begin;
 
 create table ggircs.final_report (
 
-    id                        int generated always as identity primary key,
+    id                        integer primary key,
     ghgr_import_id            integer,
     swrs_report_id            integer
 );

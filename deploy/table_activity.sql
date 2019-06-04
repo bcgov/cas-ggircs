@@ -5,7 +5,7 @@ begin;
 
 create table ggircs.activity (
 
-    id                        int generated always as identity primary key,
+    id                        integer primary key,
     ghgr_import_id            integer,
     process_idx               integer,
     sub_process_idx           integer,

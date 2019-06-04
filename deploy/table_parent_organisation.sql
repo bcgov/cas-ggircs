@@ -5,7 +5,7 @@ begin;
 
 create table ggircs.parent_organisation (
 
-    id                        int generated always as identity primary key,
+    id                        integer primary key,
     ghgr_import_id            integer,
     parent_organisation_idx   integer,
     path_context              varchar(1000),

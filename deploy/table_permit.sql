@@ -5,7 +5,7 @@ begin;
 
 create table ggircs.permit (
 
-    id                              int generated always as identity primary key,
+    id                              integer primary key,
     ghgr_import_id                  integer,
     permit_idx                      integer,
     path_context                    varchar(1000),

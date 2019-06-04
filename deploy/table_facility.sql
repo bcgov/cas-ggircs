@@ -5,7 +5,7 @@ begin;
 
 create table ggircs.facility (
 
-    id                        int generated always as identity primary key,
+    id                        integer primary key,
     ghgr_import_id            integer,
     swrs_facility_id          integer,
     facility_name             varchar(1000),

@@ -5,7 +5,7 @@ begin;
 
 create table ggircs.emission (
 
-    emission_id               integer primary key,
+    id               integer primary key,
     ghgr_import_id            integer,
     activity_id               integer,
     activity_name             varchar(1000),

@@ -5,7 +5,7 @@ begin;
 
 create table ggircs.organisation
 (
-    id                        int generated always as identity primary key,
+    id                        integer primary key,
     ghgr_import_id            integer,
     swrs_organisation_id      integer,
     business_legal_name       varchar(1000),
