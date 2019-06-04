@@ -617,7 +617,7 @@ $function$
         drop column substance_idx,
         drop column fuel_idx;
     alter table ggircs.identifier drop column identifier_idx;
-    alter table ggircs.fuel
+    alter table ggircs.measured_emission_factor
         drop column process_idx,
         drop column sub_process_idx,
         drop column units_idx,
@@ -629,7 +629,7 @@ $function$
     alter table ggircs.naics drop column naics_code_idx;
     alter table ggircs.parent_organisation drop column parent_organisation_idx;
     alter table ggircs.permit drop column permit_idx;
-    alter table ggircs.fuel
+    alter table ggircs.unit
         drop column process_idx,
         drop column sub_process_idx,
         drop column units_idx,

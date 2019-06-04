@@ -995,10 +995,14 @@ select results_eq(
     join ggircs.fuel
     on
       attributable_emission.fuel_id = fuel.id
-      order by fuel.ghgr_import_id
     $$,
 
-    'select fuel_type from ggircs.fuel where ghgr_import_id=2 and fuel_idx = 1',
+    $$ select fuel_type from ggircs.emission as emission
+       join ggircs.fuel as fuel
+       on emission.fuel_id = fuel.id
+       and
+       fuel.ghgr_import_id=2
+       and gas_type !='CO2bioC' $$,
 
     'Foreign key fuel_id in ggircs.attributable_emission references ggircs.fuel.id'
 );
@@ -1342,27 +1346,33 @@ select results_eq($$
 select results_eq($$
                   select
                       ghgr_import_id,
-                      process_idx,
-                      sub_process_idx,
                       activity_name,
                       process_name,
                       sub_process_name,
                       information_requirement
                   from ggircs_swrs.activity
-                  order by ghgr_import_id, process_idx, sub_process_idx, activity_name asc
+                  order by
+                    ghgr_import_id,
+                    activity_name,
+                    process_name,
+                    sub_process_name
+                  asc
                   $$,
 
                  $$
                  select
                       ghgr_import_id,
-                      process_idx,
-                      sub_process_idx,
                       activity_name,
                       process_name,
                       sub_process_name,
                       information_requirement
                   from ggircs.activity
-                  order by ghgr_import_id, process_idx, sub_process_idx, activity_name asc
+                  order by
+                    ghgr_import_id,
+                    activity_name,
+                    process_name,
+                    sub_process_name
+                  asc
                   $$,
 
     'data in ggircs_swrs.activity === ggircs.activity');
@@ -1373,10 +1383,6 @@ select results_eq(
               select
                   ghgr_import_id,
                   activity_name,
-                  process_idx,
-                  sub_process_idx,
-                  units_idx,
-                  unit_idx,
                   unit_name,
                   unit_description,
                   cogen_unit_name,
@@ -1394,11 +1400,7 @@ select results_eq(
                 from ggircs_swrs.unit
                 order by
                     ghgr_import_id,
-                    activity_name,
-                    process_idx,
-                    sub_process_idx,
-                    units_idx,
-                    unit_idx
+                    activity_name
                  asc
               $$,
 
@@ -1406,10 +1408,6 @@ select results_eq(
               select
                   ghgr_import_id,
                   activity_name,
-                  process_idx,
-                  sub_process_idx,
-                  units_idx,
-                  unit_idx,
                   unit_name,
                   unit_description,
                   cogen_unit_name,
@@ -1427,11 +1425,7 @@ select results_eq(
                 from ggircs.unit
                 order by
                     ghgr_import_id,
-                    activity_name,
-                    process_idx,
-                    sub_process_idx,
-                    units_idx,
-                    unit_idx
+                    activity_name
                  asc
               $$,
 
@@ -1444,7 +1438,6 @@ select results_eq(
                   ghgr_import_id,
                   swrs_facility_id,
                   path_context,
-                  identifier_idx,
                   identifier_type,
                   identifier_value
                 from ggircs_swrs.identifier
@@ -1452,7 +1445,8 @@ select results_eq(
                     ghgr_import_id,
                     swrs_facility_id,
                     path_context,
-                    identifier_idx
+                    identifier_type,
+                    identifier_value
                  asc
               $$,
 
@@ -1461,7 +1455,6 @@ select results_eq(
                   ghgr_import_id,
                   swrs_facility_id,
                   path_context,
-                  identifier_idx,
                   identifier_type,
                   identifier_value
                 from ggircs.identifier
@@ -1469,7 +1462,8 @@ select results_eq(
                     ghgr_import_id,
                     swrs_facility_id,
                     path_context,
-                    identifier_idx
+                    identifier_type,
+                    identifier_value
                  asc
               $$,
 
@@ -1482,7 +1476,6 @@ select results_eq(
                   ghgr_import_id,
                   swrs_facility_id,
                   path_context,
-                  naics_code_idx,
                   naics_classification,
                   naics_code,
                   naics_priority
@@ -1490,8 +1483,7 @@ select results_eq(
                 order by
                     ghgr_import_id,
                     swrs_facility_id,
-                    path_context,
-                    naics_code_idx
+                    path_context
                  asc
               $$,
 
@@ -1500,7 +1492,6 @@ select results_eq(
                   ghgr_import_id,
                   swrs_facility_id,
                   path_context,
-                  naics_code_idx,
                   naics_classification,
                   naics_code,
                   naics_priority
@@ -1508,8 +1499,7 @@ select results_eq(
                 order by
                     ghgr_import_id,
                     swrs_facility_id,
-                    path_context,
-                    naics_code_idx
+                    path_context
                  asc
               $$,
 
@@ -1524,16 +1514,7 @@ select results_eq(
                 sub_activity_name,
                 unit_name,
                 sub_unit_name,
-                process_idx,
-                sub_process_idx,
-                units_idx,
-                unit_idx,
-                substances_idx,
-                substance_idx,
-                fuel_idx,
                 fuel_name,
-                emissions_idx,
-                emission_idx,
                 emission_type,
                 gas_type,
                 methodology,
@@ -1543,16 +1524,7 @@ select results_eq(
                 emission_category
               from ggircs_swrs.emission
               order by
-                ghgr_import_id,
-                process_idx,
-                sub_process_idx,
-                units_idx,
-                unit_idx,
-                substances_idx,
-                substance_idx,
-                fuel_idx,
-                emissions_idx,
-                emission_idx asc
+                ghgr_import_id asc
               $$,
 
               $$
@@ -1562,16 +1534,7 @@ select results_eq(
                   sub_activity_name,
                   unit_name,
                   sub_unit_name,
-                  process_idx,
-                  sub_process_idx,
-                  units_idx,
-                  unit_idx,
-                  substances_idx,
-                  substance_idx,
-                  fuel_idx,
                   fuel_name,
-                  emissions_idx,
-                  emission_idx,
                   emission_type,
                   gas_type,
                   methodology,
@@ -1581,16 +1544,7 @@ select results_eq(
                   emission_category
                 from ggircs.emission
                 order by
-                    ghgr_import_id,
-                    process_idx,
-                    sub_process_idx,
-                    units_idx,
-                    unit_idx,
-                    substances_idx,
-                    substance_idx,
-                    fuel_idx,
-                    emissions_idx,
-                    emission_idx
+                    ghgr_import_id
                  asc
               $$,
 
@@ -1611,13 +1565,6 @@ select results_eq(
                   sub_activity_name,
                   unit_name,
                   sub_unit_name,
-                  process_idx,
-                  sub_process_idx,
-                  units_idx,
-                  unit_idx,
-                  substances_idx,
-                  substance_idx,
-                  fuel_idx,
                   fuel_type,
                   fuel_classification,
                   fuel_description,
@@ -1635,14 +1582,7 @@ select results_eq(
                   wastewater_processing_factors::text,
                   measured_conversion_factors::text
                 from ggircs_swrs.fuel
-                order by
-                    process_idx,
-                    sub_process_idx,
-                    units_idx,
-                    unit_idx,
-                    substances_idx,
-                    substance_idx,
-                    fuel_idx
+                order by ghgr_import_id
                  asc
               $$,
 
@@ -1653,13 +1593,6 @@ select results_eq(
                   sub_activity_name,
                   unit_name,
                   sub_unit_name,
-                  process_idx,
-                  sub_process_idx,
-                  units_idx,
-                  unit_idx,
-                  substances_idx,
-                  substance_idx,
-                  fuel_idx,
                   fuel_type,
                   fuel_classification,
                   fuel_description,
@@ -1677,14 +1610,7 @@ select results_eq(
                   wastewater_processing_factors::text,
                   measured_conversion_factors::text
                 from ggircs.fuel
-                order by
-                    process_idx,
-                    sub_process_idx,
-                    units_idx,
-                    unit_idx,
-                    substances_idx,
-                    substance_idx,
-                    fuel_idx
+                order by ghgr_import_id
                  asc
               $$,
 
@@ -1696,7 +1622,6 @@ select results_eq(
               select
                   ghgr_import_id,
                   path_context,
-                  permit_idx,
                   issuing_agency,
                   issuing_dept_agency_program,
                   permit_number
@@ -1711,7 +1636,6 @@ select results_eq(
               select
                   ghgr_import_id,
                   path_context,
-                  permit_idx,
                   issuing_agency,
                   issuing_dept_agency_program,
                   permit_number
@@ -1730,7 +1654,6 @@ select results_eq(
               select
                   ghgr_import_id,
                   path_context,
-                  parent_organisation_idx,
                   percentage_owned,
                   french_trade_name,
                   english_trade_name,
@@ -1740,8 +1663,7 @@ select results_eq(
                 from ggircs_swrs.parent_organisation
                 order by
                   ghgr_import_id,
-                  path_context,
-                  parent_organisation_idx
+                  path_context
                  asc
               $$,
 
@@ -1749,7 +1671,6 @@ select results_eq(
               select
                   ghgr_import_id,
                   path_context,
-                  parent_organisation_idx,
                   percentage_owned,
                   french_trade_name,
                   english_trade_name,
@@ -1759,8 +1680,7 @@ select results_eq(
                 from ggircs.parent_organisation
                 order by
                   ghgr_import_id,
-                  path_context,
-                  parent_organisation_idx
+                  path_context
                  asc
               $$,
 
@@ -1772,7 +1692,6 @@ select results_eq(
               select
                   ghgr_import_id,
                   path_context,
-                  contact_idx,
                   contact_type,
                   given_name,
                   family_name,
@@ -1787,7 +1706,8 @@ select results_eq(
                 order by
                   ghgr_import_id,
                   path_context,
-                  contact_idx
+                  contact_type,
+                  given_name
                  asc
               $$,
 
@@ -1795,7 +1715,6 @@ select results_eq(
               select
                   ghgr_import_id,
                   path_context,
-                  contact_idx,
                   contact_type,
                   given_name,
                   family_name,
@@ -1810,7 +1729,8 @@ select results_eq(
                 order by
                   ghgr_import_id,
                   path_context,
-                  contact_idx
+                  contact_type,
+                  given_name
                  asc
               $$,
 
@@ -1825,8 +1745,6 @@ select results_eq(
                   swrs_organisation_id,
                   path_context,
                   type,
-                  contact_idx,
-                  parent_organisation_idx,
                   physical_address_municipality,
                   physical_address_unit_number,
                   physical_address_street_number,
@@ -1862,9 +1780,7 @@ select results_eq(
                   swrs_facility_id,
                   swrs_organisation_id,
                   type,
-                  path_context,
-                  contact_idx,
-                  parent_organisation_idx
+                  path_context
                  asc
               $$,
 
@@ -1875,8 +1791,6 @@ select results_eq(
                   swrs_organisation_id,
                   path_context,
                   type,
-                  contact_idx,
-                  parent_organisation_idx,
                   physical_address_municipality,
                   physical_address_unit_number,
                   physical_address_street_number,
@@ -1912,9 +1826,7 @@ select results_eq(
                   swrs_facility_id,
                   swrs_organisation_id,
                   type,
-                  path_context,
-                  contact_idx,
-                  parent_organisation_idx
+                  path_context
                  asc
               $$,
 
@@ -1925,11 +1837,6 @@ select results_eq(
               $$
               select
                     ghgr_import_id,
-                    process_idx,
-                    sub_process_idx,
-                    grandparent_idx,
-                    parent_idx,
-                    class_idx,
                     grandparent,
                     parent,
                     class,
@@ -1939,11 +1846,6 @@ select results_eq(
                 from ggircs_swrs.descriptor
                 order by
                   ghgr_import_id,
-                  process_idx,
-                  sub_process_idx,
-                  grandparent_idx,
-                  parent_idx,
-                  class_idx,
                   grandparent,
                   parent,
                   class,
@@ -1954,11 +1856,6 @@ select results_eq(
               $$
               select
                     ghgr_import_id,
-                    process_idx,
-                    sub_process_idx,
-                    grandparent_idx,
-                    parent_idx,
-                    class_idx,
                     grandparent,
                     parent,
                     class,
@@ -1968,11 +1865,6 @@ select results_eq(
                 from ggircs.descriptor
                 order by
                   ghgr_import_id,
-                  process_idx,
-                  sub_process_idx,
-                  grandparent_idx,
-                  parent_idx,
-                  class_idx,
                   grandparent,
                   parent,
                   class,
@@ -1992,28 +1884,12 @@ select results_eq(
                 sub_activity_name,
                 unit_name,
                 sub_unit_name,
-                process_idx,
-                sub_process_idx,
-                units_idx,
-                unit_idx,
-                substances_idx,
-                substance_idx,
-                fuel_idx,
-                measured_emission_factor_idx
                 measured_emission_factor_amount,
                 measured_emission_factor_gas,
                 measured_emission_factor_unit_type
               from ggircs_swrs.measured_emission_factor
               order by
-                ghgr_import_id,
-                process_idx,
-                sub_process_idx,
-                units_idx,
-                unit_idx,
-                substances_idx,
-                substance_idx,
-                fuel_idx,
-                measured_emission_factor_idx
+                ghgr_import_id
               $$,
 
               $$
@@ -2023,28 +1899,12 @@ select results_eq(
                   sub_activity_name,
                   unit_name,
                   sub_unit_name,
-                  process_idx,
-                  sub_process_idx,
-                  units_idx,
-                  unit_idx,
-                  substances_idx,
-                  substance_idx,
-                  fuel_idx,
-                  measured_emission_factor_idx
                   measured_emission_factor_amount,
                   measured_emission_factor_gas,
                   measured_emission_factor_unit_type
                 from ggircs.measured_emission_factor
                 order by
-                    ghgr_import_id,
-                    process_idx,
-                    sub_process_idx,
-                    units_idx,
-                    unit_idx,
-                    substances_idx,
-                    substance_idx,
-                    fuel_idx,
-                    measured_emission_factor_idx
+                    ghgr_import_id
                  asc
               $$,
 
