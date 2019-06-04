@@ -21,7 +21,7 @@ create materialized view ggircs_swrs.final_report as (
                        join ggircs_swrs.report on table_ignore_organisation.swrs_organisation_id = report.swrs_organisation_id)
     order by swrs_report_id
   )
-  select swrs_report_id, ghgr_import_id
+  select row_number() over () as id, swrs_report_id, ghgr_import_id
   from _report
   where _history_id = 1
   order by swrs_report_id asc

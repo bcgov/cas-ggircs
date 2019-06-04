@@ -6,6 +6,7 @@ begin;
 
 create materialized view ggircs_swrs.report as (
   select
+    row_number() over () as id,
     id as ghgr_import_id,
     xml_file as source_xml,
     imported_at,

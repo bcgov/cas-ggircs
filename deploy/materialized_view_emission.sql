@@ -5,7 +5,7 @@ begin;
 
 -- Emissions from Fuel
 create materialized view ggircs_swrs.emission as (
-  select id as ghgr_import_id,
+  select row_number() over () as id, id as ghgr_import_id,
          emission_details.*
   from ggircs_swrs.ghgr_import,
        xmltable(

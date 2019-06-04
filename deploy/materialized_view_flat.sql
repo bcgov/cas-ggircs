@@ -4,7 +4,7 @@
 begin;
 
 create materialized view ggircs_swrs.flat as (
-  select id as ghgr_import_id,
+  select row_number() over () as id, id as ghgr_import_id,
          row_number() over (
            partition by id
            order by

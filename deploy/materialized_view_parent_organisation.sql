@@ -4,7 +4,7 @@
 begin;
 
 create materialized view ggircs_swrs.parent_organisation as (
-  select id as ghgr_import_id, parent_organisation_details.*
+  select row_number() over () as id, id as ghgr_import_id, parent_organisation_details.*
   from ggircs_swrs.ghgr_import,
        xmltable(
            '//ParentOrganisation'

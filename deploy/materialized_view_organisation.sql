@@ -6,6 +6,7 @@ begin;
 
 create materialized view ggircs_swrs.organisation as (
   select
+         row_number() over () as id,
          id as ghgr_import_id,
          report_details.swrs_organisation_id,
          coalesce(vt_business_legal_name, rd_business_legal_name) as business_legal_name,

@@ -6,7 +6,7 @@ begin;
 -- Fuels from Units
 -- todo: explore any other attributes for units
 create materialized view ggircs_swrs.fuel as (
-  select id as ghgr_import_id, fuel_details.*
+  select row_number() over () as id, id as ghgr_import_id, fuel_details.*
   from ggircs_swrs.ghgr_import,
        xmltable(
            '//Fuel'

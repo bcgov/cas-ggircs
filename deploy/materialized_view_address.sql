@@ -4,7 +4,7 @@
 begin;
 
 create materialized view ggircs_swrs.address as (
-  select id as ghgr_import_id,
+  select row_number() over () as id, id as ghgr_import_id,
          address_details.swrs_facility_id,
          swrs_organisation_id,
          path_context,

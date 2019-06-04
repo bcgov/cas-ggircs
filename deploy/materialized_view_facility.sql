@@ -7,7 +7,7 @@ create materialized view ggircs_swrs.facility as (
   -- Select the XML reports from ghgr_imports table and get the Facility ID and Report ID from reports table
   -- Walk the XML to extract facility details
   -- coalesce results from VerifyTombstone (vt) and RegistrationData (rd)
-  select id as ghgr_import_id,
+  select row_number() over () as id, id as ghgr_import_id,
          rd_facility_details.swrs_facility_id,
          coalesce(vt_facility_details.facility_name, rd_facility_details.facility_name) as facility_name,
          rd_facility_details.facility_type,

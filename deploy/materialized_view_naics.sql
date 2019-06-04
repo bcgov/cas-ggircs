@@ -5,6 +5,7 @@ begin;
 
 create materialized view ggircs_swrs.naics as (
   select
+         row_number() over () as id,
          id as ghgr_import_id,
          naics.*
   from ggircs_swrs.ghgr_import,

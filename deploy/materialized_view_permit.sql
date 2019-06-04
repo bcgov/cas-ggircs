@@ -4,7 +4,7 @@
 begin;
 
 create materialized view ggircs_swrs.permit as (
-  select id as ghgr_import_id, permit_details.*
+  select row_number() over () as id, id as ghgr_import_id, permit_details.*
   from ggircs_swrs.ghgr_import,
        xmltable(
            '//Permit'
