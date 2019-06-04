@@ -28,3 +28,4 @@ function_export_mv_to_table [table_ghgr_import materialized_view_report material
 table_naics_mapping [schema_ggircs_swrs] 2019-05-28T19:00:38Z Dylan Leard <dylan@button.is> # added table_naics_mapping to schema ggircs_swrs
 table_report [schema_ggircs] 2019-06-03T22:45:25Z Dylan Leard <dylan@button.is> # add table report to schema ggircs
 table_organisation [schema_ggircs] 2019-06-03T23:01:20Z Dylan Leard <dylan@button.is> # add table organisation to schema ggircs
+table_facility [schema_ggircs] 2019-06-04T17:15:20Z Dylan Leard <dylan@button.is> # add table facility to schema ggircs
