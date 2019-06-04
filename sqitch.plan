@@ -31,3 +31,4 @@ table_organisation [schema_ggircs] 2019-06-03T23:01:20Z Dylan Leard <dylan@butto
 table_facility [schema_ggircs] 2019-06-04T17:15:20Z Dylan Leard <dylan@button.is> # add table facility to schema ggircs
 table_activity [schema_ggircs] 2019-06-04T17:24:09Z Dylan Leard <dylan@button.is> # add table activity to schema ggircs
 table_unit [schema_ggircs] 2019-06-04T17:29:28Z Dylan Leard <dylan@button.is> # add table unit to schema ggircs
+table_identifier [schema_ggircs] 2019-06-04T17:35:55Z Dylan Leard <dylan@button.is> # add table identifier to schema ggircs
