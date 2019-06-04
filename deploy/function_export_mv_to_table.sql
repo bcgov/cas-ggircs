@@ -56,7 +56,7 @@ $function$
     from ggircs_swrs.facility;
 
     -- activity
-    insert into ggircs.facility (ghgr_import_id, activity_name, process_name, sub_process_name, information_requirement)
+    insert into ggircs.activity (ghgr_import_id, activity_name, process_name, sub_process_name, information_requirement)
 
     select ghgr_import_id, activity_name, process_name, sub_process_name, information_requirement
 
