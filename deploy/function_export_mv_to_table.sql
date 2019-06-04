@@ -31,25 +31,153 @@ $function$
         perform ggircs_swrs.refresh_materialized_views(quote_ident(mv_array[i]), 'with data');
       end loop;
 
-    -- Create tables
-    for i in 1 .. array_upper(mv_array, 1)
-      loop
-        raise notice 'Exporting: %', mv_array[i];
+    -- Populate tables
+    -- report
+    insert into ggircs.report (ghgr_import_id, source_xml, imported_at, swrs_report_id, prepop_report_id, report_type, swrs_facility_id, swrs_organisation_id,
+                               reporting_period_duration, status, version, submission_date, last_modified_by, last_modified_date, update_comment, swrs_report_history_id)
 
-        execute
-          'drop table if exists ggircs.' || quote_ident(mv_array[i]) || ' cascade';
+    select ghgr_import_id, source_xml, imported_at, swrs_report_id, prepop_report_id, report_type, swrs_facility_id, swrs_organisation_id,
+           reporting_period_duration, status, version, submission_date, last_modified_by, last_modified_date, update_comment, swrs_report_history_id
 
-        execute
-          'create table ggircs.' || quote_ident(mv_array[i]) ||
-                 ' as (select x.* from ggircs_swrs.' || quote_ident(mv_array[i]) ||
-                 $$ as x inner join ggircs_swrs.final_report as final_report
-                 on x.ghgr_import_id = final_report.ghgr_import_id)$$;
-        execute
-          'alter table ggircs.' || quote_ident(mv_array[i]) ||
-          ' add column id int generated always as identity primary key';
+    from ggircs_swrs.report;
 
-      end loop;
+    -- organisation
+    insert into ggircs.organisation (ghgr_import_id, swrs_organisation_id, business_legal_name, english_trade_name, french_trade_name, cra_business_number, duns, website)
 
+    select ghgr_import_id, swrs_organisation_id, business_legal_name, english_trade_name, french_trade_name, cra_business_number, duns, website
+
+    from ggircs_swrs.organisation;
+
+    -- facility
+    insert into ggircs.facility (ghgr_import_id, swrs_facility_id, facility_name, facility_type, relationship_type, portability_indicator, status, latitude, longitude)
+
+    select ghgr_import_id, swrs_facility_id, facility_name, facility_type, relationship_type, portability_indicator, status, latitude, longitude
+
+    from ggircs_swrs.facility;
+
+    -- activity
+    insert into ggircs.facility (ghgr_import_id, activity_name, process_name, sub_process_name, information_requirement)
+
+    select ghgr_import_id, activity_name, process_name, sub_process_name, information_requirement
+
+    from ggircs_swrs.activity;
+
+    -- unit
+    insert into ggircs.unit (ghgr_import_id, activity_name, unit_name, unit_description, cogen_unit_name, cogen_cycle_type, cogen_nameplate_capacity,
+                             cogen_net_power, cogen_steam_heat_acq_quantity, cogen_steam_heat_acq_name, cogen_supplemental_firing_purpose, cogen_thermal_output_quantity,
+                             non_cogen_nameplate_capacity, non_cogen_net_power, non_cogen_unit_name)
+
+    select ghgr_import_id, activity_name, unit_name, unit_description, cogen_unit_name, cogen_cycle_type, cogen_nameplate_capacity,
+           cogen_net_power, cogen_steam_heat_acq_quantity, cogen_steam_heat_acq_name, cogen_supplemental_firing_purpose, cogen_thermal_output_quantity,
+           non_cogen_nameplate_capacity, non_cogen_net_power, non_cogen_unit_name
+
+    from ggircs_swrs.unit;
+
+    -- identifier
+    insert into ggircs.identifier(ghgr_import_id, swrs_facility_id, path_context, identifier_type, identifier_value)
+
+    select ghgr_import_id, swrs_facility_id, path_context, identifier_type, identifier_value
+
+    from ggircs_swrs.identifier;
+
+    -- naics
+    insert into ggircs.naics(ghgr_import_id, swrs_facility_id, path_context, naics_classification, naics_code, naics_priority)
+
+    select ghgr_import_id, swrs_facility_id, path_context, naics_classification, naics_code, naics_priority
+
+    from ggircs_swrs.naics;
+
+    -- emission
+    insert into ggircs.emission (ghgr_import_id, activity_name, sub_activity_name, unit_name, sub_unit_name, fuel_name, emission_type,
+                                gas_type, methodology, not_applicable, quantity, calculated_quantity, emission_category)
+
+    select ghgr_import_id, activity_name, sub_activity_name, unit_name, sub_unit_name, fuel_name, emission_type,
+           gas_type, methodology, not_applicable, quantity, calculated_quantity, emission_category
+
+    from ggircs_swrs.emission;
+
+    -- final_report
+    insert into ggircs.final_report (ghgr_import_id, swrs_report_id)
+
+    select ghgr_import_id, swrs_report_id
+
+    from ggircs_swrs.final_report;
+
+    -- fuel
+    insert into ggircs.fuel(ghgr_import_id, activity_name, sub_activity_name, unit_name, sub_unit_name, fuel_type, fuel_classification, fuel_description,
+                            fuel_units, annual_fuel_amount, annual_weighted_avg_carbon_content, annual_weighted_avg_hhv, annual_steam_generation, alternative_methodology_description,
+                            other_flare_details, q1, q2, q3, q4, wastewater_processing_factors, measured_conversion_factors)
+
+    select ghgr_import_id, activity_name, sub_activity_name, unit_name, sub_unit_name, fuel_type, fuel_classification, fuel_description,
+           fuel_units, annual_fuel_amount, annual_weighted_avg_carbon_content, annual_weighted_avg_hhv, annual_steam_generation, alternative_methodology_description,
+           other_flare_details, q1, q2, q3, q4, wastewater_processing_factors, measured_conversion_factors
+
+    from ggircs_swrs.fuel;
+
+    -- permit
+
+    insert into ggircs.permit(ghgr_import_id, path_context, issuing_agency, issuing_dept_agency_program, permit_number)
+
+    select ghgr_import_id, path_context, issuing_agency, issuing_dept_agency_program, permit_number
+
+    from ggircs_swrs.permit;
+
+    -- parent_organisation
+    insert into ggircs.parent_organisation (ghgr_import_id, path_context, percentage_owned, french_trade_name, english_trade_name,
+                                            duns, business_legal_name, website)
+
+    select ghgr_import_id, path_context, percentage_owned, french_trade_name, english_trade_name,
+           duns, business_legal_name, website
+
+    from ggircs_swrs.parent_organisation;
+
+    -- contact
+    insert into ggircs.contact (ghgr_import_id, path_context, contact_type, given_name, family_name, initials, telephone_number, extension_number,
+                                fax_number, email_address, position, language_correspondence)
+
+    select ghgr_import_id, path_context, contact_type, given_name, family_name, initials, telephone_number, extension_number,
+           fax_number, email_address, position, language_correspondence
+
+    from ggircs_swrs.contact;
+
+    -- address
+    insert into ggircs.address (ghgr_import_id, swrs_facility_id, swrs_organisation_id, path_context, type, physical_address_municipality, physical_address_unit_number,
+                                physical_address_street_number, physical_address_street_number_suffix, physical_address_street_name, physical_address_street_type,
+                                physical_address_street_direction, physical_address_prov_terr_state, physical_address_postal_code_zip_code, physical_address_country,
+                                physical_address_national_topographical_description, physical_address_additional_information, physical_address_land_survey_description,
+                                mailing_address_delivery_mode, mailing_address_po_box_number, mailing_address_unit_number, mailing_address_rural_route_number,
+                                mailing_address_street_number, mailing_address_street_number_suffix, mailing_address_street_name, mailing_address_street_type,
+                                mailing_address_street_direction, mailing_address_municipality, mailing_address_prov_terr_state, mailing_address_postal_code_zip_code,
+                                mailing_address_country, mailing_address_additional_information, geographic_address_latitude, geographic_address_longitude)
+
+    select ghgr_import_id, swrs_facility_id, swrs_organisation_id, path_context, type, physical_address_municipality, physical_address_unit_number,
+           physical_address_street_number, physical_address_street_number_suffix, physical_address_street_name, physical_address_street_type,
+           physical_address_street_direction, physical_address_prov_terr_state, physical_address_postal_code_zip_code, physical_address_country,
+           physical_address_national_topographical_description, physical_address_additional_information, physical_address_land_survey_description,
+           mailing_address_delivery_mode, mailing_address_po_box_number, mailing_address_unit_number, mailing_address_rural_route_number,
+           mailing_address_street_number, mailing_address_street_number_suffix, mailing_address_street_name, mailing_address_street_type,
+           mailing_address_street_direction, mailing_address_municipality, mailing_address_prov_terr_state, mailing_address_postal_code_zip_code,
+           mailing_address_country, mailing_address_additional_information, geographic_address_latitude, geographic_address_longitude
+
+    from ggircs_swrs.address;
+
+    -- descriptor
+    insert into ggircs.descriptor (ghgr_import_id, activity_name, grandparent, parent, class, attribute, attr_value, node_value)
+
+    select ghgr_import_id, activity_name, grandparent, parent, class, attribute, attr_value, node_value
+
+    from ggircs_swrs.descriptor;
+
+    -- measured_emission_factor
+    insert into ggircs.measured_emission_factor (ghgr_import_id, activity_name, sub_activity_name, unit_name, sub_unit_name,
+                                                 measured_emission_factor_amount, measured_emission_factor_gas, measured_emission_factor_unit_type)
+
+    select ghgr_import_id, activity_name, sub_activity_name, unit_name, sub_unit_name,
+           measured_emission_factor_amount, measured_emission_factor_gas, measured_emission_factor_unit_type
+
+    from ggircs_swrs.measured_emission_factor;
+
+    -- attributable emission
     raise notice 'Exporting attributable_emission';
 
     execute
