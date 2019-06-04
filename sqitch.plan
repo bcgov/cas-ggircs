@@ -36,3 +36,4 @@ table_naics [schema_ggircs] 2019-06-04T17:41:34Z Dylan Leard <dylan@button.is> #
 table_emission [schema_ggircs] 2019-06-04T17:46:17Z Dylan Leard <dylan@button.is> # add table emission to schema ggircs
 table_final_report [schema_ggircs] 2019-06-04T17:54:09Z Dylan Leard <dylan@button.is> # add table final_report to schema ggircs
 table_fuel [schema_ggircs] 2019-06-04T18:01:26Z Dylan Leard <dylan@button.is> # add table fuel to schema ggircs
+table_permit [schema_ggircs] 2019-06-04T18:10:43Z Dylan Leard <dylan@button.is> # add table permit to schema ggircs
