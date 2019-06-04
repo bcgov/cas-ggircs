@@ -88,15 +88,20 @@ $function$
     from ggircs_swrs.naics;
 
     -- emission
-    insert into ggircs.emission (ghgr_import_id, process_idx, sub_process_idx, units_idx, unit_idx, substances_idx,
-                                 substance_idx, fuel_idx, emissions_idx, emission_idx, activity_name, sub_activity_name,
+    insert into ggircs.emission (ghgr_import_id, activity_id, activity_name, sub_activity_name,
                                  unit_name, sub_unit_name, fuel_name, emission_type,
                                  gas_type, methodology, not_applicable, quantity, calculated_quantity, emission_category)
 
-    select ghgr_import_id, process_idx, sub_process_idx, units_idx, unit_idx, substances_idx,
-           substance_idx, fuel_idx, emissions_idx, emission_idx, activity_name, sub_activity_name,
+    select ghgr_import_id, _activity.activity_id, activity_name, sub_activity_name,
            unit_name, sub_unit_name, fuel_name, emission_type,
            gas_type, methodology, not_applicable, quantity, calculated_quantity, emission_category
+
+    left join ggircs_swrs.emission as _emission on emission.emission_id = _emission.emission_id
+    left join ggircs_swrs.activity as _activity
+      on _emission.ghgr_import_id = _activity.ghgr_import_id
+      and _emission.process_idx = _activity.process_idx
+      and _emission.sub_process_idx = _activity.sub_process_idx
+      and _emission.activity_name = _activity.activity_name
 
     from ggircs_swrs.emission;
 

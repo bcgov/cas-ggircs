@@ -5,17 +5,9 @@ begin;
 
 create table ggircs.emission (
 
-    id                        int generated always as identity primary key,
+    emission_id               integer primary key,
     ghgr_import_id            integer,
-    process_idx               integer,
-    sub_process_idx           integer,
-    units_idx                 integer,
-    unit_idx                  integer,
-    substances_idx            integer,
-    substance_idx             integer,
-    fuel_idx                  integer,
-    emissions_idx             integer,
-    emission_idx              integer,
+    activity_id               integer,
     activity_name             varchar(1000),
     sub_activity_name         varchar(1000),
     unit_name                 varchar(1000),
@@ -32,8 +24,9 @@ create table ggircs.emission (
 );
 
 comment on table ggircs.emission is 'The table containing the information on emissions';
-comment on column ggircs.emission.id is 'The primary key';
+comment on column ggircs.emission.emission_id is 'The primary key';
 comment on column ggircs.emission.ghgr_import_id is 'A foreign key reference to ggircs.ghgr_import';
+comment on column ggircs.emission.activity_id is 'A foreign key reference to ggircs.activity';
 comment on column ggircs.emission.activity_name is 'The name of the activity (partial fk reference)';
 comment on column ggircs.emission.sub_activity_name is 'The name of the sub_activity (partial fk reference)';
 comment on column ggircs.emission.unit_name is 'The name of the unit (partial fk reference)';
@@ -46,5 +39,7 @@ comment on column ggircs.emission.not_applicable is 'Is the emission applicable/
 comment on column ggircs.emission.quantity is 'The quantity of the emission';
 comment on column ggircs.emission.calculated_quantity is 'The CO2 Equivalent quantity of the emission';
 comment on column ggircs.emission.emission_category is 'The emissions category';
+
+-- add the foreign key constraint on emission.activity_id = activity.activity_id
 
 commit;

@@ -4,7 +4,7 @@
 begin;
 
 create materialized view ggircs_swrs.activity as (
-  select id as ghgr_import_id, activity_details.*
+  select row_number() over () as activity_id, id as ghgr_import_id, activity_details.*
   from ggircs_swrs.ghgr_import,
        xmltable(
            '//SubProcess'
