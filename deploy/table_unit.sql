@@ -5,22 +5,26 @@ begin;
 
 create table ggircs.unit (
 
-    id                        int generated always as identity primary key,
-    ghgr_import_id            integer,
-    activity_name varchar(1000),
-    unit_name varchar(1000),
-    unit_description varchar(1000),
-    cogen_unit_name varchar(1000),
-    cogen_cycle_type varchar(1000),
-    cogen_nameplate_capacity numeric,
-    cogen_net_power numeric,
-    cogen_steam_heat_acq_quantity numeric,
-    cogen_steam_heat_acq_name varchar(1000),
-    cogen_supplemental_firing_purpose varchar(1000),
-    cogen_thermal_output_quantity numeric,
-    non_cogen_nameplate_capacity numeric,
-    non_cogen_net_power numeric,
-    non_cogen_unit_name varchar(1000)
+    id                                  int generated always as identity primary key,
+    ghgr_import_id                      integer,
+    process_idx                         integer,
+    sub_process_idx                     integer,
+    units_idx                           integer,
+    unit_idx                            integer,
+    activity_name                       varchar(1000),
+    unit_name                           varchar(1000),
+    unit_description                    varchar(1000),
+    cogen_unit_name                     varchar(1000),
+    cogen_cycle_type                    varchar(1000),
+    cogen_nameplate_capacity            numeric,
+    cogen_net_power                     numeric,
+    cogen_steam_heat_acq_quantity       numeric,
+    cogen_steam_heat_acq_name           varchar(1000),
+    cogen_supplemental_firing_purpose   varchar(1000),
+    cogen_thermal_output_quantity       numeric,
+    non_cogen_nameplate_capacity        numeric,
+    non_cogen_net_power                 numeric,
+    non_cogen_unit_name                 varchar(1000)
 
 );
 

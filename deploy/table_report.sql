@@ -19,9 +19,9 @@ create table ggircs.report
     version                   varchar(1000),
     submission_date           timestamptz,
     last_modified_by          varchar(1000),
-    last_modified_date        timestamp,
+    last_modified_date        timestamptz,
     update_comment            varchar(1000),
-    swrs_report_history_id    integer
+    swrs_report_history_id    bigint
 );
 
 comment on table ggircs.report is 'The table housing all report data, derived from ghgr_import table';

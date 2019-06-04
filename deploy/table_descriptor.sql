@@ -7,6 +7,11 @@ create table ggircs.descriptor (
 
     id                        int generated always as identity primary key,
     ghgr_import_id            integer,
+    process_idx               integer,
+    sub_process_idx           integer,
+    grandparent_idx           integer,
+    parent_idx                integer,
+    class_idx                 integer,
     activity_name             varchar(1000),
     grandparent               varchar(1000),
     parent                    varchar(1000),

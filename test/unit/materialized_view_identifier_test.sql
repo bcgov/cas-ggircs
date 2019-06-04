@@ -26,7 +26,7 @@ select index_is_unique('ggircs_swrs', 'identifier', 'ggircs_identifier_primary_k
 
 -- Test columns in matview report have correct types
 select col_type_is('ggircs_swrs', 'identifier', 'ghgr_import_id', 'integer', 'ggircs_swrs.identifier column ghgr_import_id has type integer');
-select col_type_is('ggircs_swrs', 'identifier', 'swrs_facility_id', 'numeric(1000,0)', 'ggircs_swrs.identifier column swrs_facility_id has type numeric');
+select col_type_is('ggircs_swrs', 'identifier', 'swrs_facility_id', 'integer', 'ggircs_swrs.identifier column swrs_facility_id has type numeric');
 select col_type_is('ggircs_swrs', 'identifier', 'path_context', 'character varying(1000)', 'ggircs_swrs.identifier column path_context has type varchar');
 select col_type_is('ggircs_swrs', 'identifier', 'identifier_idx', 'integer', 'ggircs_swrs.identifier column identifier_idx has type integer');
 select col_type_is('ggircs_swrs', 'identifier', 'identifier_type', 'character varying(1000)', 'ggircs_swrs.identifier column identifier_type has type varchar');
@@ -90,7 +90,7 @@ select results_eq(
 
 select results_eq(
   'select swrs_facility_id from ggircs_swrs.identifier',
-  ARRAY[666::numeric, 666::numeric, 666::numeric],
+  ARRAY[666::integer, 666::integer, 666::integer],
   'ggircs_swrs.identifier parsed column swrs_facility_id'
 );
 

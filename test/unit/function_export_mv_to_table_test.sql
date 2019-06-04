@@ -874,6 +874,7 @@ select results_eq(
       join ggircs.naics
       on
         emission.naics_id = naics.id
+      order by naics.naics_code
     $$,
 
     'select distinct(naics_code) from ggircs.naics order by naics_code',
