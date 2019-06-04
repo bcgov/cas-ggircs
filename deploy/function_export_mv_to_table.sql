@@ -582,11 +582,58 @@ $function$
           where naics.naics_code = naics_mapping.naics_code;
       alter table ggircs.naics add constraint ggircs_swrs_naics_naics_mapping_foreign_key foreign key (naics_mapping_id) references ggircs_swrs.naics_mapping(id);
 
+    -- Refresh materialized views with no data
     for i in 1 .. array_upper(mv_array, 1)
       loop
         perform ggircs_swrs.refresh_materialized_views(quote_ident(mv_array[i]), 'with no data');
       end loop;
 
+    -- drop unwanted tables from the ggircs namespace
+    alter table ggircs.activity drop column process_idx, drop column sub_process_idx;
+    alter table ggircs.address drop column contact_idx, drop column parent_organisation_idx;
+    alter table ggircs.contact drop column contact_idx;
+    alter table ggircs.descriptor
+        drop column process_idx,
+        drop column sub_process_idx,
+        drop column grandparent_idx,
+        drop column parent_idx,
+        drop column class_idx;
+    alter table ggircs.emission
+        drop column process_idx,
+        drop column sub_process_idx,
+        drop column units_idx,
+        drop column unit_idx,
+        drop column substances_idx,
+        drop column substance_idx,
+        drop column fuel_idx,
+        drop column emissions_idx,
+        drop column emission_idx;
+    alter table ggircs.fuel
+        drop column process_idx,
+        drop column sub_process_idx,
+        drop column units_idx,
+        drop column unit_idx,
+        drop column substances_idx,
+        drop column substance_idx,
+        drop column fuel_idx;
+    alter table ggircs.identifier drop column identifier_idx;
+    alter table ggircs.fuel
+        drop column process_idx,
+        drop column sub_process_idx,
+        drop column units_idx,
+        drop column unit_idx,
+        drop column substances_idx,
+        drop column substance_idx,
+        drop column fuel_idx,
+        drop column measured_emission_factor_idx;
+    alter table ggircs.naics drop column naics_code_idx;
+    alter table ggircs.parent_organisation drop column parent_organisation_idx;
+    alter table ggircs.permit drop column permit_idx;
+    alter table ggircs.fuel
+        drop column process_idx,
+        drop column sub_process_idx,
+        drop column units_idx,
+        drop column unit_idx;
   end;
 
 $function$ language plpgsql volatile ;
