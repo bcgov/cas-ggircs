@@ -7,10 +7,6 @@ create table ggircs.unit (
 
     id                                  integer primary key,
     ghgr_import_id                      integer,
-    process_idx                         integer,
-    sub_process_idx                     integer,
-    units_idx                           integer,
-    unit_idx                            integer,
     activity_name                       varchar(1000),
     unit_name                           varchar(1000),
     unit_description                    varchar(1000),

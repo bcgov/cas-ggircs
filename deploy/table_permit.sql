@@ -7,7 +7,6 @@ create table ggircs.permit (
 
     id                              integer primary key,
     ghgr_import_id                  integer,
-    permit_idx                      integer,
     path_context                    varchar(1000),
     issuing_agency                  varchar(1000),
     issuing_dept_agency_program     varchar(1000),

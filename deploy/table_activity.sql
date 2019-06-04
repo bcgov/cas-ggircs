@@ -7,8 +7,6 @@ create table ggircs.activity (
 
     id                        integer primary key,
     ghgr_import_id            integer,
-    process_idx               integer,
-    sub_process_idx           integer,
     activity_name             varchar(1000),
     process_name              varchar(1000),
     sub_process_name          varchar(1000),
