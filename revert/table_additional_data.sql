@@ -2,6 +2,6 @@
 
 begin;
 
-drop table ggircs.descriptor;
+drop table ggircs.additional_data;
 
 commit;

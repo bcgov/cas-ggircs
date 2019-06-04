@@ -1,9 +1,9 @@
--- Deploy ggircs:materialized_view_descriptors to pg
+-- Deploy ggircs:materialized_view_additional_data to pg
 -- requires: table_ghgr_import
 
-BEGIN;
+begin;
 
-create materialized view ggircs_swrs.descriptor as (
+create materialized view ggircs_swrs.additional_data as (
   select id as ghgr_import_id,
          depth_four_descriptors.*
   from ggircs_swrs.ghgr_import,
@@ -79,7 +79,7 @@ create materialized view ggircs_swrs.descriptor as (
 )
   with no data;
 
-create unique index ggircs_descriptor_primary_key on ggircs_swrs.descriptor (ghgr_import_id, process_idx,
+create unique index ggircs_additional_data_primary_key on ggircs_swrs.additional_data (ghgr_import_id, process_idx,
                                                                              sub_process_idx, activity_name,
                                                                              grandparent_idx, parent_idx, class_idx,
                                                                              parent,
@@ -87,23 +87,23 @@ create unique index ggircs_descriptor_primary_key on ggircs_swrs.descriptor (ghg
 
 
 
-comment on materialized view ggircs_swrs.descriptor is 'The materialized view containing the information on descriptors';
-comment on column ggircs_swrs.descriptor.ghgr_import_id is 'A foreign key reference to ggircs_swrs.ghgr_import';
-comment on column ggircs_swrs.descriptor.activity_name is 'The name of the node immediately after ReportData';
-comment on column ggircs_swrs.descriptor.process_idx is 'The number of preceding Process siblings before this node';
-comment on column ggircs_swrs.descriptor.sub_process_idx is 'The number of preceding SubProcess siblings before this node';
-comment on column ggircs_swrs.descriptor.grandparent_idx is 'The count of grandparent node before this node';
-comment on column ggircs_swrs.descriptor.parent_idx is 'The count of parent node before this node';
-comment on column ggircs_swrs.descriptor.class_idx is 'The count of self node';
-comment on column ggircs_swrs.descriptor.grandparent is 'The name of the grandparent node';
-comment on column ggircs_swrs.descriptor.parent is 'The name of the parent node';
-comment on column ggircs_swrs.descriptor.class is 'The name of the node itself';
-comment on column ggircs_swrs.descriptor.attribute is 'The name of any attributes on this node';
-comment on column ggircs_swrs.descriptor.attr_value is 'The value of the attributes on this node concatenated';
-comment on column ggircs_swrs.descriptor.node_value is 'The text value of the node';
+comment on materialized view ggircs_swrs.additional_data is 'The materialized view containing the information on additional_data (descriptors)';
+comment on column ggircs_swrs.additional_data.ghgr_import_id is 'A foreign key reference to ggircs_swrs.ghgr_import';
+comment on column ggircs_swrs.additional_data.activity_name is 'The name of the node immediately after ReportData';
+comment on column ggircs_swrs.additional_data.process_idx is 'The number of preceding Process siblings before this node';
+comment on column ggircs_swrs.additional_data.sub_process_idx is 'The number of preceding SubProcess siblings before this node';
+comment on column ggircs_swrs.additional_data.grandparent_idx is 'The count of grandparent node before this node';
+comment on column ggircs_swrs.additional_data.parent_idx is 'The count of parent node before this node';
+comment on column ggircs_swrs.additional_data.class_idx is 'The count of self node';
+comment on column ggircs_swrs.additional_data.grandparent is 'The name of the grandparent node';
+comment on column ggircs_swrs.additional_data.parent is 'The name of the parent node';
+comment on column ggircs_swrs.additional_data.class is 'The name of the node itself';
+comment on column ggircs_swrs.additional_data.attribute is 'The name of any attributes on this node';
+comment on column ggircs_swrs.additional_data.attr_value is 'The value of the attributes on this node concatenated';
+comment on column ggircs_swrs.additional_data.node_value is 'The text value of the node';
 
 
-COMMIT;
+commit;
 
 
 

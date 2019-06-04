@@ -6,7 +6,7 @@
   -- materialized_view_naics materialized_view_identifier
   -- materialized_view_permit materialized_view_parent_organisation
   -- materialized_view_activity materialized_view_unit materialized_view_fuel
-  -- materialized_view_emission materialized_view_descriptor
+  -- materialized_view_emission materialized_view_additional_data
 
 begin;
 
@@ -20,7 +20,7 @@ $function$
                           {report, organisation, facility,
                           activity, unit, identifier, naics, emission,
                           final_report, fuel, permit, parent_organisation, contact,
-                          address, descriptor, measured_emission_factor}
+                          address, additional_data, measured_emission_factor}
                           $$;
 
   begin
@@ -167,14 +167,14 @@ $function$
 
     from ggircs_swrs.address;
 
-    -- descriptor
-    insert into ggircs.descriptor (ghgr_import_id, process_idx, sub_process_idx, grandparent_idx, parent_idx,
+    -- additional_data
+    insert into ggircs.additional_data (ghgr_import_id, process_idx, sub_process_idx, grandparent_idx, parent_idx,
                                    class_idx, activity_name, grandparent, parent, class, attribute, attr_value, node_value)
 
     select ghgr_import_id, process_idx, sub_process_idx, grandparent_idx, parent_idx,
            class_idx, activity_name, grandparent, parent, class, attribute, attr_value, node_value
 
-    from ggircs_swrs.descriptor;
+    from ggircs_swrs.additional_data;
 
     -- measured_emission_factor
     insert into ggircs.measured_emission_factor (ghgr_import_id, process_idx, sub_process_idx, units_idx, unit_idx, substances_idx, substance_idx,
@@ -468,11 +468,11 @@ $function$
       alter table ggircs.parent_organisation add constraint ggircs_parent_organisation_report_foreign_key foreign key (report_id) references ggircs.report(id);
 
       -- Create FK/PK relation between Descriptor and Report
-      alter table ggircs.descriptor add column report_id int;
-      create index ggircs_descriptor_report_index on ggircs.descriptor (report_id);
-      update ggircs.descriptor set report_id = report.id from ggircs.report
-          where descriptor.ghgr_import_id = report.ghgr_import_id;
-      alter table ggircs.descriptor add constraint ggircs_descriptor_report_foreign_key foreign key (report_id) references ggircs.report(id);
+      alter table ggircs.additional_data add column report_id int;
+      create index ggircs_additional_data_report_index on ggircs.additional_data (report_id);
+      update ggircs.additional_data set report_id = report.id from ggircs.report
+          where additional_data.ghgr_import_id = report.ghgr_import_id;
+      alter table ggircs.additional_data add constraint ggircs_additional_data_report_foreign_key foreign key (report_id) references ggircs.report(id);
 
       -- Create FK/PK relation between Fuel and Report
       alter table ggircs.fuel add column report_id int;
@@ -522,14 +522,14 @@ $function$
       alter table ggircs.contact add constraint ggircs_contact_address_foreign_key foreign key (address_id) references ggircs.address(id);
 
       -- Create FK/PK relation between Descriptor and Activity
-      alter table ggircs.descriptor add column activity_id int;
-      create index ggircs_descriptor_activity_index on ggircs.descriptor (activity_id);
-      update ggircs.descriptor set activity_id = activity.id from ggircs.activity
-          where descriptor.ghgr_import_id = activity.ghgr_import_id
-            and descriptor.process_idx = activity.process_idx
-            and descriptor.sub_process_idx = activity.sub_process_idx
-            and descriptor.activity_name = activity.activity_name;
-      alter table ggircs.descriptor add constraint ggircs_descriptor_activity_foreign_key foreign key (activity_id) references ggircs.activity(id);
+      alter table ggircs.additional_data add column activity_id int;
+      create index ggircs_additional_data_activity_index on ggircs.additional_data (activity_id);
+      update ggircs.additional_data set activity_id = activity.id from ggircs.activity
+          where additional_data.ghgr_import_id = activity.ghgr_import_id
+            and additional_data.process_idx = activity.process_idx
+            and additional_data.sub_process_idx = activity.sub_process_idx
+            and additional_data.activity_name = activity.activity_name;
+      alter table ggircs.additional_data add constraint ggircs_additional_data_activity_foreign_key foreign key (activity_id) references ggircs.activity(id);
 
       -- Create FK/PK relation between Fuel and Unit
       alter table ggircs.fuel add column unit_id int;
@@ -592,7 +592,7 @@ $function$
     alter table ggircs.activity drop column process_idx, drop column sub_process_idx;
     alter table ggircs.address drop column contact_idx, drop column parent_organisation_idx;
     alter table ggircs.contact drop column contact_idx;
-    alter table ggircs.descriptor
+    alter table ggircs.additional_data
         drop column process_idx,
         drop column sub_process_idx,
         drop column grandparent_idx,

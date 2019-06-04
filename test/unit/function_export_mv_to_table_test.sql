@@ -753,7 +753,7 @@ $do$
    declare mv_array text[] := $${report, organisation, facility,
                        activity, unit, identifier, naics, emission,
                        final_report, fuel, permit, parent_organisation, contact,
-                       address, descriptor, measured_emission_factor}$$;
+                       address, additional_data, measured_emission_factor}$$;
     begin
       for i in 1 .. array_upper(mv_array, 1)
           loop
@@ -782,7 +782,7 @@ select tables_are('ggircs'::name, ARRAY[
     'parent_organisation'::name,
     'contact'::name,
     'address'::name,
-    'descriptor'::name,
+    'additional_data'::name,
     'measured_emission_factor'::name
     ],
     $$
@@ -790,7 +790,7 @@ select tables_are('ggircs'::name, ARRAY[
                              report, organisation, facility, activity,
                              unit, identifier, naics. emission, attributable_emission, final_report,
                              fuel, permit, parent_organisation, contact, address
-                             descriptor, measured_emission_factor
+                             additional_data, measured_emission_factor
     $$
 );
 
@@ -809,7 +809,7 @@ select has_pk('ggircs', 'permit', 'ggircs_permit has primary key');
 select has_pk('ggircs', 'parent_organisation', 'ggircs_parent_organisation has primary key');
 select has_pk('ggircs', 'contact', 'ggircs_contact has primary key');
 select has_pk('ggircs', 'address', 'ggircs_address has primary key');
-select has_pk('ggircs', 'descriptor', 'ggircs_descriptor has primary key');
+select has_pk('ggircs', 'additional_data', 'ggircs_additional_data has primary key');
 select has_pk('ggircs', 'measured_emission_factor', 'ggircs_measured_emission_factor has primary key');
 
 
@@ -828,7 +828,7 @@ select has_fk('ggircs', 'permit', 'ggircs_permit has foreign key constraint(s)')
 -- select has_fk('ggircs', 'parent_organisation', 'ggircs_parent_organisation has foreign key constraint(s)');
 select has_fk('ggircs', 'contact', 'ggircs_contact has foreign key constraint(s)');
 select has_fk('ggircs', 'address', 'ggircs_address has foreign key constraint(s)');
-select has_fk('ggircs', 'descriptor', 'ggircs_descriptor has foreign key constraint(s)');
+select has_fk('ggircs', 'additional_data', 'ggircs_additional_data has foreign key constraint(s)');
 select has_fk('ggircs', 'measured_emission_factor', 'ggircs_measured_emission_factor has foreign key constraint(s)');
 
 -- All tables in schema ggircs have data
@@ -847,7 +847,7 @@ select isnt_empty('select * from ggircs.permit', 'there is data in ggircs.permit
 select isnt_empty('select * from ggircs.parent_organisation', 'there is data in ggircs.parent_organisation');
 select isnt_empty('select * from ggircs.contact', 'there is data in ggircs.contact');
 select isnt_empty('select * from ggircs.address', 'there is data in ggircs.address');
-select isnt_empty('select * from ggircs.descriptor', 'there is data in ggircs.descriptor');
+select isnt_empty('select * from ggircs.additional_data', 'there is data in ggircs.additional_data');
 select isnt_empty('select * from ggircs.measured_emission_factor', 'there is data in ggircs.measured_emission_factor');
 
 -- No CO2bioC in attributable_emission
@@ -911,14 +911,14 @@ select results_eq(
 -- Descriptor -> Activity
 select results_eq(
     $$
-    select distinct(activity.ghgr_import_id) from ggircs.descriptor
+    select distinct(activity.ghgr_import_id) from ggircs.additional_data
     join ggircs.activity
-    on descriptor.activity_id = activity.id
+    on additional_data.activity_id = activity.id
     $$,
 
     'select distinct(ghgr_import_id) from ggircs.activity',
 
-    'Foreign key activity_id in ggircs.descriptor references ggircs.activity.id'
+    'Foreign key activity_id in ggircs.additional_data references ggircs.activity.id'
 );
 
 -- Activity -> Report
@@ -1196,14 +1196,14 @@ select results_eq(
 -- Descriptor -> Report
 select results_eq(
     $$
-    select distinct(report.ghgr_import_id) from ggircs.descriptor
+    select distinct(report.ghgr_import_id) from ggircs.additional_data
     join ggircs.report
-    on descriptor.report_id = report.id
+    on additional_data.report_id = report.id
     $$,
 
     'select distinct(ghgr_import_id) from ggircs.report',
 
-    'Foreign key report_id in ggircs.descriptor references ggircs.report.id'
+    'Foreign key report_id in ggircs.additional_data references ggircs.report.id'
 );
 
 -- Fuel -> Report
@@ -1832,7 +1832,7 @@ select results_eq(
 
               'data in ggircs_swrs.address === ggircs.address');
 
--- Data in ggircs_swrs.descriptor === data in ggircs.descriptor
+-- Data in ggircs_swrs.additional_data === data in ggircs.additional_data
 select results_eq(
               $$
               select
@@ -1843,7 +1843,7 @@ select results_eq(
                     attribute,
                     attr_value,
                     node_value
-                from ggircs_swrs.descriptor
+                from ggircs_swrs.additional_data
                 order by
                   ghgr_import_id,
                   grandparent,
@@ -1862,7 +1862,7 @@ select results_eq(
                     attribute,
                     attr_value,
                     node_value
-                from ggircs.descriptor
+                from ggircs.additional_data
                 order by
                   ghgr_import_id,
                   grandparent,
@@ -1872,7 +1872,7 @@ select results_eq(
                  asc
               $$,
 
-              'data in ggircs_swrs.descriptor === ggircs.descriptor');
+              'data in ggircs_swrs.additional_data === ggircs.additional_data');
 
 
 -- Data in ggircs_swrs.measured_emission_factor === data in ggircs.measured_emission_factor
@@ -1917,7 +1917,7 @@ select results_eq(
                        {report, organisation, facility,
                        activity, unit, identifier, naics, emission,
                        final_report, fuel, permit, parent_organisation, contact,
-                       address, descriptor, measured_emission_factor}
+                       address, additional_data, measured_emission_factor}
                        $$;
       begin
         for i in 1 .. array_upper(mv_array, 1)
