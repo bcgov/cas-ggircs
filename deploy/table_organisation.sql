@@ -13,10 +13,10 @@ create table ggircs.organisation
     french_trade_name         varchar(1000),
     cra_business_number       varchar(1000),
     duns                      varchar(1000),
-    website                  varchar(1000)
+    website                   varchar(1000)
 );
 
-comment on table ggircs.organisation is 'the materialized view housing all report data pertaining to the reporting organisation';
+comment on table ggircs.organisation is 'the table housing all report data pertaining to the reporting organisation';
 comment on column ggircs.organisation.id is 'The primary key';
 comment on column ggircs.organisation.ghgr_import_id is 'The internal reference to the file imported from ghgr';
 comment on column ggircs.organisation.swrs_organisation_id is 'The reporting organisation swrs id';
