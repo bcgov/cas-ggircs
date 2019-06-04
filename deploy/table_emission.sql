@@ -23,6 +23,7 @@ create table ggircs.emission (
 );
 
 comment on table ggircs.emission is 'The table containing the information on emissions';
+comment on column ggircs.emission.id is 'The primary key';
 comment on column ggircs.emission.ghgr_import_id is 'A foreign key reference to ggircs.ghgr_import';
 comment on column ggircs.emission.activity_name is 'The name of the activity (partial fk reference)';
 comment on column ggircs.emission.sub_activity_name is 'The name of the sub_activity (partial fk reference)';

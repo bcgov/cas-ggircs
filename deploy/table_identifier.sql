@@ -14,6 +14,7 @@ create table ggircs.identifier(
 );
 
 comment on table ggircs.identifier is 'The table housing information regarding identifiers';
+comment on column ggircs.identifier.id is 'The primary key';
 comment on column ggircs.identifier.ghgr_import_id is 'The foreign key referencing ggrics_swrs.ghgr_import.id';
 comment on column ggircs.identifier.swrs_facility_id is 'The swrs facility id';
 comment on column ggircs.identifier.path_context is 'The path context to the Identifier node (from VerifyTombstone or RegistrationDetails)';
