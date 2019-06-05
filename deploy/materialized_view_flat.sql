@@ -29,6 +29,7 @@ create unique index ggircs_flat_primary_key on ggircs_swrs.flat (ghgr_import_id,
 create index ggircs_flat_report on ggircs_swrs.flat (ghgr_import_id);
 
 comment on materialized view ggircs_swrs.flat is 'The flat view of data in the swrs report';
+comment on column ggircs_swrs.flat.id is 'A generated index used for keying in the ggircs schema';
 comment on column ggircs_swrs.flat.ghgr_import_id is 'The foreign key reference to ggircs_swrs.ghgr_import.id';
 comment on column ggircs_swrs.flat.swrs_report_id is 'The external ReportID as defined by SWRS';
 comment on column ggircs_swrs.flat.element_id is 'The assigned element id';

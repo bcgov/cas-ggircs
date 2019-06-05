@@ -45,6 +45,7 @@ create materialized view ggircs_swrs.fuel as (
 create unique index ggircs_fuel_primary_key on ggircs_swrs.fuel (ghgr_import_id, activity_name, sub_activity_name, unit_name, sub_unit_name, process_idx, sub_process_idx, units_idx, unit_idx, substances_idx, substance_idx, fuel_idx);
 
 comment on materialized view ggircs_swrs.fuel is 'The materialized view containing the information on fuels';
+comment on column ggircs_swrs.fuel.id is 'A generated index used for keying in the ggircs schema';
 comment on column ggircs_swrs.fuel.ghgr_import_id is 'A foreign key reference to ggircs_swrs.ghgr_import';
 comment on column ggircs_swrs.fuel.activity_name is 'The name of the activity (partial fk reference)';
 comment on column ggircs_swrs.fuel.sub_activity_name is 'The name of the sub_activity (partial fk reference)';

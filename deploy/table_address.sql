@@ -51,6 +51,10 @@ create table ggircs.address (
 comment on table ggircs.address is 'The table housing address information for facilities, organisations and contacts';
 comment on column ggircs.address.id is 'The primary key';
 comment on column ggircs.address.ghgr_import_id is 'The foreign key that references ggircs.ghgr_import';
+comment on column ggircs.address.facility_id is 'A foreign key reference to ggircs.facility';
+comment on column ggircs.address.organisation_id is 'A foreign key reference to ggircs.organisation';
+comment on column ggircs.address.parent_organisation_id is 'A foreign key reference to ggircs.parent_organisation';
+comment on column ggircs.address.report_id is 'A foreign key reference to ggircs.report';
 comment on column ggircs.address.swrs_facility_id is 'The foreign key that references ggircs.facility';
 comment on column ggircs.address.swrs_organisation_id is 'The foreign key that references ggircs.organisation';
 comment on column ggircs.address.path_context is 'The ancestor path context (VerifyTombstone or RegistrationData)';

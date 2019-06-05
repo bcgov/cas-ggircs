@@ -24,6 +24,7 @@ create materialized view ggircs_swrs.naics as (
 create unique index ggircs_naics_primary_key on ggircs_swrs.naics (ghgr_import_id, swrs_facility_id, path_context, naics_code_idx);
 
 comment on materialized view ggircs_swrs.naics is 'The materialized view housing all report data pertaining to naics';
+comment on column ggircs_swrs.naics.id is 'A generated index used for keying in the ggircs schema';
 comment on column ggircs_swrs.naics.ghgr_import_id is 'The foreign key reference to ggircs_swrs.ghgr_import.id';
 comment on column ggircs_swrs.naics.swrs_facility_id is 'The reporting facility swrs id, fk to ggircs_swrs.facility';
 comment on column ggircs_swrs.naics.path_context is 'The ancestor context from which this naics code was selected (from VerifyTombstone or RegistrationData)';

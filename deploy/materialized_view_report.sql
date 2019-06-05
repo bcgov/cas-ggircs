@@ -54,6 +54,7 @@ create unique index ggircs_report_primary_key on ggircs_swrs.report (ghgr_import
 create index ggircs_swrs_report_history on ggircs_swrs.report (swrs_report_history_id);
 
 comment on materialized view ggircs_swrs.report is 'The materialized view housing all report data, derived from ghgr_import table';
+comment on column ggircs_swrs.report.id is 'A generated index used for keying in the ggircs schema';
 comment on column ggircs_swrs.report.ghgr_import_id is 'The internal primary key for the file';
 comment on column ggircs_swrs.report.source_xml is 'The raw xml file imported from GHGR';
 comment on column ggircs_swrs.report.imported_at is 'The timestamp noting when the file was imported';

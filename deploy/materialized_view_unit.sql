@@ -41,6 +41,7 @@ create materialized view ggircs_swrs.unit as (
 create unique index ggircs_unit_primary_key on ggircs_swrs.unit (ghgr_import_id, activity_name, process_idx, sub_process_idx, units_idx, unit_idx);
 
 comment on materialized view ggircs_swrs.unit is 'The materialized view containing the information on swrs machinery units';
+comment on column ggircs_swrs.unit.id is 'A generated index used for keying in the ggircs schema';
 comment on column ggircs_swrs.unit.ghgr_import_id is 'A foreign key reference to ggircs_swrs.ghgr_import.id';
 comment on column ggircs_swrs.unit.activity_name is 'The name of the activity';
 comment on column ggircs_swrs.unit.process_idx is 'The number of preceding Process siblings before this Process';

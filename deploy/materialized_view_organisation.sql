@@ -48,6 +48,7 @@ create materialized view ggircs_swrs.organisation as (
 create unique index ggircs_organisation_primary_key on ggircs_swrs.organisation (ghgr_import_id, swrs_organisation_id);
 
 comment on materialized view ggircs_swrs.organisation is 'the materialized view housing all report data pertaining to the reporting organisation';
+comment on column ggircs_swrs.organisation.id is 'A generated index used for keying in the ggircs schema';
 comment on column ggircs_swrs.organisation.ghgr_import_id is 'The internal reference to the file imported from ghgr';
 comment on column ggircs_swrs.organisation.swrs_organisation_id is 'The reporting organisation swrs id';
 comment on column ggircs_swrs.organisation.business_legal_name is 'The legal business name of the reporting organisation';

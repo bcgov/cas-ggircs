@@ -24,6 +24,10 @@ create table ggircs.facility (
 comment on table ggircs.facility is 'the table housing all report data pertaining to the reporting facility';
 comment on column ggircs.facility.id is 'The primary key';
 comment on column ggircs.facility.ghgr_import_id is 'The primary key for the materialized view';
+comment on column ggircs.facility.identifier_id is 'A foreign key reference to ggircs.identifier';
+comment on column ggircs.facility.naics_id is 'A foreign key reference to ggircs.naics';
+comment on column ggircs.facility.organisation_id is 'A foreign key reference to ggircs.organisation';
+comment on column ggircs.facility.report_id is 'A foreign key reference to ggircs.report';
 comment on column ggircs.facility.swrs_facility_id is 'The reporting facility swrs id';
 comment on column ggircs.facility.facility_name is 'The name of the reporting facility';
 comment on column ggircs.facility.facility_type is 'The type of the reporting facility';

@@ -21,6 +21,8 @@ create table ggircs.additional_data (
 comment on table ggircs.additional_data is 'The table containing the information on additional_data (descriptors)';
 comment on column ggircs.additional_data.id is 'The primary key';
 comment on column ggircs.additional_data.ghgr_import_id is 'A foreign key reference to ggircs.ghgr_import';
+comment on column ggircs.additional_data.activity_id is 'A foreign key reference to ggircs.activity';
+comment on column ggircs.additional_data.report_id is 'A foreign key reference to ggircs.report';
 comment on column ggircs.additional_data.activity_name is 'The name of the node immediately after ReportData';
 comment on column ggircs.additional_data.grandparent is 'The name of the grandparent node';
 comment on column ggircs.additional_data.parent is 'The name of the parent node';

@@ -22,6 +22,7 @@ create materialized view ggircs_swrs.activity as (
 create unique index ggircs_activity_primary_key on ggircs_swrs.activity (ghgr_import_id, process_idx, sub_process_idx, activity_name);
 
 comment on materialized view ggircs_swrs.activity is 'The materialized view for Process and SubProcess from each SWRS report (the "activity")';
+comment on column ggircs_swrs.activity.id is 'A generated index used for keying in the ggircs schema';
 comment on column ggircs_swrs.activity.ghgr_import_id is 'A foreign key reference to ggircs_swrs.ghgr_import.id';
 comment on column ggircs_swrs.activity.process_idx is 'The number of preceding Process siblings before this activity';
 comment on column ggircs_swrs.activity.sub_process_idx is 'The number of preceding SubProcess siblings before this activity';

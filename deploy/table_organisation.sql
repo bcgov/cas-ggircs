@@ -20,6 +20,8 @@ create table ggircs.organisation
 
 comment on table ggircs.organisation is 'the table housing all report data pertaining to the reporting organisation';
 comment on column ggircs.organisation.id is 'The primary key';
+comment on column ggircs.organisation.parent_organisation_id is 'A foreign key reference to ggircs.parent_organisation';
+comment on column ggircs.organisation.report_id is 'A foreign key reference to ggircs.report';
 comment on column ggircs.organisation.ghgr_import_id is 'The internal reference to the file imported from ghgr';
 comment on column ggircs.organisation.swrs_organisation_id is 'The reporting organisation swrs id';
 comment on column ggircs.organisation.business_legal_name is 'The legal business name of the reporting organisation';

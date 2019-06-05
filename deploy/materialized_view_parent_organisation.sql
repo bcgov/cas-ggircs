@@ -25,6 +25,7 @@ create unique index ggircs_parent_organisation_primary_key
     on ggircs_swrs.parent_organisation (ghgr_import_id, path_context, parent_organisation_idx);
 
 comment on materialized view ggircs_swrs.parent_organisation is 'The materialized view housing parent organisation information';
+comment on column ggircs_swrs.parent_organisation.id is 'A generated index used for keying in the ggircs schema';
 comment on column ggircs_swrs.parent_organisation.ghgr_import_id is 'The foreign key reference to ggircs_swrs.ghgr_import';
 comment on column ggircs_swrs.parent_organisation.path_context is 'The path context used to reach the ParentOrganisation node (VerifyTombstone or RegistrationData';
 comment on column ggircs_swrs.parent_organisation.parent_organisation_idx is 'The number of preceding ParentOrganisation nodes before this ParentOrganisation node';

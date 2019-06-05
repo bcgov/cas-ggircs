@@ -18,6 +18,7 @@ create table ggircs.permit (
 comment on table ggircs.permit is 'The table housing permit information';
 comment on column ggircs.permit.id is 'The primary key';
 comment on column ggircs.permit.ghgr_import_id is 'The foreign key reference to ggircs.ghgr_import';
+comment on column ggircs.permit.facility_id is 'A foreign key reference to ggircs.facility';
 comment on column ggircs.permit.path_context is 'The context of the parent path (from VerifyTombstone or RegistrationData';
 comment on column ggircs.permit.issuing_agency is 'The issuing agency for this permit';
 comment on column ggircs.permit.issuing_dept_agency_program is 'The issuing agency program for this permit';

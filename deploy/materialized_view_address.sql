@@ -90,6 +90,7 @@ create unique index ggircs_address_primary_key
     on ggircs_swrs.address (ghgr_import_id, swrs_facility_id, swrs_organisation_id, type, contact_idx, parent_organisation_idx);
 
 comment on materialized view ggircs_swrs.address is 'The materialized view housing address information for facilities, organisations and contacts';
+comment on column ggircs_swrs.address.id is 'A generated index used for keying in the ggircs schema';
 comment on column ggircs_swrs.address.ghgr_import_id is 'The foreign key that references ggircs_swrs.ghgr_import';
 comment on column ggircs_swrs.address.swrs_facility_id is 'The foreign key that references ggircs_swrs.facility';
 comment on column ggircs_swrs.address.swrs_organisation_id is 'The foreign key that references ggircs_swrs.organisation';

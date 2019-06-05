@@ -30,6 +30,7 @@ create materialized view ggircs_swrs.identifier as (
 create unique index ggircs_identifier_primary_key on ggircs_swrs.identifier (ghgr_import_id, swrs_facility_id, path_context, identifier_idx);
 
 comment on materialized view ggircs_swrs.identifier is 'The materialized view housing information regarding identifiers';
+comment on column ggircs_swrs.identifier.id is 'A generated index used for keying in the ggircs schema';
 comment on column ggircs_swrs.identifier.ghgr_import_id is 'The foreign key referencing ggrics_swrs.ghgr_import.id';
 comment on column ggircs_swrs.identifier.swrs_facility_id is 'The swrs facility id';
 comment on column ggircs_swrs.identifier.path_context is 'The path context to the Identifier node (from VerifyTombstone or RegistrationDetails)';

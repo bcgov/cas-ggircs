@@ -30,6 +30,7 @@ create materialized view ggircs_swrs.final_report as (
 create unique index ggircs_final_report_primary_key on ggircs_swrs.final_report (swrs_report_id, ghgr_import_id);
 
 comment on materialized view ggircs_swrs.final_report is 'The view showing the latest submitted report by ggircs_swrs.report.id';
+comment on column ggircs_swrs.final_report.id is 'A generated index used for keying in the ggircs schema';
 comment on column ggircs_swrs.final_report.swrs_report_id is 'The foreign key referencing ggircs_swrs.report.id';
 comment on column ggircs_swrs.final_report.ghgr_import_id is 'The foreign key referencing ggircs_swrs.ghgr_import.id';
 

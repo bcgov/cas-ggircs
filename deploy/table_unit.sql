@@ -28,6 +28,7 @@ create table ggircs.unit (
 comment on table ggircs.unit is 'The table containing the information on swrs machinery units';
 comment on column ggircs.unit.id is 'The primary key';
 comment on column ggircs.unit.ghgr_import_id is 'A foreign key reference to ggircs.ghgr_import.id';
+comment on column ggircs.unit.activity_id is 'A foreign key reference to ggircs.activity';
 comment on column ggircs.unit.activity_name is 'The name of the activity';
 comment on column ggircs.unit.unit_name is 'The name of the unit of machinery emitting greenhouse gas';
 comment on column ggircs.unit.unit_description is 'The description of the unit of machinery emitting greenhouse gas';

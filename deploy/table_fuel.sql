@@ -34,6 +34,8 @@ create table ggircs.fuel (
 comment on table ggircs.fuel is 'The table containing the information on fuels';
 comment on column ggircs.fuel.id is 'The primary key';
 comment on column ggircs.fuel.ghgr_import_id is 'A foreign key reference to ggircs.ghgr_import';
+comment on column ggircs.fuel.report_id is 'A foreign key reference to ggircs.report';
+comment on column ggircs.fuel.unit_id is 'A foreign key reference to ggircs.unit';
 comment on column ggircs.fuel.activity_name is 'The name of the activity (partial fk reference)';
 comment on column ggircs.fuel.sub_activity_name is 'The name of the sub_activity (partial fk reference)';
 comment on column ggircs.fuel.unit_name is 'The name of the unit (partial fk reference)';

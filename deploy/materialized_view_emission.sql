@@ -44,6 +44,7 @@ create unique index ggircs_emission_primary_key on ggircs_swrs.emission (ghgr_im
                                                                          fuel_idx, fuel_name, emissions_idx, emission_idx);
 
 comment on materialized view ggircs_swrs.emission is 'The materialized view containing the information on emissions';
+comment on column ggircs_swrs.emission.id is 'A generated index used for keying in the ggircs schema';
 comment on column ggircs_swrs.emission.ghgr_import_id is 'A foreign key reference to ggircs_swrs.ghgr_import';
 comment on column ggircs_swrs.emission.activity_name is 'The name of the activity (partial fk reference)';
 comment on column ggircs_swrs.emission.sub_activity_name is 'The name of the sub_activity (partial fk reference)';

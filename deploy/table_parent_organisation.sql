@@ -20,6 +20,7 @@ create table ggircs.parent_organisation (
 comment on table ggircs.parent_organisation is 'The table housing parent organisation information';
 comment on column ggircs.parent_organisation.id is 'The primary key';
 comment on column ggircs.parent_organisation.ghgr_import_id is 'The foreign key reference to ggircs.ghgr_import';
+comment on column ggircs.parent_organisation.report_id is 'A foreign key reference to ggircs.report';
 comment on column ggircs.parent_organisation.path_context is 'The path context used to reach the ParentOrganisation node (VerifyTombstone or RegistrationData';
 comment on column ggircs.parent_organisation.percentage_owned is 'The % owned by this parent organisation';
 comment on column ggircs.parent_organisation.french_trade_name is 'The french trade name of this parent organisation';

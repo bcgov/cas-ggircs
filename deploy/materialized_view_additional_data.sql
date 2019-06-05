@@ -88,6 +88,7 @@ create unique index ggircs_additional_data_primary_key on ggircs_swrs.additional
 
 
 comment on materialized view ggircs_swrs.additional_data is 'The materialized view containing the information on additional_data (descriptors)';
+comment on column ggircs_swrs.additional_data.id is 'A generated index used for keying in the ggircs schema';
 comment on column ggircs_swrs.additional_data.ghgr_import_id is 'A foreign key reference to ggircs_swrs.ghgr_import';
 comment on column ggircs_swrs.additional_data.activity_name is 'The name of the node immediately after ReportData';
 comment on column ggircs_swrs.additional_data.process_idx is 'The number of preceding Process siblings before this node';
