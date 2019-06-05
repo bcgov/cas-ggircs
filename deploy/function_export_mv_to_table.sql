@@ -88,7 +88,6 @@ $function$
     with x as (select * from ggircs_swrs.identifier where identifier_type = 'BCGHGID' and identifier_value is not null and identifier_value != '' order by path_context asc)
     update ggircs.facility as f set identifier_id = x.id from x where f.ghgr_import_id = x.ghgr_import_id;
 
-
     -- ACTIVITY
     insert into ggircs.activity (id, ghgr_import_id, facility_id, report_id,  activity_name, process_name, sub_process_name, information_requirement)
 
@@ -211,7 +210,6 @@ $function$
       and _emission.units_idx = _unit.units_idx
       and _emission.unit_idx = _unit.unit_idx;
 
-
     -- FINAL REPORT
     insert into ggircs.final_report (id, ghgr_import_id, swrs_report_id)
 
@@ -288,9 +286,9 @@ $function$
     --FK Contact -> Facility
     left join ggircs_swrs.facility as _facility
       on _contact.ghgr_import_id = _facility.ghgr_import_id
+    --FK Contact -> Report
     left join ggircs_swrs.report as _report
       on _contact.ghgr_import_id = _report.ghgr_import_id;
-
 
     -- ADDRESS
     insert into ggircs.address (id, ghgr_import_id, facility_id, organisation_id, parent_organisation_id, report_id, swrs_facility_id, swrs_organisation_id, path_context, type, physical_address_municipality, physical_address_unit_number,
@@ -510,6 +508,58 @@ $function$
 --       update ggircs.attributable_emission set facility_id = facility.id from ggircs.facility
 --           where attributable_emission.ghgr_import_id = facility.ghgr_import_id;
 --       alter table ggircs.attributable_emission add constraint ggircs_attributable_emission_facility_foreign_key foreign key (facility_id) references ggircs.facility(id);
+
+    /** Create Foreign Key Constraints **/
+
+    alter table ggircs.organisation add constraint ggircs_organisation_parent_organisation_foreign_key foreign key (parent_organisation_id) references ggircs.parent_organisation(id);
+    alter table ggircs.organisation add constraint ggircs_organisation_report_foreign_key foreign key (report_id) references ggircs.report(id);
+
+    alter table ggircs.facility add constraint ggircs_facility_naics_foreign_key foreign key (naics_id) references ggircs.naics(id);
+    alter table ggircs.facility add constraint ggircs_facility_organisation_foreign_key foreign key (organisation_id) references ggircs.organisation(id);
+    alter table ggircs.facility add constraint ggircs_facility_report_foreign_key foreign key (report_id) references ggircs.report(id);
+    alter table ggircs.facility add constraint ggircs_facility_identifier_foreign_key foreign key (identifier_id) references ggircs.identifier(id);
+
+    alter table ggircs.activity add constraint ggircs_activity_facility_foreign_key foreign key (facility_id) references ggircs.facility(id);
+    alter table ggircs.activity add constraint ggircs_activity_report_foreign_key foreign key (report_id) references ggircs.report(id);
+
+    alter table ggircs.identifier add constraint ggircs_identifier_facility_foreign_key foreign key (facility_id) references ggircs.facility(id);
+    alter table ggircs.identifier add constraint ggircs_identifier_report_foreign_key foreign key (report_id) references ggircs.report(id);
+
+    alter table ggircs.unit add constraint ggircs_unit_activity_foreign_key foreign key (activity_id) references ggircs.activity(id);
+
+    alter table ggircs.naics add constraint ggircs_naics_facility_foreign_key foreign key (facility_id) references ggircs.facility(id);
+    alter table ggircs.naics add constraint ggircs_naics_report_foreign_key foreign key (report_id) references ggircs.report(id);
+    alter table ggircs.naics add constraint ggircs_naics_naics_mapping_foreign_key foreign key (naics_mapping_id) references ggircs_swrs.naics_mapping(id);
+
+    alter table ggircs.emission add constraint ggircs_emission_activity_foreign_key foreign key (activity_id) references ggircs.activity(id);
+    alter table ggircs.emission add constraint ggircs_emission_facility_foreign_key foreign key (facility_id) references ggircs.facility(id);
+    alter table ggircs.emission add constraint ggircs_emission_fuel_foreign_key foreign key (fuel_id) references ggircs.fuel(id);
+    alter table ggircs.emission add constraint ggircs_emission_naics_foreign_key foreign key (naics_id) references ggircs.naics(id);
+    alter table ggircs.emission add constraint ggircs_emission_organisation_foreign_key foreign key (organisation_id) references ggircs.organisation(id);
+    alter table ggircs.emission add constraint ggircs_emission_report_foreign_key foreign key (report_id) references ggircs.report(id);
+    alter table ggircs.emission add constraint ggircs_emission_unit_foreign_key foreign key (unit_id) references ggircs.unit(id);
+
+    alter table ggircs.fuel add constraint ggircs_fuel_report_foreign_key foreign key (report_id) references ggircs.report(id);
+    alter table ggircs.fuel add constraint ggircs_fuel_unit_foreign_key foreign key (unit_id) references ggircs.unit(id);
+
+    alter table ggircs.permit add constraint ggircs_permit_facility_foreign_key foreign key (facility_id) references ggircs.facility(id);
+
+    alter table ggircs.parent_organisation add constraint ggircs_parent_organisation_report_foreign_key foreign key (report_id) references ggircs.report(id);
+
+    alter table ggircs.contact add constraint ggircs_contact_address_foreign_key foreign key (address_id) references ggircs.address(id);
+    alter table ggircs.contact add constraint ggircs_contact_facility_foreign_key foreign key (facility_id) references ggircs.facility(id);
+    alter table ggircs.contact add constraint ggircs_contact_report_foreign_key foreign key (report_id) references ggircs.report(id);
+
+    alter table ggircs.address add constraint ggircs_address_facility_foreign_key foreign key (facility_id) references ggircs.facility(id);
+    alter table ggircs.address add constraint ggircs_address_organisation_foreign_key foreign key (organisation_id) references ggircs.organisation(id);
+    alter table ggircs.address add constraint ggircs_parent_organisation_facility_foreign_key foreign key (parent_organisation_id) references ggircs.parent_organisation(id);
+    alter table ggircs.address add constraint ggircs_address_report_foreign_key foreign key (report_id) references ggircs.report(id);
+
+    alter table ggircs.additional_data add constraint ggircs_additional_data_activity_foreign_key foreign key (activity_id) references ggircs.activity(id);
+    alter table ggircs.additional_data add constraint ggircs_additional_data_report_foreign_key foreign key (report_id) references ggircs.report(id);
+
+    alter table ggircs.measured_emission_factor add constraint ggircs_measured_emission_factor_fuel_foreign_key foreign key (fuel_id) references ggircs.fuel(id);
+
 
 
     -- Refresh materialized views with no data
