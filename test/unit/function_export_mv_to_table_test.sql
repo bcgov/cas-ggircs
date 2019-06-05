@@ -4,7 +4,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(94);
+select plan(102);
 
 insert into ggircs_swrs.ghgr_import (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -932,6 +932,20 @@ select results_eq(
 );
 
 -- Facility -> Organisation
+select results_eq(
+    $$
+    select organisation.ghgr_import_id from ggircs.facility
+    join ggircs.organisation
+    on
+        facility.organisation_id = organisation.id
+    order by organisation.ghgr_import_id
+    $$,
+
+    'select ghgr_import_id from ggircs.organisation order by organisation.ghgr_import_id',
+
+    'Foreign key organisation_id in ggircs.facility references ggircs.organisation.id'
+
+);
 
 -- Facility -> Report
 select results_eq(
@@ -950,8 +964,46 @@ select results_eq(
 
 -- Todo: missing attributable emission tests
 -- Attributable Emission -> Activity
+select results_eq(
+    $$
+    select activity.activity_name from ggircs.attributable_emission
+    join ggircs.activity
+    on
+      attributable_emission.activity_id = activity.id
+    $$,
+
+    $$ select activity.activity_name from ggircs.emission as emission
+       join ggircs.fuel as fuel
+       on emission.fuel_id = fuel.id
+       join ggircs.unit as unit
+       on fuel.unit_id = unit.id
+       join ggircs.activity as activity
+       on unit.activity_id = activity.id
+       and fuel.ghgr_import_id=2
+       and gas_type !='CO2bioC' $$,
+
+    'Foreign key activity_id in ggircs.attributable_emission references ggircs.activity.id'
+);
 
 -- Attributable Emission -> Facility
+select results_eq(
+    $$
+    select facility.facility_name from ggircs.attributable_emission
+    join ggircs.facility
+    on
+      attributable_emission.facility_id = facility.id
+    $$,
+
+    $$ select facility.facility_name from ggircs.emission as emission
+       join ggircs.facility as facility
+       on emission.facility_id = facility.id
+       and facility_type != 'EIO'
+       and facility_type != 'LFO'
+       and gas_type !='CO2bioC' $$,
+
+    'Foreign key facility_id in ggircs.attributable_emission references ggircs.facility.id'
+);
+
 
 -- Attributable Emission -> Fuel
 select results_eq(
@@ -973,12 +1025,77 @@ select results_eq(
 );
 
 -- Attributable Emission -> Naics
+select results_eq(
+    $$
+    select naics.naics_code from ggircs.attributable_emission
+    join ggircs.naics
+    on
+      attributable_emission.naics_id = naics.id
+    $$,
+
+    $$ select naics.naics_code from ggircs.emission as emission
+       join ggircs.naics as naics
+       on emission.naics_id = naics.id
+       and emission.ghgr_import_id=2
+       and gas_type !='CO2bioC' $$,
+
+    'Foreign key naics_id in ggircs.attributable_emission references ggircs.naics.id'
+);
 
 -- Attributable Emission -> Organisation
 
+select results_eq(
+    $$
+    select organisation.swrs_organisation_id from ggircs.attributable_emission
+    join ggircs.organisation
+    on
+      attributable_emission.organisation_id = organisation.id
+    $$,
+
+    $$ select organisation.swrs_organisation_id from ggircs.emission as emission
+       join ggircs.organisation as organisation
+       on emission.organisation_id = organisation.id
+       and emission.ghgr_import_id=2
+       and gas_type !='CO2bioC' $$,
+
+    'Foreign key organisation_id in ggircs.attributable_emission references ggircs.organisation.id'
+);
+
 -- Attributable Emission -> Report
+select results_eq(
+    $$
+    select report.ghgr_import_id from ggircs.attributable_emission
+    join ggircs.report
+    on
+      attributable_emission.report_id = report.id
+    $$,
+
+    $$ select report.ghgr_import_id from ggircs.emission as emission
+       join ggircs.report as report
+       on emission.report_id = report.id
+       and emission.ghgr_import_id=2
+       and gas_type !='CO2bioC' $$,
+
+    'Foreign key report_id in ggircs.attributable_emission references ggircs.report.id'
+);
 
 -- Attributable Emission -> Unit
+select results_eq(
+    $$
+    select unit.unit_name from ggircs.attributable_emission
+    join ggircs.unit
+    on
+      attributable_emission.unit_id = unit.id
+    $$,
+
+    $$ select unit.unit_name from ggircs.emission as emission
+       join ggircs.unit as unit
+       on emission.unit_id = unit.id
+       and emission.ghgr_import_id=2
+       and gas_type !='CO2bioC' $$,
+
+    'Foreign key unit_id in ggircs.attributable_emission references ggircs.unit.id'
+);
 
 -- Fuel -> Report
 select results_eq(
@@ -1181,8 +1298,19 @@ select results_eq(
     'Foreign key parent_organisation_id in ggircs.organisation references ggircs.parent_organisation.id'
 );
 
--- TODO:
 -- Organisation -> Report
+select results_eq(
+
+    $$
+    select report.ghgr_import_id from ggircs.organisation
+    join ggircs.report
+    on organisation.report_id = report.id
+    $$,
+
+    'select ghgr_import_id from ggircs.report',
+
+    'Foreign key report_id in ggircs.organisation references ggircs.report'
+);
 
 -- Parent Organisation -> Report
 select results_eq(
