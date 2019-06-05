@@ -7,6 +7,8 @@ create table ggircs.fuel (
 
     id                                  integer primary key,
     ghgr_import_id                      integer,
+    report_id                           integer,
+    unit_id                             integer,
     activity_name                       varchar(1000),
     sub_activity_name                   varchar(1000),
     unit_name                           varchar(1000),

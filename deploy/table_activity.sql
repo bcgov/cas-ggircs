@@ -6,6 +6,8 @@ begin;
 create table ggircs.activity (
 
     id                        integer primary key,
+    facility_id               integer,
+    report_id                 integer,
     ghgr_import_id            integer,
     activity_name             varchar(1000),
     process_name              varchar(1000),

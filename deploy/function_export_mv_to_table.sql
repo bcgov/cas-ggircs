@@ -75,28 +75,46 @@ $function$
     left join ggircs_swrs.report as _report
     on _facility.ghgr_import_id = _report.ghgr_import_id;
 
+    -- FK Facility -> Identifier
     --Todo: Can this be brought into the join and still work (use our same hierarchy rules for RD vs VT?)
     with x as (select * from ggircs_swrs.identifier where identifier_type = 'BCGHGID' and identifier_value is not null and identifier_value != '' order by path_context asc)
     update ggircs.facility as f set identifier_id = x.id from x where f.ghgr_import_id = x.ghgr_import_id;
 
 
     -- activity
-    insert into ggircs.activity (id, ghgr_import_id, activity_name, process_name, sub_process_name, information_requirement)
+    insert into ggircs.activity (id, ghgr_import_id, facility_id, report_id,  activity_name, process_name, sub_process_name, information_requirement)
 
-    select id, ghgr_import_id,  activity_name, process_name, sub_process_name, information_requirement
+    select _activity.id, _activity.ghgr_import_id,  _facility.id, _report.id, _activity.activity_name, _activity.process_name, _activity.sub_process_name, _activity.information_requirement
 
-    from ggircs_swrs.activity;
+    from ggircs_swrs.activity
+
+    left join ggircs_swrs.activity as _activity on activity.id = _activity.id
+    -- FK Activity -> Facility
+    left join ggircs_swrs.facility as _facility
+      on _activity.ghgr_import_id = _facility.ghgr_import_id
+    -- FK Activity -> Report
+    left join ggircs_swrs.report as _report
+      on _activity.ghgr_import_id = _report.ghgr_import_id;
 
     -- unit
-    insert into ggircs.unit (id, ghgr_import_id, activity_name, unit_name, unit_description, cogen_unit_name, cogen_cycle_type, cogen_nameplate_capacity,
+    insert into ggircs.unit (id, ghgr_import_id, activity_id, activity_name, unit_name, unit_description, cogen_unit_name, cogen_cycle_type, cogen_nameplate_capacity,
                              cogen_net_power, cogen_steam_heat_acq_quantity, cogen_steam_heat_acq_name, cogen_supplemental_firing_purpose, cogen_thermal_output_quantity,
                              non_cogen_nameplate_capacity, non_cogen_net_power, non_cogen_unit_name)
 
-    select id, ghgr_import_id,  activity_name, unit_name, unit_description, cogen_unit_name, cogen_cycle_type, cogen_nameplate_capacity,
-           cogen_net_power, cogen_steam_heat_acq_quantity, cogen_steam_heat_acq_name, cogen_supplemental_firing_purpose, cogen_thermal_output_quantity,
-           non_cogen_nameplate_capacity, non_cogen_net_power, non_cogen_unit_name
+    select _unit.id, _unit.ghgr_import_id, _activity.id, _unit.activity_name, _unit.unit_name, _unit.unit_description, _unit.cogen_unit_name, _unit.cogen_cycle_type,
+           _unit.cogen_nameplate_capacity, _unit.cogen_net_power, _unit.cogen_steam_heat_acq_quantity, _unit.cogen_steam_heat_acq_name, _unit.cogen_supplemental_firing_purpose,
+           _unit.cogen_thermal_output_quantity, _unit.non_cogen_nameplate_capacity, _unit.non_cogen_net_power, _unit.non_cogen_unit_name
 
-    from ggircs_swrs.unit;
+    from ggircs_swrs.unit
+
+    left join ggircs_swrs.unit as _unit on unit.id = _unit.id
+    left join ggircs_swrs.activity as _activity
+      on _unit.ghgr_import_id = _activity.ghgr_import_id
+      and _unit.process_idx = _activity.process_idx
+      and _unit.sub_process_idx = _activity.sub_process_idx
+      and _unit.activity_name = _activity.activity_name;
+
+
 
     -- identifier
     insert into ggircs.identifier(id, ghgr_import_id, swrs_facility_id, path_context, identifier_type, identifier_value)
@@ -175,20 +193,31 @@ $function$
     from ggircs_swrs.final_report;
 
     -- fuel
-    insert into ggircs.fuel(id, ghgr_import_id,
+    insert into ggircs.fuel(id, ghgr_import_id, report_id, unit_id,
                             activity_name, sub_activity_name, unit_name, sub_unit_name, fuel_type, fuel_classification, fuel_description,
                             fuel_units, annual_fuel_amount, annual_weighted_avg_carbon_content, annual_weighted_avg_hhv, annual_steam_generation, alternative_methodology_description,
                             other_flare_details, q1, q2, q3, q4, wastewater_processing_factors, measured_conversion_factors)
 
-    select id, ghgr_import_id,
-           activity_name, sub_activity_name, unit_name, sub_unit_name, fuel_type, fuel_classification, fuel_description,
-           fuel_units, annual_fuel_amount, annual_weighted_avg_carbon_content, annual_weighted_avg_hhv, annual_steam_generation, alternative_methodology_description,
-           other_flare_details, q1, q2, q3, q4, wastewater_processing_factors, measured_conversion_factors
+    select _fuel.id, _fuel.ghgr_import_id, _report.id, _unit.id,
+           _fuel.activity_name, _fuel.sub_activity_name, _fuel.unit_name, _fuel.sub_unit_name, _fuel.fuel_type, _fuel.fuel_classification, _fuel.fuel_description,
+           _fuel.fuel_units, _fuel.annual_fuel_amount, _fuel.annual_weighted_avg_carbon_content, _fuel.annual_weighted_avg_hhv, _fuel.annual_steam_generation,
+           _fuel.alternative_methodology_description, _fuel.other_flare_details, _fuel.q1, _fuel.q2, _fuel.q3, _fuel.q4, _fuel.wastewater_processing_factors, _fuel.measured_conversion_factors
 
-    from ggircs_swrs.fuel;
+    from ggircs_swrs.fuel
+    left join ggircs_swrs.fuel as _fuel on _fuel.id = fuel.id
+    -- FK Fuel -> Report
+    left join ggircs_swrs.report as _report
+    on _fuel.ghgr_import_id = _report.ghgr_import_id
+    -- FK Fuel -> Unit
+    left join ggircs_swrs.unit as _unit
+      on _fuel.ghgr_import_id = _unit.ghgr_import_id
+      and _fuel.process_idx = _unit.process_idx
+      and _fuel.sub_process_idx = _unit.sub_process_idx
+      and _fuel.activity_name = _unit.activity_name
+      and _fuel.units_idx = _unit.units_idx
+      and _fuel.unit_idx = _unit.unit_idx;
 
     -- permit
-
     insert into ggircs.permit(id, ghgr_import_id, path_context, issuing_agency, issuing_dept_agency_program, permit_number)
 
     select id, ghgr_import_id, path_context, issuing_agency, issuing_dept_agency_program, permit_number
@@ -235,13 +264,24 @@ $function$
     from ggircs_swrs.address;
 
     -- additional_data
-    insert into ggircs.additional_data (id, ghgr_import_id,
+    insert into ggircs.additional_data (id, ghgr_import_id, activity_id, report_id,
                                    activity_name, grandparent, parent, class, attribute, attr_value, node_value)
 
-    select id, ghgr_import_id,
-           activity_name, grandparent, parent, class, attribute, attr_value, node_value
+    select _additional_data.id, _additional_data.ghgr_import_id, _activity.id, _report.id, _additional_data.activity_name, _additional_data.grandparent, _additional_data.parent,
+           _additional_data.class, _additional_data.attribute, _additional_data.attr_value, _additional_data.node_value
 
-    from ggircs_swrs.additional_data;
+    from ggircs_swrs.additional_data
+
+    left join ggircs_swrs.additional_data as _additional_data on additional_data.id = _additional_data.id
+    -- FK Additional Data -> Activity
+    left join ggircs_swrs.activity as _activity
+      on _additional_data.ghgr_import_id = _activity.ghgr_import_id
+      and _additional_data.process_idx = _activity.process_idx
+      and _additional_data.sub_process_idx = _activity.sub_process_idx
+      and _additional_data.activity_name = _activity.activity_name
+    -- FK Additional Data -> Report
+    left join ggircs_swrs.report as _report
+      on _additional_data.ghgr_import_id = _report.ghgr_import_id;
 
     -- measured_emission_factor
     insert into ggircs.measured_emission_factor (id, ghgr_import_id,
@@ -425,26 +465,10 @@ $function$
 --           where permit.ghgr_import_id = facility.ghgr_import_id;
 --       alter table ggircs.permit add constraint ggircs_permit_facility_foreign_key foreign key (facility_id) references ggircs.facility(id);
 --
---       -- Create FK/PK relation between Activity and Facility
---       alter table ggircs.activity add column facility_id int;
---       create index ggircs_activity_facility_index on ggircs.activity (facility_id);
---       update ggircs.activity set facility_id = facility.id from ggircs.facility
---           where activity.ghgr_import_id = facility.ghgr_import_id;
---       alter table ggircs.activity add constraint ggircs_activity_facility_foreign_key foreign key (facility_id) references ggircs.facility(id);
---
---       -- Create FK/PK relation between Facility and Identifier (BCGHGID)
---       alter table ggircs.facility add column identifier_id int;
---       create index ggircs_facility_identifier_index on ggircs.facility (identifier_id);
---
---       alter table ggircs.facility add constraint ggircs_facility_identifier_foreign_key foreign key (identifier_id) references ggircs.identifier(id);
+
 --
 --     /** Remaining FK's **/
---       -- Create FK/PK relation between Activity and Report
---       alter table ggircs.activity add column report_id int;
---       create index ggircs_activity_report_index on ggircs.activity (report_id);
---       update ggircs.activity set report_id = report.id from ggircs.report
---           where activity.ghgr_import_id = report.ghgr_import_id;
---       alter table ggircs.activity add constraint ggircs_activity_report_foreign_key foreign key (report_id) references ggircs.report(id);
+
 --
 --       -- Create FK/PK relation between Address and Report
 --       alter table ggircs.address add column report_id int;
@@ -466,20 +490,7 @@ $function$
 --       update ggircs.parent_organisation set report_id = report.id from ggircs.report
 --           where parent_organisation.ghgr_import_id = report.ghgr_import_id;
 --       alter table ggircs.parent_organisation add constraint ggircs_parent_organisation_report_foreign_key foreign key (report_id) references ggircs.report(id);
---
---       -- Create FK/PK relation between Descriptor and Report
---       alter table ggircs.additional_data add column report_id int;
---       create index ggircs_additional_data_report_index on ggircs.additional_data (report_id);
---       update ggircs.additional_data set report_id = report.id from ggircs.report
---           where additional_data.ghgr_import_id = report.ghgr_import_id;
---       alter table ggircs.additional_data add constraint ggircs_additional_data_report_foreign_key foreign key (report_id) references ggircs.report(id);
---
---       -- Create FK/PK relation between Fuel and Report
---       alter table ggircs.fuel add column report_id int;
---       create index ggircs_fuel_report_index on ggircs.fuel (report_id);
---       update ggircs.fuel set report_id = report.id from ggircs.report
---           where fuel.ghgr_import_id = report.ghgr_import_id;
---       alter table ggircs.fuel add constraint ggircs_fuel_report_foreign_key foreign key (report_id) references ggircs.report(id);
+
 --
 --       -- Create FK/PK relation between Naics and Report
 --       alter table ggircs.naics add column report_id int;
@@ -521,40 +532,12 @@ $function$
 --           and   address.contact_idx = contact.contact_idx;
 --       alter table ggircs.contact add constraint ggircs_contact_address_foreign_key foreign key (address_id) references ggircs.address(id);
 --
---       -- Create FK/PK relation between Descriptor and Activity
---       alter table ggircs.additional_data add column activity_id int;
---       create index ggircs_additional_data_activity_index on ggircs.additional_data (activity_id);
---       update ggircs.additional_data set activity_id = activity.id from ggircs.activity
---           where additional_data.ghgr_import_id = activity.ghgr_import_id
---             and additional_data.process_idx = activity.process_idx
---             and additional_data.sub_process_idx = activity.sub_process_idx
---             and additional_data.activity_name = activity.activity_name;
---       alter table ggircs.additional_data add constraint ggircs_additional_data_activity_foreign_key foreign key (activity_id) references ggircs.activity(id);
---
---       -- Create FK/PK relation between Fuel and Unit
---       alter table ggircs.fuel add column unit_id int;
---       create index ggircs_fuel_unit_index on ggircs.fuel (unit_id);
---       update ggircs.fuel set unit_id = unit.id from ggircs.unit
---           where fuel.ghgr_import_id = unit.ghgr_import_id and fuel.process_idx = unit.process_idx  and fuel.sub_process_idx = unit.sub_process_idx
---             and fuel.activity_name = unit.activity_name and fuel.units_idx = unit.units_idx and fuel.unit_idx = unit.unit_idx;
---       alter table ggircs.fuel add constraint ggircs_fuel_unit_foreign_key foreign key (unit_id) references ggircs.unit(id);
---
 --     -- Create FK/PK relation between Organisation and Parent Organisation
 --       alter table ggircs.organisation add column parent_organisation_id int;
 --       create index ggircs_organisation_parent_organisation_index on ggircs.organisation (parent_organisation_id);
 --       update ggircs.organisation set parent_organisation_id = parent_organisation.id from ggircs.parent_organisation
 --           where parent_organisation.ghgr_import_id = organisation.ghgr_import_id;
 --       alter table ggircs.organisation add constraint ggircs_organisation_parent_organisation_foreign_key foreign key (parent_organisation_id) references ggircs.parent_organisation(id);
---
---       -- Create FK/PK relation between Unit and Activity
---       alter table ggircs.unit add column activity_id int;
---       create index ggircs_unit_activity_index on ggircs.unit (activity_id);
---       update ggircs.unit set activity_id = activity.id from ggircs.activity
---           where unit.ghgr_import_id = activity.ghgr_import_id
---             and unit.process_idx = activity.process_idx
---             and unit.sub_process_idx = activity.sub_process_idx
---             and unit.activity_name = activity.activity_name;
---       alter table ggircs.unit add constraint ggircs_unit_activity_foreign_key foreign key (activity_id) references ggircs.activity(id);
 --
 --       -- Create FK/PK relation between Measured_Emission_Factor and Fuel
 --       alter table ggircs.measured_emission_factor add column fuel_id int;

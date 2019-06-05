@@ -968,6 +968,19 @@ select results_eq(
 --     'Foreign key fuel_id in ggircs.attributable_emission references ggircs.fuel.id'
 -- );
 
+-- Fuel -> Report
+select results_eq(
+    $$
+    select distinct(report.ghgr_import_id) from ggircs.fuel
+    join ggircs.report
+    on fuel.report_id = report.id
+    $$,
+
+    'select distinct(ghgr_import_id) from ggircs.report',
+
+    'Foreign key report_id in ggircs.fuel references ggircs.report.id'
+);
+
 -- Fuel -> Unit
 select results_eq(
     $$
@@ -1005,6 +1018,34 @@ select results_eq(
     'select distinct(ghgr_import_id) from ggircs.activity',
 
     'Foreign key activity_id in ggircs.additional_data references ggircs.activity.id'
+);
+
+-- Additional Data -> Report
+select results_eq(
+    $$
+    select distinct(report.ghgr_import_id) from ggircs.additional_data
+    join ggircs.report
+    on additional_data.report_id = report.id
+    $$,
+
+    'select distinct(ghgr_import_id) from ggircs.report',
+
+    'Foreign key report_id in ggircs.additional_data references ggircs.report.id'
+);
+
+-- Activity -> Facility
+select results_eq(
+    $$
+    select distinct(facility.ghgr_import_id) from ggircs.activity
+    join ggircs.facility
+    on
+      activity.facility_id = facility.id
+      order by ghgr_import_id
+    $$,
+
+    'select ghgr_import_id from ggircs.facility order by ghgr_import_id',
+
+    'Foreign key facility_id in ggircs.activity references ggircs.facility.id'
 );
 
 -- Activity -> Report
@@ -1072,21 +1113,6 @@ select results_eq(
     'select ghgr_import_id from ggircs.parent_organisation',
 
     'Foreign key parent_organisation_id in ggircs.organisation references ggircs.parent_organisation.id'
-);
-
--- Activity -> Facility
-select results_eq(
-    $$
-    select distinct(facility.ghgr_import_id) from ggircs.activity
-    join ggircs.facility
-    on
-      activity.facility_id = facility.id
-      order by ghgr_import_id
-    $$,
-
-    'select ghgr_import_id from ggircs.facility order by ghgr_import_id',
-
-    'Foreign key facility_id in ggircs.activity references ggircs.facility.id'
 );
 
 -- Address -> Facility
@@ -1214,32 +1240,6 @@ select results_eq(
     'select distinct(ghgr_import_id) from ggircs.report',
 
     'Foreign key report_id in ggircs.parent_organisation references ggircs.report.id'
-);
-
--- Descriptor -> Report
-select results_eq(
-    $$
-    select distinct(report.ghgr_import_id) from ggircs.additional_data
-    join ggircs.report
-    on additional_data.report_id = report.id
-    $$,
-
-    'select distinct(ghgr_import_id) from ggircs.report',
-
-    'Foreign key report_id in ggircs.additional_data references ggircs.report.id'
-);
-
--- Fuel -> Report
-select results_eq(
-    $$
-    select distinct(report.ghgr_import_id) from ggircs.fuel
-    join ggircs.report
-    on fuel.report_id = report.id
-    $$,
-
-    'select distinct(ghgr_import_id) from ggircs.report',
-
-    'Foreign key report_id in ggircs.fuel references ggircs.report.id'
 );
 
 -- Naics -> Report

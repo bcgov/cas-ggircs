@@ -7,6 +7,8 @@ create table ggircs.additional_data (
 
     id                        integer primary key,
     ghgr_import_id            integer,
+    activity_id               integer,
+    report_id                 integer,
     activity_name             varchar(1000),
     grandparent               varchar(1000),
     parent                    varchar(1000),
