@@ -10,6 +10,7 @@ select has_materialized_view('ggircs_swrs', 'flat', 'ggircs_swrs.flat exists as 
 
 -- Test column names in matview report exist and are correct
 select columns_are('ggircs_swrs'::name, 'flat'::name, array[
+    'id'::name,
     'ghgr_import_id'::name,
     'element_id'::name,
     'swrs_report_id'::name,
@@ -86,7 +87,7 @@ select results_eq(
 
 -- test the columnns for matview facility have been properly parsed from xml
 select results_eq(
-  'select * from ggircs_swrs.flat',
+  'select element_id, swrs_report_id, class, attr, value, context from ggircs_swrs.flat order by element_id',
 
   $$
   with _flat as (
@@ -99,9 +100,9 @@ select results_eq(
         (5::bigint, 800855555::numeric, 'NotApplicable'::varchar,''::varchar,'true'::varchar, 'TotalCO2CapturedEmissions/CO2Captured/'::varchar),
         (6::bigint, 800855555::numeric, 'GasType'::varchar,''::varchar,'CO2nonbio'::varchar, 'TotalCO2CapturedEmissions/CO2Captured/'::varchar)
     )
-    as flat (element_id, class, attr, value, context)
+    as flat (element_id, swrs_report_id, class, attr, value, context)
   )
-  select ghgr_import.id, _flat.* from _flat, ggircs_swrs.ghgr_import;
+  select _flat.* from _flat;
   $$,
 
   'ggircs_swrs.flat() should return all xml nodes with values as rows');

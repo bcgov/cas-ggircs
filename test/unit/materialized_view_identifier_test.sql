@@ -10,6 +10,7 @@ select has_materialized_view('ggircs_swrs', 'identifier', 'Materialized view fac
 
 -- Test column names in matview identifier exist
 select columns_are('ggircs_swrs'::name, 'identifier'::name,ARRAY[
+    'id'::name,
     'ghgr_import_id'::name,
     'swrs_facility_id'::name,
     'path_context'::name,

@@ -16,6 +16,7 @@ select has_index(
 );
 
 select columns_are('ggircs_swrs'::name, 'address'::name, array[
+    'id'::name,
     'ghgr_import_id'::name,
     'swrs_facility_id'::name,
     'swrs_organisation_id'::name,

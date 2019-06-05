@@ -10,6 +10,7 @@ select has_materialized_view('ggircs_swrs', 'organisation', 'ggircs_swrs.organis
 
 -- -- Test column names in matview report exist and are correct
 select columns_are('ggircs_swrs'::name, 'organisation'::name, ARRAY[
+    'id'::name,
     'ghgr_import_id'::name,
     'swrs_organisation_id'::name,
     'business_legal_name'::name,

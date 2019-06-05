@@ -18,7 +18,7 @@ select has_index(
 );
 
 select columns_are('ggircs_swrs'::name, 'measured_emission_factor'::name, array[
-
+    'id'::name,
     'ghgr_import_id'::name,
     'activity_name'::name,
     'sub_activity_name'::name,

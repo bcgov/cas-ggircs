@@ -11,6 +11,7 @@ select has_materialized_view('ggircs_swrs', 'naics', 'ggircs_swrs.naics exists')
 -- -- Test column names in matview report exist
 
 select columns_are('ggircs_swrs'::name, 'naics'::name, ARRAY[
+    'id'::name,
     'ghgr_import_id'::name,
     'swrs_facility_id'::name,
     'path_context'::name,
