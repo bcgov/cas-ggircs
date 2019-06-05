@@ -895,7 +895,33 @@ select results_eq(
     'Foreign key naics_id in ggircs.emission references ggircs.naics.id'
 );
 
+-- Emission -> Organisation
+
+-- Emission -> Report
+
+-- Emission -> Unit
+
 -- Fuel -> Unit
+
+-- Attributable Emission -> Fuel
+select results_eq(
+    $$
+    select fuel.fuel_type from ggircs.attributable_emission
+    join ggircs.fuel
+    on
+      attributable_emission.fuel_id = fuel.id
+    $$,
+
+    $$ select fuel_type from ggircs.emission as emission
+       join ggircs.fuel as fuel
+       on emission.fuel_id = fuel.id
+       and
+       fuel.ghgr_import_id=2
+       and gas_type !='CO2bioC' $$,
+
+    'Foreign key fuel_id in ggircs.attributable_emission references ggircs.fuel.id'
+);
+
 select results_eq(
     $$
     select distinct(fuel.ghgr_import_id) from ggircs.fuel
@@ -999,25 +1025,6 @@ select results_eq(
     'select ghgr_import_id from ggircs.parent_organisation',
 
     'Foreign key parent_organisation_id in ggircs.organisation references ggircs.parent_organisation.id'
-);
-
--- Attributable Emission -> Fuel
-select results_eq(
-    $$
-    select fuel.fuel_type from ggircs.attributable_emission
-    join ggircs.fuel
-    on
-      attributable_emission.fuel_id = fuel.id
-    $$,
-
-    $$ select fuel_type from ggircs.emission as emission
-       join ggircs.fuel as fuel
-       on emission.fuel_id = fuel.id
-       and
-       fuel.ghgr_import_id=2
-       and gas_type !='CO2bioC' $$,
-
-    'Foreign key fuel_id in ggircs.attributable_emission references ggircs.fuel.id'
 );
 
 -- Activity -> Facility
