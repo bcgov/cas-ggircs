@@ -6,6 +6,8 @@ begin;
 create table ggircs.organisation
 (
     id                        integer primary key,
+    parent_organisation_id    integer,
+    report_id                 integer,
     ghgr_import_id            integer,
     swrs_organisation_id      integer,
     business_legal_name       varchar(1000),

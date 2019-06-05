@@ -7,6 +7,8 @@ create table ggircs.identifier(
 
     id                        integer primary key,
     ghgr_import_id            integer,
+    facility_id               integer,
+    report_id                 integer,
     swrs_facility_id          integer,
     path_context              varchar(1000),
     identifier_type           varchar(1000),

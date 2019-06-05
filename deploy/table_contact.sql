@@ -7,6 +7,9 @@ create table ggircs.contact (
 
     id                        integer primary key,
     ghgr_import_id            integer,
+    address_id                integer,
+    facility_id               integer,
+    report_id                 integer,
     path_context              varchar(1000),
     contact_type              varchar(1000),
     given_name                varchar(1000),

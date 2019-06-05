@@ -7,6 +7,9 @@ create table ggircs.naics (
 
     id                        integer primary key,
     ghgr_import_id            integer,
+    facility_id               integer,
+    naics_mapping_id          integer,
+    report_id                 integer,
     swrs_facility_id          integer,
     path_context              varchar(1000),
     naics_classification      varchar(1000),

@@ -7,6 +7,7 @@ create table ggircs.parent_organisation (
 
     id                        integer primary key,
     ghgr_import_id            integer,
+    report_id                 integer,
     path_context              varchar(1000),
     percentage_owned          numeric,
     french_trade_name         varchar(1000),

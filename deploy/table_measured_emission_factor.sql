@@ -7,6 +7,7 @@ create table ggircs.measured_emission_factor (
 
     id                                  integer primary key,
     ghgr_import_id                      integer,
+    fuel_id                             integer,
     activity_name                       varchar(1000),
     sub_activity_name                   varchar(1000),
     unit_name                           varchar(1000),

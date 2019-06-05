@@ -4,7 +4,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(94);
+select plan(93);
 
 insert into ggircs_swrs.ghgr_import (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -1063,6 +1063,21 @@ select results_eq(
     'Foreign key report_id in ggircs.activity references ggircs.report.id'
 );
 
+-- Address -> Facility
+select results_eq(
+    $$
+    select distinct(facility.ghgr_import_id) from ggircs.address
+    join ggircs.facility
+    on
+      address.facility_id = facility.id
+      order by ghgr_import_id
+    $$,
+-- --
+    'select ghgr_import_id from ggircs.facility order by ghgr_import_id',
+-- --
+    'Foreign key facility_id in ggircs.address references ggircs.facility.id'
+);
+
 -- Address -> Organisation
 select results_eq(
     $$
@@ -1089,6 +1104,19 @@ select results_eq(
     'Foreign key parent_organisation_id in ggircs.address references ggircs.parent_organisation.id'
 );
 
+-- Address -> Report
+select results_eq(
+    $$
+    select distinct(report.ghgr_import_id) from ggircs.address
+    join ggircs.report
+    on address.report_id = report.id
+    $$,
+
+    'select distinct(ghgr_import_id) from ggircs.report',
+
+    'Foreign key report_id in ggircs.address references ggircs.report.id'
+);
+
 -- Contact -> Address
 select results_eq(
     $$
@@ -1100,6 +1128,32 @@ select results_eq(
     'select distinct(ghgr_import_id) from ggircs.address',
 
     'Foreign key address_id in ggircs.contact references ggircs.address.id'
+);
+
+-- Contact -> Facility
+select results_eq(
+               $$
+    select distinct(facility.ghgr_import_id) from ggircs.contact
+    join ggircs.facility
+    on
+      contact.facility_id = facility.id
+      order by ghgr_import_id
+    $$,
+               'select ghgr_import_id from ggircs.facility order by ghgr_import_id',
+               'Foreign key facility_id in ggircs.contact references ggircs.facility.id'
+);
+
+-- Contact -> Report
+select results_eq(
+    $$
+    select distinct(report.ghgr_import_id) from ggircs.contact
+    join ggircs.report
+    on contact.report_id = report.id
+    $$,
+
+    'select distinct(ghgr_import_id) from ggircs.report',
+
+    'Foreign key report_id in ggircs.contact references ggircs.report.id'
 );
 
 -- Organisation -> Parent Organisation
@@ -1115,35 +1169,21 @@ select results_eq(
     'Foreign key parent_organisation_id in ggircs.organisation references ggircs.parent_organisation.id'
 );
 
--- Address -> Facility
+-- Organisation -> Report
+
+-- Parent Organisation -> Report
 select results_eq(
     $$
-    select distinct(facility.ghgr_import_id) from ggircs.address
-    join ggircs.facility
-    on
-      address.facility_id = facility.id
-      order by ghgr_import_id
-    $$,
--- --
-    'select ghgr_import_id from ggircs.facility order by ghgr_import_id',
--- --
-    'Foreign key facility_id in ggircs.address references ggircs.facility.id'
-);
-
--- Contact -> Facility
-select results_eq(
-    $$
-    select distinct(facility.ghgr_import_id) from ggircs.contact
-    join ggircs.facility
-    on
-      contact.facility_id = facility.id
-      order by ghgr_import_id
+    select distinct(report.ghgr_import_id) from ggircs.parent_organisation
+    join ggircs.report
+    on parent_organisation.report_id = report.id
     $$,
 
-    'select ghgr_import_id from ggircs.facility order by ghgr_import_id',
+    'select distinct(ghgr_import_id) from ggircs.report',
 
-    'Foreign key facility_id in ggircs.contact references ggircs.facility.id'
+    'Foreign key report_id in ggircs.parent_organisation references ggircs.report.id'
 );
+
 
 -- Identifier -> Facility
 select results_eq(
@@ -1160,6 +1200,19 @@ select results_eq(
     'Foreign key facility_id in ggircs.identifier references ggircs.facility.id'
 );
 
+-- Identifier -> Report
+select results_eq(
+               $$
+    select distinct(report.ghgr_import_id) from ggircs.identifier
+    join ggircs.report
+    on identifier.report_id = report.id
+    $$,
+
+    'select distinct(ghgr_import_id) from ggircs.report',
+
+    'Foreign key report_id in ggircs.identifier references ggircs.report.id'
+);
+
 -- NAICS -> Facility
 select results_eq(
     $$
@@ -1173,6 +1226,35 @@ select results_eq(
     'select ghgr_import_id from ggircs.facility order by ghgr_import_id',
 
     'Foreign key facility_id in ggircs.naics references ggircs.facility.id'
+);
+
+-- Naics -> Report
+select results_eq(
+    $$
+    select distinct(report.ghgr_import_id) from ggircs.naics
+    join ggircs.report
+    on naics.report_id = report.id
+    $$,
+
+    'select distinct(ghgr_import_id) from ggircs.report',
+
+    'Foreign key report_id in ggircs.naics references ggircs.report.id'
+);
+
+-- Naics -> ggircs_swrs.naics_mapping
+select results_eq(
+    $$
+    select distinct(ggircs_swrs.naics_mapping.naics_code, ggircs_swrs.naics_mapping.irc_category) from ggircs.naics
+    join ggircs_swrs.naics_mapping
+    on naics.naics_mapping_id = naics_mapping.id
+    $$,
+
+    $$
+    select distinct(naics_code, irc_category) from ggircs_swrs.naics_mapping
+    where naics_code in (321111, 721310)
+    $$,
+
+    'Foreign key naics_mapping_id references ggircs.swrs.naics_mapping.id'
 );
 
 -- Permit -> Facility
@@ -1203,86 +1285,7 @@ select results_eq(
     'Foreign key fuel_id in ggircs.measured_emission_factor references ggircs.fuel.id'
 );
 
--- Address -> Report
-select results_eq(
-    $$
-    select distinct(report.ghgr_import_id) from ggircs.address
-    join ggircs.report
-    on address.report_id = report.id
-    $$,
 
-    'select distinct(ghgr_import_id) from ggircs.report',
-
-    'Foreign key report_id in ggircs.address references ggircs.report.id'
-);
-
--- Contact -> Report
-select results_eq(
-    $$
-    select distinct(report.ghgr_import_id) from ggircs.contact
-    join ggircs.report
-    on contact.report_id = report.id
-    $$,
-
-    'select distinct(ghgr_import_id) from ggircs.report',
-
-    'Foreign key report_id in ggircs.contact references ggircs.report.id'
-);
-
--- Parent Organisation -> Report
-select results_eq(
-    $$
-    select distinct(report.ghgr_import_id) from ggircs.parent_organisation
-    join ggircs.report
-    on parent_organisation.report_id = report.id
-    $$,
-
-    'select distinct(ghgr_import_id) from ggircs.report',
-
-    'Foreign key report_id in ggircs.parent_organisation references ggircs.report.id'
-);
-
--- Naics -> Report
-select results_eq(
-    $$
-    select distinct(report.ghgr_import_id) from ggircs.naics
-    join ggircs.report
-    on naics.report_id = report.id
-    $$,
-
-    'select distinct(ghgr_import_id) from ggircs.report',
-
-    'Foreign key report_id in ggircs.naics references ggircs.report.id'
-);
-
--- Identifier -> Report
-select results_eq(
-               $$
-    select distinct(report.ghgr_import_id) from ggircs.identifier
-    join ggircs.report
-    on identifier.report_id = report.id
-    $$,
-
-    'select distinct(ghgr_import_id) from ggircs.report',
-
-    'Foreign key report_id in ggircs.identifier references ggircs.report.id'
-);
-
--- Naics -> ggircs_swrs.naics_mapping
-select results_eq(
-    $$
-    select distinct(ggircs_swrs.naics_mapping.naics_code, ggircs_swrs.naics_mapping.irc_category) from ggircs.naics
-    join ggircs_swrs.naics_mapping
-    on naics.naics_mapping_id = naics_mapping.id
-    $$,
-
-    $$
-    select distinct(naics_code, irc_category) from ggircs_swrs.naics_mapping
-    where naics_code in (321111, 721310)
-    $$,
-
-    'Foreign key naics_mapping_id references ggircs.swrs.naics_mapping.id'
-);
 
 /** Test data transferred from ggircs_swrs to ggircs properly **/
 -- Data in ggircs_swrs.report === data in ggircs_report

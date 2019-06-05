@@ -7,6 +7,10 @@ create table ggircs.address (
 
     id                                                  integer primary key,
     ghgr_import_id                                      integer,
+    facility_id                                         integer,
+    organisation_id                                     integer,
+    parent_organisation_id                              integer,
+    report_id                                           integer,
     swrs_facility_id                                    integer,
     swrs_organisation_id                                integer,
     path_context                                        varchar(1000),
