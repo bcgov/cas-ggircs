@@ -851,9 +851,22 @@ select isnt_empty('select * from ggircs.additional_data', 'there is data in ggir
 select isnt_empty('select * from ggircs.measured_emission_factor', 'there is data in ggircs.measured_emission_factor');
 
 -- No CO2bioC in attributable_emission
-select is_empty($$select * from ggircs.attributable_emission where gas_type='CO2bioC'$$, 'CO2bioC emissions are not in attributable_emission');
+-- select is_empty($$select * from ggircs.attributable_emission where gas_type='CO2bioC'$$, 'CO2bioC emissions are not in attributable_emission');
 
 -- Test validity of FK relations
+-- Emission -> Activity
+select results_eq(
+    $$
+    select distinct(activity.ghgr_import_id) from ggircs.emission
+    join ggircs.activity
+    on emission.activity_id = activity.id
+    $$,
+
+    'select distinct(ghgr_import_id) from ggircs.activity',
+
+    'Foreign key activity_id in ggircs.emission references ggircs.activity.id'
+);
+
 -- Emission -> Fuel
 select results_eq(
     $$
@@ -908,7 +921,7 @@ select results_eq(
     'Foreign key unit_id in ggircs.unit references ggircs.activity.id'
 );
 
--- Descriptor -> Activity
+-- Additional Data -> Activity
 select results_eq(
     $$
     select distinct(activity.ghgr_import_id) from ggircs.additional_data

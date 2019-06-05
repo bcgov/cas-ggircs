@@ -5,7 +5,7 @@ begin;
 
 create table ggircs.emission (
 
-    id               integer primary key,
+    id                        integer primary key,
     ghgr_import_id            integer,
     activity_id               integer,
     activity_name             varchar(1000),
@@ -24,7 +24,7 @@ create table ggircs.emission (
 );
 
 comment on table ggircs.emission is 'The table containing the information on emissions';
-comment on column ggircs.emission.emission_id is 'The primary key';
+comment on column ggircs.emission.id is 'The primary key';
 comment on column ggircs.emission.ghgr_import_id is 'A foreign key reference to ggircs.ghgr_import';
 comment on column ggircs.emission.activity_id is 'A foreign key reference to ggircs.activity';
 comment on column ggircs.emission.activity_name is 'The name of the activity (partial fk reference)';

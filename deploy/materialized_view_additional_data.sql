@@ -29,7 +29,7 @@ create materialized view ggircs_swrs.additional_data as (
 
   union all
 
-  select id as ghgr_import_id,
+  select row_number() over () as id, id as ghgr_import_id,
          depth_three_descriptors.*
   from ggircs_swrs.ghgr_import,
        xmltable(
@@ -54,7 +54,7 @@ create materialized view ggircs_swrs.additional_data as (
 
   union all
 
-  select id as ghgr_import_id,
+  select row_number() over () as id, id as ghgr_import_id,
          depth_one_descriptors.*
   from ggircs_swrs.ghgr_import,
        xmltable(
