@@ -4,7 +4,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(93);
+select plan(94);
 
 insert into ggircs_swrs.ghgr_import (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -949,24 +949,36 @@ select results_eq(
 );
 
 -- Todo: fix after attributable emission table creation is fixed in export file
+-- Attributable Emission -> Activity
+
+-- Attributable Emission -> Facility
+
 -- Attributable Emission -> Fuel
--- select results_eq(
---     $$
---     select fuel.fuel_type from ggircs.attributable_emission
---     join ggircs.fuel
---     on
---       attributable_emission.fuel_id = fuel.id
---     $$,
---
---     $$ select fuel_type from ggircs.emission as emission
---        join ggircs.fuel as fuel
---        on emission.fuel_id = fuel.id
---        and
---        fuel.ghgr_import_id=2
---        and gas_type !='CO2bioC' $$,
---
---     'Foreign key fuel_id in ggircs.attributable_emission references ggircs.fuel.id'
--- );
+select results_eq(
+    $$
+    select fuel.fuel_type from ggircs.attributable_emission
+    join ggircs.fuel
+    on
+      attributable_emission.fuel_id = fuel.id
+    $$,
+
+    $$ select fuel_type from ggircs.emission as emission
+       join ggircs.fuel as fuel
+       on emission.fuel_id = fuel.id
+       and
+       fuel.ghgr_import_id=2
+       and gas_type !='CO2bioC' $$,
+
+    'Foreign key fuel_id in ggircs.attributable_emission references ggircs.fuel.id'
+);
+
+-- Attributable Emission -> Naics
+
+-- Attributable Emission -> Organisation
+
+-- Attributable Emission -> Report
+
+-- Attributable Emission -> Unit
 
 -- Fuel -> Report
 select results_eq(
