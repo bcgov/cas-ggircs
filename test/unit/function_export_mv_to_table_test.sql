@@ -880,7 +880,6 @@ select results_eq(
     'Foreign key fuel_id in ggircs.emission references ggircs.fuel.id'
 );
 
-
 -- Emission -> Naics
 select results_eq(
     $$select distinct(naics.naics_code) from ggircs.emission

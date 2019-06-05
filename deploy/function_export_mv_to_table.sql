@@ -88,12 +88,12 @@ $function$
     from ggircs_swrs.naics;
 
     -- emission
-    insert into ggircs.emission (id, ghgr_import_id, activity_id, fuel_id, activity_name, sub_activity_name,
+    insert into ggircs.emission (id, ghgr_import_id, activity_id, fuel_id, naics_id, organisation_id, report_id, unit_id, activity_name, sub_activity_name,
                                  unit_name, sub_unit_name, fuel_name, emission_type,
                                  gas_type, methodology, not_applicable, quantity, calculated_quantity, emission_category)
 
-    select _emission.id, _emission.ghgr_import_id, _activity.id, _fuel.id,  _emission.activity_name, _emission.sub_activity_name,
-           _emission.unit_name, _emission.sub_unit_name, _emission.fuel_name, _emission.emission_type,
+    select _emission.id, _emission.ghgr_import_id, _activity.id, _fuel.id, _naics.id, _organisation.id, _report.id, _unit.id,
+           _emission.activity_name, _emission.sub_activity_name, _emission.unit_name, _emission.sub_unit_name, _emission.fuel_name, _emission.emission_type,
            _emission.gas_type, _emission.methodology, _emission.not_applicable, _emission.quantity, _emission.calculated_quantity, _emission.emission_category
 
     from ggircs_swrs.emission
@@ -236,7 +236,32 @@ $function$
 
           $$
           create table ggircs.attributable_emission
-          as (select x.ghgr_import_id from ggircs_swrs.emission
+          as (
+          select
+             x.ghgr_import_id,
+             x.activity_name,
+             x.sub_activity_name,
+             x.unit_name,
+             x.sub_unit_name,
+             x.process_idx,
+             x.sub_process_idx,
+             x.units_idx,
+             x.unit_idx,
+             x.substances_idx,
+             x.substance_idx,
+             x.fuel_idx,
+             x.fuel_name,
+             x.emissions_idx,
+             x.emission_idx,
+             x.emission_type,
+             x.gas_type,
+             x.methodology,
+             x.not_applicable,
+             x.quantity,
+             x.calculated_quantity,
+             x.emission_category
+
+          from ggircs_swrs.emission
           as x inner join ggircs_swrs.final_report as final_report
           on x.ghgr_import_id = final_report.ghgr_import_id
           join ggircs_swrs.facility as facility
@@ -260,7 +285,7 @@ $function$
 
     execute 'alter table ggircs.attributable_emission add column id int generated always as identity primary key';
 
---         /** Attributable Emission FKs**/
+        /** Attributable Emission FKs**/
 --       -- Create FK/PK relation between Attributable_Emission and Activity
 --       alter table ggircs.attributable_emission add column activity_id int;
 --       create index ggircs_attributable_emission_activity_index on ggircs.attributable_emission (activity_id);
@@ -304,14 +329,14 @@ $function$
 --       update ggircs.attributable_emission set organisation_id = organisation.id from ggircs.organisation
 --           where attributable_emission.ghgr_import_id = organisation.ghgr_import_id;
 --       alter table ggircs.attributable_emission add constraint ggircs_attributable_emission_organisation_foreign_key foreign key (organisation_id) references ggircs.organisation(id);
--- -- --
+--
 --       -- Create FK/PK relation between Attributable_Emission and Report
 --       alter table ggircs.attributable_emission add column report_id int;
 --       create index ggircs_attributable_emission_report_index on ggircs.attributable_emission (report_id);
 --       update ggircs.attributable_emission set report_id = report.id from ggircs.report
 --           where attributable_emission.ghgr_import_id = report.ghgr_import_id;
 --       alter table ggircs.attributable_emission add constraint ggircs_attributable_emission_report_foreign_key foreign key (report_id) references ggircs.report(id);
--- -- --
+--
 --       -- Create FK/PK relation between Attributable_Emission and Unit
 --       alter table ggircs.attributable_emission add column unit_id int;
 --       create index ggircs_attributable_emission_unit_index on ggircs.attributable_emission (unit_id);
@@ -323,7 +348,7 @@ $function$
 --             and attributable_emission.units_idx = unit.units_idx
 --             and attributable_emission.unit_idx = unit.unit_idx;
 --       alter table ggircs.attributable_emission add constraint ggircs_attributable_emission_unit_foreign_key foreign key (unit_id) references ggircs.unit(id);
--- -- --
+
 --     /** FACILITY FKs**/
 --       -- Create FK/PK relation between Attributable_Emission and Facility
 --       alter table ggircs.attributable_emission add column facility_id int;
