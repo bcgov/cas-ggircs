@@ -25,3 +25,6 @@ workflows:
   test:
     jobs:
        - test
+notify:
+  webhooks:
+    - url: https://outlook.office.com/webhook/a00d3135-7e96-47a0-817e-0086ec993205@55bc71c2-5150-4ff8-bbcd-d94bc32bf20c/CircleCI/4dd288af085245bf96cc07dce642e3ed/c436c63a-5475-4837-ae24-c21c300bd4e1
