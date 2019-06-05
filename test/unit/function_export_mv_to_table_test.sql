@@ -948,7 +948,7 @@ select results_eq(
     'Foreign key report_id in ggircs.facility references ggircs.report.id'
 );
 
--- Todo: fix after attributable emission table creation is fixed in export file
+-- Todo: missing attributable emission tests
 -- Attributable Emission -> Activity
 
 -- Attributable Emission -> Facility
@@ -1181,6 +1181,7 @@ select results_eq(
     'Foreign key parent_organisation_id in ggircs.organisation references ggircs.parent_organisation.id'
 );
 
+-- TODO:
 -- Organisation -> Report
 
 -- Parent Organisation -> Report
