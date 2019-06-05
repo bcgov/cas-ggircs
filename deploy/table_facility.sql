@@ -7,6 +7,10 @@ create table ggircs.facility (
 
     id                        integer primary key,
     ghgr_import_id            integer,
+    identifier_id             integer,
+    naics_id                  integer,
+    organisation_id           integer,
+    report_id                 integer,
     swrs_facility_id          integer,
     facility_name             varchar(1000),
     facility_type             varchar(1000),

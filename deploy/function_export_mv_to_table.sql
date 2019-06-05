@@ -49,11 +49,36 @@ $function$
     from ggircs_swrs.organisation;
 
     -- facility
-    insert into ggircs.facility (id, ghgr_import_id, swrs_facility_id, facility_name, facility_type, relationship_type, portability_indicator, status, latitude, longitude)
 
-    select id, ghgr_import_id, swrs_facility_id, facility_name, facility_type, relationship_type, portability_indicator, status, latitude, longitude
+    insert into ggircs.facility (id, ghgr_import_id, identifier_id, naics_id, organisation_id, report_id, swrs_facility_id, facility_name, facility_type, relationship_type, portability_indicator, status, latitude, longitude)
 
-    from ggircs_swrs.facility;
+    select _facility.id, _facility.ghgr_import_id, null, _naics.id, _organisation.id, _report.id, _facility.swrs_facility_id, _facility.facility_name, _facility.facility_type,
+           _facility.relationship_type, _facility.portability_indicator, _facility.status, _facility.latitude, _facility.longitude
+
+    from ggircs_swrs.facility
+    left join ggircs_swrs.facility as _facility on facility.id = _facility.id
+    -- FK Facility -> Identifier
+--     left join ggircs_swrs.identifier as _identifier
+--         on _facility.ghgr_import_id = _identifier.ghgr_import_id
+--         and _identifier.identifier_type = 'BCGHGID'
+--         and _identifier.identifier_value is not null
+--         and _identifier.identifier_value != ''
+--         and _identifier.path_context = 'RegistrationData'
+    -- FK Facility -> Naics
+    left join ggircs_swrs.naics as _naics
+        on _facility.ghgr_import_id = _naics.ghgr_import_id
+        and _naics.path_context = 'RegistrationData'
+    -- FK Facility -> Organisation
+    left join ggircs_swrs.organisation as _organisation
+        on _facility.ghgr_import_id = _organisation.ghgr_import_id
+    -- FK Facility -> Report
+    left join ggircs_swrs.report as _report
+    on _facility.ghgr_import_id = _report.ghgr_import_id;
+
+    --Todo: Can this be brought into the join and still work (use our same hierarchy rules for RD vs VT?)
+    with x as (select * from ggircs_swrs.identifier where identifier_type = 'BCGHGID' and identifier_value is not null and identifier_value != '' order by path_context asc)
+    update ggircs.facility as f set identifier_id = x.id from x where f.ghgr_import_id = x.ghgr_import_id;
+
 
     -- activity
     insert into ggircs.activity (id, ghgr_import_id, activity_name, process_name, sub_process_name, information_requirement)
@@ -88,11 +113,11 @@ $function$
     from ggircs_swrs.naics;
 
     -- emission
-    insert into ggircs.emission (id, ghgr_import_id, activity_id, fuel_id, naics_id, organisation_id, report_id, unit_id, activity_name, sub_activity_name,
+    insert into ggircs.emission (id, ghgr_import_id, activity_id, facility_id, fuel_id, naics_id, organisation_id, report_id, unit_id, activity_name, sub_activity_name,
                                  unit_name, sub_unit_name, fuel_name, emission_type,
                                  gas_type, methodology, not_applicable, quantity, calculated_quantity, emission_category)
 
-    select _emission.id, _emission.ghgr_import_id, _activity.id, _fuel.id, _naics.id, _organisation.id, _report.id, _unit.id,
+    select _emission.id, _emission.ghgr_import_id, _activity.id, _facility.id, _fuel.id, _naics.id, _organisation.id, _report.id, _unit.id,
            _emission.activity_name, _emission.sub_activity_name, _emission.unit_name, _emission.sub_unit_name, _emission.fuel_name, _emission.emission_type,
            _emission.gas_type, _emission.methodology, _emission.not_applicable, _emission.quantity, _emission.calculated_quantity, _emission.emission_category
 
@@ -105,6 +130,9 @@ $function$
       and _emission.process_idx = _activity.process_idx
       and _emission.sub_process_idx = _activity.sub_process_idx
       and _emission.activity_name = _activity.activity_name
+    -- FK Emission -> Facility
+    left join ggircs_swrs.facility as _facility
+        on _emission.ghgr_import_id = _facility.ghgr_import_id
     -- FK Emission -> Fuel
     left join ggircs_swrs.fuel as _fuel
       on _emission.ghgr_import_id = _fuel.ghgr_import_id
@@ -226,6 +254,7 @@ $function$
 
     from ggircs_swrs.measured_emission_factor;
 
+    -- Todo: Should attributable emission be a view rather than a table?
     -- attributable emission
     raise notice 'Exporting attributable_emission';
 
@@ -349,27 +378,16 @@ $function$
 --             and attributable_emission.unit_idx = unit.unit_idx;
 --       alter table ggircs.attributable_emission add constraint ggircs_attributable_emission_unit_foreign_key foreign key (unit_id) references ggircs.unit(id);
 
---     /** FACILITY FKs**/
---       -- Create FK/PK relation between Attributable_Emission and Facility
+        -- Create FK/PK relation between Attributable_Emission and Facility
 --       alter table ggircs.attributable_emission add column facility_id int;
 --       create index ggircs_attributable_emission_facility_index on ggircs.attributable_emission (facility_id);
 --       update ggircs.attributable_emission set facility_id = facility.id from ggircs.facility
 --           where attributable_emission.ghgr_import_id = facility.ghgr_import_id;
 --       alter table ggircs.attributable_emission add constraint ggircs_attributable_emission_facility_foreign_key foreign key (facility_id) references ggircs.facility(id);
---
---       -- Create FK/PK relation between Emission and Facility
---       alter table ggircs.emission add column facility_id int;
---       create index ggircs_emission_facility_index on ggircs.emission (facility_id);
---       update ggircs.emission set facility_id = facility.id from ggircs.facility
---           where emission.ghgr_import_id = facility.ghgr_import_id;
---       alter table ggircs.emission add constraint ggircs_emission_facility_foreign_key foreign key (facility_id) references ggircs.facility(id);
---
---       -- Create FK/PK relation between Facility and Report
---       alter table ggircs.facility add column report_id int;
---       create index ggircs_facility_report_index on ggircs.facility (report_id);
---       update ggircs.facility set report_id = report.id from ggircs.report
---           where facility.ghgr_import_id = report.ghgr_import_id;
---       alter table ggircs.facility add constraint ggircs_facility_report_foreign_key foreign key (report_id) references ggircs.report(id);
+
+
+
+--     /** FACILITY FKs**/
 --
 --      -- Create FK/PK relation between Address and Facility
 --       alter table ggircs.address add column facility_id int;
@@ -414,29 +432,11 @@ $function$
 --           where activity.ghgr_import_id = facility.ghgr_import_id;
 --       alter table ggircs.activity add constraint ggircs_activity_facility_foreign_key foreign key (facility_id) references ggircs.facility(id);
 --
---       -- Create FK/PK relation between Facility and Organisation
---       alter table ggircs.facility add column organisation_id int;
---       create index ggircs_facility_organisation_index on ggircs.facility (organisation_id);
---       update ggircs.facility set organisation_id = organisation.id from ggircs.organisation
---           where facility.ghgr_import_id = organisation.ghgr_import_id;
---       alter table ggircs.facility add constraint ggircs_facility_organisation_foreign_key foreign key (organisation_id) references ggircs.organisation(id);
---
 --       -- Create FK/PK relation between Facility and Identifier (BCGHGID)
 --       alter table ggircs.facility add column identifier_id int;
 --       create index ggircs_facility_identifier_index on ggircs.facility (identifier_id);
 --
---       with x as (select * from ggircs.identifier where identifier_type = 'BCGHGID' and identifier_value is not null and identifier_value != '' order by path_context desc)
---       update ggircs.facility as f set identifier_id = x.id from x where f.ghgr_import_id = x.ghgr_import_id;
---
 --       alter table ggircs.facility add constraint ggircs_facility_identifier_foreign_key foreign key (identifier_id) references ggircs.identifier(id);
---
---       -- Create FK/PK relation between Facility and Naics (naics_code / classification)
---       alter table ggircs.facility add column naics_id int;
---       create index ggircs_facility_naics_index on ggircs.facility (naics_id);
---       -- Only keying on path_context = 'RegistrationData', VerifyTombstone does not have classification
---       with x as (select * from ggircs.naics where path_context = 'RegistrationData')
---       update ggircs.facility as f set naics_id = x.id from x where f.ghgr_import_id = x.ghgr_import_id;
---       alter table ggircs.facility add constraint ggircs_facility_naics_foreign_key foreign key (naics_id) references ggircs.naics(id);
 --
 --     /** Remaining FK's **/
 --       -- Create FK/PK relation between Activity and Report

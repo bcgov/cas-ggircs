@@ -894,33 +894,81 @@ select results_eq(
     'Foreign key naics_id in ggircs.emission references ggircs.naics.id'
 );
 
+-- Emission -> Fuel
+
 -- Emission -> Organisation
 
 -- Emission -> Report
 
 -- Emission -> Unit
 
--- Fuel -> Unit
-
--- Attributable Emission -> Fuel
+-- Facility -> Identifier
 select results_eq(
     $$
-    select fuel.fuel_type from ggircs.attributable_emission
-    join ggircs.fuel
+    select identifier.identifier_value as bcghgid from ggircs.facility
+    join ggircs.identifier
     on
-      attributable_emission.fuel_id = fuel.id
+      facility.identifier_id = identifier.id
+      and identifier.identifier_type = 'BCGHGID'
     $$,
 
-    $$ select fuel_type from ggircs.emission as emission
-       join ggircs.fuel as fuel
-       on emission.fuel_id = fuel.id
-       and
-       fuel.ghgr_import_id=2
-       and gas_type !='CO2bioC' $$,
+    ARRAY['VT_12345'::varchar, 'RD_123456'::varchar],
 
-    'Foreign key fuel_id in ggircs.attributable_emission references ggircs.fuel.id'
+    'Foreign key identifier_id in ggircs.facility references ggircs.identifier.id'
 );
 
+-- Facility -> Naics
+select results_eq(
+    $$
+    select naics.naics_code, naics_classification from ggircs.facility
+    join ggircs.naics
+    on
+      facility.naics_id = naics.id
+    $$,
+
+    $$ select naics_code, naics_classification from ggircs.naics where path_context = 'RegistrationData' order by naics_code $$,
+
+    'Foreign key naics_id in ggircs.facility references ggircs.naics.id'
+);
+
+-- Facility -> Organisation
+
+-- Facility -> Report
+select results_eq(
+    $$
+    select report.swrs_facility_id from ggircs.facility
+    join ggircs.report
+    on
+      facility.report_id = report.id
+      order by report.ghgr_import_id
+    $$,
+
+    'select swrs_facility_id from ggircs.report order by ghgr_import_id',
+
+    'Foreign key report_id in ggircs.facility references ggircs.report.id'
+);
+
+-- Todo: fix after attributable emission table creation is fixed in export file
+-- Attributable Emission -> Fuel
+-- select results_eq(
+--     $$
+--     select fuel.fuel_type from ggircs.attributable_emission
+--     join ggircs.fuel
+--     on
+--       attributable_emission.fuel_id = fuel.id
+--     $$,
+--
+--     $$ select fuel_type from ggircs.emission as emission
+--        join ggircs.fuel as fuel
+--        on emission.fuel_id = fuel.id
+--        and
+--        fuel.ghgr_import_id=2
+--        and gas_type !='CO2bioC' $$,
+--
+--     'Foreign key fuel_id in ggircs.attributable_emission references ggircs.fuel.id'
+-- );
+
+-- Fuel -> Unit
 select results_eq(
     $$
     select distinct(fuel.ghgr_import_id) from ggircs.fuel
@@ -1041,21 +1089,6 @@ select results_eq(
     'Foreign key facility_id in ggircs.activity references ggircs.facility.id'
 );
 
--- Facility -> Report
-select results_eq(
-    $$
-    select report.swrs_facility_id from ggircs.facility
-    join ggircs.report
-    on
-      facility.report_id = report.id
-      order by report.ghgr_import_id
-    $$,
-
-    'select swrs_facility_id from ggircs.report order by ghgr_import_id',
-
-    'Foreign key report_id in ggircs.facility references ggircs.report.id'
-);
-
 -- Address -> Facility
 select results_eq(
     $$
@@ -1129,35 +1162,6 @@ select results_eq(
     'select ghgr_import_id from ggircs.facility order by ghgr_import_id',
 
     'Foreign key facility_id in ggircs.permit references ggircs.facility.id'
-);
-
--- Facility -> Identifier
-select results_eq(
-    $$
-    select identifier.identifier_value as bcghgid from ggircs.facility
-    join ggircs.identifier
-    on
-      facility.identifier_id = identifier.id
-      and identifier.identifier_type = 'BCGHGID'
-    $$,
-
-    ARRAY['VT_12345'::varchar, 'RD_123456'::varchar],
-
-    'Foreign key identifier_id in ggircs.facility references ggircs.identifier.id'
-);
-
--- Facility -> Naics
-select results_eq(
-    $$
-    select naics.naics_code, naics_classification from ggircs.facility
-    join ggircs.naics
-    on
-      facility.naics_id = naics.id
-    $$,
-
-    $$ select naics_code, naics_classification from ggircs.naics where path_context = 'RegistrationData' $$,
-
-    'Foreign key naics_id in ggircs.facility references ggircs.naics.id'
 );
 
 -- Measured Emission Factor -> Fuel
