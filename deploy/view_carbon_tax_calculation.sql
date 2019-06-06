@@ -10,11 +10,11 @@ create or replace view ggircs.carbon_tax_calculation as
                report.reporting_period_duration::integer         as rpd,
                pro_rated_carbon_tax_rate                as pro_rated_ctr,
                pro_rated_implied_emission_factor        as pro_rated_ief
-        from ggircs_swrs.fuel
+        from ggircs.fuel
                 join ggircs_swrs.fuel_mapping as fm
                     on fuel.fuel_type = fm.fuel_type
-                join ggircs_swrs.report as report
-                    on fuel.ghgr_import_id = report.ghgr_import_id
+                join ggircs.report as report
+                    on fuel.report_id = report.id
                 join ggircs.pro_rated_carbon_tax_rate as ctr
                     on fuel.fuel_type = ctr.fuel_type
                     and report.reporting_period_duration::integer = ctr.reporting_year
