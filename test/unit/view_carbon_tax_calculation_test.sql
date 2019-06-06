@@ -156,7 +156,6 @@ refresh materialized view ggircs_swrs.fuel with data;
     on _fuel.ghgr_import_id = _report.ghgr_import_id;
 
 -- Test validity of calculation
-
 select results_eq(
     'select calculated_carbon_tax from ggircs.carbon_tax_calculation',
 
@@ -187,7 +186,6 @@ select results_eq(
 
     'ggircs.carbon_tax_calculation properly calculates carbon tax based on fuel_amount * pro-rated carbon tax rate * pro-rated implied emission factor'
 );
-
 
 select * from finish();
 rollback;

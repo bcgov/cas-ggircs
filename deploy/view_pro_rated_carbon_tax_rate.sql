@@ -1,5 +1,8 @@
 -- Deploy ggircs:view_pro_rated_carbon_rate to pg
--- requires: schema_ggircs
+-- requires:
+    -- schema_ggircs
+    -- table_fuel
+    -- table_report
 
 begin;
 

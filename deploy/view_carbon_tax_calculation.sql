@@ -1,5 +1,8 @@
 -- Deploy ggircs:view_carbon_tax_calculation to pg
--- requires: schema_ggircs
+-- requires:
+    -- schema_ggircs
+    -- table_fuel
+    -- table_report
 
 begin;
 

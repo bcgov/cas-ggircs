@@ -1,5 +1,8 @@
 -- Deploy ggircs:view_pro_rated_implied_emission_factor to pg
--- requires: schema_ggircs
+-- requires:
+    -- schema_ggircs
+    -- table_fuel
+    -- table_report
 
 begin;
 
