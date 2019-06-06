@@ -174,6 +174,7 @@ refresh materialized view ggircs_swrs.fuel with data;
     left join ggircs_swrs.report as _report
     on _fuel.ghgr_import_id = _report.ghgr_import_id;
 
+-- Test Pro-rated results
 select results_eq(
     'select reporting_year from ggircs.pro_rated_carbon_tax_rate order by reporting_year',
 
