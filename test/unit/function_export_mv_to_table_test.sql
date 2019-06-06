@@ -4,7 +4,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(102);
+select plan(103);
 
 insert into ggircs_swrs.ghgr_import (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -1778,7 +1778,11 @@ select results_eq(
                   wastewater_processing_factors::text,
                   measured_conversion_factors::text
                 from ggircs_swrs.fuel
-                order by ghgr_import_id
+                order by
+                    ghgr_import_id,
+                    activity_name,
+                    sub_activity_name,
+                    fuel_type
                  asc
               $$,
 
@@ -1806,7 +1810,11 @@ select results_eq(
                   wastewater_processing_factors::text,
                   measured_conversion_factors::text
                 from ggircs.fuel
-                order by ghgr_import_id
+                order by
+                    ghgr_import_id,
+                    activity_name,
+                    sub_activity_name,
+                    fuel_type
                  asc
               $$,
 
