@@ -150,14 +150,41 @@ $$);
 refresh materialized view ggircs_swrs.report with data;
 refresh materialized view ggircs_swrs.fuel with data;
 
+
+-- REPORT
+    insert into ggircs.report (id, ghgr_import_id, source_xml, imported_at, swrs_report_id, prepop_report_id, report_type, swrs_facility_id, swrs_organisation_id,
+                               reporting_period_duration, status, version, submission_date, last_modified_by, last_modified_date, update_comment, swrs_report_history_id)
+
+    select id, ghgr_import_id, source_xml, imported_at, swrs_report_id, prepop_report_id, report_type, swrs_facility_id, swrs_organisation_id,
+           reporting_period_duration, status, version, submission_date, last_modified_by, last_modified_date, update_comment, swrs_report_history_id
+
+    from ggircs_swrs.report;
+
+-- FUEL
+    insert into ggircs.fuel(id, ghgr_import_id, report_id,
+                            activity_name, sub_activity_name, unit_name, sub_unit_name, fuel_type, fuel_classification, fuel_description,
+                            fuel_units, annual_fuel_amount, annual_weighted_avg_carbon_content, annual_weighted_avg_hhv, annual_steam_generation, alternative_methodology_description,
+                            other_flare_details, q1, q2, q3, q4, wastewater_processing_factors, measured_conversion_factors)
+
+    select _fuel.id, _fuel.ghgr_import_id, _report.id,
+           _fuel.activity_name, _fuel.sub_activity_name, _fuel.unit_name, _fuel.sub_unit_name, _fuel.fuel_type, _fuel.fuel_classification, _fuel.fuel_description,
+           _fuel.fuel_units, _fuel.annual_fuel_amount, _fuel.annual_weighted_avg_carbon_content, _fuel.annual_weighted_avg_hhv, _fuel.annual_steam_generation,
+           _fuel.alternative_methodology_description, _fuel.other_flare_details, _fuel.q1, _fuel.q2, _fuel.q3, _fuel.q4, _fuel.wastewater_processing_factors, _fuel.measured_conversion_factors
+
+    from ggircs_swrs.fuel
+    left join ggircs_swrs.fuel as _fuel on _fuel.id = fuel.id
+    -- FK Fuel -> Report
+    left join ggircs_swrs.report as _report
+    on _fuel.ghgr_import_id = _report.ghgr_import_id;
+
 select results_eq(
     'select reporting_year from ggircs.pro_rated_implied_emission_factor order by reporting_year',
 
     $$
     select reporting_period_duration::integer
-    from ggircs_swrs.fuel as fuel
-    join ggircs_swrs.report as report
-    on report.ghgr_import_id = fuel.ghgr_import_id
+    from ggircs.fuel as fuel
+    join ggircs.report as report
+    on fuel.report_id = report.id
     order by reporting_period_duration
     $$,
 
@@ -165,28 +192,11 @@ select results_eq(
 );
 
 select results_eq(
-    $$ select year_length from ggircs.pro_rated_implied_emission_factor where fuel_type = 'Wood Waste' $$,
-
-    $$
-    with x as (
-    select reporting_period_duration as rpd, fuel_type
-    from ggircs_swrs.fuel as fuel
-    join ggircs_swrs.report as report
-    on report.ghgr_import_id = fuel.ghgr_import_id
-    )
-    select concat((x.rpd)::text, '-12-31')::date - concat((x.rpd)::text, '-01-01')::date as year_length
-    from x where x.fuel_type = 'Wood Waste'
-    $$,
-
-    'pro_rated_implied_emission_factor properly selects the length of the reporting year in days'
-);
-
-select results_eq(
     'select fuel_mapping_id from ggircs.pro_rated_implied_emission_factor order by fuel_mapping_id',
 
     $$
     select fm.id
-    from ggircs_swrs.fuel as fuel
+    from ggircs.fuel as fuel
     join ggircs_swrs.fuel_mapping as fm
     on fuel.fuel_type = fm.fuel_type
     $$,
@@ -195,18 +205,9 @@ select results_eq(
 );
 
 select results_eq(
-    $$ select year_length from ggircs.pro_rated_implied_emission_factor where fuel_type = 'Wood Waste' $$,
+    $$ select year_length from ggircs.pro_rated_implied_emission_factor where fuel_type != 'Wood Waste' order by year_length $$,
 
-    $$
-    with x as (
-    select reporting_period_duration as rpd, fuel_type
-    from ggircs_swrs.fuel as fuel
-    join ggircs_swrs.report as report
-    on report.ghgr_import_id = fuel.ghgr_import_id
-    )
-    select concat((x.rpd::integer)::text, '-12-31')::date - concat((x.rpd::integer)::text, '-01-01')::date as year_length
-    from x where x.fuel_type = 'Wood Waste'
-    $$,
+    ARRAY[364,365],
 
     'pro_rated_implied_emission_factor properly selects the length of the reporting year in days'
 );
@@ -239,7 +240,9 @@ select results_eq(
     $$ select pro_rated_implied_emission_factor from ggircs.pro_rated_implied_emission_factor order by pro_rated_implied_emission_factor $$,
 
     $$
-    select ((y.start_rate * y.start_duration) + (y.end_rate * y.end_duration)) / y.year_length as pro_rated_implied_emission_factor from ggircs.pro_rated_implied_emission_factor y
+    select ((y.start_rate * y.start_duration) + (y.end_rate * y.end_duration)) / y.year_length as pro_rated_implied_emission_factor
+    from ggircs.pro_rated_implied_emission_factor y
+    order by pro_rated_implied_emission_factor
     $$,
 
     'pro_rated_implied_emission_factor properly pro-rates the implied emission factor'

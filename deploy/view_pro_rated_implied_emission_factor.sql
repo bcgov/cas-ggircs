@@ -13,13 +13,16 @@ create or replace view ggircs.pro_rated_implied_emission_factor as
                ief.implied_emission_factor      as implied_emission_factor,
                ief.id                           as id,
                ief.fuel_mapping_id              as fuel_mapping_id
-        from ggircs_swrs.fuel
-                 join ggircs_swrs.report as report
-                      on fuel.ghgr_import_id = report.ghgr_import_id
+        from ggircs.fuel
+                 join ggircs.report as report
+                      on fuel.report_id = report.id
                  join ggircs_swrs.fuel_mapping as fmap
                       on fuel.fuel_type = fmap.fuel_type
                  join ggircs_swrs.implied_emission_factor as ief
                       on fuel_mapping_id = fmap.id
+                      and concat((report.reporting_period_duration)::text, '-12-31')::date > ief.start_date
+                      and concat((report.reporting_period_duration)::text, '-12-31')::date < ief.end_date
+
     ), y as (
     select x.id as id,
            x.rpd as reporting_year,
@@ -72,8 +75,7 @@ create or replace view ggircs.pro_rated_implied_emission_factor as
                                                              where id = x.id)
            end as end_duration,
 
-           concat((x.rpd)::text, '-12-31')::date - concat((x.rpd)::text, '-01-01')::date as year_length,
-           row_number() over (partition by fuel_type, rpd order by rpd desc) as rn
+           concat((x.rpd)::text, '-12-31')::date - concat((x.rpd)::text, '-01-01')::date as year_length
     from x)
     select
            y.reporting_year,
@@ -85,6 +87,6 @@ create or replace view ggircs.pro_rated_implied_emission_factor as
            y.end_rate,
            y.end_duration,
            ((y.start_rate * y.start_duration) + (y.end_rate * y.end_duration)) / y.year_length as pro_rated_implied_emission_factor
-    from y where y.rn = 1
+    from y
 ;
 commit;
