@@ -762,22 +762,6 @@ $do$
     end
 $do$;
 
-select '-----------------------------------';
-
-
-select * from ggircs.pro_rated_carbon_tax_rate;
-select '-----------------------------------';
--- select * from ggircs.pro_rated_implied_emission_factor;
-select '-----------------------------------';
-select '-----------------------------------';
-
--- select 'Reporting Year, Fuel Type, Pro-Rated Carbon Rate, Pro-Rated Implied Emission Factor, Fuel Amount, Calculated Carbon Tax';
-select '-----------------------------------';
-select (year, fuel_type, round(calculated_carbon_tax::numeric, 2)) from ggircs.carbon_tax_calculation;
-select '-----------------------------------';
-select '-----------------------------------';
--- select * from blah;
-
 -- Function export_mv_to_table exists
 select has_function( 'ggircs_swrs', 'export_mv_to_table', 'Schema ggircs_swrs has function export_mv_to_table()' );
 

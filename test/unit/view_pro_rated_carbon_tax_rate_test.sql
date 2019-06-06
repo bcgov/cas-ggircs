@@ -190,7 +190,7 @@ select results_eq(
 );
 
 select results_eq(
-    $$ select year_length from ggircs.pro_rated_carbon_tax_rate where fuel_type = 'Wood Waste' $$,
+    $$ select year_length from ggircs.pro_rated_carbon_tax_rate where fuel_type = 'Wood Waste' order by year_length$$,
 
     $$
     with x as (
@@ -201,13 +201,14 @@ select results_eq(
     )
     select concat((x.rpd::integer)::text, '-12-31')::date - concat((x.rpd::integer)::text, '-01-01')::date as year_length
     from x where x.fuel_type = 'Wood Waste'
+    order by year_length
     $$,
 
     'pro_rated_carbon_tax_rate properly selects the length of the reporting year in days'
 );
 
 select results_eq(
-    $$ select start_rate from ggircs.pro_rated_carbon_tax_rate where fuel_type = 'Wood Waste' $$,
+    $$ select start_rate from ggircs.pro_rated_carbon_tax_rate where fuel_type = 'Wood Waste' order by start_rate desc $$,
 
     $$
     with x as (
@@ -232,7 +233,7 @@ select results_eq(
 );
 
 select results_eq(
-    $$ select start_duration from ggircs.pro_rated_carbon_tax_rate where fuel_type = 'Wood Waste' $$,
+    $$ select start_duration from ggircs.pro_rated_carbon_tax_rate where fuel_type = 'Wood Waste' order by start_duration asc $$,
 
     $$
     with x as (
@@ -260,7 +261,7 @@ select results_eq(
 );
 
 select results_eq(
-    $$ select end_rate from ggircs.pro_rated_carbon_tax_rate where fuel_type = 'Wood Waste' $$,
+    $$ select end_rate from ggircs.pro_rated_carbon_tax_rate where fuel_type = 'Wood Waste' order by end_rate desc $$,
 
     $$
     with x as (
@@ -373,6 +374,7 @@ select results_eq(
     'pro_rated_carbon_tax_rate properly calculates the pro_rated_carbon_tax_rate'
 );
 
+select * from ggircs.pro_rated_carbon_tax_rate;
 
 select * from finish();
 rollback;
