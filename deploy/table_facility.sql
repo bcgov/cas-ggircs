@@ -8,7 +8,6 @@ create table ggircs.facility (
     id                        integer primary key,
     ghgr_import_id            integer,
     identifier_id             integer,
-    naics_id                  integer,
     organisation_id           integer,
     report_id                 integer,
     swrs_facility_id          integer,
@@ -25,7 +24,6 @@ comment on table ggircs.facility is 'the table housing all report data pertainin
 comment on column ggircs.facility.id is 'The primary key';
 comment on column ggircs.facility.ghgr_import_id is 'The primary key for the materialized view';
 comment on column ggircs.facility.identifier_id is 'A foreign key reference to ggircs.identifier';
-comment on column ggircs.facility.naics_id is 'A foreign key reference to ggircs.naics';
 comment on column ggircs.facility.organisation_id is 'A foreign key reference to ggircs.organisation';
 comment on column ggircs.facility.report_id is 'A foreign key reference to ggircs.report';
 comment on column ggircs.facility.swrs_facility_id is 'The reporting facility swrs id';

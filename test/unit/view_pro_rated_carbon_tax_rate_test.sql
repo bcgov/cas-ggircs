@@ -374,7 +374,5 @@ select results_eq(
     'pro_rated_carbon_tax_rate properly calculates the pro_rated_carbon_tax_rate'
 );
 
-select * from ggircs.pro_rated_carbon_tax_rate;
-
 select * from finish();
 rollback;

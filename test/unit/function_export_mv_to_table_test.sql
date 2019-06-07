@@ -917,20 +917,6 @@ select results_eq(
     'Foreign key identifier_id in ggircs.facility references ggircs.identifier.id'
 );
 
--- Facility -> Naics
-select results_eq(
-    $$
-    select naics.naics_code, naics_classification from ggircs.facility
-    join ggircs.naics
-    on
-      facility.naics_id = naics.id
-    $$,
-
-    $$ select naics_code, naics_classification from ggircs.naics where path_context = 'RegistrationData' order by naics_code $$,
-
-    'Foreign key naics_id in ggircs.facility references ggircs.naics.id'
-);
-
 -- Facility -> Organisation
 select results_eq(
     $$
@@ -1284,19 +1270,6 @@ select results_eq(
     'Foreign key report_id in ggircs.contact references ggircs.report.id'
 );
 
--- Organisation -> Parent Organisation
-select results_eq(
-    $$
-    select distinct(parent_organisation.ghgr_import_id) from ggircs.organisation
-    join ggircs.parent_organisation
-    on organisation.parent_organisation_id = parent_organisation.id
-    $$,
-
-    'select ghgr_import_id from ggircs.parent_organisation',
-
-    'Foreign key parent_organisation_id in ggircs.organisation references ggircs.parent_organisation.id'
-);
-
 -- Organisation -> Report
 select results_eq(
 
@@ -1324,6 +1297,20 @@ select results_eq(
     'Foreign key report_id in ggircs.parent_organisation references ggircs.report.id'
 );
 
+select id, organisation_id from ggircs.parent_organisation;
+
+-- Parent Organisation -> Organisation
+select results_eq(
+    $$
+    select distinct(organisation.ghgr_import_id) from ggircs.parent_organisation
+    join ggircs.organisation
+    on parent_organisation.organisation_id = organisation.id
+    $$,
+
+    'select ghgr_import_id from ggircs.organisation',
+
+    'Foreign key organisation_id in ggircs.parent_organisation references ggircs.organisation.id'
+);
 
 -- Identifier -> Facility
 select results_eq(
@@ -1366,6 +1353,26 @@ select results_eq(
     'select ghgr_import_id from ggircs.facility order by ghgr_import_id',
 
     'Foreign key facility_id in ggircs.naics references ggircs.facility.id'
+);
+
+-- Naics -> Facility (path_context = RegistrationData)
+select results_eq(
+    $$
+    select facility.ghgr_import_id from ggircs.naics
+    join ggircs.facility
+    on
+      naics.registration_data_facility_id = facility.id
+    order by naics_code
+    $$,
+
+    $$ select facility.ghgr_import_id
+       from ggircs.naics
+       join ggircs.facility
+       on
+         naics.facility_id = facility.id
+         and path_context = 'RegistrationData' order by naics_code $$,
+
+    'Foreign key registration_data_facility_id in ggircs.naics references ggircs.facility.id'
 );
 
 -- Naics -> Report

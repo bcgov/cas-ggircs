@@ -42,40 +42,26 @@ $function$
     from ggircs_swrs.report;
 
     -- ORGANISATION
-    insert into ggircs.organisation (id, ghgr_import_id, parent_organisation_id, report_id, swrs_organisation_id, business_legal_name, english_trade_name, french_trade_name, cra_business_number, duns, website)
+    insert into ggircs.organisation (id, ghgr_import_id, report_id, swrs_organisation_id, business_legal_name, english_trade_name, french_trade_name, cra_business_number, duns, website)
 
-    select _organisation.id, _organisation.ghgr_import_id, _parent_organisation.id, _report.id, _organisation.swrs_organisation_id, _organisation.business_legal_name,
+    select _organisation.id, _organisation.ghgr_import_id, _report.id, _organisation.swrs_organisation_id, _organisation.business_legal_name,
            _organisation.english_trade_name, _organisation.french_trade_name, _organisation.cra_business_number, _organisation.duns, _organisation.website
 
     from ggircs_swrs.organisation
 
     left join ggircs_swrs.organisation as _organisation on organisation.id = _organisation.id
-    --FK Organisation -> Parent Organisation
-    left join ggircs_swrs.parent_organisation as _parent_organisation
-      on _organisation.ghgr_import_id = _parent_organisation.ghgr_import_id
     --FK Organisation -> Report
     left join ggircs_swrs.report as _report
       on _organisation.ghgr_import_id = _report.ghgr_import_id;
 
     -- FACILITY
-    insert into ggircs.facility (id, ghgr_import_id, identifier_id, naics_id, organisation_id, report_id, swrs_facility_id, facility_name, facility_type, relationship_type, portability_indicator, status, latitude, longitude)
+    insert into ggircs.facility (id, ghgr_import_id, identifier_id, organisation_id, report_id, swrs_facility_id, facility_name, facility_type, relationship_type, portability_indicator, status, latitude, longitude)
 
-    select _facility.id, _facility.ghgr_import_id, null, _naics.id, _organisation.id, _report.id, _facility.swrs_facility_id, _facility.facility_name, _facility.facility_type,
+    select _facility.id, _facility.ghgr_import_id, null, _organisation.id, _report.id, _facility.swrs_facility_id, _facility.facility_name, _facility.facility_type,
            _facility.relationship_type, _facility.portability_indicator, _facility.status, _facility.latitude, _facility.longitude
 
     from ggircs_swrs.facility
     left join ggircs_swrs.facility as _facility on facility.id = _facility.id
-    -- FK Facility -> Identifier
---     left join ggircs_swrs.identifier as _identifier
---         on _facility.ghgr_import_id = _identifier.ghgr_import_id
---         and _identifier.identifier_type = 'BCGHGID'
---         and _identifier.identifier_value is not null
---         and _identifier.identifier_value != ''
---         and _identifier.path_context = 'RegistrationData'
-    -- FK Facility -> Naics
-    left join ggircs_swrs.naics as _naics
-        on _facility.ghgr_import_id = _naics.ghgr_import_id
-        and _naics.path_context = 'RegistrationData'
     -- FK Facility -> Organisation
     left join ggircs_swrs.organisation as _organisation
         on _facility.ghgr_import_id = _organisation.ghgr_import_id
@@ -138,9 +124,9 @@ $function$
       on _identifier.ghgr_import_id = _report.ghgr_import_id;
 
     -- NAICS
-    insert into ggircs.naics(id, ghgr_import_id, facility_id, naics_mapping_id, report_id, swrs_facility_id, path_context, naics_classification, naics_code, naics_priority)
+    insert into ggircs.naics(id, ghgr_import_id, facility_id, registration_data_facility_id, naics_mapping_id, report_id, swrs_facility_id, path_context, naics_classification, naics_code, naics_priority)
 
-    select _naics.id, _naics.ghgr_import_id, _facility.id, _naics_mapping.id, _report.id, _naics.swrs_facility_id,
+    select _naics.id, _naics.ghgr_import_id, _facility.id, (select _facility.id where _naics.path_context = 'RegistrationData'), _naics_mapping.id, _report.id, _naics.swrs_facility_id,
            _naics.path_context, _naics.naics_classification, _naics.naics_code, _naics.naics_priority
 
     from ggircs_swrs.naics
@@ -255,15 +241,18 @@ $function$
     on _permit.ghgr_import_id = _facility.ghgr_import_id;
 
     -- PARENT ORGANISATION
-    insert into ggircs.parent_organisation (id, ghgr_import_id, report_id, path_context, percentage_owned, french_trade_name, english_trade_name,
+    insert into ggircs.parent_organisation (id, ghgr_import_id, report_id, organisation_id, path_context, percentage_owned, french_trade_name, english_trade_name,
                                             duns, business_legal_name, website)
 
-    select _parent_organisation.id, _parent_organisation.ghgr_import_id, _report.id, _parent_organisation.path_context, _parent_organisation.percentage_owned,
+    select _parent_organisation.id, _parent_organisation.ghgr_import_id, _report.id, _organisation.id, _parent_organisation.path_context, _parent_organisation.percentage_owned,
            _parent_organisation.french_trade_name, _parent_organisation.english_trade_name, _parent_organisation.duns, _parent_organisation.business_legal_name, _parent_organisation.website
 
     from ggircs_swrs.parent_organisation
 
     left join ggircs_swrs.parent_organisation as _parent_organisation on parent_organisation.id = _parent_organisation.id
+    --FK Parent Organisation -> Organisation
+    left join ggircs_swrs.organisation as _organisation
+      on parent_organisation.ghgr_import_id = _organisation.ghgr_import_id
     -- FK Parent Organisation -> Report
     left join ggircs_swrs.report as _report
       on parent_organisation.ghgr_import_id = _report.ghgr_import_id;
@@ -518,10 +507,8 @@ $function$
 
     /** Create Foreign Key Constraints **/
 
-    alter table ggircs.organisation add constraint ggircs_organisation_parent_organisation_foreign_key foreign key (parent_organisation_id) references ggircs.parent_organisation(id);
     alter table ggircs.organisation add constraint ggircs_organisation_report_foreign_key foreign key (report_id) references ggircs.report(id);
 
-    alter table ggircs.facility add constraint ggircs_facility_naics_foreign_key foreign key (naics_id) references ggircs.naics(id);
     alter table ggircs.facility add constraint ggircs_facility_organisation_foreign_key foreign key (organisation_id) references ggircs.organisation(id);
     alter table ggircs.facility add constraint ggircs_facility_report_foreign_key foreign key (report_id) references ggircs.report(id);
     alter table ggircs.facility add constraint ggircs_facility_identifier_foreign_key foreign key (identifier_id) references ggircs.identifier(id);
@@ -535,6 +522,7 @@ $function$
     alter table ggircs.unit add constraint ggircs_unit_activity_foreign_key foreign key (activity_id) references ggircs.activity(id);
 
     alter table ggircs.naics add constraint ggircs_naics_facility_foreign_key foreign key (facility_id) references ggircs.facility(id);
+    alter table ggircs.naics add constraint ggircs_naics_registration_data_facility_foreign_key foreign key (registration_data_facility_id) references ggircs.facility(id);
     alter table ggircs.naics add constraint ggircs_naics_report_foreign_key foreign key (report_id) references ggircs.report(id);
     alter table ggircs.naics add constraint ggircs_naics_naics_mapping_foreign_key foreign key (naics_mapping_id) references ggircs_swrs.naics_mapping(id);
 
@@ -551,6 +539,7 @@ $function$
 
     alter table ggircs.permit add constraint ggircs_permit_facility_foreign_key foreign key (facility_id) references ggircs.facility(id);
 
+    alter table ggircs.parent_organisation add constraint ggircs_parent_organisation_organisation_foreign_key foreign key (organisation_id) references ggircs.organisation(id);
     alter table ggircs.parent_organisation add constraint ggircs_parent_organisation_report_foreign_key foreign key (report_id) references ggircs.report(id);
 
     alter table ggircs.contact add constraint ggircs_contact_address_foreign_key foreign key (address_id) references ggircs.address(id);
