@@ -2,4 +2,6 @@
 
 begin;
 
+select * from ggircs.carbon_tax_calculation where false;
+
 commit;
