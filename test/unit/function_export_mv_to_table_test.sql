@@ -962,7 +962,6 @@ select results_eq(
     'Foreign key report_id in ggircs.facility references ggircs.report.id'
 );
 
--- Todo: missing attributable emission tests
 -- Attributable Emission -> Activity
 select results_eq(
     $$
