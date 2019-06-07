@@ -289,11 +289,19 @@ $function$
     from ggircs_swrs.contact
 
     left join ggircs_swrs.contact as _contact on contact.id = _contact.id
+    -- todo: this could be re-worked when we get a better idea how to handle path_context
     --FK Contact -> Address
     left join ggircs_swrs.address as _address
       on _contact.ghgr_import_id = _address.ghgr_import_id
       and _address.type = 'Contact'
       and _contact.contact_idx = _address.contact_idx
+      and(
+            (_contact.path_context = 'RegistrationData'
+            and _address.path_context = 'RegistrationData')
+         or
+            (_contact.path_context = 'VerifyTombstone'
+            and _address.path_context = 'VerifyTombstone')
+          )
     --FK Contact -> Facility
     left join ggircs_swrs.facility as _facility
       on _contact.ghgr_import_id = _facility.ghgr_import_id
