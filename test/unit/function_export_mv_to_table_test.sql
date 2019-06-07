@@ -1076,7 +1076,7 @@ select results_eq(
     $$ select unit.unit_name from ggircs.emission as emission
        join ggircs.unit as unit
        on emission.unit_id = unit.id
-       and emission.ghgr_import_id=2
+       and emission.ghgr_import_id = 2
        and gas_type !='CO2bioC' $$,
 
     'Foreign key unit_id in ggircs.attributable_emission references ggircs.unit.id'
@@ -1296,8 +1296,6 @@ select results_eq(
 
     'Foreign key report_id in ggircs.parent_organisation references ggircs.report.id'
 );
-
-select id, organisation_id from ggircs.parent_organisation;
 
 -- Parent Organisation -> Organisation
 select results_eq(

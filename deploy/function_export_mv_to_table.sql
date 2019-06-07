@@ -178,9 +178,31 @@ $function$
       and _emission.unit_idx = _fuel.unit_idx
       and _emission.fuel_idx = _fuel.fuel_idx
     -- FK Emission -> Naics
-    left join ggircs_swrs.naics as _naics
-      on _emission.ghgr_import_id = _naics.ghgr_import_id
-      and _naics.path_context = 'RegistrationData'
+        -- This long join gets id for the NAICS code from RegistrationData if the code exists and is unique (1 Primary per report)
+        -- If there are 2 primary NAICS codes defined in RegistrationData the id for the code is derived from VerifyTombstone
+    left outer join ggircs_swrs.naics as _naics
+      on  _emission.ghgr_import_id = _naics.ghgr_import_id
+      and ((_naics.path_context = 'RegistrationData'
+      and (_naics.naics_priority = 'Primary'
+            or _naics.naics_priority = '100.00'
+            or _naics.naics_priority = '100')
+      and (select count(ghgr_import_id)
+           from ggircs_swrs.naics as __naics
+           where ghgr_import_id = _emission.ghgr_import_id
+           and __naics.path_context = 'RegistrationData'
+           and (__naics.naics_priority = 'Primary'
+            or __naics.naics_priority = '100.00'
+            or __naics.naics_priority = '100')) < 2)
+       or (_naics.path_context='VerifyTombstone'
+           and _naics.naics_code is not null
+           and (select count(ghgr_import_id)
+           from ggircs_swrs.naics as __naics
+           where ghgr_import_id = _emission.ghgr_import_id
+           and __naics.path_context = 'RegistrationData'
+           and (__naics.naics_priority = 'Primary'
+            or __naics.naics_priority = '100.00'
+            or __naics.naics_priority = '100')) > 1))
+
     -- FK Emission -> Organisation
     left join ggircs_swrs.organisation as _organisation
       on _emission.ghgr_import_id = _organisation.ghgr_import_id
