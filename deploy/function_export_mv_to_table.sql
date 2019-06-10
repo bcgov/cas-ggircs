@@ -589,7 +589,7 @@ $function$
 
     alter table ggircs.address add constraint ggircs_address_facility_foreign_key foreign key (facility_id) references ggircs.facility(id);
     alter table ggircs.address add constraint ggircs_address_organisation_foreign_key foreign key (organisation_id) references ggircs.organisation(id);
-    alter table ggircs.address add constraint ggircs_parent_organisation_facility_foreign_key foreign key (parent_organisation_id) references ggircs.parent_organisation(id);
+    alter table ggircs.address add constraint ggircs_parent_address_parent_organisation_foreign_key foreign key (parent_organisation_id) references ggircs.parent_organisation(id);
     alter table ggircs.address add constraint ggircs_address_report_foreign_key foreign key (report_id) references ggircs.report(id);
 
     alter table ggircs.additional_data add constraint ggircs_additional_data_activity_foreign_key foreign key (activity_id) references ggircs.activity(id);
