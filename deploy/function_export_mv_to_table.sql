@@ -70,7 +70,7 @@ $function$
     on _facility.ghgr_import_id = _report.ghgr_import_id;
 
     -- FK Facility -> Identifier
-    --Todo: Can this be brought into the join and still work (use our same hierarchy rules for RD vs VT?)
+    --Todo: Remove this fk relation as it is a Parent -> Child relation and find a way to relate to this from Identifier -> Facility with a bcghgid_id column
     with x as (select * from ggircs_swrs.identifier where identifier_type = 'BCGHGID' and identifier_value is not null and identifier_value != '' order by path_context asc)
     update ggircs.facility as f set identifier_id = x.id from x where f.ghgr_import_id = x.ghgr_import_id;
 
@@ -226,12 +226,12 @@ $function$
     from ggircs_swrs.final_report;
 
     -- FUEL
-    insert into ggircs.fuel(id, ghgr_import_id, report_id, unit_id,
+    insert into ggircs.fuel(id, ghgr_import_id, report_id, unit_id, fuel_mapping_id,
                             activity_name, sub_activity_name, unit_name, sub_unit_name, fuel_type, fuel_classification, fuel_description,
                             fuel_units, annual_fuel_amount, annual_weighted_avg_carbon_content, annual_weighted_avg_hhv, annual_steam_generation, alternative_methodology_description,
                             other_flare_details, q1, q2, q3, q4, wastewater_processing_factors, measured_conversion_factors)
 
-    select _fuel.id, _fuel.ghgr_import_id, _report.id, _unit.id,
+    select _fuel.id, _fuel.ghgr_import_id, _report.id, _unit.id, _fuel_mapping.id,
            _fuel.activity_name, _fuel.sub_activity_name, _fuel.unit_name, _fuel.sub_unit_name, _fuel.fuel_type, _fuel.fuel_classification, _fuel.fuel_description,
            _fuel.fuel_units, _fuel.annual_fuel_amount, _fuel.annual_weighted_avg_carbon_content, _fuel.annual_weighted_avg_hhv, _fuel.annual_steam_generation,
            _fuel.alternative_methodology_description, _fuel.other_flare_details, _fuel.q1, _fuel.q2, _fuel.q3, _fuel.q4, _fuel.wastewater_processing_factors, _fuel.measured_conversion_factors
@@ -248,7 +248,9 @@ $function$
       and _fuel.sub_process_idx = _unit.sub_process_idx
       and _fuel.activity_name = _unit.activity_name
       and _fuel.units_idx = _unit.units_idx
-      and _fuel.unit_idx = _unit.unit_idx;
+      and _fuel.unit_idx = _unit.unit_idx
+    left join ggircs_swrs.fuel_mapping as _fuel_mapping
+      on _fuel.fuel_type = _fuel_mapping.fuel_type;
 
     -- PERMIT
     insert into ggircs.permit(id, ghgr_import_id, facility_id, path_context, issuing_agency, issuing_dept_agency_program, permit_number)
@@ -548,7 +550,8 @@ $function$
 
     alter table ggircs.facility add constraint ggircs_facility_organisation_foreign_key foreign key (organisation_id) references ggircs.organisation(id);
     alter table ggircs.facility add constraint ggircs_facility_report_foreign_key foreign key (report_id) references ggircs.report(id);
-    alter table ggircs.facility add constraint ggircs_facility_identifier_foreign_key foreign key (identifier_id) references ggircs.identifier(id);
+    -- Todo: This fk constraint can't exist as it is a Parent -> Child fk relation. It needs to be removed when the BCGHGID relation on Facility -> Identifier is refactored
+--     alter table ggircs.facility add constraint ggircs_facility_identifier_foreign_key foreign key (identifier_id) references ggircs.identifier(id);
 
     alter table ggircs.activity add constraint ggircs_activity_facility_foreign_key foreign key (facility_id) references ggircs.facility(id);
     alter table ggircs.activity add constraint ggircs_activity_report_foreign_key foreign key (report_id) references ggircs.report(id);
@@ -573,6 +576,7 @@ $function$
 
     alter table ggircs.fuel add constraint ggircs_fuel_report_foreign_key foreign key (report_id) references ggircs.report(id);
     alter table ggircs.fuel add constraint ggircs_fuel_unit_foreign_key foreign key (unit_id) references ggircs.unit(id);
+    alter table ggircs.fuel add constraint ggircs_swrs_fuel_fuel_mapping_foreign_key foreign key (fuel_mapping_id) references ggircs_swrs.fuel_mapping(id);
 
     alter table ggircs.permit add constraint ggircs_permit_facility_foreign_key foreign key (facility_id) references ggircs.facility(id);
 
@@ -598,13 +602,6 @@ $function$
       loop
         perform ggircs_swrs.refresh_materialized_views(quote_ident(mv_array[i]), 'with no data');
       end loop;
-
-      -- Create FK/PK relation between fuel and ggircs_swrs.fuel_mapping
-      alter table ggircs.fuel add column fuel_mapping_id int;
-      create index ggircs_fuel_fuel_mapping_index on ggircs.fuel (fuel_mapping_id);
-      update ggircs.fuel set fuel_mapping_id = fuel_mapping.id from ggircs_swrs.fuel_mapping
-          where fuel.fuel_type = fuel_mapping.fuel_type;
-      alter table ggircs.fuel add constraint ggircs_swrs_fuel_fuel_mapping_foreign_key foreign key (fuel_mapping_id) references ggircs_swrs.fuel_mapping(id);
 
       -- Create FK/PK relation between fuel and carbon_tax_rate_mapping (before Apr 1 reporting yr)
         alter table ggircs.fuel add column rate_jan_id int;

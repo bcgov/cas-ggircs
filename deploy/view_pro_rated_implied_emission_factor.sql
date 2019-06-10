@@ -22,7 +22,7 @@ create or replace view ggircs.pro_rated_implied_emission_factor as
                  join ggircs_swrs.fuel_mapping as fmap
                       on fuel.fuel_type = fmap.fuel_type
                  join ggircs_swrs.implied_emission_factor as ief
-                      on fuel_mapping_id = fmap.id
+                      on ief.fuel_mapping_id = fmap.id
                       and concat((report.reporting_period_duration)::text, '-12-31')::date > ief.start_date
                       and concat((report.reporting_period_duration)::text, '-12-31')::date < ief.end_date
 
