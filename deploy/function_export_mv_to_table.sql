@@ -345,6 +345,13 @@ $function$
       on _address.ghgr_import_id = _parent_organisation.ghgr_import_id
       and _address.type = 'ParentOrganisation'
       and _address.parent_organisation_idx = _parent_organisation.parent_organisation_idx
+      and(
+            (_parent_organisation.path_context = 'RegistrationData'
+            and _address.path_context = 'RegistrationData')
+         or
+            (_parent_organisation.path_context = 'VerifyTombstone'
+            and _address.path_context = 'VerifyTombstone')
+          )
     -- FK Address -> Report
     left join ggircs_swrs.report as _report
       on _address.ghgr_import_id = _report.ghgr_import_id;
@@ -397,7 +404,7 @@ $function$
       and _measured_emission_factor.unit_idx = _fuel.unit_idx
       and _measured_emission_factor.fuel_idx = _fuel.fuel_idx;
 
-    -- Todo: Should attributable emission be a view rather than a table?
+    -- Todo: Should attributable emission be a view rather than a table? Yes
     -- ATTRIBUTABLE EMISSION
     raise notice 'Exporting attributable_emission';
 
