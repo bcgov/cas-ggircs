@@ -45,7 +45,7 @@ INSERT INTO ggircs_swrs.implied_emission_factor (implied_emission_factor, start_
 INSERT INTO ggircs_swrs.implied_emission_factor (implied_emission_factor, start_date, end_date, fuel_mapping_id) VALUES (2.077, '2019-04-01', '2020-03-31', 4);
 INSERT INTO ggircs_swrs.implied_emission_factor (implied_emission_factor, start_date, end_date, fuel_mapping_id) VALUES (2.0771111111, '2020-04-01', '2021-03-31', 4);
 INSERT INTO ggircs_swrs.implied_emission_factor (implied_emission_factor, start_date, end_date, fuel_mapping_id) VALUES (2.077, '2021-04-01', '9999-03-31', 4);
-INSERT INTO ggircs_swrs.implied_emission_factor (implied_emission_factor, start_date, end_date, fuel_mapping_id) VALUES (0.315, '0001-01-01', '2017-03-31', 5);
+INSERT INTO ggircs_swrs.implied_emission_factor (implied_emission_factor, start_date, end_date, fuel_mapping_id) VALUES (null, '0001-01-01', '2017-03-31', 5);
 INSERT INTO ggircs_swrs.implied_emission_factor (implied_emission_factor, start_date, end_date, fuel_mapping_id) VALUES (0.315, '2017-04-01', '2018-03-31', 5);
 INSERT INTO ggircs_swrs.implied_emission_factor (implied_emission_factor, start_date, end_date, fuel_mapping_id) VALUES (0.3151428571, '2018-04-01', '2019-03-31', 5);
 INSERT INTO ggircs_swrs.implied_emission_factor (implied_emission_factor, start_date, end_date, fuel_mapping_id) VALUES (0.315, '2019-04-01', '2020-03-31', 5);
@@ -57,7 +57,7 @@ INSERT INTO ggircs_swrs.implied_emission_factor (implied_emission_factor, start_
 INSERT INTO ggircs_swrs.implied_emission_factor (implied_emission_factor, start_date, end_date, fuel_mapping_id) VALUES (0.246, '2019-04-01', '2020-03-31', 6);
 INSERT INTO ggircs_swrs.implied_emission_factor (implied_emission_factor, start_date, end_date, fuel_mapping_id) VALUES (0.246, '2020-04-01', '2021-03-31', 6);
 INSERT INTO ggircs_swrs.implied_emission_factor (implied_emission_factor, start_date, end_date, fuel_mapping_id) VALUES (0.246, '2021-04-01', '9999-03-31', 6);
-INSERT INTO ggircs_swrs.implied_emission_factor (implied_emission_factor, start_date, end_date, fuel_mapping_id) VALUES (0.246, '0001-01-01', '2017-03-31', 7);
+INSERT INTO ggircs_swrs.implied_emission_factor (implied_emission_factor, start_date, end_date, fuel_mapping_id) VALUES (null, '0001-01-01', '2017-03-31', 7);
 INSERT INTO ggircs_swrs.implied_emission_factor (implied_emission_factor, start_date, end_date, fuel_mapping_id) VALUES (0.246, '2017-04-01', '2018-03-31', 7);
 INSERT INTO ggircs_swrs.implied_emission_factor (implied_emission_factor, start_date, end_date, fuel_mapping_id) VALUES (0.246, '2018-04-01', '2019-03-31', 7);
 INSERT INTO ggircs_swrs.implied_emission_factor (implied_emission_factor, start_date, end_date, fuel_mapping_id) VALUES (0.246, '2019-04-01', '2020-03-31', 7);
@@ -111,7 +111,7 @@ INSERT INTO ggircs_swrs.implied_emission_factor (implied_emission_factor, start_
 INSERT INTO ggircs_swrs.implied_emission_factor (implied_emission_factor, start_date, end_date, fuel_mapping_id) VALUES (null, '2019-04-01', '2020-03-31', 15);
 INSERT INTO ggircs_swrs.implied_emission_factor (implied_emission_factor, start_date, end_date, fuel_mapping_id) VALUES (null, '2020-04-01', '2021-03-31', 15);
 INSERT INTO ggircs_swrs.implied_emission_factor (implied_emission_factor, start_date, end_date, fuel_mapping_id) VALUES (null, '2021-04-01', '9999-03-31', 15);
-INSERT INTO ggircs_swrs.implied_emission_factor (implied_emission_factor, start_date, end_date, fuel_mapping_id) VALUES (0.176, '0001-01-01', '2017-03-31', 16);
+INSERT INTO ggircs_swrs.implied_emission_factor (implied_emission_factor, start_date, end_date, fuel_mapping_id) VALUES (null, '0001-01-01', '2017-03-31', 16);
 INSERT INTO ggircs_swrs.implied_emission_factor (implied_emission_factor, start_date, end_date, fuel_mapping_id) VALUES (0.176, '2017-04-01', '2018-03-31', 16);
 INSERT INTO ggircs_swrs.implied_emission_factor (implied_emission_factor, start_date, end_date, fuel_mapping_id) VALUES (0.176, '2018-04-01', '2019-03-31', 16);
 INSERT INTO ggircs_swrs.implied_emission_factor (implied_emission_factor, start_date, end_date, fuel_mapping_id) VALUES (0.176, '2019-04-01', '2020-03-31', 16);
