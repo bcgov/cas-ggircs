@@ -2,6 +2,35 @@ apiVersion: template.openshift.io/v1
 kind: Template
 labels:
   template: deploy-template
+
+envDefaults: &envDefaults
+  env:
+    - name: SQITCH_TARGET
+      value: "db:pg:"
+    - name: PGUSER
+      valueFrom:
+        secretKeyRef:
+          key: database-user
+          name: cas-ggircs-postgres
+    - name: PGPASSWORD
+      valueFrom:
+        secretKeyRef:
+          key: database-password
+          name: cas-ggircs-postgres
+    - name: PGDATABASE
+      valueFrom:
+        secretKeyRef:
+          key: database-name
+          name: cas-ggircs-postgres
+    - name: PGPORT
+      value: "5432"
+    - name: PGHOST
+      value: cas-ggircs-postgres
+    - name: SQITCH_FULLNAME
+      value: OpenShift Deployer
+    - name: SQITCH_EMAIL
+      value: deployer@pathfinder.gov.bc.ca
+
 objects:
 
 - apiVersion: v1
@@ -16,6 +45,32 @@ objects:
       name: cas-ggircs
     strategy:
       type: Rolling
+      rollingParams:
+        pre:
+          failurePolicy: Retry
+          execNewPod:
+            <<: *envDefaults
+            containerName: cas-ggircs
+            command:
+              - /usr/bin/env
+              - bash
+              - -c
+              - |
+                sqitch revert table_ghgr_import -y;
+        post:
+          failurePolicy: Retry
+          execNewPod:
+            <<: *envDefaults
+            containerName: cas-ggircs
+            command:
+              - /usr/bin/env
+              - bash
+              - -c
+              - |
+                set -euo pipefail;
+                sqitch deploy;
+                echo "Exporting data to `ggircs` schema";
+                psql -c "select ggircs_swrs.export_mv_to_table()";
     template:
       metadata:
         labels:
@@ -23,32 +78,7 @@ objects:
       spec:
         containers:
         - capabilities: {}
-          env:
-          - name: SQITCH_TARGET
-            value: "db:pg:"
-          - name: PGUSER
-            valueFrom:
-              secretKeyRef:
-                key: database-user
-                name: cas-ggircs-postgres
-          - name: PGPASSWORD
-            valueFrom:
-              secretKeyRef:
-                key: database-password
-                name: cas-ggircs-postgres
-          - name: PGDATABASE
-            valueFrom:
-              secretKeyRef:
-                key: database-name
-                name: cas-ggircs-postgres
-          - name: PGPORT
-            value: "5432"
-          - name: PGHOST
-            value: cas-ggircs-postgres
-          - name: SQITCH_FULLNAME
-            value: OpenShift Deployer
-          - name: SQITCH_EMAIL
-            value: deployer@pathfinder.gov.bc.ca
+          <<: *envDefaults
           image: cas-ggircs-mirror:latest
           imagePullPolicy: IfNotPresent
           name: cas-ggircs

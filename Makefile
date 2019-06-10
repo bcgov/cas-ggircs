@@ -200,7 +200,7 @@ define switch_project
 endef
 
 define oc_process
-	@@${OC} process -f openshift/${1}.yml ${2} | ${OC} apply --wait=true -f-
+	@@${OC} process -f openshift/${1}.yml ${2} | ${OC} apply --wait=true --overwrite=true -f-
 endef
 
 define build
@@ -245,8 +245,6 @@ define deploy
 	$(call oc_process,service/cas-ggircs-metabase-postgres,)
 	$(call oc_process,service/cas-ggircs-metabase,)
 	$(call oc_process,route/cas-ggircs-metabase,OC_PROJECT=${OC_PROJECT})
-	# Migrate...
-	# TODO(wenzowski): automatically run a `sqitch deploy`
 endef
 
 .PHONY: deploy_tools
