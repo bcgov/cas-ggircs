@@ -16,13 +16,7 @@ create materialized view ggircs_swrs.report as (
     report_details.swrs_facility_id,
     report_details.swrs_organisation_id,
     (regexp_matches(report_details.reporting_period_duration, '\d\d\d\d'))[1]::varchar(1000) as reporting_period_duration,
-    report_status.*,
-    row_number() over (
-      partition by report_details.swrs_report_id
-      order by
-        report_status.submission_date desc,
-        id desc
-      )                            as swrs_report_history_id
+    report_status.*
   from ggircs_swrs.ghgr_import,
        xmltable(
            '/ReportData/ReportDetails'
@@ -51,7 +45,6 @@ create materialized view ggircs_swrs.report as (
 
 
 create unique index ggircs_report_primary_key on ggircs_swrs.report (ghgr_import_id);
-create index ggircs_swrs_report_history on ggircs_swrs.report (swrs_report_history_id);
 
 comment on materialized view ggircs_swrs.report is 'The materialized view housing all report data, derived from ghgr_import table';
 comment on column ggircs_swrs.report.id is 'A generated index used for keying in the ggircs schema';
@@ -70,6 +63,5 @@ comment on column ggircs_swrs.report.submission_date is 'The date the report was
 comment on column ggircs_swrs.report.last_modified_by is 'The person who last modified the report';
 comment on column ggircs_swrs.report.last_modified_date is 'The timestamp recorded in SWRS when the report was last modified';
 comment on column ggircs_swrs.report.update_comment is 'The description of the update';
-comment on column ggircs_swrs.report.swrs_report_history_id is 'The id denoting the history of the report (1 = latest)';
 
 commit;

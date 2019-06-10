@@ -1463,8 +1463,7 @@ select results_eq($$
                       submission_date,
                       last_modified_by,
                       last_modified_date,
-                      update_comment,
-                      swrs_report_history_id
+                      update_comment
                   from ggircs_swrs.report
 
                   order by ghgr_import_id
@@ -1486,8 +1485,7 @@ select results_eq($$
                       submission_date,
                       last_modified_by,
                       last_modified_date,
-                      update_comment,
-                      swrs_report_history_id
+                      update_comment
                   from ggircs.report
 
                   order by ghgr_import_id

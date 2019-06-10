@@ -3,7 +3,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(49);
+select plan(45);
 
 -- Test matview report exists in schema ggircs_swrs
 select has_materialized_view('ggircs_swrs', 'report', 'Materialized view report exists');
@@ -22,11 +22,9 @@ select has_column('ggircs_swrs', 'report', 'version', 'Matview report has column
 select has_column('ggircs_swrs', 'report', 'submission_date', 'Matview report has column: submission_date');
 select has_column('ggircs_swrs', 'report', 'last_modified_by', 'Matview report has column: last_modified_by');
 select has_column('ggircs_swrs', 'report', 'update_comment', 'Matview report has column: update_comment');
-select has_column('ggircs_swrs', 'report', 'swrs_report_history_id', 'Matview report has column: swrs_report_history_id');
 
 -- Test index names in matview report exist and are correct
 select has_index('ggircs_swrs', 'report', 'ggircs_report_primary_key', 'Matview report has index: ggircs_report_primary_key');
-select has_index('ggircs_swrs', 'report', 'ggircs_swrs_report_history', 'Matview report has index: ggircs_swrs_report_history');
 
 -- Test unique indicies are defined unique
 select index_is_unique('ggircs_swrs', 'report', 'ggircs_report_primary_key', 'Matview report index ggircs_report_primary_key is unique');
@@ -46,7 +44,6 @@ select col_type_is('ggircs_swrs', 'report', 'version', 'character varying(1000)'
 select col_type_is('ggircs_swrs', 'report', 'submission_date', 'timestamp with time zone', 'Matview report column submission_date has type character varying(1000)');
 select col_type_is('ggircs_swrs', 'report', 'last_modified_by', 'character varying(1000)', 'Matview report column last_modified_by has type character varying(1000)');
 select col_type_is('ggircs_swrs', 'report', 'update_comment', 'character varying(1000)', 'Matview report column update_comment has type character varying(1000)');
-select col_type_is('ggircs_swrs', 'report', 'swrs_report_history_id', 'bigint', 'Matview report column swrs_report_history_id has type bigint');
 
 -- Setup fixture
 insert into ggircs_swrs.ghgr_import (imported_at, xml_file) VALUES ('2018-09-29T11:55:39.423', $$
@@ -103,7 +100,6 @@ select results_eq('select submission_date from ggircs_swrs.report', ARRAY[null::
 select results_eq('select last_modified_by from ggircs_swrs.report', ARRAY['Donny Donaldson McDonaldface'::varchar], 'Matview report parsed column last_modified_by');
 select results_eq('select last_modified_date from ggircs_swrs.report', ARRAY['2018-09-28T11:55:39.423'::timestamptz], 'Matview report parsed column last_modified_date');
 select results_eq('select update_comment from ggircs_swrs.report', ARRAY[null::varchar], 'Matview report parsed column update_comment');
-select results_eq('select swrs_report_history_id from ggircs_swrs.report', ARRAY[1::bigint], 'Matview report parsed column swrs_report_history_id');
 
 select finish();
 rollback;
