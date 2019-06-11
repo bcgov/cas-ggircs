@@ -1406,10 +1406,11 @@ select results_eq(
       join ggircs_swrs.fuel_mapping
       on
         fuel.fuel_mapping_id = fuel_mapping.id
+      order by fuel_type
     $$,
 
     $$select fuel_type from ggircs_swrs.fuel_mapping
-      where fuel_type in ('Residual Fuel Oil (#5 & 6)', 'Wood Waste')
+      where fuel_type in ('Residual Fuel Oil (#5 & 6)', 'Wood Waste') order by fuel_type
     $$,
 
     'Foreign key fuel_mapping_id references ggircs.swrs.fuel_mapping.id'
