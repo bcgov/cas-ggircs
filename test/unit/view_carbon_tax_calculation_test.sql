@@ -83,7 +83,7 @@ $$), ($$
     <FacilityId>0001</FacilityId>
     <FacilityType>ABC</FacilityType>
     <OrganisationId>0000</OrganisationId>
-    <ReportingPeriodDuration>2020</ReportingPeriodDuration>
+    <ReportingPeriodDuration>2015</ReportingPeriodDuration>
     <ReportStatus>
       <Status>Submitted</Status>
       <SubmissionDate>2013-03-28T19:25:55.32</SubmissionDate>

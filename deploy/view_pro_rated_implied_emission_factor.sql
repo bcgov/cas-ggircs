@@ -32,7 +32,6 @@ create or replace view ggircs.pro_rated_implied_emission_factor as
            x.fuel_type as fuel_type,
            x.fuel_mapping_id,
            case
-               when x.rpd <= 2017 then 0
                when x.rpd > 2021
                then (select implied_emission_factor
                        from ggircs_swrs.implied_emission_factor
@@ -47,7 +46,6 @@ create or replace view ggircs.pro_rated_implied_emission_factor as
            end as start_rate,
 
            case
-               when x.rpd < 2017 then 0
                when x.rpd > 2021
                  then (select implied_emission_factor
                        from ggircs_swrs.implied_emission_factor
@@ -62,7 +60,6 @@ create or replace view ggircs.pro_rated_implied_emission_factor as
            end as end_rate,
 
            case
-               when x.rpd <= 2017 then 0
                when x.rpd > 2021 then concat((x.rpd)::text, '-04-01')::date - concat((x.rpd)::text, '-01-01')::date
                else (select start_date
                      from ggircs_swrs.implied_emission_factor
@@ -70,7 +67,6 @@ create or replace view ggircs.pro_rated_implied_emission_factor as
            end as start_duration,
 
            case
-               when x.rpd < 2017 then 0
                when x.rpd = 2017 then '2017-12-31'::date - '2017-04-01'::date
                when x.rpd > 2021 then concat((x.rpd)::text, '-12-31')::date - concat((x.rpd)::text, '-04-01')::date
                else concat((x.rpd)::text, '-12-31')::date - (select start_date
