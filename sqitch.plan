@@ -31,6 +31,7 @@ table_carbon_tax_rate_mapping [schema_ggircs_swrs] 2019-05-28T23:02:37Z Dylan Le
 table_report [schema_ggircs] 2019-06-03T22:45:25Z Dylan Leard <dylan@button.is> # add table report to schema ggircs
 table_organisation [table_report] 2019-06-03T23:01:20Z Dylan Leard <dylan@button.is> # add table organisation to schema ggircs
 table_single_facility [table_organisation] 2019-06-04T17:15:20Z Dylan Leard <dylan@button.is> # add table facility to schema ggircs
+table_lfo_facility [table_organisation] 2019-06-11T21:50:18Z Matthieu Foucault <matthieu@button.is> # add table lfo_facility to schema ggircs
 table_activity [table_single_facility] 2019-06-04T17:24:09Z Dylan Leard <dylan@button.is> # add table activity to schema ggircs
 table_unit [table_activity] 2019-06-04T17:29:28Z Dylan Leard <dylan@button.is> # add table unit to schema ggircs
 table_identifier [table_facility] 2019-06-04T17:35:55Z Dylan Leard <dylan@button.is> # add table identifier to schema ggircs

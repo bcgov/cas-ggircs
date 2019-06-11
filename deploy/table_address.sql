@@ -8,6 +8,7 @@ create table ggircs.address (
     id                                                  integer primary key,
     ghgr_import_id                                      integer,
     single_facility_id                                  integer,
+    lfo_facility_id                                     integer,
     organisation_id                                     integer,
     parent_organisation_id                              integer,
     report_id                                           integer,
@@ -51,7 +52,8 @@ create table ggircs.address (
 comment on table ggircs.address is 'The table housing address information for facilities, organisations and contacts';
 comment on column ggircs.address.id is 'The primary key';
 comment on column ggircs.address.ghgr_import_id is 'The foreign key that references ggircs.ghgr_import';
-comment on column ggircs.address.single_facility_id is 'A foreign key reference to ggircs.facility';
+comment on column ggircs.address.single_facility_id is 'A foreign key reference to ggircs.single_facility';
+comment on column ggircs.address.lfo_facility_id is 'A foreign key reference to ggircs.lfo_facility';
 comment on column ggircs.address.organisation_id is 'A foreign key reference to ggircs.organisation';
 comment on column ggircs.address.parent_organisation_id is 'A foreign key reference to ggircs.parent_organisation';
 comment on column ggircs.address.report_id is 'A foreign key reference to ggircs.report';

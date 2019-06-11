@@ -4,7 +4,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(100);
+select plan(103);
 
 insert into ggircs_swrs.ghgr_import (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -770,6 +770,7 @@ select tables_are('ggircs'::name, ARRAY[
     'report'::name,
     'organisation'::name,
     'single_facility'::name,
+    'lfo_facility'::name,
     'activity'::name,
     'unit'::name,
     'identifier'::name,
@@ -797,6 +798,7 @@ select tables_are('ggircs'::name, ARRAY[
 select has_pk('ggircs', 'report', 'ggircs_report has primary key');
 select has_pk('ggircs', 'organisation', 'ggircs_organisation has primary key');
 select has_pk('ggircs', 'single_facility', 'ggircs.single_facility has primary key');
+select has_pk('ggircs', 'lfo_facility', 'ggircs.lfo_facility has primary key');
 select has_pk('ggircs', 'activity', 'ggircs_activity has primary key');
 select has_pk('ggircs', 'unit', 'ggircs_unit has primary key');
 select has_pk('ggircs', 'identifier', 'ggircs_identifier has primary key');
@@ -815,6 +817,7 @@ select has_pk('ggircs', 'measured_emission_factor', 'ggircs_measured_emission_fa
 -- select has_fk('ggircs', 'report', 'ggircs_report has foreign key constraint(s)');
 select has_fk('ggircs', 'organisation', 'ggircs_organisation has foreign key constraint(s)');
 select has_fk('ggircs', 'single_facility', 'ggircs_single_facility has foreign key constraint(s)');
+select has_fk('ggircs', 'lfo_facility', 'ggircs_lfo_facility has foreign key constraint(s)');
 select has_fk('ggircs', 'activity', 'ggircs_activity has foreign key constraint(s)');
 select has_fk('ggircs', 'unit', 'ggircs_unit has foreign key constraint(s)');
 select has_fk('ggircs', 'identifier', 'ggircs_identifier has foreign key constraint(s)');
@@ -832,6 +835,7 @@ select has_fk('ggircs', 'measured_emission_factor', 'ggircs_measured_emission_fa
 select isnt_empty('select * from ggircs.report', 'there is data in ggircs.report');
 select isnt_empty('select * from ggircs.organisation', 'there is data in ggircs.organisation');
 select isnt_empty('select * from ggircs.single_facility', 'single_facility has data');
+select isnt_empty('select * from ggircs.lfo_facility', 'lfo_facility has data');
 select isnt_empty('select * from ggircs.activity', 'there is data in ggircs.activity');
 select isnt_empty('select * from ggircs.unit', 'there is data in ggircs.unit');
 select isnt_empty('select * from ggircs.identifier', 'there is data in ggircs.identifier');
