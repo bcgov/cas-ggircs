@@ -10,7 +10,7 @@ begin;
 -- create schema ggircs_swrs;
 -- TODO: set search_path to change dynamically for each schema, I don't think this will work once
 --       schemas other than ggircs_swrs become populated with tables
-set search_path to ggircs_swrs,public;
+set search_path to ggircs,ggircs_swrs,public;
 
 select * from no_plan();
 
@@ -18,7 +18,10 @@ select * from no_plan();
 
 -- GUIDELINE: All tables should have descriptions
 -- Check all tables for an existing description (regex '.+')
-with tnames as (select table_name from information_schema.tables where table_schema like 'ggircs%' and table_type != 'VIEW')
+with tnames as (select table_name from information_schema.tables
+                    where table_schema like 'ggircs%'
+                     and table_type != 'VIEW'
+               )
 select matches(
                obj_description(tbl::regclass, 'pg_class'),
                '.+',
