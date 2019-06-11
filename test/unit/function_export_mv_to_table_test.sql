@@ -1415,10 +1415,10 @@ select results_eq(
 -- Permit -> Facility
 select results_eq(
     $$
-    select facility.ghgr_import_id from ggircs.permit
+    select single_facility.ghgr_import_id from ggircs.permit
     join ggircs.single_facility
     on
-      permit.facility_id = facility.id
+      permit.single_facility_id = single_facility.id
       order by ghgr_import_id
     $$,
 
