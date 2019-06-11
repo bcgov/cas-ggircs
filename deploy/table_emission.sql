@@ -8,7 +8,7 @@ create table ggircs.emission (
     id                        integer primary key,
     ghgr_import_id            integer,
     activity_id               integer,
-    facility_id               integer,
+    single_facility_id        integer,
     fuel_id                   integer,
     naics_id                  integer,
     organisation_id           integer,
@@ -33,7 +33,7 @@ comment on table ggircs.emission is 'The table containing the information on emi
 comment on column ggircs.emission.id is 'The primary key';
 comment on column ggircs.emission.ghgr_import_id is 'A foreign key reference to ggircs.ghgr_import';
 comment on column ggircs.emission.activity_id is 'A foreign key reference to ggircs.activity';
-comment on column ggircs.emission.facility_id is 'A foreign key reference to ggircs.facility';
+comment on column ggircs.emission.single_facility_id is 'A foreign key reference to ggircs.facility';
 comment on column ggircs.emission.fuel_id is 'A foreign key reference to ggircs.fuel';
 comment on column ggircs.emission.naics_id is 'A foreign key reference to ggircs.naics';
 comment on column ggircs.emission.organisation_id is 'A foreign key reference to ggircs.organisation';

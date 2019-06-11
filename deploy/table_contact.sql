@@ -8,7 +8,7 @@ create table ggircs.contact (
     id                        integer primary key,
     ghgr_import_id            integer,
     address_id                integer,
-    facility_id               integer,
+    single_facility_id        integer,
     report_id                 integer,
     path_context              varchar(1000),
     contact_type              varchar(1000),
@@ -27,7 +27,7 @@ comment on table ggircs.contact is 'The table housing contact information';
 comment on column ggircs.contact.id is 'The primary key';
 comment on column ggircs.contact.ghgr_import_id is 'The foreign key reference to ggircs.ghgr_import';
 comment on column ggircs.contact.address_id is 'A foreign key reference to ggircs.address';
-comment on column ggircs.contact.facility_id is 'A foreign key reference to ggircs.facility';
+comment on column ggircs.contact.single_facility_id is 'A foreign key reference to ggircs.facility';
 comment on column ggircs.contact.report_id is 'A foreign key reference to ggircs.report';
 comment on column ggircs.contact.path_context is 'The umbrella context from which the contact was pulled from the xml (VerifyTombstone or RegistrationData';
 comment on column ggircs.contact.contact_type is 'The type of contact';

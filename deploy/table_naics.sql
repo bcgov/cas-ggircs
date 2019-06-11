@@ -7,8 +7,8 @@ create table ggircs.naics (
 
     id                              integer primary key,
     ghgr_import_id                  integer,
-    facility_id                     integer,
-    registration_data_facility_id   integer,
+    single_facility_id              integer,
+    registration_data_single_facility_id   integer,
     naics_mapping_id                integer,
     report_id                       integer,
     swrs_facility_id                integer,
@@ -22,8 +22,8 @@ create table ggircs.naics (
 comment on table ggircs.naics is 'The table housing all report data pertaining to naics';
 comment on column ggircs.naics.id is 'The primary key';
 comment on column ggircs.naics.ghgr_import_id is 'The foreign key reference to ggircs.ghgr_import.id';
-comment on column ggircs.naics.facility_id is 'A foreign key reference to ggircs.facility';
-comment on column ggircs.naics.registration_data_facility_id is 'A foreign key reference to ggircs.facility where naics path context = RegistrationData';
+comment on column ggircs.naics.single_facility_id is 'A foreign key reference to ggircs.facility';
+comment on column ggircs.naics.registration_data_single_facility_id is 'A foreign key reference to ggircs.facility where naics path context = RegistrationData';
 comment on column ggircs.naics.naics_mapping_id is 'A foreign key reference to ggircs_swrs.naics_mapping';
 comment on column ggircs.naics.report_id is 'A foreign key reference to ggircs.report';
 comment on column ggircs.naics.swrs_facility_id is 'The reporting facility swrs id, fk to ggircs.facility';
