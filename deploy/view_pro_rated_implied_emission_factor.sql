@@ -86,6 +86,6 @@ create or replace view ggircs.pro_rated_implied_emission_factor as
            y.end_rate,
            y.end_duration,
            ((y.start_rate * y.start_duration) + (y.end_rate * y.end_duration)) / y.year_length as pro_rated_implied_emission_factor
-    from y
+    from y group by reporting_year, fuel_type, fuel_mapping_id, year_length, start_rate, start_duration, end_rate, end_duration
 ;
 commit;
