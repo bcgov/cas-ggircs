@@ -4,7 +4,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(103);
+select plan(104);
 
 insert into ggircs_swrs.ghgr_import (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -524,7 +524,7 @@ $$), ($$
     <ReportID>1235</ReportID>
     <ReportType>R1</ReportType>
     <FacilityId>0001</FacilityId>
-    <FacilityType>ABC</FacilityType>
+    <FacilityType>LF_a</FacilityType>
     <OrganisationId>0000</OrganisationId>
     <ReportingPeriodDuration>2020</ReportingPeriodDuration>
     <ReportStatus>
@@ -1321,6 +1321,48 @@ select set_eq(
     'select swrs_facility_id from ggircs.report',
 
     'Foreign key report_id in ggircs.single_facility references ggircs.report.id'
+);
+
+-- Single Facility -> LFO Facility
+
+select set_eq(
+    $$
+    select single_facility.id, single_facility.parent_facility_id
+    from ggircs.single_facility
+    inner join ggircs.lfo_facility as _lfo_facility
+    on _lfo_facility.id = single_facility.parent_facility_id
+    $$,
+
+    $$
+    with _final_lfo_facility as (
+        select _facility.id, _organisation.swrs_organisation_id, _report.reporting_period_duration
+        from ggircs_swrs.facility
+        inner join ggircs_swrs.facility as _facility
+            on facility.id = _facility.id
+            and _facility.facility_type = 'LFO'
+        left join ggircs_swrs.organisation as _organisation
+            on _facility.ghgr_import_id = _organisation.ghgr_import_id
+        left join ggircs_swrs.report as _report
+            on _facility.ghgr_import_id = _report.ghgr_import_id
+        inner join ggircs_swrs.final_report as _final_report
+            on _facility.ghgr_import_id = _final_report.ghgr_import_id
+    )
+    select facility.id, _final_lfo_facility.id as parent_facility_id
+    from ggircs_swrs.facility
+    inner join ggircs_swrs.facility as _facility
+        on facility.id = _facility.id
+        and (_facility.facility_type = 'IF_a' or _facility.facility_type = 'IF_b' or _facility.facility_type = 'L_c')
+    left join ggircs_swrs.organisation as _organisation
+        on _facility.ghgr_import_id = _organisation.ghgr_import_id
+    left join ggircs_swrs.report as _report
+        on _facility.ghgr_import_id = _report.ghgr_import_id
+    inner join _final_lfo_facility
+        on _organisation.swrs_organisation_id = _final_lfo_facility.swrs_organisation_id
+        and _report.reporting_period_duration = _final_lfo_facility.reporting_period_duration
+    $$,
+
+    'Foreign key parent_facility_id in ggircs.single_facility references ggircs.lfo_facility.id for IF_a, IF_b or L_c facilities'
+
 );
 
 -- Attributable Emission -> Activity
