@@ -742,6 +742,374 @@ $$), ($$
     </ActivityPages>
   </ActivityData>
 </ReportData>
+$$), ($$
+<ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <RegistrationData>
+    <Organisation>
+      <Details>
+        <BusinessLegalName>Bart Simpson</BusinessLegalName>
+        <EnglishTradeName>Bart Simpson</EnglishTradeName>
+        <FrenchTradeName/>
+        <CRABusinessNumber>12345</CRABusinessNumber>
+        <DUNSNumber>0</DUNSNumber>
+        <WebSite>www.nhl.com</WebSite>
+      </Details>
+      <Address>
+        <PhysicalAddress>
+          <StreetNumber>300</StreetNumber>
+          <StreetNumberSuffix/>
+          <StreetName>A Drive</StreetName>
+          <StreetType>Drive</StreetType>
+          <StreetDirection>North</StreetDirection>
+          <Municipality>Funky Town</Municipality>
+          <ProvTerrState>British Columbia</ProvTerrState>
+          <PostalCodeZipCode>H0H0H0</PostalCodeZipCode>
+          <Country>Canada</Country>
+        </PhysicalAddress>
+        <MailingAddress>
+          <DeliveryMode>Post Office Box</DeliveryMode>
+          <POBoxNumber>1</POBoxNumber>
+          <StreetNumber>300</StreetNumber>
+          <StreetNumberSuffix/>
+          <StreetName>A Drive</StreetName>
+          <StreetType>Drive</StreetType>
+          <Municipality>Funky Town</Municipality>
+          <ProvTerrState>British Columbia</ProvTerrState>
+          <PostalCodeZipCode>H0H0H0</PostalCodeZipCode>
+          <Country>Canada</Country>
+          <AdditionalInformation/>
+        </MailingAddress>
+      </Address>
+    </Organisation>
+    <Facility>
+      <Details>
+        <FacilityName>fname</FacilityName>
+        <RelationshipType>Owned and Operated</RelationshipType>
+        <PortabilityIndicator>N</PortabilityIndicator>
+        <Status>Active</Status>
+      </Details>
+      <Identifiers>
+        <IdentifierList>
+          <Identifier>
+            <IdentifierType>BCGHGID</IdentifierType>
+            <IdentifierValue>RD_123456</IdentifierValue>
+          </Identifier>
+          <Identifier>
+            <IdentifierType>GHGRP Identification Number</IdentifierType>
+            <IdentifierValue>654321</IdentifierValue>
+          </Identifier>
+          <Identifier>
+            <IdentifierType>National Emission Reduction Masterplan</IdentifierType>
+            <IdentifierValue>1234</IdentifierValue>
+          </Identifier>
+          <Identifier>
+            <IdentifierType>National Pollutant Release Inventory Identifier</IdentifierType>
+            <IdentifierValue>0000</IdentifierValue>
+          </Identifier>
+        </IdentifierList>
+        <NAICSCodeList>
+          <NAICSCode>
+            <NAICSClassification>Chemical Pulp Mills </NAICSClassification>
+            <Code>321111</Code>
+            <NaicsPriority>Primary</NaicsPriority>
+          </NAICSCode>
+        </NAICSCodeList>
+        <Permits>
+          <Permit>
+            <IssuingAgency>British Columbia</IssuingAgency>
+            <PermitNumber>0000</PermitNumber>
+          </Permit>
+        </Permits>
+      </Identifiers>
+      <Address>
+        <PhysicalAddress>
+          <StreetNumber>123</StreetNumber>
+          <StreetName>A Drive</StreetName>
+          <StreetType>Drive</StreetType>
+          <Municipality>Funky Town</Municipality>
+          <ProvTerrState>British Columbia</ProvTerrState>
+          <PostalCodeZipCode>H0H0H0</PostalCodeZipCode>
+          <Country>Canada</Country>
+        </PhysicalAddress>
+        <MailingAddress>
+          <DeliveryMode>Post Office Box</DeliveryMode>
+          <POBoxNumber>000</POBoxNumber>
+          <StreetNumber>300</StreetNumber>
+          <StreetName>A Drive</StreetName>
+          <StreetType>Drive</StreetType>
+          <Municipality>Funky Town</Municipality>
+          <ProvTerrState>British Columbia</ProvTerrState>
+          <PostalCodeZipCode>H0H0H0</PostalCodeZipCode>
+          <Country>Canada</Country>
+          <AdditionalInformation/>
+        </MailingAddress>
+        <GeographicAddress>
+          <Latitude>1.23000</Latitude>
+          <Longitude>1.26000</Longitude>
+          <UTMZone>1</UTMZone>
+          <UTMNorthing>1</UTMNorthing>
+          <UTMEasting>1</UTMEasting>
+        </GeographicAddress>
+      </Address>
+    </Facility>
+    <Contacts/>
+    <ParentOrganisations>
+      <ParentOrganisation>
+        <Details>
+          <BusinessLegalName>ABC</BusinessLegalName>
+          <CRABusinessNumber>123456789</CRABusinessNumber>
+          <PercentageOwned>0</PercentageOwned>
+        </Details>
+        <Address>
+          <PhysicalAddress>
+            <UnitNumber/>
+            <StreetNumber>0</StreetNumber>
+            <StreetNumberSuffix/>
+            <StreetName/>
+            <Municipality/>
+            <PostalCodeZipCode/>
+            <AdditionalInformation/>
+            <LandSurveyDescription/>
+            <NationalTopographicalDescription/>
+          </PhysicalAddress>
+          <MailingAddress>
+            <UnitNumber>1</UnitNumber>
+            <StreetNumber>2700</StreetNumber>
+            <StreetNumberSuffix/>
+            <StreetName>00th</StreetName>
+            <StreetType>Avenue</StreetType>
+            <Municipality>Vancouver</Municipality>
+            <ProvTerrState>British Columbia</ProvTerrState>
+            <PostalCodeZipCode>H0H0H0</PostalCodeZipCode>
+            <Country>Canada</Country>
+            <AdditionalInformation/>
+          </MailingAddress>
+        </Address>
+      </ParentOrganisation>
+    </ParentOrganisations>
+  </RegistrationData>
+  <ReportDetails>
+    <ReportID>1236</ReportID>
+    <ReportType>R1</ReportType>
+    <FacilityId>0002</FacilityId>
+    <FacilityType>LFO</FacilityType>
+    <OrganisationId>0000</OrganisationId>
+    <ReportingPeriodDuration>2020</ReportingPeriodDuration>
+    <ReportStatus>
+      <Status>Submitted</Status>
+      <SubmissionDate>2013-03-28T19:25:55.32</SubmissionDate>
+      <LastModifiedBy>Buddy</LastModifiedBy>
+    </ReportStatus>
+    <ActivityOrSource>
+      <ActivityList>
+        <Activity>
+          <ActivityName>GeneralStationaryCombustion</ActivityName>
+          <TableNumber>1</TableNumber>
+        </Activity>
+        <Activity>
+          <ActivityName>MobileCombustion</ActivityName>
+          <TableNumber>1</TableNumber>
+        </Activity>
+        <Activity>
+          <ActivityName>ElectricityGeneration</ActivityName>
+          <TableNumber>1</TableNumber>
+        </Activity>
+        <Activity>
+          <ActivityName>PulpAndPaperProduction</ActivityName>
+          <TableNumber>1</TableNumber>
+        </Activity>
+      </ActivityList>
+    </ActivityOrSource>
+  </ReportDetails>
+  <OperationalWorkerReport/>
+  <VerifyTombstone>
+    <Organisation>
+      <Details>
+        <BusinessLegalName>Bart Simpson</BusinessLegalName>
+        <EnglishTradeName>Bart Simpson</EnglishTradeName>
+        <CRABusinessNumber>123456778</CRABusinessNumber>
+        <DUNSNumber>00-000-0000</DUNSNumber>
+      </Details>
+      <Address>
+        <MailingAddress>
+          <POBoxNumber>0000</POBoxNumber>
+          <StreetNumber>00</StreetNumber>
+          <StreetName>A Drive</StreetName>
+          <StreetType>Drive</StreetType>
+          <Municipality>Funky Town</Municipality>
+          <ProvTerrState>British Columbia</ProvTerrState>
+          <PostalCodeZipCode>H0H0H0</PostalCodeZipCode>
+          <Country>Canada</Country>
+        </MailingAddress>
+      </Address>
+    </Organisation>
+    <Facility>
+      <Details>
+        <FacilityName>Bart Simpson</FacilityName>
+        <Identifiers>
+          <IdentifierList>
+            <Identifier>
+              <IdentifierType>NPRI</IdentifierType>
+              <IdentifierValue>12345</IdentifierValue>
+            </Identifier>
+            <Identifier>
+              <IdentifierType>BCGHGID</IdentifierType>
+              <IdentifierValue></IdentifierValue>
+            </Identifier>
+          </IdentifierList>
+          <NAICSCodeList>
+            <NAICSCode>
+              <Code>321111</Code>
+            </NAICSCode>
+          </NAICSCodeList>
+        </Identifiers>
+      </Details>
+      <Address>
+        <PhysicalAddress>
+          <StreetNumber>1</StreetNumber>
+          <StreetName>A Drive</StreetName>
+          <StreetType>Drive</StreetType>
+          <Municipality>Funky Town</Municipality>
+          <ProvTerrState>British Columbia</ProvTerrState>
+          <PostalCodeZipCode>H0H0H0</PostalCodeZipCode>
+          <Country>Canada</Country>
+        </PhysicalAddress>
+        <GeographicalAddress>
+          <Latitude>1.23000</Latitude>
+          <Longitude>1.26000</Longitude>
+        </GeographicalAddress>
+      </Address>
+    </Facility>
+    <Contacts>
+      <Contact>
+        <Details>
+          <ContactType>Operator Contact</ContactType>
+          <GivenName>Buddy</GivenName>
+          <TelephoneNumber>1234</TelephoneNumber>
+          <ExtensionNumber>1</ExtensionNumber>
+          <EmailAddress>abc@abc.ca</EmailAddress>
+          <Position>Environmental Manager</Position>
+        </Details>
+        <Address>
+          <MailingAddress>
+            <POBoxNumber>00</POBoxNumber>
+            <Municipality>Funky Town</Municipality>
+            <ProvTerrState>British Columbia</ProvTerrState>
+            <PostalCodeZipCode>H0H0H0</PostalCodeZipCode>
+            <Country>Canada</Country>
+          </MailingAddress>
+        </Address>
+      </Contact>
+      <Contact>
+        <Details>
+          <ContactType>Operator Representative</ContactType>
+          <GivenName>Buddy</GivenName>
+          <TelephoneNumber>0000</TelephoneNumber>
+          <ExtensionNumber>1</ExtensionNumber>
+          <EmailAddress>abc@abc.ca</EmailAddress>
+          <Position>Environmental Manager</Position>
+        </Details>
+        <Address>
+          <MailingAddress>
+            <POBoxNumber>00</POBoxNumber>
+            <Municipality>Funky Town</Municipality>
+            <ProvTerrState>British Columbia</ProvTerrState>
+            <PostalCodeZipCode>H0H0H0</PostalCodeZipCode>
+            <Country>Canada</Country>
+          </MailingAddress>
+        </Address>
+      </Contact>
+    </Contacts>
+    <ParentOrganisations/>
+  </VerifyTombstone>
+  <ActivityData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <ActivityPages>
+      <Process ProcessName="ElectricityGeneration">
+        <SubProcess SubprocessName="Emissions from fuel combustion for electricity generation" InformationRequirement="Required">
+          <Units UnitType="Cogen Units">
+            <Unit>
+              <COGenUnit>
+                <CogenUnitName>Boiler 16 - hog fuel</CogenUnitName>
+                <NameplateCapacity>5.9</NameplateCapacity>
+                <NetPower>30165</NetPower>
+                <CycleType>Topping</CycleType>
+                <ThermalOutputQuantity>886917960</ThermalOutputQuantity>
+                <SupplementalFiringPurpose>Electr. Generation</SupplementalFiringPurpose>
+              </COGenUnit>
+              <Fuels>
+                <Fuel>
+                  <FuelType>Wood Waste</FuelType>
+                  <FuelClassification>Biomass in Schedule C</FuelClassification>
+                  <FuelDescription/>
+                  <FuelUnits>bone dry tonnes</FuelUnits>
+                  <AnnualFuelAmount>0</AnnualFuelAmount>
+                  <AnnualSteamGeneration>290471000</AnnualSteamGeneration>
+                  <MeasuredEmissionFactors>
+                    <MeasuredEmissionFactor>
+                      <MeasuredEmissionFactorGas>CO2</MeasuredEmissionFactorGas>
+                      <MeasuredEmissionFactorAmount>50000</MeasuredEmissionFactorAmount>
+                      <MeasuredEmissionFactorUnitType>g/GJ</MeasuredEmissionFactorUnitType>
+                    </MeasuredEmissionFactor>
+                    <MeasuredEmissionFactor>
+                      <MeasuredEmissionFactorGas>CH4</MeasuredEmissionFactorGas>
+                      <MeasuredEmissionFactorAmount>0.966</MeasuredEmissionFactorAmount>
+                      <MeasuredEmissionFactorUnitType>g/GJ</MeasuredEmissionFactorUnitType>
+                    </MeasuredEmissionFactor>
+                  </MeasuredEmissionFactors>
+                  <Emissions>
+                    <Emission>
+                      <Groups>
+                        <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                        <EmissionGroupTypes>BC_ScheduleB_GeneralStationaryCombustionEmissions</EmissionGroupTypes>
+                        <EmissionGroupTypes>EC_GeneralStationaryCombustionEmissions</EmissionGroupTypes>
+                      </Groups>
+                      <NotApplicable>false</NotApplicable>
+                      <Quantity>168038.5773</Quantity>
+                      <CalculatedQuantity>168038.5773</CalculatedQuantity>
+                      <GasType>CO2bioC</GasType>
+                      <Methodology>Methodology 3 (measured CC/Steam)</Methodology>
+                    </Emission>
+                  </Emissions>
+                  <AlternativeMethodologyDescription/>
+                </Fuel>
+                <Fuel>
+                  <FuelType>Residual Fuel Oil (#5 &amp; 6)</FuelType>
+                  <FuelClassification>non-biomass</FuelClassification>
+                  <FuelDescription/>
+                  <FuelUnits>kilolitres</FuelUnits>
+                  <AnnualFuelAmount>9441</AnnualFuelAmount>
+                  <AnnualWeightedAverageCarbonContent>0.862</AnnualWeightedAverageCarbonContent>
+                  <Emissions>
+                    <Emission>
+                      <Groups>
+                        <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                        <EmissionGroupTypes>BC_ScheduleB_GeneralStationaryCombustionEmissions</EmissionGroupTypes>
+                        <EmissionGroupTypes>EC_GeneralStationaryCombustionEmissions</EmissionGroupTypes>
+                      </Groups>
+                      <NotApplicable>false</NotApplicable>
+                      <Quantity>29819.5973</Quantity>
+                      <CalculatedQuantity>29819.5973</CalculatedQuantity>
+                      <GasType>CO2nonbio</GasType>
+                      <Methodology>Methodology 3 (measured CC/Steam)</Methodology>
+                    </Emission>
+                  </Emissions>
+                  <AlternativeMethodologyDescription/>
+                </Fuel>
+              </Fuels>
+            </Unit>
+          </Units>
+        </SubProcess>
+      </Process>
+      <Process>
+        <SubProcess SubprocessName="Additional Reportable Information as per WCI.352(i)(1)-(12)" InformationRequirement="MandatoryAdditional">
+          <Amount AmtDomain="PulpAndPaperBlackLiquor" AmtAction="Combusted" AmtPeriod="Annual">168389</Amount>
+          <PercentSolidsByWeight>53</PercentSolidsByWeight>
+          <PulpAndPaperCarbonates/>
+        </SubProcess>
+      </Process>
+    </ActivityPages>
+  </ActivityData>
+</ReportData>
 $$);
 
 -- Run table export function
@@ -855,7 +1223,7 @@ select isnt_empty('select * from ggircs.measured_emission_factor', 'there is dat
 
 -- Test validity of FK relations
 -- Emission -> Activity
-select results_eq(
+select set_eq(
     $$
     select distinct(activity.ghgr_import_id) from ggircs.emission
     join ggircs.activity
@@ -868,7 +1236,7 @@ select results_eq(
 );
 
 -- Emission -> Fuel
-select results_eq(
+select set_eq(
     $$
     select distinct(fuel.ghgr_import_id) from ggircs.emission
     join ggircs.fuel
@@ -881,15 +1249,14 @@ select results_eq(
 );
 
 -- Emission -> Naics
-select results_eq(
+select set_eq(
     $$select distinct(naics.naics_code) from ggircs.emission
       join ggircs.naics
       on
         emission.naics_id = naics.id
-      order by naics.naics_code
     $$,
 
-    'select distinct(naics_code) from ggircs.naics order by naics_code',
+    'select distinct(naics_code) from ggircs.naics',
 
     'Foreign key naics_id in ggircs.emission references ggircs.naics.id'
 );
@@ -903,7 +1270,7 @@ select results_eq(
 -- Emission -> Unit
 
 -- Facility -> Identifier
-select results_eq(
+select set_eq(
     $$
     select identifier.identifier_value as bcghgid from ggircs.single_facility
     join ggircs.identifier
@@ -918,38 +1285,46 @@ select results_eq(
 );
 
 -- Facility -> Organisation
-select results_eq(
+select set_eq(
     $$
-    select organisation.ghgr_import_id from ggircs.single_facility
+    with _facility as (
+        select ghgr_import_id, organisation_id from ggircs.single_facility
+        union
+        select ghgr_import_id, organisation_id from ggircs.lfo_facility
+    )
+    select organisation.ghgr_import_id from _facility
     join ggircs.organisation
     on
-        single_facility.organisation_id = organisation.id
-    order by organisation.ghgr_import_id
+        _facility.organisation_id = organisation.id
     $$,
 
-    'select ghgr_import_id from ggircs.organisation order by organisation.ghgr_import_id',
+    'select ghgr_import_id from ggircs.organisation',
 
     'Foreign key organisation_id in ggircs.single_facility references ggircs.organisation.id'
 
 );
 
 -- Facility -> Report
-select results_eq(
+select set_eq(
     $$
-    select report.swrs_facility_id from ggircs.single_facility
+    with _facility as (
+        select report_id from ggircs.single_facility
+        union
+        select report_id from ggircs.lfo_facility
+    )
+    select report.swrs_facility_id from _facility
     join ggircs.report
     on
-      single_facility.report_id = report.id
-      order by report.ghgr_import_id
+      _facility.report_id = report.id
     $$,
 
-    'select swrs_facility_id from ggircs.report order by ghgr_import_id',
+    'select swrs_facility_id from ggircs.report',
 
     'Foreign key report_id in ggircs.single_facility references ggircs.report.id'
 );
 
 -- Attributable Emission -> Activity
-select results_eq(
+select set_eq(
     $$
     select activity.activity_name from ggircs.attributable_emission
     join ggircs.activity
@@ -971,7 +1346,7 @@ select results_eq(
 );
 
 -- Attributable Emission -> Facility
-select results_eq(
+select set_eq(
     $$
     select single_facility.facility_name from ggircs.attributable_emission
     join ggircs.single_facility
@@ -991,7 +1366,7 @@ select results_eq(
 
 
 -- Attributable Emission -> Fuel
-select results_eq(
+select set_eq(
     $$
     select fuel.fuel_type from ggircs.attributable_emission
     join ggircs.fuel
@@ -1010,7 +1385,7 @@ select results_eq(
 );
 
 -- Attributable Emission -> Naics
-select results_eq(
+select set_eq(
     $$
     select naics.naics_code from ggircs.attributable_emission
     join ggircs.naics
@@ -1029,7 +1404,7 @@ select results_eq(
 
 -- Attributable Emission -> Organisation
 
-select results_eq(
+select set_eq(
     $$
     select organisation.swrs_organisation_id from ggircs.attributable_emission
     join ggircs.organisation
@@ -1047,7 +1422,7 @@ select results_eq(
 );
 
 -- Attributable Emission -> Report
-select results_eq(
+select set_eq(
     $$
     select report.ghgr_import_id from ggircs.attributable_emission
     join ggircs.report
@@ -1065,7 +1440,7 @@ select results_eq(
 );
 
 -- Attributable Emission -> Unit
-select results_eq(
+select set_eq(
     $$
     select unit.unit_name from ggircs.attributable_emission
     join ggircs.unit
@@ -1083,7 +1458,7 @@ select results_eq(
 );
 
 -- Fuel -> Report
-select results_eq(
+select set_eq(
     $$
     select distinct(report.ghgr_import_id) from ggircs.fuel
     join ggircs.report
@@ -1096,7 +1471,7 @@ select results_eq(
 );
 
 -- Fuel -> Unit
-select results_eq(
+select set_eq(
     $$
     select distinct(fuel.ghgr_import_id) from ggircs.fuel
     join ggircs.unit
@@ -1109,7 +1484,7 @@ select results_eq(
 );
 
 -- Unit -> Activity
-select results_eq(
+select set_eq(
     $$
     select distinct(activity.ghgr_import_id) from ggircs.unit
     join ggircs.activity
@@ -1122,7 +1497,7 @@ select results_eq(
 );
 
 -- Additional Data -> Activity
-select results_eq(
+select set_eq(
     $$
     select distinct(activity.ghgr_import_id) from ggircs.additional_data
     join ggircs.activity
@@ -1135,7 +1510,7 @@ select results_eq(
 );
 
 -- Additional Data -> Report
-select results_eq(
+select set_eq(
     $$
     select distinct(report.ghgr_import_id) from ggircs.additional_data
     join ggircs.report
@@ -1148,7 +1523,7 @@ select results_eq(
 );
 
 -- Activity -> Facility
-select results_eq(
+select set_eq(
     $$
     select distinct(single_facility.ghgr_import_id) from ggircs.activity
     join ggircs.single_facility
@@ -1163,7 +1538,7 @@ select results_eq(
 );
 
 -- Activity -> Report
-select results_eq(
+select set_eq(
     $$
     select distinct(report.ghgr_import_id) from ggircs.activity
     join ggircs.report
@@ -1178,7 +1553,7 @@ select results_eq(
 );
 
 -- Address -> Facility
-select results_eq(
+select set_eq(
     $$
     select distinct(single_facility.ghgr_import_id) from ggircs.address
     join ggircs.single_facility
@@ -1193,7 +1568,7 @@ select results_eq(
 );
 
 -- Address -> Organisation
-select results_eq(
+select set_eq(
     $$
     select distinct(organisation.ghgr_import_id) from ggircs.address
     join ggircs.organisation
@@ -1206,7 +1581,7 @@ select results_eq(
 );
 
 -- Address -> Parent Organisation
-select results_eq(
+select set_eq(
     $$
     select distinct(parent_organisation.ghgr_import_id) from ggircs.address
     join ggircs.parent_organisation
@@ -1219,7 +1594,7 @@ select results_eq(
 );
 
 -- Address -> Report
-select results_eq(
+select set_eq(
     $$
     select distinct(report.ghgr_import_id) from ggircs.address
     join ggircs.report
@@ -1232,7 +1607,7 @@ select results_eq(
 );
 
 -- Contact -> Address
-select results_eq(
+select set_eq(
     $$
     select distinct(address.ghgr_import_id) from ggircs.contact
     join ggircs.address
@@ -1245,7 +1620,7 @@ select results_eq(
 );
 
 -- Contact -> Facility
-select results_eq(
+select set_eq(
                $$
     select distinct(single_facility.ghgr_import_id) from ggircs.contact
     join ggircs.single_facility
@@ -1258,7 +1633,7 @@ select results_eq(
 );
 
 -- Contact -> Report
-select results_eq(
+select set_eq(
     $$
     select distinct(report.ghgr_import_id) from ggircs.contact
     join ggircs.report
@@ -1271,7 +1646,7 @@ select results_eq(
 );
 
 -- Organisation -> Report
-select results_eq(
+select set_eq(
 
     $$
     select report.ghgr_import_id from ggircs.organisation
@@ -1285,7 +1660,7 @@ select results_eq(
 );
 
 -- Parent Organisation -> Report
-select results_eq(
+select set_eq(
     $$
     select distinct(report.ghgr_import_id) from ggircs.parent_organisation
     join ggircs.report
@@ -1298,7 +1673,7 @@ select results_eq(
 );
 
 -- Parent Organisation -> Organisation
-select results_eq(
+select set_eq(
     $$
     select distinct(organisation.ghgr_import_id) from ggircs.parent_organisation
     join ggircs.organisation
@@ -1311,7 +1686,7 @@ select results_eq(
 );
 
 -- Identifier -> Facility
-select results_eq(
+select set_eq(
     $$
     select distinct(single_facility.ghgr_import_id) from ggircs.identifier
     join ggircs.single_facility
@@ -1326,7 +1701,7 @@ select results_eq(
 );
 
 -- Identifier -> Report
-select results_eq(
+select set_eq(
                $$
     select distinct(report.ghgr_import_id) from ggircs.identifier
     join ggircs.report
@@ -1339,7 +1714,7 @@ select results_eq(
 );
 
 -- NAICS -> Facility
-select results_eq(
+select set_eq(
     $$
     select distinct(single_facility.ghgr_import_id) from ggircs.naics
     join ggircs.single_facility
@@ -1354,13 +1729,12 @@ select results_eq(
 );
 
 -- Naics -> Facility (path_context = RegistrationData)
-select results_eq(
+select set_eq(
     $$
     select single_facility.ghgr_import_id from ggircs.naics
     join ggircs.single_facility
     on
       naics.registration_data_single_facility_id = single_facility.id
-    order by naics_code
     $$,
 
     $$ select single_facility.ghgr_import_id
@@ -1374,35 +1748,35 @@ select results_eq(
 );
 
 -- Naics -> Report
-select results_eq(
+select set_eq(
     $$
-    select distinct(report.ghgr_import_id) from ggircs.naics
+    select report.ghgr_import_id from ggircs.naics
     join ggircs.report
     on naics.report_id = report.id
     $$,
 
-    'select distinct(ghgr_import_id) from ggircs.report',
+    'select ghgr_import_id from ggircs.report',
 
     'Foreign key report_id in ggircs.naics references ggircs.report.id'
 );
 
 -- Naics -> ggircs_swrs.naics_mapping
-select results_eq(
+select set_eq(
                $$
-    select distinct(ggircs_swrs.naics_mapping.naics_code, ggircs_swrs.naics_mapping.irc_category) from ggircs.naics
+    select ggircs_swrs.naics_mapping.naics_code, ggircs_swrs.naics_mapping.irc_category from ggircs.naics
     join ggircs_swrs.naics_mapping
     on naics.naics_mapping_id = naics_mapping.id
     $$,
                $$
-    select distinct(naics_code, irc_category) from ggircs_swrs.naics_mapping
+    select naics_code, irc_category from ggircs_swrs.naics_mapping
     where naics_code in (321111, 721310)
     $$,
                'Foreign key naics_mapping_id references ggircs.swrs.naics_mapping.id'
 );
 
 -- ggircs.fuel -> ggircs_swrs.fuel_mapping
-select results_eq(
-    $$select distinct( ggircs_swrs.fuel_mapping.fuel_type) from ggircs.fuel
+select set_eq(
+    $$select ggircs_swrs.fuel_mapping.fuel_type from ggircs.fuel
       join ggircs_swrs.fuel_mapping
       on
         fuel.fuel_mapping_id = fuel_mapping.id
@@ -1417,7 +1791,7 @@ select results_eq(
 );
 
 -- Permit -> Facility
-select results_eq(
+select set_eq(
     $$
     select single_facility.ghgr_import_id from ggircs.permit
     join ggircs.single_facility
@@ -1432,7 +1806,7 @@ select results_eq(
 );
 
 -- Measured Emission Factor -> Fuel
-select results_eq(
+select set_eq(
     $$
     select distinct(fuel.ghgr_import_id) from ggircs.measured_emission_factor
     join ggircs.fuel
@@ -1448,7 +1822,7 @@ select results_eq(
 
 /** Test data transferred from ggircs_swrs to ggircs properly **/
 -- Data in ggircs_swrs.report === data in ggircs_report
-select results_eq($$
+select set_eq($$
                   select
                       ghgr_import_id,
                       source_xml::text,
@@ -1466,8 +1840,6 @@ select results_eq($$
                       last_modified_date,
                       update_comment
                   from ggircs_swrs.report
-
-                  order by ghgr_import_id
                   $$,
 
                  $$
@@ -1488,14 +1860,12 @@ select results_eq($$
                       last_modified_date,
                       update_comment
                   from ggircs.report
-
-                  order by ghgr_import_id
                   $$,
 
     'data in ggircs_swrs.report === ggircs.report');
 
 -- Data in ggircs_swrs.organisation === data in ggircs.organisation
-select results_eq($$
+select set_eq($$
                   select
                       ghgr_import_id,
                       swrs_organisation_id,
@@ -1506,7 +1876,6 @@ select results_eq($$
                       duns,
                       website
                   from ggircs_swrs.organisation
-                  order by ghgr_import_id
                   $$,
 
                  $$
@@ -1520,13 +1889,12 @@ select results_eq($$
                       duns,
                       website
                   from ggircs.organisation
-                  order by ghgr_import_id
                   $$,
 
     'data in ggircs_swrs.organisation === ggircs.organisation');
 
 -- Data in ggircs_swrs.activity === data in ggircs.activity
-select results_eq($$
+select set_eq($$
                   select
                       ghgr_import_id,
                       activity_name,
@@ -1534,12 +1902,6 @@ select results_eq($$
                       sub_process_name,
                       information_requirement
                   from ggircs_swrs.activity
-                  order by
-                    ghgr_import_id,
-                    activity_name,
-                    process_name,
-                    sub_process_name
-                  asc
                   $$,
 
                  $$
@@ -1550,18 +1912,12 @@ select results_eq($$
                       sub_process_name,
                       information_requirement
                   from ggircs.activity
-                  order by
-                    ghgr_import_id,
-                    activity_name,
-                    process_name,
-                    sub_process_name
-                  asc
                   $$,
 
     'data in ggircs_swrs.activity === ggircs.activity');
 
 -- Data in ggircs_swrs.unit === data in ggircs.unit
-select results_eq(
+select set_eq(
               $$
               select
                   ghgr_import_id,
@@ -1581,10 +1937,6 @@ select results_eq(
                   non_cogen_unit_name
 
                 from ggircs_swrs.unit
-                order by
-                    ghgr_import_id,
-                    activity_name
-                 asc
               $$,
 
               $$
@@ -1606,16 +1958,12 @@ select results_eq(
                   non_cogen_unit_name
 
                 from ggircs.unit
-                order by
-                    ghgr_import_id,
-                    activity_name
-                 asc
               $$,
 
               'data in ggircs_swrs.unit === ggircs.unit');
 
 -- Data in ggircs_swrs.identifier === data in ggircs.identifier
-select results_eq(
+select set_eq(
               $$
               select
                   ghgr_import_id,
@@ -1624,13 +1972,6 @@ select results_eq(
                   identifier_type,
                   identifier_value
                 from ggircs_swrs.identifier
-                order by
-                    ghgr_import_id,
-                    swrs_facility_id,
-                    path_context,
-                    identifier_type,
-                    identifier_value
-                 asc
               $$,
 
               $$
@@ -1641,19 +1982,12 @@ select results_eq(
                   identifier_type,
                   identifier_value
                 from ggircs.identifier
-                order by
-                    ghgr_import_id,
-                    swrs_facility_id,
-                    path_context,
-                    identifier_type,
-                    identifier_value
-                 asc
               $$,
 
               'data in ggircs_swrs.identifier === ggircs.identifier');
 
 -- Data in ggircs_swrs.naics === data in ggircs.naics
-select results_eq(
+select set_eq(
               $$
               select
                   ghgr_import_id,
@@ -1663,11 +1997,6 @@ select results_eq(
                   naics_code,
                   naics_priority
                 from ggircs_swrs.naics
-                order by
-                    ghgr_import_id,
-                    swrs_facility_id,
-                    path_context
-                 asc
               $$,
 
               $$
@@ -1679,17 +2008,12 @@ select results_eq(
                   naics_code,
                   naics_priority
                 from ggircs.naics
-                order by
-                    ghgr_import_id,
-                    swrs_facility_id,
-                    path_context
-                 asc
               $$,
 
               'data in ggircs_swrs.naics === ggircs.naics');
 
 -- Data in ggircs_swrs.emission === data in ggircs.emission
-select results_eq(
+select set_eq(
               $$
               select
                 emission.ghgr_import_id,
@@ -1726,15 +2050,12 @@ select results_eq(
                   calculated_quantity,
                   emission_category
                 from ggircs.emission
-                order by
-                    ghgr_import_id
-                 asc
               $$,
 
               'data in ggircs_swrs.emission === ggircs.emission');
 
 -- Data in ggircs_swrs.fuel === data in ggircs.fuel
-select results_eq(
+select set_eq(
               $$
               select
                   ghgr_import_id,
@@ -1802,7 +2123,7 @@ select results_eq(
               'data in ggircs_swrs.fuel === ggircs.fuel');
 
 -- Data in ggircs_swrs.permit === data in ggircs.permit
-select results_eq(
+select set_eq(
               $$
               select
                   ghgr_import_id,
@@ -1834,7 +2155,7 @@ select results_eq(
               'data in ggircs_swrs.permit === ggircs.permit');
 
 -- Data in ggircs_swrs.parent_organisation === data in ggircs.parent_organisation
-select results_eq(
+select set_eq(
               $$
               select
                   ghgr_import_id,
@@ -1872,7 +2193,7 @@ select results_eq(
               'data in ggircs_swrs.parent_organisation === ggircs.parent_organisation');
 
 -- Data in ggircs_swrs.contact === data in ggircs.contact
-select results_eq(
+select set_eq(
               $$
               select
                   ghgr_import_id,
@@ -1922,7 +2243,7 @@ select results_eq(
               'data in ggircs_swrs.contact === ggircs.contact');
 
 -- Data in ggircs_swrs.address === data in ggircs.address
-select results_eq(
+select set_eq(
               $$
               select
                   ghgr_import_id,
@@ -2018,7 +2339,7 @@ select results_eq(
               'data in ggircs_swrs.address === ggircs.address');
 
 -- Data in ggircs_swrs.additional_data === data in ggircs.additional_data
-select results_eq(
+select set_eq(
               $$
               select
                     ghgr_import_id,
@@ -2061,7 +2382,7 @@ select results_eq(
 
 
 -- Data in ggircs_swrs.measured_emission_factor === data in ggircs.measured_emission_factor
-select results_eq(
+select set_eq(
               $$
               select
                 ghgr_import_id,
