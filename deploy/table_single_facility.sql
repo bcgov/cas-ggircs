@@ -11,6 +11,7 @@ create table ggircs.single_facility (
     organisation_id           integer,
     report_id                 integer,
     swrs_facility_id          integer,
+    parent_facility_id        integer,
     facility_name             varchar(1000),
     facility_type             varchar(1000),
     relationship_type         varchar(1000),
@@ -27,6 +28,7 @@ comment on column ggircs.single_facility.identifier_id is 'A foreign key referen
 comment on column ggircs.single_facility.organisation_id is 'A foreign key reference to ggircs.organisation';
 comment on column ggircs.single_facility.report_id is 'A foreign key reference to ggircs.report';
 comment on column ggircs.single_facility.swrs_facility_id is 'The reporting facility swrs id';
+comment on column ggircs.single_facility.parent_facility_id is 'The id of LFO facility this facility belongs to';
 comment on column ggircs.single_facility.facility_name is 'The name of the reporting facility';
 comment on column ggircs.single_facility.facility_type is 'The type of the reporting facility';
 comment on column ggircs.single_facility.relationship_type is 'The type of relationship';

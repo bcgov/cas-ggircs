@@ -59,22 +59,42 @@ $function$
 
     -- SINGLE FACILITY
     delete from ggircs.single_facility;
-    insert into ggircs.single_facility (id, ghgr_import_id, identifier_id, organisation_id, report_id, swrs_facility_id, facility_name, facility_type, relationship_type, portability_indicator, status, latitude, longitude)
+    with _final_lfo_facility as (
+        -- facility_id will be as the parent facility FK. organisation_id and reporting_period_duration are the join constraints
+        select _facility.id, _organisation.swrs_organisation_id, _report.reporting_period_duration
+        from ggircs_swrs.facility
+        inner join ggircs_swrs.facility as _facility
+            on facility.id = _facility.id
+            and _facility.facility_type = 'LFO'
+        left join ggircs_swrs.organisation as _organisation
+            on _facility.ghgr_import_id = _organisation.ghgr_import_id
+        left join ggircs_swrs.report as _report
+            on _facility.ghgr_import_id = _report.ghgr_import_id
+        -- Drop rows that are not in the final report
+        inner join ggircs_swrs.final_report as _final_report
+            on _facility.ghgr_import_id = _final_report.ghgr_import_id
+    )
+    insert into ggircs.single_facility (id, ghgr_import_id, identifier_id, organisation_id, report_id, swrs_facility_id, parent_facility_id, facility_name, facility_type, relationship_type, portability_indicator, status, latitude, longitude)
 
-    select _facility.id, _facility.ghgr_import_id, null, _organisation.id, _report.id, _facility.swrs_facility_id, _facility.facility_name, _facility.facility_type,
+    select _facility.id, _facility.ghgr_import_id, null, _organisation.id, _report.id, _facility.swrs_facility_id, _final_lfo_facility.id, _facility.facility_name, _facility.facility_type,
            _facility.relationship_type, _facility.portability_indicator, _facility.status, _facility.latitude, _facility.longitude
 
     from ggircs_swrs.facility as _facility
     inner join ggircs_swrs.final_report as _final_report on _facility.ghgr_import_id = _final_report.ghgr_import_id
-        and _facility.facility_type != 'LFO'
+        and (_facility.facility_type != 'LFO' or _facility.facility_type is null)
     -- FK Facility -> Organisation
     left join ggircs_swrs.organisation as _organisation
         on _facility.ghgr_import_id = _organisation.ghgr_import_id
     -- FK Facility -> Report
     left join ggircs_swrs.report as _report
-        on _facility.ghgr_import_id = _report.ghgr_import_id;
+        on _facility.ghgr_import_id = _report.ghgr_import_id
+    -- FK Single Facility -> LFO Facility
+    left join _final_lfo_facility
+        on _organisation.swrs_organisation_id = _final_lfo_facility.swrs_organisation_id
+        and _report.reporting_period_duration = _final_lfo_facility.reporting_period_duration
+        and (_facility.facility_type = 'IF_a' or _facility.facility_type = 'IF_b' or _facility.facility_type = 'L_c');
 
-    -- FK Facility -> Identifier
+    -- FK Single Facility -> Identifier
     --Todo: Remove this fk relation as it is a Parent -> Child relation and find a way to relate to this from Identifier -> Facility with a bcghgid_id column
     with x as (select * from ggircs_swrs.identifier where identifier_type = 'BCGHGID' and identifier_value is not null and identifier_value != '' order by path_context asc)
     update ggircs.single_facility as f set identifier_id = x.id from x where f.ghgr_import_id = x.ghgr_import_id;
@@ -97,7 +117,7 @@ $function$
     left join ggircs_swrs.report as _report
         on _facility.ghgr_import_id = _report.ghgr_import_id;
 
-    -- FK Facility -> Identifier
+    -- FK LFO Facility -> Identifier
     --Todo: Remove this fk relation as it is a Parent -> Child relation and find a way to relate to this from Identifier -> Facility with a bcghgid_id column
     with x as (select * from ggircs_swrs.identifier where identifier_type = 'BCGHGID' and identifier_value is not null and identifier_value != '' order by path_context asc)
     update ggircs.lfo_facility as f set identifier_id = x.id from x where f.ghgr_import_id = x.ghgr_import_id;
@@ -111,14 +131,7 @@ $function$
 
     from ggircs_swrs.activity as _activity
 
-<<<<<<< refs/remotes/origin/master
     inner join ggircs_swrs.final_report as _final_report on _activity.ghgr_import_id = _final_report.ghgr_import_id
-    -- FK Activity -> Facility
-    left join ggircs_swrs.facility as _facility
-      on _activity.ghgr_import_id = _facility.ghgr_import_id
-      and _facility.facility_type != 'LFO'
-=======
-    left join ggircs_swrs.activity as _activity on activity.id = _activity.id
     -- FK Activity -> Single Facility
     left join ggircs_swrs.facility as _single_facility
       on _activity.ghgr_import_id = _single_facility.ghgr_import_id
@@ -127,7 +140,6 @@ $function$
     left join ggircs_swrs.facility as _lfo_facility
       on _activity.ghgr_import_id = _lfo_facility.ghgr_import_id
       and _lfo_facility.facility_type = 'LFO'
->>>>>>> Add lfo_facility table
     -- FK Activity -> Report
     left join ggircs_swrs.report as _report
       on _activity.ghgr_import_id = _report.ghgr_import_id;
@@ -160,14 +172,7 @@ $function$
 
     from ggircs_swrs.identifier as _identifier
 
-<<<<<<< refs/remotes/origin/master
     inner join ggircs_swrs.final_report as _final_report on _identifier.ghgr_import_id = _final_report.ghgr_import_id
-    -- FK Identifier -> Facility
-    left join ggircs_swrs.facility as _facility
-      on _identifier.ghgr_import_id = _facility.ghgr_import_id
-      and _facility.facility_type != 'LFO'
-=======
-    left join ggircs_swrs.identifier as _identifier on identifier.id = _identifier.id
     -- FK Identifier -> Single Facility
     left join ggircs_swrs.facility as _single_facility
       on _identifier.ghgr_import_id = _single_facility.ghgr_import_id
@@ -176,7 +181,6 @@ $function$
     left join ggircs_swrs.facility as _lfo_facility
       on _identifier.ghgr_import_id = _lfo_facility.ghgr_import_id
       and _lfo_facility.facility_type = 'LFO'
->>>>>>> Add lfo_facility table
     -- FK Identifier -> Report
     left join ggircs_swrs.report as _report
       on _identifier.ghgr_import_id = _report.ghgr_import_id;
@@ -191,16 +195,8 @@ $function$
         _naics_mapping.id, _report.id, _naics.swrs_facility_id,
         _naics.path_context, _naics.naics_classification, _naics.naics_code, _naics.naics_priority
 
-<<<<<<< refs/remotes/origin/master
     from ggircs_swrs.naics as _naics
     inner join ggircs_swrs.final_report as _final_report on _naics.ghgr_import_id = _final_report.ghgr_import_id
-    -- FK Naics -> Facility
-    left join ggircs_swrs.facility as _facility
-      on _naics.ghgr_import_id = _facility.ghgr_import_id
-      and _facility.facility_type != 'LFO'
-=======
-    from ggircs_swrs.naics
-    left join ggircs_swrs.naics as _naics on naics.id = _naics.id
     -- FK Naics -> Single Facility
     left join ggircs_swrs.facility as _single_facility
       on _naics.ghgr_import_id = _single_facility.ghgr_import_id
@@ -209,7 +205,6 @@ $function$
     left join ggircs_swrs.facility as _lfo_facility
       on _naics.ghgr_import_id = _lfo_facility.ghgr_import_id
       and _lfo_facility.facility_type = 'LFO'
->>>>>>> Add lfo_facility table
     -- FK Naics -> Report
     left join ggircs_swrs.report as _report
       on _naics.ghgr_import_id = _report.ghgr_import_id
@@ -336,14 +331,7 @@ $function$
 
     from ggircs_swrs.permit as _permit
 
-<<<<<<< refs/remotes/origin/master
     inner join ggircs_swrs.final_report as _final_report on _permit.ghgr_import_id = _final_report.ghgr_import_id
-    -- FK Permit -> Facility
-    left join ggircs_swrs.facility as _facility
-        on _permit.ghgr_import_id = _facility.ghgr_import_id
-        and _facility.facility_type != 'LFO';
-=======
-    left join ggircs_swrs.permit as _permit on permit.id = _permit.id
     -- FK Permit -> Single Facility
     left join ggircs_swrs.facility as _single_facility
         on _permit.ghgr_import_id = _single_facility.ghgr_import_id
@@ -352,7 +340,6 @@ $function$
     left join ggircs_swrs.facility as _lfo_facility
         on _permit.ghgr_import_id = _lfo_facility.ghgr_import_id
         and _lfo_facility.facility_type = 'LFO';
->>>>>>> Add lfo_facility table
 
     -- PARENT ORGANISATION
     delete from ggircs.parent_organisation;
@@ -431,15 +418,7 @@ $function$
 
     from ggircs_swrs.address as _address
 
-<<<<<<< refs/remotes/origin/master
     inner join ggircs_swrs.final_report as _final_report on _address.ghgr_import_id = _final_report.ghgr_import_id
-    -- FK Address -> Facility
-    left join ggircs_swrs.facility as _facility
-      on _address.ghgr_import_id = _facility.ghgr_import_id
-      and _address.type = 'Facility'
-      and _facility.facility_type != 'LFO'
-=======
-    left join ggircs_swrs.address as _address on address.id = _address.id
     -- FK Address -> Single Facility
     left join ggircs_swrs.facility as _single_facility
         on _address.ghgr_import_id = _single_facility.ghgr_import_id
@@ -448,7 +427,6 @@ $function$
     left join ggircs_swrs.facility as _lfo_facility
         on _address.ghgr_import_id = _lfo_facility.ghgr_import_id
         and _lfo_facility.facility_type = 'LFO'
->>>>>>> Add lfo_facility table
     --FK Address -> Organisation
     left join ggircs_swrs.organisation as _organisation
       on _address.ghgr_import_id = _organisation.ghgr_import_id
@@ -673,6 +651,7 @@ $function$
 
     alter table ggircs.single_facility add constraint ggircs_single_facility_organisation_foreign_key foreign key (organisation_id) references ggircs.organisation(id);
     alter table ggircs.single_facility add constraint ggircs_single_facility_report_foreign_key foreign key (report_id) references ggircs.report(id);
+    alter table ggircs.single_facility add constraint ggircs_single_facility_parent_facility_foreign_key foreign key (parent_facility_id) references ggircs.lfo_facility(id);
     -- Todo: This fk constraint can't exist as it is a Parent -> Child fk relation. It needs to be removed when the BCGHGID relation on Facility -> Identifier is refactored
 --     alter table ggircs.single_facility add constraint ggircs_single_facility_identifier_foreign_key foreign key (identifier_id) references ggircs.identifier(id);
 
