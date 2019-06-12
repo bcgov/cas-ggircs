@@ -16,6 +16,7 @@ select has_view(
 select columns_are('ggircs'::name, 'carbon_tax_calculation'::name, array[
     'year'::name,
     'fuel_type'::name,
+    'amount'::name,
     'calculated_carbon_tax'::name
 ]);
 
