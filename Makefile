@@ -64,7 +64,7 @@ prove_style:
 .PHONY: prove_unit
 prove_unit:
 	# Run unit test suite using pg_prove
-	@@${PG_PROVE} -v -d ${TEST_DB} test/unit/*_test.sql
+	@@${PG_PROVE} -d ${TEST_DB} test/unit/*_test.sql
 
 .PHONY: revert
 revert:
