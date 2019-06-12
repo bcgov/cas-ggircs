@@ -157,7 +157,7 @@ refresh materialized view ggircs_swrs.fuel with data;
 
 -- Test validity of calculation
 select results_eq(
-    'select calculated_carbon_tax from ggircs.carbon_tax_calculation',
+    'select calculated_carbon_tax from ggircs.carbon_tax_calculation order by calculated_carbon_tax',
 
     $$
     with x as (
@@ -181,11 +181,13 @@ select results_eq(
     )
     select
       (x.amount * x.pro_rated_ctr * x.pro_rated_ief) as calculated_carbon_tax
-    from x
+    from x order by calculated_carbon_tax
     $$,
 
     'ggircs.carbon_tax_calculation properly calculates carbon tax based on fuel_amount * pro-rated carbon tax rate * pro-rated implied emission factor'
 );
+
+select * from ggircs.carbon_tax_calculation;
 
 select * from finish();
 rollback;

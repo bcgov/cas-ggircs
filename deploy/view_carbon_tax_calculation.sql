@@ -10,25 +10,29 @@ create or replace view ggircs.carbon_tax_calculation as
     with x as (
         select fuel.fuel_type                           as fuel_type,
                fuel.annual_fuel_amount                  as amount,
-               report.reporting_period_duration::integer         as rpd,
-               pro_rated_carbon_tax_rate                as pro_rated_ctr,
-               pro_rated_implied_emission_factor        as pro_rated_ief
+               report.reporting_period_duration::integer         as rpd
         from ggircs.fuel
                 join ggircs_swrs.fuel_mapping as fm
                     on fuel.fuel_type = fm.fuel_type
                 join ggircs.report as report
                     on fuel.report_id = report.id
-                join ggircs.pro_rated_carbon_tax_rate as ctr
-                    on fuel.fuel_type = ctr.fuel_type
-                    and report.reporting_period_duration::integer = ctr.reporting_year
-                join ggircs.pro_rated_implied_emission_factor as ief
-                    on ief.fuel_mapping_id = fm.id
-                    and report.reporting_period_duration::integer = ief.reporting_year
-
-    )
+    ),
+    y as (
     select x.rpd as year,
            x.fuel_type as fuel_type,
-           (x.amount * x.pro_rated_ctr * x.pro_rated_ief) as calculated_carbon_tax
-    from x
+           x.amount as amount,
+          (select distinct(pro_rated_carbon_tax_rate) from ggircs.pro_rated_carbon_tax_rate
+                    where fuel_type = x.fuel_type
+                    and reporting_year = x.rpd) as pro_rated_ctr,
+          (select distinct(pro_rated_implied_emission_factor) from ggircs.pro_rated_implied_emission_factor
+                    where fuel_type = x.fuel_type
+                    and reporting_year = x.rpd) as pro_rated_ief
+    from x)
+    select
+           y.year,
+           y.fuel_type,
+           (y.amount * y.pro_rated_ctr * y.pro_rated_ief) as calculated_carbon_tax
+
+    from y
 ;
 commit;
