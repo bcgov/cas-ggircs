@@ -4,7 +4,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(100);
+select plan(104);
 
 insert into ggircs_swrs.ghgr_import (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -891,12 +891,58 @@ select results_eq(
 );
 
 -- Emission -> Fuel
+select results_eq(
+    $$select distinct(fuel_type) from ggircs.emission
+      join ggircs.fuel
+      on
+        emission.fuel_id = fuel.id
+      order by fuel_type
+    $$,
+
+    'select distinct(fuel_type) from ggircs.fuel order by fuel_type',
+
+    'Foreign key fuel_id in ggircs.emission references ggircs.fuel.id'
+);
 
 -- Emission -> Organisation
+select set_eq(
+    $$select organisation.id from ggircs.emission
+      join ggircs.organisation
+      on
+        emission.organisation_id = organisation.id
+    $$,
+
+    'select id from ggircs.organisation',
+
+    'Foreign key organisation_id in ggircs.emission references ggircs.organisation.id'
+);
 
 -- Emission -> Report
+select set_eq(
+    $$select report.ghgr_import_id from ggircs.emission
+      join ggircs.report
+      on
+        emission.report_id = report.id
+    $$,
+
+    'select ghgr_import_id from ggircs.report',
+
+    'Foreign key report_id in ggircs.emission references ggircs.report.id'
+);
 
 -- Emission -> Unit
+select results_eq(
+    $$select distinct(unit.unit_name) from ggircs.emission
+      join ggircs.unit
+      on
+        emission.unit_id = unit.id
+      order by unit_name
+    $$,
+
+    'select distinct(unit_name) from ggircs.unit order by unit_name',
+
+    'Foreign key unit_id in ggircs.emission references ggircs.unit.id'
+);
 
 -- Facility -> Identifier
 select results_eq(
