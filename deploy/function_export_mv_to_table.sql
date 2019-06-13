@@ -60,19 +60,18 @@ $function$
     -- SINGLE FACILITY
     delete from ggircs.single_facility;
     with _final_lfo_facility as (
-        -- facility_id will be as the parent facility FK. organisation_id and reporting_period_duration are the join constraints
+        -- facility.id will as the parent facility FK.
+        -- swrs_organisation_id and reporting_period_duration are the join constraints
         select _facility.id, _organisation.swrs_organisation_id, _report.reporting_period_duration
         from ggircs_swrs.facility
-        inner join ggircs_swrs.facility as _facility
-            on facility.id = _facility.id
+        inner join ggircs_swrs.final_report as _final_report
+            on _facility.ghgr_import_id = _final_report.ghgr_import_id
             and _facility.facility_type = 'LFO'
         left join ggircs_swrs.organisation as _organisation
             on _facility.ghgr_import_id = _organisation.ghgr_import_id
         left join ggircs_swrs.report as _report
             on _facility.ghgr_import_id = _report.ghgr_import_id
-        -- Drop rows that are not in the final report
-        inner join ggircs_swrs.final_report as _final_report
-            on _facility.ghgr_import_id = _final_report.ghgr_import_id
+
     )
     insert into ggircs.single_facility (id, ghgr_import_id, identifier_id, organisation_id, report_id, swrs_facility_id, parent_facility_id, facility_name, facility_type, relationship_type, portability_indicator, status, latitude, longitude)
 
