@@ -4,7 +4,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(102);
+select plan(103);
 
 insert into ggircs_swrs.ghgr_import (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -158,7 +158,7 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
     <FacilityId>0000</FacilityId>
     <FacilityType>EIO</FacilityType>
     <OrganisationId>0000</OrganisationId>
-    <ReportingPeriodDuration>2012</ReportingPeriodDuration>
+    <ReportingPeriodDuration>2025</ReportingPeriodDuration>
     <ReportStatus>
       <Status>Submitted</Status>
       <SubmissionDate>2013-03-27T19:25:55.32</SubmissionDate>
@@ -526,7 +526,7 @@ $$), ($$
     <FacilityId>0001</FacilityId>
     <FacilityType>ABC</FacilityType>
     <OrganisationId>0000</OrganisationId>
-    <ReportingPeriodDuration>2012</ReportingPeriodDuration>
+    <ReportingPeriodDuration>2020</ReportingPeriodDuration>
     <ReportStatus>
       <Status>Submitted</Status>
       <SubmissionDate>2013-03-28T19:25:55.32</SubmissionDate>
@@ -917,20 +917,6 @@ select results_eq(
     'Foreign key identifier_id in ggircs.facility references ggircs.identifier.id'
 );
 
--- Facility -> Naics
-select results_eq(
-    $$
-    select naics.naics_code, naics_classification from ggircs.facility
-    join ggircs.naics
-    on
-      facility.naics_id = naics.id
-    $$,
-
-    $$ select naics_code, naics_classification from ggircs.naics where path_context = 'RegistrationData' order by naics_code $$,
-
-    'Foreign key naics_id in ggircs.facility references ggircs.naics.id'
-);
-
 -- Facility -> Organisation
 select results_eq(
     $$
@@ -962,7 +948,6 @@ select results_eq(
     'Foreign key report_id in ggircs.facility references ggircs.report.id'
 );
 
--- Todo: missing attributable emission tests
 -- Attributable Emission -> Activity
 select results_eq(
     $$
@@ -1091,7 +1076,7 @@ select results_eq(
     $$ select unit.unit_name from ggircs.emission as emission
        join ggircs.unit as unit
        on emission.unit_id = unit.id
-       and emission.ghgr_import_id=2
+       and emission.ghgr_import_id = 2
        and gas_type !='CO2bioC' $$,
 
     'Foreign key unit_id in ggircs.attributable_emission references ggircs.unit.id'
@@ -1285,19 +1270,6 @@ select results_eq(
     'Foreign key report_id in ggircs.contact references ggircs.report.id'
 );
 
--- Organisation -> Parent Organisation
-select results_eq(
-    $$
-    select distinct(parent_organisation.ghgr_import_id) from ggircs.organisation
-    join ggircs.parent_organisation
-    on organisation.parent_organisation_id = parent_organisation.id
-    $$,
-
-    'select ghgr_import_id from ggircs.parent_organisation',
-
-    'Foreign key parent_organisation_id in ggircs.organisation references ggircs.parent_organisation.id'
-);
-
 -- Organisation -> Report
 select results_eq(
 
@@ -1325,6 +1297,18 @@ select results_eq(
     'Foreign key report_id in ggircs.parent_organisation references ggircs.report.id'
 );
 
+-- Parent Organisation -> Organisation
+select results_eq(
+    $$
+    select distinct(organisation.ghgr_import_id) from ggircs.parent_organisation
+    join ggircs.organisation
+    on parent_organisation.organisation_id = organisation.id
+    $$,
+
+    'select ghgr_import_id from ggircs.organisation',
+
+    'Foreign key organisation_id in ggircs.parent_organisation references ggircs.organisation.id'
+);
 
 -- Identifier -> Facility
 select results_eq(
@@ -1369,6 +1353,26 @@ select results_eq(
     'Foreign key facility_id in ggircs.naics references ggircs.facility.id'
 );
 
+-- Naics -> Facility (path_context = RegistrationData)
+select results_eq(
+    $$
+    select facility.ghgr_import_id from ggircs.naics
+    join ggircs.facility
+    on
+      naics.registration_data_facility_id = facility.id
+    order by naics_code
+    $$,
+
+    $$ select facility.ghgr_import_id
+       from ggircs.naics
+       join ggircs.facility
+       on
+         naics.facility_id = facility.id
+         and path_context = 'RegistrationData' order by naics_code $$,
+
+    'Foreign key registration_data_facility_id in ggircs.naics references ggircs.facility.id'
+);
+
 -- Naics -> Report
 select results_eq(
     $$
@@ -1384,18 +1388,32 @@ select results_eq(
 
 -- Naics -> ggircs_swrs.naics_mapping
 select results_eq(
-    $$
+               $$
     select distinct(ggircs_swrs.naics_mapping.naics_code, ggircs_swrs.naics_mapping.irc_category) from ggircs.naics
     join ggircs_swrs.naics_mapping
     on naics.naics_mapping_id = naics_mapping.id
     $$,
-
-    $$
+               $$
     select distinct(naics_code, irc_category) from ggircs_swrs.naics_mapping
     where naics_code in (321111, 721310)
     $$,
+               'Foreign key naics_mapping_id references ggircs.swrs.naics_mapping.id'
+);
 
-    'Foreign key naics_mapping_id references ggircs.swrs.naics_mapping.id'
+-- ggircs.fuel -> ggircs_swrs.fuel_mapping
+select results_eq(
+    $$select distinct( ggircs_swrs.fuel_mapping.fuel_type) from ggircs.fuel
+      join ggircs_swrs.fuel_mapping
+      on
+        fuel.fuel_mapping_id = fuel_mapping.id
+      order by fuel_type
+    $$,
+
+    $$select fuel_type from ggircs_swrs.fuel_mapping
+      where fuel_type in ('Residual Fuel Oil (#5 & 6)', 'Wood Waste') order by fuel_type
+    $$,
+
+    'Foreign key fuel_mapping_id references ggircs.swrs.fuel_mapping.id'
 );
 
 -- Permit -> Facility
@@ -1446,8 +1464,7 @@ select results_eq($$
                       submission_date,
                       last_modified_by,
                       last_modified_date,
-                      update_comment,
-                      swrs_report_history_id
+                      update_comment
                   from ggircs_swrs.report
 
                   order by ghgr_import_id
@@ -1469,8 +1486,7 @@ select results_eq($$
                       submission_date,
                       last_modified_by,
                       last_modified_date,
-                      update_comment,
-                      swrs_report_history_id
+                      update_comment
                   from ggircs.report
 
                   order by ghgr_import_id
@@ -1749,7 +1765,11 @@ select results_eq(
                   wastewater_processing_factors::text,
                   measured_conversion_factors::text
                 from ggircs_swrs.fuel
-                order by ghgr_import_id
+                order by
+                    ghgr_import_id,
+                    activity_name,
+                    sub_activity_name,
+                    fuel_type
                  asc
               $$,
 
@@ -1777,7 +1797,11 @@ select results_eq(
                   wastewater_processing_factors::text,
                   measured_conversion_factors::text
                 from ggircs.fuel
-                order by ghgr_import_id
+                order by
+                    ghgr_import_id,
+                    activity_name,
+                    sub_activity_name,
+                    fuel_type
                  asc
               $$,
 

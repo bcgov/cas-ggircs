@@ -4,7 +4,8 @@
 begin;
 
 create materialized view ggircs_swrs.additional_data as (
-  select row_number() over () as id, id as ghgr_import_id,
+  with x as (
+  select id as ghgr_import_id,
          depth_four_descriptors.*
   from ggircs_swrs.ghgr_import,
        xmltable(
@@ -29,7 +30,7 @@ create materialized view ggircs_swrs.additional_data as (
 
   union all
 
-  select row_number() over () as id, id as ghgr_import_id,
+  select id as ghgr_import_id,
          depth_three_descriptors.*
   from ggircs_swrs.ghgr_import,
        xmltable(
@@ -54,7 +55,7 @@ create materialized view ggircs_swrs.additional_data as (
 
   union all
 
-  select row_number() over () as id, id as ghgr_import_id,
+  select id as ghgr_import_id,
          depth_one_descriptors.*
   from ggircs_swrs.ghgr_import,
        xmltable(
@@ -77,7 +78,7 @@ create materialized view ggircs_swrs.additional_data as (
              ,node_value varchar(10000) path 'string(./text())'
          ) as depth_one_descriptors
 )
-  with no data;
+select row_number() over () as id, x.* from x) with no data;
 
 create unique index ggircs_additional_data_primary_key on ggircs_swrs.additional_data (ghgr_import_id, process_idx,
                                                                              sub_process_idx, activity_name,

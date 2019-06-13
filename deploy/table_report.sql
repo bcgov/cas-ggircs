@@ -20,8 +20,7 @@ create table ggircs.report
     submission_date           timestamptz,
     last_modified_by          varchar(1000),
     last_modified_date        timestamptz,
-    update_comment            varchar(1000),
-    swrs_report_history_id    bigint
+    update_comment            varchar(1000)
 );
 
 comment on table ggircs.report is 'The table housing all report data, derived from ghgr_import table';
@@ -41,6 +40,5 @@ comment on column ggircs.report.submission_date is 'The date the report was subm
 comment on column ggircs.report.last_modified_by is 'The person who last modified the report';
 comment on column ggircs.report.last_modified_date is 'The timestamp recorded in SWRS when the report was last modified';
 comment on column ggircs.report.update_comment is 'The description of the update';
-comment on column ggircs.report.swrs_report_history_id is 'The id denoting the history of the report (1 = latest)';
 
 commit;

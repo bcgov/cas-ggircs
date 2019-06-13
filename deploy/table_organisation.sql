@@ -6,7 +6,6 @@ begin;
 create table ggircs.organisation
 (
     id                        integer primary key,
-    parent_organisation_id    integer,
     report_id                 integer,
     ghgr_import_id            integer,
     swrs_organisation_id      integer,
@@ -20,7 +19,6 @@ create table ggircs.organisation
 
 comment on table ggircs.organisation is 'the table housing all report data pertaining to the reporting organisation';
 comment on column ggircs.organisation.id is 'The primary key';
-comment on column ggircs.organisation.parent_organisation_id is 'A foreign key reference to ggircs.parent_organisation';
 comment on column ggircs.organisation.report_id is 'A foreign key reference to ggircs.report';
 comment on column ggircs.organisation.ghgr_import_id is 'The internal reference to the file imported from ghgr';
 comment on column ggircs.organisation.swrs_organisation_id is 'The reporting organisation swrs id';
@@ -32,8 +30,3 @@ comment on column ggircs.organisation.duns is 'The organisation duns number';
 comment on column ggircs.organisation.website is 'The organisation website address';
 
 commit;
-
--- refresh materialized view ggircs_swrs.organisation;
--- INSERT INTO ggircs.organisation (ghgr_import_id, swrs_organisation_id, business_legal_name, english_trade_name, french_trade_name, cra_business_number, duns, website)
--- SELECT ghgr_import_id, swrs_organisation_id, business_legal_name, english_trade_name, french_trade_name, cra_business_number, duns, website
--- FROM ggircs_swrs.organisation;
