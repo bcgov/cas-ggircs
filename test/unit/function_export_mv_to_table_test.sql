@@ -4,7 +4,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(103);
+select plan(100);
 
 insert into ggircs_swrs.ghgr_import (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -776,7 +776,6 @@ select tables_are('ggircs'::name, ARRAY[
     'naics'::name,
     'emission'::name,
     'attributable_emission'::name,
-    'final_report'::name,
     'fuel'::name,
     'permit'::name,
     'parent_organisation'::name,
@@ -788,7 +787,7 @@ select tables_are('ggircs'::name, ARRAY[
     $$
     Schema ggircs has tables [
                              report, organisation, facility, activity,
-                             unit, identifier, naics. emission, attributable_emission, final_report,
+                             unit, identifier, naics. emission, attributable_emission,
                              fuel, permit, parent_organisation, contact, address
                              additional_data, measured_emission_factor
     $$
@@ -803,7 +802,6 @@ select has_pk('ggircs', 'unit', 'ggircs_unit has primary key');
 select has_pk('ggircs', 'identifier', 'ggircs_identifier has primary key');
 select has_pk('ggircs', 'naics', 'ggircs_naics has primary key');
 select has_pk('ggircs', 'emission', 'ggircs_emission has primary key');
-select has_pk('ggircs', 'final_report', 'ggircs_final_report has primary key');
 select has_pk('ggircs', 'fuel', 'ggircs_fuel has primary key');
 select has_pk('ggircs', 'permit', 'ggircs_permit has primary key');
 select has_pk('ggircs', 'parent_organisation', 'ggircs_parent_organisation has primary key');
@@ -813,7 +811,7 @@ select has_pk('ggircs', 'additional_data', 'ggircs_additional_data has primary k
 select has_pk('ggircs', 'measured_emission_factor', 'ggircs_measured_emission_factor has primary key');
 
 
--- Test tables have foreign key constraints (No FK constraints: report, final_report, parent_organisation)
+-- Test tables have foreign key constraints (No FK constraints: report, parent_organisation)
 -- select has_fk('ggircs', 'report', 'ggircs_report has foreign key constraint(s)');
 select has_fk('ggircs', 'organisation', 'ggircs_organisation has foreign key constraint(s)');
 select has_fk('ggircs', 'facility', 'ggircs_facility has foreign key constraint(s)');
@@ -822,7 +820,6 @@ select has_fk('ggircs', 'unit', 'ggircs_unit has foreign key constraint(s)');
 select has_fk('ggircs', 'identifier', 'ggircs_identifier has foreign key constraint(s)');
 select has_fk('ggircs', 'naics', 'ggircs_naics has foreign key constraint(s)');
 select has_fk('ggircs', 'emission', 'ggircs.emission has foreign key constraint(s)');
--- select has_fk('ggircs', 'final_report', 'ggircs_final_report has foreign key constraint(s)');
 select has_fk('ggircs', 'fuel', 'ggircs_fuel has foreign key constraint(s)');
 select has_fk('ggircs', 'permit', 'ggircs_permit has foreign key constraint(s)');
 -- select has_fk('ggircs', 'parent_organisation', 'ggircs_parent_organisation has foreign key constraint(s)');
@@ -841,7 +838,6 @@ select isnt_empty('select * from ggircs.identifier', 'there is data in ggircs.id
 select isnt_empty('select * from ggircs.naics', 'there is data in ggircs.naics');
 select isnt_empty('select * from ggircs.emission', 'there is data in ggircs.emission');
 select isnt_empty('select * from ggircs.attributable_emission', 'attributable_emission has data');
-select isnt_empty('select * from ggircs.final_report', 'there is data in ggircs.final_report');
 select isnt_empty('select * from ggircs.fuel', 'there is data in ggircs.fuel');
 select isnt_empty('select * from ggircs.permit', 'there is data in ggircs.permit');
 select isnt_empty('select * from ggircs.parent_organisation', 'there is data in ggircs.parent_organisation');
@@ -1732,12 +1728,6 @@ select results_eq(
               $$,
 
               'data in ggircs_swrs.emission === ggircs.emission');
-
-select results_eq(
-    'select ghgr_import_id, swrs_report_id from ggircs_swrs.final_report order by ghgr_import_id asc',
-    'select ghgr_import_id, swrs_report_id from ggircs.final_report order by ghgr_import_id asc',
-    'data in ggircs_swrs.final_report === ggircs.final_report'
-);
 
 -- Data in ggircs_swrs.fuel === data in ggircs.fuel
 select results_eq(

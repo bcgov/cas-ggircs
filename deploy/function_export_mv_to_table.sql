@@ -37,10 +37,11 @@ $function$
     insert into ggircs.report (id, ghgr_import_id, source_xml, imported_at, swrs_report_id, prepop_report_id, report_type, swrs_facility_id, swrs_organisation_id,
                                reporting_period_duration, status, version, submission_date, last_modified_by, last_modified_date, update_comment)
 
-    select id, ghgr_import_id, source_xml, imported_at, swrs_report_id, prepop_report_id, report_type, swrs_facility_id, swrs_organisation_id,
+    select _report.id, _report.ghgr_import_id, source_xml, imported_at, _report.swrs_report_id, prepop_report_id, report_type, swrs_facility_id, swrs_organisation_id,
            reporting_period_duration, status, version, submission_date, last_modified_by, last_modified_date, update_comment
 
-    from ggircs_swrs.report;
+    from ggircs_swrs.report as _report
+    inner join ggircs_swrs.final_report as _final_report on _report.ghgr_import_id = _final_report.ghgr_import_id;
 
     -- ORGANISATION
     delete from ggircs.organisation;
@@ -49,9 +50,9 @@ $function$
     select _organisation.id, _organisation.ghgr_import_id, _report.id, _organisation.swrs_organisation_id, _organisation.business_legal_name,
            _organisation.english_trade_name, _organisation.french_trade_name, _organisation.cra_business_number, _organisation.duns, _organisation.website
 
-    from ggircs_swrs.organisation
+    from ggircs_swrs.organisation as _organisation
 
-    left join ggircs_swrs.organisation as _organisation on organisation.id = _organisation.id
+    inner join ggircs_swrs.final_report as _final_report on _organisation.ghgr_import_id = _final_report.ghgr_import_id
     --FK Organisation -> Report
     left join ggircs_swrs.report as _report
       on _organisation.ghgr_import_id = _report.ghgr_import_id;
@@ -63,8 +64,8 @@ $function$
     select _facility.id, _facility.ghgr_import_id, null, _organisation.id, _report.id, _facility.swrs_facility_id, _facility.facility_name, _facility.facility_type,
            _facility.relationship_type, _facility.portability_indicator, _facility.status, _facility.latitude, _facility.longitude
 
-    from ggircs_swrs.facility
-    left join ggircs_swrs.facility as _facility on facility.id = _facility.id
+    from ggircs_swrs.facility as _facility
+    inner join ggircs_swrs.final_report as _final_report on _facility.ghgr_import_id = _final_report.ghgr_import_id
     -- FK Facility -> Organisation
     left join ggircs_swrs.organisation as _organisation
         on _facility.ghgr_import_id = _organisation.ghgr_import_id
@@ -83,9 +84,9 @@ $function$
 
     select _activity.id, _activity.ghgr_import_id,  _facility.id, _report.id, _activity.activity_name, _activity.process_name, _activity.sub_process_name, _activity.information_requirement
 
-    from ggircs_swrs.activity
+    from ggircs_swrs.activity as _activity
 
-    left join ggircs_swrs.activity as _activity on activity.id = _activity.id
+    inner join ggircs_swrs.final_report as _final_report on _activity.ghgr_import_id = _final_report.ghgr_import_id
     -- FK Activity -> Facility
     left join ggircs_swrs.facility as _facility
       on _activity.ghgr_import_id = _facility.ghgr_import_id
@@ -103,9 +104,9 @@ $function$
            _unit.cogen_nameplate_capacity, _unit.cogen_net_power, _unit.cogen_steam_heat_acq_quantity, _unit.cogen_steam_heat_acq_name, _unit.cogen_supplemental_firing_purpose,
            _unit.cogen_thermal_output_quantity, _unit.non_cogen_nameplate_capacity, _unit.non_cogen_net_power, _unit.non_cogen_unit_name
 
-    from ggircs_swrs.unit
+    from ggircs_swrs.unit as _unit
 
-    left join ggircs_swrs.unit as _unit on unit.id = _unit.id
+    inner join ggircs_swrs.final_report as _final_report on _unit.ghgr_import_id = _final_report.ghgr_import_id
     -- FK Unit -> Activity
     left join ggircs_swrs.activity as _activity
       on _unit.ghgr_import_id = _activity.ghgr_import_id
@@ -119,9 +120,9 @@ $function$
 
     select _identifier.id, _identifier.ghgr_import_id, _facility.id, _report.id, _identifier.swrs_facility_id, _identifier.path_context, _identifier.identifier_type, _identifier.identifier_value
 
-    from ggircs_swrs.identifier
+    from ggircs_swrs.identifier as _identifier
 
-    left join ggircs_swrs.identifier as _identifier on identifier.id = _identifier.id
+    inner join ggircs_swrs.final_report as _final_report on _identifier.ghgr_import_id = _final_report.ghgr_import_id
     -- FK Identifier -> Facility
     left join ggircs_swrs.facility as _facility
       on _identifier.ghgr_import_id = _facility.ghgr_import_id
@@ -136,8 +137,8 @@ $function$
     select _naics.id, _naics.ghgr_import_id, _facility.id, (select _facility.id where _naics.path_context = 'RegistrationData'), _naics_mapping.id, _report.id, _naics.swrs_facility_id,
            _naics.path_context, _naics.naics_classification, _naics.naics_code, _naics.naics_priority
 
-    from ggircs_swrs.naics
-    left join ggircs_swrs.naics as _naics on naics.id = _naics.id
+    from ggircs_swrs.naics as _naics
+    inner join ggircs_swrs.final_report as _final_report on _naics.ghgr_import_id = _final_report.ghgr_import_id
     -- FK Naics -> Facility
     left join ggircs_swrs.facility as _facility
       on _naics.ghgr_import_id = _facility.ghgr_import_id
@@ -158,9 +159,9 @@ $function$
            _emission.activity_name, _emission.sub_activity_name, _emission.unit_name, _emission.sub_unit_name, _emission.fuel_name, _emission.emission_type,
            _emission.gas_type, _emission.methodology, _emission.not_applicable, _emission.quantity, _emission.calculated_quantity, _emission.emission_category
 
-    from ggircs_swrs.emission
+    from ggircs_swrs.emission as _emission
     -- join ggircs_swrs.emission to use _idx columns in FK creations
-    left join ggircs_swrs.emission as _emission on emission.id = _emission.id
+    inner join ggircs_swrs.final_report as _final_report on _emission.ghgr_import_id = _final_report.ghgr_import_id
     -- FK Emission -> Activity
     left join ggircs_swrs.activity as _activity
       on _emission.ghgr_import_id = _activity.ghgr_import_id
@@ -226,14 +227,6 @@ $function$
       and _emission.units_idx = _unit.units_idx
       and _emission.unit_idx = _unit.unit_idx;
 
-    -- FINAL REPORT
-    delete from ggircs.final_report;
-    insert into ggircs.final_report (id, ghgr_import_id, swrs_report_id)
-
-    select id, ghgr_import_id, swrs_report_id
-
-    from ggircs_swrs.final_report;
-
     -- FUEL
     delete from ggircs.fuel;
     insert into ggircs.fuel(id, ghgr_import_id, report_id, unit_id, fuel_mapping_id,
@@ -246,8 +239,8 @@ $function$
            _fuel.fuel_units, _fuel.annual_fuel_amount, _fuel.annual_weighted_avg_carbon_content, _fuel.annual_weighted_avg_hhv, _fuel.annual_steam_generation,
            _fuel.alternative_methodology_description, _fuel.other_flare_details, _fuel.q1, _fuel.q2, _fuel.q3, _fuel.q4, _fuel.wastewater_processing_factors, _fuel.measured_conversion_factors
 
-    from ggircs_swrs.fuel
-    left join ggircs_swrs.fuel as _fuel on _fuel.id = fuel.id
+    from ggircs_swrs.fuel as _fuel
+    inner join ggircs_swrs.final_report as _final_report on _fuel.ghgr_import_id = _final_report.ghgr_import_id
     -- FK Fuel -> Report
     left join ggircs_swrs.report as _report
     on _fuel.ghgr_import_id = _report.ghgr_import_id
@@ -268,9 +261,9 @@ $function$
 
     select _permit.id, _permit.ghgr_import_id, _facility.id, _permit.path_context, _permit.issuing_agency, _permit.issuing_dept_agency_program, _permit.permit_number
 
-    from ggircs_swrs.permit
+    from ggircs_swrs.permit as _permit
 
-    left join ggircs_swrs.permit as _permit on permit.id = _permit.id
+    inner join ggircs_swrs.final_report as _final_report on _permit.ghgr_import_id = _final_report.ghgr_import_id
     -- FK Permit -> Facility
     left join ggircs_swrs.facility as _facility
     on _permit.ghgr_import_id = _facility.ghgr_import_id;
@@ -283,15 +276,15 @@ $function$
     select _parent_organisation.id, _parent_organisation.ghgr_import_id, _report.id, _organisation.id, _parent_organisation.path_context, _parent_organisation.percentage_owned,
            _parent_organisation.french_trade_name, _parent_organisation.english_trade_name, _parent_organisation.duns, _parent_organisation.business_legal_name, _parent_organisation.website
 
-    from ggircs_swrs.parent_organisation
+    from ggircs_swrs.parent_organisation as _parent_organisation
 
-    left join ggircs_swrs.parent_organisation as _parent_organisation on parent_organisation.id = _parent_organisation.id
+    inner join ggircs_swrs.final_report as _final_report on _parent_organisation.ghgr_import_id = _final_report.ghgr_import_id
     --FK Parent Organisation -> Organisation
     left join ggircs_swrs.organisation as _organisation
-      on parent_organisation.ghgr_import_id = _organisation.ghgr_import_id
+      on _parent_organisation.ghgr_import_id = _organisation.ghgr_import_id
     -- FK Parent Organisation -> Report
     left join ggircs_swrs.report as _report
-      on parent_organisation.ghgr_import_id = _report.ghgr_import_id;
+      on _parent_organisation.ghgr_import_id = _report.ghgr_import_id;
 
     -- CONTACT
     delete from ggircs.contact;
@@ -301,9 +294,9 @@ $function$
     select _contact.id, _contact.ghgr_import_id, _address.id, _facility.id, _report.id, _contact.path_context, _contact.contact_type, _contact.given_name, _contact.family_name,
            _contact.initials, _contact.telephone_number, _contact.extension_number, _contact.fax_number, _contact.email_address, _contact.position, _contact.language_correspondence
 
-    from ggircs_swrs.contact
+    from ggircs_swrs.contact as _contact
 
-    left join ggircs_swrs.contact as _contact on contact.id = _contact.id
+    inner join ggircs_swrs.final_report as _final_report on _contact.ghgr_import_id = _final_report.ghgr_import_id
     -- todo: this could be re-worked when we get a better idea how to handle path_context
     --FK Contact -> Address
     left join ggircs_swrs.address as _address
@@ -345,9 +338,9 @@ $function$
            _address.mailing_address_street_direction, _address.mailing_address_municipality, _address.mailing_address_prov_terr_state, _address.mailing_address_postal_code_zip_code,
            _address.mailing_address_country, _address.mailing_address_additional_information, _address.geographic_address_latitude, _address.geographic_address_longitude
 
-    from ggircs_swrs.address
+    from ggircs_swrs.address as _address
 
-    left join ggircs_swrs.address as _address on address.id = _address.id
+    inner join ggircs_swrs.final_report as _final_report on _address.ghgr_import_id = _final_report.ghgr_import_id
     -- FK Address -> Facility
     left join ggircs_swrs.facility as _facility
       on _address.ghgr_import_id = _facility.ghgr_import_id
@@ -380,9 +373,9 @@ $function$
     select _additional_data.id, _additional_data.ghgr_import_id, _activity.id, _report.id, _additional_data.activity_name, _additional_data.grandparent, _additional_data.parent,
            _additional_data.class, _additional_data.attribute, _additional_data.attr_value, _additional_data.node_value
 
-    from ggircs_swrs.additional_data
+    from ggircs_swrs.additional_data as _additional_data
 
-    left join ggircs_swrs.additional_data as _additional_data on additional_data.id = _additional_data.id
+    inner join ggircs_swrs.final_report as _final_report on _additional_data.ghgr_import_id = _final_report.ghgr_import_id
     -- FK Additional Data -> Activity
     left join ggircs_swrs.activity as _activity
       on _additional_data.ghgr_import_id = _activity.ghgr_import_id
@@ -403,9 +396,9 @@ $function$
            _measured_emission_factor.activity_name, _measured_emission_factor.sub_activity_name, _measured_emission_factor.unit_name, _measured_emission_factor.sub_unit_name,
            _measured_emission_factor.measured_emission_factor_amount, _measured_emission_factor.measured_emission_factor_gas, _measured_emission_factor.measured_emission_factor_unit_type
 
-    from ggircs_swrs.measured_emission_factor
+    from ggircs_swrs.measured_emission_factor as _measured_emission_factor
 
-    left join ggircs_swrs.measured_emission_factor as _measured_emission_factor on measured_emission_factor.id = _measured_emission_factor.id
+    inner join ggircs_swrs.final_report as _final_report on _measured_emission_factor.ghgr_import_id = _final_report.ghgr_import_id
     --FK Measured Emission Factor -> Fuel
     left join ggircs_swrs.fuel as _fuel
       on _measured_emission_factor.ghgr_import_id = _fuel.ghgr_import_id
