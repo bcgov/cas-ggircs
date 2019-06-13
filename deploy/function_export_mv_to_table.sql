@@ -63,7 +63,7 @@ $function$
         -- facility.id will as the parent facility FK.
         -- swrs_organisation_id and reporting_period_duration are the join constraints
         select _facility.id, _organisation.swrs_organisation_id, _report.reporting_period_duration
-        from ggircs_swrs.facility
+        from ggircs_swrs.facility as _facility
         inner join ggircs_swrs.final_report as _final_report
             on _facility.ghgr_import_id = _final_report.ghgr_import_id
             and _facility.facility_type = 'LFO'
