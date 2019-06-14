@@ -215,7 +215,7 @@ select results_eq(
 select results_eq(
     $$ select start_rate from ggircs.pro_rated_implied_emission_factor order by start_rate $$,
 
-    ARRAY[0.315, 0.3151111111, null, null],
+    ARRAY[0.315, 0.315, null, null],
 
     'pro_rated_implied_emission_factor properly selects the rate for the beginning of the year before the rate hike'
 );
