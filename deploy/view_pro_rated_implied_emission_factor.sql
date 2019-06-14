@@ -23,8 +23,8 @@ create or replace view ggircs.pro_rated_implied_emission_factor as
                       on fuel.fuel_type = fmap.fuel_type
                  join ggircs_swrs.implied_emission_factor as ief
                       on ief.fuel_mapping_id = fmap.id
-                      and concat((report.reporting_period_duration)::text, '-12-31')::date > ief.start_date
-                      and concat((report.reporting_period_duration)::text, '-12-31')::date < ief.end_date
+                      and concat((report.reporting_period_duration::integer - 1)::text, '-04-01')::date >= ief.start_date
+                      and concat(report.reporting_period_duration::text, '-03-31')::date <= ief.end_date
 
     ), y as (
     select x.id as id,
@@ -63,7 +63,7 @@ create or replace view ggircs.pro_rated_implied_emission_factor as
                when x.rpd > 2021 then concat((x.rpd)::text, '-04-01')::date - concat((x.rpd)::text, '-01-01')::date
                else (select start_date
                      from ggircs_swrs.implied_emission_factor
-                     where id = x.id) - concat((x.rpd)::text, '-01-01')::date
+                     where id = x.id+1) - concat((x.rpd)::text, '-01-01')::date
            end as start_duration,
 
            case
@@ -71,7 +71,7 @@ create or replace view ggircs.pro_rated_implied_emission_factor as
                when x.rpd > 2021 then concat((x.rpd)::text, '-12-31')::date - concat((x.rpd)::text, '-04-01')::date
                else concat((x.rpd)::text, '-12-31')::date - (select start_date
                                                              from ggircs_swrs.implied_emission_factor
-                                                             where id = x.id)
+                                                             where id = x.id+1)
            end as end_duration,
 
            concat((x.rpd)::text, '-12-31')::date - concat((x.rpd)::text, '-01-01')::date as year_length
