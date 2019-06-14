@@ -1161,6 +1161,8 @@ select tables_are('ggircs'::name, ARRAY[
     $$
 );
 
+explain analyze select report.status from ggircs.fuel join ggircs.report on report_id = report.id;
+
 -- Test all tables have primary key
 select has_pk('ggircs', 'report', 'ggircs_report has primary key');
 select has_pk('ggircs', 'organisation', 'ggircs_organisation has primary key');
