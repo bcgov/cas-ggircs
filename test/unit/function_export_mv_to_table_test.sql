@@ -1161,7 +1161,32 @@ select tables_are('ggircs'::name, ARRAY[
     $$
 );
 
-explain analyze select report.status from ggircs.fuel join ggircs.report on report_id = report.id;
+-- This gets the columns used in the index for the table/matview's primary key
+select substring((SELECT
+    indexdef
+FROM
+    pg_indexes
+WHERE
+    schemaname = 'ggircs_swrs'
+AND
+    tablename = 'fuel'
+AND
+    indexname = 'ggircs_fuel_primary_key'
+ORDER BY
+    tablename,
+    indexname) from '(?<=\().+?(?=\))');
+
+SELECT
+    *
+FROM
+    pg_indexes
+WHERE
+    schemaname = 'ggircs_swrs'
+AND
+    tablename = 'fuel'
+ORDER BY
+    tablename,
+    indexname;
 
 -- Test all tables have primary key
 select has_pk('ggircs', 'report', 'ggircs_report has primary key');
