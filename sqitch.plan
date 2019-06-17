@@ -48,3 +48,5 @@ view_pro_rated_carbon_tax_rate [schema_ggircs table_fuel table_report] 2019-05-2
 table_implied_emission_factor [schema_ggircs_swrs] 2019-05-30T17:34:31Z Dylan Leard <dylan@button.is> # add implied emission factor table to schema ggircs_swrs
 view_pro_rated_implied_emission_factor [schema_ggircs table_fuel table_report] 2019-05-30T18:38:14Z Dylan Leard <dylan@button.is> # add pro-rated implied emission factor view to schema ggircs
 view_carbon_tax_calculation [schema_ggircs table_fuel table_report] 2019-05-30T20:10:33Z Dylan Leard <dylan@button.is> # add carbon tax calculation view to schema ggircs
+view_attributable_emissions_with_details [schema_ggircs] 2019-06-17T23:13:02Z Dylan Leard <dylan@button.is> # add view attributable emissions with details to schema ggircs
+view_report_with_org [schema_ggircs] 2019-06-17T23:13:54Z Dylan Leard <dylan@button.is> # add view report with org to schema ggircs
