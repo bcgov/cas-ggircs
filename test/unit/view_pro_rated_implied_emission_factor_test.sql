@@ -191,7 +191,7 @@ select results_eq(
     'pro_rated_implied_emission_factor properly selects the reporting year'
 );
 
-select results_eq(
+select set_eq(
     'select fuel_mapping_id from ggircs.pro_rated_implied_emission_factor order by fuel_mapping_id',
 
     $$
