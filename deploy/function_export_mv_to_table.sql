@@ -360,10 +360,10 @@ $function$
 
     -- CONTACT
     delete from ggircs.contact;
-    insert into ggircs.contact (id, ghgr_import_id, address_id, single_facility_id, lfo_facility_id, report_id, path_context, contact_type, given_name, family_name, initials, telephone_number, extension_number,
+    insert into ggircs.contact (id, ghgr_import_id, address_id, single_facility_id, lfo_facility_id, report_id, organisation_id, path_context, contact_type, given_name, family_name, initials, telephone_number, extension_number,
                                 fax_number, email_address, position, language_correspondence)
 
-    select _contact.id, _contact.ghgr_import_id, _address.id, _single_facility.id, _lfo_facility.id, _report.id, _contact.path_context, _contact.contact_type, _contact.given_name, _contact.family_name,
+    select _contact.id, _contact.ghgr_import_id, _address.id, _single_facility.id, _lfo_facility.id, _report.id, _organisation.id, _contact.path_context, _contact.contact_type, _contact.given_name, _contact.family_name,
            _contact.initials, _contact.telephone_number, _contact.extension_number, _contact.fax_number, _contact.email_address, _contact.position, _contact.language_correspondence
 
     from ggircs_swrs.contact as _contact
@@ -392,7 +392,9 @@ $function$
         and _lfo_facility.facility_type = 'LFO'
     --FK Contact -> Report
     left join ggircs_swrs.report as _report
-      on _contact.ghgr_import_id = _report.ghgr_import_id;
+      on _contact.ghgr_import_id = _report.ghgr_import_id
+    left join ggircs_swrs.organisation as _organisation
+        on _contact.ghgr_import_id = _organisation.ghgr_import_id;
 
     -- ADDRESS
     delete from ggircs.address;
