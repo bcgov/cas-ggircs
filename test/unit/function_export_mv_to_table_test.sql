@@ -4,7 +4,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(108);
+select plan(109);
 
 insert into ggircs_swrs.ghgr_import (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -1144,7 +1144,6 @@ select tables_are('ggircs'::name, ARRAY[
     'identifier'::name,
     'naics'::name,
     'emission'::name,
-    'attributable_emission'::name,
     'fuel'::name,
     'permit'::name,
     'parent_organisation'::name,
@@ -1156,7 +1155,7 @@ select tables_are('ggircs'::name, ARRAY[
     $$
     Schema ggircs has tables [
                              report, organisation, single_facility, lfo_facility, activity,
-                             unit, identifier, naics, emission, attributable_emission,
+                             unit, identifier, naics, emission,
                              fuel, permit, parent_organisation, contact, address,
                              additional_data, measured_emission_factor
     $$
@@ -1731,6 +1730,19 @@ select set_eq(
     'select distinct(ghgr_import_id) from ggircs.report',
 
     'Foreign key report_id in ggircs.contact references ggircs.report.id'
+);
+
+-- Contact -> Report
+select set_eq(
+    $$
+    select distinct(organisation.ghgr_import_id) from ggircs.contact
+    join ggircs.organisation
+    on contact.organisation_id = organisation.id
+    $$,
+
+    'select distinct(ghgr_import_id) from ggircs.organisation',
+
+    'Foreign key organisation_id in ggircs.contact references ggircs.organisation.id'
 );
 
 -- Organisation -> Report
