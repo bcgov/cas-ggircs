@@ -6,6 +6,54 @@ reset client_min_messages;
 begin;
 select * from no_plan();
 
+/** FACILITY **/
+
+-- Single Facility -> Organisation
+select results_eq(
+    $$
+        select substring((
+            select
+                indexdef
+            from
+                pg_indexes
+            where
+                schemaname = 'ggircs_swrs'
+            and
+                tablename = 'organisation'
+            and
+                indexname = 'ggircs_organisation_primary_key')
+        from '(?<=\().+?(?=\))')
+    $$,
+
+    -- columns used in join: ghgr_import_id
+    $$ select 'ghgr_import_id' $$,
+
+    'All columns in unique index ggircs_organisation_primary_key are used in join when creating ggircs.single_facility -> ggircs.organisation FK relation'
+);
+
+-- Single Facility -> Report
+select results_eq(
+    $$
+        select substring((
+            select
+                indexdef
+            from
+                pg_indexes
+            where
+                schemaname = 'ggircs_swrs'
+            and
+                tablename = 'report'
+            and
+                indexname = 'ggircs_report_primary_key')
+        from '(?<=\().+?(?=\))')
+    $$,
+
+    -- columns used in join: ghgr_import_id
+    $$ select 'ghgr_import_id' $$,
+
+    'All columns in unique index ggircs_report_primary_key are used in join when creating ggircs.single_facility -> ggircs.report FK relation'
+);
+
 /** FUEL **/
 -- Fuel -> Report
 select results_eq(
