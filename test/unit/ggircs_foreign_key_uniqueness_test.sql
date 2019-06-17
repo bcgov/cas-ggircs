@@ -27,7 +27,7 @@ select results_eq(
     -- columns used in join: ghgr_import_id
     $$ select 'ghgr_import_id' $$,
 
-    'All columns in index ggircs_report_primary_key are used in join when creating ggircs.fuel -> ggircs.report FK relation'
+    'All columns in unique index ggircs_report_primary_key are used in join when creating ggircs.fuel -> ggircs.report FK relation'
 );
 
 -- Fuel -> Unit
@@ -50,7 +50,7 @@ select results_eq(
     -- columns used in join: ghgr_import_id, activity_name, process_idx, sub_process_idx, units_idx, unit_idx
     $$ select 'ghgr_import_id, activity_name, process_idx, sub_process_idx, units_idx, unit_idx' $$,
 
-    'All columns in index ggircs_unit_primary_key are used in join when creating ggircs.fuel -> ggircs.unit FK relation'
+    'All columns in unique index ggircs_unit_primary_key are used in join when creating ggircs.fuel -> ggircs.unit FK relation'
 );
 
 -- Fuel -> Fuel Mapping (ggircs_swrs)
@@ -73,7 +73,31 @@ select results_eq(
     -- columns used in join: fuel_type
     $$ select 'fuel_type' $$,
 
-    'All columns in index ggircs_fuel_mapping_fuel_type are used in join when creating ggircs.fuel -> ggircs.fuel_mapping FK relation'
+    'All columns in unique index ggircs_fuel_mapping_fuel_type are used in join when creating ggircs.fuel -> ggircs.fuel_mapping FK relation'
+);
+
+/** ORGANISATION **/
+-- Organisation -> Report
+select results_eq(
+    $$
+        select substring((
+            select
+                indexdef
+            from
+                pg_indexes
+            where
+                schemaname = 'ggircs_swrs'
+            and
+                tablename = 'report'
+            and
+                indexname = 'ggircs_report_primary_key')
+        from '(?<=\().+?(?=\))')
+    $$,
+
+    -- columns used in join: ghgr_import_id
+    $$ select 'ghgr_import_id' $$,
+
+    'All columns in unique index ggircs_report_primary_key are used in join when creating ggircs.organisation -> ggircs.report FK relation'
 );
 
 select * from finish();
