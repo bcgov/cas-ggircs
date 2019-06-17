@@ -105,9 +105,9 @@ $function$
     select _facility.id, _facility.ghgr_import_id, null, _organisation.id, _report.id, _facility.swrs_facility_id, _facility.facility_name, _facility.facility_type,
            _facility.relationship_type, _facility.portability_indicator, _facility.status, _facility.latitude, _facility.longitude
 
-    from ggircs_swrs.facility
-    inner join ggircs_swrs.facility as _facility
-        on facility.id = _facility.id
+    from ggircs_swrs.facility as _facility
+   inner join ggircs_swrs.final_report as _final_report
+        on _facility.ghgr_import_id = _final_report.ghgr_import_id
         and _facility.facility_type = 'LFO'
     -- FK Facility -> Organisation
     left join ggircs_swrs.organisation as _organisation
