@@ -1169,24 +1169,12 @@ FROM
 WHERE
     schemaname = 'ggircs_swrs'
 AND
-    tablename = 'fuel'
+    tablename = 'unit'
 AND
-    indexname = 'ggircs_fuel_primary_key'
+    indexname = 'ggircs_unit_primary_key'
 ORDER BY
     tablename,
     indexname) from '(?<=\().+?(?=\))');
-
-SELECT
-    *
-FROM
-    pg_indexes
-WHERE
-    schemaname = 'ggircs_swrs'
-AND
-    tablename = 'fuel'
-ORDER BY
-    tablename,
-    indexname;
 
 -- Test all tables have primary key
 select has_pk('ggircs', 'report', 'ggircs_report has primary key');
