@@ -1144,7 +1144,6 @@ select tables_are('ggircs'::name, ARRAY[
     'identifier'::name,
     'naics'::name,
     'emission'::name,
-    'attributable_emission'::name,
     'fuel'::name,
     'permit'::name,
     'parent_organisation'::name,
@@ -1156,7 +1155,7 @@ select tables_are('ggircs'::name, ARRAY[
     $$
     Schema ggircs has tables [
                              report, organisation, single_facility, lfo_facility, activity,
-                             unit, identifier, naics, emission, attributable_emission,
+                             unit, identifier, naics, emission,
                              fuel, permit, parent_organisation, contact, address,
                              additional_data, measured_emission_factor
     $$
