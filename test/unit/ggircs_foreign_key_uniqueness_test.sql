@@ -70,7 +70,7 @@ select results_eq(
         from '(?<=\().+?(?=\))')
     $$,
 
-    -- columns used in join: ghgr_import_id
+    -- columns used in join: fuel_type
     $$ select 'fuel_type' $$,
 
     'All columns in index ggircs_fuel_mapping_fuel_type are used in join when creating ggircs.fuel -> ggircs.fuel_mapping FK relation'
