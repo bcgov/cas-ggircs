@@ -98,6 +98,17 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$<ReportData xmlns:xsi="
 </ReportData>
 $$), ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <RegistrationData>
+  <Facility>
+  </Facility>
+    <NAICSCodeList>
+      <NAICSCode>
+        <NAICSClassification>Chemical Pulp Mills </NAICSClassification>
+        <Code>322112</Code>
+        <NaicsPriority>Primary</NaicsPriority>
+      </NAICSCode>
+    </NAICSCodeList>
+  </RegistrationData>
   <ReportDetails>
     <ReportID>1235</ReportID>
     <ReportType>R1</ReportType>
@@ -272,6 +283,43 @@ insert into ggircs.naics(id, ghgr_import_id, single_facility_id, lfo_facility_id
     left join ggircs_swrs.report as _report
     on _fuel.ghgr_import_id = _report.ghgr_import_id;
 
+-- Test fk relations
+-- Organisation
+select set_eq(
+    $$ select organisation.swrs_organisation_id from ggircs.carbon_tax_calculation as ct
+       join ggircs.organisation on ct.organisation_id = organisation.id
+    $$,
+    'select swrs_organisation_id from ggircs.organisation',
+    'fk organisation_id references organisation'
+);
+
+-- Single Facility
+select set_eq(
+    $$ select single_facility.swrs_facility_id from ggircs.carbon_tax_calculation as ct
+       join ggircs.single_facility on ct.single_facility_id = single_facility.id
+    $$,
+    'select swrs_facility_id from ggircs.single_facility',
+    'fk single_facility_id references single_facility'
+);
+
+-- Naics
+select set_eq(
+    $$ select naics.naics_code from ggircs.carbon_tax_calculation as ct
+       join ggircs.naics on ct.naics_id = naics.id
+    $$,
+    'select naics_code from ggircs.naics',
+    'fk naics_id references naics'
+);
+
+-- Naics
+select set_eq(
+    $$ select naics_mapping.hhw_category from ggircs.carbon_tax_calculation as ct
+       join ggircs_swrs.naics_mapping on ct.naics_mapping_id = naics_mapping.id
+    $$,
+    'select hhw_category from ggircs_swrs.naics_mapping where naics_code = 322112',
+    'fk naics_mapping_id references naics_mapping'
+);
+
 -- Test validity of calculation
 select results_eq(
     'select calculated_carbon_tax from ggircs.carbon_tax_calculation order by calculated_carbon_tax',
@@ -303,8 +351,6 @@ select results_eq(
 
     'ggircs.carbon_tax_calculation properly calculates carbon tax based on fuel_amount * pro-rated carbon tax rate * pro-rated implied emission factor'
 );
-
-select * from ggircs.carbon_tax_calculation;
 
 select * from finish();
 rollback;
