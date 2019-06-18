@@ -10,6 +10,8 @@ create table ggircs.identifier(
     report_id                 integer references ggircs.report (id),
     single_facility_id        integer references ggircs.single_facility(id),
     lfo_facility_id           integer references ggircs.lfo_facility(id),
+    lfo_facility_bcghgid_id         integer,
+    single_facility_bcghgid_id      integer,
     swrs_facility_id          integer,
     path_context              varchar(1000),
     identifier_type           varchar(1000),
@@ -19,6 +21,8 @@ create table ggircs.identifier(
 comment on table ggircs.identifier is 'The table housing information regarding identifiers';
 comment on column ggircs.identifier.id is 'The primary key';
 comment on column ggircs.identifier.ghgr_import_id is 'The foreign key referencing ggrics_swrs.ghgr_import.id';
+comment on column ggircs.identifier.single_facility_bcghgid_id is 'A foreign key reference to ggircs.single_facility with correct bcghgid';
+comment on column ggircs.identifier.lfo_facility_bcghgid_id is 'A foreign key reference to ggircs.lfo_facility with correct bcghgid';
 comment on column ggircs.identifier.single_facility_id is 'A foreign key reference to ggircs.single_facility';
 comment on column ggircs.identifier.lfo_facility_id is 'A foreign key reference to ggircs.lfo_facility';
 comment on column ggircs.identifier.report_id is 'A foreign key reference to ggircs.report';

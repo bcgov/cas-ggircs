@@ -93,11 +93,6 @@ $function$
         and _report.reporting_period_duration = _final_lfo_facility.reporting_period_duration
         and (_facility.facility_type = 'IF_a' or _facility.facility_type = 'IF_b' or _facility.facility_type = 'L_c');
 
-    -- FK Single Facility -> Identifier
-    -- TODO: Remove this fk relation as it is a Parent -> Child relation and find a way to relate to this from Identifier -> Facility with a bcghgid_id column
-    --  with x as (select * from ggircs_swrs.identifier where identifier_type = 'BCGHGID' and identifier_value is not null and identifier_value != '' order by path_context asc)
-    --  update ggircs.single_facility as f set identifier_id = x.id from x where f.ghgr_import_id = x.ghgr_import_id;
-
     -- LFO FACILITY
     delete from ggircs.lfo_facility;
     insert into ggircs.lfo_facility (id, ghgr_import_id, organisation_id, report_id, swrs_facility_id, facility_name, facility_type, relationship_type, portability_indicator, status, latitude, longitude)
@@ -115,12 +110,6 @@ $function$
     -- FK Facility -> Report
     left join ggircs_swrs.report as _report
         on _facility.ghgr_import_id = _report.ghgr_import_id;
-
-    -- FK LFO Facility -> Identifier
-    -- TODO: Remove this fk relation as it is a Parent -> Child relation and find a way to relate to this from Identifier -> Facility with a bcghgid_id column
-    --  with x as (select * from ggircs_swrs.identifier where identifier_type = 'BCGHGID' and identifier_value is not null and identifier_value != '' order by path_context asc)
-    --  update ggircs.lfo_facility as f set identifier_id = x.id from x where f.ghgr_import_id = x.ghgr_import_id;
-
 
     -- ACTIVITY
     delete from ggircs.activity;
@@ -165,9 +154,9 @@ $function$
 
     -- IDENTIFIER
     delete from ggircs.identifier;
-    insert into ggircs.identifier(id, ghgr_import_id, single_facility_id, lfo_facility_id, report_id, swrs_facility_id, path_context, identifier_type, identifier_value)
+    insert into ggircs.identifier(id, ghgr_import_id, single_facility_bcghgid_id, lfo_facility_bcghgid_id, single_facility_id, lfo_facility_id, report_id, swrs_facility_id, path_context, identifier_type, identifier_value)
 
-    select _identifier.id, _identifier.ghgr_import_id, _single_facility.id, _lfo_facility.id, _report.id, _identifier.swrs_facility_id, _identifier.path_context, _identifier.identifier_type, _identifier.identifier_value
+    select _identifier.id, _identifier.ghgr_import_id, _single_facility_bcghgid.id, _lfo_facility_bcghgid.id, _single_facility.id, _lfo_facility.id, _report.id, _identifier.swrs_facility_id, _identifier.path_context, _identifier.identifier_type, _identifier.identifier_value
 
     from ggircs_swrs.identifier as _identifier
 
@@ -182,7 +171,41 @@ $function$
       and _lfo_facility.facility_type = 'LFO'
     -- FK Identifier -> Report
     left join ggircs_swrs.report as _report
-      on _identifier.ghgr_import_id = _report.ghgr_import_id;
+      on _identifier.ghgr_import_id = _report.ghgr_import_id
+    left join ggircs.single_facility as _single_facility_bcghgid
+      on _identifier.ghgr_import_id = _single_facility_bcghgid.ghgr_import_id
+      and (((_identifier.path_context = 'VerifyTombstone'
+             and _identifier.identifier_type = 'BCGHGID'
+             and _identifier.identifier_value is not null
+             and _identifier.identifier_value != '' )
+
+               and (select id from ggircs_swrs.identifier as __identifier
+                  where __identifier.ghgr_import_id = _single_facility_bcghgid.ghgr_import_id
+                  and __identifier.path_context = 'RegistrationData'
+                  and __identifier.identifier_type = 'BCGHGID'
+                  and __identifier.identifier_value is not null
+                  and __identifier.identifier_value != '') is null)
+          or (_identifier.path_context = 'RegistrationData'
+             and _identifier.identifier_type = 'BCGHGID'
+             and _identifier.identifier_value is not null
+             and _identifier.identifier_value != '' ))
+    left join ggircs.lfo_facility as _lfo_facility_bcghgid
+      on _identifier.ghgr_import_id = _lfo_facility_bcghgid.ghgr_import_id
+      and (((_identifier.path_context = 'VerifyTombstone'
+             and _identifier.identifier_type = 'BCGHGID'
+             and _identifier.identifier_value is not null
+             and _identifier.identifier_value != '' )
+
+               and (select id from ggircs_swrs.identifier as __identifier
+                  where __identifier.ghgr_import_id = _lfo_facility_bcghgid.ghgr_import_id
+                  and __identifier.path_context = 'RegistrationData'
+                  and __identifier.identifier_type = 'BCGHGID'
+                  and __identifier.identifier_value is not null
+                  and __identifier.identifier_value != '') is null)
+          or (_identifier.path_context = 'RegistrationData'
+             and _identifier.identifier_type = 'BCGHGID'
+             and _identifier.identifier_value is not null
+             and _identifier.identifier_value != '' ));
 
     -- NAICS
     delete from ggircs.naics;
@@ -499,153 +522,6 @@ $function$
       and _measured_emission_factor.unit_idx = _fuel.unit_idx
       and _measured_emission_factor.fuel_idx = _fuel.fuel_idx;
 
-    -- Todo: Should attributable emission be a view rather than a table? Yes
-    -- ATTRIBUTABLE EMISSION
---     raise notice 'Exporting attributable_emission';
---
---     execute
---       'drop table if exists ggircs.attributable_emission';
---
---     execute
---
---           $$
---           create table ggircs.attributable_emission
---           as (
---           select
---              x.ghgr_import_id,
---              x.activity_name,
---              x.sub_activity_name,
---              x.unit_name,
---              x.sub_unit_name,
---              x.process_idx,
---              x.sub_process_idx,
---              x.units_idx,
---              x.unit_idx,
---              x.substances_idx,
---              x.substance_idx,
---              x.fuel_idx,
---              x.fuel_name,
---              x.emissions_idx,
---              x.emission_idx,
---              x.emission_type,
---              x.gas_type,
---              x.methodology,
---              x.not_applicable,
---              x.quantity,
---              x.calculated_quantity,
---              x.emission_category
---
---           from ggircs_swrs.emission
---           as x inner join ggircs_swrs.final_report as final_report
---           on x.ghgr_import_id = final_report.ghgr_import_id
---           join ggircs_swrs.facility as facility
---           on x.ghgr_import_id = facility.ghgr_import_id
---           join ggircs_swrs.activity as activity
---           on x.ghgr_import_id = activity.ghgr_import_id
---           and x.process_idx = activity.process_idx
---           and x.sub_process_idx = activity.sub_process_idx
---           and x.activity_name = activity.activity_name
---           and x.gas_type != 'CO2bioC'
---           and facility.facility_type != 'EIO'
---           and facility.facility_type != 'LFO'
---           and activity.sub_process_name not in  ('Additional Reportable Information as per WCI.352(i)(1)-(12)',
---                                    'Additional Reportable Information as per WCI.352(i)(13)',
---                                    'Additional Reportable Information as per WCI.362(g)(21)',
---                                    'Additional information for cement and lime production facilities only (not aggregated in totals)',
---                                    'Additional information for cement and lime production facilities only (not aggregated intotals)',
---                                    'Additional information required when other activities selected are Activities in Table 2 rows 2, 4, 5 , or 6',
---                                    'Additional reportable information')
---           )$$;
---
---     execute 'alter table ggircs.attributable_emission add column id int generated always as identity primary key';
-
-        /** Attributable Emission FKs**/
-      -- Create FK/PK relation between Attributable_Emission and Activity
---       alter table ggircs.attributable_emission add column activity_id int;
---       create index ggircs_attributable_emission_activity_index on ggircs.attributable_emission (activity_id);
---       update ggircs.attributable_emission set activity_id = _activity.id
---         from ggircs_swrs.activity as _activity
---           where attributable_emission.ghgr_import_id = _activity.ghgr_import_id
---             and attributable_emission.process_idx = _activity.process_idx
---             and attributable_emission.sub_process_idx = _activity.sub_process_idx
---             and attributable_emission.activity_name = _activity.activity_name;
---       alter table ggircs.attributable_emission add constraint ggircs_attributable_emission_activity_foreign_key foreign key (activity_id) references ggircs.activity(id);
---
---       -- Create FK/PK relation between Attributable_Emission and Fuel
---       alter table ggircs.attributable_emission add column fuel_id int;
---       create index ggircs_attributable_emission_fuel_index on ggircs.attributable_emission (fuel_id);
---       update ggircs.attributable_emission set fuel_id = _fuel.id
---         from ggircs_swrs.fuel as _fuel
---           where attributable_emission.ghgr_import_id = _fuel.ghgr_import_id
---             and attributable_emission.process_idx = _fuel.process_idx
---             and attributable_emission.sub_process_idx = _fuel.sub_process_idx
---             and attributable_emission.activity_name = _fuel.activity_name
---             and attributable_emission.sub_activity_name = _fuel.sub_activity_name
---             and attributable_emission.unit_name = _fuel.unit_name
---             and attributable_emission.sub_unit_name = _fuel.sub_unit_name
---             and attributable_emission.substance_idx = _fuel.substance_idx
---             and attributable_emission.substances_idx = _fuel.substances_idx
---             and attributable_emission.sub_unit_name = _fuel.sub_unit_name
---             and attributable_emission.units_idx = _fuel.units_idx
---             and attributable_emission.unit_idx = _fuel.unit_idx
---             and attributable_emission.fuel_idx = _fuel.fuel_idx;
---       alter table ggircs.attributable_emission add constraint ggircs_attributable_emission_fuel_foreign_key foreign key (fuel_id) references ggircs.fuel(id);
---
---       -- Create FK/PK relation between Attributable_Emission and NAICS
---       alter table ggircs.attributable_emission add column naics_id int;
---       create index ggircs_attributable_emission_naics_index on ggircs.attributable_emission (naics_id);
---       update ggircs.attributable_emission set naics_id = _naics.id
---         from ggircs_swrs.naics as _naics
---           where attributable_emission.ghgr_import_id = _naics.ghgr_import_id
---           and _naics.path_context = 'RegistrationData';
---       alter table ggircs.attributable_emission add constraint ggircs_attributable_emission_naics_foreign_key foreign key (naics_id) references ggircs.naics(id);
---
---       -- Create FK/PK relation between Attributable_Emission and Organisation
---       alter table ggircs.attributable_emission add column organisation_id int;
---       create index ggircs_attributable_emission_organisation_index on ggircs.attributable_emission (organisation_id);
---       update ggircs.attributable_emission set organisation_id = _organisation.id
---         from ggircs_swrs.organisation as _organisation
---           where attributable_emission.ghgr_import_id = _organisation.ghgr_import_id;
---       alter table ggircs.attributable_emission add constraint ggircs_attributable_emission_organisation_foreign_key foreign key (organisation_id) references ggircs.organisation(id);
---
---       -- Create FK/PK relation between Attributable_Emission and Report
---       alter table ggircs.attributable_emission add column report_id int;
---       create index ggircs_attributable_emission_report_index on ggircs.attributable_emission (report_id);
---       update ggircs.attributable_emission set report_id = _report.id
---         from ggircs_swrs.report as _report
---           where attributable_emission.ghgr_import_id = _report.ghgr_import_id;
---       alter table ggircs.attributable_emission add constraint ggircs_attributable_emission_report_foreign_key foreign key (report_id) references ggircs.report(id);
---
---       -- Create FK/PK relation between Attributable_Emission and Unit
---       alter table ggircs.attributable_emission add column unit_id int;
---       create index ggircs_attributable_emission_unit_index on ggircs.attributable_emission (unit_id);
---       update ggircs.attributable_emission set unit_id = _unit.id
---         from ggircs_swrs.unit as _unit
---           where attributable_emission.ghgr_import_id = _unit.ghgr_import_id
---             and attributable_emission.process_idx = _unit.process_idx
---             and attributable_emission.sub_process_idx = _unit.sub_process_idx
---             and attributable_emission.activity_name = _unit.activity_name
---             and attributable_emission.units_idx = _unit.units_idx
---             and attributable_emission.unit_idx = _unit.unit_idx;
---       alter table ggircs.attributable_emission add constraint ggircs_attributable_emission_unit_foreign_key foreign key (unit_id) references ggircs.unit(id);
---
---       -- Create FK/PK relation between Attributable_Emission and Single Facility
---       alter table ggircs.attributable_emission add column single_facility_id int;
---       create index ggircs_attributable_emission_single_facility_index on ggircs.attributable_emission (single_facility_id);
---       update ggircs.attributable_emission set single_facility_id = _facility.id
---         from ggircs_swrs.facility as _facility
---           where attributable_emission.ghgr_import_id = _facility.ghgr_import_id
---           and (_facility.facility_type != 'LFO' or _facility.facility_type is null);
---       alter table ggircs.attributable_emission add constraint ggircs_attributable_emission_single_facility_foreign_key foreign key (single_facility_id) references ggircs.single_facility(id);
---
---       -- Create FK/PK relation between Attributable_Emission and LFO Facility
---       alter table ggircs.attributable_emission add column lfo_facility_id int;
---       create index ggircs_attributable_emission_lfo_facility_index on ggircs.attributable_emission (lfo_facility_id);
---       update ggircs.attributable_emission set lfo_facility_id = _facility.id
---         from ggircs_swrs.facility as _facility
---           where attributable_emission.ghgr_import_id = _facility.ghgr_import_id
---           and _facility.facility_type = 'LFO';
---       alter table ggircs.attributable_emission add constraint ggircs_attributable_emission_lfo_facility_foreign_key foreign key (lfo_facility_id) references ggircs.lfo_facility(id);
 
     -- Refresh materialized views with no data
     for i in 1 .. array_upper(mv_array, 1)

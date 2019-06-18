@@ -21,6 +21,9 @@ create table ggircs.lfo_facility (
 
 comment on table ggircs.lfo_facility is 'the table housing all report data pertaining to the reporting LFO facility';
 comment on column ggircs.lfo_facility.id is 'The primary key';
+comment on column ggircs.lfo_facility.ghgr_import_id is 'The primary key for the materialized view';
+comment on column ggircs.lfo_facility.organisation_id is 'A foreign key reference to ggircs.organisation';
+>>>>>>> removed facility -> identifier(bcghgid) fk and replaced with a proper child -> parent key
 comment on column ggircs.lfo_facility.report_id is 'A foreign key reference to ggircs.report';
 comment on column ggircs.lfo_facility.organisation_id is 'A foreign key reference to ggircs.organisation';
 comment on column ggircs.lfo_facility.ghgr_import_id is 'The primary key for the materialized view';
