@@ -6,6 +6,75 @@ reset client_min_messages;
 begin;
 select * from no_plan();
 
+/** ACTIVITY **/
+-- Activity -> Report
+select results_eq(
+    $$
+        select substring((
+            select
+                indexdef
+            from
+                pg_indexes
+            where
+                schemaname = 'ggircs_swrs'
+            and
+                tablename = 'report'
+            and
+                indexname = 'ggircs_report_primary_key')
+        from '(?<=\().+?(?=\))')
+    $$,
+
+    -- columns used in join: ghgr_import_id
+    $$ select 'ghgr_import_id' $$,
+
+    'All columns in unique index ggircs_report_primary_key are used in join when creating ggircs.activity -> ggircs.single_facility FK relation'
+);
+-- Activity -> Single Facility
+select results_eq(
+    $$
+        select substring((
+            select
+                indexdef
+            from
+                pg_indexes
+            where
+                schemaname = 'ggircs_swrs'
+            and
+                tablename = 'facility'
+            and
+                indexname = 'ggircs_facility_primary_key')
+        from '(?<=\().+?(?=\))')
+    $$,
+
+    -- columns used in join: ghgr_import_id
+    $$ select 'ghgr_import_id' $$,
+
+    'All columns in unique index ggircs_facility_primary_key are used in join when creating ggircs.activity -> ggircs.single_facility FK relation'
+);
+
+-- Activity -> LFO Facility
+select results_eq(
+    $$
+        select substring((
+            select
+                indexdef
+            from
+                pg_indexes
+            where
+                schemaname = 'ggircs_swrs'
+            and
+                tablename = 'facility'
+            and
+                indexname = 'ggircs_facility_primary_key')
+        from '(?<=\().+?(?=\))')
+    $$,
+
+    -- columns used in join: ghgr_import_id
+    $$ select 'ghgr_import_id' $$,
+
+    'All columns in unique index ggircs_facility_primary_key are used in join when creating ggircs.activity -> ggircs.lfo_facility FK relation'
+);
+
 /** FACILITY **/
 
 -- Single Facility -> Organisation
