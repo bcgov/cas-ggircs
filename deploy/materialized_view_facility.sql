@@ -49,7 +49,7 @@ create materialized view ggircs_swrs.facility as (
   order by ghgr_import_id desc
 ) with no data;
 
-create unique index ggircs_facility_primary_key on ggircs_swrs.facility (ghgr_import_id, swrs_facility_id);
+create unique index ggircs_facility_primary_key on ggircs_swrs.facility (ghgr_import_id);
 
 comment on materialized view ggircs_swrs.facility is 'the materialized view housing all report data pertaining to the reporting facility';
 comment on column ggircs_swrs.facility.id is 'A generated index used for keying in the ggircs schema';
