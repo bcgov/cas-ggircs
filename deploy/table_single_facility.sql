@@ -22,11 +22,6 @@ create table ggircs.single_facility (
 
 comment on table ggircs.single_facility is 'the table housing all report data pertaining to the reporting facility';
 comment on column ggircs.single_facility.id is 'The primary key';
-<<<<<<< 556dd3f90823338fa4727b33421f6a382080c8ac
-=======
-comment on column ggircs.single_facility.ghgr_import_id is 'The primary key for the materialized view';
-comment on column ggircs.single_facility.organisation_id is 'A foreign key reference to ggircs.organisation';
->>>>>>> removed facility -> identifier(bcghgid) fk and replaced with a proper child -> parent key
 comment on column ggircs.single_facility.report_id is 'A foreign key reference to ggircs.report';
 comment on column ggircs.single_facility.organisation_id is 'A foreign key reference to ggircs.organisation';
 comment on column ggircs.single_facility.lfo_facility_id is 'A foreign key reference to ggircs.lfo_facility';

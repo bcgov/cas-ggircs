@@ -4,7 +4,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(108);
+select plan(109);
 
 insert into ggircs_swrs.ghgr_import (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
