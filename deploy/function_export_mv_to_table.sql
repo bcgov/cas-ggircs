@@ -174,35 +174,35 @@ $function$
       on _identifier.ghgr_import_id = _report.ghgr_import_id
     left join ggircs.single_facility as _single_facility_bcghgid
       on _identifier.ghgr_import_id = _single_facility_bcghgid.ghgr_import_id
-      and (((_identifier.path_context = 'VerifyTombstone'
+      and (((_identifier.path_context = 'RegistrationData'
              and _identifier.identifier_type = 'BCGHGID'
              and _identifier.identifier_value is not null
              and _identifier.identifier_value != '' )
 
                and (select id from ggircs_swrs.identifier as __identifier
                   where __identifier.ghgr_import_id = _single_facility_bcghgid.ghgr_import_id
-                  and __identifier.path_context = 'RegistrationData'
+                  and __identifier.path_context = 'VerifyTombstone'
                   and __identifier.identifier_type = 'BCGHGID'
                   and __identifier.identifier_value is not null
                   and __identifier.identifier_value != '') is null)
-          or (_identifier.path_context = 'RegistrationData'
+          or (_identifier.path_context = 'VerifyTombstone'
              and _identifier.identifier_type = 'BCGHGID'
              and _identifier.identifier_value is not null
              and _identifier.identifier_value != '' ))
     left join ggircs.lfo_facility as _lfo_facility_bcghgid
       on _identifier.ghgr_import_id = _lfo_facility_bcghgid.ghgr_import_id
-      and (((_identifier.path_context = 'VerifyTombstone'
+      and (((_identifier.path_context = 'RegistrationData'
              and _identifier.identifier_type = 'BCGHGID'
              and _identifier.identifier_value is not null
              and _identifier.identifier_value != '' )
 
                and (select id from ggircs_swrs.identifier as __identifier
                   where __identifier.ghgr_import_id = _lfo_facility_bcghgid.ghgr_import_id
-                  and __identifier.path_context = 'RegistrationData'
+                  and __identifier.path_context = 'VerifyTombstone'
                   and __identifier.identifier_type = 'BCGHGID'
                   and __identifier.identifier_value is not null
                   and __identifier.identifier_value != '') is null)
-          or (_identifier.path_context = 'RegistrationData'
+          or (_identifier.path_context = 'VerifyTombstone'
              and _identifier.identifier_type = 'BCGHGID'
              and _identifier.identifier_value is not null
              and _identifier.identifier_value != '' ));
