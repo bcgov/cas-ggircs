@@ -30,6 +30,15 @@ create table ggircs.emission (
 
 );
 
+create index ggircs_emission_activity_foreign_key on ggircs.emission(activity_id);
+create index ggircs_emission_single_facility_foreign_key on ggircs.emission(single_facility_id);
+create index ggircs_emission_lfo_facility_foreign_key on ggircs.emission(lfo_facility_id);
+create index ggircs_emission_fuel_foreign_key on ggircs.emission(fuel_id);
+create index ggircs_emission_naics_foreign_key on ggircs.emission(naics_id);
+create index ggircs_emission_organisation_foreign_key on ggircs.emission(organisation_id);
+create index ggircs_emission_report_foreign_key on ggircs.emission(report_id);
+create index ggircs_emission_unit_foreign_key on ggircs.emission(unit_id);
+
 comment on table ggircs.emission is 'The table containing the information on emissions';
 comment on column ggircs.emission.id is 'The primary key';
 comment on column ggircs.emission.ghgr_import_id is 'A foreign key reference to ggircs.ghgr_import';

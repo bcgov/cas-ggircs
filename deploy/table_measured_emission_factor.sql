@@ -17,6 +17,8 @@ create table ggircs.measured_emission_factor (
     measured_emission_factor_unit_type  varchar(1000)
 );
 
+create index ggircs_measured_emission_factor_fuel_foreign_key on ggircs.measured_emission_factor(fuel_id);
+
 comment on table ggircs.measured_emission_factor is 'The table containing the information on fuels';
 comment on column ggircs.measured_emission_factor.id is 'The primary key';
 comment on column ggircs.measured_emission_factor.fuel_id is 'A foreign key reference to ggircs.fuel';

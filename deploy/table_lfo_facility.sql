@@ -19,6 +19,9 @@ create table ggircs.lfo_facility (
     longitude                 numeric
 );
 
+create index ggircs_lfo_facility_report_foreign_key on ggircs.lfo_facility(report_id);
+create index ggircs_lfo_facility_organisation_foreign_key on ggircs.lfo_facility(organisation_id);
+
 comment on table ggircs.lfo_facility is 'the table housing all report data pertaining to the reporting LFO facility';
 comment on column ggircs.lfo_facility.id is 'The primary key';
 comment on column ggircs.lfo_facility.report_id is 'A foreign key reference to ggircs.report';

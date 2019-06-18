@@ -25,6 +25,11 @@ create table ggircs.contact (
     language_correspondence   varchar(1000)
 );
 
+create index ggircs_contact_report_foreign_key on ggircs.contact(report_id);
+create index ggircs_contact_address_foreign_key on ggircs.contact(address_id);
+create index ggircs_contact_single_facility_foreign_key on ggircs.contact(single_facility_id);
+create index ggircs_contact_lfo_facility_foreign_key on ggircs.contact(lfo_facility_id);
+
 comment on table ggircs.contact is 'The table housing contact information';
 comment on column ggircs.contact.id is 'The primary key';
 comment on column ggircs.contact.report_id is 'A foreign key reference to ggircs.report';

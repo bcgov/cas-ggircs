@@ -18,6 +18,9 @@ create table ggircs.parent_organisation (
     website                   varchar(1000)
 );
 
+create index ggircs_parent_organisation_report_foreign_key on ggircs.parent_organisation(report_id);
+create index ggircs_parent_organisation_organisation_foreign_key on ggircs.parent_organisation(organisation_id);
+
 comment on table ggircs.parent_organisation is 'The table housing parent organisation information';
 comment on column ggircs.parent_organisation.id is 'The primary key';
 comment on column ggircs.parent_organisation.report_id is 'A foreign key reference to ggircs.report';

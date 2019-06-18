@@ -49,15 +49,11 @@ create table ggircs.address (
     geographic_address_longitude                        numeric
 );
 
-report_id                                           integer references ggircs.report(id),
-    single_facility_id                                  integer references ggircs.single_facility(id),
-    lfo_facility_id                                     integer references ggircs.lfo_facility(id),
-    organisation_id                                     integer references ggircs.organisation(id),
-    parent_organisation_id                              integer references ggircs.parent_organisation(id),
-
 create index ggircs_address_report_foreign_key on ggircs.address(report_id);
 create index ggircs_address_single_facility_foreign_key on ggircs.address(single_facility_id);
-create index ggircs_address_single_facility_foreign_key on ggircs.address(lfo_facility_id);
+create index ggircs_address_lfo_facility_foreign_key on ggircs.address(lfo_facility_id);
+create index ggircs_address_organisation_foreign_key on ggircs.address(organisation_id);
+create index ggircs_address_parent_organisation_foreign_key on ggircs.address(parent_organisation_id);
 
 comment on table ggircs.address is 'The table housing address information for facilities, organisations and contacts';
 comment on column ggircs.address.id is 'The primary key';

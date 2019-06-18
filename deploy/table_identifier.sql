@@ -18,6 +18,10 @@ create table ggircs.identifier(
     identifier_value          varchar(1000)
 );
 
+create index ggircs_identifier_report_foreign_key on ggircs.identifier(report_id);
+create index ggircs_identifier_single_facility_foreign_key on ggircs.identifier(single_facility_id);
+create index ggircs_identifier_lfo_facility_foreign_key on ggircs.identifier(lfo_facility_id);
+
 comment on table ggircs.identifier is 'The table housing information regarding identifiers';
 comment on column ggircs.identifier.id is 'The primary key';
 comment on column ggircs.identifier.ghgr_import_id is 'The foreign key referencing ggrics_swrs.ghgr_import.id';

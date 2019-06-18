@@ -25,6 +25,8 @@ create table ggircs.unit (
 
 );
 
+create index ggircs_unit_activity_id_foreign_key on ggircs.unit(activity_id);
+
 comment on table ggircs.unit is 'The table containing the information on swrs machinery units';
 comment on column ggircs.unit.id is 'The primary key';
 comment on column ggircs.unit.ghgr_import_id is 'A foreign key reference to ggircs.ghgr_import.id';

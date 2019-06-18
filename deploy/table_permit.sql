@@ -16,6 +16,9 @@ create table ggircs.permit (
 
 );
 
+create index ggircs_permit_single_facility_foreign_key on ggircs.permit(single_facility_id);
+create index ggircs_permit_lfo_facility_foreign_key on ggircs.permit(lfo_facility_id);
+
 comment on table ggircs.permit is 'The table housing permit information';
 comment on column ggircs.permit.id is 'The primary key';
 comment on column ggircs.permit.ghgr_import_id is 'The foreign key reference to ggircs.ghgr_import';
