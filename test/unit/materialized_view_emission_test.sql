@@ -128,10 +128,10 @@ select col_hasnt_default('ggircs_swrs', 'emission', 'not_applicable', 'emission.
 select col_type_is(      'ggircs_swrs', 'emission', 'emission_category', 'character varying(1000)', 'emission.emission_category column should be type text');
 select col_hasnt_default('ggircs_swrs', 'emission', 'emission_category', 'emission.emission_category column should not have a default');
 
-select col_type_is(      'ggircs_swrs', 'emission', 'quantity', 'numeric(1000,0)', 'emission.quantity column should be type numeric');
+select col_type_is(      'ggircs_swrs', 'emission', 'quantity', 'numeric', 'emission.quantity column should be type numeric');
 -- select col_has_default(  'ggircs_swrs', 'emission', 'quantity', 'emission.quantity column should have a default');
 
-select col_type_is(      'ggircs_swrs', 'emission', 'calculated_quantity', 'numeric(1000,0)', 'emission.calculated_quantity column should be type numeric');
+select col_type_is(      'ggircs_swrs', 'emission', 'calculated_quantity', 'numeric', 'emission.calculated_quantity column should be type numeric');
 -- select col_has_default(  'ggircs_swrs', 'emission', 'calculated_quantity', 'emission.calculated_quantity column should have a default');
 
 -- Insert data for fixture based testing
