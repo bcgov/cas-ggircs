@@ -6,8 +6,8 @@ begin;
 create table ggircs.measured_emission_factor (
 
     id                                  integer primary key,
+    fuel_id                             integer references ggircs.fuel(id),
     ghgr_import_id                      integer,
-    fuel_id                             integer,
     activity_name                       varchar(1000),
     sub_activity_name                   varchar(1000),
     unit_name                           varchar(1000),
@@ -19,8 +19,8 @@ create table ggircs.measured_emission_factor (
 
 comment on table ggircs.measured_emission_factor is 'The table containing the information on fuels';
 comment on column ggircs.measured_emission_factor.id is 'The primary key';
-comment on column ggircs.measured_emission_factor.ghgr_import_id is 'A foreign key reference to ggircs.ghgr_import';
 comment on column ggircs.measured_emission_factor.fuel_id is 'A foreign key reference to ggircs.fuel';
+comment on column ggircs.measured_emission_factor.ghgr_import_id is 'A foreign key reference to ggircs.ghgr_import';
 comment on column ggircs.measured_emission_factor.activity_name is 'The name of the activity (partial fk reference)';
 comment on column ggircs.measured_emission_factor.sub_activity_name is 'The name of the sub_activity (partial fk reference)';
 comment on column ggircs.measured_emission_factor.unit_name is 'The name of the unit (partial fk reference)';

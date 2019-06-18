@@ -4,7 +4,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(109);
+select plan(108);
 
 insert into ggircs_swrs.ghgr_import (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -1315,19 +1315,19 @@ select results_eq(
 );
 
 -- Facility -> Identifier
-select set_eq(
-    $$
-    select identifier.identifier_value as bcghgid from ggircs.single_facility
-    join ggircs.identifier
-    on
-      single_facility.identifier_id = identifier.id
-      and identifier.identifier_type = 'BCGHGID'
-    $$,
+--  select set_eq(
+    --  $$
+    --  select identifier.identifier_value as bcghgid from ggircs.single_facility
+    --  join ggircs.identifier
+    --  on
+      --  single_facility.identifier_id = identifier.id
+      --  and identifier.identifier_type = 'BCGHGID'
+    --  $$,
 
-    ARRAY['VT_12345'::varchar, 'RD_123456'::varchar],
+    --  ARRAY['VT_12345'::varchar, 'RD_123456'::varchar],
 
-    'Foreign key identifier_id in ggircs.single_facility references ggircs.identifier.id'
-);
+    --  'Foreign key identifier_id in ggircs.single_facility references ggircs.identifier.id'
+--  );
 
 -- Facility -> Organisation
 select set_eq(
@@ -1372,10 +1372,10 @@ select set_eq(
 
 select set_eq(
     $$
-    select single_facility.id, single_facility.parent_facility_id
+    select single_facility.id, single_facility.lfo_facility_id
     from ggircs.single_facility
     inner join ggircs.lfo_facility as _lfo_facility
-    on _lfo_facility.id = single_facility.parent_facility_id
+    on _lfo_facility.id = single_facility.lfo_facility_id
     $$,
 
     $$

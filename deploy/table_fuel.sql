@@ -7,9 +7,9 @@ create table ggircs.fuel (
 
     id                                  integer primary key,
     ghgr_import_id                      integer,
-    report_id                           integer,
-    unit_id                             integer,
-    fuel_mapping_id                     integer,
+    report_id                           integer references ggircs.report(id),
+    unit_id                             integer references ggircs.unit(id),
+    fuel_mapping_id                     integer references ggircs_swrs.fuel_mapping(id),
     activity_name                       varchar(1000),
     sub_activity_name                   varchar(1000),
     unit_name                           varchar(1000),

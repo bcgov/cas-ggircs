@@ -6,12 +6,12 @@ begin;
 create table ggircs.address (
 
     id                                                  integer primary key,
+    report_id                                           integer references ggircs.report(id),
+    single_facility_id                                  integer references ggircs.single_facility(id),
+    lfo_facility_id                                     integer references ggircs.lfo_facility(id),
+    organisation_id                                     integer references ggircs.organisation(id),
+    parent_organisation_id                              integer references ggircs.parent_organisation(id),
     ghgr_import_id                                      integer,
-    single_facility_id                                  integer,
-    lfo_facility_id                                     integer,
-    organisation_id                                     integer,
-    parent_organisation_id                              integer,
-    report_id                                           integer,
     swrs_facility_id                                    integer,
     swrs_organisation_id                                integer,
     path_context                                        varchar(1000),
