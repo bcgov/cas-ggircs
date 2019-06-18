@@ -7,8 +7,8 @@ create table ggircs.permit (
 
     id                              integer primary key,
     ghgr_import_id                  integer,
-    single_facility_id              integer,
-    lfo_facility_id                 integer,
+    single_facility_id              integer references ggircs.single_facility(id),
+    lfo_facility_id                 integer references ggircs.lfo_facility(id),
     path_context                    varchar(1000),
     issuing_agency                  varchar(1000),
     issuing_dept_agency_program     varchar(1000),

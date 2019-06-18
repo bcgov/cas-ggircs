@@ -73,9 +73,9 @@ $function$
             on _facility.ghgr_import_id = _report.ghgr_import_id
 
     )
-    insert into ggircs.single_facility (id, ghgr_import_id, identifier_id, organisation_id, report_id, swrs_facility_id, parent_facility_id, facility_name, facility_type, relationship_type, portability_indicator, status, latitude, longitude)
+    insert into ggircs.single_facility (id, ghgr_import_id, organisation_id, report_id, swrs_facility_id, lfo_facility_id, facility_name, facility_type, relationship_type, portability_indicator, status, latitude, longitude)
 
-    select _facility.id, _facility.ghgr_import_id, null, _organisation.id, _report.id, _facility.swrs_facility_id, _final_lfo_facility.id, _facility.facility_name, _facility.facility_type,
+    select _facility.id, _facility.ghgr_import_id, _organisation.id, _report.id, _facility.swrs_facility_id, _final_lfo_facility.id, _facility.facility_name, _facility.facility_type,
            _facility.relationship_type, _facility.portability_indicator, _facility.status, _facility.latitude, _facility.longitude
 
     from ggircs_swrs.facility as _facility
@@ -94,15 +94,15 @@ $function$
         and (_facility.facility_type = 'IF_a' or _facility.facility_type = 'IF_b' or _facility.facility_type = 'L_c');
 
     -- FK Single Facility -> Identifier
-    --Todo: Remove this fk relation as it is a Parent -> Child relation and find a way to relate to this from Identifier -> Facility with a bcghgid_id column
-    with x as (select * from ggircs_swrs.identifier where identifier_type = 'BCGHGID' and identifier_value is not null and identifier_value != '' order by path_context asc)
-    update ggircs.single_facility as f set identifier_id = x.id from x where f.ghgr_import_id = x.ghgr_import_id;
+    -- TODO: Remove this fk relation as it is a Parent -> Child relation and find a way to relate to this from Identifier -> Facility with a bcghgid_id column
+    --  with x as (select * from ggircs_swrs.identifier where identifier_type = 'BCGHGID' and identifier_value is not null and identifier_value != '' order by path_context asc)
+    --  update ggircs.single_facility as f set identifier_id = x.id from x where f.ghgr_import_id = x.ghgr_import_id;
 
     -- LFO FACILITY
     delete from ggircs.lfo_facility;
-    insert into ggircs.lfo_facility (id, ghgr_import_id, identifier_id, organisation_id, report_id, swrs_facility_id, facility_name, facility_type, relationship_type, portability_indicator, status, latitude, longitude)
+    insert into ggircs.lfo_facility (id, ghgr_import_id, organisation_id, report_id, swrs_facility_id, facility_name, facility_type, relationship_type, portability_indicator, status, latitude, longitude)
 
-    select _facility.id, _facility.ghgr_import_id, null, _organisation.id, _report.id, _facility.swrs_facility_id, _facility.facility_name, _facility.facility_type,
+    select _facility.id, _facility.ghgr_import_id, _organisation.id, _report.id, _facility.swrs_facility_id, _facility.facility_name, _facility.facility_type,
            _facility.relationship_type, _facility.portability_indicator, _facility.status, _facility.latitude, _facility.longitude
 
     from ggircs_swrs.facility as _facility
@@ -117,9 +117,9 @@ $function$
         on _facility.ghgr_import_id = _report.ghgr_import_id;
 
     -- FK LFO Facility -> Identifier
-    --Todo: Remove this fk relation as it is a Parent -> Child relation and find a way to relate to this from Identifier -> Facility with a bcghgid_id column
-    with x as (select * from ggircs_swrs.identifier where identifier_type = 'BCGHGID' and identifier_value is not null and identifier_value != '' order by path_context asc)
-    update ggircs.lfo_facility as f set identifier_id = x.id from x where f.ghgr_import_id = x.ghgr_import_id;
+    -- TODO: Remove this fk relation as it is a Parent -> Child relation and find a way to relate to this from Identifier -> Facility with a bcghgid_id column
+    --  with x as (select * from ggircs_swrs.identifier where identifier_type = 'BCGHGID' and identifier_value is not null and identifier_value != '' order by path_context asc)
+    --  update ggircs.lfo_facility as f set identifier_id = x.id from x where f.ghgr_import_id = x.ghgr_import_id;
 
 
     -- ACTIVITY
@@ -211,6 +211,34 @@ $function$
     left join ggircs_swrs.naics_mapping as _naics_mapping
       on _naics.naics_code = _naics_mapping.naics_code;
 
+    -- FUEL
+    delete from ggircs.fuel;
+    insert into ggircs.fuel(id, ghgr_import_id, report_id, unit_id, fuel_mapping_id,
+                            activity_name, sub_activity_name, unit_name, sub_unit_name, fuel_type, fuel_classification, fuel_description,
+                            fuel_units, annual_fuel_amount, annual_weighted_avg_carbon_content, annual_weighted_avg_hhv, annual_steam_generation, alternative_methodology_description,
+                            other_flare_details, q1, q2, q3, q4, wastewater_processing_factors, measured_conversion_factors)
+
+    select _fuel.id, _fuel.ghgr_import_id, _report.id, _unit.id, _fuel_mapping.id,
+           _fuel.activity_name, _fuel.sub_activity_name, _fuel.unit_name, _fuel.sub_unit_name, _fuel.fuel_type, _fuel.fuel_classification, _fuel.fuel_description,
+           _fuel.fuel_units, _fuel.annual_fuel_amount, _fuel.annual_weighted_avg_carbon_content, _fuel.annual_weighted_avg_hhv, _fuel.annual_steam_generation,
+           _fuel.alternative_methodology_description, _fuel.other_flare_details, _fuel.q1, _fuel.q2, _fuel.q3, _fuel.q4, _fuel.wastewater_processing_factors, _fuel.measured_conversion_factors
+
+    from ggircs_swrs.fuel as _fuel
+    inner join ggircs_swrs.final_report as _final_report on _fuel.ghgr_import_id = _final_report.ghgr_import_id
+    -- FK Fuel -> Report
+    left join ggircs_swrs.report as _report
+    on _fuel.ghgr_import_id = _report.ghgr_import_id
+    -- FK Fuel -> Unit
+    left join ggircs_swrs.unit as _unit
+      on _fuel.ghgr_import_id = _unit.ghgr_import_id
+      and _fuel.process_idx = _unit.process_idx
+      and _fuel.sub_process_idx = _unit.sub_process_idx
+      and _fuel.activity_name = _unit.activity_name
+      and _fuel.units_idx = _unit.units_idx
+      and _fuel.unit_idx = _unit.unit_idx
+    left join ggircs_swrs.fuel_mapping as _fuel_mapping
+      on _fuel.fuel_type = _fuel_mapping.fuel_type;
+
     -- EMISSION
     delete from ggircs.emission;
     insert into ggircs.emission (id, ghgr_import_id, activity_id, single_facility_id, lfo_facility_id, fuel_id, naics_id, organisation_id, report_id, unit_id, activity_name, sub_activity_name,
@@ -294,33 +322,6 @@ $function$
       and _emission.units_idx = _unit.units_idx
       and _emission.unit_idx = _unit.unit_idx;
 
-    -- FUEL
-    delete from ggircs.fuel;
-    insert into ggircs.fuel(id, ghgr_import_id, report_id, unit_id, fuel_mapping_id,
-                            activity_name, sub_activity_name, unit_name, sub_unit_name, fuel_type, fuel_classification, fuel_description,
-                            fuel_units, annual_fuel_amount, annual_weighted_avg_carbon_content, annual_weighted_avg_hhv, annual_steam_generation, alternative_methodology_description,
-                            other_flare_details, q1, q2, q3, q4, wastewater_processing_factors, measured_conversion_factors)
-
-    select _fuel.id, _fuel.ghgr_import_id, _report.id, _unit.id, _fuel_mapping.id,
-           _fuel.activity_name, _fuel.sub_activity_name, _fuel.unit_name, _fuel.sub_unit_name, _fuel.fuel_type, _fuel.fuel_classification, _fuel.fuel_description,
-           _fuel.fuel_units, _fuel.annual_fuel_amount, _fuel.annual_weighted_avg_carbon_content, _fuel.annual_weighted_avg_hhv, _fuel.annual_steam_generation,
-           _fuel.alternative_methodology_description, _fuel.other_flare_details, _fuel.q1, _fuel.q2, _fuel.q3, _fuel.q4, _fuel.wastewater_processing_factors, _fuel.measured_conversion_factors
-
-    from ggircs_swrs.fuel as _fuel
-    inner join ggircs_swrs.final_report as _final_report on _fuel.ghgr_import_id = _final_report.ghgr_import_id
-    -- FK Fuel -> Report
-    left join ggircs_swrs.report as _report
-    on _fuel.ghgr_import_id = _report.ghgr_import_id
-    -- FK Fuel -> Unit
-    left join ggircs_swrs.unit as _unit
-      on _fuel.ghgr_import_id = _unit.ghgr_import_id
-      and _fuel.process_idx = _unit.process_idx
-      and _fuel.sub_process_idx = _unit.sub_process_idx
-      and _fuel.activity_name = _unit.activity_name
-      and _fuel.units_idx = _unit.units_idx
-      and _fuel.unit_idx = _unit.unit_idx
-    left join ggircs_swrs.fuel_mapping as _fuel_mapping
-      on _fuel.fuel_type = _fuel_mapping.fuel_type;
 
     -- PERMIT
     delete from ggircs.permit;
@@ -357,44 +358,6 @@ $function$
     -- FK Parent Organisation -> Report
     left join ggircs_swrs.report as _report
       on _parent_organisation.ghgr_import_id = _report.ghgr_import_id;
-
-    -- CONTACT
-    delete from ggircs.contact;
-    insert into ggircs.contact (id, ghgr_import_id, address_id, single_facility_id, lfo_facility_id, report_id, organisation_id, path_context, contact_type, given_name, family_name, initials, telephone_number, extension_number,
-                                fax_number, email_address, position, language_correspondence)
-
-    select _contact.id, _contact.ghgr_import_id, _address.id, _single_facility.id, _lfo_facility.id, _report.id, _organisation.id, _contact.path_context, _contact.contact_type, _contact.given_name, _contact.family_name,
-           _contact.initials, _contact.telephone_number, _contact.extension_number, _contact.fax_number, _contact.email_address, _contact.position, _contact.language_correspondence
-
-    from ggircs_swrs.contact as _contact
-
-    inner join ggircs_swrs.final_report as _final_report on _contact.ghgr_import_id = _final_report.ghgr_import_id
-    -- todo: this could be re-worked when we get a better idea how to handle path_context
-    --FK Contact -> Address
-    left join ggircs_swrs.address as _address
-      on _contact.ghgr_import_id = _address.ghgr_import_id
-      and _address.type = 'Contact'
-      and _contact.contact_idx = _address.contact_idx
-      and(
-            (_contact.path_context = 'RegistrationData'
-            and _address.path_context = 'RegistrationData')
-         or
-            (_contact.path_context = 'VerifyTombstone'
-            and _address.path_context = 'VerifyTombstone')
-          )
-    -- FK Contact -> Single Facility
-    left join ggircs_swrs.facility as _single_facility
-        on _contact.ghgr_import_id = _single_facility.ghgr_import_id
-        and (_single_facility.facility_type != 'LFO' or _single_facility.facility_type is null)
-    -- FK Contact -> LFO Facility
-    left join ggircs_swrs.facility as _lfo_facility
-        on _contact.ghgr_import_id = _lfo_facility.ghgr_import_id
-        and _lfo_facility.facility_type = 'LFO'
-    --FK Contact -> Report
-    left join ggircs_swrs.report as _report
-      on _contact.ghgr_import_id = _report.ghgr_import_id
-    left join ggircs_swrs.organisation as _organisation
-        on _contact.ghgr_import_id = _organisation.ghgr_import_id;
 
     -- ADDRESS
     delete from ggircs.address;
@@ -447,6 +410,44 @@ $function$
     -- FK Address -> Report
     left join ggircs_swrs.report as _report
       on _address.ghgr_import_id = _report.ghgr_import_id;
+
+    -- CONTACT
+    delete from ggircs.contact;
+    insert into ggircs.contact (id, ghgr_import_id, address_id, single_facility_id, lfo_facility_id, report_id, organisation_id, path_context, contact_type, given_name, family_name, initials, telephone_number, extension_number,
+                                fax_number, email_address, position, language_correspondence)
+
+    select _contact.id, _contact.ghgr_import_id, _address.id, _single_facility.id, _lfo_facility.id, _report.id, _organisation.id, _contact.path_context, _contact.contact_type, _contact.given_name, _contact.family_name,
+           _contact.initials, _contact.telephone_number, _contact.extension_number, _contact.fax_number, _contact.email_address, _contact.position, _contact.language_correspondence
+
+    from ggircs_swrs.contact as _contact
+
+    inner join ggircs_swrs.final_report as _final_report on _contact.ghgr_import_id = _final_report.ghgr_import_id
+    -- todo: this could be re-worked when we get a better idea how to handle path_context
+    --FK Contact -> Address
+    left join ggircs_swrs.address as _address
+      on _contact.ghgr_import_id = _address.ghgr_import_id
+      and _address.type = 'Contact'
+      and _contact.contact_idx = _address.contact_idx
+      and(
+            (_contact.path_context = 'RegistrationData'
+            and _address.path_context = 'RegistrationData')
+         or
+            (_contact.path_context = 'VerifyTombstone'
+            and _address.path_context = 'VerifyTombstone')
+          )
+    -- FK Contact -> Single Facility
+    left join ggircs_swrs.facility as _single_facility
+        on _contact.ghgr_import_id = _single_facility.ghgr_import_id
+        and (_single_facility.facility_type != 'LFO' or _single_facility.facility_type is null)
+    -- FK Contact -> LFO Facility
+    left join ggircs_swrs.facility as _lfo_facility
+        on _contact.ghgr_import_id = _lfo_facility.ghgr_import_id
+        and _lfo_facility.facility_type = 'LFO'
+    --FK Contact -> Report
+    left join ggircs_swrs.report as _report
+      on _contact.ghgr_import_id = _report.ghgr_import_id
+    left join ggircs_swrs.organisation as _organisation
+        on _contact.ghgr_import_id = _organisation.ghgr_import_id;
 
     -- ADDITIONAL DATA
     delete from ggircs.additional_data;
@@ -645,71 +646,6 @@ $function$
 --           where attributable_emission.ghgr_import_id = _facility.ghgr_import_id
 --           and _facility.facility_type = 'LFO';
 --       alter table ggircs.attributable_emission add constraint ggircs_attributable_emission_lfo_facility_foreign_key foreign key (lfo_facility_id) references ggircs.lfo_facility(id);
-
-    /** Create Foreign Key Constraints **/
-
-    alter table ggircs.organisation add constraint ggircs_organisation_report_foreign_key foreign key (report_id) references ggircs.report(id);
-
-    alter table ggircs.single_facility add constraint ggircs_single_facility_organisation_foreign_key foreign key (organisation_id) references ggircs.organisation(id);
-    alter table ggircs.single_facility add constraint ggircs_single_facility_report_foreign_key foreign key (report_id) references ggircs.report(id);
-    alter table ggircs.single_facility add constraint ggircs_single_facility_parent_facility_foreign_key foreign key (parent_facility_id) references ggircs.lfo_facility(id);
-    -- Todo: This fk constraint can't exist as it is a Parent -> Child fk relation. It needs to be removed when the BCGHGID relation on Facility -> Identifier is refactored
---     alter table ggircs.single_facility add constraint ggircs_single_facility_identifier_foreign_key foreign key (identifier_id) references ggircs.identifier(id);
-
-    alter table ggircs.lfo_facility add constraint ggircs_lfo_facility_organisation_foreign_key foreign key (organisation_id) references ggircs.organisation(id);
-    alter table ggircs.lfo_facility add constraint ggircs_lfo_facility_report_foreign_key foreign key (report_id) references ggircs.report(id);
-
-    alter table ggircs.activity add constraint ggircs_activity_single_facility_foreign_key foreign key (single_facility_id) references ggircs.single_facility(id);
-    alter table ggircs.activity add constraint ggircs_activity_lfo_facility_foreign_key foreign key (lfo_facility_id) references ggircs.lfo_facility(id);
-    alter table ggircs.activity add constraint ggircs_activity_report_foreign_key foreign key (report_id) references ggircs.report(id);
-
-    alter table ggircs.identifier add constraint ggircs_identifier_single_facility_foreign_key foreign key (single_facility_id) references ggircs.single_facility(id);
-    alter table ggircs.identifier add constraint ggircs_identifier_lfo_facility_foreign_key foreign key (lfo_facility_id) references ggircs.lfo_facility(id);
-    alter table ggircs.identifier add constraint ggircs_identifier_report_foreign_key foreign key (report_id) references ggircs.report(id);
-
-    alter table ggircs.unit add constraint ggircs_unit_activity_foreign_key foreign key (activity_id) references ggircs.activity(id);
-
-    alter table ggircs.naics add constraint ggircs_naics_single_facility_foreign_key foreign key (single_facility_id) references ggircs.single_facility(id);
-    alter table ggircs.naics add constraint ggircs_naics_lfo_facility_foreign_key foreign key (lfo_facility_id) references ggircs.lfo_facility(id);
-    alter table ggircs.naics add constraint ggircs_naics_registration_data_single_facility_foreign_key foreign key (registration_data_single_facility_id) references ggircs.single_facility(id);
-    alter table ggircs.naics add constraint ggircs_naics_registration_data_lfo_facility_foreign_key foreign key (registration_data_lfo_facility_id) references ggircs.lfo_facility(id);
-    alter table ggircs.naics add constraint ggircs_naics_report_foreign_key foreign key (report_id) references ggircs.report(id);
-    alter table ggircs.naics add constraint ggircs_naics_naics_mapping_foreign_key foreign key (naics_mapping_id) references ggircs_swrs.naics_mapping(id);
-
-    alter table ggircs.emission add constraint ggircs_emission_activity_foreign_key foreign key (activity_id) references ggircs.activity(id);
-    alter table ggircs.emission add constraint ggircs_emission_single_facility_foreign_key foreign key (single_facility_id) references ggircs.single_facility(id);
-    alter table ggircs.emission add constraint ggircs_emission_lfo_facility_foreign_key foreign key (lfo_facility_id) references ggircs.lfo_facility(id);
-    alter table ggircs.emission add constraint ggircs_emission_fuel_foreign_key foreign key (fuel_id) references ggircs.fuel(id);
-    alter table ggircs.emission add constraint ggircs_emission_naics_foreign_key foreign key (naics_id) references ggircs.naics(id);
-    alter table ggircs.emission add constraint ggircs_emission_organisation_foreign_key foreign key (organisation_id) references ggircs.organisation(id);
-    alter table ggircs.emission add constraint ggircs_emission_report_foreign_key foreign key (report_id) references ggircs.report(id);
-    alter table ggircs.emission add constraint ggircs_emission_unit_foreign_key foreign key (unit_id) references ggircs.unit(id);
-
-    alter table ggircs.fuel add constraint ggircs_fuel_report_foreign_key foreign key (report_id) references ggircs.report(id);
-    alter table ggircs.fuel add constraint ggircs_fuel_unit_foreign_key foreign key (unit_id) references ggircs.unit(id);
-    alter table ggircs.fuel add constraint ggircs_swrs_fuel_fuel_mapping_foreign_key foreign key (fuel_mapping_id) references ggircs_swrs.fuel_mapping(id);
-
-    alter table ggircs.permit add constraint ggircs_permit_single_facility_foreign_key foreign key (single_facility_id) references ggircs.single_facility(id);
-    alter table ggircs.permit add constraint ggircs_permit_lfo_facility_foreign_key foreign key (lfo_facility_id) references ggircs.lfo_facility(id);
-
-    alter table ggircs.parent_organisation add constraint ggircs_parent_organisation_organisation_foreign_key foreign key (organisation_id) references ggircs.organisation(id);
-    alter table ggircs.parent_organisation add constraint ggircs_parent_organisation_report_foreign_key foreign key (report_id) references ggircs.report(id);
-
-    alter table ggircs.contact add constraint ggircs_contact_address_foreign_key foreign key (address_id) references ggircs.address(id);
-    alter table ggircs.contact add constraint ggircs_contact_single_facility_foreign_key foreign key (single_facility_id) references ggircs.single_facility(id);
-    alter table ggircs.contact add constraint ggircs_contact_lfo_facility_foreign_key foreign key (lfo_facility_id) references ggircs.lfo_facility(id);
-    alter table ggircs.contact add constraint ggircs_contact_report_foreign_key foreign key (report_id) references ggircs.report(id);
-
-    alter table ggircs.address add constraint ggircs_address_single_facility_foreign_key foreign key (single_facility_id) references ggircs.single_facility(id);
-    alter table ggircs.address add constraint ggircs_address_lfo_facility_foreign_key foreign key (lfo_facility_id) references ggircs.lfo_facility(id);
-    alter table ggircs.address add constraint ggircs_address_organisation_foreign_key foreign key (organisation_id) references ggircs.organisation(id);
-    alter table ggircs.address add constraint ggircs_parent_address_parent_organisation_foreign_key foreign key (parent_organisation_id) references ggircs.parent_organisation(id);
-    alter table ggircs.address add constraint ggircs_address_report_foreign_key foreign key (report_id) references ggircs.report(id);
-
-    alter table ggircs.additional_data add constraint ggircs_additional_data_activity_foreign_key foreign key (activity_id) references ggircs.activity(id);
-    alter table ggircs.additional_data add constraint ggircs_additional_data_report_foreign_key foreign key (report_id) references ggircs.report(id);
-
-    alter table ggircs.measured_emission_factor add constraint ggircs_measured_emission_factor_fuel_foreign_key foreign key (fuel_id) references ggircs.fuel(id);
 
     -- Refresh materialized views with no data
     for i in 1 .. array_upper(mv_array, 1)

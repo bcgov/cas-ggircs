@@ -6,9 +6,9 @@ begin;
 create table ggircs.activity (
 
     id                        integer primary key,
-    single_facility_id        integer,
-    lfo_facility_id           integer,
-    report_id                 integer,
+    report_id                 integer references ggircs.report(id),
+    single_facility_id        integer references ggircs.single_facility(id),
+    lfo_facility_id           integer references ggircs.lfo_facility(id),
     ghgr_import_id            integer,
     activity_name             varchar(1000),
     process_name              varchar(1000),

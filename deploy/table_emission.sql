@@ -7,14 +7,14 @@ create table ggircs.emission (
 
     id                        integer primary key,
     ghgr_import_id            integer,
-    activity_id               integer,
-    single_facility_id        integer,
-    lfo_facility_id           integer,
-    fuel_id                   integer,
-    naics_id                  integer,
-    organisation_id           integer,
-    report_id                 integer,
-    unit_id                   integer,
+    activity_id               integer references ggircs.activity(id),
+    single_facility_id        integer references ggircs.single_facility(id),
+    lfo_facility_id           integer references ggircs.lfo_facility(id),
+    fuel_id                   integer references ggircs.fuel(id),
+    naics_id                  integer references ggircs.naics(id),
+    organisation_id           integer references ggircs.organisation(id),
+    report_id                 integer references ggircs.report(id),
+    unit_id                   integer references ggircs.unit(id),
     activity_name             varchar(1000),
     sub_activity_name         varchar(1000),
     unit_name                 varchar(1000),
@@ -53,7 +53,5 @@ comment on column ggircs.emission.not_applicable is 'Is the emission applicable/
 comment on column ggircs.emission.quantity is 'The quantity of the emission';
 comment on column ggircs.emission.calculated_quantity is 'The CO2 Equivalent quantity of the emission';
 comment on column ggircs.emission.emission_category is 'The emissions category';
-
--- add the foreign key constraint on emission.activity_id = activity.activity_id
 
 commit;

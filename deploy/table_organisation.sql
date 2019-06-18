@@ -6,7 +6,7 @@ begin;
 create table ggircs.organisation
 (
     id                        integer primary key,
-    report_id                 integer,
+    report_id                 integer references ggircs.report(id),
     ghgr_import_id            integer,
     swrs_organisation_id      integer,
     business_legal_name       varchar(1000),

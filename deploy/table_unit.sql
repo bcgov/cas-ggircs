@@ -7,7 +7,7 @@ create table ggircs.unit (
 
     id                                  integer primary key,
     ghgr_import_id                      integer,
-    activity_id                         integer,
+    activity_id                         integer references ggircs.activity(id),
     activity_name                       varchar(1000),
     unit_name                           varchar(1000),
     unit_description                    varchar(1000),

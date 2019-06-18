@@ -7,9 +7,9 @@ create table ggircs.identifier(
 
     id                        integer primary key,
     ghgr_import_id            integer,
-    single_facility_id        integer,
-    lfo_facility_id           integer,
-    report_id                 integer,
+    report_id                 integer references ggircs.report (id),
+    single_facility_id        integer references ggircs.single_facility(id),
+    lfo_facility_id           integer references ggircs.lfo_facility(id),
     swrs_facility_id          integer,
     path_context              varchar(1000),
     identifier_type           varchar(1000),
@@ -28,10 +28,3 @@ comment on column ggircs.identifier.identifier_type is 'The type of identifier';
 comment on column ggircs.identifier.identifier_value is 'The value of the identifier';
 
 commit;
-
-
-
--- Deploy ggircs:materialized_view_identifier to pg
--- requires: table_ghgr_import
-
-begin;
