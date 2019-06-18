@@ -18,6 +18,9 @@ create table ggircs.additional_data (
     node_value                varchar(10000)
 );
 
+create index ggircs_additonal_data_report_foreign_key on ggircs.additional_data(report_id);
+create index ggircs_additonal_data_activity_foreign_key on ggircs.additional_data(activity_id);
+
 comment on table ggircs.additional_data is 'The table containing the information on additional_data (descriptors)';
 comment on column ggircs.additional_data.id is 'The primary key';
 comment on column ggircs.additional_data.report_id is 'A foreign key reference to ggircs.report';
