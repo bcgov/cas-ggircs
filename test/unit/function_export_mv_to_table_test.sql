@@ -4,7 +4,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(108);
+select plan(109);
 
 insert into ggircs_swrs.ghgr_import (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -1314,21 +1314,6 @@ select results_eq(
     'Foreign key unit_id in ggircs.emission references ggircs.unit.id'
 );
 
--- Facility -> Identifier
---  select set_eq(
-    --  $$
-    --  select identifier.identifier_value as bcghgid from ggircs.single_facility
-    --  join ggircs.identifier
-    --  on
-      --  single_facility.identifier_id = identifier.id
-      --  and identifier.identifier_type = 'BCGHGID'
-    --  $$,
-
-    --  ARRAY['VT_12345'::varchar, 'RD_123456'::varchar],
-
-    --  'Foreign key identifier_id in ggircs.single_facility references ggircs.identifier.id'
---  );
-
 -- Facility -> Organisation
 select set_eq(
     $$
@@ -1799,6 +1784,21 @@ select set_eq(
 
     'Foreign key facility_id in ggircs.identifier references ggircs.single_facility.id'
 );
+
+-- Identifier (BCGHGID) -> Single Facility
+select results_eq(
+    $$
+    select identifier.identifier_value as bcghgid from ggircs.single_facility
+    join ggircs.identifier
+    on
+      single_facility.id = identifier.single_facility_bcghgid_id
+    $$,
+
+    ARRAY['VT_12345'::varchar, 'RD_123456'::varchar],
+
+    'Foreign key single_facility_bcghgid_id in ggircs.identifier references ggircs.single_facility.id'
+);
+
 
 -- Identifier -> Report
 select set_eq(
