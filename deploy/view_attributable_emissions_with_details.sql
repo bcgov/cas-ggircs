@@ -19,7 +19,7 @@ select
        regexp_replace(
          regexp_replace(
           ae.emission_category, 'BC_ScheduleB_', ''), 'Emissions', ''
-         ) as emission_category,
+         )::varchar(1000) as emission_category,
        rp.reporting_period_duration,
        f.fuel_type,
        f.fuel_units,
@@ -30,7 +30,7 @@ select
        f.annual_weighted_avg_hhv,
        f.annual_steam_generation,
        f.alternative_methodology_description,
-        n.naics_classification,
+       n.naics_classification,
        n.naics_code,
        u.unit_name,
        u.id as unit_id,
