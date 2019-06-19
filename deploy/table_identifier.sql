@@ -5,22 +5,24 @@ begin;
 
 create table ggircs.identifier(
 
-    id                        integer primary key,
-    ghgr_import_id            integer,
-    report_id                 integer references ggircs.report (id),
-    single_facility_id        integer references ggircs.single_facility(id),
-    lfo_facility_id           integer references ggircs.lfo_facility(id),
-    lfo_facility_bcghgid_id         integer,
-    single_facility_bcghgid_id      integer,
-    swrs_facility_id          integer,
-    path_context              varchar(1000),
-    identifier_type           varchar(1000),
-    identifier_value          varchar(1000)
+    id                              integer primary key,
+    ghgr_import_id                  integer,
+    report_id                       integer references ggircs.report (id),
+    single_facility_id              integer references ggircs.single_facility(id),
+    lfo_facility_id                 integer references ggircs.lfo_facility(id),
+    single_facility_bcghgid_id      integer references ggircs.lfo_facility(id),
+    lfo_facility_bcghgid_id         integer references ggircs.single_facility(id),
+    swrs_facility_id                integer,
+    path_context                    varchar(1000),
+    identifier_type                 varchar(1000),
+    identifier_value                varchar(1000)
 );
 
 create index ggircs_identifier_report_foreign_key on ggircs.identifier(report_id);
 create index ggircs_identifier_single_facility_foreign_key on ggircs.identifier(single_facility_id);
 create index ggircs_identifier_lfo_facility_foreign_key on ggircs.identifier(lfo_facility_id);
+create index ggircs_identifier_single_facility_bcghgid_foreign_key on ggircs.identifier(single_facility_bcghgid_id);
+create index ggircs_identifier_lfo_facility_bcghgid_foreign_key on ggircs.identifier(lfo_facility_bcghgid_id);
 
 comment on table ggircs.identifier is 'The table housing information regarding identifiers';
 comment on column ggircs.identifier.id is 'The primary key';
