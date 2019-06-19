@@ -57,6 +57,24 @@ $function$
     left join ggircs_swrs.report as _report
       on _organisation.ghgr_import_id = _report.ghgr_import_id;
 
+    -- LFO FACILITY
+    delete from ggircs.lfo_facility;
+    insert into ggircs.lfo_facility (id, ghgr_import_id, organisation_id, report_id, swrs_facility_id, facility_name, facility_type, relationship_type, portability_indicator, status, latitude, longitude)
+
+    select _facility.id, _facility.ghgr_import_id, _organisation.id, _report.id, _facility.swrs_facility_id, _facility.facility_name, _facility.facility_type,
+           _facility.relationship_type, _facility.portability_indicator, _facility.status, _facility.latitude, _facility.longitude
+
+    from ggircs_swrs.facility as _facility
+   inner join ggircs_swrs.final_report as _final_report
+        on _facility.ghgr_import_id = _final_report.ghgr_import_id
+        and _facility.facility_type = 'LFO'
+    -- FK Facility -> Organisation
+    left join ggircs_swrs.organisation as _organisation
+        on _facility.ghgr_import_id = _organisation.ghgr_import_id
+    -- FK Facility -> Report
+    left join ggircs_swrs.report as _report
+        on _facility.ghgr_import_id = _report.ghgr_import_id;
+
     -- SINGLE FACILITY
     delete from ggircs.single_facility;
     with _final_lfo_facility as (
@@ -92,24 +110,6 @@ $function$
         on _organisation.swrs_organisation_id = _final_lfo_facility.swrs_organisation_id
         and _report.reporting_period_duration = _final_lfo_facility.reporting_period_duration
         and (_facility.facility_type = 'IF_a' or _facility.facility_type = 'IF_b' or _facility.facility_type = 'L_c');
-
-    -- LFO FACILITY
-    delete from ggircs.lfo_facility;
-    insert into ggircs.lfo_facility (id, ghgr_import_id, organisation_id, report_id, swrs_facility_id, facility_name, facility_type, relationship_type, portability_indicator, status, latitude, longitude)
-
-    select _facility.id, _facility.ghgr_import_id, _organisation.id, _report.id, _facility.swrs_facility_id, _facility.facility_name, _facility.facility_type,
-           _facility.relationship_type, _facility.portability_indicator, _facility.status, _facility.latitude, _facility.longitude
-
-    from ggircs_swrs.facility as _facility
-   inner join ggircs_swrs.final_report as _final_report
-        on _facility.ghgr_import_id = _final_report.ghgr_import_id
-        and _facility.facility_type = 'LFO'
-    -- FK Facility -> Organisation
-    left join ggircs_swrs.organisation as _organisation
-        on _facility.ghgr_import_id = _organisation.ghgr_import_id
-    -- FK Facility -> Report
-    left join ggircs_swrs.report as _report
-        on _facility.ghgr_import_id = _report.ghgr_import_id;
 
     -- ACTIVITY
     delete from ggircs.activity;
