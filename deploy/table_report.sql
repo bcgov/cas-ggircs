@@ -7,7 +7,6 @@ create table ggircs.report
 (
     id                        integer primary key,
     ghgr_import_id            integer,
-    source_xml                xml,
     imported_at               timestamptz,
     swrs_report_id            integer not null,
     prepop_report_id          integer,
@@ -26,7 +25,6 @@ create table ggircs.report
 comment on table ggircs.report is 'The table housing all report data, derived from ghgr_import table';
 comment on column ggircs.report.id is 'The primary key';
 comment on column ggircs.report.ghgr_import_id is 'The internal primary key for the file';
-comment on column ggircs.report.source_xml is 'The raw xml file imported from GHGR';
 comment on column ggircs.report.imported_at is 'The timestamp noting when the file was imported';
 comment on column ggircs.report.swrs_report_id is 'The swrs report id';
 comment on column ggircs.report.prepop_report_id is 'The prepop report id';
