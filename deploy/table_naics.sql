@@ -21,6 +21,13 @@ create table ggircs.naics (
 
 );
 
+create index ggircs_naics_report_foreign_key on ggircs.naics(report_id);
+create index ggircs_naics_single_facility_foreign_key on ggircs.naics(single_facility_id);
+create index ggircs_naics_lfo_facility_foreign_key on ggircs.naics(lfo_facility_id);
+create index ggircs_naics_registration_data_single_facility_foreign_key on ggircs.naics(single_facility_id);
+create index ggircs_naics_registration_data_lfo_facility_foreign_key on ggircs.naics(lfo_facility_id);
+create index ggircs_naics_naics_mapping_foreign_key on ggircs.naics(naics_mapping_id);
+
 comment on table ggircs.naics is 'The table housing all report data pertaining to naics';
 comment on column ggircs.naics.id is 'The primary key';
 comment on column ggircs.naics.ghgr_import_id is 'The foreign key reference to ggircs.ghgr_import.id';

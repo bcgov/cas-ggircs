@@ -45,7 +45,7 @@ create materialized view ggircs_swrs.organisation as (
              vt_web_site varchar(1000) path './VerifyTombstone/Organisation/Details/WebSite'
          ) as vt_organisation_details
 ) with no data;
-create unique index ggircs_organisation_primary_key on ggircs_swrs.organisation (ghgr_import_id, swrs_organisation_id);
+create unique index ggircs_organisation_primary_key on ggircs_swrs.organisation (ghgr_import_id);
 
 comment on materialized view ggircs_swrs.organisation is 'the materialized view housing all report data pertaining to the reporting organisation';
 comment on column ggircs_swrs.organisation.id is 'A generated index used for keying in the ggircs schema';

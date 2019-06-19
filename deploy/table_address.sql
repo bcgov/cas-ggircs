@@ -49,6 +49,12 @@ create table ggircs.address (
     geographic_address_longitude                        numeric
 );
 
+create index ggircs_address_report_foreign_key on ggircs.address(report_id);
+create index ggircs_address_single_facility_foreign_key on ggircs.address(single_facility_id);
+create index ggircs_address_lfo_facility_foreign_key on ggircs.address(lfo_facility_id);
+create index ggircs_address_organisation_foreign_key on ggircs.address(organisation_id);
+create index ggircs_address_parent_organisation_foreign_key on ggircs.address(parent_organisation_id);
+
 comment on table ggircs.address is 'The table housing address information for facilities, organisations and contacts';
 comment on column ggircs.address.id is 'The primary key';
 comment on column ggircs.address.ghgr_import_id is 'The foreign key that references ggircs.ghgr_import';

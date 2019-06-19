@@ -14,8 +14,11 @@ create table ggircs.activity (
     process_name              varchar(1000),
     sub_process_name          varchar(1000),
     information_requirement   varchar(1000)
-
 );
+
+create index ggircs_activity_report_foreign_key on ggircs.activity(report_id);
+create index ggircs_activity_single_facility_foreign_key on ggircs.activity(single_facility_id);
+create index ggircs_activity_lfo_facility_foreign_key on ggircs.activity(lfo_facility_id);
 
 comment on table ggircs.activity is 'The table for Process and SubProcess from each SWRS report (the "activity")';
 comment on column ggircs.activity.id is 'The primary key';

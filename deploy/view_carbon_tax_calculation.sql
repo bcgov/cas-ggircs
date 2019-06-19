@@ -50,4 +50,5 @@ select fuel.organisation_id,
        fuel.amount,
        (fuel.amount * pro_rated_ctr * pro_rated_ief) as calculated_carbon_tax
 from fuel;
+
 commit;

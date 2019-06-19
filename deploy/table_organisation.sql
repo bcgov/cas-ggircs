@@ -17,6 +17,8 @@ create table ggircs.organisation
     website                   varchar(1000)
 );
 
+create index ggircs_organisaion_report_foreign_key on ggircs.organisation(report_id);
+
 comment on table ggircs.organisation is 'the table housing all report data pertaining to the reporting organisation';
 comment on column ggircs.organisation.id is 'The primary key';
 comment on column ggircs.organisation.report_id is 'A foreign key reference to ggircs.report';

@@ -23,6 +23,8 @@ comment on column ggircs_swrs.fuel_mapping.carbon_taxed is 'Is the fuel carbon t
 comment on column ggircs_swrs.fuel_mapping.cta_mapping is 'Generalized high-level fuel type';
 comment on column ggircs_swrs.fuel_mapping.cta_rate_units is 'The units of measure';
 
+create unique index ggircs_swrs_fuel_mapping_fuel_type on ggircs_swrs.fuel_mapping(fuel_type);
+
 INSERT INTO ggircs_swrs.fuel_mapping (fuel_type, normalized_fuel_type, state, carbon_taxed, cta_mapping, cta_rate_units) VALUES ('Acetylene', 'Acetylene (Sm^3)', '(Gas)', 'no', 'n/a', '$/m3');
 INSERT INTO ggircs_swrs.fuel_mapping (fuel_type, normalized_fuel_type, state, carbon_taxed, cta_mapping, cta_rate_units) VALUES ('Acetylene (Sm^3)', 'Acetylene (Sm^3)', '(Gas)', 'no', 'n/a', '$/m3');
 INSERT INTO ggircs_swrs.fuel_mapping (fuel_type, normalized_fuel_type, state, carbon_taxed, cta_mapping, cta_rate_units) VALUES ('Agricultural Byproducts (bone dry tonnes)', 'Agricultural Byproducts (bone dry tonnes)', '(Solid)', 'no', 'n/a', '$/tonne');

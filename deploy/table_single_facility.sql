@@ -20,6 +20,10 @@ create table ggircs.single_facility (
     longitude                 numeric
 );
 
+create index ggircs_single_facility_organisation_foreign_key on ggircs.single_facility(organisation_id);
+create index ggircs_single_facility_report_foreign_key on ggircs.single_facility(report_id);
+create index ggircs_single_facility_lfo_facility_foreign_key on ggircs.single_facility(lfo_facility_id);
+
 comment on table ggircs.single_facility is 'the table housing all report data pertaining to the reporting facility';
 comment on column ggircs.single_facility.id is 'The primary key';
 comment on column ggircs.single_facility.report_id is 'A foreign key reference to ggircs.report';

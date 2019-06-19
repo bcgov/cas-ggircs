@@ -32,6 +32,10 @@ create table ggircs.fuel (
     measured_conversion_factors         xml
 );
 
+create index ggircs_fuel_report_foreign_key on ggircs.fuel(report_id);
+create index ggircs_fuel_unit_foreign_key on ggircs.fuel(unit_id);
+create index ggircs_fuel_fuel_mapping_foreign_key on ggircs.fuel(fuel_mapping_id);
+
 comment on table ggircs.fuel is 'The table containing the information on fuels';
 comment on column ggircs.fuel.id is 'The primary key';
 comment on column ggircs.fuel.ghgr_import_id is 'A foreign key reference to ggircs.ghgr_import';
