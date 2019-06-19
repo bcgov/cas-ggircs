@@ -45,6 +45,7 @@ table_contact [table_report table_address table_single_facility table_lfo_facili
 table_additional_data [table_report table_activity] 2019-06-04T18:45:22Z Dylan Leard <dylan@button.is> # add table descriptor to schema ggircs
 table_measured_emission_factor [table_fuel] 2019-06-04T18:51:37Z Dylan Leard <dylan@button.is> # add table measured_emission_factor to schema ggircs
 view_pro_rated_carbon_tax_rate [schema_ggircs table_fuel table_report] 2019-05-29T19:30:58Z Dylan Leard <dylan@button.is> # add pro rated carbon rate view to schema ggircs
+table_fuel_charge [schema_ggircs_swrs] 2019-06-19T23:35:41Z Dylan Leard <dylan@button.is> # add table fuel_charge to schema ggircs_swrs
 table_implied_emission_factor [schema_ggircs_swrs] 2019-05-30T17:34:31Z Dylan Leard <dylan@button.is> # add implied emission factor table to schema ggircs_swrs
 view_pro_rated_implied_emission_factor [schema_ggircs table_fuel table_report] 2019-05-30T18:38:14Z Dylan Leard <dylan@button.is> # add pro-rated implied emission factor view to schema ggircs
 view_carbon_tax_calculation [schema_ggircs table_fuel table_report] 2019-05-30T20:10:33Z Dylan Leard <dylan@button.is> # add carbon tax calculation view to schema ggircs
