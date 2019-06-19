@@ -1161,21 +1161,6 @@ select tables_are('ggircs'::name, ARRAY[
     $$
 );
 
--- This gets the columns used in the index for the table/matview's primary key
-select substring((SELECT
-    indexdef
-FROM
-    pg_indexes
-WHERE
-    schemaname = 'ggircs_swrs'
-AND
-    tablename = 'unit'
-AND
-    indexname = 'ggircs_unit_primary_key'
-ORDER BY
-    tablename,
-    indexname) from '(?<=\().+?(?=\))');
-
 -- Test all tables have primary key
 select has_pk('ggircs', 'report', 'ggircs_report has primary key');
 select has_pk('ggircs', 'organisation', 'ggircs_organisation has primary key');
