@@ -31,6 +31,7 @@ create or replace view ggircs.pro_rated_fuel_charge as
                     start_date > concat(_report.reporting_period_duration::text, '-01-01')::date and end_date > concat(_report.reporting_period_duration::text, '-12-31')::date
                     then
                     concat(_report.reporting_period_duration::text, '-12-31')::date - start_date
+                   -- Todo: case when reporting year -01-01 > end date of last rate band
                 end as duration
         from ggircs.fuel
                  join ggircs.report as _report
