@@ -14,10 +14,9 @@ create or replace view ggircs.carbon_tax_calculation as
                _naics.id                                  as naics_id,
                _naics_mapping.id                          as naics_mapping_id,
                _fuel.fuel_type,
-               _fuel.annual_fuel_amount                   as amount,
+               _fuel.annual_fuel_amount                   as fuel_amount,
                _report.reporting_period_duration::integer as year,
-               ctr.pro_rated_carbon_tax_rate              as pro_rated_ctr,
-               ief.pro_rated_implied_emission_factor      as pro_rated_ief
+               _pro_rated_fuel_charge.pro_rated_fuel_charge
         from ggircs.fuel as _fuel
                  join ggircs_swrs.fuel_mapping as _fuel_mapping
                       on _fuel.fuel_type = _fuel_mapping.fuel_type
@@ -33,12 +32,15 @@ create or replace view ggircs.carbon_tax_calculation as
                       on _report.id = _naics.report_id
                  left join ggircs_swrs.naics_mapping as _naics_mapping
                       on _naics.naics_mapping_id = _naics_mapping.id
-                 join ggircs.pro_rated_carbon_tax_rate as ctr
-                      on _fuel.fuel_type = ctr.fuel_type
-                        and _report.reporting_period_duration::integer = ctr.reporting_year
-                 join ggircs.pro_rated_implied_emission_factor as ief
-                      on ief.fuel_mapping_id = _fuel_mapping.id
-                        and _report.reporting_period_duration::integer = ief.reporting_year
+                 join ggircs.pro_rated_fuel_charge as _pro_rated_fuel_charge
+                      on _fuel_mapping.id = _pro_rated_fuel_charge.fuel_mapping_id
+                      and _report.reporting_period_duration::integer = _pro_rated_fuel_charge.rpd
+--                  join ggircs.pro_rated_carbon_tax_rate as ctr
+--                       on _fuel.fuel_type = ctr.fuel_type
+--                         and _report.reporting_period_duration::integer = ctr.reporting_year
+--                  join ggircs.pro_rated_implied_emission_factor as ief
+--                       on ief.fuel_mapping_id = _fuel_mapping.id
+--                         and _report.reporting_period_duration::integer = ief.reporting_year
     )
 select fuel.organisation_id,
        fuel.single_facility_id,
@@ -47,8 +49,8 @@ select fuel.organisation_id,
        fuel.naics_mapping_id,
        fuel.year,
        fuel.fuel_type,
-       fuel.amount,
-       (fuel.amount * pro_rated_ctr * pro_rated_ief) as calculated_carbon_tax
+       fuel.fuel_amount,
+       (fuel.fuel_amount * pro_rated_fuel_charge) as calculated_carbon_tax
 from fuel;
 
 commit;

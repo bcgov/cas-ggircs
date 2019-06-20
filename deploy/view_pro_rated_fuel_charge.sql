@@ -64,5 +64,5 @@ create or replace view ggircs.pro_rated_fuel_charge as
                     ((select (duration::numeric / year_length::numeric) * fuel_charge))
             end as pro_rated_rates
             from x where duration > 0 group by fuel_mapping_id, rpd,fuel_type, year_length, fuel_charge, duration)
-            select fuel_mapping_id, fuel_type, rpd, sum(distinct(pro_rated_rates)) as pro_rated from y group by fuel_mapping_id, fuel_type, rpd;
+            select fuel_mapping_id, fuel_type, rpd, sum(distinct(pro_rated_rates)) as pro_rated_fuel_charge from y group by fuel_mapping_id, fuel_type, rpd;
 commit;
