@@ -885,4 +885,18 @@ INSERT INTO ggircs_swrs.fuel_charge (fuel_charge, start_date, end_date, fuel_map
 INSERT INTO ggircs_swrs.fuel_charge (fuel_charge, start_date, end_date, fuel_mapping_id) VALUES (null, '2020-04-01', '2021-03-31', 144);
 INSERT INTO ggircs_swrs.fuel_charge (fuel_charge, start_date, end_date, fuel_mapping_id) VALUES (null, '2021-04-01', '9999-12-31', 144);
 
+INSERT INTO ggircs_swrs.fuel_charge (fuel_charge, start_date, end_date, fuel_mapping_id) VALUES (0.057, '1899-12-30', '2017-03-31', 145);
+INSERT INTO ggircs_swrs.fuel_charge (fuel_charge, start_date, end_date, fuel_mapping_id) VALUES (0.057, '2017-04-01', '2018-03-31', 145);
+INSERT INTO ggircs_swrs.fuel_charge (fuel_charge, start_date, end_date, fuel_mapping_id) VALUES (0.065, '2018-04-01', '2019-03-31', 145);
+INSERT INTO ggircs_swrs.fuel_charge (fuel_charge, start_date, end_date, fuel_mapping_id) VALUES (0.076, '2019-04-01', '2020-03-31', 145);
+INSERT INTO ggircs_swrs.fuel_charge (fuel_charge, start_date, end_date, fuel_mapping_id) VALUES (0.0855, '2020-04-01', '2021-03-31', 145);
+INSERT INTO ggircs_swrs.fuel_charge (fuel_charge, start_date, end_date, fuel_mapping_id) VALUES (0.095, '2021-04-01', '9999-12-31', 145);
+
+INSERT INTO ggircs_swrs.fuel_charge (fuel_charge, start_date, end_date, fuel_mapping_id) VALUES (0.057, '1899-12-30', '2017-03-31', 146);
+INSERT INTO ggircs_swrs.fuel_charge (fuel_charge, start_date, end_date, fuel_mapping_id) VALUES (0.057, '2017-04-01', '2018-03-31', 146);
+INSERT INTO ggircs_swrs.fuel_charge (fuel_charge, start_date, end_date, fuel_mapping_id) VALUES (0.065, '2018-04-01', '2019-03-31', 146);
+INSERT INTO ggircs_swrs.fuel_charge (fuel_charge, start_date, end_date, fuel_mapping_id) VALUES (0.076, '2019-04-01', '2020-03-31', 146);
+INSERT INTO ggircs_swrs.fuel_charge (fuel_charge, start_date, end_date, fuel_mapping_id) VALUES (0.0855, '2020-04-01', '2021-03-31', 146);
+INSERT INTO ggircs_swrs.fuel_charge (fuel_charge, start_date, end_date, fuel_mapping_id) VALUES (0.095, '2021-04-01', '9999-12-31', 146);
+
 commit;

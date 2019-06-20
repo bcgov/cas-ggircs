@@ -171,5 +171,6 @@ INSERT INTO ggircs_swrs.fuel_mapping(fuel_type, normalized_fuel_type, state, car
 INSERT INTO ggircs_swrs.fuel_mapping(fuel_type, normalized_fuel_type, state, carbon_taxed, cta_mapping, cta_rate_units, unit_conversion_factor) VALUES ('Waste Oil (kilolitres)', 'Waste Oil (kilolitres)', '(Liquid)', 'no', 'n/a', 'n/a', 1000);
 INSERT INTO ggircs_swrs.fuel_mapping(fuel_type, normalized_fuel_type, state, carbon_taxed, cta_mapping, cta_rate_units, unit_conversion_factor) VALUES ('Wood Waste', 'Wood Waste (bone dry tonnes)', '(Solid)', 'no', 'n/a', 'n/a', 1);
 INSERT INTO ggircs_swrs.fuel_mapping(fuel_type, normalized_fuel_type, state, carbon_taxed, cta_mapping, cta_rate_units, unit_conversion_factor) VALUES ('Wood Waste (bone dry tonnes)', 'Wood Waste (bone dry tonnes)', '(Solid)', 'no', 'n/a', 'n/a', 1);
-
+INSERT INTO ggircs_swrs.fuel_mapping(fuel_type, normalized_fuel_type, state, carbon_taxed, cta_mapping, cta_rate_units, unit_conversion_factor) VALUES ('Flared Natural Gas', 'Flared Natural Gas', 'Gas', 'yes', 'Flaring', '$/m3', 1);
+INSERT INTO ggircs_swrs.fuel_mapping(fuel_type, normalized_fuel_type, state, carbon_taxed, cta_mapping, cta_rate_units, unit_conversion_factor) VALUES ('Vented Natural Gas', 'Vented Natural Gas', 'Gas', 'yes', 'Venting', '$/m3', 1);
 commit;
