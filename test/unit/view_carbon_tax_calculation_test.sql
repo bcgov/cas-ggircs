@@ -61,7 +61,7 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
     </NAICSCodeList>
   </RegistrationData>
   <ReportDetails>
-    <ReportID>1235</ReportID>
+    <ReportID>123500000</ReportID>
     <ReportType>R1</ReportType>
     <FacilityId>0001</FacilityId>
     <FacilityType>ABC</FacilityType>
@@ -95,6 +95,7 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
                   <FuelUnits>kilolitres</FuelUnits>
                   <AnnualFuelAmount>9441</AnnualFuelAmount>
                   <AnnualWeightedAverageCarbonContent>0.862</AnnualWeightedAverageCarbonContent>
+                  <Emissions><Emission></Emission></Emissions>
                 </Fuel>
               </Fuels>
             </Unit>
@@ -176,7 +177,6 @@ refresh materialized view ggircs_swrs.emission with data;
         and (_facility.facility_type = 'IF_a' or _facility.facility_type = 'IF_b' or _facility.facility_type = 'L_c');
 
 -- ACTIVITY
-    delete from ggircs.activity;
     insert into ggircs.activity (id, ghgr_import_id, single_facility_id, lfo_facility_id, report_id, activity_name, process_name, sub_process_name, information_requirement)
 
     select _activity.id, _activity.ghgr_import_id, _single_facility.id, _lfo_facility.id, _report.id, _activity.activity_name, _activity.process_name, _activity.sub_process_name, _activity.information_requirement
