@@ -344,12 +344,27 @@ $function$
             and _fuel_mapping.fuel_type != 'Flared Natural Gas CH4'
             and _fuel_mapping.fuel_type != 'Flared Natural Gas CO2'
             and _activity.sub_process_name = 'Flaring'
-            and _emission.gas_type = 'N2O'))
---         or (_fuel_mapping.fuel_type = 'Vented Natural Gas'
---             and _emission.emission_type
---                     in $$
---
---                        $$)
+            and _emission.gas_type = 'N2O')
+        or (_fuel_mapping.fuel_type = 'Vented Natural Gas'
+            and _emission.emission_type
+                in (
+                   'NG Distribution: NG continuous high bleed devices venting',
+                   'NG Distribution: NG continuous low bleed devices venting',
+                   'NG Distribution: NG intermittent devices venting',
+                   'NG Distribution: NG pneumatic pumps venting',
+                   'Onshore NG Transmission Compression/Pipelines: NG continuous high bleed devices venting',
+                   'Onshore NG Transmission Compression/Pipelines: NG continuous low bleed devices venting',
+                   'Onshore NG Transmission Compression/Pipelines: NG intermittent devices venting',
+                   'Onshore NG Transmission Compression/Pipelines: NG pneumatic pumps venting',
+                   'Onshore Petroleum and NG Production: NG continuous high bleed devices venting',
+                   'Onshore Petroleum and NG Production: NG continuous low bleed devices venting',
+                   'Onshore Petroleum and NG Production: NG intermittent devices venting',
+                   'Onshore Petroleum and NG Production: NG pneumatic pump venting',
+                   'Underground NG Storage: NG continuous high bleed devices venting',
+                   'Underground NG Storage: NG continuous low bleed devices venting',
+                   'Underground NG Storage: NG intermittent devices venting',
+                   'Underground NG Storage: NG pneumatic pumps venting'
+                   )))
 
 
     -- FK Emission -> Organisation
