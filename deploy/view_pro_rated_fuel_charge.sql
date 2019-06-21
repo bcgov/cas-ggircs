@@ -16,7 +16,7 @@ create or replace view ggircs.pro_rated_fuel_charge as
                _fuel_charge.end_date,
                _fuel_charge.fuel_charge,
                _fuel_charge.id                                                  as fuel_charge_id,
-               _fuel_mapping.unit_conversion_factor,
+               _fuel_carbon_tax_details.unit_conversion_factor,
                concat(_report.reporting_period_duration::text, '-12-31')::date - concat(_report.reporting_period_duration::text, '-01-01')::date as year_length,
                case when
                     _report.reporting_period_duration::integer <= 2017
@@ -44,6 +44,9 @@ create or replace view ggircs.pro_rated_fuel_charge as
                  join ggircs_swrs.fuel_mapping as _fuel_mapping
                       on fuel.fuel_mapping_id = _fuel_mapping.id
                       or _emission.fuel_mapping_id = _fuel_mapping.id
+                 join ggircs_swrs.fuel_carbon_tax_details as _fuel_carbon_tax_details
+                      on _fuel_mapping.fuel_carbon_tax_details_id = _fuel_carbon_tax_details.id
+                      or _emission.fuel_mapping_id = _fuel_carbon_tax_details.id
                  join ggircs_swrs.fuel_charge as _fuel_charge
                       on _fuel_charge.fuel_mapping_id = _fuel_mapping.id
 

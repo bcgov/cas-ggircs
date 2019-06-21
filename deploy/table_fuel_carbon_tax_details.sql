@@ -110,7 +110,9 @@ insert into ggircs_swrs.fuel_carbon_tax_details (normalized_fuel_type, state, ca
 insert into ggircs_swrs.fuel_carbon_tax_details (normalized_fuel_type, state, carbon_taxed, cta_mapping, cta_rate_units, unit_conversion_factor) values ('Vegetable Oil (kilolitres)','(Liquid)','f','n/a','n/a',1000);
 insert into ggircs_swrs.fuel_carbon_tax_details (normalized_fuel_type, state, carbon_taxed, cta_mapping, cta_rate_units, unit_conversion_factor) values ('Waste Oil (kilolitres)','(Liquid)','f','n/a','n/a',1000);
 insert into ggircs_swrs.fuel_carbon_tax_details (normalized_fuel_type, state, carbon_taxed, cta_mapping, cta_rate_units, unit_conversion_factor) values ('Wood Waste (bone dry tonnes)','(Solid)','f','n/a','n/a',1);
-insert into ggircs_swrs.fuel_carbon_tax_details (normalized_fuel_type, state, carbon_taxed, cta_mapping, cta_rate_units, unit_conversion_factor) values ('Flared Natural Gas','Gas','t','Flaring','$/m3',1);
+insert into ggircs_swrs.fuel_carbon_tax_details (normalized_fuel_type, state, carbon_taxed, cta_mapping, cta_rate_units, unit_conversion_factor) values ('Flared Natural Gas CO2','Gas','t','Flaring','$/m3',1000000/2151);
+insert into ggircs_swrs.fuel_carbon_tax_details (normalized_fuel_type, state, carbon_taxed, cta_mapping, cta_rate_units, unit_conversion_factor) values ('Flared Natural Gas CH4','Gas','t','Flaring','$/m3',1000000/6.5);
+insert into ggircs_swrs.fuel_carbon_tax_details (normalized_fuel_type, state, carbon_taxed, cta_mapping, cta_rate_units, unit_conversion_factor) values ('Flared Natural Gas N20','Gas','t','Flaring','$/m3',1000000/0.06);
 insert into ggircs_swrs.fuel_carbon_tax_details (normalized_fuel_type, state, carbon_taxed, cta_mapping, cta_rate_units, unit_conversion_factor) values ('Vented Natural Gas','Gas','t','Venting','$/m3',1);
 
 commit;
