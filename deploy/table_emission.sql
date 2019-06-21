@@ -15,6 +15,7 @@ create table ggircs.emission (
     organisation_id           integer references ggircs.organisation(id),
     report_id                 integer references ggircs.report(id),
     unit_id                   integer references ggircs.unit(id),
+    fuel_mapping_id           integer references ggircs_swrs.fuel_mapping,
     activity_name             varchar(1000),
     sub_activity_name         varchar(1000),
     unit_name                 varchar(1000),

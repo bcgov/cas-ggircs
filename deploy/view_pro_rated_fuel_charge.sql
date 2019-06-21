@@ -9,15 +9,14 @@ begin;
 create or replace view ggircs.pro_rated_fuel_charge as
     with x as (
         select fuel.ghgr_import_id,
-               fuel.fuel_type,
-               fuel.fuel_mapping_id                       as fuel_mapping_id,
-               _report.reporting_period_duration::integer as rpd,
+               _fuel_mapping.fuel_type,
+               coalesce(fuel.fuel_mapping_id, _emission.fuel_mapping_id)        as fuel_mapping_id,
+               _report.reporting_period_duration::integer                       as rpd,
                _fuel_charge.start_date,
                _fuel_charge.end_date,
                _fuel_charge.fuel_charge,
-               _fuel_charge.id                            as fuel_charge_id,
+               _fuel_charge.id                                                  as fuel_charge_id,
                _fuel_mapping.unit_conversion_factor,
-               _activity.sub_process_name                as source_type,
                concat(_report.reporting_period_duration::text, '-12-31')::date - concat(_report.reporting_period_duration::text, '-01-01')::date as year_length,
                case when
                     _report.reporting_period_duration::integer <= 2017
@@ -40,16 +39,15 @@ create or replace view ggircs.pro_rated_fuel_charge as
                       on fuel.report_id = _report.id
                  join ggircs.unit as _unit
                       on fuel.unit_id = _unit.id
-                 left join ggircs.activity as _activity
-                      on fuel.report_id = _activity.report_id
-                      and _activity.sub_process_name = 'Flaring'
+                 left join ggircs.emission as _emission
+                      on fuel.id = _emission.fuel_id
                  join ggircs_swrs.fuel_mapping as _fuel_mapping
                       on fuel.fuel_mapping_id = _fuel_mapping.id
-                      or _fuel_mapping.fuel_type = 'Flared Natural Gas'
+                      or _emission.fuel_mapping_id = _fuel_mapping.id
                  join ggircs_swrs.fuel_charge as _fuel_charge
                       on _fuel_charge.fuel_mapping_id = _fuel_mapping.id
 
-    ), y as (select rpd, fuel_mapping_id, fuel_type, source_type, year_length, duration, fuel_charge, unit_conversion_factor,
+    ), y as (select rpd, fuel_mapping_id, fuel_type, year_length, duration, fuel_charge, unit_conversion_factor,
              case when rpd <= 2017
                  then
                     (select distinct(fuel_charge) * unit_conversion_factor
@@ -57,7 +55,7 @@ create or replace view ggircs.pro_rated_fuel_charge as
                        where id = (
                            select min(_fuel_charge.id)
                            from ggircs_swrs.fuel_charge as _fuel_charge
-                           where _fuel_charge.fuel_mapping_id = case when x.source_type = 'Flaring' then 145 else x.fuel_mapping_id end)
+                           where _fuel_charge.fuel_mapping_id = x.fuel_mapping_id)
                        )
              when rpd >2021
                  then
@@ -71,6 +69,6 @@ create or replace view ggircs.pro_rated_fuel_charge as
                  else
                     ((select (duration::numeric / year_length::numeric) * fuel_charge * unit_conversion_factor))
             end as pro_rated_rates
-            from x where duration > 0 group by fuel_mapping_id, rpd,fuel_type, year_length, fuel_charge, duration, source_type, unit_conversion_factor)
-            select fuel_mapping_id, fuel_type, source_type, rpd, sum(distinct(pro_rated_rates)) as pro_rated_fuel_charge from y group by fuel_mapping_id, fuel_type, rpd, source_type;
+            from x where duration > 0 group by fuel_mapping_id, rpd,fuel_type, year_length, fuel_charge, duration, unit_conversion_factor)
+            select fuel_mapping_id, fuel_type, rpd, sum(distinct(pro_rated_rates)) as pro_rated_fuel_charge from y group by fuel_mapping_id, fuel_type, rpd;
 commit;

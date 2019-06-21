@@ -264,11 +264,11 @@ $function$
 
     -- EMISSION
     delete from ggircs.emission;
-    insert into ggircs.emission (id, ghgr_import_id, activity_id, single_facility_id, lfo_facility_id, fuel_id, naics_id, organisation_id, report_id, unit_id, activity_name, sub_activity_name,
-                                 unit_name, sub_unit_name, fuel_name, emission_type,
+    insert into ggircs.emission (id, ghgr_import_id, activity_id, single_facility_id, lfo_facility_id, fuel_id, naics_id, organisation_id, report_id, unit_id, fuel_mapping_id,
+                                 activity_name, sub_activity_name, unit_name, sub_unit_name, fuel_name, emission_type,
                                  gas_type, methodology, not_applicable, quantity, calculated_quantity, emission_category)
 
-    select _emission.id, _emission.ghgr_import_id, _activity.id, _single_facility.id, _lfo_facility.id, _fuel.id, _naics.id, _organisation.id, _report.id, _unit.id,
+    select _emission.id, _emission.ghgr_import_id, _activity.id, _single_facility.id, _lfo_facility.id, _fuel.id, _naics.id, _organisation.id, _report.id, _unit.id, _fuel_mapping.id,
            _emission.activity_name, _emission.sub_activity_name, _emission.unit_name, _emission.sub_unit_name, _emission.fuel_name, _emission.emission_type,
            _emission.gas_type, _emission.methodology, _emission.not_applicable, _emission.quantity, _emission.calculated_quantity, _emission.emission_category
 
@@ -329,6 +329,9 @@ $function$
            and (__naics.naics_priority = 'Primary'
             or __naics.naics_priority = '100.00'
             or __naics.naics_priority = '100')) > 1))
+    left join ggircs_swrs.fuel_mapping as _fuel_mapping
+        on _fuel_mapping.fuel_type = 'Flared Natural Gas'
+        and _activity.sub_process_name = 'Flaring'
 
     -- FK Emission -> Organisation
     left join ggircs_swrs.organisation as _organisation
