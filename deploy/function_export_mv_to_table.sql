@@ -329,6 +329,7 @@ $function$
            and (__naics.naics_priority = 'Primary'
             or __naics.naics_priority = '100.00'
             or __naics.naics_priority = '100')) > 1))
+    -- FK Emission -> Fuel Mapping
     left join ggircs_swrs.fuel_mapping as _fuel_mapping
         on ((_fuel_mapping.fuel_type = 'Flared Natural Gas CO2'
             and _fuel_mapping.fuel_type != 'Flared Natural Gas CH4'
@@ -365,8 +366,6 @@ $function$
                    'Underground NG Storage: NG intermittent devices venting',
                    'Underground NG Storage: NG pneumatic pumps venting'
                    )))
-
-
     -- FK Emission -> Organisation
     left join ggircs_swrs.organisation as _organisation
       on _emission.ghgr_import_id = _organisation.ghgr_import_id

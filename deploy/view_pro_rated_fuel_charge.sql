@@ -37,8 +37,6 @@ create or replace view ggircs.pro_rated_fuel_charge as
         from ggircs.fuel
                  join ggircs.report as _report
                       on fuel.report_id = _report.id
-                 join ggircs.unit as _unit
-                      on fuel.unit_id = _unit.id
                  left join ggircs.emission as _emission
                       on fuel.id = _emission.fuel_id
                  join ggircs_swrs.fuel_mapping as _fuel_mapping

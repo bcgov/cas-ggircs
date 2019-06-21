@@ -16,13 +16,12 @@ select has_view(
 select columns_are('ggircs'::name, 'carbon_tax_calculation'::name, array[
     'organisation_id'::name,
     'single_facility_id'::name,
-    'lfo_facility_id'::name,
     'naics_id'::name,
-    'naics_mapping_id'::name,
     'year'::name,
     'fuel_type'::name,
-    'amount'::name,
-    'calculated_carbon_tax'::name
+    'fuel_amount'::name,
+    'calculated_carbon_tax'::name,
+    'pro_rated_calculated_carbon_tax'::name
 ]);
 
 -- Column attributes are correct
@@ -32,14 +31,8 @@ select col_hasnt_default('ggircs', 'carbon_tax_calculation', 'organisation_id', 
 select col_type_is('ggircs', 'carbon_tax_calculation', 'single_facility_id', 'integer', 'carbon_tax_calculation.single_facility_id column should be type integer');
 select col_hasnt_default('ggircs', 'carbon_tax_calculation', 'single_facility_id', 'carbon_tax_calculation.single_facility_id column should not have a default value');
 
-select col_type_is('ggircs', 'carbon_tax_calculation', 'lfo_facility_id', 'integer', 'carbon_tax_calculation.lfo_facility_id column should be type integer');
-select col_hasnt_default('ggircs', 'carbon_tax_calculation', 'lfo_facility_id', 'carbon_tax_calculation.lfo_facility_id column should not have a default value');
-
 select col_type_is('ggircs', 'carbon_tax_calculation', 'naics_id', 'integer', 'carbon_tax_calculation.naics_id column should be type integer');
 select col_hasnt_default('ggircs', 'carbon_tax_calculation', 'naics_id', 'carbon_tax_calculation.naics_id column should not have a default value');
-
-select col_type_is('ggircs', 'carbon_tax_calculation', 'naics_mapping_id', 'integer', 'carbon_tax_calculation.naics_mapping_id column should be type integer');
-select col_hasnt_default('ggircs', 'carbon_tax_calculation', 'naics_mapping_id', 'carbon_tax_calculation.naics_mapping_id column should not have a default value');
 
 select col_type_is('ggircs', 'carbon_tax_calculation', 'year', 'integer', 'carbon_tax_calculation.reporting_year column should be type integer');
 select col_hasnt_default('ggircs', 'carbon_tax_calculation', 'year', 'carbon_tax_calculation.reporting_year column should not have a default value');
@@ -50,53 +43,11 @@ select col_hasnt_default('ggircs', 'carbon_tax_calculation', 'fuel_type', 'carbo
 select col_type_is('ggircs', 'carbon_tax_calculation', 'calculated_carbon_tax', 'numeric', 'carbon_tax_calculation.calculated_carbon_tax column should be type numeric');
 select col_hasnt_default('ggircs', 'carbon_tax_calculation', 'calculated_carbon_tax', 'carbon_tax_calculation.calculated_carbon_tax column should not have a default value');
 
+select col_type_is('ggircs', 'carbon_tax_calculation', 'pro_rated_calculated_carbon_tax', 'numeric', 'carbon_tax_calculation.pro_rated_calculated_carbon_tax column should be type numeric');
+select col_hasnt_default('ggircs', 'carbon_tax_calculation', 'pro_rated_calculated_carbon_tax', 'carbon_tax_calculation.pro_rated_calculated_carbon_tax column should not have a default value');
+
 -- XML fixture for testing
-insert into ggircs_swrs.ghgr_import (xml_file) values ($$<ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <ReportDetails>
-    <ReportID>1234</ReportID>
-    <ReportType>R1</ReportType>
-    <FacilityId>0000</FacilityId>
-    <FacilityType>EIO</FacilityType>
-    <OrganisationId>0000</OrganisationId>
-    <ReportingPeriodDuration>2025</ReportingPeriodDuration>
-    <ReportStatus>
-      <Status>Submitted</Status>
-      <SubmissionDate>2013-03-27T19:25:55.32</SubmissionDate>
-      <LastModifiedBy>Buddy</LastModifiedBy>
-    </ReportStatus>
-  </ReportDetails>
-  <ActivityData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-    <ActivityPages>
-      <Process ProcessName="ElectricityGeneration">
-        <SubProcess SubprocessName="Emissions from fuel combustion for electricity generation" InformationRequirement="Required">
-          <Units UnitType="Cogen Units">
-            <Unit>
-              <Fuels>
-                <Fuel>
-                  <FuelType>Wood Waste</FuelType>
-                  <FuelClassification>Biomass in Schedule C</FuelClassification>
-                  <FuelDescription/>
-                  <FuelUnits>bone dry tonnes</FuelUnits>
-                  <AnnualFuelAmount>0</AnnualFuelAmount>
-                  <AnnualSteamGeneration>290471000</AnnualSteamGeneration>
-                </Fuel>
-                <Fuel>
-                  <FuelType>Residual Fuel Oil (#5 &amp; 6)</FuelType>
-                  <FuelClassification>non-biomass</FuelClassification>
-                  <FuelDescription/>
-                  <FuelUnits>kilolitres</FuelUnits>
-                  <AnnualFuelAmount>9441</AnnualFuelAmount>
-                  <AnnualWeightedAverageCarbonContent>0.862</AnnualWeightedAverageCarbonContent>
-                </Fuel>
-              </Fuels>
-            </Unit>
-          </Units>
-        </SubProcess>
-      </Process>
-    </ActivityPages>
-  </ActivityData>
-</ReportData>
-$$), ($$
+insert into ggircs_swrs.ghgr_import (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <RegistrationData>
   <Facility>
@@ -160,8 +111,10 @@ refresh materialized view ggircs_swrs.report with data;
 refresh materialized view ggircs_swrs.final_report with data;
 refresh materialized view ggircs_swrs.organisation with data;
 refresh materialized view ggircs_swrs.facility with data;
+refresh materialized view ggircs_swrs.activity with data;
 refresh materialized view ggircs_swrs.naics with data;
 refresh materialized view ggircs_swrs.fuel with data;
+refresh materialized view ggircs_swrs.emission with data;
 
 -- Populate necessary ggircs tables
 
@@ -222,22 +175,26 @@ refresh materialized view ggircs_swrs.fuel with data;
         and _report.reporting_period_duration = _final_lfo_facility.reporting_period_duration
         and (_facility.facility_type = 'IF_a' or _facility.facility_type = 'IF_b' or _facility.facility_type = 'L_c');
 
-    -- LFO FACILITY
-    insert into ggircs.lfo_facility (id, ghgr_import_id, organisation_id, report_id, swrs_facility_id, facility_name, facility_type, relationship_type, portability_indicator, status, latitude, longitude)
+-- ACTIVITY
+    delete from ggircs.activity;
+    insert into ggircs.activity (id, ghgr_import_id, single_facility_id, lfo_facility_id, report_id, activity_name, process_name, sub_process_name, information_requirement)
 
-    select _facility.id, _facility.ghgr_import_id, _organisation.id, _report.id, _facility.swrs_facility_id, _facility.facility_name, _facility.facility_type,
-           _facility.relationship_type, _facility.portability_indicator, _facility.status, _facility.latitude, _facility.longitude
+    select _activity.id, _activity.ghgr_import_id, _single_facility.id, _lfo_facility.id, _report.id, _activity.activity_name, _activity.process_name, _activity.sub_process_name, _activity.information_requirement
 
-    from ggircs_swrs.facility as _facility
-   inner join ggircs_swrs.final_report as _final_report
-        on _facility.ghgr_import_id = _final_report.ghgr_import_id
-        and _facility.facility_type = 'LFO'
-    -- FK Facility -> Organisation
-    left join ggircs_swrs.organisation as _organisation
-        on _facility.ghgr_import_id = _organisation.ghgr_import_id
-    -- FK Facility -> Report
+    from ggircs_swrs.activity as _activity
+
+    inner join ggircs_swrs.final_report as _final_report on _activity.ghgr_import_id = _final_report.ghgr_import_id
+    -- FK Activity -> Single Facility
+    left join ggircs_swrs.facility as _single_facility
+      on _activity.ghgr_import_id = _single_facility.ghgr_import_id
+      and (_single_facility.facility_type != 'LFO' or _single_facility.facility_type is null)
+    -- FK Activity -> LFO Facility
+    left join ggircs_swrs.facility as _lfo_facility
+      on _activity.ghgr_import_id = _lfo_facility.ghgr_import_id
+      and _lfo_facility.facility_type = 'LFO'
+    -- FK Activity -> Report
     left join ggircs_swrs.report as _report
-        on _facility.ghgr_import_id = _report.ghgr_import_id;
+      on _activity.ghgr_import_id = _report.ghgr_import_id;
 
 -- NAICS
 insert into ggircs.naics(id, ghgr_import_id, single_facility_id, lfo_facility_id, registration_data_single_facility_id, registration_data_lfo_facility_id, naics_mapping_id, report_id, swrs_facility_id, path_context, naics_classification, naics_code, naics_priority)
@@ -283,12 +240,91 @@ insert into ggircs.naics(id, ghgr_import_id, single_facility_id, lfo_facility_id
     left join ggircs_swrs.report as _report
     on _fuel.ghgr_import_id = _report.ghgr_import_id;
 
+-- EMISSION
+    insert into ggircs.emission (id, ghgr_import_id, activity_id, single_facility_id, fuel_id, fuel_mapping_id,
+                                 activity_name, sub_activity_name, unit_name, sub_unit_name, fuel_name, emission_type,
+                                 gas_type, methodology, not_applicable, quantity, calculated_quantity, emission_category)
+
+    select _emission.id, _emission.ghgr_import_id, _activity.id, _single_facility.id, _fuel.id, _fuel_mapping.id,
+           _emission.activity_name, _emission.sub_activity_name, _emission.unit_name, _emission.sub_unit_name, _emission.fuel_name, _emission.emission_type,
+           _emission.gas_type, _emission.methodology, _emission.not_applicable, _emission.quantity, _emission.calculated_quantity, _emission.emission_category
+
+    from ggircs_swrs.emission as _emission
+    -- join ggircs_swrs.emission to use _idx columns in FK creations
+    inner join ggircs_swrs.final_report as _final_report on _emission.ghgr_import_id = _final_report.ghgr_import_id
+    -- FK Emission -> Activity
+    left join ggircs_swrs.activity as _activity
+      on _emission.ghgr_import_id = _activity.ghgr_import_id
+      and _emission.process_idx = _activity.process_idx
+      and _emission.sub_process_idx = _activity.sub_process_idx
+      and _emission.activity_name = _activity.activity_name
+    -- FK Emission -> Single Facility
+    left join ggircs_swrs.facility as _single_facility
+        on _emission.ghgr_import_id = _single_facility.ghgr_import_id
+        and (_single_facility.facility_type != 'LFO' or _single_facility.facility_type is null)
+    -- FK Emission -> Fuel
+    left join ggircs_swrs.fuel as _fuel
+      on _emission.ghgr_import_id = _fuel.ghgr_import_id
+      and _emission.process_idx = _fuel.process_idx
+      and _emission.sub_process_idx = _fuel.sub_process_idx
+      and _emission.activity_name = _fuel.activity_name
+      and _emission.sub_activity_name = _fuel.sub_activity_name
+      and _emission.unit_name = _fuel.unit_name
+      and _emission.sub_unit_name = _fuel.sub_unit_name
+      and _emission.substance_idx = _fuel.substance_idx
+      and _emission.substances_idx = _fuel.substances_idx
+      and _emission.sub_unit_name = _fuel.sub_unit_name
+      and _emission.units_idx = _fuel.units_idx
+      and _emission.unit_idx = _fuel.unit_idx
+      and _emission.fuel_idx = _fuel.fuel_idx
+    -- FK Emission -> Naics
+        -- This long join gets id for the NAICS code from RegistrationData if the code exists and is unique (1 Primary per report)
+        -- If there are 2 primary NAICS codes defined in RegistrationData the id for the code is derived from VerifyTombstone
+    -- FK Emission -> Fuel Mapping
+    left join ggircs_swrs.fuel_mapping as _fuel_mapping
+        on ((_fuel_mapping.fuel_type = 'Flared Natural Gas CO2'
+            and _fuel_mapping.fuel_type != 'Flared Natural Gas CH4'
+            and _fuel_mapping.fuel_type != 'Flared Natural Gas N20'
+            and _activity.sub_process_name = 'Flaring'
+            and _emission.gas_type like 'CO2%')
+        or (_fuel_mapping.fuel_type = 'Flared Natural Gas CH4'
+            and _activity.sub_process_name = 'Flaring'
+            and _fuel_mapping.fuel_type != 'Flared Natural Gas CO2'
+            and _fuel_mapping.fuel_type != 'Flared Natural Gas N20'
+            and _emission.gas_type = 'CH4')
+        or (_fuel_mapping.fuel_type = 'Flared Natural Gas N2O'
+            and _fuel_mapping.fuel_type != 'Flared Natural Gas CH4'
+            and _fuel_mapping.fuel_type != 'Flared Natural Gas CO2'
+            and _activity.sub_process_name = 'Flaring'
+            and _emission.gas_type = 'N2O')
+        or (_fuel_mapping.fuel_type = 'Vented Natural Gas'
+            and _emission.emission_type
+                in (
+                   'NG Distribution: NG continuous high bleed devices venting',
+                   'NG Distribution: NG continuous low bleed devices venting',
+                   'NG Distribution: NG intermittent devices venting',
+                   'NG Distribution: NG pneumatic pumps venting',
+                   'Onshore NG Transmission Compression/Pipelines: NG continuous high bleed devices venting',
+                   'Onshore NG Transmission Compression/Pipelines: NG continuous low bleed devices venting',
+                   'Onshore NG Transmission Compression/Pipelines: NG intermittent devices venting',
+                   'Onshore NG Transmission Compression/Pipelines: NG pneumatic pumps venting',
+                   'Onshore Petroleum and NG Production: NG continuous high bleed devices venting',
+                   'Onshore Petroleum and NG Production: NG continuous low bleed devices venting',
+                   'Onshore Petroleum and NG Production: NG intermittent devices venting',
+                   'Onshore Petroleum and NG Production: NG pneumatic pump venting',
+                   'Underground NG Storage: NG continuous high bleed devices venting',
+                   'Underground NG Storage: NG continuous low bleed devices venting',
+                   'Underground NG Storage: NG intermittent devices venting',
+                   'Underground NG Storage: NG pneumatic pumps venting'
+                   )));
+
 -- Test fk relations
 -- Organisation
-select set_eq(
-    $$ select organisation.swrs_organisation_id from ggircs.carbon_tax_calculation as ct
-       join ggircs.organisation on ct.organisation_id = organisation.id
-    $$,
+select results_eq(
+    'select * from ggircs.carbon_tax_calculation',
+--     $$ select organisation.swrs_organisation_id from ggircs.carbon_tax_calculation as ct
+--        join ggircs.organisation on ct.organisation_id = organisation.id
+--     $$,
     'select swrs_organisation_id from ggircs.organisation',
     'fk organisation_id references organisation'
 );
@@ -309,15 +345,6 @@ select set_eq(
     $$,
     'select naics_code from ggircs.naics',
     'fk naics_id references naics'
-);
-
--- Naics
-select set_eq(
-    $$ select naics_mapping.hhw_category from ggircs.carbon_tax_calculation as ct
-       join ggircs_swrs.naics_mapping on ct.naics_mapping_id = naics_mapping.id
-    $$,
-    'select hhw_category from ggircs_swrs.naics_mapping where naics_code = 322112',
-    'fk naics_mapping_id references naics_mapping'
 );
 
 -- Test validity of calculation
