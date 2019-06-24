@@ -826,7 +826,6 @@ select set_eq(
     'ggircs.attributable_emissions_with_details has correct information'
 
 );
-select * from ggircs.attributable_emissions_with_details;
 
 select * from finish();
 rollback;
