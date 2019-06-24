@@ -21,8 +21,11 @@ create or replace view ggircs.carbon_tax_calculation as
                _pro_rated_fuel_charge.pro_rated_fuel_charge,
                _pro_rated_fuel_charge.flat_rate
         from ggircs.fuel as _fuel
-                 join ggircs.emission as _emission
+                 join ggircs.unit as _unit
+                      on _fuel.unit_id = _unit.id
+                 left join ggircs.emission as _emission
                       on _fuel.id = _emission.fuel_id
+                      and _emission.fuel_mapping_id is not null
                  join ggircs_swrs.fuel_mapping as _fuel_mapping
                       on _fuel.fuel_mapping_id = _fuel_mapping.id
                       or _emission.fuel_mapping_id = _fuel_mapping.id
@@ -34,9 +37,28 @@ create or replace view ggircs.carbon_tax_calculation as
                       on _report.id = _single_facility.report_id
                  join ggircs.naics as _naics
                       on _report.id = _naics.report_id
-                      and _naics.path_context = 'RegistrationData'
+                      and ((_naics.path_context = 'RegistrationData'
+                      and (_naics.naics_priority = 'Primary'
+                            or _naics.naics_priority = '100.00'
+                            or _naics.naics_priority = '100')
+                      and (select count(ghgr_import_id)
+                           from ggircs_swrs.naics as __naics
+                           where ghgr_import_id = _emission.ghgr_import_id
+                           and __naics.path_context = 'RegistrationData'
+                           and (__naics.naics_priority = 'Primary'
+                            or __naics.naics_priority = '100.00'
+                            or __naics.naics_priority = '100')) < 2)
+                       or (_naics.path_context='VerifyTombstone'
+                           and _naics.naics_code is not null
+                           and (select count(ghgr_import_id)
+                           from ggircs_swrs.naics as __naics
+                           where ghgr_import_id = _emission.ghgr_import_id
+                           and __naics.path_context = 'RegistrationData'
+                           and (__naics.naics_priority = 'Primary'
+                            or __naics.naics_priority = '100.00'
+                            or __naics.naics_priority = '100')) > 1))
                  join ggircs.activity as _activity
-                      on _activity.report_id = _report.id
+                      on _unit.activity_id = _activity.id
                  join ggircs.pro_rated_fuel_charge as _pro_rated_fuel_charge
                       on _fuel_mapping.id = _pro_rated_fuel_charge.fuel_mapping_id
                       and _report.reporting_period_duration::integer = _pro_rated_fuel_charge.rpd
