@@ -64,7 +64,7 @@ create or replace view ggircs.carbon_tax_calculation as
                       on _unit.activity_id = _activity.id
                  join ggircs.pro_rated_fuel_charge as _pro_rated_fuel_charge
                       on _fuel_mapping.id = _pro_rated_fuel_charge.fuel_mapping_id
-                      and _report.reporting_period_duration::integer = _pro_rated_fuel_charge.rpd
+                      and _report.reporting_period_duration::integer = _pro_rated_fuel_charge.year
                  join ggircs_swrs.fuel_carbon_tax_details as _fuel_carbon_tax_details
                       on _fuel_mapping.fuel_carbon_tax_details_id = _fuel_carbon_tax_details.id
                  join ggircs_swrs.fuel_charge as _fuel_charge

@@ -8,10 +8,9 @@ begin;
 
 create or replace view ggircs.pro_rated_fuel_charge as
     with x as (
-        select fuel.ghgr_import_id,
-               _fuel_mapping.fuel_type,
+        select _fuel_mapping.fuel_type,
                coalesce(fuel.fuel_mapping_id, _emission.fuel_mapping_id)        as fuel_mapping_id,
-               _report.reporting_period_duration::integer                       as rpd,
+               _report.reporting_period_duration::integer                       as year,
                _fuel_charge.start_date,
                _fuel_charge.end_date,
                _fuel_charge.fuel_charge,
@@ -48,13 +47,13 @@ create or replace view ggircs.pro_rated_fuel_charge as
                  join ggircs_swrs.fuel_charge as _fuel_charge
                       on _fuel_charge.fuel_mapping_id = _fuel_mapping.id
 
-    ), y as (select rpd, fuel_mapping_id, fuel_type, year_length, duration, fuel_charge, unit_conversion_factor,
+    ), y as (select year, fuel_mapping_id, fuel_type, year_length, duration, fuel_charge, unit_conversion_factor,
             (select _fuel_charge.fuel_charge * x.unit_conversion_factor
                       from ggircs_swrs.fuel_charge as _fuel_charge
-                      where concat(x.rpd::text, '-12-31')::date between _fuel_charge.start_date and _fuel_charge.end_date
+                      where concat(x.year::text, '-12-31')::date between _fuel_charge.start_date and _fuel_charge.end_date
                       and _fuel_charge.fuel_mapping_id = x.fuel_mapping_id
                    ) as flat_rate,
-             case when rpd <= 2017
+             case when year <= 2017
                  then
                     (select distinct(fuel_charge) * unit_conversion_factor
                        from ggircs_swrs.fuel_charge
@@ -63,7 +62,7 @@ create or replace view ggircs.pro_rated_fuel_charge as
                            from ggircs_swrs.fuel_charge as _fuel_charge
                            where _fuel_charge.fuel_mapping_id = x.fuel_mapping_id)
                        )
-             when rpd >2021
+             when year >2021
                  then
                     (select distinct(fuel_charge) * unit_conversion_factor
                        from ggircs_swrs.fuel_charge
@@ -75,13 +74,13 @@ create or replace view ggircs.pro_rated_fuel_charge as
                  else
                     ((select (duration::numeric / year_length::numeric) * fuel_charge * unit_conversion_factor))
             end as pro_rated_rates
-            from x where duration > 0 group by fuel_mapping_id, rpd,fuel_type, year_length, fuel_charge, duration, unit_conversion_factor)
+            from x where duration > 0 group by fuel_mapping_id, year,fuel_type, year_length, fuel_charge, duration, unit_conversion_factor)
             select fuel_mapping_id,
                    fuel_type,
-                   rpd,
+                   year,
 
                    sum(distinct(pro_rated_rates)) as pro_rated_fuel_charge,
                    flat_rate,
                    unit_conversion_factor
-            from y group by fuel_mapping_id, fuel_type, flat_rate, rpd, unit_conversion_factor;
+            from y group by fuel_mapping_id, fuel_type, flat_rate, year, unit_conversion_factor;
 commit;
