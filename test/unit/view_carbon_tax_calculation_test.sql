@@ -24,6 +24,11 @@ select columns_are('ggircs'::name, 'carbon_tax_calculation'::name, array[
     'year'::name,
     'fuel_type'::name,
     'fuel_amount'::name,
+    'fuel_charge'::name,
+    'pro_rated_fuel_charge'::name,
+    'unit_conversion_factor'::name,
+    'flat_calculation'::name,
+    'pro_rated_calculation'::name,
     'calculated_carbon_tax'::name,
     'pro_rated_calculated_carbon_tax'::name
 ]);
@@ -43,6 +48,24 @@ select col_hasnt_default('ggircs', 'carbon_tax_calculation', 'year', 'carbon_tax
 
 select col_type_is('ggircs', 'carbon_tax_calculation', 'fuel_type', 'character varying(1000)', 'carbon_tax_calculation.fuel_type column should be type varchar');
 select col_hasnt_default('ggircs', 'carbon_tax_calculation', 'fuel_type', 'carbon_tax_calculation.fuel_type column should not have a default value');
+
+select col_type_is('ggircs', 'carbon_tax_calculation', 'fuel_amount', 'numeric', 'carbon_tax_calculation.fuel_amount column should be type numeric');
+select col_hasnt_default('ggircs', 'carbon_tax_calculation', 'fuel_amount', 'carbon_tax_calculation.fuel_amount column should not have a default value');
+
+select col_type_is('ggircs', 'carbon_tax_calculation', 'fuel_charge', 'numeric', 'carbon_tax_calculation.fuel_charge column should be type numeric');
+select col_hasnt_default('ggircs', 'carbon_tax_calculation', 'fuel_charge', 'carbon_tax_calculation.fuel_charge column should not have a default value');
+
+select col_type_is('ggircs', 'carbon_tax_calculation', 'pro_rated_fuel_charge', 'numeric', 'carbon_tax_calculation.pro_rated_fuel_charge column should be type numeric');
+select col_hasnt_default('ggircs', 'carbon_tax_calculation', 'pro_rated_fuel_charge', 'carbon_tax_calculation.pro_rated_fuel_charge column should not have a default value');
+
+select col_type_is('ggircs', 'carbon_tax_calculation', 'unit_conversion_factor', 'integer', 'carbon_tax_calculation.unit_conversion_factor column should be type integer');
+select col_hasnt_default('ggircs', 'carbon_tax_calculation', 'unit_conversion_factor', 'carbon_tax_calculation.unit_conversion_factor column should not have a default value');
+
+select col_type_is('ggircs', 'carbon_tax_calculation', 'flat_calculation', 'character varying(1000)', 'carbon_tax_calculation.flat_calculation column should be type varchar');
+select col_hasnt_default('ggircs', 'carbon_tax_calculation', 'flat_calculation', 'carbon_tax_calculation.flat_calculation column should not have a default value');
+
+select col_type_is('ggircs', 'carbon_tax_calculation', 'pro_rated_calculation', 'character varying(1000)', 'carbon_tax_calculation.pro_rated_calculation column should be type varchar');
+select col_hasnt_default('ggircs', 'carbon_tax_calculation', 'pro_rated_calculation', 'carbon_tax_calculation.pro_rated_calculation column should not have a default value');
 
 select col_type_is('ggircs', 'carbon_tax_calculation', 'calculated_carbon_tax', 'numeric', 'carbon_tax_calculation.calculated_carbon_tax column should be type numeric');
 select col_hasnt_default('ggircs', 'carbon_tax_calculation', 'calculated_carbon_tax', 'carbon_tax_calculation.calculated_carbon_tax column should not have a default value');

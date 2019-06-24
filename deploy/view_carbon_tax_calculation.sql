@@ -86,9 +86,9 @@ select report_id,
        round(pro_rated_fuel_charge / unit_conversion_factor, 4) as pro_rated_fuel_charge,
        unit_conversion_factor,
        round((fuel_amount * flat_rate), 2) as calculated_carbon_tax,
-       'Flat Rate Calculation: (fuel_amount * fuel_charge * unit_conversion_factor)' as flat_calculation,
+       'Flat Rate Calculation: (fuel_amount * fuel_charge * unit_conversion_factor)'::varchar(1000) as flat_calculation,
        round((fuel_amount * pro_rated_fuel_charge), 2) as pro_rated_calculated_carbon_tax,
-       'Pro-rated Rate Calculation: (fuel_amount * pro_rated_fuel_charge * unit_conversion_factor)' as pro_rated_calculation
+       'Pro-rated Rate Calculation: (fuel_amount * pro_rated_fuel_charge * unit_conversion_factor)'::varchar(1000) as pro_rated_calculation
 from fuel;
 
 commit;
