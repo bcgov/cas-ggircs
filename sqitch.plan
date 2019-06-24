@@ -44,6 +44,7 @@ function_export_measured_emission_factor [materialized_view_fuel materialized_vi
 function_export_mv_to_table [table_ghgr_import materialized_view_report materialized_view_final_report materialized_view_facility materialized_view_organisation materialized_view_address materialized_view_contact materialized_view_naics materialized_view_identifier materialized_view_permit materialized_view_parent_organisation materialized_view_activity materialized_view_unit materialized_view_fuel materialized_view_emission materialized_view_additional_data] 2019-05-13T20:26:20Z Hamza Javed <hamza@button.is> # Add a function that exports all materialized views to tables
 table_fuel_carbon_tax_details [schema_ggircs_swrs] 2019-06-21T17:15:03Z Dylan Leard <dylan@button.is> # add fuel carbon tax details table
 table_naics_category [schema_ggircs_swrs] 2019-06-24T23:03:05Z Dylan Leard <dylan@button.is> # add table naics_category to schema ggircs_swrs
+table_naics_naics_category [schema_ggircs_swrs] 2019-06-24T23:11:21Z Dylan Leard <dylan@button.is> # add through table naics_naics_category to schema ggircs_swrs
 table_fuel_mapping [schema_ggircs_swrs] 2019-05-23T21:43:54Z Dylan Leard <dylan@button.is> # add fuel mapping table to schema ggircs_swrs
 table_carbon_tax_rate_mapping [schema_ggircs_swrs] 2019-05-28T23:02:37Z Dylan Leard <dylan@button.is> # add carbon tax rate table to schema ggircs_swrs
 table_report [schema_ggircs] 2019-06-03T22:45:25Z Dylan Leard <dylan@button.is> # add table report to schema ggircs
