@@ -153,15 +153,307 @@ select col_hasnt_default('ggircs', 'attributable_emissions_with_details', 'swrs_
 -- XML fixture for testing
 insert into ggircs_swrs.ghgr_import (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <RegistrationData>
+    <Organisation>
+      <Details>
+        <BusinessLegalName>Bart Simpson</BusinessLegalName>
+        <EnglishTradeName>Bart Simpson</EnglishTradeName>
+        <FrenchTradeName/>
+        <CRABusinessNumber>12345</CRABusinessNumber>
+        <DUNSNumber>0</DUNSNumber>
+        <WebSite>www.nhl.com</WebSite>
+      </Details>
+      <Address>
+        <PhysicalAddress>
+          <StreetNumber>300</StreetNumber>
+          <StreetNumberSuffix/>
+          <StreetName>A Drive</StreetName>
+          <StreetType>Drive</StreetType>
+          <StreetDirection>North</StreetDirection>
+          <Municipality>Funky Town</Municipality>
+          <ProvTerrState>British Columbia</ProvTerrState>
+          <PostalCodeZipCode>H0H0H0</PostalCodeZipCode>
+          <Country>Canada</Country>
+        </PhysicalAddress>
+        <MailingAddress>
+          <DeliveryMode>Post Office Box</DeliveryMode>
+          <POBoxNumber>1</POBoxNumber>
+          <StreetNumber>300</StreetNumber>
+          <StreetNumberSuffix/>
+          <StreetName>A Drive</StreetName>
+          <StreetType>Drive</StreetType>
+          <Municipality>Funky Town</Municipality>
+          <ProvTerrState>British Columbia</ProvTerrState>
+          <PostalCodeZipCode>H0H0H0</PostalCodeZipCode>
+          <Country>Canada</Country>
+          <AdditionalInformation/>
+        </MailingAddress>
+      </Address>
+    </Organisation>
+    <Facility>
+      <Details>
+        <FacilityName>fname</FacilityName>
+        <RelationshipType>Owned and Operated</RelationshipType>
+        <PortabilityIndicator>N</PortabilityIndicator>
+        <Status>Active</Status>
+      </Details>
+      <Identifiers>
+        <IdentifierList>
+          <Identifier>
+            <IdentifierType>BCGHGID</IdentifierType>
+            <IdentifierValue>RD_123456</IdentifierValue>
+          </Identifier>
+          <Identifier>
+            <IdentifierType>GHGRP Identification Number</IdentifierType>
+            <IdentifierValue>654321</IdentifierValue>
+          </Identifier>
+          <Identifier>
+            <IdentifierType>National Emission Reduction Masterplan</IdentifierType>
+            <IdentifierValue>1234</IdentifierValue>
+          </Identifier>
+          <Identifier>
+            <IdentifierType>National Pollutant Release Inventory Identifier</IdentifierType>
+            <IdentifierValue>0000</IdentifierValue>
+          </Identifier>
+        </IdentifierList>
+        <NAICSCodeList>
+          <NAICSCode>
+            <NAICSClassification>Chemical Pulp Mills </NAICSClassification>
+            <Code>721310</Code>
+            <NaicsPriority>Primary</NaicsPriority>
+          </NAICSCode>
+        </NAICSCodeList>
+        <Permits>
+          <Permit>
+            <IssuingAgency>British Columbia</IssuingAgency>
+            <PermitNumber>0000</PermitNumber>
+          </Permit>
+        </Permits>
+      </Identifiers>
+      <Address>
+        <PhysicalAddress>
+          <StreetNumber>123</StreetNumber>
+          <StreetName>A Drive</StreetName>
+          <StreetType>Drive</StreetType>
+          <Municipality>Funky Town</Municipality>
+          <ProvTerrState>British Columbia</ProvTerrState>
+          <PostalCodeZipCode>H0H0H0</PostalCodeZipCode>
+          <Country>Canada</Country>
+        </PhysicalAddress>
+        <MailingAddress>
+          <DeliveryMode>Post Office Box</DeliveryMode>
+          <POBoxNumber>000</POBoxNumber>
+          <StreetNumber>300</StreetNumber>
+          <StreetName>A Drive</StreetName>
+          <StreetType>Drive</StreetType>
+          <Municipality>Funky Town</Municipality>
+          <ProvTerrState>British Columbia</ProvTerrState>
+          <PostalCodeZipCode>H0H0H0</PostalCodeZipCode>
+          <Country>Canada</Country>
+          <AdditionalInformation/>
+        </MailingAddress>
+        <GeographicAddress>
+          <Latitude>1.23000</Latitude>
+          <Longitude>1.26000</Longitude>
+          <UTMZone>1</UTMZone>
+          <UTMNorthing>1</UTMNorthing>
+          <UTMEasting>1</UTMEasting>
+        </GeographicAddress>
+      </Address>
+    </Facility>
+    <Contacts/>
+    <ParentOrganisations>
+      <ParentOrganisation>
+        <Details>
+          <BusinessLegalName>ABC</BusinessLegalName>
+          <CRABusinessNumber>123456789</CRABusinessNumber>
+          <PercentageOwned>0</PercentageOwned>
+        </Details>
+        <Address>
+          <PhysicalAddress>
+            <UnitNumber/>
+            <StreetNumber>0</StreetNumber>
+            <StreetNumberSuffix/>
+            <StreetName/>
+            <Municipality/>
+            <PostalCodeZipCode/>
+            <AdditionalInformation/>
+            <LandSurveyDescription/>
+            <NationalTopographicalDescription/>
+          </PhysicalAddress>
+          <MailingAddress>
+            <UnitNumber>1</UnitNumber>
+            <StreetNumber>2700</StreetNumber>
+            <StreetNumberSuffix/>
+            <StreetName>00th</StreetName>
+            <StreetType>Avenue</StreetType>
+            <Municipality>Vancouver</Municipality>
+            <ProvTerrState>British Columbia</ProvTerrState>
+            <PostalCodeZipCode>H0H0H0</PostalCodeZipCode>
+            <Country>Canada</Country>
+            <AdditionalInformation/>
+          </MailingAddress>
+        </Address>
+      </ParentOrganisation>
+    </ParentOrganisations>
+  </RegistrationData>
+  <ReportDetails>
+    <ReportID>1234</ReportID>
+    <ReportType>R1</ReportType>
+    <FacilityId>0000</FacilityId>
+    <FacilityType>ABC</FacilityType>
+    <OrganisationId>0000</OrganisationId>
+    <ReportingPeriodDuration>2025</ReportingPeriodDuration>
+    <ReportStatus>
+      <Status>Submitted</Status>
+      <SubmissionDate>2013-03-27T19:25:55.32</SubmissionDate>
+      <LastModifiedBy>Buddy</LastModifiedBy>
+    </ReportStatus>
+    <ActivityOrSource>
+      <ActivityList>
+        <Activity>
+          <ActivityName>GeneralStationaryCombustion</ActivityName>
+          <TableNumber>1</TableNumber>
+        </Activity>
+        <Activity>
+          <ActivityName>MobileCombustion</ActivityName>
+          <TableNumber>1</TableNumber>
+        </Activity>
+        <Activity>
+          <ActivityName>ElectricityGeneration</ActivityName>
+          <TableNumber>1</TableNumber>
+        </Activity>
+        <Activity>
+          <ActivityName>PulpAndPaperProduction</ActivityName>
+          <TableNumber>1</TableNumber>
+        </Activity>
+      </ActivityList>
+    </ActivityOrSource>
+  </ReportDetails>
+  <OperationalWorkerReport/>
+  <VerifyTombstone>
+    <Organisation>
+      <Details>
+        <BusinessLegalName>Bart Simpson</BusinessLegalName>
+        <EnglishTradeName>Bart Simpson</EnglishTradeName>
+        <CRABusinessNumber>123456778</CRABusinessNumber>
+        <DUNSNumber>00-000-0000</DUNSNumber>
+      </Details>
+      <Address>
+        <MailingAddress>
+          <POBoxNumber>0000</POBoxNumber>
+          <StreetNumber>00</StreetNumber>
+          <StreetName>A Drive</StreetName>
+          <StreetType>Drive</StreetType>
+          <Municipality>Funky Town</Municipality>
+          <ProvTerrState>British Columbia</ProvTerrState>
+          <PostalCodeZipCode>H0H0H0</PostalCodeZipCode>
+          <Country>Canada</Country>
+        </MailingAddress>
+      </Address>
+    </Organisation>
+    <Facility>
+      <Details>
+        <FacilityName>Bart Simpson</FacilityName>
+        <Identifiers>
+          <IdentifierList>
+            <Identifier>
+              <IdentifierType>NPRI</IdentifierType>
+              <IdentifierValue>12345</IdentifierValue>
+            </Identifier>
+            <Identifier>
+              <IdentifierType>BCGHGID</IdentifierType>
+              <IdentifierValue>VT_12345</IdentifierValue>
+            </Identifier>
+          </IdentifierList>
+          <NAICSCodeList>
+            <NAICSCode>
+              <Code>721310</Code>
+            </NAICSCode>
+          </NAICSCodeList>
+        </Identifiers>
+      </Details>
+      <Address>
+        <PhysicalAddress>
+          <StreetNumber>1</StreetNumber>
+          <StreetName>A Drive</StreetName>
+          <StreetType>Drive</StreetType>
+          <Municipality>Funky Town</Municipality>
+          <ProvTerrState>British Columbia</ProvTerrState>
+          <PostalCodeZipCode>H0H0H0</PostalCodeZipCode>
+          <Country>Canada</Country>
+        </PhysicalAddress>
+        <GeographicalAddress>
+          <Latitude>1.23000</Latitude>
+          <Longitude>1.26000</Longitude>
+        </GeographicalAddress>
+      </Address>
+    </Facility>
+    <Contacts>
+      <Contact>
+        <Details>
+          <ContactType>Operator Contact</ContactType>
+          <GivenName>Buddy</GivenName>
+          <TelephoneNumber>1234</TelephoneNumber>
+          <ExtensionNumber>1</ExtensionNumber>
+          <EmailAddress>abc@abc.ca</EmailAddress>
+          <Position>Environmental Manager</Position>
+        </Details>
+        <Address>
+          <MailingAddress>
+            <POBoxNumber>00</POBoxNumber>
+            <Municipality>Funky Town</Municipality>
+            <ProvTerrState>British Columbia</ProvTerrState>
+            <PostalCodeZipCode>H0H0H0</PostalCodeZipCode>
+            <Country>Canada</Country>
+          </MailingAddress>
+        </Address>
+      </Contact>
+      <Contact>
+        <Details>
+          <ContactType>Operator Representative</ContactType>
+          <GivenName>Buddy</GivenName>
+          <TelephoneNumber>0000</TelephoneNumber>
+          <ExtensionNumber>1</ExtensionNumber>
+          <EmailAddress>abc@abc.ca</EmailAddress>
+          <Position>Environmental Manager</Position>
+        </Details>
+        <Address>
+          <MailingAddress>
+            <POBoxNumber>00</POBoxNumber>
+            <Municipality>Funky Town</Municipality>
+            <ProvTerrState>British Columbia</ProvTerrState>
+            <PostalCodeZipCode>H0H0H0</PostalCodeZipCode>
+            <Country>Canada</Country>
+          </MailingAddress>
+        </Address>
+      </Contact>
+    </Contacts>
+    <ParentOrganisations/>
+  </VerifyTombstone>
   <ActivityData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <ActivityPages>
-      <Process ProcessName="GeneralStationaryCombustion">
-        <SubProcess SubprocessName="(a) general stationary combustion, useful energy" InformationRequirement="Required">
-          <Units>
+      <Process ProcessName="ElectricityGeneration">
+        <SubProcess SubprocessName="Emissions from fuel combustion for electricity generation" InformationRequirement="Required">
+          <Units UnitType="Cogen Units">
             <Unit>
+              <COGenUnit>
+                <CogenUnitName>Boiler 16 - hog fuel</CogenUnitName>
+                <NameplateCapacity>5.9</NameplateCapacity>
+                <NetPower>30165</NetPower>
+                <CycleType>Topping</CycleType>
+                <ThermalOutputQuantity>886917960</ThermalOutputQuantity>
+                <SupplementalFiringPurpose>Electr. Generation</SupplementalFiringPurpose>
+              </COGenUnit>
               <Fuels>
                 <Fuel>
-                  <Emissions EmissionsType="Combustion: Field gas or Process Vent Gas">
+                  <FuelType>Residual Fuel Oil (#5 &amp; 6)</FuelType>
+                  <FuelClassification>non-biomass</FuelClassification>
+                  <FuelDescription/>
+                  <FuelUnits>kilolitres</FuelUnits>
+                  <AnnualFuelAmount>9441</AnnualFuelAmount>
+                  <AnnualWeightedAverageCarbonContent>0.862</AnnualWeightedAverageCarbonContent>
+                  <Emissions>
                     <Emission>
                       <Groups>
                         <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
@@ -169,33 +461,28 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
                         <EmissionGroupTypes>EC_GeneralStationaryCombustionEmissions</EmissionGroupTypes>
                       </Groups>
                       <NotApplicable>false</NotApplicable>
-                      <Quantity>28215</Quantity>
-                      <CalculatedQuantity>28215</CalculatedQuantity>
-                      <GasType>ATTRIBUTABLE</GasType>
-                      <Methodology>Methodology 2 (measured HHV/Steam)</Methodology>
+                      <Quantity>29819.5973</Quantity>
+                      <CalculatedQuantity>29819.5973</CalculatedQuantity>
+                      <GasType>CO2nonbio</GasType>
+                      <Methodology>Methodology 3 (measured CC/Steam)</Methodology>
                     </Emission>
                   </Emissions>
-                </Fuel>
-                <Fuel>
-                  <Emission>
-                    <GasType>gassy</GasType>
-                  </Emission>
+                  <AlternativeMethodologyDescription/>
                 </Fuel>
               </Fuels>
             </Unit>
           </Units>
         </SubProcess>
       </Process>
+      <Process>
+        <SubProcess SubprocessName="Additional Reportable Information as per WCI.352(i)(1)-(12)" InformationRequirement="MandatoryAdditional">
+          <Amount AmtDomain="PulpAndPaperBlackLiquor" AmtAction="Combusted" AmtPeriod="Annual">168389</Amount>
+          <PercentSolidsByWeight>53</PercentSolidsByWeight>
+          <PulpAndPaperCarbonates/>
+        </SubProcess>
+      </Process>
     </ActivityPages>
   </ActivityData>
-  <ReportDetails>
-    <ReportID>1234</ReportID>
-    <ReportType>R1</ReportType>
-    <FacilityId>0000</FacilityId>
-    <FacilityType>ABC</FacilityType>
-    <OrganisationId>0000</OrganisationId>
-    <ReportingPeriodDuration>2019</ReportingPeriodDuration>
-  </ReportDetails>
 </ReportData>
 $$);
 
@@ -485,6 +772,61 @@ select set_eq(
     'select id from ggircs.unit',
     'fk unit_id references unit'
 );
+
+-- Attributable Emissions with details has correct information
+select set_eq(
+   'select * from ggircs.attributable_emissions_with_details',
+    $$ select
+        e.id,
+        o.business_legal_name,
+        fc.facility_name,
+        fc.facility_type,
+        ac.process_name,
+        ac.sub_process_name,
+        e.emission_type,
+        e.gas_type,
+        e.quantity,
+        e.calculated_quantity,
+        e.methodology,
+        regexp_replace(
+         regexp_replace(
+          e.emission_category, 'BC_ScheduleB_', ''), 'Emissions', ''
+         )::varchar(1000) as emission_category,
+        rp.reporting_period_duration,
+        f.fuel_type,
+        f.fuel_units,
+        f.fuel_classification,
+        f.fuel_description,
+        f.annual_fuel_amount,
+        f.annual_weighted_avg_carbon_content,
+        f.annual_weighted_avg_hhv,
+        f.annual_steam_generation,
+        f.alternative_methodology_description,
+        n.naics_classification,
+        n.naics_code,
+        u.unit_name,
+        u.id as unit_id,
+        e.ghgr_import_id,
+        e.report_id,
+        e.organisation_id,
+        e.single_facility_id,
+        rp.swrs_report_id,
+        o.swrs_organisation_id,
+        fc.swrs_facility_id
+      from ggircs.emission as e
+        join ggircs.fuel as f on e.fuel_id = f.id
+        join ggircs.naics as n on e.naics_id = n.id
+        join ggircs.single_facility as fc on e.single_facility_id = fc.id
+        join ggircs.report as rp on e.report_id = rp.id
+        join ggircs.activity as ac on e.activity_id = ac.id
+        join ggircs.organisation as o on e.organisation_id = o.id
+        join ggircs.unit as u on e.unit_id = u.id
+
+        $$,
+    'ggircs.attributable_emissions_with_details has correct information'
+
+);
+select * from ggircs.attributable_emissions_with_details;
 
 select * from finish();
 rollback;
