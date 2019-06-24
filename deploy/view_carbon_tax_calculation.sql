@@ -8,7 +8,7 @@ begin;
 
 create or replace view ggircs.carbon_tax_calculation as
     with fuel as (
-        select _report.id                                                 as report_id,
+        select _report.id                                                    as report_id,
                _organisation.id                                              as organisation_id,
                _single_facility.id                                           as single_facility_id,
                _activity.id                                                  as activity_id,
@@ -19,7 +19,10 @@ create or replace view ggircs.carbon_tax_calculation as
                coalesce(_fuel.annual_fuel_amount, _emission.quantity)        as fuel_amount,
                _report.reporting_period_duration::integer as year,
                _pro_rated_fuel_charge.pro_rated_fuel_charge,
-               _pro_rated_fuel_charge.flat_rate
+               _pro_rated_fuel_charge.flat_rate,
+               _fuel_carbon_tax_details.cta_rate_units                      as units,
+               _fuel_carbon_tax_details.unit_conversion_factor              as unit_conversion_factor,
+               _fuel_charge.fuel_charge
         from ggircs.fuel as _fuel
                  join ggircs.unit as _unit
                       on _fuel.unit_id = _unit.id
@@ -62,6 +65,12 @@ create or replace view ggircs.carbon_tax_calculation as
                  join ggircs.pro_rated_fuel_charge as _pro_rated_fuel_charge
                       on _fuel_mapping.id = _pro_rated_fuel_charge.fuel_mapping_id
                       and _report.reporting_period_duration::integer = _pro_rated_fuel_charge.rpd
+                 join ggircs_swrs.fuel_carbon_tax_details as _fuel_carbon_tax_details
+                      on _fuel_mapping.fuel_carbon_tax_details_id = _fuel_carbon_tax_details.id
+                 join ggircs_swrs.fuel_charge as _fuel_charge
+                      on _fuel_charge.fuel_mapping_id = _fuel_mapping.id
+                      and (concat(_report.reporting_period_duration::text, '-12-31')::date
+                      between _fuel_charge.start_date and _fuel_charge.end_date)
     )
 select report_id,
        organisation_id,
@@ -73,8 +82,13 @@ select report_id,
        year,
        fuel_type,
        fuel_amount,
-       (fuel_amount * flat_rate) as calculated_carbon_tax,
-       (fuel_amount * pro_rated_fuel_charge) as pro_rated_calculated_carbon_tax
+       fuel_charge,
+       round(pro_rated_fuel_charge / unit_conversion_factor, 4) as pro_rated_fuel_charge,
+       unit_conversion_factor,
+       round((fuel_amount * flat_rate), 2) as calculated_carbon_tax,
+       'Flat Rate Calculation: (fuel_amount * fuel_charge * unit_conversion_factor)' as flat_calculation,
+       round((fuel_amount * pro_rated_fuel_charge), 2) as pro_rated_calculated_carbon_tax,
+       'Pro-rated Rate Calculation: (fuel_amount * pro_rated_fuel_charge * unit_conversion_factor)' as pro_rated_calculation
 from fuel;
 
 commit;

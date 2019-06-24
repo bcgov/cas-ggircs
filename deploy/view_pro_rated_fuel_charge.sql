@@ -79,7 +79,9 @@ create or replace view ggircs.pro_rated_fuel_charge as
             select fuel_mapping_id,
                    fuel_type,
                    rpd,
+
                    sum(distinct(pro_rated_rates)) as pro_rated_fuel_charge,
-                   flat_rate
-            from y group by fuel_mapping_id, fuel_type, flat_rate, rpd;
+                   flat_rate,
+                   unit_conversion_factor
+            from y group by fuel_mapping_id, fuel_type, flat_rate, rpd, unit_conversion_factor;
 commit;
