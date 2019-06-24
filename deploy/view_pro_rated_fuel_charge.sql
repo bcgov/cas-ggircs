@@ -80,7 +80,6 @@ create or replace view ggircs.pro_rated_fuel_charge as
             select fuel_mapping_id,
                    fuel_type,
                    year,
-
                    sum(distinct(pro_rated_rates)) as pro_rated_fuel_charge,
                    flat_rate,
                    unit_conversion_factor
