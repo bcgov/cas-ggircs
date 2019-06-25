@@ -30,7 +30,7 @@ create or replace view ggircs.pro_rated_fuel_charge as
                     then
                     concat(_report.reporting_period_duration::text, '-12-31')::date - start_date
                     else
-                    365
+                    concat(_report.reporting_period_duration::text, '-12-31')::date - concat(_report.reporting_period_duration::text, '-01-01')::date
                 end as duration
         from ggircs.fuel
                  join ggircs.report as _report
