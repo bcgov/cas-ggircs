@@ -58,7 +58,7 @@ $function$
       on _organisation.ghgr_import_id = _report.ghgr_import_id
     ;
 
-    select ggircs_swrs.export_facility_to_ggircs();
+    perform ggircs_swrs.export_facility_to_ggircs();
 
     -- ACTIVITY
     delete from ggircs.activity;
