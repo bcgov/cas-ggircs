@@ -5,7 +5,7 @@
 
 begin;
 
-create or replace view ggircs.naics_mapping as
+create or replace view ggircs.naics_category_mapping as
 
     select naics.naics_code, _naics_category_hhw.naics_category as hhw_category, _naics_category_irc.naics_category as irc_category
         from ggircs.naics

@@ -2,6 +2,6 @@
 
 begin;
 
-drop view if exists ggircs.naics_mapping;
+drop view if exists ggircs.naics_category_mapping;
 
 commit;
