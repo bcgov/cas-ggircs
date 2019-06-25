@@ -17,7 +17,7 @@ $function$
   declare
 
        mv_array text[] := $$
-                          {report, organisation,
+                          {report, organisation, facility,
                           activity, unit, identifier, naics, emission,
                           final_report, fuel, permit, parent_organisation, contact,
                           address, additional_data, measured_emission_factor}
@@ -296,9 +296,7 @@ $function$
       and _emission.sub_process_idx = _unit.sub_process_idx
       and _emission.activity_name = _unit.activity_name
       and _emission.units_idx = _unit.units_idx
-      and _emission.unit_idx = _unit.unit_idx
-      ;
-
+      and _emission.unit_idx = _unit.unit_idx;
 
     -- PERMIT
     delete from ggircs.permit;

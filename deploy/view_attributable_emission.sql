@@ -34,6 +34,7 @@ create or replace view ggircs.attributable_emission as(
           on x.activity_id = _activity.id
           and x.gas_type != 'CO2bioC'
           and _facility.facility_type != 'EIO'
+          and _facility.facility_type != 'LFO'
           and _activity.sub_process_name not in  ('Additional Reportable Information as per WCI.352(i)(1)-(12)',
                                    'Additional Reportable Information as per WCI.352(i)(13)',
                                    'Additional Reportable Information as per WCI.362(g)(21)',

@@ -4,7 +4,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(109);
+select plan(106);
 
 insert into ggircs_swrs.ghgr_import (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -1138,7 +1138,6 @@ select tables_are('ggircs'::name, ARRAY[
     'report'::name,
     'organisation'::name,
     'facility'::name,
-    'lfo_facility'::name,
     'activity'::name,
     'unit'::name,
     'identifier'::name,
@@ -1165,7 +1164,6 @@ select tables_are('ggircs'::name, ARRAY[
 select has_pk('ggircs', 'report', 'ggircs_report has primary key');
 select has_pk('ggircs', 'organisation', 'ggircs_organisation has primary key');
 select has_pk('ggircs', 'facility', 'ggircs.facility has primary key');
-select has_pk('ggircs', 'lfo_facility', 'ggircs.lfo_facility has primary key');
 select has_pk('ggircs', 'activity', 'ggircs_activity has primary key');
 select has_pk('ggircs', 'unit', 'ggircs_unit has primary key');
 select has_pk('ggircs', 'identifier', 'ggircs_identifier has primary key');
@@ -1184,7 +1182,6 @@ select has_pk('ggircs', 'measured_emission_factor', 'ggircs_measured_emission_fa
 -- select has_fk('ggircs', 'report', 'ggircs_report has foreign key constraint(s)');
 select has_fk('ggircs', 'organisation', 'ggircs_organisation has foreign key constraint(s)');
 select has_fk('ggircs', 'facility', 'ggircs_facility has foreign key constraint(s)');
-select has_fk('ggircs', 'lfo_facility', 'ggircs_lfo_facility has foreign key constraint(s)');
 select has_fk('ggircs', 'activity', 'ggircs_activity has foreign key constraint(s)');
 select has_fk('ggircs', 'unit', 'ggircs_unit has foreign key constraint(s)');
 select has_fk('ggircs', 'identifier', 'ggircs_identifier has foreign key constraint(s)');
@@ -1202,7 +1199,6 @@ select has_fk('ggircs', 'measured_emission_factor', 'ggircs_measured_emission_fa
 select isnt_empty('select * from ggircs.report', 'there is data in ggircs.report');
 select isnt_empty('select * from ggircs.organisation', 'there is data in ggircs.organisation');
 select isnt_empty('select * from ggircs.facility', 'facility has data');
-select isnt_empty('select * from ggircs.lfo_facility', 'lfo_facility has data');
 select isnt_empty('select * from ggircs.activity', 'there is data in ggircs.activity');
 select isnt_empty('select * from ggircs.unit', 'there is data in ggircs.unit');
 select isnt_empty('select * from ggircs.identifier', 'there is data in ggircs.identifier');
@@ -1319,8 +1315,6 @@ select set_eq(
     $$
     with _facility as (
         select ghgr_import_id, organisation_id from ggircs.facility
-        union
-        select ghgr_import_id, organisation_id from ggircs.lfo_facility
     )
     select organisation.ghgr_import_id from _facility
     join ggircs.organisation
@@ -1339,8 +1333,6 @@ select set_eq(
     $$
     with _facility as (
         select report_id from ggircs.facility
-        union
-        select report_id from ggircs.lfo_facility
     )
     select report.swrs_facility_id from _facility
     join ggircs.report
@@ -1357,10 +1349,8 @@ select set_eq(
 
 select set_eq(
     $$
-    select facility.id, facility.lfo_facility_id
-    from ggircs.facility
-    inner join ggircs.lfo_facility as _lfo_facility
-    on _lfo_facility.id = facility.lfo_facility_id
+    select facility.id, facility.parent_facility_id
+    from ggircs.facility where parent_facility_id is not null
     $$,
 
     $$
@@ -1794,7 +1784,7 @@ select results_eq(
       facility.id = identifier.facility_bcghgid_id
     $$,
 
-    ARRAY['VT_12345'::varchar, 'RD_123456'::varchar],
+    ARRAY['VT_12345'::varchar, 'RD_123456'::varchar, 'RD_123456'::varchar],
 
     'Foreign key facility_bcghgid_id in ggircs.identifier references ggircs.facility.id'
 );
@@ -1894,15 +1884,15 @@ select set_eq(
 select set_eq(
     $$
     select facility.ghgr_import_id from ggircs.permit
-    join ggircs.single_facility
+    join ggircs.facility
     on
-      permit.single_facility_id = single_facility.id
+      permit.facility_id = facility.id
       order by ghgr_import_id
     $$,
 
-    'select ghgr_import_id from ggircs.single_facility order by ghgr_import_id',
+    'select ghgr_import_id from ggircs.facility order by ghgr_import_id',
 
-    'Foreign key facility_id in ggircs.permit references ggircs.single_facility.id'
+    'Foreign key facility_id in ggircs.permit references ggircs.facility.id'
 );
 
 -- Measured Emission Factor -> Fuel

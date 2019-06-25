@@ -48,7 +48,6 @@ $function$
     -- FK Facility -> Report
     left join ggircs_swrs.report as _report
         on _facility.ghgr_import_id = _report.ghgr_import_id
-
     -- FK Single Facility -> LFO Facility
     left join _final_lfo_facility
         on _organisation.swrs_organisation_id = _final_lfo_facility.swrs_organisation_id
