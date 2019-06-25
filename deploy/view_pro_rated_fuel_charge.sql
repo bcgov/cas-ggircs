@@ -17,9 +17,7 @@ create or replace view ggircs.pro_rated_fuel_charge as
                _fuel_charge.id                                                  as fuel_charge_id,
                _fuel_carbon_tax_details.unit_conversion_factor,
                concat(_report.reporting_period_duration::text, '-12-31')::date - concat(_report.reporting_period_duration::text, '-01-01')::date as year_length,
-               case when
-                    _report.reporting_period_duration::integer <= 2017
-                    then 365
+               case
                     when
                     start_date < concat(_report.reporting_period_duration::text, '-01-01')::date and end_date < concat(_report.reporting_period_duration::text, '-12-31')::date
                     then end_date - concat(_report.reporting_period_duration::text, '-01-01')::date
@@ -31,9 +29,8 @@ create or replace view ggircs.pro_rated_fuel_charge as
                     start_date > concat(_report.reporting_period_duration::text, '-01-01')::date and end_date > concat(_report.reporting_period_duration::text, '-12-31')::date
                     then
                     concat(_report.reporting_period_duration::text, '-12-31')::date - start_date
-                    when
-                    end_date < concat(_report.reporting_period_duration::text, '01-01')::date
-                    then 365
+                    else
+                    365
                 end as duration
         from ggircs.fuel
                  join ggircs.report as _report
@@ -64,7 +61,7 @@ create or replace view ggircs.pro_rated_fuel_charge as
                            from ggircs_swrs.fuel_charge as _fuel_charge
                            where _fuel_charge.fuel_mapping_id = x.fuel_mapping_id)
                        )
-             when concat(year::text, '01-01')::date > max(end_date)
+             when concat(year::text, '-01-01')::date > max(end_date)
                  then
                     (select distinct(fuel_charge) * unit_conversion_factor
                        from ggircs_swrs.fuel_charge
