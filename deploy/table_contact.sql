@@ -8,8 +8,7 @@ create table ggircs.contact (
     id                        integer primary key,
     report_id                 integer references ggircs.report(id),
     address_id                integer references ggircs.address(id),
-    single_facility_id        integer references ggircs.single_facility(id),
-    lfo_facility_id           integer references ggircs.lfo_facility(id),
+    facility_id               integer references ggircs.facility(id),
     ghgr_import_id            integer,
     organisation_id           integer,
     path_context              varchar(1000),
@@ -27,15 +26,14 @@ create table ggircs.contact (
 
 create index ggircs_contact_report_foreign_key on ggircs.contact(report_id);
 create index ggircs_contact_address_foreign_key on ggircs.contact(address_id);
-create index ggircs_contact_single_facility_foreign_key on ggircs.contact(single_facility_id);
-create index ggircs_contact_lfo_facility_foreign_key on ggircs.contact(lfo_facility_id);
+create index ggircs_contact_facility_foreign_key on ggircs.contact(facility_id);
+
 
 comment on table ggircs.contact is 'The table housing contact information';
 comment on column ggircs.contact.id is 'The primary key';
 comment on column ggircs.contact.report_id is 'A foreign key reference to ggircs.report';
 comment on column ggircs.contact.address_id is 'A foreign key reference to ggircs.address';
-comment on column ggircs.contact.single_facility_id is 'A foreign key reference to ggircs.single_facility';
-comment on column ggircs.contact.lfo_facility_id is 'A foreign key reference to ggircs.lfo_facility';
+comment on column ggircs.contact.facility_id is 'A foreign key reference to ggircs.facility';
 comment on column ggircs.contact.ghgr_import_id is 'The foreign key reference to ggircs.ghgr_import';
 comment on column ggircs.contact.organisation_id is 'A foreign key reference to ggircs.organisation';
 comment on column ggircs.contact.path_context is 'The umbrella context from which the contact was pulled from the xml (VerifyTombstone or RegistrationData';

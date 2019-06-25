@@ -16,7 +16,7 @@ select has_view(
 select columns_are('ggircs'::name, 'carbon_tax_calculation'::name, array[
     'report_id'::name,
     'organisation_id'::name,
-    'single_facility_id'::name,
+    'facility_id'::name,
     'naics_id'::name,
     'activity_id'::name,
     'fuel_id'::name,
@@ -37,8 +37,8 @@ select columns_are('ggircs'::name, 'carbon_tax_calculation'::name, array[
 select col_type_is('ggircs', 'carbon_tax_calculation', 'organisation_id', 'integer', 'carbon_tax_calculation.organisation_id column should be type integer');
 select col_hasnt_default('ggircs', 'carbon_tax_calculation', 'organisation_id', 'carbon_tax_calculation.organisation_id column should not have a default value');
 
-select col_type_is('ggircs', 'carbon_tax_calculation', 'single_facility_id', 'integer', 'carbon_tax_calculation.single_facility_id column should be type integer');
-select col_hasnt_default('ggircs', 'carbon_tax_calculation', 'single_facility_id', 'carbon_tax_calculation.single_facility_id column should not have a default value');
+select col_type_is('ggircs', 'carbon_tax_calculation', 'facility_id', 'integer', 'carbon_tax_calculation.facility_id column should be type integer');
+select col_hasnt_default('ggircs', 'carbon_tax_calculation', 'facility_id', 'carbon_tax_calculation.facility_id column should not have a default value');
 
 select col_type_is('ggircs', 'carbon_tax_calculation', 'naics_id', 'integer', 'carbon_tax_calculation.naics_id column should be type integer');
 select col_hasnt_default('ggircs', 'carbon_tax_calculation', 'naics_id', 'carbon_tax_calculation.naics_id column should not have a default value');
@@ -171,6 +171,7 @@ refresh materialized view ggircs_swrs.emission with data;
     --FK Organisation -> Report
     left join ggircs_swrs.report as _report
       on _organisation.ghgr_import_id = _report.ghgr_import_id;
+<<<<<<< 42e9e1797755213e1dac5923e44b217adc9d3a2e
 
     -- LFO FACILITY
     delete from ggircs.lfo_facility;
@@ -190,6 +191,9 @@ refresh materialized view ggircs_swrs.emission with data;
     left join ggircs_swrs.report as _report
         on _facility.ghgr_import_id = _report.ghgr_import_id;
 
+=======
+/*
+>>>>>>> Unsplit facility
     -- SINGLE FACILITY
     delete from ggircs.single_facility;
     with _final_lfo_facility as (
@@ -245,6 +249,7 @@ refresh materialized view ggircs_swrs.emission with data;
       and _lfo_facility.facility_type = 'LFO'
     -- FK Activity -> Report
     left join ggircs_swrs.report as _report
+<<<<<<< 42e9e1797755213e1dac5923e44b217adc9d3a2e
       on _activity.ghgr_import_id = _report.ghgr_import_id;
 
     -- UNIT
@@ -325,6 +330,12 @@ refresh materialized view ggircs_swrs.emission with data;
     -- NAICS
     delete from ggircs.naics;
     insert into ggircs.naics(id, ghgr_import_id, single_facility_id, lfo_facility_id, registration_data_single_facility_id, registration_data_lfo_facility_id, naics_mapping_id, report_id, swrs_facility_id, path_context, naics_classification, naics_code, naics_priority)
+=======
+        on _facility.ghgr_import_id = _report.ghgr_import_id;
+*/
+-- NAICS
+insert into ggircs.naics(id, ghgr_import_id, single_facility_id, lfo_facility_id, registration_data_single_facility_id, registration_data_lfo_facility_id, naics_mapping_id, report_id, swrs_facility_id, path_context, naics_classification, naics_code, naics_priority)
+>>>>>>> Unsplit facility
 
     select _naics.id, _naics.ghgr_import_id, _single_facility.id, _lfo_facility.id,
         (select _single_facility.id where _naics.path_context = 'RegistrationData'),
@@ -505,7 +516,7 @@ select results_eq(
     'select swrs_organisation_id from ggircs.organisation',
     'fk organisation_id references organisation'
 );
-
+/*
 -- Single Facility
 select set_eq(
     $$ select single_facility.swrs_facility_id from ggircs.carbon_tax_calculation as ct
@@ -514,7 +525,7 @@ select set_eq(
     'select swrs_facility_id from ggircs.single_facility',
     'fk single_facility_id references single_facility'
 );
-
+*/
 -- Naics
 select set_eq(
     $$ select naics.naics_code from ggircs.carbon_tax_calculation as ct

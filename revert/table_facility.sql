@@ -2,6 +2,6 @@
 
 begin;
 
-drop table ggircs.single_facility;
+drop table ggircs.facility;
 
 commit;

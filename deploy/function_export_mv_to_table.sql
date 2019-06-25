@@ -17,7 +17,7 @@ $function$
   declare
 
        mv_array text[] := $$
-                          {report, organisation, facility,
+                          {report, organisation,
                           activity, unit, identifier, naics, emission,
                           final_report, fuel, permit, parent_organisation, contact,
                           address, additional_data, measured_emission_factor}
@@ -55,82 +55,28 @@ $function$
     inner join ggircs_swrs.final_report as _final_report on _organisation.ghgr_import_id = _final_report.ghgr_import_id
     --FK Organisation -> Report
     left join ggircs_swrs.report as _report
-      on _organisation.ghgr_import_id = _report.ghgr_import_id;
+      on _organisation.ghgr_import_id = _report.ghgr_import_id
+    ;
 
-    -- LFO FACILITY
-    delete from ggircs.lfo_facility;
-    insert into ggircs.lfo_facility (id, ghgr_import_id, organisation_id, report_id, swrs_facility_id, facility_name, facility_type, relationship_type, portability_indicator, status, latitude, longitude)
-
-    select _facility.id, _facility.ghgr_import_id, _organisation.id, _report.id, _facility.swrs_facility_id, _facility.facility_name, _facility.facility_type,
-           _facility.relationship_type, _facility.portability_indicator, _facility.status, _facility.latitude, _facility.longitude
-
-    from ggircs_swrs.facility as _facility
-   inner join ggircs_swrs.final_report as _final_report
-        on _facility.ghgr_import_id = _final_report.ghgr_import_id
-        and _facility.facility_type = 'LFO'
-    -- FK Facility -> Organisation
-    left join ggircs_swrs.organisation as _organisation
-        on _facility.ghgr_import_id = _organisation.ghgr_import_id
-    -- FK Facility -> Report
-    left join ggircs_swrs.report as _report
-        on _facility.ghgr_import_id = _report.ghgr_import_id;
-
-    -- SINGLE FACILITY
-    delete from ggircs.single_facility;
-    with _final_lfo_facility as (
-        -- facility.id will as the parent facility FK.
-        -- swrs_organisation_id and reporting_period_duration are the join constraints
-        select _facility.id, _organisation.swrs_organisation_id, _report.reporting_period_duration
-        from ggircs_swrs.facility as _facility
-        inner join ggircs_swrs.final_report as _final_report
-            on _facility.ghgr_import_id = _final_report.ghgr_import_id
-            and _facility.facility_type = 'LFO'
-        left join ggircs_swrs.organisation as _organisation
-            on _facility.ghgr_import_id = _organisation.ghgr_import_id
-        left join ggircs_swrs.report as _report
-            on _facility.ghgr_import_id = _report.ghgr_import_id
-
-    )
-    insert into ggircs.single_facility (id, ghgr_import_id, organisation_id, report_id, swrs_facility_id, lfo_facility_id, facility_name, facility_type, relationship_type, portability_indicator, status, latitude, longitude)
-
-    select _facility.id, _facility.ghgr_import_id, _organisation.id, _report.id, _facility.swrs_facility_id, _final_lfo_facility.id, _facility.facility_name, _facility.facility_type,
-           _facility.relationship_type, _facility.portability_indicator, _facility.status, _facility.latitude, _facility.longitude
-
-    from ggircs_swrs.facility as _facility
-    inner join ggircs_swrs.final_report as _final_report on _facility.ghgr_import_id = _final_report.ghgr_import_id
-        and (_facility.facility_type != 'LFO' or _facility.facility_type is null)
-    -- FK Facility -> Organisation
-    left join ggircs_swrs.organisation as _organisation
-        on _facility.ghgr_import_id = _organisation.ghgr_import_id
-    -- FK Facility -> Report
-    left join ggircs_swrs.report as _report
-        on _facility.ghgr_import_id = _report.ghgr_import_id
-    -- FK Single Facility -> LFO Facility
-    left join _final_lfo_facility
-        on _organisation.swrs_organisation_id = _final_lfo_facility.swrs_organisation_id
-        and _report.reporting_period_duration = _final_lfo_facility.reporting_period_duration
-        and (_facility.facility_type = 'IF_a' or _facility.facility_type = 'IF_b' or _facility.facility_type = 'L_c');
+    perform ggircs_swrs.export_facility_to_ggircs();
 
     -- ACTIVITY
     delete from ggircs.activity;
-    insert into ggircs.activity (id, ghgr_import_id, single_facility_id, lfo_facility_id, report_id, activity_name, process_name, sub_process_name, information_requirement)
+    insert into ggircs.activity (id, ghgr_import_id, facility_id,  report_id, activity_name, process_name, sub_process_name, information_requirement)
 
-    select _activity.id, _activity.ghgr_import_id, _single_facility.id, _lfo_facility.id, _report.id, _activity.activity_name, _activity.process_name, _activity.sub_process_name, _activity.information_requirement
+    select _activity.id, _activity.ghgr_import_id, _facility.id, _report.id, _activity.activity_name, _activity.process_name, _activity.sub_process_name, _activity.information_requirement
 
     from ggircs_swrs.activity as _activity
 
     inner join ggircs_swrs.final_report as _final_report on _activity.ghgr_import_id = _final_report.ghgr_import_id
-    -- FK Activity -> Single Facility
-    left join ggircs_swrs.facility as _single_facility
-      on _activity.ghgr_import_id = _single_facility.ghgr_import_id
-      and (_single_facility.facility_type != 'LFO' or _single_facility.facility_type is null)
-    -- FK Activity -> LFO Facility
-    left join ggircs_swrs.facility as _lfo_facility
-      on _activity.ghgr_import_id = _lfo_facility.ghgr_import_id
-      and _lfo_facility.facility_type = 'LFO'
+    -- FK Activity ->  Facility
+    left join ggircs_swrs.facility as _facility
+      on _activity.ghgr_import_id = _facility.ghgr_import_id
+
     -- FK Activity -> Report
     left join ggircs_swrs.report as _report
-      on _activity.ghgr_import_id = _report.ghgr_import_id;
+      on _activity.ghgr_import_id = _report.ghgr_import_id
+    ;
 
     -- UNIT
     delete from ggircs.unit;
@@ -150,37 +96,33 @@ $function$
       on _unit.ghgr_import_id = _activity.ghgr_import_id
       and _unit.process_idx = _activity.process_idx
       and _unit.sub_process_idx = _activity.sub_process_idx
-      and _unit.activity_name = _activity.activity_name;
+      and _unit.activity_name = _activity.activity_name
+    ;
 
     -- IDENTIFIER
     delete from ggircs.identifier;
-    insert into ggircs.identifier(id, ghgr_import_id, single_facility_bcghgid_id, lfo_facility_bcghgid_id, single_facility_id, lfo_facility_id, report_id, swrs_facility_id, path_context, identifier_type, identifier_value)
+    insert into ggircs.identifier(id, ghgr_import_id, facility_bcghgid_id, facility_id,  report_id, swrs_facility_id, path_context, identifier_type, identifier_value)
 
-    select _identifier.id, _identifier.ghgr_import_id, _single_facility_bcghgid.id, _lfo_facility_bcghgid.id, _single_facility.id, _lfo_facility.id, _report.id, _identifier.swrs_facility_id, _identifier.path_context, _identifier.identifier_type, _identifier.identifier_value
+    select _identifier.id, _identifier.ghgr_import_id, _facility_bcghgid.id, _facility.id,  _report.id, _identifier.swrs_facility_id, _identifier.path_context, _identifier.identifier_type, _identifier.identifier_value
 
     from ggircs_swrs.identifier as _identifier
 
     inner join ggircs_swrs.final_report as _final_report on _identifier.ghgr_import_id = _final_report.ghgr_import_id
-    -- FK Identifier -> Single Facility
-    left join ggircs_swrs.facility as _single_facility
-      on _identifier.ghgr_import_id = _single_facility.ghgr_import_id
-      and (_single_facility.facility_type != 'LFO' or _single_facility.facility_type is null)
-    -- FK Identifier -> LFO Facility
-    left join ggircs_swrs.facility as _lfo_facility
-      on _identifier.ghgr_import_id = _lfo_facility.ghgr_import_id
-      and _lfo_facility.facility_type = 'LFO'
+    -- FK Identifier -> Facility
+    left join ggircs_swrs.facility as _facility
+      on _identifier.ghgr_import_id = _facility.ghgr_import_id
     -- FK Identifier -> Report
     left join ggircs_swrs.report as _report
       on _identifier.ghgr_import_id = _report.ghgr_import_id
-    left join ggircs.single_facility as _single_facility_bcghgid
-      on _identifier.ghgr_import_id = _single_facility_bcghgid.ghgr_import_id
+    left join ggircs.facility as _facility_bcghgid
+      on _identifier.ghgr_import_id = _facility_bcghgid.ghgr_import_id
       and (((_identifier.path_context = 'RegistrationData'
              and _identifier.identifier_type = 'BCGHGID'
              and _identifier.identifier_value is not null
              and _identifier.identifier_value != '' )
 
                and (select id from ggircs_swrs.identifier as __identifier
-                  where __identifier.ghgr_import_id = _single_facility_bcghgid.ghgr_import_id
+                  where __identifier.ghgr_import_id = _facility_bcghgid.ghgr_import_id
                   and __identifier.path_context = 'VerifyTombstone'
                   and __identifier.identifier_type = 'BCGHGID'
                   and __identifier.identifier_value is not null
@@ -189,50 +131,29 @@ $function$
              and _identifier.identifier_type = 'BCGHGID'
              and _identifier.identifier_value is not null
              and _identifier.identifier_value != '' ))
-    left join ggircs.lfo_facility as _lfo_facility_bcghgid
-      on _identifier.ghgr_import_id = _lfo_facility_bcghgid.ghgr_import_id
-      and (((_identifier.path_context = 'RegistrationData'
-             and _identifier.identifier_type = 'BCGHGID'
-             and _identifier.identifier_value is not null
-             and _identifier.identifier_value != '' )
-
-               and (select id from ggircs_swrs.identifier as __identifier
-                  where __identifier.ghgr_import_id = _lfo_facility_bcghgid.ghgr_import_id
-                  and __identifier.path_context = 'VerifyTombstone'
-                  and __identifier.identifier_type = 'BCGHGID'
-                  and __identifier.identifier_value is not null
-                  and __identifier.identifier_value != '') is null)
-          or (_identifier.path_context = 'VerifyTombstone'
-             and _identifier.identifier_type = 'BCGHGID'
-             and _identifier.identifier_value is not null
-             and _identifier.identifier_value != '' ));
+      ;
 
     -- NAICS
     delete from ggircs.naics;
-    insert into ggircs.naics(id, ghgr_import_id, single_facility_id, lfo_facility_id, registration_data_single_facility_id, registration_data_lfo_facility_id, naics_mapping_id, report_id, swrs_facility_id, path_context, naics_classification, naics_code, naics_priority)
+    insert into ggircs.naics(id, ghgr_import_id, facility_id,  registration_data_facility_id, naics_mapping_id, report_id, swrs_facility_id, path_context, naics_classification, naics_code, naics_priority)
 
-    select _naics.id, _naics.ghgr_import_id, _single_facility.id, _lfo_facility.id,
-        (select _single_facility.id where _naics.path_context = 'RegistrationData'),
-        (select _lfo_facility.id where _naics.path_context = 'RegistrationData'),
+    select _naics.id, _naics.ghgr_import_id, _facility.id,
+        (select _facility.id where _naics.path_context = 'RegistrationData'),
         _naics_mapping.id, _report.id, _naics.swrs_facility_id,
         _naics.path_context, _naics.naics_classification, _naics.naics_code, _naics.naics_priority
 
     from ggircs_swrs.naics as _naics
     inner join ggircs_swrs.final_report as _final_report on _naics.ghgr_import_id = _final_report.ghgr_import_id
-    -- FK Naics -> Single Facility
-    left join ggircs_swrs.facility as _single_facility
-      on _naics.ghgr_import_id = _single_facility.ghgr_import_id
-      and (_single_facility.facility_type != 'LFO' or _single_facility.facility_type is null)
-    -- FK Naics -> LFO Facility
-    left join ggircs_swrs.facility as _lfo_facility
-      on _naics.ghgr_import_id = _lfo_facility.ghgr_import_id
-      and _lfo_facility.facility_type = 'LFO'
+    -- FK Naics ->  Facility
+    left join ggircs_swrs.facility as _facility
+      on _naics.ghgr_import_id = _facility.ghgr_import_id
     -- FK Naics -> Report
     left join ggircs_swrs.report as _report
       on _naics.ghgr_import_id = _report.ghgr_import_id
     -- FK Naics -> Naics Mapping
     left join ggircs_swrs.naics_mapping as _naics_mapping
-      on _naics.naics_code = _naics_mapping.naics_code;
+      on _naics.naics_code = _naics_mapping.naics_code
+      ;
 
     -- FUEL
     delete from ggircs.fuel;
@@ -260,15 +181,16 @@ $function$
       and _fuel.units_idx = _unit.units_idx
       and _fuel.unit_idx = _unit.unit_idx
     left join ggircs_swrs.fuel_mapping as _fuel_mapping
-      on _fuel.fuel_type = _fuel_mapping.fuel_type;
+      on _fuel.fuel_type = _fuel_mapping.fuel_type
+      ;
 
     -- EMISSION
     delete from ggircs.emission;
-    insert into ggircs.emission (id, ghgr_import_id, activity_id, single_facility_id, lfo_facility_id, fuel_id, naics_id, organisation_id, report_id, unit_id, fuel_mapping_id,
-                                 activity_name, sub_activity_name, unit_name, sub_unit_name, fuel_name, emission_type,
+    insert into ggircs.emission (id, ghgr_import_id, activity_id, facility_id,  fuel_id, naics_id, organisation_id, report_id, unit_id, activity_name, sub_activity_name,
+                                 unit_name, sub_unit_name, fuel_name, emission_type,
                                  gas_type, methodology, not_applicable, quantity, calculated_quantity, emission_category)
 
-    select _emission.id, _emission.ghgr_import_id, _activity.id, _single_facility.id, _lfo_facility.id, _fuel.id, _naics.id, _organisation.id, _report.id, _unit.id, _fuel_mapping.id,
+    select _emission.id, _emission.ghgr_import_id, _activity.id, _facility.id,  _fuel.id, _naics.id, _organisation.id, _report.id, _unit.id,
            _emission.activity_name, _emission.sub_activity_name, _emission.unit_name, _emission.sub_unit_name, _emission.fuel_name, _emission.emission_type,
            _emission.gas_type, _emission.methodology, _emission.not_applicable, _emission.quantity, _emission.calculated_quantity, _emission.emission_category
 
@@ -281,14 +203,9 @@ $function$
       and _emission.process_idx = _activity.process_idx
       and _emission.sub_process_idx = _activity.sub_process_idx
       and _emission.activity_name = _activity.activity_name
-    -- FK Emission -> Single Facility
-    left join ggircs_swrs.facility as _single_facility
-        on _emission.ghgr_import_id = _single_facility.ghgr_import_id
-        and (_single_facility.facility_type != 'LFO' or _single_facility.facility_type is null)
-    -- FK Emission -> LFO Facility
-    left join ggircs_swrs.facility as _lfo_facility
-        on _emission.ghgr_import_id = _lfo_facility.ghgr_import_id
-        and _lfo_facility.facility_type = 'LFO'
+    -- FK Emission -> Facility
+    left join ggircs_swrs.facility as _facility
+        on _emission.ghgr_import_id = _facility.ghgr_import_id
     -- FK Emission -> Fuel
     left join ggircs_swrs.fuel as _fuel
       on _emission.ghgr_import_id = _fuel.ghgr_import_id
@@ -379,27 +296,22 @@ $function$
       and _emission.sub_process_idx = _unit.sub_process_idx
       and _emission.activity_name = _unit.activity_name
       and _emission.units_idx = _unit.units_idx
-      and _emission.unit_idx = _unit.unit_idx;
+      and _emission.unit_idx = _unit.unit_idx
+      ;
 
 
     -- PERMIT
     delete from ggircs.permit;
-    insert into ggircs.permit(id, ghgr_import_id, single_facility_id, lfo_facility_id, path_context, issuing_agency, issuing_dept_agency_program, permit_number)
+    insert into ggircs.permit(id, ghgr_import_id, facility_id,  path_context, issuing_agency, issuing_dept_agency_program, permit_number)
 
-    select _permit.id, _permit.ghgr_import_id, _single_facility.id, _lfo_facility.id, _permit.path_context, _permit.issuing_agency, _permit.issuing_dept_agency_program, _permit.permit_number
+    select _permit.id, _permit.ghgr_import_id, _facility.id,  _permit.path_context, _permit.issuing_agency, _permit.issuing_dept_agency_program, _permit.permit_number
 
     from ggircs_swrs.permit as _permit
 
     inner join ggircs_swrs.final_report as _final_report on _permit.ghgr_import_id = _final_report.ghgr_import_id
-    -- FK Permit -> Single Facility
-    left join ggircs_swrs.facility as _single_facility
-        on _permit.ghgr_import_id = _single_facility.ghgr_import_id
-        and (_single_facility.facility_type != 'LFO' or _single_facility.facility_type is null)
-    -- FK Permit -> LFO Facility
-    left join ggircs_swrs.facility as _lfo_facility
-        on _permit.ghgr_import_id = _lfo_facility.ghgr_import_id
-        and _lfo_facility.facility_type = 'LFO';
-
+    -- FK Permit -> Facility
+    left join ggircs_swrs.facility as _facility
+        on _permit.ghgr_import_id = _facility.ghgr_import_id;
     -- PARENT ORGANISATION
     delete from ggircs.parent_organisation;
     insert into ggircs.parent_organisation (id, ghgr_import_id, report_id, organisation_id, path_context, percentage_owned, french_trade_name, english_trade_name,
@@ -416,11 +328,12 @@ $function$
       on _parent_organisation.ghgr_import_id = _organisation.ghgr_import_id
     -- FK Parent Organisation -> Report
     left join ggircs_swrs.report as _report
-      on _parent_organisation.ghgr_import_id = _report.ghgr_import_id;
+      on _parent_organisation.ghgr_import_id = _report.ghgr_import_id
+      ;
 
     -- ADDRESS
     delete from ggircs.address;
-    insert into ggircs.address (id, ghgr_import_id, single_facility_id, lfo_facility_id, organisation_id, parent_organisation_id, report_id, swrs_facility_id, swrs_organisation_id, path_context, type, physical_address_municipality, physical_address_unit_number,
+    insert into ggircs.address (id, ghgr_import_id, facility_id,  organisation_id, parent_organisation_id, report_id, swrs_facility_id, swrs_organisation_id, path_context, type, physical_address_municipality, physical_address_unit_number,
                                 physical_address_street_number, physical_address_street_number_suffix, physical_address_street_name, physical_address_street_type,
                                 physical_address_street_direction, physical_address_prov_terr_state, physical_address_postal_code_zip_code, physical_address_country,
                                 physical_address_national_topographical_description, physical_address_additional_information, physical_address_land_survey_description,
@@ -429,7 +342,7 @@ $function$
                                 mailing_address_street_direction, mailing_address_municipality, mailing_address_prov_terr_state, mailing_address_postal_code_zip_code,
                                 mailing_address_country, mailing_address_additional_information, geographic_address_latitude, geographic_address_longitude)
 
-    select _address.id, _address.ghgr_import_id, _single_facility.id, _lfo_facility.id, _organisation.id, _parent_organisation.id, _report.id, _address.swrs_facility_id, _address.swrs_organisation_id,
+    select _address.id, _address.ghgr_import_id, _facility.id,  _organisation.id, _parent_organisation.id, _report.id, _address.swrs_facility_id, _address.swrs_organisation_id,
            _address.path_context,_address.type, _address.physical_address_municipality, _address.physical_address_unit_number,
            _address.physical_address_street_number, _address.physical_address_street_number_suffix, _address.physical_address_street_name, _address.physical_address_street_type,
            _address.physical_address_street_direction, _address.physical_address_prov_terr_state, _address.physical_address_postal_code_zip_code, _address.physical_address_country,
@@ -442,14 +355,9 @@ $function$
     from ggircs_swrs.address as _address
 
     inner join ggircs_swrs.final_report as _final_report on _address.ghgr_import_id = _final_report.ghgr_import_id
-    -- FK Address -> Single Facility
-    left join ggircs_swrs.facility as _single_facility
-        on _address.ghgr_import_id = _single_facility.ghgr_import_id
-        and (_single_facility.facility_type != 'LFO' or _single_facility.facility_type is null)
-    -- FK Address -> LFO Facility
-    left join ggircs_swrs.facility as _lfo_facility
-        on _address.ghgr_import_id = _lfo_facility.ghgr_import_id
-        and _lfo_facility.facility_type = 'LFO'
+    -- FK Address -> Facility
+    left join ggircs_swrs.facility as _facility
+        on _address.ghgr_import_id = _facility.ghgr_import_id
     --FK Address -> Organisation
     left join ggircs_swrs.organisation as _organisation
       on _address.ghgr_import_id = _organisation.ghgr_import_id
@@ -472,10 +380,10 @@ $function$
 
     -- CONTACT
     delete from ggircs.contact;
-    insert into ggircs.contact (id, ghgr_import_id, address_id, single_facility_id, lfo_facility_id, report_id, organisation_id, path_context, contact_type, given_name, family_name, initials, telephone_number, extension_number,
+    insert into ggircs.contact (id, ghgr_import_id, address_id, facility_id,  report_id, organisation_id, path_context, contact_type, given_name, family_name, initials, telephone_number, extension_number,
                                 fax_number, email_address, position, language_correspondence)
 
-    select _contact.id, _contact.ghgr_import_id, _address.id, _single_facility.id, _lfo_facility.id, _report.id, _organisation.id, _contact.path_context, _contact.contact_type, _contact.given_name, _contact.family_name,
+    select _contact.id, _contact.ghgr_import_id, _address.id, _facility.id,  _report.id, _organisation.id, _contact.path_context, _contact.contact_type, _contact.given_name, _contact.family_name,
            _contact.initials, _contact.telephone_number, _contact.extension_number, _contact.fax_number, _contact.email_address, _contact.position, _contact.language_correspondence
 
     from ggircs_swrs.contact as _contact
@@ -494,19 +402,16 @@ $function$
             (_contact.path_context = 'VerifyTombstone'
             and _address.path_context = 'VerifyTombstone')
           )
-    -- FK Contact -> Single Facility
-    left join ggircs_swrs.facility as _single_facility
-        on _contact.ghgr_import_id = _single_facility.ghgr_import_id
-        and (_single_facility.facility_type != 'LFO' or _single_facility.facility_type is null)
-    -- FK Contact -> LFO Facility
-    left join ggircs_swrs.facility as _lfo_facility
-        on _contact.ghgr_import_id = _lfo_facility.ghgr_import_id
-        and _lfo_facility.facility_type = 'LFO'
+    -- FK Contact ->  Facility
+    left join ggircs_swrs.facility as _facility
+        on _contact.ghgr_import_id = _facility.ghgr_import_id
+
     --FK Contact -> Report
     left join ggircs_swrs.report as _report
       on _contact.ghgr_import_id = _report.ghgr_import_id
     left join ggircs_swrs.organisation as _organisation
-        on _contact.ghgr_import_id = _organisation.ghgr_import_id;
+        on _contact.ghgr_import_id = _organisation.ghgr_import_id
+      ;
 
     -- ADDITIONAL DATA
     delete from ggircs.additional_data;
@@ -527,7 +432,8 @@ $function$
       and _additional_data.activity_name = _activity.activity_name
     -- FK Additional Data -> Report
     left join ggircs_swrs.report as _report
-      on _additional_data.ghgr_import_id = _report.ghgr_import_id;
+      on _additional_data.ghgr_import_id = _report.ghgr_import_id
+      ;
 
     -- MEASURED EMISSION FACTOR
     delete from ggircs.measured_emission_factor;
@@ -556,7 +462,8 @@ $function$
       and _measured_emission_factor.sub_unit_name = _fuel.sub_unit_name
       and _measured_emission_factor.units_idx = _fuel.units_idx
       and _measured_emission_factor.unit_idx = _fuel.unit_idx
-      and _measured_emission_factor.fuel_idx = _fuel.fuel_idx;
+      and _measured_emission_factor.fuel_idx = _fuel.fuel_idx
+      ;
 
 
     -- Refresh materialized views with no data
@@ -569,3 +476,7 @@ $function$
 $function$ language plpgsql volatile ;
 
 commit;
+
+
+--todo: uncomment refresh and unrefresh
+--make test isn't working

@@ -8,8 +8,7 @@ create table ggircs.emission (
     id                        integer primary key,
     ghgr_import_id            integer,
     activity_id               integer references ggircs.activity(id),
-    single_facility_id        integer references ggircs.single_facility(id),
-    lfo_facility_id           integer references ggircs.lfo_facility(id),
+    facility_id               integer references ggircs.facility(id),
     fuel_id                   integer references ggircs.fuel(id),
     naics_id                  integer references ggircs.naics(id),
     organisation_id           integer references ggircs.organisation(id),
@@ -32,8 +31,7 @@ create table ggircs.emission (
 );
 
 create index ggircs_emission_activity_foreign_key on ggircs.emission(activity_id);
-create index ggircs_emission_single_facility_foreign_key on ggircs.emission(single_facility_id);
-create index ggircs_emission_lfo_facility_foreign_key on ggircs.emission(lfo_facility_id);
+create index ggircs_emission_facility_foreign_key on ggircs.emission(facility_id);
 create index ggircs_emission_fuel_foreign_key on ggircs.emission(fuel_id);
 create index ggircs_emission_naics_foreign_key on ggircs.emission(naics_id);
 create index ggircs_emission_organisation_foreign_key on ggircs.emission(organisation_id);
@@ -44,8 +42,7 @@ comment on table ggircs.emission is 'The table containing the information on emi
 comment on column ggircs.emission.id is 'The primary key';
 comment on column ggircs.emission.ghgr_import_id is 'A foreign key reference to ggircs.ghgr_import';
 comment on column ggircs.emission.activity_id is 'A foreign key reference to ggircs.activity';
-comment on column ggircs.emission.single_facility_id is 'A foreign key reference to ggircs.single_facility';
-comment on column ggircs.emission.lfo_facility_id is 'A foreign key reference to ggircs.lfo_facility';
+comment on column ggircs.emission.facility_id is 'A foreign key reference to ggircs.facility';
 comment on column ggircs.emission.fuel_id is 'A foreign key reference to ggircs.fuel';
 comment on column ggircs.emission.naics_id is 'A foreign key reference to ggircs.naics';
 comment on column ggircs.emission.organisation_id is 'A foreign key reference to ggircs.organisation';

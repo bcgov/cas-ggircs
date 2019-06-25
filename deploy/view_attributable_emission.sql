@@ -10,7 +10,7 @@ create or replace view ggircs.attributable_emission as(
              x.fuel_id,
              x.activity_id,
              x.report_id,
-             x.single_facility_id,
+             x.facility_id,
              x.organisation_id,
              x.unit_id,
              x.naics_id,
@@ -28,12 +28,12 @@ create or replace view ggircs.attributable_emission as(
              x.emission_category
 
           from ggircs.emission as x
-          join ggircs.single_facility as _single_facility
-          on x.single_facility_id = _single_facility.id
+          join ggircs.facility as _facility
+          on x.facility_id = _facility.id
           join ggircs.activity as _activity
           on x.activity_id = _activity.id
           and x.gas_type != 'CO2bioC'
-          and _single_facility.facility_type != 'EIO'
+          and _facility.facility_type != 'EIO'
           and _activity.sub_process_name not in  ('Additional Reportable Information as per WCI.352(i)(1)-(12)',
                                    'Additional Reportable Information as per WCI.352(i)(13)',
                                    'Additional Reportable Information as per WCI.362(g)(21)',

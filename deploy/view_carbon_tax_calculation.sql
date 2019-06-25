@@ -10,7 +10,7 @@ create or replace view ggircs.carbon_tax_calculation as
     with fuel as (
         select _report.id                                                    as report_id,
                _organisation.id                                              as organisation_id,
-               _single_facility.id                                           as single_facility_id,
+               _facility.id                               as facility_id,
                _activity.id                                                  as activity_id,
                _fuel.id                                                      as fuel_id,
                _emission.id                                                  as emission_id,
@@ -36,9 +36,9 @@ create or replace view ggircs.carbon_tax_calculation as
                       on _fuel.report_id = _report.id
                  join ggircs.organisation as _organisation
                       on _report.id = _organisation.report_id
-                 inner join ggircs.single_facility as _single_facility
-                      on _report.id = _single_facility.report_id
-                 join ggircs.naics as _naics
+                 left join ggircs.facility as _facility
+                      on _report.id = _facility.report_id
+                 left join ggircs.naics as _naics
                       on _report.id = _naics.report_id
                       and ((_naics.path_context = 'RegistrationData'
                       and (_naics.naics_priority = 'Primary'
@@ -74,7 +74,7 @@ create or replace view ggircs.carbon_tax_calculation as
     )
 select report_id,
        organisation_id,
-       single_facility_id,
+       fuel.facility_id,
        activity_id,
        fuel_id,
        emission_id,

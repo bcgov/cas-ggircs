@@ -46,7 +46,7 @@ from ggircs.attributable_emission as ae
        left join ggircs.fuel as f on ae.fuel_id = f.id
        left join ggircs.activity as ac on ac.id = ae.activity_id
        left join ggircs.report as rp on rp.id = ae.report_id
-       left join ggircs.single_facility as fc on fc.id = ae.single_facility_id
+       left join ggircs.facility as fc on fc.id = ae.facility_id
        left join ggircs.organisation as org on org.id = ae.organisation_id
        left join ggircs.unit as u on u.id = ae.unit_id
        left join ggircs.naics as n on n.id = ae.naics_id;

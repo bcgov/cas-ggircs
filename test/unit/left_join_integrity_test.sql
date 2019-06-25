@@ -1225,23 +1225,10 @@ select set_eq(
     'Ensure left joins are not causing additional rows to be returned in ggircs.identifier'
 );
 
-/** LFO FACILITY **/
-select set_eq(
-    'select id from ggircs.lfo_facility',
-
-    $$
-    select facility.id from ggircs_swrs.facility
-    inner join ggircs_swrs.final_report as _final_report
-    on facility.ghgr_import_id = _final_report.ghgr_import_id
-    and facility_type = 'LFO'
-    $$,
-
-    'Ensure left joins are not causing additional rows to be returned in ggircs.lfo_facility'
-);
 
 /** SINGLE FACILITY **/
 select set_eq(
-    'select id from ggircs.single_facility',
+    'select id from ggircs.facility',
 
     $$
     select facility.id from ggircs_swrs.facility

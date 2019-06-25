@@ -7,8 +7,7 @@ create table ggircs.address (
 
     id                                                  integer primary key,
     report_id                                           integer references ggircs.report(id),
-    single_facility_id                                  integer references ggircs.single_facility(id),
-    lfo_facility_id                                     integer references ggircs.lfo_facility(id),
+    facility_id                                         integer references ggircs.facility(id),
     organisation_id                                     integer references ggircs.organisation(id),
     parent_organisation_id                              integer references ggircs.parent_organisation(id),
     ghgr_import_id                                      integer,
@@ -50,16 +49,14 @@ create table ggircs.address (
 );
 
 create index ggircs_address_report_foreign_key on ggircs.address(report_id);
-create index ggircs_address_single_facility_foreign_key on ggircs.address(single_facility_id);
-create index ggircs_address_lfo_facility_foreign_key on ggircs.address(lfo_facility_id);
+create index ggircs_address_facility_foreign_key on ggircs.address(facility_id);
 create index ggircs_address_organisation_foreign_key on ggircs.address(organisation_id);
 create index ggircs_address_parent_organisation_foreign_key on ggircs.address(parent_organisation_id);
 
 comment on table ggircs.address is 'The table housing address information for facilities, organisations and contacts';
 comment on column ggircs.address.id is 'The primary key';
 comment on column ggircs.address.ghgr_import_id is 'The foreign key that references ggircs.ghgr_import';
-comment on column ggircs.address.single_facility_id is 'A foreign key reference to ggircs.single_facility';
-comment on column ggircs.address.lfo_facility_id is 'A foreign key reference to ggircs.lfo_facility';
+comment on column ggircs.address.facility_id is 'A foreign key reference to ggircs.facility';
 comment on column ggircs.address.organisation_id is 'A foreign key reference to ggircs.organisation';
 comment on column ggircs.address.parent_organisation_id is 'A foreign key reference to ggircs.parent_organisation';
 comment on column ggircs.address.report_id is 'A foreign key reference to ggircs.report';

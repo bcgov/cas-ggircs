@@ -18,7 +18,7 @@ select
        _organisation.swrs_organisation_id,
        _facility.swrs_facility_id
 from ggircs.report as _report
-       left join ggircs.single_facility as _facility on _report.id = _facility.report_id
+       left join ggircs.facility as _facility on _report.id = _facility.report_id
        left join ggircs.naics as _naics on _report.id = _naics.report_id
        left join ggircs.organisation as _organisation on _report.ghgr_import_id = _organisation.ghgr_import_id;
 
