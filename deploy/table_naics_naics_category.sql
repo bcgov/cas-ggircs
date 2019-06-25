@@ -18,7 +18,7 @@ comment on column ggircs_swrs.naics_naics_category.naics_code_pattern is 'The na
 comment on column ggircs_swrs.naics_naics_category.hhw_category_id is 'The foreign key for the hhw category';
 comment on column ggircs_swrs.naics_naics_category.irc_category_id is 'The foreign key for the irc category';
 
-insert into ggircs_swrs.naics_naics_category (naics_code, naics_code_pattern, hhw_category_id, irc_category_id) values (111419, null, 1, 15);
+insert into ggircs_swrs.naics_naics_category (naics_code, naics_code_pattern, hhw_category_id, irc_category_id) values (111419, null, 1, 14);
 insert into ggircs_swrs.naics_naics_category (naics_code, naics_code_pattern, hhw_category_id, irc_category_id) values (115110, null, 1, null);
 insert into ggircs_swrs.naics_naics_category (naics_code, naics_code_pattern, hhw_category_id, irc_category_id) values (115210, null, 1, null);
 insert into ggircs_swrs.naics_naics_category (naics_code, naics_code_pattern, hhw_category_id, irc_category_id) values (221111, null, 2, 15);

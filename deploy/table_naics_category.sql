@@ -11,7 +11,8 @@ create table ggircs_swrs.naics_category (
 
 comment on table  ggircs_swrs.naics_category is 'The fuel mapping table that maps naics codes with hhw and irc categories';
 comment on column ggircs_swrs.naics_category.id is 'The internal primary key for the mapping';
-comment on column ggircs_swrs.naics_category.id is 'The foreign key for the category';
+comment on column ggircs_swrs.naics_category.naics_category is 'The naics category';
+comment on column ggircs_swrs.naics_category.naics_category_type is 'The naics category type (hhw / irc)';
 
 insert into ggircs_swrs.naics_category (naics_category, naics_category_type) values ('Agriculture', 'hhw');
 insert into ggircs_swrs.naics_category (naics_category, naics_category_type) values ('Electricity and Heat Supply', 'hhw');
