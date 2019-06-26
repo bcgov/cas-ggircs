@@ -17,7 +17,7 @@ create or replace view ggircs.naics_category_mapping as
                 on _naics_naics_category.irc_category_id = _naics_category_irc.id
             join ggircs.report as _report
                 on naics.report_id = _report.id
-            join ggircs.facility as _facility
-                on naics.facility_id = _facility.id;
+            join ggircs.single_facility as _facility
+                on naics.single_facility_id = _facility.id;
 commit;
 
