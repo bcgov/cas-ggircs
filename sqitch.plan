@@ -73,3 +73,9 @@ view_attributable_emission [schema_ggircs] 2019-06-17T23:23:16Z Dylan Leard <dyl
 view_attributable_emissions_with_details [schema_ggircs] 2019-06-17T23:13:02Z Dylan Leard <dylan@button.is> # add view attributable emissions with details to schema ggircs
 view_report_with_org [schema_ggircs] 2019-06-17T23:13:54Z Dylan Leard <dylan@button.is> # add view report with org to schema ggircs
 view_facility_details [schema_ggircs table_facility table_organisation table_naics table_naics_mapping table_identifier] 2019-06-28T20:01:36Z Hamza Javed <hamza@button.is> # Build a view for facility detail
+schema_ciip 2019-06-24T22:54:49Z Matthieu Foucault <matthieu@button.is> # Add a schema for ciip
+ciip_table_application [schema_ciip] 2019-06-25T00:00:28Z Matthieu Foucault <matthieu@button.is> # Add a table for ciip applications
+ciip_table_operator [ciip_table_application] 2019-06-25T17:34:46Z Matthieu Foucault <matthieu@button.is> # Add an operator table in ciip schema
+ciip_table_facility [ciip_table_application ciip_table_operator] 2019-06-25T17:36:52Z Matthieu Foucault <matthieu@button.is> # Add a facility table in ciip schema
+ciip_table_address [ciip_table_application ciip_table_facility ciip_table_operator] 2019-06-25T17:39:10Z Matthieu Foucault <matthieu@button.is> # Add an address table in ciip schema
+ciip_table_contact [ciip_table_application ciip_table_address] 2019-06-25T17:37:54Z Matthieu Foucault <matthieu@button.is> # Add a contact table in ciip schema
