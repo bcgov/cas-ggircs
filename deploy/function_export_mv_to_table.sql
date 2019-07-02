@@ -474,7 +474,3 @@ $function$
 $function$ language plpgsql volatile ;
 
 commit;
-
-
---todo: uncomment refresh and unrefresh
---make test isn't working
