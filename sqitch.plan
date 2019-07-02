@@ -54,3 +54,4 @@ view_attributable_emission [schema_ggircs] 2019-06-17T23:23:16Z Dylan Leard <dyl
 view_attributable_emissions_with_details [schema_ggircs] 2019-06-17T23:13:02Z Dylan Leard <dylan@button.is> # add view attributable emissions with details to schema ggircs
 view_report_with_org [schema_ggircs] 2019-06-17T23:13:54Z Dylan Leard <dylan@button.is> # add view report with org to schema ggircs
 function_export_facility_to_ggircs [materialized_view_facility] 2019-06-20T23:47:20Z Hamza Javed <hamza@button.is> # Adding function to export facility to GGIRCS
+view_facility_details [schema_ggircs table_facility table_organisation table_naics table_naics_mapping table_identifier] 2019-06-28T20:01:36Z Hamza Javed <hamza@button.is> # Build a view for facility detail

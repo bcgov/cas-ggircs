@@ -27,7 +27,8 @@ $function$
         left join ggircs_swrs.report as _report
             on _facility.ghgr_import_id = _report.ghgr_import_id
     )
-    insert into ggircs.facility (id, ghgr_import_id, organisation_id, report_id, swrs_facility_id,
+    insert into ggircs.facility (id, ghgr_import_id, organisation_id, report_id,
+                                 swrs_facility_id,
                                  parent_facility_id,
                                  facility_name, facility_type,
                                  relationship_type, portability_indicator, status,
@@ -52,7 +53,8 @@ $function$
     left join _final_lfo_facility
         on _organisation.swrs_organisation_id = _final_lfo_facility.swrs_organisation_id
         and _report.reporting_period_duration = _final_lfo_facility.reporting_period_duration
-        and (_facility.facility_type = 'IF_a' or _facility.facility_type = 'IF_b' or _facility.facility_type = 'L_c');
+        and (_facility.facility_type = 'IF_a' or _facility.facility_type = 'IF_b' or _facility.facility_type = 'L_c')
+      ;
 
     end;
 
