@@ -2,6 +2,6 @@
 
 begin;
 
-drop function ggircs_swrs.export_mv_to_table;
+drop function ggircs_swrs.export_report_to_ggircs;
 
 commit;
