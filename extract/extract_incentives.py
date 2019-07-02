@@ -87,15 +87,27 @@ def extract_book(book_path, cur):
     else :
         operator['is_bc_cop_reg_valid'] = False
 
+    if operator.get('duns') is not None:
+        cur.execute(
+            """
+            select distinct swrs_organisation_id from ggircs.organisation
+            where duns = %s
+            """,
+            (operator['duns'],)
+        )
+        res = cur.fetchone()
+        if res is not None:
+            operator['swrs_operator_id'] = res[0]
+
     cur.execute(
         ('insert into ciip.operator '
         '(application_id, business_legal_name, english_trade_name, bc_corp_reg_number, '
-        'is_bc_cop_reg_number_valid, orgbook_legal_name, is_registration_active, duns) '
-        'values (%s, %s, %s, %s, %s, %s, %s, %s) '
+        'is_bc_cop_reg_number_valid, orgbook_legal_name, is_registration_active, duns, swrs_operator_id) '
+        'values (%s, %s, %s, %s, %s, %s, %s, %s, %s) '
         'returning id'),
         (application_id, operator['legal_name'], operator['trade_name'], operator['bc_corp_reg'],
         operator.get('is_bc_cop_reg_valid'), operator.get('orgbook_legal_name'), operator.get('is_registration_active'),
-        operator.get('duns'))
+        operator.get('duns'), operator.get('swrs_operator_id'))
     )
     operator['id'] = cur.fetchone()[0]
 
@@ -109,13 +121,25 @@ def extract_book(book_path, cur):
     }
 
     cur.execute(
+        """
+        select distinct swrs_facility_id from ggircs.identifier
+        where identifier_value = %s
+        """,
+        (facility['bcghg_id'],)
+    )
+
+    res = cur.fetchone()
+    if res is not None:
+        facility['swrs_facility_id'] = res[0]
+
+    cur.execute(
         ('insert into ciip.facility '
         '(application_id, operator_id, facility_name, facility_type, '
-        'bc_ghg_id, facility_description, naics) '
-        'values (%s, %s, %s, %s, %s, %s, %s) '
+        'bc_ghg_id, facility_description, naics, swrs_facility_id) '
+        'values (%s, %s, %s, %s, %s, %s, %s, %s) '
         'returning id'),
         (application_id, operator['id'], facility['name'], facility['type'],
-        facility['bcghg_id'], facility['description'], facility['naics'])
+        facility['bcghg_id'], facility['description'], facility['naics'], facility.get('swrs_facility_id'))
     )
     facility['id'] = cur.fetchone()[0]
 
@@ -255,7 +279,7 @@ def extract_book(book_path, cur):
 conn = psycopg2.connect(dbname='ggircs_dev', host='localhost')
 cur = conn.cursor()
 
-directory = 'data/ciip/LFO Received/Applications'
+directory = 'data/ciip/SFO Received/Applications'
 
 try:
     for filename in os.listdir(directory):
