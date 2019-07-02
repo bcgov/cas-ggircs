@@ -3,7 +3,7 @@
 
 begin;
 
--- @view: string (the view to refresh), @data string (with or without data)
+-- @data string (with or without data)
 create or replace function ggircs_swrs.refresh_materialized_views(data text)
   returns void as
 $function$

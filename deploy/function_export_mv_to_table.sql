@@ -21,15 +21,7 @@ $function$
 
     -- Populate tables
     -- REPORT
-    delete from ggircs.report;
-    insert into ggircs.report (id, ghgr_import_id, source_xml, imported_at, swrs_report_id, prepop_report_id, report_type, swrs_facility_id, swrs_organisation_id,
-                               reporting_period_duration, status, version, submission_date, last_modified_by, last_modified_date, update_comment)
-
-    select _report.id, _report.ghgr_import_id, source_xml, imported_at, _report.swrs_report_id, prepop_report_id, report_type, swrs_facility_id, swrs_organisation_id,
-           reporting_period_duration, status, version, submission_date, last_modified_by, last_modified_date, update_comment
-
-    from ggircs_swrs.report as _report
-    inner join ggircs_swrs.final_report as _final_report on _report.ghgr_import_id = _final_report.ghgr_import_id;
+    perform ggircs_swrs.export_report_to_ggircs();
 
     -- ORGANISATION
     delete from ggircs.organisation;
