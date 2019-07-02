@@ -13,7 +13,7 @@ create table ggircs_swrs.implied_emission_factor (
 
 create index ggircs_swrs_implied_emission_factor_fuel_mapping_foreign_key on ggircs_swrs.implied_emission_factor(fuel_mapping_id);
 
-comment on table  ggircs_swrs.implied_emission_factor is 'The implied emission factor table contains the implied factor to be multiplied by the carbon tax rate for each fuel';
+comment on table  ggircs_swrs.implied_emission_factor is 'DEPRECATED The implied emission factor table contains the implied factor to be multiplied by the carbon tax rate for each fuel';
 comment on column ggircs_swrs.implied_emission_factor.id is 'The internal primary key';
 comment on column ggircs_swrs.implied_emission_factor.implied_emission_factor is 'The ministry-defined implied emission factor pertaining to a specific fuel type';
 comment on column ggircs_swrs.implied_emission_factor.start_date is 'The date on which the implied emission factor came into effect';

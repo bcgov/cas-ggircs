@@ -8,7 +8,7 @@ reset client_min_messages;
     ggircs table after all left joins have been done. **/
 
 begin;
-select plan(15);
+select plan(14);
 
 insert into ggircs_swrs.ghgr_import (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -1225,29 +1225,15 @@ select set_eq(
     'Ensure left joins are not causing additional rows to be returned in ggircs.identifier'
 );
 
-/** LFO FACILITY **/
-select set_eq(
-    'select id from ggircs.lfo_facility',
-
-    $$
-    select facility.id from ggircs_swrs.facility
-    inner join ggircs_swrs.final_report as _final_report
-    on facility.ghgr_import_id = _final_report.ghgr_import_id
-    and facility_type = 'LFO'
-    $$,
-
-    'Ensure left joins are not causing additional rows to be returned in ggircs.lfo_facility'
-);
 
 /** SINGLE FACILITY **/
 select set_eq(
-    'select id from ggircs.single_facility',
+    'select id from ggircs.facility',
 
     $$
     select facility.id from ggircs_swrs.facility
     inner join ggircs_swrs.final_report as _final_report
     on facility.ghgr_import_id = _final_report.ghgr_import_id
-    and facility_type !='LFO'
     $$,
 
     'Ensure left joins are not causing additional rows to be returned in ggircs.facility'

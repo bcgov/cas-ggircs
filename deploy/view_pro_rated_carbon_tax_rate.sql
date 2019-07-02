@@ -4,6 +4,8 @@
     -- table_fuel
     -- table_report
 
+/** DEPRECATED **/
+
 begin;
 
 create or replace view ggircs.pro_rated_carbon_tax_rate as

@@ -8,47 +8,87 @@ begin;
 
 create or replace view ggircs.carbon_tax_calculation as
     with fuel as (
-        select _organisation.id                           as organisation_id,
-               _single_facility.id                        as single_facility_id,
-               _lfo_facility.id                           as lfo_facility_id,
-               _naics.id                                  as naics_id,
-               _naics_mapping.id                          as naics_mapping_id,
-               _fuel.fuel_type,
-               _fuel.annual_fuel_amount                   as amount,
+        select _report.id                                                    as report_id,
+               _organisation.id                                              as organisation_id,
+               _facility.id                               as facility_id,
+               _activity.id                                                  as activity_id,
+               _fuel.id                                                      as fuel_id,
+               _emission.id                                                  as emission_id,
+               _naics.id                                                     as naics_id,
+               _fuel_mapping.fuel_type                                       as fuel_type,
+               coalesce(_fuel.annual_fuel_amount, _emission.quantity)        as fuel_amount,
                _report.reporting_period_duration::integer as year,
-               ctr.pro_rated_carbon_tax_rate              as pro_rated_ctr,
-               ief.pro_rated_implied_emission_factor      as pro_rated_ief
+               _pro_rated_fuel_charge.pro_rated_fuel_charge,
+               _pro_rated_fuel_charge.flat_rate,
+               _fuel_carbon_tax_details.cta_rate_units                      as units,
+               _fuel_carbon_tax_details.unit_conversion_factor              as unit_conversion_factor,
+               _fuel_charge.fuel_charge
         from ggircs.fuel as _fuel
+                 join ggircs.unit as _unit
+                      on _fuel.unit_id = _unit.id
+                 left join ggircs.emission as _emission
+                      on _fuel.id = _emission.fuel_id
+                      and _emission.fuel_mapping_id is not null
                  join ggircs_swrs.fuel_mapping as _fuel_mapping
-                      on _fuel.fuel_type = _fuel_mapping.fuel_type
+                      on _fuel.fuel_mapping_id = _fuel_mapping.id
+                      or _emission.fuel_mapping_id = _fuel_mapping.id
                  join ggircs.report as _report
                       on _fuel.report_id = _report.id
-                 left join ggircs.organisation as _organisation
+                 join ggircs.organisation as _organisation
                       on _report.id = _organisation.report_id
-                 left join ggircs.lfo_facility as _lfo_facility
-                      on _report.id = _lfo_facility.report_id
-                 left join ggircs.single_facility as _single_facility
-                      on _report.id = _single_facility.report_id
+                 left join ggircs.facility as _facility
+                      on _report.id = _facility.report_id
                  left join ggircs.naics as _naics
                       on _report.id = _naics.report_id
-                 left join ggircs_swrs.naics_mapping as _naics_mapping
-                      on _naics.naics_mapping_id = _naics_mapping.id
-                 join ggircs.pro_rated_carbon_tax_rate as ctr
-                      on _fuel.fuel_type = ctr.fuel_type
-                        and _report.reporting_period_duration::integer = ctr.reporting_year
-                 join ggircs.pro_rated_implied_emission_factor as ief
-                      on ief.fuel_mapping_id = _fuel_mapping.id
-                        and _report.reporting_period_duration::integer = ief.reporting_year
+                      and ((_naics.path_context = 'RegistrationData'
+                      and (_naics.naics_priority = 'Primary'
+                            or _naics.naics_priority = '100.00'
+                            or _naics.naics_priority = '100')
+                      and (select count(ghgr_import_id)
+                           from ggircs.naics as __naics
+                           where ghgr_import_id = _emission.ghgr_import_id
+                           and __naics.path_context = 'RegistrationData'
+                           and (__naics.naics_priority = 'Primary'
+                            or __naics.naics_priority = '100.00'
+                            or __naics.naics_priority = '100')) < 2)
+                       or (_naics.path_context='VerifyTombstone'
+                           and _naics.naics_code is not null
+                           and (select count(ghgr_import_id)
+                           from ggircs.naics as __naics
+                           where ghgr_import_id = _emission.ghgr_import_id
+                           and __naics.path_context = 'RegistrationData'
+                           and (__naics.naics_priority = 'Primary'
+                            or __naics.naics_priority = '100.00'
+                            or __naics.naics_priority = '100')) > 1))
+                 join ggircs.activity as _activity
+                      on _unit.activity_id = _activity.id
+                 join ggircs.pro_rated_fuel_charge as _pro_rated_fuel_charge
+                      on _fuel_mapping.id = _pro_rated_fuel_charge.fuel_mapping_id
+                      and _report.reporting_period_duration::integer = _pro_rated_fuel_charge.year
+                 join ggircs_swrs.fuel_carbon_tax_details as _fuel_carbon_tax_details
+                      on _fuel_mapping.fuel_carbon_tax_details_id = _fuel_carbon_tax_details.id
+                 join ggircs_swrs.fuel_charge as _fuel_charge
+                      on _fuel_charge.fuel_mapping_id = _fuel_mapping.id
+                      and (concat(_report.reporting_period_duration::text, '-12-31')::date
+                      between _fuel_charge.start_date and _fuel_charge.end_date)
     )
-select fuel.organisation_id,
-       fuel.single_facility_id,
-       fuel.lfo_facility_id,
-       fuel.naics_id,
-       fuel.naics_mapping_id,
-       fuel.year,
-       fuel.fuel_type,
-       fuel.amount,
-       (fuel.amount * pro_rated_ctr * pro_rated_ief) as calculated_carbon_tax
+select report_id,
+       organisation_id,
+       fuel.facility_id,
+       activity_id,
+       fuel_id,
+       emission_id,
+       naics_id,
+       year,
+       fuel_type,
+       fuel_amount,
+       fuel_charge,
+       round(pro_rated_fuel_charge / unit_conversion_factor, 4) as pro_rated_fuel_charge,
+       unit_conversion_factor,
+       round((fuel_amount * flat_rate), 2) as calculated_carbon_tax,
+       'Flat Rate Calculation: (fuel_amount * fuel_charge * unit_conversion_factor)'::varchar(1000) as flat_calculation,
+       round((fuel_amount * pro_rated_fuel_charge), 2) as pro_rated_calculated_carbon_tax,
+       'Pro-rated Rate Calculation: (fuel_amount * pro_rated_fuel_charge * unit_conversion_factor)'::varchar(1000) as pro_rated_calculation
 from fuel;
 
 commit;
