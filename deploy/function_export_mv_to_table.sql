@@ -26,6 +26,7 @@ $function$
     -- ORGANISATION
     perform ggircs_swrs.export_organisation_to_ggircs();
 
+    -- FACILITY
     perform ggircs_swrs.export_facility_to_ggircs();
 
     -- ACTIVITY
@@ -37,14 +38,14 @@ $function$
     from ggircs_swrs.activity as _activity
 
     inner join ggircs_swrs.final_report as _final_report on _activity.ghgr_import_id = _final_report.ghgr_import_id
+
     -- FK Activity ->  Facility
     left join ggircs_swrs.facility as _facility
       on _activity.ghgr_import_id = _facility.ghgr_import_id
 
     -- FK Activity -> Report
     left join ggircs_swrs.report as _report
-      on _activity.ghgr_import_id = _report.ghgr_import_id
-    ;
+      on _activity.ghgr_import_id = _report.ghgr_import_id;
 
     -- UNIT
     delete from ggircs.unit;
