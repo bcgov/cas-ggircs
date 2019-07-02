@@ -58,6 +58,7 @@ $function$
     -- FK Permit -> Facility
     left join ggircs_swrs.facility as _facility
         on _permit.ghgr_import_id = _facility.ghgr_import_id;
+
     -- PARENT ORGANISATION
     delete from ggircs.parent_organisation;
     insert into ggircs.parent_organisation (id, ghgr_import_id, report_id, organisation_id, path_context, percentage_owned, french_trade_name, english_trade_name,
