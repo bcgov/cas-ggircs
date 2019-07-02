@@ -14,22 +14,10 @@ create or replace function ggircs_swrs.export_mv_to_table()
   returns void as
 $function$
   /** Create all tables from materialized views that are not being split up **/
-  declare
-
-       mv_array text[] := $$
-                          {report, organisation, facility,
-                          activity, unit, identifier, naics, emission,
-                          final_report, fuel, permit, parent_organisation, contact,
-                          address, additional_data, measured_emission_factor}
-                          $$;
-
   begin
 
     -- Refresh materialized views
-    for i in 1 .. array_upper(mv_array, 1)
-      loop
-        perform ggircs_swrs.refresh_materialized_views(quote_ident(mv_array[i]), 'with data');
-      end loop;
+    perform ggircs_swrs.refresh_materialized_views('with data');
 
     -- Populate tables
     -- REPORT
@@ -465,10 +453,7 @@ $function$
 
 
     -- Refresh materialized views with no data
-    for i in 1 .. array_upper(mv_array, 1)
-      loop
-        perform ggircs_swrs.refresh_materialized_views(quote_ident(mv_array[i]), 'with no data');
-      end loop;
+    perform ggircs_swrs.refresh_materialized_views('with no data');
   end;
 
 $function$ language plpgsql volatile ;

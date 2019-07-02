@@ -1116,19 +1116,7 @@ $$);
 select ggircs_swrs.export_mv_to_table();
 
 -- Refresh all materialized views (run again so materialized views are populated for data equality tests below)
-do
-$do$
-   declare mv_array text[] := $${report, organisation, facility,
-                       activity, unit, identifier, naics, emission,
-                       final_report, fuel, permit, parent_organisation, contact,
-                       address, additional_data, measured_emission_factor}$$;
-    begin
-      for i in 1 .. array_upper(mv_array, 1)
-          loop
-            perform ggircs_swrs.refresh_materialized_views(quote_ident(mv_array[i]), 'with data');
-          end loop;
-    end
-$do$;
+select ggircs_swrs.refresh_materialized_views('with data');
 
 -- Function export_mv_to_table exists
 select has_function( 'ggircs_swrs', 'export_mv_to_table', 'Schema ggircs_swrs has function export_mv_to_table()' );
@@ -2507,21 +2495,7 @@ select set_eq(
               'data in ggircs_swrs.measured_emission_factor === ggircs.measured_emission_factor');
 
   -- refresh views with no data
-  do
-    $do$
-      declare mv_array text[] := $$
-                       {report, organisation, facility,
-                       activity, unit, identifier, naics, emission,
-                       final_report, fuel, permit, parent_organisation, contact,
-                       address, additional_data, measured_emission_factor}
-                       $$;
-      begin
-        for i in 1 .. array_upper(mv_array, 1)
-          loop
-            perform ggircs_swrs.refresh_materialized_views(quote_ident(mv_array[i]), 'with no data');
-          end loop;
-      end
-    $do$;
+  select ggircs_swrs.refresh_materialized_views('with no data');
 
   -- Refresh function has cleared materialized views
   select is_empty('select * from ggircs_swrs.report where false', 'refresh_materialized_views() has cleared materialized views');
