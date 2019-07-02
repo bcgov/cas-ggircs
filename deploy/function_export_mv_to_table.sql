@@ -13,7 +13,6 @@ begin;
 create or replace function ggircs_swrs.export_mv_to_table()
   returns void as
 $function$
-  /** Create all tables from materialized views that are not being split up **/
   begin
 
     -- Refresh materialized views
@@ -30,22 +29,7 @@ $function$
     perform ggircs_swrs.export_facility_to_ggircs();
 
     -- ACTIVITY
-    delete from ggircs.activity;
-    insert into ggircs.activity (id, ghgr_import_id, facility_id,  report_id, activity_name, process_name, sub_process_name, information_requirement)
-
-    select _activity.id, _activity.ghgr_import_id, _facility.id, _report.id, _activity.activity_name, _activity.process_name, _activity.sub_process_name, _activity.information_requirement
-
-    from ggircs_swrs.activity as _activity
-
-    inner join ggircs_swrs.final_report as _final_report on _activity.ghgr_import_id = _final_report.ghgr_import_id
-
-    -- FK Activity ->  Facility
-    left join ggircs_swrs.facility as _facility
-      on _activity.ghgr_import_id = _facility.ghgr_import_id
-
-    -- FK Activity -> Report
-    left join ggircs_swrs.report as _report
-      on _activity.ghgr_import_id = _report.ghgr_import_id;
+    perform ggircs_swrs.export_activity_to_ggircs();
 
     -- UNIT
     delete from ggircs.unit;
