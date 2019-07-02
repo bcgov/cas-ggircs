@@ -43,15 +43,26 @@ def extract_book(book_path, cur):
     admin_sheet = incentives_book.sheet_by_name('Administrative Info')
     cert_sheet = incentives_book.sheet_by_name('Statement of Certification')
 
-    # TODO: Find header of signature of CO section and offset from there.
+    header = 'Signature of Certifying Official'
+    co_header_idx = None
+    for r in range(cert_sheet.nrows):
+        if (get_sheet_value(cert_sheet, r, 1) == header):
+            co_header_idx = r
+            break
+    if co_header_idx is None:
+        raise "could not find certyfing official header"
 
+    signature_date = get_sheet_value(cert_sheet, co_header_idx + 7, 6)
+    signature_date = dateutil.parser.parse(signature_date) if signature_date is not None else None
     cur.execute(
         ('insert into ciip.application '
         '(source_file_name, source_sha1, imported_at, application_year, signature_date) '
         'values (%s, %s, %s, %s, %s) '
         'returning id'),
-        (book_path, hasher.hexdigest(),datetime.datetime.now(),
-        int(cert_sheet.cell_value(7, 10)), dateutil.parser.parse(get_sheet_value(cert_sheet, 47, 6)))
+        (
+            book_path, hasher.hexdigest(),datetime.datetime.now(),
+            int(cert_sheet.cell_value(7, 10)), signature_date,
+        )
     )
 
     application_id = cur.fetchone()[0]
@@ -63,7 +74,7 @@ def extract_book(book_path, cur):
         'legal_name'      : get_sheet_value(admin_sheet, 4, 1),
         'trade_name'      : get_sheet_value(admin_sheet, 6, 1),
         'duns'            : duns,
-        'bc_corp_reg'     : get_sheet_value(admin_sheet, 10, 1),
+        'bc_corp_reg'     : get_sheet_value(admin_sheet, 10, 1).replace(" ", ""),
     }
 
     orgbook_req = requests.get(
@@ -75,8 +86,6 @@ def extract_book(book_path, cur):
         operator['is_registration_active'] = not orgbook_resp['names'][0]['inactive']
     else :
         operator['is_bc_cop_reg_valid'] = False
-
-    print(operator)
 
     cur.execute(
         ('insert into ciip.operator '
@@ -119,10 +128,10 @@ def extract_book(book_path, cur):
     }
 
     co_addr =  {
-        'street_address'  : get_sheet_value(cert_sheet, 51, 1),
-        'municipality'    : cert_sheet.cell_value(51, 4),
-        'province'        : cert_sheet.cell_value(53, 1),
-        'postal_code'     : cert_sheet.cell_value(53, 4),
+        'street_address'  : get_sheet_value(cert_sheet, co_header_idx + 11, 1),
+        'municipality'    : get_sheet_value(cert_sheet, co_header_idx + 11, 4),
+        'province'        : get_sheet_value(cert_sheet, co_header_idx, 13, 1),
+        'postal_code'     : get_sheet_value(cert_sheet, co_header_idx, 13, 4),
         'application_id'  : application_id,
     }
 
@@ -167,7 +176,6 @@ def extract_book(book_path, cur):
         )
 
     addresses = reduce_dicts_array(addresses, addresses_eq)
-    print(addresses)
     addr_ids = []
 
     for a in addresses:
@@ -180,17 +188,15 @@ def extract_book(book_path, cur):
         ))
         addr_ids.append(cur.fetchone())
 
-    print(addr_ids)
     rep_addr_idx = next (i for i,a in enumerate(addresses) if addresses_eq(a, rep_addr))
     co_addr_idx = next (i for i,a in enumerate(addresses) if addresses_eq(a, co_addr))
-    print(co_addr_idx)
     contacts = [
         {
-            'first_name'      : cert_sheet.cell_value(47, 1),
-            'last_name'       : cert_sheet.cell_value(47, 4),
-            'position'        : cert_sheet.cell_value(49, 1),
-            'email'           : cert_sheet.cell_value(49, 4),
-            'phone'           : cert_sheet.cell_value(49, 6),
+            'first_name'      : get_sheet_value(cert_sheet, co_header_idx + 7, 1),
+            'last_name'       : get_sheet_value(cert_sheet, co_header_idx + 7, 4),
+            'position'        : get_sheet_value(cert_sheet, co_header_idx + 9, 1),
+            'email'           : get_sheet_value(cert_sheet, co_header_idx + 9, 4),
+            'phone'           : get_sheet_value(cert_sheet, co_header_idx + 9, 6),
             'application_id'  : application_id,
             'facility_id'     : facility['id'],
             'operator_id'     : operator['id'],
@@ -222,7 +228,6 @@ def extract_book(book_path, cur):
         )
 
     contacts = reduce_dicts_array(contacts, should_merge_contacts)
-    print(contacts)
     def contact_dict_to_tuple(c) :
         return (
             c['application_id'], c.get('application_co_id'), c['address_id'],
@@ -250,7 +255,7 @@ def extract_book(book_path, cur):
 conn = psycopg2.connect(dbname='ggircs_dev', host='localhost')
 cur = conn.cursor()
 
-directory = 'data/ciip/SFO Received/Applications'
+directory = 'data/ciip/LFO Received/Applications'
 
 try:
     for filename in os.listdir(directory):
