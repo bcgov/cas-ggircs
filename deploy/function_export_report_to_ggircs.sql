@@ -10,10 +10,10 @@ $function$
     begin
 
         delete from ggircs.report;
-        insert into ggircs.report (id, ghgr_import_id, source_xml, imported_at, swrs_report_id, prepop_report_id, report_type, swrs_facility_id, swrs_organisation_id,
+        insert into ggircs.report (id, ghgr_import_id, imported_at, swrs_report_id, prepop_report_id, report_type, swrs_facility_id, swrs_organisation_id,
                                        reporting_period_duration, status, version, submission_date, last_modified_by, last_modified_date, update_comment)
 
-        select _report.id, _report.ghgr_import_id, source_xml, imported_at, _report.swrs_report_id, prepop_report_id, report_type, swrs_facility_id, swrs_organisation_id,
+        select _report.id, _report.ghgr_import_id, imported_at, _report.swrs_report_id, prepop_report_id, report_type, swrs_facility_id, swrs_organisation_id,
                reporting_period_duration, status, version, submission_date, last_modified_by, last_modified_date, update_comment
 
         from ggircs_swrs.report as _report

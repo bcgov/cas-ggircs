@@ -1903,7 +1903,6 @@ select set_eq(
 select set_eq($$
                   select
                       ghgr_import_id,
-                      source_xml::text,
                       imported_at,
                       swrs_report_id,
                       prepop_report_id,
@@ -1923,7 +1922,6 @@ select set_eq($$
                  $$
                  select
                       ghgr_import_id,
-                      source_xml::text,
                       imported_at,
                       swrs_report_id,
                       prepop_report_id,
