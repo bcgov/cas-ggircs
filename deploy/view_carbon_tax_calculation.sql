@@ -45,7 +45,7 @@ create or replace view ggircs.carbon_tax_calculation as
                             or _naics.naics_priority = '100.00'
                             or _naics.naics_priority = '100')
                       and (select count(ghgr_import_id)
-                           from ggircs_swrs.naics as __naics
+                           from ggircs.naics as __naics
                            where ghgr_import_id = _emission.ghgr_import_id
                            and __naics.path_context = 'RegistrationData'
                            and (__naics.naics_priority = 'Primary'
@@ -54,7 +54,7 @@ create or replace view ggircs.carbon_tax_calculation as
                        or (_naics.path_context='VerifyTombstone'
                            and _naics.naics_code is not null
                            and (select count(ghgr_import_id)
-                           from ggircs_swrs.naics as __naics
+                           from ggircs.naics as __naics
                            where ghgr_import_id = _emission.ghgr_import_id
                            and __naics.path_context = 'RegistrationData'
                            and (__naics.naics_priority = 'Primary'
