@@ -1152,7 +1152,7 @@ select tables_are('ggircs'::name, ARRAY[
 -- select has_pk('ggircs', 'report', 'ggircs_report has primary key');
 -- select has_pk('ggircs', 'organisation', 'ggircs_organisation has primary key');
 -- select has_pk('ggircs', 'facility', 'ggircs.facility has primary key');
-select has_pk('ggircs', 'activity', 'ggircs_activity has primary key');
+-- select has_pk('ggircs', 'activity', 'ggircs_activity has primary key');
 select has_pk('ggircs', 'unit', 'ggircs_unit has primary key');
 select has_pk('ggircs', 'identifier', 'ggircs_identifier has primary key');
 select has_pk('ggircs', 'naics', 'ggircs_naics has primary key');
@@ -1170,7 +1170,7 @@ select has_pk('ggircs', 'measured_emission_factor', 'ggircs_measured_emission_fa
 -- select has_fk('ggircs', 'report', 'ggircs_report has foreign key constraint(s)');
 -- select has_fk('ggircs', 'organisation', 'ggircs_organisation has foreign key constraint(s)');
 -- select has_fk('ggircs', 'facility', 'ggircs_facility has foreign key constraint(s)');
-select has_fk('ggircs', 'activity', 'ggircs_activity has foreign key constraint(s)');
+-- select has_fk('ggircs', 'activity', 'ggircs_activity has foreign key constraint(s)');
 select has_fk('ggircs', 'unit', 'ggircs_unit has foreign key constraint(s)');
 select has_fk('ggircs', 'identifier', 'ggircs_identifier has foreign key constraint(s)');
 select has_fk('ggircs', 'naics', 'ggircs_naics has foreign key constraint(s)');
@@ -1187,7 +1187,7 @@ select has_fk('ggircs', 'measured_emission_factor', 'ggircs_measured_emission_fa
 -- select isnt_empty('select * from ggircs.report', 'there is data in ggircs.report');
 -- select isnt_empty('select * from ggircs.organisation', 'there is data in ggircs.organisation');
 -- select isnt_empty('select * from ggircs.facility', 'facility has data');
-select isnt_empty('select * from ggircs.activity', 'there is data in ggircs.activity');
+-- select isnt_empty('select * from ggircs.activity', 'there is data in ggircs.activity');
 select isnt_empty('select * from ggircs.unit', 'there is data in ggircs.unit');
 select isnt_empty('select * from ggircs.identifier', 'there is data in ggircs.identifier');
 select isnt_empty('select * from ggircs.naics', 'there is data in ggircs.naics');
@@ -1572,35 +1572,35 @@ select set_eq(
     'Foreign key report_id in ggircs.additional_data references ggircs.report.id'
 );
 
--- Activity -> Facility
-select set_eq(
-    $$
-    select distinct(facility.ghgr_import_id) from ggircs.activity
-    join ggircs.facility
-    on
-      activity.facility_id = facility.id
-      order by ghgr_import_id
-    $$,
-
-    'select ghgr_import_id from ggircs.facility order by ghgr_import_id',
-
-    'Foreign key facility_id in ggircs.activity references ggircs.facility.id'
-);
-
--- Activity -> Report
-select set_eq(
-    $$
-    select distinct(report.ghgr_import_id) from ggircs.activity
-    join ggircs.report
-    on
-      activity.report_id = report.id
-      order by report.ghgr_import_id asc
-    $$,
-
-    'select distinct(ghgr_import_id) from ggircs.report order by ghgr_import_id asc',
-
-    'Foreign key report_id in ggircs.activity references ggircs.report.id'
-);
+-- -- Activity -> Facility
+-- select set_eq(
+--     $$
+--     select distinct(facility.ghgr_import_id) from ggircs.activity
+--     join ggircs.facility
+--     on
+--       activity.facility_id = facility.id
+--       order by ghgr_import_id
+--     $$,
+--
+--     'select ghgr_import_id from ggircs.facility order by ghgr_import_id',
+--
+--     'Foreign key facility_id in ggircs.activity references ggircs.facility.id'
+-- );
+--
+-- -- Activity -> Report
+-- select set_eq(
+--     $$
+--     select distinct(report.ghgr_import_id) from ggircs.activity
+--     join ggircs.report
+--     on
+--       activity.report_id = report.id
+--       order by report.ghgr_import_id asc
+--     $$,
+--
+--     'select distinct(ghgr_import_id) from ggircs.report order by ghgr_import_id asc',
+--
+--     'Foreign key report_id in ggircs.activity references ggircs.report.id'
+-- );
 
 -- Address -> Facility
 select set_eq(
@@ -1969,28 +1969,28 @@ select set_eq(
 --
 --     'data in ggircs_swrs.organisation === ggircs.organisation');
 
--- Data in ggircs_swrs.activity === data in ggircs.activity
-select set_eq($$
-                  select
-                      ghgr_import_id,
-                      activity_name,
-                      process_name,
-                      sub_process_name,
-                      information_requirement
-                  from ggircs_swrs.activity
-                  $$,
-
-                 $$
-                 select
-                      ghgr_import_id,
-                      activity_name,
-                      process_name,
-                      sub_process_name,
-                      information_requirement
-                  from ggircs.activity
-                  $$,
-
-    'data in ggircs_swrs.activity === ggircs.activity');
+-- -- Data in ggircs_swrs.activity === data in ggircs.activity
+-- select set_eq($$
+--                   select
+--                       ghgr_import_id,
+--                       activity_name,
+--                       process_name,
+--                       sub_process_name,
+--                       information_requirement
+--                   from ggircs_swrs.activity
+--                   $$,
+--
+--                  $$
+--                  select
+--                       ghgr_import_id,
+--                       activity_name,
+--                       process_name,
+--                       sub_process_name,
+--                       information_requirement
+--                   from ggircs.activity
+--                   $$,
+--
+--     'data in ggircs_swrs.activity === ggircs.activity');
 
 -- Data in ggircs_swrs.unit === data in ggircs.unit
 select set_eq(

@@ -661,7 +661,6 @@ select set_eq(
 );
 
 -- Single Facility -> LFO Facility
-
 select set_eq(
     $$
     select facility.id, facility.parent_facility_id
