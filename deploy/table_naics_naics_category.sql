@@ -26,7 +26,7 @@ insert into ggircs_swrs.naics_naics_category (naics_code, naics_code_pattern, hh
 insert into ggircs_swrs.naics_naics_category (naics_code, naics_code_pattern, hhw_category_id, irc_category_id) values (221119, null, 2, 15);
 insert into ggircs_swrs.naics_naics_category (naics_code, naics_code_pattern, hhw_category_id, irc_category_id) values (221121, null, 2, 15);
 insert into ggircs_swrs.naics_naics_category (naics_code, naics_code_pattern, hhw_category_id, irc_category_id) values (221330, null, 2, 15);
-insert into ggircs_swrs.naics_naics_category (naics_code, naics_code_pattern, hhw_category_id, irc_category_id) values (221122, null, 2, null);
+insert into ggircs_swrs.naics_naics_category (naics_code, naics_code_pattern, hhw_category_id, irc_category_id) values (221122, null, 2, 15);
 insert into ggircs_swrs.naics_naics_category (naics_code, naics_code_pattern, hhw_category_id, irc_category_id) values (321111, null, 3, 16);
 insert into ggircs_swrs.naics_naics_category (naics_code, naics_code_pattern, hhw_category_id, irc_category_id) values (321112, null, 3, 16);
 insert into ggircs_swrs.naics_naics_category (naics_code, naics_code_pattern, hhw_category_id, irc_category_id) values (321212, null, 3, 16);
@@ -71,6 +71,12 @@ insert into ggircs_swrs.naics_naics_category (naics_code, naics_code_pattern, hh
 insert into ggircs_swrs.naics_naics_category (naics_code, naics_code_pattern, hhw_category_id, irc_category_id) values (221320, null, 12, 28);
 insert into ggircs_swrs.naics_naics_category (naics_code, naics_code_pattern, hhw_category_id, irc_category_id) values (221310, null, 12, null);
 insert into ggircs_swrs.naics_naics_category (naics_code, naics_code_pattern, hhw_category_id, irc_category_id) values (562910, null, 12, null);
+
+insert into ggircs_swrs.naics_naics_category (naics_code, naics_code_pattern, hhw_category_id, irc_category_id) values (321216, null, 3, 16);
+insert into ggircs_swrs.naics_naics_category (naics_code, naics_code_pattern, hhw_category_id, irc_category_id) values (811199, null, 4, 19);
+insert into ggircs_swrs.naics_naics_category (naics_code, naics_code_pattern, hhw_category_id, irc_category_id) values (493110, null, 8, 24);
+insert into ggircs_swrs.naics_naics_category (naics_code, naics_code_pattern, hhw_category_id, irc_category_id) values (211113, null, 8, 24);
+insert into ggircs_swrs.naics_naics_category (naics_code, naics_code_pattern, hhw_category_id, irc_category_id) values (211114, null, 8, 24);
 
 /** Mapping for incomplete NAICS codes **/
 
