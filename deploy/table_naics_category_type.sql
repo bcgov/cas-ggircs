@@ -9,12 +9,12 @@ create table ggircs_swrs.naics_category_type (
   description varchar(1000)
 );
 
-comment on table  ggircs_swrs.naics_category is 'The fuel mapping table that maps naics codes with hhw and irc categories';
-comment on column ggircs_swrs.naics_category.id is 'The internal primary key for the type mapping';
-comment on column ggircs_swrs.naics_category.naics_category_type is 'The naics category type';
-comment on column ggircs_swrs.naics_category.description is 'The description of the category type';
+comment on table  ggircs_swrs.naics_category_type is 'The fuel mapping table that maps naics codes with hhw and irc categories';
+comment on column ggircs_swrs.naics_category_type.id is 'The internal primary key for the type mapping';
+comment on column ggircs_swrs.naics_category_type.naics_category_type is 'The naics category type';
+comment on column ggircs_swrs.naics_category_type.description is 'The description of the category type';
 
-insert into ggircs_swrs.naics_category (naics_category, description) values ('hhw', $$Hilary's high level category type$$);
-insert into ggircs_swrs.naics_category (naics_category, description) values ('irc', 'Industrial Reporting Category sector');
+insert into ggircs_swrs.naics_category_type (naics_category_type, description) values ('hhw', $$Hilary's high level category type$$);
+insert into ggircs_swrs.naics_category_type (naics_category_type, description) values ('irc', 'Industrial Reporting Category sector');
 
 commit;

@@ -5,43 +5,43 @@ begin;
 
 create table ggircs_swrs.naics_category (
   id integer generated always as identity primary key,
-  naics_category varchar(1000),
-  naics_category_type varchar(1000)
+  naics_category varchar(1000)
 );
 
 comment on table  ggircs_swrs.naics_category is 'The fuel mapping table that maps naics codes with hhw and irc categories';
 comment on column ggircs_swrs.naics_category.id is 'The internal primary key for the mapping';
 comment on column ggircs_swrs.naics_category.naics_category is 'The naics category';
-comment on column ggircs_swrs.naics_category.naics_category_type is 'The naics category type (hhw / irc)';
 
-insert into ggircs_swrs.naics_category (naics_category, naics_category_type) values ('Agriculture', 'hhw');
-insert into ggircs_swrs.naics_category (naics_category, naics_category_type) values ('Electricity and Heat Supply', 'hhw');
-insert into ggircs_swrs.naics_category (naics_category, naics_category_type) values ('Forest Products', 'hhw');
-insert into ggircs_swrs.naics_category (naics_category, naics_category_type) values ('Manufacturing', 'hhw');
-insert into ggircs_swrs.naics_category (naics_category, naics_category_type) values ('Mineral Products', 'hhw');
-insert into ggircs_swrs.naics_category (naics_category, naics_category_type) values ('Metals', 'hhw');
-insert into ggircs_swrs.naics_category (naics_category, naics_category_type) values ('Mining', 'hhw');
-insert into ggircs_swrs.naics_category (naics_category, naics_category_type) values ('Oil and Gas', 'hhw');
-insert into ggircs_swrs.naics_category (naics_category, naics_category_type) values ('Refineries', 'hhw');
-insert into ggircs_swrs.naics_category (naics_category, naics_category_type) values ('Construction', 'hhw');
-insert into ggircs_swrs.naics_category (naics_category, naics_category_type) values ('Pipelines', 'hhw');
-insert into ggircs_swrs.naics_category (naics_category, naics_category_type) values ('Waste', 'hhw');
-insert into ggircs_swrs.naics_category (naics_category, naics_category_type) values ('Other', 'hhw');
+insert into ggircs_swrs.naics_category (naics_category) values ('Agriculture');
+insert into ggircs_swrs.naics_category (naics_category) values ('Electricity and Heat Supply');
+insert into ggircs_swrs.naics_category (naics_category) values ('Forest Products');
+insert into ggircs_swrs.naics_category (naics_category) values ('Manufacturing');
+insert into ggircs_swrs.naics_category (naics_category) values ('Mineral Products');
+insert into ggircs_swrs.naics_category (naics_category) values ('Metals');
+insert into ggircs_swrs.naics_category (naics_category) values ('Mining');
+insert into ggircs_swrs.naics_category (naics_category) values ('Oil and Gas');
+insert into ggircs_swrs.naics_category (naics_category) values ('Refineries');
+insert into ggircs_swrs.naics_category (naics_category) values ('Construction');
+insert into ggircs_swrs.naics_category (naics_category) values ('Pipelines');
+insert into ggircs_swrs.naics_category (naics_category) values ('Waste');
+insert into ggircs_swrs.naics_category (naics_category) values ('Other');
 
-insert into ggircs_swrs.naics_category (naics_category, naics_category_type) values ('Food Industry', 'irc');
-insert into ggircs_swrs.naics_category (naics_category, naics_category_type) values ('Electricity and Heat Supply', 'irc');
-insert into ggircs_swrs.naics_category (naics_category, naics_category_type) values ('Wood Products', 'irc');
-insert into ggircs_swrs.naics_category (naics_category, naics_category_type) values ('Pulp and Paper', 'irc');
-insert into ggircs_swrs.naics_category (naics_category, naics_category_type) values ('Chemicals', 'irc');
-insert into ggircs_swrs.naics_category (naics_category, naics_category_type) values ('Other Consumer Products', 'irc');
-insert into ggircs_swrs.naics_category (naics_category, naics_category_type) values ('Non-Metallic Materials', 'irc');
-insert into ggircs_swrs.naics_category (naics_category, naics_category_type) values ('Metallic Materials', 'irc');
-insert into ggircs_swrs.naics_category (naics_category, naics_category_type) values ('Coal Mining', 'irc');
-insert into ggircs_swrs.naics_category (naics_category, naics_category_type) values ('Metal Mining', 'irc');
-insert into ggircs_swrs.naics_category (naics_category, naics_category_type) values ('Oil and Gas Extraction', 'irc');
-insert into ggircs_swrs.naics_category (naics_category, naics_category_type) values ('Oil Refining', 'irc');
-insert into ggircs_swrs.naics_category (naics_category, naics_category_type) values ('Construction', 'irc');
-insert into ggircs_swrs.naics_category (naics_category, naics_category_type) values ('Oil and Gas Transportation and Distribution', 'irc');
-insert into ggircs_swrs.naics_category (naics_category, naics_category_type) values ('Waste Treatment', 'irc');
+insert into ggircs_swrs.naics_category (naics_category) values ('Food Industry');
+insert into ggircs_swrs.naics_category (naics_category) values ('Wood Products');
+insert into ggircs_swrs.naics_category (naics_category) values ('Pulp and Paper');
+insert into ggircs_swrs.naics_category (naics_category) values ('Chemicals');
+insert into ggircs_swrs.naics_category (naics_category) values ('Other Consumer Products');
+insert into ggircs_swrs.naics_category (naics_category) values ('Non-Metallic Materials');
+insert into ggircs_swrs.naics_category (naics_category) values ('Metallic Materials');
+insert into ggircs_swrs.naics_category (naics_category) values ('Coal Mining');
+insert into ggircs_swrs.naics_category (naics_category) values ('Metal Mining');
+insert into ggircs_swrs.naics_category (naics_category) values ('Oil and Gas Extraction');
+insert into ggircs_swrs.naics_category (naics_category) values ('Oil Refining');
+insert into ggircs_swrs.naics_category (naics_category) values ('Oil and Gas Transportation and Distribution');
+insert into ggircs_swrs.naics_category (naics_category) values ('Waste Treatment');
+
+insert into ggircs_swrs.naics_category (naics_category) values ('Cannabis');
+insert into ggircs_swrs.naics_category (naics_category) values ('Liquefied Natural Gas Production');
+
 
 commit;
