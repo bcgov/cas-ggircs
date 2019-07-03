@@ -12,7 +12,6 @@ create or replace view ggircs.facility_details as
 select
        _facility.*,
        _naics.id as naics_id,
-       _naics.naics_category_id as naics_category_id,
        _naics.naics_classification,
        _naics.naics_code,
        _identifier.identifier_value

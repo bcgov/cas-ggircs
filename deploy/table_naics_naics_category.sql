@@ -70,12 +70,6 @@ insert into ggircs_swrs.naics_naics_category (naics_code_pattern, category_id, c
 insert into ggircs_swrs.naics_naics_category (naics_code_pattern, category_id, category_type_id) values (221310, 12, 1);
 insert into ggircs_swrs.naics_naics_category (naics_code_pattern, category_id, category_type_id) values (562910, 12, 1);
 
-insert into ggircs_swrs.naics_naics_category (naics_code_pattern, category_id, category_type_id) values (321216, 3, 1);
-insert into ggircs_swrs.naics_naics_category (naics_code_pattern, category_id, category_type_id) values (811199, 4, 1);
-insert into ggircs_swrs.naics_naics_category (naics_code_pattern, category_id, category_type_id) values (493110, 8, 1);
-insert into ggircs_swrs.naics_naics_category (naics_code_pattern, category_id, category_type_id) values (211113, 8, 1);
-insert into ggircs_swrs.naics_naics_category (naics_code_pattern, category_id, category_type_id) values (211114, 8, 1);
-
 -- IRC category_type
 insert into ggircs_swrs.naics_naics_category (naics_code_pattern, category_id, category_type_id) values (111419, 14, 2);
 insert into ggircs_swrs.naics_naics_category (naics_code_pattern, category_id, category_type_id) values (221111, 2, 2);

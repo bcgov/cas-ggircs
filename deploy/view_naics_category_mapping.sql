@@ -7,17 +7,26 @@ begin;
 
 create or replace view ggircs.naics_category_mapping as
 
-    select naics.naics_code, _naics_category_hhw.naics_category as hhw_category, _naics_category_irc.naics_category as irc_category
-        from ggircs.naics
-            join ggircs_swrs.naics_naics_category as _naics_naics_category
-                on naics.naics_category_id = _naics_naics_category.id
-            join ggircs_swrs.naics_category as _naics_category_hhw
-                on _naics_naics_category.hhw_category_id = _naics_category_hhw.id
-            join ggircs_swrs.naics_category as _naics_category_irc
-                on _naics_naics_category.irc_category_id = _naics_category_irc.id
-            join ggircs.report as _report
-                on naics.report_id = _report.id
-            join ggircs.facility as _facility
-                on naics.facility_id = _facility.id;
+    select distinct(naics_code), category_id, category_type_id
+    from ggircs.naics
+    join ggircs_swrs.naics_naics_category
+        on naics_code::text like naics_code_pattern || '%'
+    join ggircs.report as _report
+        on naics.report_id = _report.id
+    join ggircs.facility as _facility
+        on naics.facility_id = _facility.id;
+
+--     select naics.naics_code, _naics_category_hhw.naics_category as hhw_category, _naics_category_irc.naics_category as irc_category
+--         from ggircs.naics
+--             join ggircs_swrs.naics_naics_category as _naics_naics_category
+--                 on naics.naics_category_id = _naics_naics_category.id
+--             join ggircs_swrs.naics_category as _naics_category_hhw
+--                 on _naics_naics_category.hhw_category_id = _naics_category_hhw.id
+--             join ggircs_swrs.naics_category as _naics_category_irc
+--                 on _naics_naics_category.irc_category_id = _naics_category_irc.id
+--             join ggircs.report as _report
+--                 on naics.report_id = _report.id
+--             join ggircs.facility as _facility
+--                 on naics.facility_id = _facility.id;
 commit;
 
