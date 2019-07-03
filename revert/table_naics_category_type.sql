@@ -2,6 +2,6 @@
 
 begin;
 
-drop table ggircs_swrs.naics_category_type;
+drop table ggircs.naics_category_type;
 
 commit;
