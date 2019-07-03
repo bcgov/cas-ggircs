@@ -9,12 +9,12 @@ create materialized view ggircs_swrs.organisation as (
          row_number() over () as id,
          id as ghgr_import_id,
          report_details.swrs_organisation_id,
-         coalesce(vt_business_legal_name, rd_business_legal_name) as business_legal_name,
-         coalesce(vt_english_trade_name, rd_english_trade_name)   as english_trade_name,
-         coalesce(vt_french_trade_name, rd_french_trade_name)     as french_trade_name,
-         coalesce(vt_cra_business_number, rd_cra_business_number) as cra_business_number,
-         coalesce(vt_duns, rd_duns)                               as duns,
-         coalesce(vt_web_site, rd_web_site)                       as website
+         coalesce(vt_business_legal_name, rd_business_legal_name)       as business_legal_name,
+         coalesce(vt_english_trade_name, rd_english_trade_name)         as english_trade_name,
+         coalesce(vt_french_trade_name, rd_french_trade_name)           as french_trade_name,
+         coalesce(vt_cra_business_number, rd_cra_business_number)       as cra_business_number,
+         translate(coalesce(vt_duns, rd_duns), '-', '')::varchar(1000)  as duns,
+         coalesce(vt_web_site, rd_web_site)                             as website
   from ggircs_swrs.ghgr_import,
        xmltable(
            '/ReportData/ReportDetails'
