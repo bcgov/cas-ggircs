@@ -219,11 +219,11 @@ refresh materialized view ggircs_swrs.emission with data;
 
     -- NAICS
     delete from ggircs.naics;
-    insert into ggircs.naics(id, ghgr_import_id, facility_id,  registration_data_facility_id, naics_mapping_id, report_id, swrs_facility_id, path_context, naics_classification, naics_code, naics_priority)
+    insert into ggircs.naics(id, ghgr_import_id, facility_id,  registration_data_facility_id, naics_category_id, report_id, swrs_facility_id, path_context, naics_classification, naics_code, naics_priority)
 
     select _naics.id, _naics.ghgr_import_id, _facility.id,
         (select _facility.id where _naics.path_context = 'RegistrationData'),
-        _naics_mapping.id, _report.id, _naics.swrs_facility_id,
+        _naics_category.id, _report.id, _naics.swrs_facility_id,
         _naics.path_context, _naics.naics_classification, _naics.naics_code, _naics.naics_priority
 
     from ggircs_swrs.naics as _naics
@@ -235,9 +235,11 @@ refresh materialized view ggircs_swrs.emission with data;
     left join ggircs_swrs.report as _report
       on _naics.ghgr_import_id = _report.ghgr_import_id
     -- FK Naics -> Naics Mapping
-    left join ggircs_swrs.naics_mapping as _naics_mapping
-      on _naics.naics_code = _naics_mapping.naics_code
-      ;
+    left join ggircs_swrs.naics_naics_category as _naics_category
+      on (_naics.naics_code = _naics_category.naics_code
+            or (_naics.naics_code not in (select naics_code from ggircs_swrs.naics_naics_category)
+                and _naics.naics_code::text like _naics_category.naics_code_pattern)
+         );
 
     -- FUEL
     delete from ggircs.fuel;
