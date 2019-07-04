@@ -1153,7 +1153,7 @@ select tables_are('ggircs'::name, ARRAY[
 -- select has_pk('ggircs', 'organisation', 'ggircs_organisation has primary key');
 -- select has_pk('ggircs', 'facility', 'ggircs.facility has primary key');
 -- select has_pk('ggircs', 'activity', 'ggircs_activity has primary key');
-select has_pk('ggircs', 'unit', 'ggircs_unit has primary key');
+-- select has_pk('ggircs', 'unit', 'ggircs_unit has primary key');
 select has_pk('ggircs', 'identifier', 'ggircs_identifier has primary key');
 select has_pk('ggircs', 'naics', 'ggircs_naics has primary key');
 select has_pk('ggircs', 'emission', 'ggircs_emission has primary key');
@@ -1171,7 +1171,7 @@ select has_pk('ggircs', 'measured_emission_factor', 'ggircs_measured_emission_fa
 -- select has_fk('ggircs', 'organisation', 'ggircs_organisation has foreign key constraint(s)');
 -- select has_fk('ggircs', 'facility', 'ggircs_facility has foreign key constraint(s)');
 -- select has_fk('ggircs', 'activity', 'ggircs_activity has foreign key constraint(s)');
-select has_fk('ggircs', 'unit', 'ggircs_unit has foreign key constraint(s)');
+-- select has_fk('ggircs', 'unit', 'ggircs_unit has foreign key constraint(s)');
 select has_fk('ggircs', 'identifier', 'ggircs_identifier has foreign key constraint(s)');
 select has_fk('ggircs', 'naics', 'ggircs_naics has foreign key constraint(s)');
 select has_fk('ggircs', 'emission', 'ggircs.emission has foreign key constraint(s)');
@@ -1188,7 +1188,7 @@ select has_fk('ggircs', 'measured_emission_factor', 'ggircs_measured_emission_fa
 -- select isnt_empty('select * from ggircs.organisation', 'there is data in ggircs.organisation');
 -- select isnt_empty('select * from ggircs.facility', 'facility has data');
 -- select isnt_empty('select * from ggircs.activity', 'there is data in ggircs.activity');
-select isnt_empty('select * from ggircs.unit', 'there is data in ggircs.unit');
+-- select isnt_empty('select * from ggircs.unit', 'there is data in ggircs.unit');
 select isnt_empty('select * from ggircs.identifier', 'there is data in ggircs.identifier');
 select isnt_empty('select * from ggircs.naics', 'there is data in ggircs.naics');
 select isnt_empty('select * from ggircs.emission', 'there is data in ggircs.emission');
@@ -1533,18 +1533,18 @@ select set_eq(
     'Foreign key unit_id in ggircs.fuel references ggircs.unit.id'
 );
 
--- Unit -> Activity
-select set_eq(
-    $$
-    select distinct(activity.ghgr_import_id) from ggircs.unit
-    join ggircs.activity
-    on unit.activity_id = activity.id
-    $$,
-
-    'select distinct(ghgr_import_id) from ggircs.activity',
-
-    'Foreign key unit_id in ggircs.unit references ggircs.activity.id'
-);
+-- -- Unit -> Activity
+-- select set_eq(
+--     $$
+--     select distinct(activity.ghgr_import_id) from ggircs.unit
+--     join ggircs.activity
+--     on unit.activity_id = activity.id
+--     $$,
+--
+--     'select distinct(ghgr_import_id) from ggircs.activity',
+--
+--     'Foreign key unit_id in ggircs.unit references ggircs.activity.id'
+-- );
 
 -- Additional Data -> Activity
 select set_eq(
@@ -1992,51 +1992,51 @@ select set_eq(
 --
 --     'data in ggircs_swrs.activity === ggircs.activity');
 
--- Data in ggircs_swrs.unit === data in ggircs.unit
-select set_eq(
-              $$
-              select
-                  ghgr_import_id,
-                  activity_name,
-                  unit_name,
-                  unit_description,
-                  cogen_unit_name,
-                  cogen_cycle_type,
-                  cogen_nameplate_capacity,
-                  cogen_net_power,
-                  cogen_steam_heat_acq_quantity,
-                  cogen_steam_heat_acq_name,
-                  cogen_supplemental_firing_purpose,
-                  cogen_thermal_output_quantity,
-                  non_cogen_nameplate_capacity,
-                  non_cogen_net_power,
-                  non_cogen_unit_name
-
-                from ggircs_swrs.unit
-              $$,
-
-              $$
-              select
-                  ghgr_import_id,
-                  activity_name,
-                  unit_name,
-                  unit_description,
-                  cogen_unit_name,
-                  cogen_cycle_type,
-                  cogen_nameplate_capacity,
-                  cogen_net_power,
-                  cogen_steam_heat_acq_quantity,
-                  cogen_steam_heat_acq_name,
-                  cogen_supplemental_firing_purpose,
-                  cogen_thermal_output_quantity,
-                  non_cogen_nameplate_capacity,
-                  non_cogen_net_power,
-                  non_cogen_unit_name
-
-                from ggircs.unit
-              $$,
-
-              'data in ggircs_swrs.unit === ggircs.unit');
+-- -- Data in ggircs_swrs.unit === data in ggircs.unit
+-- select set_eq(
+--               $$
+--               select
+--                   ghgr_import_id,
+--                   activity_name,
+--                   unit_name,
+--                   unit_description,
+--                   cogen_unit_name,
+--                   cogen_cycle_type,
+--                   cogen_nameplate_capacity,
+--                   cogen_net_power,
+--                   cogen_steam_heat_acq_quantity,
+--                   cogen_steam_heat_acq_name,
+--                   cogen_supplemental_firing_purpose,
+--                   cogen_thermal_output_quantity,
+--                   non_cogen_nameplate_capacity,
+--                   non_cogen_net_power,
+--                   non_cogen_unit_name
+--
+--                 from ggircs_swrs.unit
+--               $$,
+--
+--               $$
+--               select
+--                   ghgr_import_id,
+--                   activity_name,
+--                   unit_name,
+--                   unit_description,
+--                   cogen_unit_name,
+--                   cogen_cycle_type,
+--                   cogen_nameplate_capacity,
+--                   cogen_net_power,
+--                   cogen_steam_heat_acq_quantity,
+--                   cogen_steam_heat_acq_name,
+--                   cogen_supplemental_firing_purpose,
+--                   cogen_thermal_output_quantity,
+--                   non_cogen_nameplate_capacity,
+--                   non_cogen_net_power,
+--                   non_cogen_unit_name
+--
+--                 from ggircs.unit
+--               $$,
+--
+--               'data in ggircs_swrs.unit === ggircs.unit');
 
 -- Data in ggircs_swrs.identifier === data in ggircs.identifier
 select set_eq(
