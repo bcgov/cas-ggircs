@@ -149,7 +149,5 @@ select set_eq(
     'ggircs.naics_category_mapping properly selects categories and types from both fully and partially defined naics codes in the naics_naics_category through table'
 );
 
-select * from ggircs.naics_category_mapping;
-
 select * from finish();
 rollback;
