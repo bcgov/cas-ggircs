@@ -1156,7 +1156,7 @@ select tables_are('ggircs'::name, ARRAY[
 -- select has_pk('ggircs', 'unit', 'ggircs_unit has primary key');
 -- select has_pk('ggircs', 'identifier', 'ggircs_identifier has primary key');
 -- select has_pk('ggircs', 'naics', 'ggircs_naics has primary key');
-select has_pk('ggircs', 'emission', 'ggircs_emission has primary key');
+-- select has_pk('ggircs', 'emission', 'ggircs_emission has primary key');
 select has_pk('ggircs', 'fuel', 'ggircs_fuel has primary key');
 select has_pk('ggircs', 'permit', 'ggircs_permit has primary key');
 select has_pk('ggircs', 'parent_organisation', 'ggircs_parent_organisation has primary key');
@@ -1174,7 +1174,7 @@ select has_pk('ggircs', 'measured_emission_factor', 'ggircs_measured_emission_fa
 -- select has_fk('ggircs', 'unit', 'ggircs_unit has foreign key constraint(s)');
 -- select has_fk('ggircs', 'identifier', 'ggircs_identifier has foreign key constraint(s)');
 -- select has_fk('ggircs', 'naics', 'ggircs_naics has foreign key constraint(s)');
-select has_fk('ggircs', 'emission', 'ggircs.emission has foreign key constraint(s)');
+-- select has_fk('ggircs', 'emission', 'ggircs.emission has foreign key constraint(s)');
 select has_fk('ggircs', 'fuel', 'ggircs_fuel has foreign key constraint(s)');
 select has_fk('ggircs', 'permit', 'ggircs_permit has foreign key constraint(s)');
 -- select has_fk('ggircs', 'parent_organisation', 'ggircs_parent_organisation has foreign key constraint(s)');
@@ -1191,7 +1191,7 @@ select has_fk('ggircs', 'measured_emission_factor', 'ggircs_measured_emission_fa
 -- select isnt_empty('select * from ggircs.unit', 'there is data in ggircs.unit');
 -- select isnt_empty('select * from ggircs.identifier', 'there is data in ggircs.identifier');
 -- select isnt_empty('select * from ggircs.naics', 'there is data in ggircs.naics');
-select isnt_empty('select * from ggircs.emission', 'there is data in ggircs.emission');
+-- select isnt_empty('select * from ggircs.emission', 'there is data in ggircs.emission');
 select isnt_empty('select * from ggircs.attributable_emission', 'attributable_emission has data');
 select isnt_empty('select * from ggircs.fuel', 'there is data in ggircs.fuel');
 select isnt_empty('select * from ggircs.permit', 'there is data in ggircs.permit');
@@ -1205,98 +1205,98 @@ select isnt_empty('select * from ggircs.measured_emission_factor', 'there is dat
 -- select is_empty($$select * from ggircs.attributable_emission where gas_type='CO2bioC'$$, 'CO2bioC emissions are not in attributable_emission');
 
 -- Test validity of FK relations
--- Emission -> Activity
-select set_eq(
-    $$
-    select distinct(activity.ghgr_import_id) from ggircs.emission
-    join ggircs.activity
-    on emission.activity_id = activity.id
-    $$,
-
-    'select distinct(ghgr_import_id) from ggircs.activity',
-
-    'Foreign key activity_id in ggircs.emission references ggircs.activity.id'
-);
-
--- Emission -> Fuel
-select set_eq(
-    $$
-    select distinct(fuel.ghgr_import_id) from ggircs.emission
-    join ggircs.fuel
-    on emission.fuel_id = fuel.id
-    $$,
-
-    'select distinct(ghgr_import_id) from ggircs.fuel',
-
-    'Foreign key fuel_id in ggircs.emission references ggircs.fuel.id'
-);
-
--- Emission -> Naics
-select set_eq(
-    $$select distinct(naics.naics_code) from ggircs.emission
-      join ggircs.naics
-      on
-        emission.naics_id = naics.id
-    $$,
-
-    'select distinct(naics_code) from ggircs.naics',
-
-    'Foreign key naics_id in ggircs.emission references ggircs.naics.id'
-);
-
--- Emission -> Fuel
-select results_eq(
-    $$select distinct(fuel_type) from ggircs.emission
-      join ggircs.fuel
-      on
-        emission.fuel_id = fuel.id
-      order by fuel_type
-    $$,
-
-    'select distinct(fuel_type) from ggircs.fuel order by fuel_type',
-
-    'Foreign key fuel_id in ggircs.emission references ggircs.fuel.id'
-);
-
--- Emission -> Organisation
-select set_eq(
-    $$select organisation.id from ggircs.emission
-      join ggircs.organisation
-      on
-        emission.organisation_id = organisation.id
-    $$,
-
-    'select id from ggircs.organisation',
-
-    'Foreign key organisation_id in ggircs.emission references ggircs.organisation.id'
-);
-
--- Emission -> Report
-select set_eq(
-    $$select report.ghgr_import_id from ggircs.emission
-      join ggircs.report
-      on
-        emission.report_id = report.id
-    $$,
-
-    'select ghgr_import_id from ggircs.report',
-
-    'Foreign key report_id in ggircs.emission references ggircs.report.id'
-);
-
--- Emission -> Unit
-select results_eq(
-    $$select distinct(unit.unit_name) from ggircs.emission
-      join ggircs.unit
-      on
-        emission.unit_id = unit.id
-      order by unit_name
-    $$,
-
-    'select distinct(unit_name) from ggircs.unit order by unit_name',
-
-    'Foreign key unit_id in ggircs.emission references ggircs.unit.id'
-);
+-- -- Emission -> Activity
+-- select set_eq(
+--     $$
+--     select distinct(activity.ghgr_import_id) from ggircs.emission
+--     join ggircs.activity
+--     on emission.activity_id = activity.id
+--     $$,
+--
+--     'select distinct(ghgr_import_id) from ggircs.activity',
+--
+--     'Foreign key activity_id in ggircs.emission references ggircs.activity.id'
+-- );
+--
+-- -- Emission -> Fuel
+-- select set_eq(
+--     $$
+--     select distinct(fuel.ghgr_import_id) from ggircs.emission
+--     join ggircs.fuel
+--     on emission.fuel_id = fuel.id
+--     $$,
+--
+--     'select distinct(ghgr_import_id) from ggircs.fuel',
+--
+--     'Foreign key fuel_id in ggircs.emission references ggircs.fuel.id'
+-- );
+--
+-- -- Emission -> Naics
+-- select set_eq(
+--     $$select distinct(naics.naics_code) from ggircs.emission
+--       join ggircs.naics
+--       on
+--         emission.naics_id = naics.id
+--     $$,
+--
+--     'select distinct(naics_code) from ggircs.naics',
+--
+--     'Foreign key naics_id in ggircs.emission references ggircs.naics.id'
+-- );
+--
+-- -- Emission -> Fuel
+-- select results_eq(
+--     $$select distinct(fuel_type) from ggircs.emission
+--       join ggircs.fuel
+--       on
+--         emission.fuel_id = fuel.id
+--       order by fuel_type
+--     $$,
+--
+--     'select distinct(fuel_type) from ggircs.fuel order by fuel_type',
+--
+--     'Foreign key fuel_id in ggircs.emission references ggircs.fuel.id'
+-- );
+--
+-- -- Emission -> Organisation
+-- select set_eq(
+--     $$select organisation.id from ggircs.emission
+--       join ggircs.organisation
+--       on
+--         emission.organisation_id = organisation.id
+--     $$,
+--
+--     'select id from ggircs.organisation',
+--
+--     'Foreign key organisation_id in ggircs.emission references ggircs.organisation.id'
+-- );
+--
+-- -- Emission -> Report
+-- select set_eq(
+--     $$select report.ghgr_import_id from ggircs.emission
+--       join ggircs.report
+--       on
+--         emission.report_id = report.id
+--     $$,
+--
+--     'select ghgr_import_id from ggircs.report',
+--
+--     'Foreign key report_id in ggircs.emission references ggircs.report.id'
+-- );
+--
+-- -- Emission -> Unit
+-- select results_eq(
+--     $$select distinct(unit.unit_name) from ggircs.emission
+--       join ggircs.unit
+--       on
+--         emission.unit_id = unit.id
+--       order by unit_name
+--     $$,
+--
+--     'select distinct(unit_name) from ggircs.unit order by unit_name',
+--
+--     'Foreign key unit_id in ggircs.emission references ggircs.unit.id'
+-- );
 
 -- -- Facility -> Organisation
 -- select set_eq(
@@ -2088,47 +2088,47 @@ select set_eq(
 --
 --               'data in ggircs_swrs.naics === ggircs.naics');
 
--- Data in ggircs_swrs.emission === data in ggircs.emission
-select set_eq(
-              $$
-              select
-                emission.ghgr_import_id,
-                activity_name,
-                sub_activity_name,
-                unit_name,
-                sub_unit_name,
-                fuel_name,
-                emission_type,
-                gas_type,
-                methodology,
-                not_applicable,
-                quantity,
-                calculated_quantity,
-                emission_category
-              from ggircs_swrs.emission
-              order by
-                ghgr_import_id asc
-              $$,
-
-              $$
-              select
-                  ghgr_import_id,
-                  activity_name,
-                  sub_activity_name,
-                  unit_name,
-                  sub_unit_name,
-                  fuel_name,
-                  emission_type,
-                  gas_type,
-                  methodology,
-                  not_applicable,
-                  quantity,
-                  calculated_quantity,
-                  emission_category
-                from ggircs.emission
-              $$,
-
-              'data in ggircs_swrs.emission === ggircs.emission');
+-- -- Data in ggircs_swrs.emission === data in ggircs.emission
+-- select set_eq(
+--               $$
+--               select
+--                 emission.ghgr_import_id,
+--                 activity_name,
+--                 sub_activity_name,
+--                 unit_name,
+--                 sub_unit_name,
+--                 fuel_name,
+--                 emission_type,
+--                 gas_type,
+--                 methodology,
+--                 not_applicable,
+--                 quantity,
+--                 calculated_quantity,
+--                 emission_category
+--               from ggircs_swrs.emission
+--               order by
+--                 ghgr_import_id asc
+--               $$,
+--
+--               $$
+--               select
+--                   ghgr_import_id,
+--                   activity_name,
+--                   sub_activity_name,
+--                   unit_name,
+--                   sub_unit_name,
+--                   fuel_name,
+--                   emission_type,
+--                   gas_type,
+--                   methodology,
+--                   not_applicable,
+--                   quantity,
+--                   calculated_quantity,
+--                   emission_category
+--                 from ggircs.emission
+--               $$,
+--
+--               'data in ggircs_swrs.emission === ggircs.emission');
 
 -- Data in ggircs_swrs.fuel === data in ggircs.fuel
 select set_eq(
