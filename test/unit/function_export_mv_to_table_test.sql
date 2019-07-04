@@ -1157,7 +1157,7 @@ select tables_are('ggircs'::name, ARRAY[
 -- select has_pk('ggircs', 'identifier', 'ggircs_identifier has primary key');
 -- select has_pk('ggircs', 'naics', 'ggircs_naics has primary key');
 -- select has_pk('ggircs', 'emission', 'ggircs_emission has primary key');
-select has_pk('ggircs', 'fuel', 'ggircs_fuel has primary key');
+-- select has_pk('ggircs', 'fuel', 'ggircs_fuel has primary key');
 select has_pk('ggircs', 'permit', 'ggircs_permit has primary key');
 select has_pk('ggircs', 'parent_organisation', 'ggircs_parent_organisation has primary key');
 select has_pk('ggircs', 'contact', 'ggircs_contact has primary key');
@@ -1175,7 +1175,7 @@ select has_pk('ggircs', 'measured_emission_factor', 'ggircs_measured_emission_fa
 -- select has_fk('ggircs', 'identifier', 'ggircs_identifier has foreign key constraint(s)');
 -- select has_fk('ggircs', 'naics', 'ggircs_naics has foreign key constraint(s)');
 -- select has_fk('ggircs', 'emission', 'ggircs.emission has foreign key constraint(s)');
-select has_fk('ggircs', 'fuel', 'ggircs_fuel has foreign key constraint(s)');
+-- select has_fk('ggircs', 'fuel', 'ggircs_fuel has foreign key constraint(s)');
 select has_fk('ggircs', 'permit', 'ggircs_permit has foreign key constraint(s)');
 -- select has_fk('ggircs', 'parent_organisation', 'ggircs_parent_organisation has foreign key constraint(s)');
 select has_fk('ggircs', 'contact', 'ggircs_contact has foreign key constraint(s)');
@@ -1193,7 +1193,7 @@ select has_fk('ggircs', 'measured_emission_factor', 'ggircs_measured_emission_fa
 -- select isnt_empty('select * from ggircs.naics', 'there is data in ggircs.naics');
 -- select isnt_empty('select * from ggircs.emission', 'there is data in ggircs.emission');
 select isnt_empty('select * from ggircs.attributable_emission', 'attributable_emission has data');
-select isnt_empty('select * from ggircs.fuel', 'there is data in ggircs.fuel');
+-- select isnt_empty('select * from ggircs.fuel', 'there is data in ggircs.fuel');
 select isnt_empty('select * from ggircs.permit', 'there is data in ggircs.permit');
 select isnt_empty('select * from ggircs.parent_organisation', 'there is data in ggircs.parent_organisation');
 select isnt_empty('select * from ggircs.contact', 'there is data in ggircs.contact');
@@ -1507,31 +1507,31 @@ select set_eq(
     'Foreign key unit_id in ggircs.attributable_emission references ggircs.unit.id'
 );
 
--- Fuel -> Report
-select set_eq(
-    $$
-    select distinct(report.ghgr_import_id) from ggircs.fuel
-    join ggircs.report
-    on fuel.report_id = report.id
-    $$,
-
-    'select distinct(ghgr_import_id) from ggircs.report',
-
-    'Foreign key report_id in ggircs.fuel references ggircs.report.id'
-);
-
--- Fuel -> Unit
-select set_eq(
-    $$
-    select distinct(fuel.ghgr_import_id) from ggircs.fuel
-    join ggircs.unit
-    on fuel.unit_id = unit.id
-    $$,
-
-    'select distinct(ghgr_import_id) from ggircs.unit',
-
-    'Foreign key unit_id in ggircs.fuel references ggircs.unit.id'
-);
+-- -- Fuel -> Report
+-- select set_eq(
+--     $$
+--     select distinct(report.ghgr_import_id) from ggircs.fuel
+--     join ggircs.report
+--     on fuel.report_id = report.id
+--     $$,
+--
+--     'select distinct(ghgr_import_id) from ggircs.report',
+--
+--     'Foreign key report_id in ggircs.fuel references ggircs.report.id'
+-- );
+--
+-- -- Fuel -> Unit
+-- select set_eq(
+--     $$
+--     select distinct(fuel.ghgr_import_id) from ggircs.fuel
+--     join ggircs.unit
+--     on fuel.unit_id = unit.id
+--     $$,
+--
+--     'select distinct(ghgr_import_id) from ggircs.unit',
+--
+--     'Foreign key unit_id in ggircs.fuel references ggircs.unit.id'
+-- );
 
 -- -- Unit -> Activity
 -- select set_eq(
@@ -2130,73 +2130,73 @@ select set_eq(
 --
 --               'data in ggircs_swrs.emission === ggircs.emission');
 
--- Data in ggircs_swrs.fuel === data in ggircs.fuel
-select set_eq(
-              $$
-              select
-                  ghgr_import_id,
-                  activity_name,
-                  sub_activity_name,
-                  unit_name,
-                  sub_unit_name,
-                  fuel_type,
-                  fuel_classification,
-                  fuel_description,
-                  fuel_units,
-                  annual_fuel_amount,
-                  annual_weighted_avg_carbon_content,
-                  annual_weighted_avg_hhv,
-                  annual_steam_generation,
-                  alternative_methodology_description,
-                  other_flare_details,
-                  q1,
-                  q2,
-                  q3,
-                  q4,
-                  wastewater_processing_factors::text,
-                  measured_conversion_factors::text
-                from ggircs_swrs.fuel
-                order by
-                    ghgr_import_id,
-                    activity_name,
-                    sub_activity_name,
-                    fuel_type
-                 asc
-              $$,
-
-              $$
-              select
-                  ghgr_import_id,
-                  activity_name,
-                  sub_activity_name,
-                  unit_name,
-                  sub_unit_name,
-                  fuel_type,
-                  fuel_classification,
-                  fuel_description,
-                  fuel_units,
-                  annual_fuel_amount,
-                  annual_weighted_avg_carbon_content,
-                  annual_weighted_avg_hhv,
-                  annual_steam_generation,
-                  alternative_methodology_description,
-                  other_flare_details,
-                  q1,
-                  q2,
-                  q3,
-                  q4,
-                  wastewater_processing_factors::text,
-                  measured_conversion_factors::text
-                from ggircs.fuel
-                order by
-                    ghgr_import_id,
-                    activity_name,
-                    sub_activity_name,
-                    fuel_type
-                 asc
-              $$,
-
-              'data in ggircs_swrs.fuel === ggircs.fuel');
+-- -- Data in ggircs_swrs.fuel === data in ggircs.fuel
+-- select set_eq(
+--               $$
+--               select
+--                   ghgr_import_id,
+--                   activity_name,
+--                   sub_activity_name,
+--                   unit_name,
+--                   sub_unit_name,
+--                   fuel_type,
+--                   fuel_classification,
+--                   fuel_description,
+--                   fuel_units,
+--                   annual_fuel_amount,
+--                   annual_weighted_avg_carbon_content,
+--                   annual_weighted_avg_hhv,
+--                   annual_steam_generation,
+--                   alternative_methodology_description,
+--                   other_flare_details,
+--                   q1,
+--                   q2,
+--                   q3,
+--                   q4,
+--                   wastewater_processing_factors::text,
+--                   measured_conversion_factors::text
+--                 from ggircs_swrs.fuel
+--                 order by
+--                     ghgr_import_id,
+--                     activity_name,
+--                     sub_activity_name,
+--                     fuel_type
+--                  asc
+--               $$,
+--
+--               $$
+--               select
+--                   ghgr_import_id,
+--                   activity_name,
+--                   sub_activity_name,
+--                   unit_name,
+--                   sub_unit_name,
+--                   fuel_type,
+--                   fuel_classification,
+--                   fuel_description,
+--                   fuel_units,
+--                   annual_fuel_amount,
+--                   annual_weighted_avg_carbon_content,
+--                   annual_weighted_avg_hhv,
+--                   annual_steam_generation,
+--                   alternative_methodology_description,
+--                   other_flare_details,
+--                   q1,
+--                   q2,
+--                   q3,
+--                   q4,
+--                   wastewater_processing_factors::text,
+--                   measured_conversion_factors::text
+--                 from ggircs.fuel
+--                 order by
+--                     ghgr_import_id,
+--                     activity_name,
+--                     sub_activity_name,
+--                     fuel_type
+--                  asc
+--               $$,
+--
+--               'data in ggircs_swrs.fuel === ggircs.fuel');
 
 -- Data in ggircs_swrs.permit === data in ggircs.permit
 select set_eq(
