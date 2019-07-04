@@ -7,6 +7,12 @@ import datetime
 import dateutil.parser
 import os
 
+def zero_if_not_number(a):
+    try:
+        return float(a)
+    except:
+        return 0
+
 ## returns True if two contact dicts represent the same individual
 def should_merge_contacts(a,b):
     return (
@@ -318,7 +324,6 @@ def extract_book(book_path, cur):
     fuel_sheet = incentives_book.sheet_by_name('Fuel Usage') if 'Fuel Usage' in incentives_book.sheet_names() else incentives_book.sheet_by_name('Fuel Usage ')
     # emissions_sheet = incentives_book.sheet_by_name('Emissions')
     # emissions_allocation_sheet = incentives_book.sheet_by_name('Emissions Allocation')
-    # electricity_sheet = incentives_book.sheet_by_name('Electricity')
 
     fuels = []
     use_alt_fuel_format = get_sheet_value(fuel_sheet, 3, 0) != 'Fuel Type '
@@ -357,6 +362,49 @@ def extract_book(book_path, cur):
         '''insert into ciip.fuel(fuel_type, fuel_type_alt, fuel_description, quantity, fuel_units, carbon_emissions, application_id)
         values %s''',
         fuels
+    )
+
+    elec_sheet = None
+    row_range = None
+    col_range = None
+    if 'Electricity' in incentives_book.sheet_names():
+        elec_sheet = incentives_book.sheet_by_name('Electricity')
+        row_range = range(4, 7, 2)
+        col_range = range(1, 10, 2)
+    else:
+        elec_sheet = incentives_book.sheet_by_name('Electricity and Heat')
+        row_range = range(5, 7)
+        col_range = range(1, 6)
+
+
+    elec_and_heat = [
+        (
+            application_id,
+            'Electricity',
+            zero_if_not_number(get_sheet_value(elec_sheet, row_range[0], col_range[0])),
+            zero_if_not_number(get_sheet_value(elec_sheet, row_range[0], col_range[1])),
+            zero_if_not_number(get_sheet_value(elec_sheet, row_range[0], col_range[2])),
+            zero_if_not_number(get_sheet_value(elec_sheet, row_range[0], col_range[3])),
+            zero_if_not_number(get_sheet_value(elec_sheet, row_range[0], col_range[4])),
+        ),
+        (
+            application_id,
+            'Heat',
+            zero_if_not_number(get_sheet_value(elec_sheet, row_range[1], col_range[0])),
+            zero_if_not_number(get_sheet_value(elec_sheet, row_range[1], col_range[1])),
+            zero_if_not_number(get_sheet_value(elec_sheet, row_range[1], col_range[2])),
+            zero_if_not_number(get_sheet_value(elec_sheet, row_range[1], col_range[3])),
+            zero_if_not_number(get_sheet_value(elec_sheet, row_range[1], col_range[4])),
+        ),
+    ]
+
+    psycopg2.extras.execute_values(
+        cur,
+        '''insert into ciip.energy
+         (application_id, energy_type, purchased_energy, generated_energy,
+         consumed_energy, sold_energy, emissions_from_generated)
+        values %s''',
+        elec_and_heat
     )
 
     return
