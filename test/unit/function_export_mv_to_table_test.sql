@@ -1162,7 +1162,7 @@ select tables_are('ggircs'::name, ARRAY[
 -- select has_pk('ggircs', 'parent_organisation', 'ggircs_parent_organisation has primary key');
 -- select has_pk('ggircs', 'contact', 'ggircs_contact has primary key');
 -- select has_pk('ggircs', 'address', 'ggircs_address has primary key');
-select has_pk('ggircs', 'additional_data', 'ggircs_additional_data has primary key');
+-- select has_pk('ggircs', 'additional_data', 'ggircs_additional_data has primary key');
 select has_pk('ggircs', 'measured_emission_factor', 'ggircs_measured_emission_factor has primary key');
 
 
@@ -1180,7 +1180,7 @@ select has_pk('ggircs', 'measured_emission_factor', 'ggircs_measured_emission_fa
 -- select has_fk('ggircs', 'parent_organisation', 'ggircs_parent_organisation has foreign key constraint(s)');
 -- select has_fk('ggircs', 'contact', 'ggircs_contact has foreign key constraint(s)');
 -- select has_fk('ggircs', 'address', 'ggircs_address has foreign key constraint(s)');
-select has_fk('ggircs', 'additional_data', 'ggircs_additional_data has foreign key constraint(s)');
+-- select has_fk('ggircs', 'additional_data', 'ggircs_additional_data has foreign key constraint(s)');
 select has_fk('ggircs', 'measured_emission_factor', 'ggircs_measured_emission_factor has foreign key constraint(s)');
 
 -- All tables in schema ggircs have data
@@ -1198,7 +1198,7 @@ select isnt_empty('select * from ggircs.attributable_emission', 'attributable_em
 -- select isnt_empty('select * from ggircs.parent_organisation', 'there is data in ggircs.parent_organisation');
 -- select isnt_empty('select * from ggircs.contact', 'there is data in ggircs.contact');
 -- select isnt_empty('select * from ggircs.address', 'there is data in ggircs.address');
-select isnt_empty('select * from ggircs.additional_data', 'there is data in ggircs.additional_data');
+-- select isnt_empty('select * from ggircs.additional_data', 'there is data in ggircs.additional_data');
 select isnt_empty('select * from ggircs.measured_emission_factor', 'there is data in ggircs.measured_emission_factor');
 
 -- No CO2bioC in attributable_emission
@@ -1546,31 +1546,31 @@ select set_eq(
 --     'Foreign key unit_id in ggircs.unit references ggircs.activity.id'
 -- );
 
--- Additional Data -> Activity
-select set_eq(
-    $$
-    select distinct(activity.ghgr_import_id) from ggircs.additional_data
-    join ggircs.activity
-    on additional_data.activity_id = activity.id
-    $$,
-
-    'select distinct(ghgr_import_id) from ggircs.activity',
-
-    'Foreign key activity_id in ggircs.additional_data references ggircs.activity.id'
-);
-
--- Additional Data -> Report
-select set_eq(
-    $$
-    select distinct(report.ghgr_import_id) from ggircs.additional_data
-    join ggircs.report
-    on additional_data.report_id = report.id
-    $$,
-
-    'select distinct(ghgr_import_id) from ggircs.report',
-
-    'Foreign key report_id in ggircs.additional_data references ggircs.report.id'
-);
+-- -- Additional Data -> Activity
+-- select set_eq(
+--     $$
+--     select distinct(activity.ghgr_import_id) from ggircs.additional_data
+--     join ggircs.activity
+--     on additional_data.activity_id = activity.id
+--     $$,
+--
+--     'select distinct(ghgr_import_id) from ggircs.activity',
+--
+--     'Foreign key activity_id in ggircs.additional_data references ggircs.activity.id'
+-- );
+--
+-- -- Additional Data -> Report
+-- select set_eq(
+--     $$
+--     select distinct(report.ghgr_import_id) from ggircs.additional_data
+--     join ggircs.report
+--     on additional_data.report_id = report.id
+--     $$,
+--
+--     'select distinct(ghgr_import_id) from ggircs.report',
+--
+--     'Foreign key report_id in ggircs.additional_data references ggircs.report.id'
+-- );
 
 -- -- Activity -> Facility
 -- select set_eq(
