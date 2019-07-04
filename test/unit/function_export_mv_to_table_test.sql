@@ -1155,7 +1155,7 @@ select tables_are('ggircs'::name, ARRAY[
 -- select has_pk('ggircs', 'activity', 'ggircs_activity has primary key');
 -- select has_pk('ggircs', 'unit', 'ggircs_unit has primary key');
 -- select has_pk('ggircs', 'identifier', 'ggircs_identifier has primary key');
-select has_pk('ggircs', 'naics', 'ggircs_naics has primary key');
+-- select has_pk('ggircs', 'naics', 'ggircs_naics has primary key');
 select has_pk('ggircs', 'emission', 'ggircs_emission has primary key');
 select has_pk('ggircs', 'fuel', 'ggircs_fuel has primary key');
 select has_pk('ggircs', 'permit', 'ggircs_permit has primary key');
@@ -1173,7 +1173,7 @@ select has_pk('ggircs', 'measured_emission_factor', 'ggircs_measured_emission_fa
 -- select has_fk('ggircs', 'activity', 'ggircs_activity has foreign key constraint(s)');
 -- select has_fk('ggircs', 'unit', 'ggircs_unit has foreign key constraint(s)');
 -- select has_fk('ggircs', 'identifier', 'ggircs_identifier has foreign key constraint(s)');
-select has_fk('ggircs', 'naics', 'ggircs_naics has foreign key constraint(s)');
+-- select has_fk('ggircs', 'naics', 'ggircs_naics has foreign key constraint(s)');
 select has_fk('ggircs', 'emission', 'ggircs.emission has foreign key constraint(s)');
 select has_fk('ggircs', 'fuel', 'ggircs_fuel has foreign key constraint(s)');
 select has_fk('ggircs', 'permit', 'ggircs_permit has foreign key constraint(s)');
@@ -1190,7 +1190,7 @@ select has_fk('ggircs', 'measured_emission_factor', 'ggircs_measured_emission_fa
 -- select isnt_empty('select * from ggircs.activity', 'there is data in ggircs.activity');
 -- select isnt_empty('select * from ggircs.unit', 'there is data in ggircs.unit');
 -- select isnt_empty('select * from ggircs.identifier', 'there is data in ggircs.identifier');
-select isnt_empty('select * from ggircs.naics', 'there is data in ggircs.naics');
+-- select isnt_empty('select * from ggircs.naics', 'there is data in ggircs.naics');
 select isnt_empty('select * from ggircs.emission', 'there is data in ggircs.emission');
 select isnt_empty('select * from ggircs.attributable_emission', 'attributable_emission has data');
 select isnt_empty('select * from ggircs.fuel', 'there is data in ggircs.fuel');
@@ -1791,66 +1791,66 @@ select set_eq(
 --     'Foreign key report_id in ggircs.identifier references ggircs.report.id'
 -- );
 
--- NAICS -> Facility
-select set_eq(
-    $$
-    select distinct(facility.ghgr_import_id) from ggircs.naics
-    join ggircs.facility
-    on
-      naics.facility_id = facility.id
-      order by ghgr_import_id
-    $$,
-
-    'select ghgr_import_id from ggircs.facility order by ghgr_import_id',
-
-    'Foreign key facility_id in ggircs.naics references ggircs.facility.id'
-);
-
--- Naics -> Facility (path_context = RegistrationData)
-select set_eq(
-    $$
-    select facility.ghgr_import_id from ggircs.naics
-    join ggircs.facility
-    on
-      naics.registration_data_facility_id = facility.id
-    $$,
-
-    $$ select facility.ghgr_import_id
-       from ggircs.naics
-       join ggircs.facility
-       on
-         naics.facility_id = facility.id
-         and path_context = 'RegistrationData' order by naics_code $$,
-
-    'Foreign key registration_data_facility_id in ggircs.naics references ggircs.facility.id'
-);
-
--- Naics -> Report
-select set_eq(
-    $$
-    select report.ghgr_import_id from ggircs.naics
-    join ggircs.report
-    on naics.report_id = report.id
-    $$,
-
-    'select ghgr_import_id from ggircs.report',
-
-    'Foreign key report_id in ggircs.naics references ggircs.report.id'
-);
-
--- Naics -> ggircs_swrs.naics_mapping
-select set_eq(
-               $$
-    select ggircs_swrs.naics_mapping.naics_code, ggircs_swrs.naics_mapping.irc_category from ggircs.naics
-    join ggircs_swrs.naics_mapping
-    on naics.naics_mapping_id = naics_mapping.id
-    $$,
-               $$
-    select naics_code, irc_category from ggircs_swrs.naics_mapping
-    where naics_code in (321111, 721310)
-    $$,
-               'Foreign key naics_mapping_id references ggircs.swrs.naics_mapping.id'
-);
+-- -- NAICS -> Facility
+-- select set_eq(
+--     $$
+--     select distinct(facility.ghgr_import_id) from ggircs.naics
+--     join ggircs.facility
+--     on
+--       naics.facility_id = facility.id
+--       order by ghgr_import_id
+--     $$,
+--
+--     'select ghgr_import_id from ggircs.facility order by ghgr_import_id',
+--
+--     'Foreign key facility_id in ggircs.naics references ggircs.facility.id'
+-- );
+--
+-- -- Naics -> Facility (path_context = RegistrationData)
+-- select set_eq(
+--     $$
+--     select facility.ghgr_import_id from ggircs.naics
+--     join ggircs.facility
+--     on
+--       naics.registration_data_facility_id = facility.id
+--     $$,
+--
+--     $$ select facility.ghgr_import_id
+--        from ggircs.naics
+--        join ggircs.facility
+--        on
+--          naics.facility_id = facility.id
+--          and path_context = 'RegistrationData' order by naics_code $$,
+--
+--     'Foreign key registration_data_facility_id in ggircs.naics references ggircs.facility.id'
+-- );
+--
+-- -- Naics -> Report
+-- select set_eq(
+--     $$
+--     select report.ghgr_import_id from ggircs.naics
+--     join ggircs.report
+--     on naics.report_id = report.id
+--     $$,
+--
+--     'select ghgr_import_id from ggircs.report',
+--
+--     'Foreign key report_id in ggircs.naics references ggircs.report.id'
+-- );
+--
+-- -- Naics -> ggircs_swrs.naics_mapping
+-- select set_eq(
+--                $$
+--     select ggircs_swrs.naics_mapping.naics_code, ggircs_swrs.naics_mapping.irc_category from ggircs.naics
+--     join ggircs_swrs.naics_mapping
+--     on naics.naics_mapping_id = naics_mapping.id
+--     $$,
+--                $$
+--     select naics_code, irc_category from ggircs_swrs.naics_mapping
+--     where naics_code in (321111, 721310)
+--     $$,
+--                'Foreign key naics_mapping_id references ggircs.swrs.naics_mapping.id'
+-- );
 
 -- ggircs.fuel -> ggircs_swrs.fuel_mapping
 select set_eq(
@@ -2062,31 +2062,31 @@ select set_eq(
 --
 --               'data in ggircs_swrs.identifier === ggircs.identifier');
 
--- Data in ggircs_swrs.naics === data in ggircs.naics
-select set_eq(
-              $$
-              select
-                  ghgr_import_id,
-                  swrs_facility_id,
-                  path_context,
-                  naics_classification,
-                  naics_code,
-                  naics_priority
-                from ggircs_swrs.naics
-              $$,
-
-              $$
-              select
-                  ghgr_import_id,
-                  swrs_facility_id,
-                  path_context,
-                  naics_classification,
-                  naics_code,
-                  naics_priority
-                from ggircs.naics
-              $$,
-
-              'data in ggircs_swrs.naics === ggircs.naics');
+-- -- Data in ggircs_swrs.naics === data in ggircs.naics
+-- select set_eq(
+--               $$
+--               select
+--                   ghgr_import_id,
+--                   swrs_facility_id,
+--                   path_context,
+--                   naics_classification,
+--                   naics_code,
+--                   naics_priority
+--                 from ggircs_swrs.naics
+--               $$,
+--
+--               $$
+--               select
+--                   ghgr_import_id,
+--                   swrs_facility_id,
+--                   path_context,
+--                   naics_classification,
+--                   naics_code,
+--                   naics_priority
+--                 from ggircs.naics
+--               $$,
+--
+--               'data in ggircs_swrs.naics === ggircs.naics');
 
 -- Data in ggircs_swrs.emission === data in ggircs.emission
 select set_eq(
