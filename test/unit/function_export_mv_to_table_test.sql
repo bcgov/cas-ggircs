@@ -1160,7 +1160,7 @@ select tables_are('ggircs'::name, ARRAY[
 -- select has_pk('ggircs', 'fuel', 'ggircs_fuel has primary key');
 -- select has_pk('ggircs', 'permit', 'ggircs_permit has primary key');
 -- select has_pk('ggircs', 'parent_organisation', 'ggircs_parent_organisation has primary key');
-select has_pk('ggircs', 'contact', 'ggircs_contact has primary key');
+-- select has_pk('ggircs', 'contact', 'ggircs_contact has primary key');
 select has_pk('ggircs', 'address', 'ggircs_address has primary key');
 select has_pk('ggircs', 'additional_data', 'ggircs_additional_data has primary key');
 select has_pk('ggircs', 'measured_emission_factor', 'ggircs_measured_emission_factor has primary key');
@@ -1178,7 +1178,7 @@ select has_pk('ggircs', 'measured_emission_factor', 'ggircs_measured_emission_fa
 -- select has_fk('ggircs', 'fuel', 'ggircs_fuel has foreign key constraint(s)');
 -- select has_fk('ggircs', 'permit', 'ggircs_permit has foreign key constraint(s)');
 -- select has_fk('ggircs', 'parent_organisation', 'ggircs_parent_organisation has foreign key constraint(s)');
-select has_fk('ggircs', 'contact', 'ggircs_contact has foreign key constraint(s)');
+-- select has_fk('ggircs', 'contact', 'ggircs_contact has foreign key constraint(s)');
 select has_fk('ggircs', 'address', 'ggircs_address has foreign key constraint(s)');
 select has_fk('ggircs', 'additional_data', 'ggircs_additional_data has foreign key constraint(s)');
 select has_fk('ggircs', 'measured_emission_factor', 'ggircs_measured_emission_factor has foreign key constraint(s)');
@@ -1196,7 +1196,7 @@ select isnt_empty('select * from ggircs.attributable_emission', 'attributable_em
 -- select isnt_empty('select * from ggircs.fuel', 'there is data in ggircs.fuel');
 -- select isnt_empty('select * from ggircs.permit', 'there is data in ggircs.permit');
 -- select isnt_empty('select * from ggircs.parent_organisation', 'there is data in ggircs.parent_organisation');
-select isnt_empty('select * from ggircs.contact', 'there is data in ggircs.contact');
+-- select isnt_empty('select * from ggircs.contact', 'there is data in ggircs.contact');
 select isnt_empty('select * from ggircs.address', 'there is data in ggircs.address');
 select isnt_empty('select * from ggircs.additional_data', 'there is data in ggircs.additional_data');
 select isnt_empty('select * from ggircs.measured_emission_factor', 'there is data in ggircs.measured_emission_factor');
@@ -1656,57 +1656,57 @@ select set_eq(
     'Foreign key report_id in ggircs.address references ggircs.report.id'
 );
 
--- Contact -> Address
-select set_eq(
-    $$
-    select distinct(address.ghgr_import_id) from ggircs.contact
-    join ggircs.address
-    on contact.address_id = address.id
-    $$,
-
-    'select distinct(ghgr_import_id) from ggircs.address',
-
-    'Foreign key address_id in ggircs.contact references ggircs.address.id'
-);
-
--- Contact -> Facility
-select set_eq(
-               $$
-    select distinct(facility.ghgr_import_id) from ggircs.contact
-    join ggircs.facility
-    on
-      contact.facility_id = facility.id
-      order by ghgr_import_id
-    $$,
-               'select ghgr_import_id from ggircs.facility order by ghgr_import_id',
-               'Foreign key facility_id in ggircs.contact references ggircs.facility.id'
-);
-
--- Contact -> Report
-select set_eq(
-    $$
-    select distinct(report.ghgr_import_id) from ggircs.contact
-    join ggircs.report
-    on contact.report_id = report.id
-    $$,
-
-    'select distinct(ghgr_import_id) from ggircs.report',
-
-    'Foreign key report_id in ggircs.contact references ggircs.report.id'
-);
-
--- Contact -> Report
-select set_eq(
-    $$
-    select distinct(organisation.ghgr_import_id) from ggircs.contact
-    join ggircs.organisation
-    on contact.organisation_id = organisation.id
-    $$,
-
-    'select distinct(ghgr_import_id) from ggircs.organisation',
-
-    'Foreign key organisation_id in ggircs.contact references ggircs.organisation.id'
-);
+-- -- Contact -> Address
+-- select set_eq(
+--     $$
+--     select distinct(address.ghgr_import_id) from ggircs.contact
+--     join ggircs.address
+--     on contact.address_id = address.id
+--     $$,
+--
+--     'select distinct(ghgr_import_id) from ggircs.address',
+--
+--     'Foreign key address_id in ggircs.contact references ggircs.address.id'
+-- );
+--
+-- -- Contact -> Facility
+-- select set_eq(
+--                $$
+--     select distinct(facility.ghgr_import_id) from ggircs.contact
+--     join ggircs.facility
+--     on
+--       contact.facility_id = facility.id
+--       order by ghgr_import_id
+--     $$,
+--                'select ghgr_import_id from ggircs.facility order by ghgr_import_id',
+--                'Foreign key facility_id in ggircs.contact references ggircs.facility.id'
+-- );
+--
+-- -- Contact -> Report
+-- select set_eq(
+--     $$
+--     select distinct(report.ghgr_import_id) from ggircs.contact
+--     join ggircs.report
+--     on contact.report_id = report.id
+--     $$,
+--
+--     'select distinct(ghgr_import_id) from ggircs.report',
+--
+--     'Foreign key report_id in ggircs.contact references ggircs.report.id'
+-- );
+--
+-- -- Contact -> Report
+-- select set_eq(
+--     $$
+--     select distinct(organisation.ghgr_import_id) from ggircs.contact
+--     join ggircs.organisation
+--     on contact.organisation_id = organisation.id
+--     $$,
+--
+--     'select distinct(ghgr_import_id) from ggircs.organisation',
+--
+--     'Foreign key organisation_id in ggircs.contact references ggircs.organisation.id'
+-- );
 
 -- -- Organisation -> Report
 -- select set_eq(
@@ -2268,55 +2268,55 @@ select set_eq(
 --
 --               'data in ggircs_swrs.parent_organisation === ggircs.parent_organisation');
 
--- Data in ggircs_swrs.contact === data in ggircs.contact
-select set_eq(
-              $$
-              select
-                  ghgr_import_id,
-                  path_context,
-                  contact_type,
-                  given_name,
-                  family_name,
-                  initials,
-                  telephone_number,
-                  extension_number,
-                  fax_number,
-                  email_address,
-                  position,
-                  language_correspondence
-                from ggircs_swrs.contact
-                order by
-                  ghgr_import_id,
-                  path_context,
-                  contact_type,
-                  given_name
-                 asc
-              $$,
-
-              $$
-              select
-                  ghgr_import_id,
-                  path_context,
-                  contact_type,
-                  given_name,
-                  family_name,
-                  initials,
-                  telephone_number,
-                  extension_number,
-                  fax_number,
-                  email_address,
-                  position,
-                  language_correspondence
-                from ggircs.contact
-                order by
-                  ghgr_import_id,
-                  path_context,
-                  contact_type,
-                  given_name
-                 asc
-              $$,
-
-              'data in ggircs_swrs.contact === ggircs.contact');
+-- -- Data in ggircs_swrs.contact === data in ggircs.contact
+-- select set_eq(
+--               $$
+--               select
+--                   ghgr_import_id,
+--                   path_context,
+--                   contact_type,
+--                   given_name,
+--                   family_name,
+--                   initials,
+--                   telephone_number,
+--                   extension_number,
+--                   fax_number,
+--                   email_address,
+--                   position,
+--                   language_correspondence
+--                 from ggircs_swrs.contact
+--                 order by
+--                   ghgr_import_id,
+--                   path_context,
+--                   contact_type,
+--                   given_name
+--                  asc
+--               $$,
+--
+--               $$
+--               select
+--                   ghgr_import_id,
+--                   path_context,
+--                   contact_type,
+--                   given_name,
+--                   family_name,
+--                   initials,
+--                   telephone_number,
+--                   extension_number,
+--                   fax_number,
+--                   email_address,
+--                   position,
+--                   language_correspondence
+--                 from ggircs.contact
+--                 order by
+--                   ghgr_import_id,
+--                   path_context,
+--                   contact_type,
+--                   given_name
+--                  asc
+--               $$,
+--
+--               'data in ggircs_swrs.contact === ggircs.contact');
 
 -- Data in ggircs_swrs.address === data in ggircs.address
 select set_eq(
