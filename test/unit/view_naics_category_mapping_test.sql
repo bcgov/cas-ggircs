@@ -134,6 +134,7 @@ refresh materialized view ggircs_swrs.naics with data;
     left join ggircs_swrs.report as _report
       on _naics.ghgr_import_id = _report.ghgr_import_id;
 
+-- Test naics code -> category/type mapping
 select set_eq(
     'select naics_category, naics_category_type from ggircs.naics_category_mapping',
     $$
@@ -142,7 +143,7 @@ select set_eq(
     join ggircs_swrs.naics_category as nc on nnc.category_id = nc.id
     join ggircs.naics_category_type as ct on nnc.category_type_id = ct.id
     $$,
-    'ggircs.naics_category_mapping properly selects categories and types'
+    'ggircs.naics_category_mapping properly selects categories and types from both fully and partially defined naics codes in the naics_naics_category through table'
 );
 
 select * from ggircs.naics_category_mapping;
