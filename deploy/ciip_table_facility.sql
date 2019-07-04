@@ -14,10 +14,13 @@ create table ciip.facility
     facility_type             varchar(1000),
     bc_ghg_id                 varchar(1000),
     facility_description      varchar(10000),
+    production_calculation_explanation varchar(10000),
+    production_additional_info varchar(10000),
+    production_public_info    varchar(10000),
     naics                     integer
 );
 
-create index ciif_facility_application_foreign_key on ciip.facility(application_id);
-create index ciif_facility_operator_foreign_key on ciip.facility(operator_id);
+create index ciip_facility_application_foreign_key on ciip.facility(application_id);
+create index ciip_facility_operator_foreign_key on ciip.facility(operator_id);
 
 commit;

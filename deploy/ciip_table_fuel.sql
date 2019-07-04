@@ -14,6 +14,6 @@ create table ciip.fuel(
     carbon_emissions          numeric
 );
 
-create index ciif_fuel_application_foreign_key on ciip.fuel(application_id);
+create index ciip_fuel_application_foreign_key on ciip.fuel(application_id);
 
 commit;

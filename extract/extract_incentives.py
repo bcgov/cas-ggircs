@@ -7,6 +7,16 @@ import datetime
 import dateutil.parser
 import os
 
+## returns True if two contact dicts represent the same individual
+def should_merge_contacts(a,b):
+    return (
+        a['first_name'] == b['first_name'] and
+        a['last_name'] == b['last_name'] and
+        a['position'] == b['position'] and
+        a['email'] == b['email'] and
+        a['phone'] == b['phone']
+    )
+
 def reduce_dicts_array(dicts_array, should_merge_fn):
     if len(dicts_array) == 1:
         return dicts_array
@@ -31,7 +41,12 @@ def extract_book(book_path, cur):
         buf = afile.read()
         hasher.update(buf)
 
-    incentives_book = xlrd.open_workbook(book_path)
+    try:
+        incentives_book = xlrd.open_workbook(book_path)
+    except xlrd.biffh.XLRDError:
+        print('skipping file ' + book_path)
+        return
+
     admin_sheet = incentives_book.sheet_by_name('Administrative Info')
     cert_sheet = incentives_book.sheet_by_name('Statement of Certification')
 
@@ -131,14 +146,57 @@ def extract_book(book_path, cur):
     if res is not None:
         facility['swrs_facility_id'] = res[0]
 
+
+    if 'Production' in incentives_book.sheet_names():
+        production_sheet = incentives_book.sheet_by_name('Production')
+        activities = []
+        for row in range(3, 42, 2):
+            product = get_sheet_value(production_sheet, row, 4)
+            if product is not None :
+                activities.append((
+                    application_id,
+                    product,
+                    get_sheet_value(production_sheet, row, 6),
+                    get_sheet_value(production_sheet, row, 8)
+                ))
+
+        psycopg2.extras.execute_values(
+            cur,
+            '''insert into ciip.production (application_id, product, quantity, units)
+            values %s''',
+            activities
+        )
+
+        facility['production_calculation_explanation'] = get_sheet_value(production_sheet, 47, 2)
+        facility['production_additional_info'] = get_sheet_value(production_sheet, 51, 2)
+        facility['production_public_info'] = get_sheet_value(production_sheet, 55, 2)
+
     cur.execute(
-        ('insert into ciip.facility '
-        '(application_id, operator_id, facility_name, facility_type, '
-        'bc_ghg_id, facility_description, naics, swrs_facility_id) '
-        'values (%s, %s, %s, %s, %s, %s, %s, %s) '
-        'returning id'),
-        (application_id, operator['id'], facility['name'], facility['type'],
-        facility['bcghg_id'], facility['description'], facility['naics'], facility.get('swrs_facility_id'))
+        ('''
+        insert into ciip.facility
+        (
+            application_id, operator_id, facility_name, facility_type,
+            bc_ghg_id, facility_description, naics, swrs_facility_id,
+            production_calculation_explanation, production_additional_info,
+            production_public_info
+        )
+        values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        returning id
+        '''
+        ),
+        (
+            application_id,
+            operator['id'],
+            facility['name'],
+            facility['type'],
+            facility['bcghg_id'],
+            facility['description'],
+            facility['naics'],
+            facility.get('swrs_facility_id'),
+            facility.get('production_calculation_explanation'),
+            facility.get('production_additional_info'),
+            facility.get('production_public_info'),
+        )
     )
     facility['id'] = cur.fetchone()[0]
 
@@ -239,15 +297,6 @@ def extract_book(book_path, cur):
         }
     ]
 
-    def should_merge_contacts(a,b):
-        return (
-            a['first_name'] == b['first_name'] and
-            a['last_name'] == b['last_name'] and
-            a['position'] == b['position'] and
-            a['email'] == b['email'] and
-            a['phone'] == b['phone']
-        )
-
     contacts = reduce_dicts_array(contacts, should_merge_contacts)
     def contact_dict_to_tuple(c) :
         return (
@@ -268,7 +317,6 @@ def extract_book(book_path, cur):
 
     fuel_sheet = incentives_book.sheet_by_name('Fuel Usage') if 'Fuel Usage' in incentives_book.sheet_names() else incentives_book.sheet_by_name('Fuel Usage ')
     # emissions_sheet = incentives_book.sheet_by_name('Emissions')
-    # production_sheet = incentives_book.sheet_by_name('Production')
     # emissions_allocation_sheet = incentives_book.sheet_by_name('Emissions Allocation')
     # electricity_sheet = incentives_book.sheet_by_name('Electricity')
 
@@ -310,6 +358,7 @@ def extract_book(book_path, cur):
         values %s''',
         fuels
     )
+
     return
 
 conn = psycopg2.connect(dbname='ggircs_dev', host='localhost')

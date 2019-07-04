@@ -80,3 +80,4 @@ ciip_table_facility [ciip_table_application ciip_table_operator] 2019-06-25T17:3
 ciip_table_address [ciip_table_application ciip_table_facility ciip_table_operator] 2019-06-25T17:39:10Z Matthieu Foucault <matthieu@button.is> # Add an address table in ciip schema
 ciip_table_contact [ciip_table_application ciip_table_address] 2019-06-25T17:37:54Z Matthieu Foucault <matthieu@button.is> # Add a contact table in ciip schema
 ciip_table_fuel [ciip_table_application] 2019-07-03T17:28:15Z Matthieu Foucault <matthieu@button.is> # Add a fuel table in ciip schema
+ciip_table_production [ciip_table_application] 2019-07-04T20:52:24Z Matthieu Foucault <matthieu@button.is> # Add a production table in ciip schema

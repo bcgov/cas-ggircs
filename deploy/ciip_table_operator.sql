@@ -17,7 +17,7 @@ create table ciip.operator
     duns                        varchar(1000)
 );
 
-create index ciif_operator_application_foreign_key on ciip.operator(application_id);
+create index ciip_operator_application_foreign_key on ciip.operator(application_id);
 
 comment on table ciip.operator is 'the table housing all report data pertaining to the reporting organisation';
 comment on column ciip.operator.id is 'The primary key';
