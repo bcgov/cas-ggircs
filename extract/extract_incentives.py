@@ -7,14 +7,6 @@ import datetime
 import dateutil.parser
 import os
 
-# included_sheets = [
-#     'Administrative Info', 'Emissions',
-#     'Production', 'Emissions Allocation',
-#     'Fuel Usage', 'Electricity',
-#     'Statement of Certification'
-# ]
-
-
 def reduce_dicts_array(dicts_array, should_merge_fn):
     if len(dicts_array) == 1:
         return dicts_array
@@ -61,39 +53,46 @@ def extract_book(book_path, cur):
         'returning id'),
         (
             book_path, hasher.hexdigest(),datetime.datetime.now(),
-            int(cert_sheet.cell_value(7, 10)), signature_date,
+            str(cert_sheet.cell_value(7, 10)), signature_date,
         )
     )
 
     application_id = cur.fetchone()[0]
 
     duns = get_sheet_value(admin_sheet, 8, 1)
-    duns = duns if duns is None else str(int(duns))
+    if type(duns) is str:
+        duns = duns.replace('-', '')
+    elif duns is not None:
+        duns = str(int(duns))
+
+    bc_corp_reg = get_sheet_value(admin_sheet, 10, 1)
+    if bc_corp_reg is not None:
+        bc_corp_reg = str(bc_corp_reg).replace(" ", "").replace('.0', '')
 
     operator = {
         'legal_name'      : get_sheet_value(admin_sheet, 4, 1),
         'trade_name'      : get_sheet_value(admin_sheet, 6, 1),
         'duns'            : duns,
-        'bc_corp_reg'     : get_sheet_value(admin_sheet, 10, 1).replace(" ", ""),
+        'bc_corp_reg'     : bc_corp_reg,
+        'is_bc_cop_reg_valid' : False # overwritten below if true
     }
 
-    orgbook_req = requests.get(
-        'https://orgbook.gov.bc.ca/api/v2/topic/ident/registration/' + operator['bc_corp_reg'] + '/formatted')
-    if orgbook_req.status_code == 200 :
-        orgbook_resp = orgbook_req.json()
-        operator['is_bc_cop_reg_valid'] = True
-        operator['orgbook_legal_name'] = orgbook_resp['names'][0]['text']
-        operator['is_registration_active'] = not orgbook_resp['names'][0]['inactive']
-    else :
-        operator['is_bc_cop_reg_valid'] = False
+    if bc_corp_reg is not None:
+        orgbook_req = requests.get(
+            'https://orgbook.gov.bc.ca/api/v2/topic/ident/registration/' + operator.get('bc_corp_reg') + '/formatted')
+        if orgbook_req.status_code == 200 :
+            orgbook_resp = orgbook_req.json()
+            operator['is_bc_cop_reg_valid'] = True
+            operator['orgbook_legal_name'] = orgbook_resp['names'][0]['text']
+            operator['is_registration_active'] = not orgbook_resp['names'][0]['inactive']
 
-    if operator.get('duns') is not None:
+    if duns is not None:
         cur.execute(
             """
             select distinct swrs_organisation_id from ggircs.organisation
             where duns = %s
             """,
-            (operator['duns'],)
+            (duns,)
         )
         res = cur.fetchone()
         if res is not None:
@@ -111,20 +110,20 @@ def extract_book(book_path, cur):
     )
     operator['id'] = cur.fetchone()[0]
 
-
+    bcghg_id = str(get_sheet_value(admin_sheet, 8, 3)).replace('.0', '').strip() if get_sheet_value(admin_sheet, 8, 3) is not None else None
     facility = {
-        'name'            : get_sheet_value(admin_sheet, 30, 1),
-        'bcghg_id'        : str(int(get_sheet_value(admin_sheet, 8, 3))),
+        'name'            : get_sheet_value(admin_sheet, 30, 1, operator['trade_name']),
+        'bcghg_id'        : bcghg_id,
         'type'            : get_sheet_value(admin_sheet, 32, 1),
-        'naics'           : int(get_sheet_value(admin_sheet, 32, 3)),
+        'naics'           : int(get_sheet_value(admin_sheet, 32, 3, get_sheet_value(admin_sheet, 10, 3, 0))),
         'description'     : get_sheet_value(admin_sheet, 42, 1) if admin_sheet.nrows >= 43 else None,
     }
 
     cur.execute(
-        """
+        '''
         select distinct swrs_facility_id from ggircs.identifier
         where identifier_value = %s
-        """,
+        ''',
         (facility['bcghg_id'],)
     )
 
@@ -154,8 +153,8 @@ def extract_book(book_path, cur):
     co_addr =  {
         'street_address'  : get_sheet_value(cert_sheet, co_header_idx + 11, 1),
         'municipality'    : get_sheet_value(cert_sheet, co_header_idx + 11, 4),
-        'province'        : get_sheet_value(cert_sheet, co_header_idx, 13, 1),
-        'postal_code'     : get_sheet_value(cert_sheet, co_header_idx, 13, 4),
+        'province'        : get_sheet_value(cert_sheet, co_header_idx + 13, 1),
+        'postal_code'     : get_sheet_value(cert_sheet, co_header_idx + 13, 4),
         'application_id'  : application_id,
     }
 
@@ -173,8 +172,6 @@ def extract_book(book_path, cur):
         {
             'street_address'  : admin_sheet.cell_value(34, 1),
             'municipality'    : admin_sheet.cell_value(36, 1),
-            'province'        : admin_sheet.cell_value(40, 1),
-            'postal_code'     : admin_sheet.cell_value(40, 3),
             'application_id'  : application_id,
             'facility_location_id' : facility['id'],
         },
@@ -195,8 +192,8 @@ def extract_book(book_path, cur):
         return (
             a['street_address'] == b['street_address'] and
             a['municipality'] == b['municipality'] and
-            a['province'] == b['province'] and
-            a['postal_code'] == b['postal_code']
+            a.get('province') == b.get('province') and
+            a.get('postal_code') == b.get('postal_code')
         )
 
     addresses = reduce_dicts_array(addresses, addresses_eq)
@@ -269,22 +266,65 @@ def extract_book(book_path, cur):
         list(map(contact_dict_to_tuple, contacts))
     )
 
-    return {
-        'operator': operator,
-        'contacts': contacts,
-        'facility': facility,
-        'addresses': addresses,
-    }
+    fuel_sheet = incentives_book.sheet_by_name('Fuel Usage') if 'Fuel Usage' in incentives_book.sheet_names() else incentives_book.sheet_by_name('Fuel Usage ')
+    # emissions_sheet = incentives_book.sheet_by_name('Emissions')
+    # production_sheet = incentives_book.sheet_by_name('Production')
+    # emissions_allocation_sheet = incentives_book.sheet_by_name('Emissions Allocation')
+    # electricity_sheet = incentives_book.sheet_by_name('Electricity')
+
+    fuels = []
+    use_alt_fuel_format = get_sheet_value(fuel_sheet, 3, 0) != 'Fuel Type '
+    row_range = range(4, fuel_sheet.nrows) if not use_alt_fuel_format else range(5, fuel_sheet.nrows - 1, 2)
+
+    for row in row_range:
+        fuel_fields = [
+            get_sheet_value(fuel_sheet, row, 0),
+            None,
+            get_sheet_value(fuel_sheet, row, 1),
+            get_sheet_value(fuel_sheet, row, 2),
+            get_sheet_value(fuel_sheet, row, 3),
+            get_sheet_value(fuel_sheet, row, 4),
+        ] if not use_alt_fuel_format else [
+            get_sheet_value(fuel_sheet, row, 1),
+            get_sheet_value(fuel_sheet, row, 3),
+            get_sheet_value(fuel_sheet, row, 5),
+            get_sheet_value(fuel_sheet, row, 7),
+            get_sheet_value(fuel_sheet, row, 9),
+            get_sheet_value(fuel_sheet, row, 11),
+        ]
+        if not all(f is None for f in fuel_fields[0:3]): # skip rows without any label
+            try:
+                if fuel_fields[3] is not None:
+                    fuel_fields[3] = float(fuel_fields[3])
+                if fuel_fields[5] is not None:
+                    fuel_fields[5] = float(fuel_fields[5])
+                fuel_fields.append(application_id)
+                fuel = tuple(fuel_fields)
+                fuels.append(fuel)
+            except:
+                print('Could not parse Fuel row: ' + ','.join(str(e) for e in fuel_fields))
+
+    psycopg2.extras.execute_values(
+        cur,
+        '''insert into ciip.fuel(fuel_type, fuel_type_alt, fuel_description, quantity, fuel_units, carbon_emissions, application_id)
+        values %s''',
+        fuels
+    )
+    return
 
 conn = psycopg2.connect(dbname='ggircs_dev', host='localhost')
 cur = conn.cursor()
 
-directory = 'data/ciip/SFO Received/Applications'
+directories = [
+    'data/ciip/02_Applications_unverified admin_SFO',
+    'data/ciip/02_Applications_unverified admin_LFO'
+]
 
 try:
-    for filename in os.listdir(directory):
-        print('parsing:' + filename)
-        appl = extract_book(os.path.join(directory,filename), cur)
+    for directory in directories:
+        for filename in os.listdir(directory):
+            print('parsing: ' + filename)
+            extract_book(os.path.join(directory,filename), cur)
     conn.commit()
 except Exception as e:
     conn.rollback()

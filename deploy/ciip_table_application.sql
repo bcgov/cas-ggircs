@@ -12,7 +12,7 @@ create table ciip.application
     swrs_facility_id          integer,
     swrs_organisation_id      integer,
     application_year          varchar(1000),
-    signature_date            timestamptz
+    signature_date            varchar(1000)
 );
 
 comment on table ciip.application is 'The table containing the data representing an SIIP application form';
