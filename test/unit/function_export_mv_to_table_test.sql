@@ -1161,7 +1161,7 @@ select tables_are('ggircs'::name, ARRAY[
 -- select has_pk('ggircs', 'permit', 'ggircs_permit has primary key');
 -- select has_pk('ggircs', 'parent_organisation', 'ggircs_parent_organisation has primary key');
 -- select has_pk('ggircs', 'contact', 'ggircs_contact has primary key');
-select has_pk('ggircs', 'address', 'ggircs_address has primary key');
+-- select has_pk('ggircs', 'address', 'ggircs_address has primary key');
 select has_pk('ggircs', 'additional_data', 'ggircs_additional_data has primary key');
 select has_pk('ggircs', 'measured_emission_factor', 'ggircs_measured_emission_factor has primary key');
 
@@ -1179,7 +1179,7 @@ select has_pk('ggircs', 'measured_emission_factor', 'ggircs_measured_emission_fa
 -- select has_fk('ggircs', 'permit', 'ggircs_permit has foreign key constraint(s)');
 -- select has_fk('ggircs', 'parent_organisation', 'ggircs_parent_organisation has foreign key constraint(s)');
 -- select has_fk('ggircs', 'contact', 'ggircs_contact has foreign key constraint(s)');
-select has_fk('ggircs', 'address', 'ggircs_address has foreign key constraint(s)');
+-- select has_fk('ggircs', 'address', 'ggircs_address has foreign key constraint(s)');
 select has_fk('ggircs', 'additional_data', 'ggircs_additional_data has foreign key constraint(s)');
 select has_fk('ggircs', 'measured_emission_factor', 'ggircs_measured_emission_factor has foreign key constraint(s)');
 
@@ -1197,7 +1197,7 @@ select isnt_empty('select * from ggircs.attributable_emission', 'attributable_em
 -- select isnt_empty('select * from ggircs.permit', 'there is data in ggircs.permit');
 -- select isnt_empty('select * from ggircs.parent_organisation', 'there is data in ggircs.parent_organisation');
 -- select isnt_empty('select * from ggircs.contact', 'there is data in ggircs.contact');
-select isnt_empty('select * from ggircs.address', 'there is data in ggircs.address');
+-- select isnt_empty('select * from ggircs.address', 'there is data in ggircs.address');
 select isnt_empty('select * from ggircs.additional_data', 'there is data in ggircs.additional_data');
 select isnt_empty('select * from ggircs.measured_emission_factor', 'there is data in ggircs.measured_emission_factor');
 
@@ -1602,59 +1602,59 @@ select set_eq(
 --     'Foreign key report_id in ggircs.activity references ggircs.report.id'
 -- );
 
--- Address -> Facility
-select set_eq(
-    $$
-    select distinct(facility.ghgr_import_id) from ggircs.address
-    join ggircs.facility
-    on
-      address.facility_id = facility.id
-      order by ghgr_import_id
-    $$,
--- --
-    'select ghgr_import_id from ggircs.facility order by ghgr_import_id',
--- --
-    'Foreign key facility_id in ggircs.address references ggircs.facility.id'
-);
-
--- Address -> Organisation
-select set_eq(
-    $$
-    select distinct(organisation.ghgr_import_id) from ggircs.address
-    join ggircs.organisation
-    on address.organisation_id = organisation.id
-    $$,
-
-    'select ghgr_import_id from ggircs.organisation',
-
-    'Foreign key organisation_id in ggircs.address references ggircs.organisation.id'
-);
-
--- Address -> Parent Organisation
-select set_eq(
-    $$
-    select distinct(parent_organisation.ghgr_import_id) from ggircs.address
-    join ggircs.parent_organisation
-    on address.parent_organisation_id = parent_organisation.id
-    $$,
-
-    'select ghgr_import_id from ggircs.parent_organisation',
-
-    'Foreign key parent_organisation_id in ggircs.address references ggircs.parent_organisation.id'
-);
-
--- Address -> Report
-select set_eq(
-    $$
-    select distinct(report.ghgr_import_id) from ggircs.address
-    join ggircs.report
-    on address.report_id = report.id
-    $$,
-
-    'select distinct(ghgr_import_id) from ggircs.report',
-
-    'Foreign key report_id in ggircs.address references ggircs.report.id'
-);
+-- -- Address -> Facility
+-- select set_eq(
+--     $$
+--     select distinct(facility.ghgr_import_id) from ggircs.address
+--     join ggircs.facility
+--     on
+--       address.facility_id = facility.id
+--       order by ghgr_import_id
+--     $$,
+-- -- --
+--     'select ghgr_import_id from ggircs.facility order by ghgr_import_id',
+-- -- --
+--     'Foreign key facility_id in ggircs.address references ggircs.facility.id'
+-- );
+--
+-- -- Address -> Organisation
+-- select set_eq(
+--     $$
+--     select distinct(organisation.ghgr_import_id) from ggircs.address
+--     join ggircs.organisation
+--     on address.organisation_id = organisation.id
+--     $$,
+--
+--     'select ghgr_import_id from ggircs.organisation',
+--
+--     'Foreign key organisation_id in ggircs.address references ggircs.organisation.id'
+-- );
+--
+-- -- Address -> Parent Organisation
+-- select set_eq(
+--     $$
+--     select distinct(parent_organisation.ghgr_import_id) from ggircs.address
+--     join ggircs.parent_organisation
+--     on address.parent_organisation_id = parent_organisation.id
+--     $$,
+--
+--     'select ghgr_import_id from ggircs.parent_organisation',
+--
+--     'Foreign key parent_organisation_id in ggircs.address references ggircs.parent_organisation.id'
+-- );
+--
+-- -- Address -> Report
+-- select set_eq(
+--     $$
+--     select distinct(report.ghgr_import_id) from ggircs.address
+--     join ggircs.report
+--     on address.report_id = report.id
+--     $$,
+--
+--     'select distinct(ghgr_import_id) from ggircs.report',
+--
+--     'Foreign key report_id in ggircs.address references ggircs.report.id'
+-- );
 
 -- -- Contact -> Address
 -- select set_eq(
@@ -2318,101 +2318,101 @@ select set_eq(
 --
 --               'data in ggircs_swrs.contact === ggircs.contact');
 
--- Data in ggircs_swrs.address === data in ggircs.address
-select set_eq(
-              $$
-              select
-                  ghgr_import_id,
-                  swrs_facility_id,
-                  swrs_organisation_id,
-                  path_context,
-                  type,
-                  physical_address_municipality,
-                  physical_address_unit_number,
-                  physical_address_street_number,
-                  physical_address_street_number_suffix,
-                  physical_address_street_name,
-                  physical_address_street_type,
-                  physical_address_street_direction,
-                  physical_address_prov_terr_state,
-                  physical_address_postal_code_zip_code,
-                  physical_address_country,
-                  physical_address_national_topographical_description,
-                  physical_address_additional_information,
-                  physical_address_land_survey_description,
-                  mailing_address_delivery_mode,
-                  mailing_address_po_box_number,
-                  mailing_address_unit_number,
-                  mailing_address_rural_route_number,
-                  mailing_address_street_number,
-                  mailing_address_street_number_suffix,
-                  mailing_address_street_name,
-                  mailing_address_street_type,
-                  mailing_address_street_direction,
-                  mailing_address_municipality,
-                  mailing_address_prov_terr_state,
-                  mailing_address_postal_code_zip_code,
-                  mailing_address_country,
-                  mailing_address_additional_information,
-                  geographic_address_latitude,
-                  geographic_address_longitude
-                from ggircs_swrs.address
-                order by
-                  ghgr_import_id,
-                  swrs_facility_id,
-                  swrs_organisation_id,
-                  type,
-                  path_context
-                 asc
-              $$,
-
-              $$
-              select
-                  ghgr_import_id,
-                  swrs_facility_id,
-                  swrs_organisation_id,
-                  path_context,
-                  type,
-                  physical_address_municipality,
-                  physical_address_unit_number,
-                  physical_address_street_number,
-                  physical_address_street_number_suffix,
-                  physical_address_street_name,
-                  physical_address_street_type,
-                  physical_address_street_direction,
-                  physical_address_prov_terr_state,
-                  physical_address_postal_code_zip_code,
-                  physical_address_country,
-                  physical_address_national_topographical_description,
-                  physical_address_additional_information,
-                  physical_address_land_survey_description,
-                  mailing_address_delivery_mode,
-                  mailing_address_po_box_number,
-                  mailing_address_unit_number,
-                  mailing_address_rural_route_number,
-                  mailing_address_street_number,
-                  mailing_address_street_number_suffix,
-                  mailing_address_street_name,
-                  mailing_address_street_type,
-                  mailing_address_street_direction,
-                  mailing_address_municipality,
-                  mailing_address_prov_terr_state,
-                  mailing_address_postal_code_zip_code,
-                  mailing_address_country,
-                  mailing_address_additional_information,
-                  geographic_address_latitude,
-                  geographic_address_longitude
-                from ggircs.address
-                order by
-                  ghgr_import_id,
-                  swrs_facility_id,
-                  swrs_organisation_id,
-                  type,
-                  path_context
-                 asc
-              $$,
-
-              'data in ggircs_swrs.address === ggircs.address');
+-- -- Data in ggircs_swrs.address === data in ggircs.address
+-- select set_eq(
+--               $$
+--               select
+--                   ghgr_import_id,
+--                   swrs_facility_id,
+--                   swrs_organisation_id,
+--                   path_context,
+--                   type,
+--                   physical_address_municipality,
+--                   physical_address_unit_number,
+--                   physical_address_street_number,
+--                   physical_address_street_number_suffix,
+--                   physical_address_street_name,
+--                   physical_address_street_type,
+--                   physical_address_street_direction,
+--                   physical_address_prov_terr_state,
+--                   physical_address_postal_code_zip_code,
+--                   physical_address_country,
+--                   physical_address_national_topographical_description,
+--                   physical_address_additional_information,
+--                   physical_address_land_survey_description,
+--                   mailing_address_delivery_mode,
+--                   mailing_address_po_box_number,
+--                   mailing_address_unit_number,
+--                   mailing_address_rural_route_number,
+--                   mailing_address_street_number,
+--                   mailing_address_street_number_suffix,
+--                   mailing_address_street_name,
+--                   mailing_address_street_type,
+--                   mailing_address_street_direction,
+--                   mailing_address_municipality,
+--                   mailing_address_prov_terr_state,
+--                   mailing_address_postal_code_zip_code,
+--                   mailing_address_country,
+--                   mailing_address_additional_information,
+--                   geographic_address_latitude,
+--                   geographic_address_longitude
+--                 from ggircs_swrs.address
+--                 order by
+--                   ghgr_import_id,
+--                   swrs_facility_id,
+--                   swrs_organisation_id,
+--                   type,
+--                   path_context
+--                  asc
+--               $$,
+--
+--               $$
+--               select
+--                   ghgr_import_id,
+--                   swrs_facility_id,
+--                   swrs_organisation_id,
+--                   path_context,
+--                   type,
+--                   physical_address_municipality,
+--                   physical_address_unit_number,
+--                   physical_address_street_number,
+--                   physical_address_street_number_suffix,
+--                   physical_address_street_name,
+--                   physical_address_street_type,
+--                   physical_address_street_direction,
+--                   physical_address_prov_terr_state,
+--                   physical_address_postal_code_zip_code,
+--                   physical_address_country,
+--                   physical_address_national_topographical_description,
+--                   physical_address_additional_information,
+--                   physical_address_land_survey_description,
+--                   mailing_address_delivery_mode,
+--                   mailing_address_po_box_number,
+--                   mailing_address_unit_number,
+--                   mailing_address_rural_route_number,
+--                   mailing_address_street_number,
+--                   mailing_address_street_number_suffix,
+--                   mailing_address_street_name,
+--                   mailing_address_street_type,
+--                   mailing_address_street_direction,
+--                   mailing_address_municipality,
+--                   mailing_address_prov_terr_state,
+--                   mailing_address_postal_code_zip_code,
+--                   mailing_address_country,
+--                   mailing_address_additional_information,
+--                   geographic_address_latitude,
+--                   geographic_address_longitude
+--                 from ggircs.address
+--                 order by
+--                   ghgr_import_id,
+--                   swrs_facility_id,
+--                   swrs_organisation_id,
+--                   type,
+--                   path_context
+--                  asc
+--               $$,
+--
+--               'data in ggircs_swrs.address === ggircs.address');
 
 -- Data in ggircs_swrs.additional_data === data in ggircs.additional_data
 select set_eq(
