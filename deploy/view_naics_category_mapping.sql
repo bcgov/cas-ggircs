@@ -28,18 +28,5 @@ create or replace view ggircs.naics_category_mapping as
         join ggircs.facility as _facility
             on naics.facility_id = _facility.id
         group by d.naics_code, d.naics_category, d.naics_category_type, d.category_id, d.category_type_id, _report.id, _facility.id;
-
---     select naics.naics_code, _naics_category_hhw.naics_category as hhw_category, _naics_category_irc.naics_category as irc_category
---         from ggircs.naics
---             join ggircs_swrs.naics_naics_category as _naics_naics_category
---                 on naics.naics_category_id = _naics_naics_category.id
---             join ggircs_swrs.naics_category as _naics_category_hhw
---                 on _naics_naics_category.hhw_category_id = _naics_category_hhw.id
---             join ggircs_swrs.naics_category as _naics_category_irc
---                 on _naics_naics_category.irc_category_id = _naics_category_irc.id
---             join ggircs.report as _report
---                 on naics.report_id = _report.id
---             join ggircs.facility as _facility
---                 on naics.facility_id = _facility.id;
 commit;
 
