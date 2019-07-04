@@ -1163,7 +1163,7 @@ select tables_are('ggircs'::name, ARRAY[
 -- select has_pk('ggircs', 'contact', 'ggircs_contact has primary key');
 -- select has_pk('ggircs', 'address', 'ggircs_address has primary key');
 -- select has_pk('ggircs', 'additional_data', 'ggircs_additional_data has primary key');
-select has_pk('ggircs', 'measured_emission_factor', 'ggircs_measured_emission_factor has primary key');
+-- select has_pk('ggircs', 'measured_emission_factor', 'ggircs_measured_emission_factor has primary key');
 
 
 -- Test tables have foreign key constraints (No FK constraints: report, parent_organisation)
@@ -1181,7 +1181,7 @@ select has_pk('ggircs', 'measured_emission_factor', 'ggircs_measured_emission_fa
 -- select has_fk('ggircs', 'contact', 'ggircs_contact has foreign key constraint(s)');
 -- select has_fk('ggircs', 'address', 'ggircs_address has foreign key constraint(s)');
 -- select has_fk('ggircs', 'additional_data', 'ggircs_additional_data has foreign key constraint(s)');
-select has_fk('ggircs', 'measured_emission_factor', 'ggircs_measured_emission_factor has foreign key constraint(s)');
+-- select has_fk('ggircs', 'measured_emission_factor', 'ggircs_measured_emission_factor has foreign key constraint(s)');
 
 -- All tables in schema ggircs have data
 -- select isnt_empty('select * from ggircs.report', 'there is data in ggircs.report');
@@ -1199,7 +1199,7 @@ select isnt_empty('select * from ggircs.attributable_emission', 'attributable_em
 -- select isnt_empty('select * from ggircs.contact', 'there is data in ggircs.contact');
 -- select isnt_empty('select * from ggircs.address', 'there is data in ggircs.address');
 -- select isnt_empty('select * from ggircs.additional_data', 'there is data in ggircs.additional_data');
-select isnt_empty('select * from ggircs.measured_emission_factor', 'there is data in ggircs.measured_emission_factor');
+-- select isnt_empty('select * from ggircs.measured_emission_factor', 'there is data in ggircs.measured_emission_factor');
 
 -- No CO2bioC in attributable_emission
 -- select is_empty($$select * from ggircs.attributable_emission where gas_type='CO2bioC'$$, 'CO2bioC emissions are not in attributable_emission');
@@ -1883,18 +1883,18 @@ select set_eq(
 --     'Foreign key facility_id in ggircs.permit references ggircs.facility.id'
 -- );
 
--- Measured Emission Factor -> Fuel
-select set_eq(
-    $$
-    select distinct(fuel.ghgr_import_id) from ggircs.measured_emission_factor
-    join ggircs.fuel
-    on measured_emission_factor.fuel_id = fuel.id
-    $$,
-
-    'select distinct(ghgr_import_id) from ggircs.fuel',
-
-    'Foreign key fuel_id in ggircs.measured_emission_factor references ggircs.fuel.id'
-);
+-- -- Measured Emission Factor -> Fuel
+-- select set_eq(
+--     $$
+--     select distinct(fuel.ghgr_import_id) from ggircs.measured_emission_factor
+--     join ggircs.fuel
+--     on measured_emission_factor.fuel_id = fuel.id
+--     $$,
+--
+--     'select distinct(ghgr_import_id) from ggircs.fuel',
+--
+--     'Foreign key fuel_id in ggircs.measured_emission_factor references ggircs.fuel.id'
+-- );
 
 
 
@@ -2414,83 +2414,83 @@ select set_eq(
 --
 --               'data in ggircs_swrs.address === ggircs.address');
 
--- Data in ggircs_swrs.additional_data === data in ggircs.additional_data
-select set_eq(
-              $$
-              select
-                    ghgr_import_id,
-                    grandparent,
-                    parent,
-                    class,
-                    attribute,
-                    attr_value,
-                    node_value
-                from ggircs_swrs.additional_data
-                order by
-                  ghgr_import_id,
-                  grandparent,
-                  parent,
-                  class,
-                  node_value
-                 asc
-              $$,
+-- -- Data in ggircs_swrs.additional_data === data in ggircs.additional_data
+-- select set_eq(
+--               $$
+--               select
+--                     ghgr_import_id,
+--                     grandparent,
+--                     parent,
+--                     class,
+--                     attribute,
+--                     attr_value,
+--                     node_value
+--                 from ggircs_swrs.additional_data
+--                 order by
+--                   ghgr_import_id,
+--                   grandparent,
+--                   parent,
+--                   class,
+--                   node_value
+--                  asc
+--               $$,
+--
+--               $$
+--               select
+--                     ghgr_import_id,
+--                     grandparent,
+--                     parent,
+--                     class,
+--                     attribute,
+--                     attr_value,
+--                     node_value
+--                 from ggircs.additional_data
+--                 order by
+--                   ghgr_import_id,
+--                   grandparent,
+--                   parent,
+--                   class,
+--                   node_value
+--                  asc
+--               $$,
+--
+--               'data in ggircs_swrs.additional_data === ggircs.additional_data');
 
-              $$
-              select
-                    ghgr_import_id,
-                    grandparent,
-                    parent,
-                    class,
-                    attribute,
-                    attr_value,
-                    node_value
-                from ggircs.additional_data
-                order by
-                  ghgr_import_id,
-                  grandparent,
-                  parent,
-                  class,
-                  node_value
-                 asc
-              $$,
 
-              'data in ggircs_swrs.additional_data === ggircs.additional_data');
-
-
--- Data in ggircs_swrs.measured_emission_factor === data in ggircs.measured_emission_factor
-select set_eq(
-              $$
-              select
-                ghgr_import_id,
-                activity_name,
-                sub_activity_name,
-                unit_name,
-                sub_unit_name,
-                measured_emission_factor_amount,
-                measured_emission_factor_gas,
-                measured_emission_factor_unit_type
-              from ggircs_swrs.measured_emission_factor
-              order by
-                ghgr_import_id
-              $$,
-
-              $$
-              select
-                  ghgr_import_id,
-                  activity_name,
-                  sub_activity_name,
-                  unit_name,
-                  sub_unit_name,
-                  measured_emission_factor_amount,
-                  measured_emission_factor_gas,
-                  measured_emission_factor_unit_type
-                from ggircs.measured_emission_factor
-                order by
-                    ghgr_import_id
-                 asc
-              $$,
-
-              'data in ggircs_swrs.measured_emission_factor === ggircs.measured_emission_factor');
+-- -- Data in ggircs_swrs.measured_emission_factor === data in ggircs.measured_emission_factor
+-- select set_eq(
+--               $$
+--               select
+--                 ghgr_import_id,
+--                 activity_name,
+--                 sub_activity_name,
+--                 unit_name,
+--                 sub_unit_name,
+--                 measured_emission_factor_amount,
+--                 measured_emission_factor_gas,
+--                 measured_emission_factor_unit_type
+--               from ggircs_swrs.measured_emission_factor
+--               order by
+--                 ghgr_import_id
+--               $$,
+--
+--               $$
+--               select
+--                   ghgr_import_id,
+--                   activity_name,
+--                   sub_activity_name,
+--                   unit_name,
+--                   sub_unit_name,
+--                   measured_emission_factor_amount,
+--                   measured_emission_factor_gas,
+--                   measured_emission_factor_unit_type
+--                 from ggircs.measured_emission_factor
+--                 order by
+--                     ghgr_import_id
+--                  asc
+--               $$,
+--
+--               'data in ggircs_swrs.measured_emission_factor === ggircs.measured_emission_factor');
 
   -- refresh views with no data
   select ggircs_swrs.refresh_materialized_views('with no data');
