@@ -19,14 +19,15 @@ create or replace view ggircs.naics_category_mapping as
                            on _nnc.category_id = _naics_category.id
                  left join ggircs.naics_category_type as _naics_category_type
                            on _nnc.category_type_id = _naics_category_type.id
-    ) select naics.naics_code, d.naics_category, d.naics_category_type, d.category_id as naics_category_id, d.category_type_id as naics_category_type_id, _report.id as report_id, _facility.id as facility_id
+    ) select d.naics_code, d.naics_category, d.naics_category_type, d.category_id as naics_category_id, d.category_type_id as naics_category_type_id, _report.id as report_id, _facility.id as facility_id
       from ggircs.naics
-        join distinct_naics_code_list as d
+        inner join distinct_naics_code_list as d
             on naics.naics_code = d.naics_code
         join ggircs.report as _report
             on naics.report_id = _report.id
         join ggircs.facility as _facility
-            on naics.facility_id = _facility.id;
+            on naics.facility_id = _facility.id
+        group by d.naics_code, d.naics_category, d.naics_category_type, d.category_id, d.category_type_id, _report.id, _facility.id;
 
 --     select naics.naics_code, _naics_category_hhw.naics_category as hhw_category, _naics_category_irc.naics_category as irc_category
 --         from ggircs.naics
