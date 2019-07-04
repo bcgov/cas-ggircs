@@ -1158,7 +1158,7 @@ select tables_are('ggircs'::name, ARRAY[
 -- select has_pk('ggircs', 'naics', 'ggircs_naics has primary key');
 -- select has_pk('ggircs', 'emission', 'ggircs_emission has primary key');
 -- select has_pk('ggircs', 'fuel', 'ggircs_fuel has primary key');
-select has_pk('ggircs', 'permit', 'ggircs_permit has primary key');
+-- select has_pk('ggircs', 'permit', 'ggircs_permit has primary key');
 select has_pk('ggircs', 'parent_organisation', 'ggircs_parent_organisation has primary key');
 select has_pk('ggircs', 'contact', 'ggircs_contact has primary key');
 select has_pk('ggircs', 'address', 'ggircs_address has primary key');
@@ -1176,7 +1176,7 @@ select has_pk('ggircs', 'measured_emission_factor', 'ggircs_measured_emission_fa
 -- select has_fk('ggircs', 'naics', 'ggircs_naics has foreign key constraint(s)');
 -- select has_fk('ggircs', 'emission', 'ggircs.emission has foreign key constraint(s)');
 -- select has_fk('ggircs', 'fuel', 'ggircs_fuel has foreign key constraint(s)');
-select has_fk('ggircs', 'permit', 'ggircs_permit has foreign key constraint(s)');
+-- select has_fk('ggircs', 'permit', 'ggircs_permit has foreign key constraint(s)');
 -- select has_fk('ggircs', 'parent_organisation', 'ggircs_parent_organisation has foreign key constraint(s)');
 select has_fk('ggircs', 'contact', 'ggircs_contact has foreign key constraint(s)');
 select has_fk('ggircs', 'address', 'ggircs_address has foreign key constraint(s)');
@@ -1194,7 +1194,7 @@ select has_fk('ggircs', 'measured_emission_factor', 'ggircs_measured_emission_fa
 -- select isnt_empty('select * from ggircs.emission', 'there is data in ggircs.emission');
 select isnt_empty('select * from ggircs.attributable_emission', 'attributable_emission has data');
 -- select isnt_empty('select * from ggircs.fuel', 'there is data in ggircs.fuel');
-select isnt_empty('select * from ggircs.permit', 'there is data in ggircs.permit');
+-- select isnt_empty('select * from ggircs.permit', 'there is data in ggircs.permit');
 select isnt_empty('select * from ggircs.parent_organisation', 'there is data in ggircs.parent_organisation');
 select isnt_empty('select * from ggircs.contact', 'there is data in ggircs.contact');
 select isnt_empty('select * from ggircs.address', 'there is data in ggircs.address');
@@ -1868,20 +1868,20 @@ select set_eq(
     'Foreign key fuel_mapping_id references ggircs.swrs.fuel_mapping.id'
 );
 
--- Permit -> Facility
-select set_eq(
-    $$
-    select facility.ghgr_import_id from ggircs.permit
-    join ggircs.facility
-    on
-      permit.facility_id = facility.id
-      order by ghgr_import_id
-    $$,
-
-    'select ghgr_import_id from ggircs.facility order by ghgr_import_id',
-
-    'Foreign key facility_id in ggircs.permit references ggircs.facility.id'
-);
+-- -- Permit -> Facility
+-- select set_eq(
+--     $$
+--     select facility.ghgr_import_id from ggircs.permit
+--     join ggircs.facility
+--     on
+--       permit.facility_id = facility.id
+--       order by ghgr_import_id
+--     $$,
+--
+--     'select ghgr_import_id from ggircs.facility order by ghgr_import_id',
+--
+--     'Foreign key facility_id in ggircs.permit references ggircs.facility.id'
+-- );
 
 -- Measured Emission Factor -> Fuel
 select set_eq(
@@ -2198,37 +2198,37 @@ select set_eq(
 --
 --               'data in ggircs_swrs.fuel === ggircs.fuel');
 
--- Data in ggircs_swrs.permit === data in ggircs.permit
-select set_eq(
-              $$
-              select
-                  ghgr_import_id,
-                  path_context,
-                  issuing_agency,
-                  issuing_dept_agency_program,
-                  permit_number
-                from ggircs_swrs.permit
-                order by
-                  ghgr_import_id,
-                  path_context
-                 asc
-              $$,
-
-              $$
-              select
-                  ghgr_import_id,
-                  path_context,
-                  issuing_agency,
-                  issuing_dept_agency_program,
-                  permit_number
-                from ggircs.permit
-                order by
-                  ghgr_import_id,
-                  path_context
-                 asc
-              $$,
-
-              'data in ggircs_swrs.permit === ggircs.permit');
+-- -- Data in ggircs_swrs.permit === data in ggircs.permit
+-- select set_eq(
+--               $$
+--               select
+--                   ghgr_import_id,
+--                   path_context,
+--                   issuing_agency,
+--                   issuing_dept_agency_program,
+--                   permit_number
+--                 from ggircs_swrs.permit
+--                 order by
+--                   ghgr_import_id,
+--                   path_context
+--                  asc
+--               $$,
+--
+--               $$
+--               select
+--                   ghgr_import_id,
+--                   path_context,
+--                   issuing_agency,
+--                   issuing_dept_agency_program,
+--                   permit_number
+--                 from ggircs.permit
+--                 order by
+--                   ghgr_import_id,
+--                   path_context
+--                  asc
+--               $$,
+--
+--               'data in ggircs_swrs.permit === ggircs.permit');
 
 -- Data in ggircs_swrs.parent_organisation === data in ggircs.parent_organisation
 select set_eq(
