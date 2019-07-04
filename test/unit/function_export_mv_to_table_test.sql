@@ -55,7 +55,8 @@ select tables_are('ggircs'::name, ARRAY[
     'contact'::name,
     'address'::name,
     'additional_data'::name,
-    'measured_emission_factor'::name
+    'measured_emission_factor'::name,
+    'naics_category_type'::name
     ],
     $$
     Schema ggircs has tables [
