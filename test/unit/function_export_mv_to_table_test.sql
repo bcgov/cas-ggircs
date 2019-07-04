@@ -1159,7 +1159,7 @@ select tables_are('ggircs'::name, ARRAY[
 -- select has_pk('ggircs', 'emission', 'ggircs_emission has primary key');
 -- select has_pk('ggircs', 'fuel', 'ggircs_fuel has primary key');
 -- select has_pk('ggircs', 'permit', 'ggircs_permit has primary key');
-select has_pk('ggircs', 'parent_organisation', 'ggircs_parent_organisation has primary key');
+-- select has_pk('ggircs', 'parent_organisation', 'ggircs_parent_organisation has primary key');
 select has_pk('ggircs', 'contact', 'ggircs_contact has primary key');
 select has_pk('ggircs', 'address', 'ggircs_address has primary key');
 select has_pk('ggircs', 'additional_data', 'ggircs_additional_data has primary key');
@@ -1195,7 +1195,7 @@ select has_fk('ggircs', 'measured_emission_factor', 'ggircs_measured_emission_fa
 select isnt_empty('select * from ggircs.attributable_emission', 'attributable_emission has data');
 -- select isnt_empty('select * from ggircs.fuel', 'there is data in ggircs.fuel');
 -- select isnt_empty('select * from ggircs.permit', 'there is data in ggircs.permit');
-select isnt_empty('select * from ggircs.parent_organisation', 'there is data in ggircs.parent_organisation');
+-- select isnt_empty('select * from ggircs.parent_organisation', 'there is data in ggircs.parent_organisation');
 select isnt_empty('select * from ggircs.contact', 'there is data in ggircs.contact');
 select isnt_empty('select * from ggircs.address', 'there is data in ggircs.address');
 select isnt_empty('select * from ggircs.additional_data', 'there is data in ggircs.additional_data');
@@ -1722,31 +1722,31 @@ select set_eq(
 --     'Foreign key report_id in ggircs.organisation references ggircs.report'
 -- );
 
--- Parent Organisation -> Report
-select set_eq(
-    $$
-    select distinct(report.ghgr_import_id) from ggircs.parent_organisation
-    join ggircs.report
-    on parent_organisation.report_id = report.id
-    $$,
-
-    'select distinct(ghgr_import_id) from ggircs.report',
-
-    'Foreign key report_id in ggircs.parent_organisation references ggircs.report.id'
-);
-
--- Parent Organisation -> Organisation
-select set_eq(
-    $$
-    select distinct(organisation.ghgr_import_id) from ggircs.parent_organisation
-    join ggircs.organisation
-    on parent_organisation.organisation_id = organisation.id
-    $$,
-
-    'select ghgr_import_id from ggircs.organisation',
-
-    'Foreign key organisation_id in ggircs.parent_organisation references ggircs.organisation.id'
-);
+-- -- Parent Organisation -> Report
+-- select set_eq(
+--     $$
+--     select distinct(report.ghgr_import_id) from ggircs.parent_organisation
+--     join ggircs.report
+--     on parent_organisation.report_id = report.id
+--     $$,
+--
+--     'select distinct(ghgr_import_id) from ggircs.report',
+--
+--     'Foreign key report_id in ggircs.parent_organisation references ggircs.report.id'
+-- );
+--
+-- -- Parent Organisation -> Organisation
+-- select set_eq(
+--     $$
+--     select distinct(organisation.ghgr_import_id) from ggircs.parent_organisation
+--     join ggircs.organisation
+--     on parent_organisation.organisation_id = organisation.id
+--     $$,
+--
+--     'select ghgr_import_id from ggircs.organisation',
+--
+--     'Foreign key organisation_id in ggircs.parent_organisation references ggircs.organisation.id'
+-- );
 
 -- -- Identifier -> Facility
 -- select set_eq(
@@ -1852,21 +1852,21 @@ select set_eq(
 --                'Foreign key naics_mapping_id references ggircs.swrs.naics_mapping.id'
 -- );
 
--- ggircs.fuel -> ggircs_swrs.fuel_mapping
-select set_eq(
-    $$select ggircs_swrs.fuel_mapping.fuel_type from ggircs.fuel
-      join ggircs_swrs.fuel_mapping
-      on
-        fuel.fuel_mapping_id = fuel_mapping.id
-      order by fuel_type
-    $$,
-
-    $$select fuel_type from ggircs_swrs.fuel_mapping
-      where fuel_type in ('Residual Fuel Oil (#5 & 6)', 'Wood Waste') order by fuel_type
-    $$,
-
-    'Foreign key fuel_mapping_id references ggircs.swrs.fuel_mapping.id'
-);
+-- -- ggircs.fuel -> ggircs_swrs.fuel_mapping
+-- select set_eq(
+--     $$select ggircs_swrs.fuel_mapping.fuel_type from ggircs.fuel
+--       join ggircs_swrs.fuel_mapping
+--       on
+--         fuel.fuel_mapping_id = fuel_mapping.id
+--       order by fuel_type
+--     $$,
+--
+--     $$select fuel_type from ggircs_swrs.fuel_mapping
+--       where fuel_type in ('Residual Fuel Oil (#5 & 6)', 'Wood Waste') order by fuel_type
+--     $$,
+--
+--     'Foreign key fuel_mapping_id references ggircs.swrs.fuel_mapping.id'
+-- );
 
 -- -- Permit -> Facility
 -- select set_eq(
@@ -2230,43 +2230,43 @@ select set_eq(
 --
 --               'data in ggircs_swrs.permit === ggircs.permit');
 
--- Data in ggircs_swrs.parent_organisation === data in ggircs.parent_organisation
-select set_eq(
-              $$
-              select
-                  ghgr_import_id,
-                  path_context,
-                  percentage_owned,
-                  french_trade_name,
-                  english_trade_name,
-                  duns,
-                  business_legal_name,
-                  website
-                from ggircs_swrs.parent_organisation
-                order by
-                  ghgr_import_id,
-                  path_context
-                 asc
-              $$,
-
-              $$
-              select
-                  ghgr_import_id,
-                  path_context,
-                  percentage_owned,
-                  french_trade_name,
-                  english_trade_name,
-                  duns,
-                  business_legal_name,
-                  website
-                from ggircs.parent_organisation
-                order by
-                  ghgr_import_id,
-                  path_context
-                 asc
-              $$,
-
-              'data in ggircs_swrs.parent_organisation === ggircs.parent_organisation');
+-- -- Data in ggircs_swrs.parent_organisation === data in ggircs.parent_organisation
+-- select set_eq(
+--               $$
+--               select
+--                   ghgr_import_id,
+--                   path_context,
+--                   percentage_owned,
+--                   french_trade_name,
+--                   english_trade_name,
+--                   duns,
+--                   business_legal_name,
+--                   website
+--                 from ggircs_swrs.parent_organisation
+--                 order by
+--                   ghgr_import_id,
+--                   path_context
+--                  asc
+--               $$,
+--
+--               $$
+--               select
+--                   ghgr_import_id,
+--                   path_context,
+--                   percentage_owned,
+--                   french_trade_name,
+--                   english_trade_name,
+--                   duns,
+--                   business_legal_name,
+--                   website
+--                 from ggircs.parent_organisation
+--                 order by
+--                   ghgr_import_id,
+--                   path_context
+--                  asc
+--               $$,
+--
+--               'data in ggircs_swrs.parent_organisation === ggircs.parent_organisation');
 
 -- Data in ggircs_swrs.contact === data in ggircs.contact
 select set_eq(
