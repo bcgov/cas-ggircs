@@ -139,9 +139,12 @@ select set_eq(
     'select naics_category, naics_category_type from ggircs.naics_category_mapping',
     $$
     select naics_category, naics_category_type from ggircs.naics
-    join ggircs_swrs.naics_naics_category as nnc on naics.naics_code::text like nnc.naics_code_pattern
-    join ggircs_swrs.naics_category as nc on nnc.category_id = nc.id
-    join ggircs.naics_category_type as ct on nnc.category_type_id = ct.id
+    join ggircs_swrs.naics_naics_category as nnc
+        on naics.naics_code::text like nnc.naics_code_pattern
+    join ggircs_swrs.naics_category as nc
+        on nnc.category_id = nc.id
+    join ggircs.naics_category_type as ct
+        on nnc.category_type_id = ct.id
     $$,
     'ggircs.naics_category_mapping properly selects categories and types from both fully and partially defined naics codes in the naics_naics_category through table'
 );
