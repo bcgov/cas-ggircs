@@ -49,22 +49,39 @@ def extract_equipment(ciip_book, cur, application_id):
 
     def get_equipment(sheet, row, col_range, eq_type):
         eq = [application_id, eq_type]
+        numeric_cols = [4, 5, 6,7,8,12,13,14,15,16] # tuple index
         for col in col_range:
             if col is None:
                 eq.append(None)
             else:
                 val = get_sheet_value(sheet, row, col)
-                if val is not None and isinstance(val, str) and val.strip().endswith('%') :
-                    try:
-                        val = float(val.replace('%', ''))
-                    except:
-                        print('Failed to convert ' + val + 'to float')
+                if val is not None:
+                    if isinstance(val, str) and val.strip().endswith('%') :
+                        try:
+                            val = float(val.replace('%', ''))
+                        except:
+                            print('Failed to convert ' + val + ' to float')
+                    elif len(eq) in numeric_cols:
+                        try:
+                            val = float(val)
+                        except:
+                            print('Failed to convert ' + str(val) + ' to float')
+                            val = None
+                    elif len(eq) == 11: # inlet_sales_compression_same_engine, should be Y or N
+                        if not isinstance(val, str) or val.strip().upper() not in ['Y', 'N']:
+                            val = None
                 eq.append(val)
         return eq
 
     def get_first_col(sheet):
         for c in range(0, sheet.ncols):
             if get_sheet_value(sheet, 5, c) == 'Equipment Identifier':
+                return c
+        return None
+
+    def get_volume_units_column(sheet):
+        for c in range(0, sheet.ncols):
+            if get_sheet_value(sheet, 5, c) == 'Output/Throughput Volume Units\n(E3m3,m3, etc.)':
                 return c
         return None
 
@@ -77,13 +94,19 @@ def extract_equipment(ciip_book, cur, application_id):
     if 'Gas Fired Equipment' in ciip_book.sheet_names():
         sheet = ciip_book.sheet_by_name('Gas Fired Equipment')
         first_col = get_first_col(sheet)
-        col_range = list(range(first_col + 0, first_col + 7)) + [None, first_col + 21, first_col + 46]
+        volume_unit_col = get_volume_units_column(sheet)
+        col_range = list(range(first_col + 0, first_col + 7))
+        col_range.append(None)
+        col_range += list(range(first_col + 21, first_col + 28))
+        col_range += [volume_unit_col, volume_unit_col + 1]
+        col_range.append(volume_unit_col + 16)
         extract_equipment_sheet(sheet, col_range, 'Gas Fired')
 
     if 'Electrical Equipment' in ciip_book.sheet_names():
         sheet = ciip_book.sheet_by_name('Electrical Equipment')
         first_col = get_first_col(sheet)
-        col_range = list(range(first_col + 0, first_col + 7)) + [first_col + 21,first_col + 22,first_col + 33]
+        volume_unit_col = get_volume_units_column(sheet)
+        col_range = list(range(first_col + 0, first_col + 7)) + list(range(first_col + 21, first_col + 29)) + list(range(volume_unit_col, volume_unit_col + 3))
         extract_equipment_sheet(sheet, col_range, 'Electrical')
 
     psycopg2.extras.execute_values(
@@ -92,7 +115,16 @@ def extract_equipment(ciip_book, cur, application_id):
         (
             application_id, equipment_category, equipment_identifier, equipment_type,
             power_rating, load_factor, utilization, runtime_hours, design_efficiency,
-            electrical_source, consumption_allocation_method, comments
+            electrical_source, consumption_allocation_method,
+            inlet_sales_compression_same_engine,
+            inlet_suction_pressure,
+            inlet_discharge_pressure,
+            sales_suction_pressure,
+            sales_compression_pressure,
+            volume_throughput,
+            volume_units,
+            volume_estimation_method,
+            comments
         )
         values %s''',
         equipment
