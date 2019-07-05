@@ -12,6 +12,7 @@ create or replace function ggircs_swrs.export_fuel_to_ggircs()
 $function$
     begin
 
+        delete from ggircs.fuel;
         insert into ggircs.fuel(id, ghgr_import_id, report_id, unit_id, fuel_mapping_id,
                                 activity_name, sub_activity_name, unit_name, sub_unit_name, fuel_type, fuel_classification, fuel_description,
                                 fuel_units, annual_fuel_amount, annual_weighted_avg_carbon_content, annual_weighted_avg_hhv, annual_steam_generation, alternative_methodology_description,

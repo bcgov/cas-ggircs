@@ -11,6 +11,7 @@ create or replace function ggircs_swrs.export_identifier_to_ggircs()
 $function$
     begin
 
+        delete from ggircs.identifier;
         insert into ggircs.identifier(id, ghgr_import_id, facility_bcghgid_id, facility_id,  report_id, swrs_facility_id, path_context, identifier_type, identifier_value)
 
         select _identifier.id, _identifier.ghgr_import_id, _facility_bcghgid.id, _facility.id,  _report.id, _identifier.swrs_facility_id, _identifier.path_context, _identifier.identifier_type, _identifier.identifier_value

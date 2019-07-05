@@ -13,6 +13,7 @@ create or replace function ggircs_swrs.export_contact_to_ggircs()
 $function$
     begin
 
+        delete from ggircs.contact;
         insert into ggircs.contact (id, ghgr_import_id, address_id, facility_id,  report_id, organisation_id, path_context, contact_type, given_name, family_name, initials, telephone_number, extension_number,
                                     fax_number, email_address, position, language_correspondence)
 

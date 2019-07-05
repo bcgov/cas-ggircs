@@ -10,6 +10,7 @@ create or replace function ggircs_swrs.export_permit_to_ggircs()
 $function$
     begin
 
+        delete from ggircs.permit;
         insert into ggircs.permit(id, ghgr_import_id, report_id, facility_id,  path_context, issuing_agency, issuing_dept_agency_program, permit_number)
 
         select _permit.id, _permit.ghgr_import_id, _report.id, _facility.id,  _permit.path_context, _permit.issuing_agency, _permit.issuing_dept_agency_program, _permit.permit_number
