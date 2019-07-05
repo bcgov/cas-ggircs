@@ -82,3 +82,8 @@ ciip_table_contact [ciip_table_application ciip_table_address] 2019-06-25T17:37:
 ciip_table_fuel [ciip_table_application] 2019-07-03T17:28:15Z Matthieu Foucault <matthieu@button.is> # Add a fuel table in ciip schema
 ciip_table_production [ciip_table_application] 2019-07-04T20:52:24Z Matthieu Foucault <matthieu@button.is> # Add a production table in ciip schema
 ciip_table_energy [ciip_table_application] 2019-07-04T21:51:10Z Matthieu Foucault <matthieu@button.is> # Add an energy table in ciip schema
+ciip_table_equipment [ciip_table_application] 2019-07-05T16:46:28Z Matthieu Foucault <matthieu@button.is> # Add an equipment table in ciip schema
+ciip_table_equipment_consumption [ciip_table_application] 2019-07-05T20:18:28Z Matthieu Foucault <matthieu@button.is> # Add an equipment consumption table in ciip schema
+ciip_table_equipment_emission [ciip_table_application] 2019-07-05T20:21:07Z Matthieu Foucault <matthieu@button.is> # Add an equipment emission table in ciip schema
+ciip_table_emission [ciip_table_application] 2019-07-05T20:21:18Z Matthieu Foucault <matthieu@button.is> # Add an emission table in ciip schema
+ciip_table_equipment_output_stream [ciip_table_application] 2019-07-05T20:42:00Z Matthieu Foucault <matthieu@button.is> # Add an equipment output stream table in ciip schema

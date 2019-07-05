@@ -13,16 +13,18 @@ def zero_if_not_number(a):
     except:
         return 0
 
+
+def partial_dict_eq(a, b, fields):
+    for f in fields:
+        if a.get(f) != b.get(f):
+            return False
+    return True
+
 ## returns True if two contact dicts represent the same individual
 def should_merge_contacts(a,b):
-    return (
-        a['first_name'] == b['first_name'] and
-        a['last_name'] == b['last_name'] and
-        a['position'] == b['position'] and
-        a['email'] == b['email'] and
-        a['phone'] == b['phone']
-    )
+    return partial_dict_eq(a, b, ['first_name', 'last_name', 'position', 'email', 'phone'])
 
+## using the provided function, returns an array where the equal dicts are merged
 def reduce_dicts_array(dicts_array, should_merge_fn):
     if len(dicts_array) == 1:
         return dicts_array
@@ -36,10 +38,65 @@ def reduce_dicts_array(dicts_array, should_merge_fn):
 
     return dicts_array
 
+
 def get_sheet_value(sheet, row, col, default = None) :
     v = sheet.cell_value(row, col)
     return v if (v != '' and v != 'N/A') else default
 
+
+def extract_equipment(ciip_book, cur, application_id):
+    equipment = []
+
+    def get_equipment(sheet, row, col_range, eq_type):
+        eq = [application_id, eq_type]
+        for col in col_range:
+            if col is None:
+                eq.append(None)
+            else:
+                val = get_sheet_value(sheet, row, col)
+                if val is not None and isinstance(val, str) and val.strip().endswith('%') :
+                    try:
+                        val = float(val.replace('%', ''))
+                    except:
+                        print('Failed to convert ' + val + 'to float')
+                eq.append(val)
+        return eq
+
+    def get_first_col(sheet):
+        for c in range(0, sheet.ncols):
+            if get_sheet_value(sheet, 5, c) == 'Equipment Identifier':
+                return c
+        return None
+
+    def extract_equipment_sheet(sheet, col_range, eq_type):
+        for row in range(6, sheet.nrows):
+            eq = get_equipment(sheet, row, col_range, eq_type)
+            if isinstance(eq[4], int) or isinstance(eq[4], float):
+                equipment.append(tuple(eq))
+
+    if 'Gas Fired Equipment' in ciip_book.sheet_names():
+        sheet = ciip_book.sheet_by_name('Gas Fired Equipment')
+        first_col = get_first_col(sheet)
+        col_range = list(range(first_col + 0, first_col + 7)) + [None, first_col + 21, first_col + 46]
+        extract_equipment_sheet(sheet, col_range, 'Gas Fired')
+
+    if 'Electrical Equipment' in ciip_book.sheet_names():
+        sheet = ciip_book.sheet_by_name('Electrical Equipment')
+        first_col = get_first_col(sheet)
+        col_range = list(range(first_col + 0, first_col + 7)) + [first_col + 21,first_col + 22,first_col + 33]
+        extract_equipment_sheet(sheet, col_range, 'Electrical')
+
+    psycopg2.extras.execute_values(
+        cur,
+        '''insert into ciip.equipment
+        (
+            application_id, equipment_category, equipment_identifier, equipment_type,
+            power_rating, load_factor, utilization, runtime_hours, design_efficiency,
+            electrical_source, consumption_allocation_method, comments
+        )
+        values %s''',
+        equipment
+    )
 
 def extract_book(book_path, cur):
     hasher = hashlib.sha1()
@@ -48,13 +105,13 @@ def extract_book(book_path, cur):
         hasher.update(buf)
 
     try:
-        incentives_book = xlrd.open_workbook(book_path)
+        ciip_book = xlrd.open_workbook(book_path)
     except xlrd.biffh.XLRDError:
         print('skipping file ' + book_path)
         return
 
-    admin_sheet = incentives_book.sheet_by_name('Administrative Info')
-    cert_sheet = incentives_book.sheet_by_name('Statement of Certification')
+    admin_sheet = ciip_book.sheet_by_name('Administrative Info')
+    cert_sheet = ciip_book.sheet_by_name('Statement of Certification')
 
     header = 'Signature of Certifying Official'
     co_header_idx = None
@@ -153,10 +210,10 @@ def extract_book(book_path, cur):
         facility['swrs_facility_id'] = res[0]
 
     activities = []
-    if 'Production' in incentives_book.sheet_names():
+    if 'Production' in ciip_book.sheet_names():
         # In the SFO applications, associated emissions are in a separate sheet
         # Make a dict of the associated emissions
-        associated_emissions_sheet = incentives_book.sheet_by_name('Emissions Allocation')
+        associated_emissions_sheet = ciip_book.sheet_by_name('Emissions Allocation')
         associated_emissions = {}
         for row in range(4, 26, 2):
             product = get_sheet_value(associated_emissions_sheet, row, 2)
@@ -166,7 +223,7 @@ def extract_book(book_path, cur):
             if product is not None:
                 associated_emissions[product.strip().lower()] = emission
 
-        production_sheet = incentives_book.sheet_by_name('Production')
+        production_sheet = ciip_book.sheet_by_name('Production')
         for row in range(3, 42, 2):
             product = get_sheet_value(production_sheet, row, 4)
             if product is not None :
@@ -183,7 +240,7 @@ def extract_book(book_path, cur):
         facility['production_additional_info'] = get_sheet_value(production_sheet, 51, 2)
         facility['production_public_info'] = get_sheet_value(production_sheet, 55, 2)
     else:
-        production_sheet = incentives_book.sheet_by_name('Module GHGs and production')
+        production_sheet = ciip_book.sheet_by_name('Module GHGs and production')
         for row in range(5, 18):
             q = zero_if_not_number(get_sheet_value(production_sheet, row, 1))
             e = zero_if_not_number(get_sheet_value(production_sheet, row, 3))
@@ -347,7 +404,7 @@ def extract_book(book_path, cur):
         list(map(contact_dict_to_tuple, contacts))
     )
 
-    fuel_sheet = incentives_book.sheet_by_name('Fuel Usage') if 'Fuel Usage' in incentives_book.sheet_names() else incentives_book.sheet_by_name('Fuel Usage ')
+    fuel_sheet = ciip_book.sheet_by_name('Fuel Usage') if 'Fuel Usage' in ciip_book.sheet_names() else ciip_book.sheet_by_name('Fuel Usage ')
     # emissions_sheet = incentives_book.sheet_by_name('Emissions')
 
     fuels = []
@@ -392,12 +449,12 @@ def extract_book(book_path, cur):
     elec_sheet = None
     row_range = None
     col_range = None
-    if 'Electricity' in incentives_book.sheet_names():
-        elec_sheet = incentives_book.sheet_by_name('Electricity')
+    if 'Electricity' in ciip_book.sheet_names():
+        elec_sheet = ciip_book.sheet_by_name('Electricity')
         row_range = range(4, 7, 2)
         col_range = range(1, 10, 2)
     else:
-        elec_sheet = incentives_book.sheet_by_name('Electricity and Heat')
+        elec_sheet = ciip_book.sheet_by_name('Electricity and Heat')
         row_range = range(5, 7)
         col_range = range(1, 6)
 
@@ -431,6 +488,8 @@ def extract_book(book_path, cur):
         values %s''',
         elec_and_heat
     )
+
+    extract_equipment(ciip_book, cur, application_id)
 
     return
 
