@@ -152,30 +152,56 @@ def extract_book(book_path, cur):
     if res is not None:
         facility['swrs_facility_id'] = res[0]
 
-
+    activities = []
     if 'Production' in incentives_book.sheet_names():
+        # In the SFO applications, associated emissions are in a separate sheet
+        # Make a dict of the associated emissions
+        associated_emissions_sheet = incentives_book.sheet_by_name('Emissions Allocation')
+        associated_emissions = {}
+        for row in range(4, 26, 2):
+            product = get_sheet_value(associated_emissions_sheet, row, 2)
+            emission = zero_if_not_number(get_sheet_value(associated_emissions_sheet, row, 6))
+            if emission == 0: # in case a unit was entered in the 'tonnes CO2' column
+                emission = zero_if_not_number(get_sheet_value(associated_emissions_sheet, row, 4))
+            if product is not None:
+                associated_emissions[product.strip().lower()] = emission
+
         production_sheet = incentives_book.sheet_by_name('Production')
-        activities = []
         for row in range(3, 42, 2):
             product = get_sheet_value(production_sheet, row, 4)
             if product is not None :
+                emission = associated_emissions.get(product.strip().lower()) if len(associated_emissions) > 1 else list(associated_emissions.values())[0]
                 activities.append((
                     application_id,
                     product,
                     get_sheet_value(production_sheet, row, 6),
-                    get_sheet_value(production_sheet, row, 8)
+                    get_sheet_value(production_sheet, row, 8),
+                    emission
                 ))
-
-        psycopg2.extras.execute_values(
-            cur,
-            '''insert into ciip.production (application_id, product, quantity, units)
-            values %s''',
-            activities
-        )
 
         facility['production_calculation_explanation'] = get_sheet_value(production_sheet, 47, 2)
         facility['production_additional_info'] = get_sheet_value(production_sheet, 51, 2)
         facility['production_public_info'] = get_sheet_value(production_sheet, 55, 2)
+    else:
+        production_sheet = incentives_book.sheet_by_name('Module GHGs and production')
+        for row in range(5, 18):
+            q = zero_if_not_number(get_sheet_value(production_sheet, row, 1))
+            e = zero_if_not_number(get_sheet_value(production_sheet, row, 3))
+            if q > 0 and e > 0:
+                activities.append((
+                    application_id,
+                    get_sheet_value(production_sheet, row, 0),
+                    q,
+                    get_sheet_value(production_sheet, row, 2),
+                    e,
+                ))
+
+    psycopg2.extras.execute_values(
+        cur,
+        '''insert into ciip.production (application_id, product, quantity, units, associated_emissions)
+        values %s''',
+        activities
+    )
 
     cur.execute(
         ('''
@@ -323,7 +349,6 @@ def extract_book(book_path, cur):
 
     fuel_sheet = incentives_book.sheet_by_name('Fuel Usage') if 'Fuel Usage' in incentives_book.sheet_names() else incentives_book.sheet_by_name('Fuel Usage ')
     # emissions_sheet = incentives_book.sheet_by_name('Emissions')
-    # emissions_allocation_sheet = incentives_book.sheet_by_name('Emissions Allocation')
 
     fuels = []
     use_alt_fuel_format = get_sheet_value(fuel_sheet, 3, 0) != 'Fuel Type '
