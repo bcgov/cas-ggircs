@@ -13,56 +13,26 @@ begin;
 create or replace function ggircs_swrs.export_mv_to_table()
   returns void as
 $function$
+
+  declare
+
+       mv_array text[] := $$
+                          {report, organisation, facility,
+                          activity, unit, identifier, naics, fuel,
+                          emission, permit, parent_organisation, address,
+                          contact, additional_data, measured_emission_factor}
+                          $$;
+
   begin
 
     -- Refresh materialized views
     perform ggircs_swrs.refresh_materialized_views('with data');
 
-    -- Populate tables
-    -- REPORT
-    perform ggircs_swrs.export_report_to_ggircs();
-
-    -- ORGANISATION
-    perform ggircs_swrs.export_organisation_to_ggircs();
-
-    -- FACILITY
-    perform ggircs_swrs.export_facility_to_ggircs();
-
-    -- ACTIVITY
-    perform ggircs_swrs.export_activity_to_ggircs();
-
-    -- UNIT
-    perform ggircs_swrs.export_unit_to_ggircs();
-
-    -- IDENTIFIER
-    perform ggircs_swrs.export_identifier_to_ggircs();
-
-    -- NAICS
-    perform ggircs_swrs.export_naics_to_ggircs();
-
-    -- FUEL
-    perform ggircs_swrs.export_fuel_to_ggircs();
-
-    -- EMISSION
-    perform ggircs_swrs.export_emission_to_ggircs();
-
-    -- PERMIT
-    perform ggircs_swrs.export_permit_to_ggircs();
-
-    -- PARENT ORGANISATION
-    perform ggircs_swrs.export_parent_organisation_to_ggircs();
-
-    -- ADDRESS
-    perform ggircs_swrs.export_address_to_ggircs();
-
-    -- CONTACT
-    perform ggircs_swrs.export_contact_to_ggircs();
-
-    -- ADDITIONAL DATA
-    perform ggircs_swrs.export_additional_data_to_ggircs();
-
-    -- MEASURED EMISSION FACTOR
-    perform ggircs_swrs.export_measured_emission_factor_to_ggircs();
+    -- Loop to populate ggircs tables with data from ggircs_swrs
+        for i in 1 .. array_upper(mv_array, 1)
+      loop
+        execute format('select ggircs_swrs.export_%s_to_ggircs()', mv_array[i]);
+      end loop;
 
     -- Refresh materialized views with no data
     perform ggircs_swrs.refresh_materialized_views('with no data');
