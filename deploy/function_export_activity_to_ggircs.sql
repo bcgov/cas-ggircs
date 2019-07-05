@@ -10,7 +10,7 @@ create or replace function ggircs_swrs.export_activity_to_ggircs()
   returns void as
 $function$
     begin
-        delete from ggircs.activity;
+
         insert into ggircs.activity (id, ghgr_import_id, facility_id,  report_id, activity_name, process_name, sub_process_name, information_requirement)
 
         select _activity.id, _activity.ghgr_import_id, _facility.id, _report.id, _activity.activity_name, _activity.process_name, _activity.sub_process_name, _activity.information_requirement
@@ -26,6 +26,7 @@ $function$
         -- FK Activity -> Report
         left join ggircs_swrs.report as _report
           on _activity.ghgr_import_id = _report.ghgr_import_id;
+
     end
 $function$ language plpgsql volatile;
 

@@ -17,7 +17,6 @@ create or replace function ggircs_swrs.export_emission_to_ggircs()
 $function$
     begin
 
-        delete from ggircs.emission;
         insert into ggircs.emission (id, ghgr_import_id, activity_id, facility_id,  fuel_id, naics_id, organisation_id, report_id, unit_id, activity_name, sub_activity_name,
                                      unit_name, sub_unit_name, fuel_name, emission_type,
                                      gas_type, methodology, not_applicable, quantity, calculated_quantity, emission_category)

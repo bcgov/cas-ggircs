@@ -13,7 +13,6 @@ create or replace function ggircs_swrs.export_address_to_ggircs()
 $function$
     begin
 
-        delete from ggircs.address;
         insert into ggircs.address (id, ghgr_import_id, facility_id,  organisation_id, parent_organisation_id, report_id, swrs_facility_id, swrs_organisation_id, path_context, type, physical_address_municipality, physical_address_unit_number,
                                     physical_address_street_number, physical_address_street_number_suffix, physical_address_street_name, physical_address_street_type,
                                     physical_address_street_direction, physical_address_prov_terr_state, physical_address_postal_code_zip_code, physical_address_country,

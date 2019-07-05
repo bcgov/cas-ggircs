@@ -10,7 +10,6 @@ create or replace function ggircs_swrs.export_measured_emission_factor_to_ggircs
 $function$
     begin
 
-        delete from ggircs.measured_emission_factor;
         insert into ggircs.measured_emission_factor (id, ghgr_import_id, fuel_id,
                                                      activity_name, sub_activity_name, unit_name, sub_unit_name,
                                                      measured_emission_factor_amount, measured_emission_factor_gas, measured_emission_factor_unit_type)

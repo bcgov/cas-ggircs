@@ -10,7 +10,6 @@ create or replace function ggircs_swrs.export_organisation_to_ggircs()
 $function$
     begin
 
-        delete from ggircs.organisation;
         insert into ggircs.organisation (id, ghgr_import_id, report_id, swrs_organisation_id, business_legal_name, english_trade_name, french_trade_name, cra_business_number, duns, website)
 
         select _organisation.id, _organisation.ghgr_import_id, _report.id, _organisation.swrs_organisation_id, _organisation.business_legal_name,

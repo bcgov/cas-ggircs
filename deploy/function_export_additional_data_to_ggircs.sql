@@ -11,7 +11,6 @@ create or replace function ggircs_swrs.export_additional_data_to_ggircs()
 $function$
     begin
 
-        delete from ggircs.additional_data;
         insert into ggircs.additional_data (id, ghgr_import_id, activity_id, report_id,
                                        activity_name, grandparent, parent, class, attribute, attr_value, node_value)
 

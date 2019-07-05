@@ -12,7 +12,6 @@ create or replace function ggircs_swrs.export_naics_to_ggircs()
 $function$
     begin
 
-        delete from ggircs.naics;
         insert into ggircs.naics(id, ghgr_import_id, facility_id,  registration_data_facility_id, naics_mapping_id, report_id, swrs_facility_id, path_context, naics_classification, naics_code, naics_priority)
 
         select _naics.id, _naics.ghgr_import_id, _facility.id,

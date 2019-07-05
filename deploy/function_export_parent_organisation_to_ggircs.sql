@@ -11,7 +11,6 @@ create or replace function ggircs_swrs.export_parent_organisation_to_ggircs()
 $function$
     begin
 
-        delete from ggircs.parent_organisation;
         insert into ggircs.parent_organisation (id, ghgr_import_id, report_id, organisation_id, path_context, percentage_owned, french_trade_name, english_trade_name,
                                                 duns, business_legal_name, website)
 

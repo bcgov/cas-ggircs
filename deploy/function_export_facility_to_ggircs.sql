@@ -10,8 +10,6 @@ $function$
 
   begin
 
-    delete from ggircs.facility;
-
     set constraints all deferred;
 
     with _final_lfo_facility as (
