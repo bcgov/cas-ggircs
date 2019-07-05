@@ -19,7 +19,7 @@ select
        regexp_replace(
          regexp_replace(
           ae.emission_category, 'BC_ScheduleB_', ''), 'Emissions', ''
-         ) as emission_category,
+         )::varchar(1000) as emission_category,
        rp.reporting_period_duration,
        f.fuel_type,
        f.fuel_units,
