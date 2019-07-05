@@ -322,20 +322,6 @@ select set_eq(
     'Foreign key report_id in ggircs.naics references ggircs.report.id'
 );
 
--- Naics -> ggircs_swrs.naics_mapping
-select set_eq(
-               $$
-    select ggircs_swrs.naics_mapping.naics_code, ggircs_swrs.naics_mapping.irc_category from ggircs.naics
-    join ggircs_swrs.naics_mapping
-    on naics.naics_mapping_id = naics_mapping.id
-    $$,
-               $$
-    select naics_code, irc_category from ggircs_swrs.naics_mapping
-    where naics_code in (321111, 721310)
-    $$,
-               'Foreign key naics_mapping_id references ggircs.swrs.naics_mapping.id'
-);
-
 -- Data in ggircs_swrs.naics === data in ggircs.naics
 select set_eq(
               $$

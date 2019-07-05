@@ -10,7 +10,7 @@ create table ggircs_swrs.fuel_mapping (
 
 );
 
-comment on table  ggircs_swrs.fuel_mapping is 'The fuel mapping table that maps fuel type with carbon tax rates';
+comment on table  ggircs_swrs.fuel_mapping is 'DEPRECATED The fuel mapping table that maps fuel type with carbon tax rates';
 comment on column ggircs_swrs.fuel_mapping.id is 'The internal primary key for the mapping';
 comment on column ggircs_swrs.fuel_mapping.fuel_type is 'The type of fuel (from GHGR), Foreign key to fuel';
 comment on column ggircs_swrs.fuel_mapping.fuel_carbon_tax_details_id is 'The foreign key to ggircs_swrs.fuel_carbon_tax_details';
