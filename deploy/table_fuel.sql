@@ -27,9 +27,7 @@ create table ggircs.fuel (
     q1                                  numeric,
     q2                                  numeric,
     q3                                  numeric,
-    q4                                  numeric,
-    wastewater_processing_factors       xml,
-    measured_conversion_factors         xml
+    q4                                  numeric
 );
 
 create index ggircs_fuel_report_foreign_key on ggircs.fuel(report_id);
@@ -60,8 +58,5 @@ comment on column ggircs.fuel.q1 is 'The fuel used in the first quarter';
 comment on column ggircs.fuel.q2 is 'The fuel used in the second quarter';
 comment on column ggircs.fuel.q3 is 'The fuel used in the third quarter';
 comment on column ggircs.fuel.q4 is 'The fuel used in the fourth quarter';
-
-comment on column ggircs.fuel.wastewater_processing_factors is 'Details on the wastewater processing factors for this fuel';
-comment on column ggircs.fuel.measured_conversion_factors is 'Details on the measured_conversion_factors for this fuel';
 
 commit;
