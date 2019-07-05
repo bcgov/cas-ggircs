@@ -1120,19 +1120,7 @@ $$);
 select ggircs_swrs.export_mv_to_table();
 
 -- Refresh all materialized views (run again so materialized views are populated for data equality tests below)
-do
-$do$
-   declare mv_array text[] := $${report, organisation, facility,
-                       activity, unit, identifier, naics, emission,
-                       final_report, fuel, permit, parent_organisation, contact,
-                       address, additional_data, measured_emission_factor}$$;
-    begin
-      for i in 1 .. array_upper(mv_array, 1)
-          loop
-            perform ggircs_swrs.refresh_materialized_views(quote_ident(mv_array[i]), 'with data');
-          end loop;
-    end
-$do$;
+select ggircs_swrs.refresh_materialized_views('with data');
 
 /** ACTIVITY **/
 select set_eq(
