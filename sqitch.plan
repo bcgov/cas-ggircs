@@ -46,7 +46,6 @@ table_fuel_carbon_tax_details [schema_ggircs_swrs] 2019-06-21T17:15:03Z Dylan Le
 table_naics_category [schema_ggircs_swrs] 2019-06-24T23:03:05Z Dylan Leard <dylan@button.is> # add table naics_category to schema ggircs_swrs
 table_naics_naics_category [schema_ggircs_swrs] 2019-06-24T23:11:21Z Dylan Leard <dylan@button.is> # add through table naics_naics_category to schema ggircs_swrs
 table_naics_category_type [schema_ggircs] 2019-07-03T21:30:35Z Dylan Leard <dylan@button.is> # add naics category type table to schema ggircs
-table_fuel_mapping [schema_ggircs_swrs] 2019-05-23T21:43:54Z Dylan Leard <dylan@button.is> # add fuel mapping table to schema ggircs_swrs
 table_carbon_tax_rate_mapping [schema_ggircs_swrs] 2019-05-28T23:02:37Z Dylan Leard <dylan@button.is> # add carbon tax rate table to schema ggircs_swrs
 table_report [schema_ggircs] 2019-06-03T22:45:25Z Dylan Leard <dylan@button.is> # add table report to schema ggircs
 table_organisation [table_report] 2019-06-03T23:01:20Z Dylan Leard <dylan@button.is> # add table organisation to schema ggircs
