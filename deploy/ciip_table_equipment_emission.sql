@@ -8,6 +8,7 @@ create table ciip.equipment_emission (
     application_id            integer references ciip.application(id),
     equipment_id              integer references ciip.equipment(id),
     processing_unit_id        integer references ciip.production(id),
+    processing_unit_name      varchar(1000),
     emission_allocation       numeric
 );
 

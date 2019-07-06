@@ -13,6 +13,11 @@ def zero_if_not_number(a):
     except:
         return 0
 
+def none_if_not_number(a):
+    try:
+        return float(a)
+    except:
+        return None
 
 def partial_dict_eq(a, b, fields):
     for f in fields:
@@ -45,7 +50,35 @@ def get_sheet_value(sheet, row, col, default = None) :
 
 
 def extract_equipment(ciip_book, cur, application_id):
-    equipment = []
+    INSERT_EQUIPMENT = '''insert into ciip.equipment
+        (
+            application_id, equipment_category, equipment_identifier, equipment_type,
+            power_rating, load_factor, utilization, runtime_hours, design_efficiency,
+            electrical_source, consumption_allocation_method,
+            inlet_sales_compression_same_engine,
+            inlet_suction_pressure,
+            inlet_discharge_pressure,
+            sales_suction_pressure,
+            sales_compression_pressure,
+            volume_throughput,
+            volume_units,
+            volume_estimation_method,
+            comments
+        )
+        values %s returning id'''
+
+    cur.execute(
+        '''
+        select id, product from ciip.production
+        where application_id = %s
+        ''',
+        (application_id,)
+    )
+
+    processes = cur.fetchall()
+    process_name_id = {}
+    for p in processes:
+        process_name_id[p[1]] = p[0]
 
     def get_equipment(sheet, row, col_range, eq_type):
         eq = [application_id, eq_type]
@@ -85,11 +118,39 @@ def extract_equipment(ciip_book, cur, application_id):
                 return c
         return None
 
-    def extract_equipment_sheet(sheet, col_range, eq_type):
+    def extract_equipment_sheet(sheet, col_range, eq_type, first_col, volume_unit_col):
+        equipment_ids = []
         for row in range(6, sheet.nrows):
             eq = get_equipment(sheet, row, col_range, eq_type)
-            if isinstance(eq[4], int) or isinstance(eq[4], float):
-                equipment.append(tuple(eq))
+            if not isinstance(eq[4], int) and not isinstance(eq[4], float):
+                continue
+            psycopg2.extras.execute_values(cur, INSERT_EQUIPMENT, [tuple(eq)])
+            equipment_id = cur.fetchall()[0]
+            equipment_ids.append(equipment_id)
+
+            allocations = []
+            for col in range(first_col + 7, first_col + 20):
+                allocation = none_if_not_number(get_sheet_value(sheet, row, col))
+                if allocation is not None:
+                    allocations.append((
+                        application_id, equipment_id, get_sheet_value(sheet, 5, col),
+                        process_name_id.get(get_sheet_value(sheet, 5, col)), # get the id of the process from the header of the column
+                        none_if_not_number(get_sheet_value(sheet, row, col))
+                    ))
+
+            psycopg2.extras.execute_values(
+                cur,
+                '''insert into ciip.equipment_consumption
+                (application_id, equipment_id, processing_unit_name, processing_unit_id, consumption_allocation)
+                values %s''',
+                allocations
+            )
+
+            #TODO: extract equipment emission and consumption
+            # Find associated
+
+
+        return equipment_ids
 
     if 'Gas Fired Equipment' in ciip_book.sheet_names():
         sheet = ciip_book.sheet_by_name('Gas Fired Equipment')
@@ -100,35 +161,38 @@ def extract_equipment(ciip_book, cur, application_id):
         col_range += list(range(first_col + 21, first_col + 28))
         col_range += [volume_unit_col, volume_unit_col + 1]
         col_range.append(volume_unit_col + 16)
-        extract_equipment_sheet(sheet, col_range, 'Gas Fired')
+        ids = extract_equipment_sheet(sheet, col_range, 'Gas Fired', first_col, volume_unit_col)
+        ids.reverse()
+        # extract emissions allocations
+        for row in range(6, 6 + len(ids)):
+            equipment_id = ids.pop()
+            allocations = []
+            for col in range(volume_unit_col + 2, volume_unit_col + 15):
+                allocation = none_if_not_number(get_sheet_value(sheet, row, col))
+                if allocation is not None:
+                    allocations.append((
+                        application_id, equipment_id, get_sheet_value(sheet, 5, col),
+                        process_name_id.get(get_sheet_value(sheet, 5, col)), # get the id of the process from the header of the column
+                        none_if_not_number(get_sheet_value(sheet, row, col))
+                    ))
+
+            psycopg2.extras.execute_values(
+                cur,
+                '''insert into ciip.equipment_emission
+                (application_id, equipment_id, processing_unit_name, processing_unit_id, emission_allocation)
+                values %s''',
+                allocations
+            )
+
+
+
 
     if 'Electrical Equipment' in ciip_book.sheet_names():
         sheet = ciip_book.sheet_by_name('Electrical Equipment')
         first_col = get_first_col(sheet)
         volume_unit_col = get_volume_units_column(sheet)
         col_range = list(range(first_col + 0, first_col + 7)) + list(range(first_col + 21, first_col + 29)) + list(range(volume_unit_col, volume_unit_col + 3))
-        extract_equipment_sheet(sheet, col_range, 'Electrical')
-
-    psycopg2.extras.execute_values(
-        cur,
-        '''insert into ciip.equipment
-        (
-            application_id, equipment_category, equipment_identifier, equipment_type,
-            power_rating, load_factor, utilization, runtime_hours, design_efficiency,
-            electrical_source, consumption_allocation_method,
-            inlet_sales_compression_same_engine,
-            inlet_suction_pressure,
-            inlet_discharge_pressure,
-            sales_suction_pressure,
-            sales_compression_pressure,
-            volume_throughput,
-            volume_units,
-            volume_estimation_method,
-            comments
-        )
-        values %s''',
-        equipment
-    )
+        extract_equipment_sheet(sheet, col_range, 'Electrical', first_col, volume_unit_col)
 
 def extract_book(book_path, cur):
     hasher = hashlib.sha1()
@@ -274,9 +338,9 @@ def extract_book(book_path, cur):
     else:
         production_sheet = ciip_book.sheet_by_name('Module GHGs and production')
         for row in range(5, 18):
-            q = zero_if_not_number(get_sheet_value(production_sheet, row, 1))
-            e = zero_if_not_number(get_sheet_value(production_sheet, row, 3))
-            if q > 0 and e > 0:
+            q = none_if_not_number(get_sheet_value(production_sheet, row, 1))
+            e = none_if_not_number(get_sheet_value(production_sheet, row, 3))
+            if q is not None or e is not None:
                 activities.append((
                     application_id,
                     get_sheet_value(production_sheet, row, 0),
@@ -432,7 +496,7 @@ def extract_book(book_path, cur):
         '''insert into ciip.contact (application_id, application_co_id, address_id,
         facility_id, facility_rep_id, operator_id, given_name, family_name, telephone_number,
         fax_number, email_address, position)
-        values %s returning id''',
+        values %s''',
         list(map(contact_dict_to_tuple, contacts))
     )
 
