@@ -16,4 +16,12 @@ create index ciip_equipment_emission_application_foreign_key on ciip.equipment_e
 create index ciip_equipment_emission_equipment_foreign_key on ciip.equipment_emission(equipment_id);
 create index ciip_equipment_emission_processing_unit_foreign_key on ciip.equipment_emission(processing_unit_id);
 
+comment on table ciip.equipment_emission is 'The table containing the equipment GHG emissions allocations';
+comment on column ciip.equipment_emission.id                   is 'The primary key';
+comment on column ciip.equipment_emission.application_id       is 'The application id';
+comment on column ciip.equipment_emission.equipment_id         is 'The equipment id';
+comment on column ciip.equipment_emission.processing_unit_id   is 'The id of the processing unit';
+comment on column ciip.equipment_emission.processing_unit_name is '__DEPRECATED__ The name of the processing unit __This is temporarily required as some consumption information was declared without an associated production__';
+comment on column ciip.equipment_emission.emission_allocation  is 'The GHG emission for the given equipment an processing unit';
+
 commit;

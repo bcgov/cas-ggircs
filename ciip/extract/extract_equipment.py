@@ -20,7 +20,7 @@ def extract(ciip_book, cursor, application_id):
             inlet_suction_pressure,
             inlet_discharge_pressure,
             sales_suction_pressure,
-            sales_compression_pressure,
+            sales_discharge_pressure,
             volume_throughput,
             volume_units,
             volume_estimation_method,

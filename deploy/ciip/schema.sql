@@ -3,6 +3,6 @@
 begin;
 
 create schema ciip;
-comment on schema ggircs is 'A schema for the CleanBC Industrial Incentive Program (CIIP)';
+comment on schema ciip is 'A schema for the CleanBC Industrial Incentive Program (CIIP)';
 
 commit;
