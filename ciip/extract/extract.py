@@ -28,8 +28,8 @@ def extract_book(book_path, cursor):
     extract_contact_info.extract(ciip_book, cursor, application_id, operator['id'], facility['id'])
     extract_fuel.extract(ciip_book, cursor, application_id)
     extract_energy.extract(ciip_book, cursor, application_id)
-    extract_equipment.extract(ciip_book, cursor, application_id)
     extract_production.extract(ciip_book, cursor, application_id)
+    extract_equipment.extract(ciip_book, cursor, application_id)
 
     return
 

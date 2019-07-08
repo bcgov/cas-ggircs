@@ -1,6 +1,14 @@
 import psycopg2
 import util
-from util import get_sheet_value, none_if_not_number
+from util import get_sheet_value, none_if_not_number, search_col_index
+
+VOLUME_UNITS_COL_HEADER = 'Output/Throughput Volume Units\n(E3m3,m3, etc.)'
+FIRST_COL_HEADER = 'Equipment Identifier'
+
+HEADER_ROW = 5
+FIRST_DATA_ROW = HEADER_ROW + 1
+
+
 
 def extract(ciip_book, cursor, application_id):
     INSERT_EQUIPMENT = '''insert into ciip.equipment
@@ -59,18 +67,6 @@ def extract(ciip_book, cursor, application_id):
                 eq.append(val)
         return eq
 
-    def get_first_col(sheet):
-        for c in range(0, sheet.ncols):
-            if get_sheet_value(sheet, 5, c) == 'Equipment Identifier':
-                return c
-        return None
-
-    def get_volume_units_column(sheet):
-        for c in range(0, sheet.ncols):
-            if get_sheet_value(sheet, 5, c) == 'Output/Throughput Volume Units\n(E3m3,m3, etc.)':
-                return c
-        return None
-
     def extract_equipment_sheet(sheet, col_range, eq_type, first_col, volume_unit_col):
         equipment_ids = []
         for row in range(6, sheet.nrows):
@@ -98,37 +94,40 @@ def extract(ciip_book, cursor, application_id):
                 values %s''',
                 allocations
             )
-
-            #TODO: extract equipment emission and consumption
-            # Find associated
-
-
         return equipment_ids
+
+    if 'Electrical Equipment' in ciip_book.sheet_names():
+        sheet = ciip_book.sheet_by_name('Electrical Equipment')
+        first_col = search_col_index(sheet, 5, FIRST_COL_HEADER)
+        volume_unit_col = search_col_index(sheet, 5, VOLUME_UNITS_COL_HEADER)
+        col_range = list(range(first_col + 0, first_col + 7)) + list(range(first_col + 21, first_col + 29)) + list(range(volume_unit_col, volume_unit_col + 3))
+        extract_equipment_sheet(sheet, col_range, 'Electrical', first_col, volume_unit_col)
 
     if 'Gas Fired Equipment' in ciip_book.sheet_names():
         sheet = ciip_book.sheet_by_name('Gas Fired Equipment')
-        first_col = get_first_col(sheet)
-        volume_unit_col = get_volume_units_column(sheet)
+        first_col = search_col_index(sheet, 5, FIRST_COL_HEADER)
+        volume_unit_col = search_col_index(sheet, 5, VOLUME_UNITS_COL_HEADER)
         col_range = list(range(first_col + 0, first_col + 7))
         col_range.append(None)
         col_range += list(range(first_col + 21, first_col + 28))
         col_range += [volume_unit_col, volume_unit_col + 1]
         col_range.append(volume_unit_col + 16)
+
         ids = extract_equipment_sheet(sheet, col_range, 'Gas Fired', first_col, volume_unit_col)
         ids.reverse()
+
         # extract emissions allocations
-        for row in range(6, 6 + len(ids)):
-            equipment_id = ids.pop()
+        for row in range(len(ids)):
+            equipment_id = ids[row]
             allocations = []
             for col in range(volume_unit_col + 2, volume_unit_col + 15):
-                allocation = none_if_not_number(get_sheet_value(sheet, row, col))
+                allocation = none_if_not_number(get_sheet_value(sheet, HEADER_ROW + 1 + row, col))
                 if allocation is not None:
                     allocations.append((
-                        application_id, equipment_id, get_sheet_value(sheet, 5, col),
-                        process_name_id.get(get_sheet_value(sheet, 5, col)), # get the id of the process from the header of the column
-                        none_if_not_number(get_sheet_value(sheet, row, col))
+                        application_id, equipment_id, get_sheet_value(sheet, HEADER_ROW, col),
+                        process_name_id.get(get_sheet_value(sheet, HEADER_ROW, col)), # get the id of the process from the header of the column
+                        none_if_not_number(get_sheet_value(sheet, HEADER_ROW + 1 + row, col))
                     ))
-
             psycopg2.extras.execute_values(
                 cursor,
                 '''insert into ciip.equipment_emission
@@ -137,12 +136,20 @@ def extract(ciip_book, cursor, application_id):
                 allocations
             )
 
+            # extract output streams
+            output_streams = []
+            for col in range(first_col + 28, volume_unit_col):
+                output_stream_value = get_sheet_value(sheet, HEADER_ROW + 1 + row, col)
+                if output_stream_value is not None:
+                    output_streams.append((
+                        application_id, equipment_id, get_sheet_value(sheet, HEADER_ROW, col), output_stream_value
+                    ))
 
+            psycopg2.extras.execute_values(
+                cursor,
+                '''insert into ciip.equipment_output_stream
+                (application_id, equipment_id, output_stream_label, output_stream_value)
+                values %s''',
+                output_streams
+            )
 
-
-    if 'Electrical Equipment' in ciip_book.sheet_names():
-        sheet = ciip_book.sheet_by_name('Electrical Equipment')
-        first_col = get_first_col(sheet)
-        volume_unit_col = get_volume_units_column(sheet)
-        col_range = list(range(first_col + 0, first_col + 7)) + list(range(first_col + 21, first_col + 29)) + list(range(volume_unit_col, volume_unit_col + 3))
-        extract_equipment_sheet(sheet, col_range, 'Electrical', first_col, volume_unit_col)

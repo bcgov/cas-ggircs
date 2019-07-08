@@ -24,7 +24,7 @@ def extract(ciip_book, cursor, book_path):
         'returning id'),
         (
             ntpath.basename(book_path), hasher.hexdigest(), datetime.datetime.now(),
-            str(cert_sheet.cell_value(7, 10)), signature_date,
+            2018, signature_date,
         )
     )
 
