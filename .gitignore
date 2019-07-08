@@ -2,3 +2,4 @@ pgtap
 .idea
 .vscode
 data/*
+__pycache__
