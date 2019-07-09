@@ -17,14 +17,15 @@ def extract(ciip_book, cursor, book_path):
 
     signature_date = get_sheet_value(cert_sheet, co_header_idx + 7, 6)
     signature_date = dateutil.parser.parse(signature_date) if signature_date is not None else None
+    application_type = 'SFO' if 'Production' in ciip_book.sheet_names() else 'LFO'
     cursor.execute(
         ('insert into ciip.application '
-        '(source_file_name, source_sha1, imported_at, application_year, signature_date) '
-        'values (%s, %s, %s, %s, %s) '
+        '(source_file_name, source_sha1, imported_at, application_year, application_type, signature_date) '
+        'values (%s, %s, %s, %s, %s, %s) '
         'returning id'),
         (
             ntpath.basename(book_path), hasher.hexdigest(), datetime.datetime.now(),
-            2018, signature_date,
+            2018, application_type, signature_date,
         )
     )
 

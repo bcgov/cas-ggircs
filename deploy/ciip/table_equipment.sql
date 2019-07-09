@@ -6,6 +6,8 @@ begin;
 create table ciip.equipment (
     id                                  serial primary key,
     application_id                      integer references ciip.application(id),
+    facility_id                         integer references ciip.facility(id),
+    operator_id                         integer references ciip.operator(id),
     equipment_category                  varchar(1000),
     equipment_identifier                varchar(1000),
     equipment_type                      varchar(1000),
@@ -28,10 +30,14 @@ create table ciip.equipment (
 );
 
 create index ciip_equipment_application_foreign_key on ciip.equipment(application_id);
+create index ciip_equipment_facility_foreign_key on ciip.equipment(facility_id);
+create index ciip_equipment_operator_foreign_key on ciip.equipment(operator_id);
 
 comment on table ciip.equipment is 'The table containing equipment information';
 comment on column ciip.equipment.id                                  is 'The primary key';
 comment on column ciip.equipment.application_id                      is 'The application id';
+comment on column ciip.equipment.facility_id                         is 'The facility id';
+comment on column ciip.equipment.operator_id                         is 'The operator id';
 comment on column ciip.equipment.equipment_category                  is 'The category of equipment (Gas Fired or Electrical)';
 comment on column ciip.equipment.equipment_identifier                is 'The identifier of the equipment';
 comment on column ciip.equipment.equipment_type                      is 'The type of equiment';

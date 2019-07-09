@@ -11,10 +11,6 @@ import extract_equipment
 import extract_energy
 import extract_fuel
 
-#TODO: equipment output streams
-#TODO: emissions
-
-
 def extract_book(book_path, cursor):
     try:
         ciip_book = xlrd.open_workbook(book_path)
@@ -26,10 +22,10 @@ def extract_book(book_path, cursor):
     operator = extract_operator.extract(ciip_book, cursor, application_id)
     facility = extract_facility.extract(ciip_book, cursor, application_id, operator)
     extract_contact_info.extract(ciip_book, cursor, application_id, operator['id'], facility['id'])
-    extract_fuel.extract(ciip_book, cursor, application_id)
-    extract_energy.extract(ciip_book, cursor, application_id)
-    extract_production.extract(ciip_book, cursor, application_id)
-    extract_equipment.extract(ciip_book, cursor, application_id)
+    extract_fuel.extract(ciip_book, cursor, application_id, operator['id'], facility['id'])
+    extract_energy.extract(ciip_book, cursor, application_id, operator['id'], facility['id'])
+    extract_production.extract(ciip_book, cursor, application_id, operator['id'], facility['id'])
+    extract_equipment.extract(ciip_book, cursor, application_id, operator['id'], facility['id'])
 
     return
 

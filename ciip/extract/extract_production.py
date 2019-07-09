@@ -2,7 +2,7 @@ import psycopg2
 import util
 from util import get_sheet_value, none_if_not_number
 
-def extract(ciip_book, cursor, application_id):
+def extract(ciip_book, cursor, application_id, operator_id, facility_id):
     products = []
     if 'Production' in ciip_book.sheet_names():
         # In the SFO applications, associated emissions are in a separate sheet
@@ -24,6 +24,8 @@ def extract(ciip_book, cursor, application_id):
                 emission = associated_emissions.get(product.strip().lower()) if len(associated_emissions) > 1 else list(associated_emissions.values())[0]
                 products.append((
                     application_id,
+                    operator_id,
+                    facility_id,
                     product,
                     get_sheet_value(production_sheet, row, 6),
                     get_sheet_value(production_sheet, row, 8),
@@ -37,6 +39,8 @@ def extract(ciip_book, cursor, application_id):
             if q is not None or e is not None:
                 products.append((
                     application_id,
+                    operator_id,
+                    facility_id,
                     get_sheet_value(production_sheet, row, 0),
                     q,
                     get_sheet_value(production_sheet, row, 2),
@@ -45,7 +49,7 @@ def extract(ciip_book, cursor, application_id):
 
     psycopg2.extras.execute_values(
         cursor,
-        '''insert into ciip.production (application_id, product, quantity, units, associated_emissions)
+        '''insert into ciip.production (application_id, operator_id, facility_id, product, quantity, units, associated_emissions)
         values %s''',
         products
     )

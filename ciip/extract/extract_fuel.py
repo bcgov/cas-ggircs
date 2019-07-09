@@ -2,7 +2,7 @@ import psycopg2
 import util
 from util import get_sheet_value
 
-def extract(ciip_book, cursor, application_id):
+def extract(ciip_book, cursor, application_id, operator_id, facility_id):
     fuel_sheet = ciip_book.sheet_by_name('Fuel Usage') if 'Fuel Usage' in ciip_book.sheet_names() else ciip_book.sheet_by_name('Fuel Usage ')
     fuels = []
     use_alt_fuel_format = get_sheet_value(fuel_sheet, 3, 0) != 'Fuel Type '
@@ -30,7 +30,7 @@ def extract(ciip_book, cursor, application_id):
                     fuel_fields[3] = float(fuel_fields[3])
                 if fuel_fields[5] is not None:
                     fuel_fields[5] = float(fuel_fields[5])
-                fuel_fields.append(application_id)
+                fuel_fields += [application_id, operator_id, facility_id]
                 fuel = tuple(fuel_fields)
                 fuels.append(fuel)
             except:
@@ -38,7 +38,9 @@ def extract(ciip_book, cursor, application_id):
 
     psycopg2.extras.execute_values(
         cursor,
-        '''insert into ciip.fuel(fuel_type, fuel_type_alt, fuel_description, quantity, fuel_units, carbon_emissions, application_id)
+        '''insert into ciip.fuel(
+            fuel_type, fuel_type_alt, fuel_description, quantity, fuel_units, carbon_emissions,
+            application_id, operator_id, facility_id)
         values %s''',
         fuels
     )

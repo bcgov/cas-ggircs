@@ -7,6 +7,8 @@ begin;
 create table ciip.energy (
     id                        serial primary key,
     application_id            integer references ciip.application(id),
+    facility_id               integer references ciip.facility(id),
+    operator_id               integer references ciip.operator(id),
     energy_type               varchar(1000),
     purchased_energy          numeric,
     generated_energy          numeric,
@@ -16,10 +18,14 @@ create table ciip.energy (
 );
 
 create index ciip_energy_application_foreign_key on ciip.energy(application_id);
+create index ciip_energy_facility_foreign_key on ciip.energy(facility_id);
+create index ciip_energy_operator_foreign_key on ciip.energy(operator_id);
 
 comment on table ciip.energy                           is 'The table containing the reported heat and electricity';
 comment on column ciip.energy.id                       is 'The primary key';
 comment on column ciip.energy.application_id           is 'The application id';
+comment on column ciip.energy.facility_id              is 'The facility id';
+comment on column ciip.energy.operator_id              is 'The operator id';
 comment on column ciip.energy.energy_type              is 'The type of energy (Heat or Electricity)';
 comment on column ciip.energy.purchased_energy         is 'The amount of purchased energy';
 comment on column ciip.energy.generated_energy         is 'The amount of generated energy';

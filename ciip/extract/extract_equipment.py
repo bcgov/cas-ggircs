@@ -10,7 +10,7 @@ FIRST_DATA_ROW = HEADER_ROW + 1
 
 
 
-def extract(ciip_book, cursor, application_id):
+def extract(ciip_book, cursor, application_id, operator_id, facility_id):
     INSERT_EQUIPMENT = '''insert into ciip.equipment
         (
             application_id, equipment_category, equipment_identifier, equipment_type,
@@ -24,7 +24,7 @@ def extract(ciip_book, cursor, application_id):
             volume_throughput,
             volume_units,
             volume_estimation_method,
-            comments
+            comments, operator_id, facility_id
         )
         values %s returning id'''
 
@@ -65,6 +65,7 @@ def extract(ciip_book, cursor, application_id):
                         if not isinstance(val, str) or val.strip().upper() not in ['Y', 'N']:
                             val = None
                 eq.append(val)
+        eq += [operator_id, facility_id]
         return eq
 
     def extract_equipment_sheet(sheet, col_range, eq_type, first_col, volume_unit_col):
