@@ -235,11 +235,11 @@ define deploy
 		METABASE_DATABASE=metabase_${OC_PROJECT} \
 		| ${OC} apply --wait=true -f-
 	# Deploy...
-	$(call oc_process,imagestream/cas-ggircs-metabase-mirror,GIT_BRANCH_NORM=${GIT_BRANCH_NORM})
+	$(call oc_process,imagestream/cas-ggircs-metabase-mirror,)
 	$(call oc_promote,cas-ggircs-metabase,${GIT_BRANCH_NORM})
 	$(call oc_process,imagestream/cas-ggircs-postgres-mirror,)
-	$(call oc_promote,cas-ggircs-postgres-mirror,latest)
-	$(call oc_process,imagestream/cas-ggircs-mirror,GIT_BRANCH_NORM=${GIT_BRANCH_NORM})
+	$(call oc_promote,cas-ggircs-postgres,latest)
+	$(call oc_process,imagestream/cas-ggircs-mirror,)
 	$(call oc_promote,cas-ggircs,${GIT_BRANCH_NORM})
 	$(call oc_process,persistentvolumeclaim/cas-ggircs-data,)
 	$(call oc_process,persistentvolumeclaim/cas-ggircs-metabase-postgres,)
