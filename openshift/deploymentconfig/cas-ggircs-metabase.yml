@@ -47,7 +47,7 @@ objects:
             value: cas-ggircs-metabase-postgres
           - name: JAVA_TIMEZONE
             value: US/Pacific
-          image: cas-ggircs-metabase-mirror:latest
+          image: cas-ggircs-metabase-mirror:${GIT_BRANCH_NORM}
           imagePullPolicy: IfNotPresent
           name: cas-ggircs-metabase
           ports:
@@ -82,9 +82,14 @@ objects:
         - cas-ggircs-metabase
         from:
           kind: ImageStreamTag
-          name: cas-ggircs-metabase-mirror:latest
+          name: cas-ggircs-metabase-mirror:${GIT_BRANCH_NORM}
         lastTriggeredImage: ""
       type: ImageChange
     - type: ConfigChange
   status: {}
 
+parameters:
+- description: Git source code branch currently deployed, where slashes are replaced by dashes, to be able to use it in image tags.
+  displayName: Git branch (normalized)
+  name: GIT_BRANCH_NORM
+  required: true

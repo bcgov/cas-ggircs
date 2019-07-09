@@ -17,7 +17,7 @@ objects:
     - from:
         kind: DockerImage
         name: docker-registry.default.svc:5000/wksv3k-tools/cas-ggircs:${GIT_BRANCH_NORM}
-      name: latest
+      name: ${GIT_BRANCH_NORM}
   status: {}
 
 parameters:

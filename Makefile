@@ -10,7 +10,7 @@ SQITCH_MIN_VERSION=0.97
 GREP=grep
 GIT=git
 GIT_BRANCH=${shell ${GIT} rev-parse --abbrev-ref HEAD}
-# openshift doesn't like slashes 
+# openshift doesn't like slashes
 GIT_BRANCH_NORM=${subst /,-,${GIT_BRANCH}}
 AWK=awk
 PSQL=psql -h localhost
@@ -52,7 +52,7 @@ test:
 unit: dropdb createdb deploy prove_unit
 
 .PHONY: deploy
-deploy: 
+deploy:
 	# Deploy all changes to ${TEST_DB} using sqitch
 	@@${SQITCH} deploy ${TEST_DB};
 
@@ -86,8 +86,8 @@ dropdb:
 		${PSQL} -c "DROP DATABASE ${TEST_DB}";
 
 define check_file_in_path
-	${if ${shell which ${word 1,${1}}}, 
-		${info ✓ Found ${word 1,${1}}}, 
+	${if ${shell which ${word 1,${1}}},
+		${info ✓ Found ${word 1,${1}}},
 		${error ✖ No ${word 1,${1}} in path.}
 	}
 endef
@@ -125,7 +125,7 @@ ifneq (${PSQL_VERSION}, ${PG_SERVER_VERSION})
 else
 	${info psql and server versions match}
 endif
-	
+
 ifeq (0,${shell ${PSQL} -qAtc "select count(*) from pg_user where usename='${PG_ROLE}' and usesuper=true"})
 	${error A postgres role with the name "${PG_ROLE}" must exist and have the SUPERUSER privilege.}
 else
@@ -203,6 +203,10 @@ define oc_process
 	@@${OC} process -f openshift/${1}.yml ${2} | ${OC} apply --wait=true --overwrite=true -f-
 endef
 
+define oc_promote
+	@@$(OC) tag $(OC_TOOLS_PROJECT)/$(1):$(2) $(1)-mirror:$(2) --reference-policy=local
+endef
+
 define build
 	@@echo Add all image streams and build in the tools project...
 	$(call oc_process,imagestream/cas-ggircs-perl,)
@@ -232,15 +236,18 @@ define deploy
 		| ${OC} apply --wait=true -f-
 	# Deploy...
 	$(call oc_process,imagestream/cas-ggircs-metabase-mirror,GIT_BRANCH_NORM=${GIT_BRANCH_NORM})
+	$(call oc_promote,cas-ggircs-metabase,${GIT_BRANCH_NORM})
 	$(call oc_process,imagestream/cas-ggircs-postgres-mirror,)
+	$(call oc_promote,cas-ggircs-postgres-mirror,latest)
 	$(call oc_process,imagestream/cas-ggircs-mirror,GIT_BRANCH_NORM=${GIT_BRANCH_NORM})
+	$(call oc_promote,cas-ggircs,${GIT_BRANCH_NORM})
 	$(call oc_process,persistentvolumeclaim/cas-ggircs-data,)
 	$(call oc_process,persistentvolumeclaim/cas-ggircs-metabase-postgres,)
 	$(call oc_process,persistentvolumeclaim/cas-ggircs-postgres,)
-	$(call oc_process,deploymentconfig/cas-ggircs-postgres,)
-	$(call oc_process,deploymentconfig/cas-ggircs-metabase-postgres,)
-	$(call oc_process,deploymentconfig/cas-ggircs-metabase,)
-	$(call oc_process,deploymentconfig/cas-ggircs,)
+	$(call oc_process,deploymentconfig/cas-ggircs-postgres)
+	$(call oc_process,deploymentconfig/cas-ggircs-metabase-postgres)
+	$(call oc_process,deploymentconfig/cas-ggircs-metabase,GIT_BRANCH_NORM=${GIT_BRANCH_NORM})
+	$(call oc_process,deploymentconfig/cas-ggircs,GIT_BRANCH_NORM=${GIT_BRANCH_NORM})
 	$(call oc_process,service/cas-ggircs-postgres,)
 	$(call oc_process,service/cas-ggircs-metabase-postgres,)
 	$(call oc_process,service/cas-ggircs-metabase,)
