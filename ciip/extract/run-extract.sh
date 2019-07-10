@@ -5,3 +5,5 @@
 
 python ./extract.py --dirslist /opt/configs/ciip-dirs --host $PGHOST --db $PGDATABASE --user $PGUSER --password $PGPASSWORD && echo 'extraction done'
 
+# start an http server to keep the pod alive
+python -m http.server

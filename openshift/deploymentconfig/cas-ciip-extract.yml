@@ -22,8 +22,6 @@ envDefaults: &envDefaults
           name: cas-ggircs-postgres
     - name: PGHOST
       value: cas-ggircs-postgres
-    - name: APP_HOME
-      value: "ciip/extract/"
     - name: APP_SCRIPT
       value: "run-extract.sh"
 
