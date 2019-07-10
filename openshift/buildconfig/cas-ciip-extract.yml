@@ -27,7 +27,8 @@ objects:
       sourceStrategy:
         from:
           kind: ImageStreamTag
-          name: cas-ggircs-python:${PYTHON_VERSION}
+          name: python:${PYTHON_VERSION}
+          namespace: openshift
       type: Source
     triggers:
     - github:

@@ -1,0 +1,86 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+labels:
+  template: deploy-template
+
+envDefaults: &envDefaults
+  env:
+    - name: PGUSER
+      valueFrom:
+        secretKeyRef:
+          key: database-user
+          name: cas-ggircs-postgres
+    - name: PGPASSWORD
+      valueFrom:
+        secretKeyRef:
+          key: database-password
+          name: cas-ggircs-postgres
+    - name: PGDATABASE
+      valueFrom:
+        secretKeyRef:
+          key: database-name
+          name: cas-ggircs-postgres
+    - name: APP_HOME
+      value: "ciip/extract/"
+    - name: APP_SCRIPT
+      value: "run-extract.sh"
+
+objects:
+
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    annotations:
+      template.alpha.openshift.io/wait-for-ready: "true"
+    name: cas-ciip-extract
+  spec:
+    replicas: 1
+    selector:
+      name: cas-ciip-extract
+    strategy:
+      type: Recreate
+    template:
+      metadata:
+        labels:
+          name: cas-ciip-extract
+      spec:
+        containers:
+        - capabilities: {}
+          <<: *envDefaults
+          image: cas-ciip-extract-mirror:latest
+          imagePullPolicy: IfNotPresent
+          name: cas-ciip-extract
+          resources:
+            limits:
+              cpu: 1000m
+              memory: 128Mi
+            requests:
+              cpu: 100m
+              memory: 64Mi
+          securityContext:
+            capabilities: {}
+            privileged: false
+          terminationMessagePath: /dev/termination-log
+          volumeMounts:
+          - mountPath: /opt/app-root/src/data
+            name: cas-ggircs-data
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        volumes:
+        - name: cas-ggircs-data
+          persistentVolumeClaim:
+            claimName: cas-ggircs-data
+    triggers:
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+        - cas-ciip-extract
+        from:
+          kind: ImageStreamTag
+          name: cas-ciip-extract-mirror:latest
+        lastTriggeredImage: ""
+      type: ImageChange
+    - type: ConfigChange
+  status: {}
+
+

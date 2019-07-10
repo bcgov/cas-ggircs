@@ -1,0 +1,27 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+objects:
+
+- apiVersion: image.openshift.io/v1
+  kind: ImageStream
+  metadata:
+    name: cas-ciip-extract-mirror
+  spec:
+    lookupPolicy:
+      local: true
+    tags:
+    - from:
+        kind: DockerImage
+        name: docker-registry.default.svc:5000/wksv3k-tools/cas-ciip-extract:${GIT_BRANCH_NORM}
+      name: ${GIT_BRANCH_NORM}
+    - from:
+        kind: DockerImage
+        name: docker-registry.default.svc:5000/wksv3k-tools/cas-ciip-extract:${GIT_BRANCH_NORM}
+      name: latest
+  status: {}
+
+parameters:
+- description: Git source code branch currently deployed, where slashes are replaced by dashes, to be able to use it in image tags.
+  displayName: Git branch (normalized)
+  name: GIT_BRANCH_NORM
+  required: true
