@@ -1,0 +1,16 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+objects:
+
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: cas-ciip-data
+  spec:
+    storageClassName: gluster-file
+    accessModes:
+    - ReadWriteMany
+    resources:
+      requests:
+        storage: 1Gi
+

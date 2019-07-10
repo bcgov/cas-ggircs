@@ -63,13 +63,19 @@ objects:
           terminationMessagePath: /dev/termination-log
           volumeMounts:
           - mountPath: /opt/app-root/src/data
-            name: cas-ggircs-data
+            name: cas-ciip-data
+          - mountPath: /opt/configs
+            name: ciip-extract-dirlist
         dnsPolicy: ClusterFirst
         restartPolicy: Always
         volumes:
-        - name: cas-ggircs-data
+        - name: cas-ciip-data
           persistentVolumeClaim:
-            claimName: cas-ggircs-data
+            claimName: cas-ciip-data
+        - configMap:
+            defaultMode: 420
+            name: ciip-extract-dirlist
+          name: ciip-extract-dirlist
     triggers:
     - imageChangeParams:
         automatic: true
