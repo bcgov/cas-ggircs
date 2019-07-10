@@ -13,8 +13,8 @@ objects:
         name: cas-ciip-extract:${GIT_BRANCH_NORM}
     resources:
       limits:
-        cpu: "4"
-        memory: 8Gi
+        cpu: "1"
+        memory: 2Gi
       requests:
         cpu: 100m
         memory: 256Mi

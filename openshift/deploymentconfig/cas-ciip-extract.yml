@@ -20,6 +20,8 @@ envDefaults: &envDefaults
         secretKeyRef:
           key: database-name
           name: cas-ggircs-postgres
+    - name: PGHOST
+      value: cas-ggircs-postgres
     - name: APP_HOME
       value: "ciip/extract/"
     - name: APP_SCRIPT
