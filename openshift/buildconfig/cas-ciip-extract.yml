@@ -22,6 +22,7 @@ objects:
       git:
         ref: ${GIT_BRANCH}
         uri: https://github.com/bcgov/cas-ggircs.git
+      contextDir: ciip/extract
       type: Git
     strategy:
       sourceStrategy:

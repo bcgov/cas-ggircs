@@ -258,6 +258,7 @@ endef
 
 define deploy_ciip
 	$(call oc_process,imagestream/cas-ciip-extract-mirror,GIT_BRANCH_NORM=${GIT_BRANCH_NORM})
+	$(call oc_process,persistentvolumeclaim/cas-ciip-data,)
 	$(call oc_process,deploymentconfig/cas-ciip-extract,)
 endef
 
