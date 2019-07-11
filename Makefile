@@ -286,6 +286,12 @@ deploy_test_ciip: deploy_tools
 	$(call switch_project)
 	$(call deploy_ciip)
 
+.PHONY: deploy_dev_ciip
+deploy_dev_ciip: OC_PROJECT=${OC_DEV_PROJECT}
+deploy_dev_ciip: deploy_tools
+	$(call switch_project)
+	$(call deploy_ciip)
+
 .PHONY: clean_test
 clean_test: OC_PROJECT=${OC_TEST_PROJECT}
 clean_test:
