@@ -10,7 +10,7 @@ const UserList = props => {
           <Accordion defaultActiveKey="0">
               {props.users.edges.map( ({node}) => {
                   return (
-                      <Card>
+                      <Card key={node.id}>
                           <Card.Header>
                               <Accordion.Toggle as={Button} variant="link" eventKey={node.id}>
                                   {node.firstName}
