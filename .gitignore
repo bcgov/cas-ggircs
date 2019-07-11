@@ -1,3 +1,4 @@
 pgtap
 .idea
 data/*
+.DS_Store
