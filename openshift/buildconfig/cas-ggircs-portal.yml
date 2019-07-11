@@ -1,0 +1,62 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+objects:
+
+- apiVersion: build.openshift.io/v1
+  kind: BuildConfig
+  metadata:
+    name: cas-ggircs
+  spec:
+    env:
+      - name: YARN_ENABLED
+        value: true
+    output:
+      to:
+        kind: ImageStreamTag
+        name: cas-ggircs-portal:${GIT_BRANCH_NORM}
+    resources:
+      limits:
+        cpu: "1"
+        memory: 8Gi
+      requests:
+        cpu: 100m
+        memory: 256Mi
+    source:
+      git:
+        ref: ${GIT_BRANCH}
+        uri: https://github.com/bcgov/cas-ggircs.git
+        contextDir: app
+      type: Git
+    strategy:
+      sourceStrategy:
+        from:
+          kind: ImageStreamTag
+          name: nodejs:${NODE_VERSION}
+          namespace: openshift
+      type: Source
+    triggers:
+    - github:
+        secret: cas-ggircs-github-trigger
+      type: GitHub
+    - generic:
+        secret: cas-ggircs-generic-trigger
+      type: Generic
+    - type: ConfigChange
+    - imageChange:
+      type: ImageChange
+
+parameters:
+
+- description: Version of Node image to be used (latest for now).
+  displayName: Version of Node Image
+  name: NODE_VERSION
+  required: true
+  value: "12.2.0"
+- description: Git source code branch currently deployed.
+  displayName: Git branch
+  name: GIT_BRANCH
+  required: true
+- description: Git source code branch currently deployed, where slashes are replaced by dashes, to be able to use it in image tags.
+  displayName: Git branch (normalized)
+  name: GIT_BRANCH_NORM
+  required: true

@@ -10,7 +10,7 @@ SQITCH_MIN_VERSION=0.97
 GREP=grep
 GIT=git
 GIT_BRANCH=${shell ${GIT} rev-parse --abbrev-ref HEAD}
-# openshift doesn't like slashes 
+# openshift doesn't like slashes
 GIT_BRANCH_NORM=${subst /,-,${GIT_BRANCH}}
 AWK=awk
 PSQL=psql -h localhost
@@ -52,7 +52,7 @@ test:
 unit: dropdb createdb deploy prove_unit
 
 .PHONY: deploy
-deploy: 
+deploy:
 	# Deploy all changes to ${TEST_DB} using sqitch
 	@@${SQITCH} deploy ${TEST_DB};
 
@@ -86,8 +86,8 @@ dropdb:
 		${PSQL} -c "DROP DATABASE ${TEST_DB}";
 
 define check_file_in_path
-	${if ${shell which ${word 1,${1}}}, 
-		${info ✓ Found ${word 1,${1}}}, 
+	${if ${shell which ${word 1,${1}}},
+		${info ✓ Found ${word 1,${1}}},
 		${error ✖ No ${word 1,${1}} in path.}
 	}
 endef
@@ -125,7 +125,7 @@ ifneq (${PSQL_VERSION}, ${PG_SERVER_VERSION})
 else
 	${info psql and server versions match}
 endif
-	
+
 ifeq (0,${shell ${PSQL} -qAtc "select count(*) from pg_user where usename='${PG_ROLE}' and usesuper=true"})
 	${error A postgres role with the name "${PG_ROLE}" must exist and have the SUPERUSER privilege.}
 else
@@ -208,7 +208,9 @@ define build
 	$(call oc_process,imagestream/cas-ggircs-perl,)
 	$(call oc_process,imagestream/cas-ggircs-postgres,)
 	$(call oc_process,imagestream/cas-ggircs,)
+	$(call oc_process,imagestream/cas-ggircs-portal,)
 	$(call oc_process,buildconfig/cas-ggircs,GIT_BRANCH=${GIT_BRANCH} GIT_BRANCH_NORM=${GIT_BRANCH_NORM})
+	$(call oc_process,buildconfig/cas-ggircs-portal,GIT_BRANCH=${GIT_BRANCH} GIT_BRANCH_NORM=${GIT_BRANCH_NORM})
 	$(call oc_process,imagestream/cas-ggircs-metabase-builder,)
 	$(call oc_process,buildconfig/cas-ggircs-metabase-builder,GIT_BRANCH=${GIT_BRANCH} GIT_BRANCH_NORM=${GIT_BRANCH_NORM})
 	$(call oc_process,imagestream/cas-ggircs-metabase-build,)
@@ -241,6 +243,7 @@ define deploy
 	$(call oc_process,deploymentconfig/cas-ggircs-metabase-postgres,)
 	$(call oc_process,deploymentconfig/cas-ggircs-metabase,)
 	$(call oc_process,deploymentconfig/cas-ggircs,)
+	$(call oc_process,deploymentconfig/cas-ggircs-portal-db,)
 	$(call oc_process,service/cas-ggircs-postgres,)
 	$(call oc_process,service/cas-ggircs-metabase-postgres,)
 	$(call oc_process,service/cas-ggircs-metabase,)
