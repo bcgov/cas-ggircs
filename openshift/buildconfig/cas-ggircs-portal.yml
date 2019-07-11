@@ -5,11 +5,8 @@ objects:
 - apiVersion: build.openshift.io/v1
   kind: BuildConfig
   metadata:
-    name: cas-ggircs
+    name: cas-ggircs-portal
   spec:
-    env:
-      - name: YARN_ENABLED
-        value: true
     output:
       to:
         kind: ImageStreamTag
@@ -25,14 +22,13 @@ objects:
       git:
         ref: ${GIT_BRANCH}
         uri: https://github.com/bcgov/cas-ggircs.git
-        contextDir: app
+      contextDir: app
       type: Git
     strategy:
       sourceStrategy:
         from:
           kind: ImageStreamTag
-          name: nodejs:${NODE_VERSION}
-          namespace: openshift
+          name: cas-ggircs-node10:${NODE_VERSION}
       type: Source
     triggers:
     - github:
@@ -51,7 +47,7 @@ parameters:
   displayName: Version of Node Image
   name: NODE_VERSION
   required: true
-  value: "12.2.0"
+  value: "latest"
 - description: Git source code branch currently deployed.
   displayName: Git branch
   name: GIT_BRANCH
