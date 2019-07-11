@@ -13,10 +13,14 @@ objects:
     - from:
         kind: DockerImage
         name: ${PERL_IMAGE}:${PERL_VERSION}
+      importPolicy:
+        scheduled: false
       name: ${PERL_VERSION}
     - from:
         kind: DockerImage
         name: ${PERL_IMAGE}:${PERL_VERSION}
+      importPolicy:
+        scheduled: false
       name: latest
   status: {}
 

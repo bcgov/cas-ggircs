@@ -16,7 +16,7 @@ objects:
         kind: DockerImage
         name: docker-registry.default.svc:5000/wksv3k-tools/cas-ggircs-postgres:${POSTGRES_VERSION}
       importPolicy:
-        scheduled: true
+        scheduled: false
       name: ${POSTGRES_VERSION}
       referencePolicy:
         type: Source

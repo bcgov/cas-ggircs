@@ -16,7 +16,7 @@ objects:
         kind: DockerImage
         name: docker-registry.default.svc:5000/wksv3k-tools/cas-ggircs-metabase:${GIT_BRANCH_NORM}
       importPolicy:
-        scheduled: true
+        scheduled: false
       name: latest
       referencePolicy:
         type: Source

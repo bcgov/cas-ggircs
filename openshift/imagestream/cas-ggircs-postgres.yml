@@ -13,10 +13,14 @@ objects:
     - from:
         kind: DockerImage
         name: ${POSTGRES_IMAGE}:${POSTGRES_VERSION}
+      importPolicy:
+        scheduled: false
       name: ${POSTGRES_VERSION}
     - from:
         kind: DockerImage
         name: ${POSTGRES_IMAGE}:${POSTGRES_VERSION}
+      importPolicy:
+        scheduled: false
       name: latest
   status: {}
 
