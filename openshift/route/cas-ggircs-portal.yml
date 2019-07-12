@@ -1,0 +1,35 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+labels:
+  template: deploy-template
+objects:
+
+- apiVersion: route.openshift.io/v1
+  kind: Route
+  metadata:
+    name: cas-ggircs-portal
+  spec:
+    host: ggircs-portal-${OC_PROJECT}.pathfinder.gov.bc.ca
+    port:
+      targetPort: cas-ggircs-portal
+    tls:
+      termination: edge
+    to:
+      kind: Service
+      name: cas-ggircs-portal
+      weight: 100
+    wildcardPolicy: None
+  status:
+    ingress:
+    - conditions:
+      - type: Admitted
+      host: ggircs-portal-${OC_PROJECT}.pathfinder.gov.bc.ca
+      routerName: router
+      wildcardPolicy: None
+
+parameters:
+- description: Openshift namespace
+  displayName: Openshift namespace
+  name: OC_PROJECT
+  required: true
+
