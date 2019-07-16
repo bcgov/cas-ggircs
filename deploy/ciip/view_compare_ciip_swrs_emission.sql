@@ -2,8 +2,50 @@
 -- requires: ciip/table_emission
 -- requires: table_emission
 
-BEGIN;
+begin;
 
--- XXX Add DDLs here.
+create or replace view ciip.compare_ciip_swrs_emission as
+    with ciip_data as (select application.application_type, application.source_file_name, operator.business_legal_name, operator.swrs_operator_id,
+       facility.facility_name, facility.swrs_facility_id,
+       emission.emission_category, emission.gas_type, emission.quantity, emission.calculated_quantity
+    from ciip.emission
+    join ciip.facility on emission.facility_id = facility.id
+    join ciip.operator on emission.operator_id = operator.id
+    join ciip.application on facility.application_id = application.id),
 
-COMMIT;
+    swrs_data as (
+        select facility.swrs_facility_id, emission.emission_category, emission.gas_type, sum(emission.quantity) as quantity,
+               sum(emission.calculated_quantity) as calculated_quantity
+        from ggircs.emission
+        join ggircs.facility on emission.facility_id = facility.id
+        join ggircs.report on emission.report_id = report.id
+        and report.reporting_period_duration = '2018'
+        group by facility.swrs_facility_id, emission.emission_category, emission.gas_type
+        union
+        select facility.swrs_facility_id, 'BC_ScheduleB_WasteAndWastewaterEmissions' as emission_category,
+               emission.gas_type, sum(emission.quantity) as quantity,
+               sum(emission.calculated_quantity) as calculated_quantity
+        from ggircs.emission
+        join ggircs.facility on emission.facility_id = facility.id
+        join ggircs.report on emission.report_id = report.id
+        and report.reporting_period_duration = '2018'
+        where emission.emission_category = 'BC_ScheduleB_WasteEmissions' or emission.emission_category = 'BC_ScheduleB_WastewaterEmissions'
+        group by facility.swrs_facility_id, emission.gas_type
+    )
+    select ciip_data.application_type, ciip_data.source_file_name, ciip_data.business_legal_name, ciip_data.facility_name,
+           ciip_data.swrs_operator_id, ciip_data.swrs_facility_id,
+           ciip_data.emission_category, ciip_data.gas_type,
+           (ciip_data.quantity > (swrs_data.quantity + 0.05 * swrs_data.quantity) or ciip_data.quantity < (swrs_data.quantity - 0.05 * swrs_data.quantity) ) as ciip_swrs_discrepancy,
+           ciip_data.quantity as ciip_quantity, swrs_data.quantity as swrs_quantity,
+           ciip_data.calculated_quantity as ciip_calculated_quantity, swrs_data.quantity as swrs_calculated_quantity
+    from ciip_data
+    join swrs_data
+    on ciip_data.swrs_facility_id = swrs_data.swrs_facility_id
+    and ciip_data.swrs_facility_id NOTNULL
+    and ciip_data.emission_category = swrs_data.emission_category
+    and ciip_data.gas_type = swrs_data.gas_type;
+
+
+commit;
+
+
