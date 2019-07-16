@@ -79,7 +79,7 @@ objects:
         containers:
         - capabilities: {}
           <<: *envDefaults
-          image: cas-ggircs-mirror:latest
+          image: cas-ggircs-mirror:${GIT_BRANCH_NORM}
           imagePullPolicy: IfNotPresent
           name: cas-ggircs
           resources:
@@ -109,7 +109,7 @@ objects:
         - cas-ggircs
         from:
           kind: ImageStreamTag
-          name: cas-ggircs-mirror:latest
+          name: cas-ggircs-mirror:${GIT_BRANCH_NORM}
         lastTriggeredImage: ""
       type: ImageChange
     - type: ConfigChange
@@ -121,4 +121,7 @@ parameters:
   name: POSTGRES_VERSION
   required: true
   value: "latest"
-
+- description: Git source code branch currently deployed, where slashes are replaced by dashes, to be able to use it in image tags.
+  displayName: Git branch (normalized)
+  name: GIT_BRANCH_NORM
+  required: true
