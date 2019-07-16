@@ -47,7 +47,7 @@ objects:
         containers:
         - capabilities: {}
           <<: *envDefaults
-          image: cas-ciip-extract-mirror:latest
+          image: cas-ciip-extract-mirror:${GIT_BRANCH_NORM}
           imagePullPolicy: IfNotPresent
           name: cas-ciip-extract
           resources:
@@ -83,10 +83,14 @@ objects:
         - cas-ciip-extract
         from:
           kind: ImageStreamTag
-          name: cas-ciip-extract-mirror:latest
+          name: cas-ciip-extract-mirror:${GIT_BRANCH_NORM}
         lastTriggeredImage: ""
       type: ImageChange
     - type: ConfigChange
   status: {}
 
-
+parameters:
+- description: Git source code branch currently deployed, where slashes are replaced by dashes, to be able to use it in image tags.
+  displayName: Git branch (normalized)
+  name: GIT_BRANCH_NORM
+  required: true
