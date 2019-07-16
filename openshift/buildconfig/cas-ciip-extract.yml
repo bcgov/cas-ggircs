@@ -28,8 +28,7 @@ objects:
       sourceStrategy:
         from:
           kind: ImageStreamTag
-          name: python:${PYTHON_VERSION}
-          namespace: openshift
+          name: cas-ggircs-python:${PYTHON_VERSION}
       type: Source
     triggers:
     - github:
@@ -48,7 +47,7 @@ parameters:
   displayName: Version of Python Image
   name: PYTHON_VERSION
   required: true
-  value: "latest"
+  value: latest
 - description: Git source code branch currently deployed.
   displayName: Git branch
   name: GIT_BRANCH
