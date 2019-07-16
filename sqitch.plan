@@ -87,3 +87,4 @@ ciip/table_equipment_consumption [ciip/table_application] 2019-07-05T20:18:28Z M
 ciip/table_equipment_emission [ciip/table_application] 2019-07-05T20:21:07Z Matthieu Foucault <matthieu@button.is> # Add an equipment emission table in ciip schema
 ciip/table_emission [ciip/table_application] 2019-07-05T20:21:18Z Matthieu Foucault <matthieu@button.is> # Add an emission table in ciip schema
 ciip/table_equipment_output_stream [ciip/table_application] 2019-07-05T20:42:00Z Matthieu Foucault <matthieu@button.is> # Add an equipment output stream table in ciip schema
+ciip/view_compare_ciip_swrs_emission [ciip/table_emission table_emission] 2019-07-16T20:51:40Z Matthieu Foucault <matthieu@button.is> # Add a view to compare emissions between CIIP and SWRS data
