@@ -46,7 +46,7 @@ create or replace view ciip.compare_ciip_swrs_emission as
            end
            as ciip_swrs_discrepancy_ratio,
            ciip_data.quantity as ciip_quantity, swrs_data.quantity as swrs_quantity,
-           ciip_data.calculated_quantity as ciip_calculated_quantity, swrs_data.quantity as swrs_calculated_quantity
+           ciip_data.calculated_quantity as ciip_calculated_quantity, swrs_data.calculated_quantity as swrs_calculated_quantity
     from ciip_data
     full outer join swrs_data
     on ciip_data.swrs_facility_id = swrs_data.swrs_facility_id
