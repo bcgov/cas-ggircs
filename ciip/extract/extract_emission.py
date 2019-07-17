@@ -1,6 +1,6 @@
 import psycopg2
 import util
-from util import get_sheet_value, none_if_not_number
+from util import get_sheet_value, zero_if_not_number
 
 ciip_swim_gas_types = {
     'Carbon dioxide from non-biomass (CO2)': 'CO2nonbio',
@@ -32,17 +32,16 @@ def extract(ciip_book, cursor, application_id, operator_id, facility_id):
         if get_sheet_value(emissions_sheet, row, 5) is None: # it's the category header
             current_emission_cat = ciip_swim_emissions_categories[get_sheet_value(emissions_sheet, row, 1)]
         else :
-            quantity = none_if_not_number(get_sheet_value(emissions_sheet, row, 4))
-            if quantity is not None:
-                emissions.append(
-                    (
-                        current_emission_cat,
-                        ciip_swim_gas_types[get_sheet_value(emissions_sheet, row, 1)],
-                        quantity,
-                        none_if_not_number(get_sheet_value(emissions_sheet, row, 8)),
-                        application_id, operator_id, facility_id
-                    )
+            quantity = zero_if_not_number(get_sheet_value(emissions_sheet, row, 4))
+            emissions.append(
+                (
+                    current_emission_cat,
+                    ciip_swim_gas_types[get_sheet_value(emissions_sheet, row, 1)],
+                    quantity,
+                    zero_if_not_number(get_sheet_value(emissions_sheet, row, 8)),
+                    application_id, operator_id, facility_id
                 )
+            )
 
 
 

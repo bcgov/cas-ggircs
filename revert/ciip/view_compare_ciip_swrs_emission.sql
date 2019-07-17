@@ -1,7 +1,7 @@
 -- Revert ggircs:ciip/view_compare_ciip_swrs_emission from pg
 
-BEGIN;
+begin;
 
--- XXX Add DDLs here.
+drop view if exists ciip.compare_ciip_swrs_emission;
 
-COMMIT;
+commit;

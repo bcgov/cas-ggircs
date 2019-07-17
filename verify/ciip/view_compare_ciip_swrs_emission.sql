@@ -1,7 +1,7 @@
 -- Verify ggircs:ciip/view_compare_ciip_swrs_emission on pg
 
-BEGIN;
+begin;
 
--- XXX Add verifications here.
+select * from ciip.compare_ciip_swrs_emission where false;
 
-ROLLBACK;
+rollback;

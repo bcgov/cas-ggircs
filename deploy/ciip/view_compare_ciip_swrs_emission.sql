@@ -20,6 +20,7 @@ create or replace view ciip.compare_ciip_swrs_emission as
         join ggircs.facility on emission.facility_id = facility.id
         join ggircs.report on emission.report_id = report.id
         and report.reporting_period_duration = '2018'
+        where emission.emission_category != 'BC_ScheduleB_WasteEmissions' and emission.emission_category != 'BC_ScheduleB_WastewaterEmissions'
         group by facility.swrs_facility_id, emission.emission_category, emission.gas_type
         union
         select facility.swrs_facility_id, 'BC_ScheduleB_WasteAndWastewaterEmissions' as emission_category,
@@ -35,15 +36,24 @@ create or replace view ciip.compare_ciip_swrs_emission as
     select ciip_data.application_type, ciip_data.source_file_name, ciip_data.business_legal_name, ciip_data.facility_name,
            ciip_data.swrs_operator_id, ciip_data.swrs_facility_id,
            ciip_data.emission_category, ciip_data.gas_type,
-           (ciip_data.quantity > (swrs_data.quantity + 0.05 * swrs_data.quantity) or ciip_data.quantity < (swrs_data.quantity - 0.05 * swrs_data.quantity) ) as ciip_swrs_discrepancy,
+           case
+           when
+              swrs_data.quantity = 0 or
+              (ciip_data.quantity IS NULL and swrs_data.quantity IS NOT NULL) or
+              (ciip_data.quantity IS NOT NULL and swrs_data.quantity IS NULL)
+           then 1
+           else round(abs(ciip_data.quantity - swrs_data.quantity) / swrs_data.quantity, 2)
+           end
+           as ciip_swrs_discrepancy_ratio,
            ciip_data.quantity as ciip_quantity, swrs_data.quantity as swrs_quantity,
            ciip_data.calculated_quantity as ciip_calculated_quantity, swrs_data.quantity as swrs_calculated_quantity
     from ciip_data
-    join swrs_data
+    full outer join swrs_data
     on ciip_data.swrs_facility_id = swrs_data.swrs_facility_id
-    and ciip_data.swrs_facility_id NOTNULL
     and ciip_data.emission_category = swrs_data.emission_category
-    and ciip_data.gas_type = swrs_data.gas_type;
+    and ciip_data.gas_type = swrs_data.gas_type
+    where ciip_data.swrs_facility_id IS NOT NULL
+    and (ciip_data.quantity > 0  or swrs_data.quantity > 0);
 
 
 commit;
