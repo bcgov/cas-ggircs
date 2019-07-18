@@ -10,6 +10,7 @@ import extract_production
 import extract_equipment
 import extract_energy
 import extract_fuel
+import extract_emission
 
 def extract_book(book_path, cursor):
     try:
@@ -26,6 +27,7 @@ def extract_book(book_path, cursor):
     extract_energy.extract(ciip_book, cursor, application_id, operator['id'], facility['id'])
     extract_production.extract(ciip_book, cursor, application_id, operator['id'], facility['id'])
     extract_equipment.extract(ciip_book, cursor, application_id, operator['id'], facility['id'])
+    extract_emission.extract(ciip_book, cursor, application_id, operator['id'], facility['id'])
 
     return
 
@@ -44,8 +46,10 @@ cur = conn.cursor()
 directories = args.dirslist.read().split('\n')
 
 try:
-    cur.execute('delete from ciip.application cascade;')
+    cur.execute('truncate table ciip.application cascade;')
     for directory in directories:
+        if directory.strip() == '':
+            continue
         for filename in os.listdir(directory):
             print('parsing: ' + filename)
             extract_book(os.path.join(directory,filename), cur)

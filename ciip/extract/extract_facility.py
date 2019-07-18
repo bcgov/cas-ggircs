@@ -24,6 +24,18 @@ def extract(ciip_book, cursor, application_id, operator):
     res = cursor.fetchone()
     if res is not None:
         facility['swrs_facility_id'] = res[0]
+    else: # try using  the facility name
+        cursor.execute(
+            '''
+            select distinct swrs_facility_id from ggircs.facility
+            where facility_name = %s
+            ''',
+            (facility['name'],)
+        )
+        res = cursor.fetchall()
+        if res is not None and len(res) == 1:
+            facility['swrs_facility_id'] = res[0][0]
+
 
     if 'Production' in ciip_book.sheet_names():
         production_sheet = ciip_book.sheet_by_name('Production')
