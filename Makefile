@@ -210,9 +210,12 @@ endef
 define build
 	@@echo Add all image streams and build in the tools project...
 	$(call oc_process,imagestream/cas-ggircs-perl,)
+	$(call oc_process,imagestream/cas-ggircs-python,)
 	$(call oc_process,imagestream/cas-ggircs-postgres,)
 	$(call oc_process,imagestream/cas-ggircs,)
+	$(call oc_process,imagestream/cas-ciip-extract,)
 	$(call oc_process,buildconfig/cas-ggircs,GIT_BRANCH=${GIT_BRANCH} GIT_BRANCH_NORM=${GIT_BRANCH_NORM})
+	$(call oc_process,buildconfig/cas-ciip-extract,GIT_BRANCH=${GIT_BRANCH} GIT_BRANCH_NORM=${GIT_BRANCH_NORM})
 	$(call oc_process,imagestream/cas-ggircs-metabase-builder,)
 	$(call oc_process,buildconfig/cas-ggircs-metabase-builder,GIT_BRANCH=${GIT_BRANCH} GIT_BRANCH_NORM=${GIT_BRANCH_NORM})
 	$(call oc_process,imagestream/cas-ggircs-metabase-build,)
@@ -254,6 +257,13 @@ define deploy
 	$(call oc_process,route/cas-ggircs-metabase,OC_PROJECT=${OC_PROJECT})
 endef
 
+define deploy_ciip
+	$(call oc_process,imagestream/cas-ciip-extract-mirror)
+	$(call oc_promote,cas-ciip-extract,${GIT_BRANCH_NORM})
+	$(call oc_process,persistentvolumeclaim/cas-ciip-data,)
+	$(call oc_process,deploymentconfig/cas-ciip-extract,GIT_BRANCH_NORM=${GIT_BRANCH_NORM})
+endef
+
 .PHONY: deploy_tools
 deploy_tools: OC_PROJECT=${OC_TOOLS_PROJECT}
 deploy_tools:
@@ -271,6 +281,18 @@ deploy_test: OC_PROJECT=${OC_TEST_PROJECT}
 deploy_test: deploy_tools
 	$(call switch_project)
 	$(call deploy)
+
+.PHONY: deploy_test_ciip
+deploy_test_ciip: OC_PROJECT=${OC_TEST_PROJECT}
+deploy_test_ciip: deploy_tools
+	$(call switch_project)
+	$(call deploy_ciip)
+
+.PHONY: deploy_dev_ciip
+deploy_dev_ciip: OC_PROJECT=${OC_DEV_PROJECT}
+deploy_dev_ciip: deploy_tools
+	$(call switch_project)
+	$(call deploy_ciip)
 
 .PHONY: clean_test
 clean_test: OC_PROJECT=${OC_TEST_PROJECT}

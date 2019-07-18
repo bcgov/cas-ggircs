@@ -44,6 +44,7 @@ cur = conn.cursor()
 directories = args.dirslist.read().split('\n')
 
 try:
+    cur.execute('delete from ciip.application cascade;')
     for directory in directories:
         for filename in os.listdir(directory):
             print('parsing: ' + filename)
