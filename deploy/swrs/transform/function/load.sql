@@ -31,11 +31,19 @@ $function$
     -- Loop to populate ggircs tables with data from ggircs_swrs
         for i in 1 .. array_upper(mv_array, 1)
       loop
-        execute format('select ggircs_swrs_transform.export_%s_to_ggircs()', mv_array[i]);
+        execute format('select ggircs_swrs_transform.load_%s()', mv_array[i]);
       end loop;
 
     -- Refresh materialized views with no data
     perform ggircs_swrs_transform.transform('with no data');
+
+    -- Override the live data schema
+    drop schema if exists ggircs;
+    alter schema ggircs_swrs_load rename to ggircs;
+
+    -- Recreate the load schema, without records
+    perform ggircs_swrs_transform.clone_schema('ggircs', 'ggircs_swrs_load', false);
+
   end;
 
 $function$ language plpgsql volatile ;
