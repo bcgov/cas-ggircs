@@ -5,11 +5,13 @@ import Header from '../components/Header'
 import UserList from "../components/UserList";
 
 
-class Index extends Component {
-  static displayName = `Index`
+class Survey extends Component {
+  static displayName = `Survey`;
 
   render(props) {
-    return (
+  //    var surveyCreator = new SurveyCreator.SurveyCreator("surveyCreatorDivElementID");
+
+      return (
         <React.Fragment>
           <Header/>
           <Container>
@@ -30,13 +32,7 @@ class Index extends Component {
             </Row>
               <br/><br/>
             <Row>
-              <iframe
-                  src="https://metabase-wksv3k-dev.pathfinder.gov.bc.ca/public/question/2b7ec16a-5793-4788-a2da-0fe08a100e55"
-                  frameBorder="0"
-                  width="100%"
-                  height="600"
-                  allowTransparency
-              ></iframe>
+
             </Row>
           </Container>
         </React.Fragment>
@@ -45,4 +41,4 @@ class Index extends Component {
 }
 
 
-export default Index;
+export default Survey;
