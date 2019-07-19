@@ -8,12 +8,12 @@ select plan(27);
 
 select has_materialized_view(
     'ggircs_swrs', 'permit',
-    'ggircs_swrs.permit should be a materialized view'
+    'ggircs_swrs_transform.permit should be a materialized view'
 );
 
 select has_index(
     'ggircs_swrs', 'permit', 'ggircs_permit_primary_key',
-    'ggircs_swrs.permit should have a primary key'
+    'ggircs_swrs_transform.permit should have a primary key'
 );
 
 select columns_are('ggircs_swrs'::name, 'permit'::name, array[
@@ -55,7 +55,7 @@ select col_is_null(      'ggircs_swrs', 'permit', 'permit_number', 'permit.permi
 select col_hasnt_default('ggircs_swrs', 'permit', 'permit_number', 'permit.permit_number column should not have a default');
 
 
-insert into ggircs_swrs.ghgr_import (xml_file) values ($$<ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+insert into ggircs_swrs_extract.ghgr_import (xml_file) values ($$<ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <RegistrationData>
     <Facility>
       <Identifiers>
@@ -76,55 +76,55 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$<ReportData xmlns:xsi="
 $$);
 
 
-refresh materialized view ggircs_swrs.facility with data;
-refresh materialized view ggircs_swrs.permit with data;
+refresh materialized view ggircs_swrs_transform.facility with data;
+refresh materialized view ggircs_swrs_transform.permit with data;
 
 select results_eq(
      $$
-     select facility.swrs_facility_id from ggircs_swrs.permit
-     join ggircs_swrs.facility
+     select facility.swrs_facility_id from ggircs_swrs_transform.permit
+     join ggircs_swrs_transform.facility
      on
      permit.ghgr_import_id = facility.ghgr_import_id
      $$,
 
-    'select swrs_facility_id from ggircs_swrs.facility',
+    'select swrs_facility_id from ggircs_swrs_transform.facility',
 
-    'Foreign key ghgr_import_id in ggircs_swrs_parent_facility references ggircs_swrs.facility'
+    'Foreign key ghgr_import_id in ggircs_swrs_parent_facility references ggircs_swrs_transform.facility'
 );
 
 -- XML import tests
 select results_eq(
-    'select ghgr_import_id from ggircs_swrs.permit',
-    'select id from ggircs_swrs.ghgr_import',
+    'select ghgr_import_id from ggircs_swrs_transform.permit',
+    'select id from ggircs_swrs_extract.ghgr_import',
     'column ghgr_import_id in permit correctly parsed xml'
 );
 
 select results_eq(
-    'select path_context from ggircs_swrs.permit',
+    'select path_context from ggircs_swrs_transform.permit',
     ARRAY['RegistrationData'::varchar],
     'column path_context in permit correctly parsed xml'
 );
 
 select results_eq(
-    'select permit_idx from ggircs_swrs.permit',
+    'select permit_idx from ggircs_swrs_transform.permit',
     ARRAY[0::integer],
     'column permit_idx in permit correctly parsed xml'
 );
 
 select results_eq(
-    'select issuing_agency from ggircs_swrs.permit',
+    'select issuing_agency from ggircs_swrs_transform.permit',
     ARRAY['BC Ministry of Environment'::varchar],
     'column issuing_agency in permit correctly parsed xml'
 );
 
 select results_eq(
-    'select issuing_dept_agency_program from ggircs_swrs.permit',
+    'select issuing_dept_agency_program from ggircs_swrs_transform.permit',
     ARRAY['abc'::varchar],
     'column issuing_dept_agency_program in permit correctly parsed xml'
 );
 
 select results_eq(
-    'select permit_number from ggircs_swrs.permit',
+    'select permit_number from ggircs_swrs_transform.permit',
     ARRAY['AB-12345'::varchar],
     'column permit_number in permit correctly parsed xml'
 );

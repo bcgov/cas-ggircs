@@ -9,7 +9,7 @@ select * from no_plan();
 -- View should exist
 select has_view(
     'ggircs', 'attributable_emissions_with_details',
-    'ggircs.attributable_emission should be a view'
+    'ggircs_swrs_load.attributable_emission should be a view'
 );
 
 -- Columns are correct
@@ -151,7 +151,7 @@ select col_type_is('ggircs', 'attributable_emissions_with_details', 'swrs_facili
 select col_hasnt_default('ggircs', 'attributable_emissions_with_details', 'swrs_facility_id', 'attributable_emission.swrs_facility_id column should not have a default value');
 
 -- XML fixture for testing
-insert into ggircs_swrs.ghgr_import (xml_file) values ($$
+insert into ggircs_swrs_extract.ghgr_import (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <RegistrationData>
     <Organisation>
@@ -487,65 +487,65 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
 $$);
 
 -- Refresh necessary materialized views
-refresh materialized view ggircs_swrs.report with data;
-refresh materialized view ggircs_swrs.final_report with data;
-refresh materialized view ggircs_swrs.organisation with data;
-refresh materialized view ggircs_swrs.facility with data;
-refresh materialized view ggircs_swrs.activity with data;
-refresh materialized view ggircs_swrs.naics with data;
-refresh materialized view ggircs_swrs.fuel with data;
-refresh materialized view ggircs_swrs.unit with data;
-refresh materialized view ggircs_swrs.emission with data;
+refresh materialized view ggircs_swrs_transform.report with data;
+refresh materialized view ggircs_swrs_transform.final_report with data;
+refresh materialized view ggircs_swrs_transform.organisation with data;
+refresh materialized view ggircs_swrs_transform.facility with data;
+refresh materialized view ggircs_swrs_transform.activity with data;
+refresh materialized view ggircs_swrs_transform.naics with data;
+refresh materialized view ggircs_swrs_transform.fuel with data;
+refresh materialized view ggircs_swrs_transform.unit with data;
+refresh materialized view ggircs_swrs_transform.emission with data;
 
 -- Populate necessary ggircs tables
-select ggircs_swrs.export_report_to_ggircs();
-select ggircs_swrs.export_organisation_to_ggircs();
-select ggircs_swrs.export_facility_to_ggircs();
-select ggircs_swrs.export_activity_to_ggircs();
-select ggircs_swrs.export_unit_to_ggircs();
-select ggircs_swrs.export_naics_to_ggircs();
-select ggircs_swrs.export_fuel_to_ggircs();
-select ggircs_swrs.export_emission_to_ggircs();
+select ggircs_swrs_transform.load_report();
+select ggircs_swrs_transform.load_organisation();
+select ggircs_swrs_transform.load_facility();
+select ggircs_swrs_transform.load_activity();
+select ggircs_swrs_transform.load_unit();
+select ggircs_swrs_transform.load_naics();
+select ggircs_swrs_transform.load_fuel();
+select ggircs_swrs_transform.load_emission();
 
 -- Test fk relations
 -- Report
 select set_eq(
-    $$ select report.id from ggircs.attributable_emissions_with_details as ae
-       join ggircs.report on ae.report_id = report.id
+    $$ select report.id from ggircs_swrs_load.attributable_emissions_with_details as ae
+       join ggircs_swrs_load.report on ae.report_id = report.id
     $$,
-    'select id from ggircs.report',
+    'select id from ggircs_swrs_load.report',
     'fk report_id references report'
 );
 
 select set_eq(
-    $$ select organisation.id from ggircs.attributable_emissions_with_details as ae
-       join ggircs.organisation on ae.organisation_id = organisation.id
+    $$ select organisation.id from ggircs_swrs_load.attributable_emissions_with_details as ae
+       join ggircs_swrs_load.organisation on ae.organisation_id = organisation.id
     $$,
-    'select id from ggircs.organisation',
+    'select id from ggircs_swrs_load.organisation',
     'fk organisation_id references organisation'
 );
 
 -- Facility
 select set_eq(
-    $$ select facility.id from ggircs.attributable_emissions_with_details as ae
-       join ggircs.facility on ae.facility_id = facility.id
+    $$ select facility.id from ggircs_swrs_load.attributable_emissions_with_details as ae
+       join ggircs_swrs_load.facility on ae.facility_id = facility.id
     $$,
-    'select id from ggircs.facility',
+    'select id from ggircs_swrs_load.facility',
     'fk facility_id references facility'
 );
 
 -- Unit
 select set_eq(
-    $$ select unit.id from ggircs.attributable_emissions_with_details as ae
-       join ggircs.unit on ae.unit_id = unit.id
+    $$ select unit.id from ggircs_swrs_load.attributable_emissions_with_details as ae
+       join ggircs_swrs_load.unit on ae.unit_id = unit.id
     $$,
-    'select id from ggircs.unit',
+    'select id from ggircs_swrs_load.unit',
     'fk unit_id references unit'
 );
 
 -- Attributable Emissions with details has correct information
 select set_eq(
-   'select * from ggircs.attributable_emissions_with_details',
+   'select * from ggircs_swrs_load.attributable_emissions_with_details',
     $$ select
         e.id,
         o.business_legal_name,
@@ -583,17 +583,17 @@ select set_eq(
         rp.swrs_report_id,
         o.swrs_organisation_id,
         fc.swrs_facility_id
-      from ggircs.emission as e
-        join ggircs.fuel as f on e.fuel_id = f.id
-        join ggircs.naics as n on e.naics_id = n.id
-        join ggircs.facility as fc on e.facility_id = fc.id
-        join ggircs.report as rp on e.report_id = rp.id
-        join ggircs.activity as ac on e.activity_id = ac.id
-        join ggircs.organisation as o on e.organisation_id = o.id
-        join ggircs.unit as u on e.unit_id = u.id
+      from ggircs_swrs_load.emission as e
+        join ggircs_swrs_load.fuel as f on e.fuel_id = f.id
+        join ggircs_swrs_load.naics as n on e.naics_id = n.id
+        join ggircs_swrs_load.facility as fc on e.facility_id = fc.id
+        join ggircs_swrs_load.report as rp on e.report_id = rp.id
+        join ggircs_swrs_load.activity as ac on e.activity_id = ac.id
+        join ggircs_swrs_load.organisation as o on e.organisation_id = o.id
+        join ggircs_swrs_load.unit as u on e.unit_id = u.id
 
         $$,
-    'ggircs.attributable_emissions_with_details has correct information'
+    'ggircs_swrs_load.attributable_emissions_with_details has correct information'
 
 );
 

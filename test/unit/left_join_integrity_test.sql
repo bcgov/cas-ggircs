@@ -10,7 +10,7 @@ reset client_min_messages;
 begin;
 select plan(14);
 
-insert into ggircs_swrs.ghgr_import (xml_file) values ($$
+insert into ggircs_swrs_extract.ghgr_import (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <RegistrationData>
     <Organisation>
@@ -1117,192 +1117,192 @@ $$), ($$
 $$);
 
 -- Run table export function
-select ggircs_swrs.export_mv_to_table();
+select ggircs_swrs_transform.load();
 
 -- Refresh all materialized views (run again so materialized views are populated for data equality tests below)
-select ggircs_swrs.refresh_materialized_views('with data');
+select ggircs_swrs_transform.transform('with data');
 
 /** ACTIVITY **/
 select set_eq(
-    'select id from ggircs.activity',
+    'select id from ggircs_swrs_load.activity',
 
     $$
-    select activity.id from ggircs_swrs.activity
-    inner join ggircs_swrs.final_report as _final_report
+    select activity.id from ggircs_swrs_transform.activity
+    inner join ggircs_swrs_transform.final_report as _final_report
     on activity.ghgr_import_id = _final_report.ghgr_import_id
     $$,
 
-    'Ensure left joins are not causing additional rows to be returned in ggircs.activity'
+    'Ensure left joins are not causing additional rows to be returned in ggircs_swrs_load.activity'
 );
 
 /** ADDITIONAL DATA **/
 select set_eq(
-    'select id from ggircs.additional_data',
+    'select id from ggircs_swrs_load.additional_data',
 
     $$
-    select additional_data.id from ggircs_swrs.additional_data
-    inner join ggircs_swrs.final_report as _final_report
+    select additional_data.id from ggircs_swrs_transform.additional_data
+    inner join ggircs_swrs_transform.final_report as _final_report
     on additional_data.ghgr_import_id = _final_report.ghgr_import_id
     $$,
 
-    'Ensure left joins are not causing additional rows to be returned in ggircs.additional_data'
+    'Ensure left joins are not causing additional rows to be returned in ggircs_swrs_load.additional_data'
 );
 
 /** ADDRESS **/
 select set_eq(
-    'select id from ggircs.address',
+    'select id from ggircs_swrs_load.address',
 
     $$
-    select address.id from ggircs_swrs.address
-    inner join ggircs_swrs.final_report as _final_report
+    select address.id from ggircs_swrs_transform.address
+    inner join ggircs_swrs_transform.final_report as _final_report
     on address.ghgr_import_id = _final_report.ghgr_import_id
     $$,
 
-    'Ensure left joins are not causing additional rows to be returned in ggircs.address'
+    'Ensure left joins are not causing additional rows to be returned in ggircs_swrs_load.address'
 );
 
 /** CONTACT **/
 select set_eq(
-    'select id from ggircs.contact',
+    'select id from ggircs_swrs_load.contact',
 
     $$
-    select contact.id from ggircs_swrs.contact
-    inner join ggircs_swrs.final_report as _final_report
+    select contact.id from ggircs_swrs_transform.contact
+    inner join ggircs_swrs_transform.final_report as _final_report
     on contact.ghgr_import_id = _final_report.ghgr_import_id
     $$,
 
-    'Ensure left joins are not causing additional rows to be returned in ggircs.contact'
+    'Ensure left joins are not causing additional rows to be returned in ggircs_swrs_load.contact'
 );
 
 /** EMISSION **/
 select set_eq(
-    'select id from ggircs.emission',
+    'select id from ggircs_swrs_load.emission',
 
     $$
-    select emission.id from ggircs_swrs.emission
-    inner join ggircs_swrs.final_report as _final_report
+    select emission.id from ggircs_swrs_transform.emission
+    inner join ggircs_swrs_transform.final_report as _final_report
     on emission.ghgr_import_id = _final_report.ghgr_import_id
     $$,
 
-    'Ensure left joins are not causing additional rows to be returned in ggircs.emission'
+    'Ensure left joins are not causing additional rows to be returned in ggircs_swrs_load.emission'
 );
 
 /** FUEL **/
 select set_eq(
-    'select id from ggircs.fuel',
+    'select id from ggircs_swrs_load.fuel',
 
     $$
-    select fuel.id from ggircs_swrs.fuel
-    inner join ggircs_swrs.final_report as _final_report
+    select fuel.id from ggircs_swrs_transform.fuel
+    inner join ggircs_swrs_transform.final_report as _final_report
     on fuel.ghgr_import_id = _final_report.ghgr_import_id
     $$,
 
-    'Ensure left joins are not causing additional rows to be returned in ggircs.fuel'
+    'Ensure left joins are not causing additional rows to be returned in ggircs_swrs_load.fuel'
 );
 
 /** IDENTIFIER **/
 select set_eq(
-    'select id from ggircs.identifier',
+    'select id from ggircs_swrs_load.identifier',
 
     $$
-    select identifier.id from ggircs_swrs.identifier
-    inner join ggircs_swrs.final_report as _final_report
+    select identifier.id from ggircs_swrs_transform.identifier
+    inner join ggircs_swrs_transform.final_report as _final_report
     on identifier.ghgr_import_id = _final_report.ghgr_import_id
     $$,
 
-    'Ensure left joins are not causing additional rows to be returned in ggircs.identifier'
+    'Ensure left joins are not causing additional rows to be returned in ggircs_swrs_load.identifier'
 );
 
 
 /** SINGLE FACILITY **/
 select set_eq(
-    'select id from ggircs.facility',
+    'select id from ggircs_swrs_load.facility',
 
     $$
-    select facility.id from ggircs_swrs.facility
-    inner join ggircs_swrs.final_report as _final_report
+    select facility.id from ggircs_swrs_transform.facility
+    inner join ggircs_swrs_transform.final_report as _final_report
     on facility.ghgr_import_id = _final_report.ghgr_import_id
     $$,
 
-    'Ensure left joins are not causing additional rows to be returned in ggircs.facility'
+    'Ensure left joins are not causing additional rows to be returned in ggircs_swrs_load.facility'
 );
 
 /** MEASURED EMISSION FACTOR **/
 select set_eq(
-    'select id from ggircs.measured_emission_factor',
+    'select id from ggircs_swrs_load.measured_emission_factor',
 
     $$
-    select measured_emission_factor.id from ggircs_swrs.measured_emission_factor
-    inner join ggircs_swrs.final_report as _final_report
+    select measured_emission_factor.id from ggircs_swrs_transform.measured_emission_factor
+    inner join ggircs_swrs_transform.final_report as _final_report
     on measured_emission_factor.ghgr_import_id = _final_report.ghgr_import_id
     $$,
 
-    'Ensure left joins are not causing additional rows to be returned in ggircs.measured_emission_factor'
+    'Ensure left joins are not causing additional rows to be returned in ggircs_swrs_load.measured_emission_factor'
 );
 
 /** NAICS **/
 select set_eq(
-    'select id from ggircs.naics',
+    'select id from ggircs_swrs_load.naics',
 
     $$
-    select naics.id from ggircs_swrs.naics
-    inner join ggircs_swrs.final_report as _final_report
+    select naics.id from ggircs_swrs_transform.naics
+    inner join ggircs_swrs_transform.final_report as _final_report
     on naics.ghgr_import_id = _final_report.ghgr_import_id
     $$,
 
-    'Ensure left joins are not causing additional rows to be returned in ggircs.naics'
+    'Ensure left joins are not causing additional rows to be returned in ggircs_swrs_load.naics'
 );
 
 /** ORGANISATION **/
 select set_eq(
-    'select id from ggircs.organisation',
+    'select id from ggircs_swrs_load.organisation',
 
     $$
-    select organisation.id from ggircs_swrs.organisation
-    inner join ggircs_swrs.final_report as _final_report
+    select organisation.id from ggircs_swrs_transform.organisation
+    inner join ggircs_swrs_transform.final_report as _final_report
     on organisation.ghgr_import_id = _final_report.ghgr_import_id
     $$,
 
-    'Ensure left joins are not causing additional rows to be returned in ggircs.organisation'
+    'Ensure left joins are not causing additional rows to be returned in ggircs_swrs_load.organisation'
 );
 
 /** PARENT ORGANISATION **/
 select set_eq(
-    'select id from ggircs.parent_organisation',
+    'select id from ggircs_swrs_load.parent_organisation',
 
     $$
-    select parent_organisation.id from ggircs_swrs.parent_organisation
-    inner join ggircs_swrs.final_report as _final_report
+    select parent_organisation.id from ggircs_swrs_transform.parent_organisation
+    inner join ggircs_swrs_transform.final_report as _final_report
     on parent_organisation.ghgr_import_id = _final_report.ghgr_import_id
     $$,
 
-    'Ensure left joins are not causing additional rows to be returned in ggircs.parent_organisation'
+    'Ensure left joins are not causing additional rows to be returned in ggircs_swrs_load.parent_organisation'
 );
 
 /** PERMIT **/
 select set_eq(
-    'select id from ggircs.permit',
+    'select id from ggircs_swrs_load.permit',
 
     $$
-    select permit.id from ggircs_swrs.permit
-    inner join ggircs_swrs.final_report as _final_report
+    select permit.id from ggircs_swrs_transform.permit
+    inner join ggircs_swrs_transform.final_report as _final_report
     on permit.ghgr_import_id = _final_report.ghgr_import_id
     $$,
 
-    'Ensure left joins are not causing additional rows to be returned in ggircs.permit'
+    'Ensure left joins are not causing additional rows to be returned in ggircs_swrs_load.permit'
 );
 
 /** UNIT **/
 select set_eq(
-    'select id from ggircs.unit',
+    'select id from ggircs_swrs_load.unit',
 
     $$
-    select unit.id from ggircs_swrs.unit
-    inner join ggircs_swrs.final_report as _final_report
+    select unit.id from ggircs_swrs_transform.unit
+    inner join ggircs_swrs_transform.final_report as _final_report
     on unit.ghgr_import_id = _final_report.ghgr_import_id
     $$,
 
-    'Ensure left joins are not causing additional rows to be returned in ggircs.unit'
+    'Ensure left joins are not causing additional rows to be returned in ggircs_swrs_load.unit'
 );
 
 select * from finish();

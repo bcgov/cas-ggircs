@@ -23,7 +23,7 @@ The `contextDir` option (see below) instructs OpenShift to run docker from that 
 source:
   git:
     ref: ${GIT_BRANCH}
-    uri: https://github.com/bcgov/cas-ggircs.git
+    uri: https://github.com/bcgov/cas-ggircs_swrs_load.git
   contextDir: docker/metabase-builder
 strategy:
   type: Docker
@@ -44,6 +44,6 @@ This [build config](buildconfig/cas-ggircs-metabase-build.yml) uses the s2i buil
 
 #### cas-ggircs-metabase
 
-The last [build config](buildconfig/cas-ggircs-metabase.yml) has two steps: 
+The last [build config](buildconfig/cas-ggircs-metabase.yml) has two steps:
   1. Pull the *cas-ggircs-metabase-build* image and copies the `metabase.jar` file into the build environment.
   1. Build an image using the [docker/metabase](/docker/metabase) dockerfile. This dockerfile installs the runtime dependency (java), exposes the metabase port (`3000`), copies the `jar` file into the image, and sets `java -jar metabase.jar` as the entrypoint.

@@ -7,9 +7,9 @@ begin;
 select * from no_plan();
 
 -- Run table export function
-select ggircs_swrs.export_mv_to_table();
+select ggircs_swrs_transform.load();
 
-insert into ggircs_swrs.ghgr_import (xml_file) values ($$
+insert into ggircs_swrs_extract.ghgr_import (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <ReportDetails>
     <ReportID>1234</ReportID>
@@ -29,17 +29,17 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
 $$);
 
 -- Refresh function populates materialized views
-select ggircs_swrs.refresh_materialized_views('with data');
-select isnt_empty('select * from ggircs_swrs.report', 'refresh_materialized_views() has populated materialized views');
+select ggircs_swrs_transform.transform('with data');
+select isnt_empty('select * from ggircs_swrs_transform.report', 'transform() has populated materialized views');
 
--- Function export_mv_to_table exists
-select has_function( 'ggircs_swrs', 'export_mv_to_table', 'Schema ggircs_swrs has function export_mv_to_table()' );
+-- Function load exists
+select has_function( 'ggircs_swrs', 'load', 'Schema ggircs_swrs has function load()' );
 
 -- refresh views with no data
-select ggircs_swrs.refresh_materialized_views('with no data');
+select ggircs_swrs_transform.transform('with no data');
 
 -- Refresh function has cleared materialized views
-select is_empty('select * from ggircs_swrs.report where false', 'refresh_materialized_views() has cleared materialized views');
+select is_empty('select * from ggircs_swrs_transform.report where false', 'transform() has cleared materialized views');
 
 select * from finish();
 rollback;

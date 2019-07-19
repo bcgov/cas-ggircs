@@ -6,7 +6,7 @@ reset client_min_messages;
 begin;
 select * from no_plan();
 
-insert into ggircs_swrs.ghgr_import (xml_file) values ($$
+insert into ggircs_swrs_extract.ghgr_import (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <RegistrationData>
     <Organisation>
@@ -169,15 +169,15 @@ $$), ($$
 </ReportData>
 $$);
 
-refresh materialized view ggircs_swrs.report with data;
-refresh materialized view ggircs_swrs.organisation with data;
-refresh materialized view ggircs_swrs.parent_organisation with data;
-refresh materialized view ggircs_swrs.final_report with data;
-select ggircs_swrs.export_report_to_ggircs();
-select ggircs_swrs.export_organisation_to_ggircs();
-select ggircs_swrs.export_parent_organisation_to_ggircs();
+refresh materialized view ggircs_swrs_transform.report with data;
+refresh materialized view ggircs_swrs_transform.organisation with data;
+refresh materialized view ggircs_swrs_transform.parent_organisation with data;
+refresh materialized view ggircs_swrs_transform.final_report with data;
+select ggircs_swrs_transform.load_report();
+select ggircs_swrs_transform.load_organisation();
+select ggircs_swrs_transform.load_parent_organisation();
 
--- Table ggircs.parent_organisation exists
+-- Table ggircs_swrs_load.parent_organisation exists
 select has_table('ggircs'::name, 'parent_organisation'::name);
 
 -- Parent Organisation has pk
@@ -187,36 +187,36 @@ select has_pk('ggircs', 'parent_organisation', 'ggircs_parent_organisation has p
 select has_fk('ggircs', 'parent_organisation', 'ggircs_parent_organisation has foreign key constraint(s)');
 
 -- Parent Organisation has data
-select isnt_empty('select * from ggircs.parent_organisation', 'there is data in ggircs.parent_organisation');
+select isnt_empty('select * from ggircs_swrs_load.parent_organisation', 'there is data in ggircs_swrs_load.parent_organisation');
 
 -- FKey tests
 -- Parent Organisation -> Report
 select set_eq(
     $$
-    select distinct(report.ghgr_import_id) from ggircs.parent_organisation
-    join ggircs.report
+    select distinct(report.ghgr_import_id) from ggircs_swrs_load.parent_organisation
+    join ggircs_swrs_load.report
     on parent_organisation.report_id = report.id
     $$,
 
-    'select distinct(ghgr_import_id) from ggircs.report',
+    'select distinct(ghgr_import_id) from ggircs_swrs_load.report',
 
-    'Foreign key report_id in ggircs.parent_organisation references ggircs.report.id'
+    'Foreign key report_id in ggircs_swrs_load.parent_organisation references ggircs_swrs_load.report.id'
 );
 
 -- Parent Organisation -> Organisation
 select set_eq(
     $$
-    select distinct(organisation.ghgr_import_id) from ggircs.parent_organisation
-    join ggircs.organisation
+    select distinct(organisation.ghgr_import_id) from ggircs_swrs_load.parent_organisation
+    join ggircs_swrs_load.organisation
     on parent_organisation.organisation_id = organisation.id
     $$,
 
-    'select ghgr_import_id from ggircs.organisation',
+    'select ghgr_import_id from ggircs_swrs_load.organisation',
 
-    'Foreign key organisation_id in ggircs.parent_organisation references ggircs.organisation.id'
+    'Foreign key organisation_id in ggircs_swrs_load.parent_organisation references ggircs_swrs_load.organisation.id'
 );
 
--- Data in ggircs_swrs.parent_organisation === data in ggircs.parent_organisation
+-- Data in ggircs_swrs_transform.parent_organisation === data in ggircs_swrs_load.parent_organisation
 select set_eq(
               $$
               select
@@ -228,7 +228,7 @@ select set_eq(
                   duns,
                   business_legal_name,
                   website
-                from ggircs_swrs.parent_organisation
+                from ggircs_swrs_transform.parent_organisation
                 order by
                   ghgr_import_id,
                   path_context
@@ -245,14 +245,14 @@ select set_eq(
                   duns,
                   business_legal_name,
                   website
-                from ggircs.parent_organisation
+                from ggircs_swrs_load.parent_organisation
                 order by
                   ghgr_import_id,
                   path_context
                  asc
               $$,
 
-              'data in ggircs_swrs.parent_organisation === ggircs.parent_organisation');
+              'data in ggircs_swrs_transform.parent_organisation === ggircs_swrs_load.parent_organisation');
 
 select * from finish();
 rollback;

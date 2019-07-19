@@ -9,7 +9,7 @@ select * from no_plan();
 -- View should exist
 select has_view(
     'ggircs', 'pro_rated_fuel_charge',
-    'ggircs.pro_rated_fuel_charge should be a view'
+    'ggircs_swrs_load.pro_rated_fuel_charge should be a view'
 );
 
 -- Columns are correct
@@ -43,7 +43,7 @@ select col_hasnt_default('ggircs', 'pro_rated_fuel_charge', 'pro_rated_fuel_char
 
 
 -- XML fixture for testing
-insert into ggircs_swrs.ghgr_import (xml_file) values ($$
+insert into ggircs_swrs_extract.ghgr_import (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <RegistrationData>
   <Facility>
@@ -104,43 +104,43 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
 $$);
 
 -- Refresh necessary materialized views
-refresh materialized view ggircs_swrs.report with data;
-refresh materialized view ggircs_swrs.final_report with data;
-refresh materialized view ggircs_swrs.organisation with data;
-refresh materialized view ggircs_swrs.facility with data;
-refresh materialized view ggircs_swrs.activity with data;
-refresh materialized view ggircs_swrs.unit with data;
-refresh materialized view ggircs_swrs.identifier with data;
-refresh materialized view ggircs_swrs.naics with data;
-refresh materialized view ggircs_swrs.fuel with data;
-refresh materialized view ggircs_swrs.emission with data;
+refresh materialized view ggircs_swrs_transform.report with data;
+refresh materialized view ggircs_swrs_transform.final_report with data;
+refresh materialized view ggircs_swrs_transform.organisation with data;
+refresh materialized view ggircs_swrs_transform.facility with data;
+refresh materialized view ggircs_swrs_transform.activity with data;
+refresh materialized view ggircs_swrs_transform.unit with data;
+refresh materialized view ggircs_swrs_transform.identifier with data;
+refresh materialized view ggircs_swrs_transform.naics with data;
+refresh materialized view ggircs_swrs_transform.fuel with data;
+refresh materialized view ggircs_swrs_transform.emission with data;
 
 -- Populate necessary ggircs tables
-select ggircs_swrs.export_report_to_ggircs();
-select ggircs_swrs.export_organisation_to_ggircs();
-select ggircs_swrs.export_facility_to_ggircs();
-select ggircs_swrs.export_activity_to_ggircs();
-select ggircs_swrs.export_unit_to_ggircs();
-select ggircs_swrs.export_identifier_to_ggircs();
-select ggircs_swrs.export_naics_to_ggircs();
-select ggircs_swrs.export_fuel_to_ggircs();
-select ggircs_swrs.export_emission_to_ggircs();
+select ggircs_swrs_transform.load_report();
+select ggircs_swrs_transform.load_organisation();
+select ggircs_swrs_transform.load_facility();
+select ggircs_swrs_transform.load_activity();
+select ggircs_swrs_transform.load_unit();
+select ggircs_swrs_transform.load_identifier();
+select ggircs_swrs_transform.load_naics();
+select ggircs_swrs_transform.load_fuel();
+select ggircs_swrs_transform.load_emission();
 
 -- Properly selects fuel charge
 select results_eq(
-    $$ select flat_rate / unit_conversion_factor from ggircs.pro_rated_fuel_charge where fuel_type = 'Residual Fuel Oil (#5 & 6)'$$,
+    $$ select flat_rate / unit_conversion_factor from ggircs_swrs_load.pro_rated_fuel_charge where fuel_type = 'Residual Fuel Oil (#5 & 6)'$$,
 
     $$
 
-      select fuel_charge from ggircs.fuel
-      join ggircs_swrs.fuel_charge
+      select fuel_charge from ggircs_swrs_load.fuel
+      join ggircs_swrs_load.fuel_charge
       on fuel.fuel_mapping_id = fuel_charge.fuel_mapping_id
       where fuel.fuel_type = 'Residual Fuel Oil (#5 & 6)'
       and ('2013-12-31' between fuel_charge.start_date and fuel_charge.end_date)
 
     $$,
 
-    'ggircs.pro_rated_fuel_charge selects proper fuel_charge for fuel_type and year'
+    'ggircs_swrs_load.pro_rated_fuel_charge selects proper fuel_charge for fuel_type and year'
 );
 
 select * from finish();

@@ -9,7 +9,7 @@ select * from no_plan();
 -- View should exist
 select has_view(
     'ggircs', 'carbon_tax_calculation',
-    'ggircs.carbon_tax_calculation should be a view'
+    'ggircs_swrs_load.carbon_tax_calculation should be a view'
 );
 
 -- Columns are correct
@@ -74,7 +74,7 @@ select col_type_is('ggircs', 'carbon_tax_calculation', 'pro_rated_calculated_car
 select col_hasnt_default('ggircs', 'carbon_tax_calculation', 'pro_rated_calculated_carbon_tax', 'carbon_tax_calculation.pro_rated_calculated_carbon_tax column should not have a default value');
 
 -- XML fixture for testing
-insert into ggircs_swrs.ghgr_import (xml_file) values ($$
+insert into ggircs_swrs_extract.ghgr_import (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <RegistrationData>
   <Facility>
@@ -135,68 +135,68 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
 $$);
 
 -- Refresh necessary materialized views
-refresh materialized view ggircs_swrs.report with data;
-refresh materialized view ggircs_swrs.final_report with data;
-refresh materialized view ggircs_swrs.organisation with data;
-refresh materialized view ggircs_swrs.facility with data;
-refresh materialized view ggircs_swrs.activity with data;
-refresh materialized view ggircs_swrs.unit with data;
-refresh materialized view ggircs_swrs.identifier with data;
-refresh materialized view ggircs_swrs.naics with data;
-refresh materialized view ggircs_swrs.fuel with data;
-refresh materialized view ggircs_swrs.emission with data;
+refresh materialized view ggircs_swrs_transform.report with data;
+refresh materialized view ggircs_swrs_transform.final_report with data;
+refresh materialized view ggircs_swrs_transform.organisation with data;
+refresh materialized view ggircs_swrs_transform.facility with data;
+refresh materialized view ggircs_swrs_transform.activity with data;
+refresh materialized view ggircs_swrs_transform.unit with data;
+refresh materialized view ggircs_swrs_transform.identifier with data;
+refresh materialized view ggircs_swrs_transform.naics with data;
+refresh materialized view ggircs_swrs_transform.fuel with data;
+refresh materialized view ggircs_swrs_transform.emission with data;
 
 -- Populate necessary ggircs tables
-select ggircs_swrs.export_report_to_ggircs();
-select ggircs_swrs.export_organisation_to_ggircs();
-select ggircs_swrs.export_facility_to_ggircs();
-select ggircs_swrs.export_activity_to_ggircs();
-select ggircs_swrs.export_unit_to_ggircs();
-select ggircs_swrs.export_identifier_to_ggircs();
-select ggircs_swrs.export_naics_to_ggircs();
-select ggircs_swrs.export_fuel_to_ggircs();
-select ggircs_swrs.export_emission_to_ggircs();
+select ggircs_swrs_transform.load_report();
+select ggircs_swrs_transform.load_organisation();
+select ggircs_swrs_transform.load_facility();
+select ggircs_swrs_transform.load_activity();
+select ggircs_swrs_transform.load_unit();
+select ggircs_swrs_transform.load_identifier();
+select ggircs_swrs_transform.load_naics();
+select ggircs_swrs_transform.load_fuel();
+select ggircs_swrs_transform.load_emission();
 
 -- Test fk relations
 -- Organisation
 select results_eq(
-    $$ select organisation.swrs_organisation_id from ggircs.carbon_tax_calculation as ct
-       join ggircs.organisation on ct.organisation_id = organisation.id
+    $$ select organisation.swrs_organisation_id from ggircs_swrs_load.carbon_tax_calculation as ct
+       join ggircs_swrs_load.organisation on ct.organisation_id = organisation.id
     $$,
-    'select swrs_organisation_id from ggircs.organisation',
+    'select swrs_organisation_id from ggircs_swrs_load.organisation',
     'fk organisation_id references organisation'
 );
 
 -- Facility
 select set_eq(
-    $$ select facility.swrs_facility_id from ggircs.carbon_tax_calculation as ct
-       join ggircs.facility on ct.facility_id = facility.id
+    $$ select facility.swrs_facility_id from ggircs_swrs_load.carbon_tax_calculation as ct
+       join ggircs_swrs_load.facility on ct.facility_id = facility.id
     $$,
-    'select swrs_facility_id from ggircs.facility',
+    'select swrs_facility_id from ggircs_swrs_load.facility',
     'fk facility_id references facility'
 );
 
 -- Naics
 select set_eq(
-    $$ select naics.naics_code from ggircs.carbon_tax_calculation as ct
-       join ggircs.naics on ct.naics_id = naics.id
+    $$ select naics.naics_code from ggircs_swrs_load.carbon_tax_calculation as ct
+       join ggircs_swrs_load.naics on ct.naics_id = naics.id
     $$,
-    'select naics_code from ggircs.naics',
+    'select naics_code from ggircs_swrs_load.naics',
     'fk naics_id references naics'
 );
 
 -- Test validity of calculation
 select results_eq(
-    'select calculated_carbon_tax from ggircs.carbon_tax_calculation order by calculated_carbon_tax',
+    'select calculated_carbon_tax from ggircs_swrs_load.carbon_tax_calculation order by calculated_carbon_tax',
 
     $$
       with x as (
-        select flat_rate from ggircs.pro_rated_fuel_charge where fuel_type = 'Residual Fuel Oil (#5 & 6)'
+        select flat_rate from ggircs_swrs_load.pro_rated_fuel_charge where fuel_type = 'Residual Fuel Oil (#5 & 6)'
       )
-      select x.flat_rate * (select annual_fuel_amount from ggircs.fuel where fuel_type = 'Residual Fuel Oil (#5 & 6)') from x
+      select x.flat_rate * (select annual_fuel_amount from ggircs_swrs_load.fuel where fuel_type = 'Residual Fuel Oil (#5 & 6)') from x
     $$,
 
-    'ggircs.carbon_tax_calculation properly calculates carbon tax based on fuel_amount * pro-rated carbon tax rate * pro-rated implied emission factor'
+    'ggircs_swrs_load.carbon_tax_calculation properly calculates carbon tax based on fuel_amount * pro-rated carbon tax rate * pro-rated implied emission factor'
 );
 
 select * from finish();

@@ -6,7 +6,7 @@ reset client_min_messages;
 begin;
 select * from no_plan();
 
-insert into ggircs_swrs.ghgr_import (xml_file) values ($$
+insert into ggircs_swrs_extract.ghgr_import (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <RegistrationData>
     <Organisation>
@@ -85,13 +85,13 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
 </ReportData>
 $$);
 
-refresh materialized view ggircs_swrs.report with data;
-refresh materialized view ggircs_swrs.organisation with data;
-refresh materialized view ggircs_swrs.final_report with data;
-select ggircs_swrs.export_report_to_ggircs();
-select ggircs_swrs.export_organisation_to_ggircs();
+refresh materialized view ggircs_swrs_transform.report with data;
+refresh materialized view ggircs_swrs_transform.organisation with data;
+refresh materialized view ggircs_swrs_transform.final_report with data;
+select ggircs_swrs_transform.load_report();
+select ggircs_swrs_transform.load_organisation();
 
--- Table ggircs.organisation exists
+-- Table ggircs_swrs_load.organisation exists
 select has_table('ggircs'::name, 'organisation'::name);
 
 -- Organisation has pk
@@ -101,24 +101,24 @@ select has_pk('ggircs', 'organisation', 'ggircs_organisation has primary key');
 select has_fk('ggircs', 'organisation', 'ggircs_organisation has foreign key constraint(s)');
 
 -- Organisation has data
-select isnt_empty('select * from ggircs.organisation', 'there is data in ggircs.organisation');
+select isnt_empty('select * from ggircs_swrs_load.organisation', 'there is data in ggircs_swrs_load.organisation');
 
 -- FKey tests
 -- Organisation -> Report
 select set_eq(
 
     $$
-    select report.ghgr_import_id from ggircs.organisation
-    join ggircs.report
+    select report.ghgr_import_id from ggircs_swrs_load.organisation
+    join ggircs_swrs_load.report
     on organisation.report_id = report.id
     $$,
 
-    'select ghgr_import_id from ggircs.report',
+    'select ghgr_import_id from ggircs_swrs_load.report',
 
-    'Foreign key report_id in ggircs.organisation references ggircs.report'
+    'Foreign key report_id in ggircs_swrs_load.organisation references ggircs_swrs_load.report'
 );
 
--- Data in ggircs_swrs.organisation === data in ggircs.organisation
+-- Data in ggircs_swrs_transform.organisation === data in ggircs_swrs_load.organisation
 select set_eq($$
                   select
                       ghgr_import_id,
@@ -129,7 +129,7 @@ select set_eq($$
                       cra_business_number,
                       duns,
                       website
-                  from ggircs_swrs.organisation
+                  from ggircs_swrs_transform.organisation
                   $$,
 
                  $$
@@ -142,10 +142,10 @@ select set_eq($$
                       cra_business_number,
                       duns,
                       website
-                  from ggircs.organisation
+                  from ggircs_swrs_load.organisation
                   $$,
 
-    'data in ggircs_swrs.organisation === ggircs.organisation');
+    'data in ggircs_swrs_transform.organisation === ggircs_swrs_load.organisation');
 
 select * from finish();
 rollback;

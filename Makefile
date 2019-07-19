@@ -301,13 +301,13 @@ s2i_build:
 	# localy build COMMITTED CHANGES ONLY
 	# @see https://github.com/sclorg/s2i-perl-container
 	# @see https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/building_running_and_managing_containers/using_red_hat_universal_base_images_standard_minimal_and_runtimes
-	s2i build https://github.com/bcgov/cas-ggircs.git -r $$(git rev-parse --verify HEAD) registry.access.redhat.com/ubi8/perl-526 cas-ggircs
+	s2i build https://github.com/bcgov/cas-ggircs_swrs_load.git -r $$(git rev-parse --verify HEAD) registry.access.redhat.com/ubi8/perl-526 cas-ggircs
 
 .PHONY: push
 push:
 	# copy data to remote
 	oc rsync data cas-ggircs-5-c46gh:/opt/app-root/src/
-	psql -c "\copy ggircs_swrs.ghgr_import from './data/select_t_REPORT_ID__t_XML_FILE__t_WHEN_C.csv' with (format csv)";
+	psql -c "\copy ggircs_swrs_extract.ghgr_import from './data/select_t_REPORT_ID__t_XML_FILE__t_WHEN_C.csv' with (format csv)";
 
 .PHONY: rsh
 rsh:
@@ -315,7 +315,7 @@ rsh:
 
 # .PHONY: refresh
 # refresh:
-# 	parallel -P8 'oc exec cas-ggircs-1-5ssz8 -- psql -c "refresh materialized view ggircs_swrs.{} with data;"' ::: \
+# 	parallel -P8 'oc exec cas-ggircs-1-5ssz8 -- psql -c "refresh materialized view ggircs_swrs_transform.{} with data;"' ::: \
 # 		report \
 # 		final_report \
 # 		facility \

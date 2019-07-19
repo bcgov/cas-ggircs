@@ -37,7 +37,7 @@ def extract(ciip_book, cursor, application_id):
     if duns is not None:
         cursor.execute(
             """
-            select distinct swrs_organisation_id from ggircs.organisation
+            select distinct swrs_organisation_id from ggircs_swrs_load.organisation
             where duns = %s
             """,
             (duns,)

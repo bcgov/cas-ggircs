@@ -9,7 +9,7 @@ select plan(25);
 -- View should exist
 select has_view(
     'ggircs', 'pro_rated_carbon_tax_rate',
-    'ggircs.pro_rated_carbon_tax_rate should be a view'
+    'ggircs_swrs_load.pro_rated_carbon_tax_rate should be a view'
 );
 
 -- Columns are correct
@@ -50,7 +50,7 @@ select col_type_is('ggircs', 'pro_rated_carbon_tax_rate', 'pro_rated_carbon_tax_
 select col_hasnt_default('ggircs', 'pro_rated_carbon_tax_rate', 'pro_rated_carbon_tax_rate', 'pro_rated_carbon_tax_rate.pro_rated_carbon_tax_rate column should not have a default value');
 
 -- XML fixture for testing
-insert into ggircs_swrs.ghgr_import (xml_file) values ($$<ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+insert into ggircs_swrs_extract.ghgr_import (xml_file) values ($$<ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <ReportDetails>
     <ReportID>1234</ReportID>
     <ReportType>R1</ReportType>
@@ -144,21 +144,21 @@ $$), ($$
 $$);
 
 -- Refresh necessary materialized views
-refresh materialized view ggircs_swrs.report with data;
-refresh materialized view ggircs_swrs.fuel with data;
+refresh materialized view ggircs_swrs_transform.report with data;
+refresh materialized view ggircs_swrs_transform.fuel with data;
 
 -- Populate necessary ggircs tables
 -- REPORT
-    insert into ggircs.report (id, ghgr_import_id, source_xml, imported_at, swrs_report_id, prepop_report_id, report_type, swrs_facility_id, swrs_organisation_id,
+    insert into ggircs_swrs_load.report (id, ghgr_import_id, source_xml, imported_at, swrs_report_id, prepop_report_id, report_type, swrs_facility_id, swrs_organisation_id,
                                reporting_period_duration, status, version, submission_date, last_modified_by, last_modified_date, update_comment)
 
     select id, ghgr_import_id, source_xml, imported_at, swrs_report_id, prepop_report_id, report_type, swrs_facility_id, swrs_organisation_id,
            reporting_period_duration, status, version, submission_date, last_modified_by, last_modified_date, update_comment
 
-    from ggircs_swrs.report;
+    from ggircs_swrs_transform.report;
 
 -- FUEL
-    insert into ggircs.fuel(id, ghgr_import_id, report_id,
+    insert into ggircs_swrs_load.fuel(id, ghgr_import_id, report_id,
                             activity_name, sub_activity_name, unit_name, sub_unit_name, fuel_type, fuel_classification, fuel_description,
                             fuel_units, annual_fuel_amount, annual_weighted_avg_carbon_content, annual_weighted_avg_hhv, annual_steam_generation, alternative_methodology_description,
                             other_flare_details, q1, q2, q3, q4, wastewater_processing_factors, measured_conversion_factors)
@@ -168,20 +168,20 @@ refresh materialized view ggircs_swrs.fuel with data;
            _fuel.fuel_units, _fuel.annual_fuel_amount, _fuel.annual_weighted_avg_carbon_content, _fuel.annual_weighted_avg_hhv, _fuel.annual_steam_generation,
            _fuel.alternative_methodology_description, _fuel.other_flare_details, _fuel.q1, _fuel.q2, _fuel.q3, _fuel.q4, _fuel.wastewater_processing_factors, _fuel.measured_conversion_factors
 
-    from ggircs_swrs.fuel
-    left join ggircs_swrs.fuel as _fuel on _fuel.id = fuel.id
+    from ggircs_swrs_transform.fuel
+    left join ggircs_swrs_transform.fuel as _fuel on _fuel.id = fuel.id
     -- FK Fuel -> Report
-    left join ggircs_swrs.report as _report
+    left join ggircs_swrs_transform.report as _report
     on _fuel.ghgr_import_id = _report.ghgr_import_id;
 
 -- Test Pro-rated results
 select results_eq(
-    'select reporting_year from ggircs.pro_rated_carbon_tax_rate order by reporting_year',
+    'select reporting_year from ggircs_swrs_load.pro_rated_carbon_tax_rate order by reporting_year',
 
     $$
     select reporting_period_duration::integer
-    from ggircs_swrs.fuel as fuel
-    join ggircs_swrs.report as report
+    from ggircs_swrs_transform.fuel as fuel
+    join ggircs_swrs_transform.report as report
     on report.ghgr_import_id = fuel.ghgr_import_id
     order by reporting_period_duration
     $$,
@@ -190,13 +190,13 @@ select results_eq(
 );
 
 select results_eq(
-    $$ select year_length from ggircs.pro_rated_carbon_tax_rate where fuel_type = 'Wood Waste' order by year_length$$,
+    $$ select year_length from ggircs_swrs_load.pro_rated_carbon_tax_rate where fuel_type = 'Wood Waste' order by year_length$$,
 
     $$
     with x as (
     select reporting_period_duration as rpd, fuel_type
-    from ggircs_swrs.fuel as fuel
-    join ggircs_swrs.report as report
+    from ggircs_swrs_transform.fuel as fuel
+    join ggircs_swrs_transform.report as report
     on report.ghgr_import_id = fuel.ghgr_import_id
     )
     select concat((x.rpd::integer)::text, '-12-31')::date - concat((x.rpd::integer)::text, '-01-01')::date as year_length
@@ -208,22 +208,22 @@ select results_eq(
 );
 
 select results_eq(
-    $$ select start_rate from ggircs.pro_rated_carbon_tax_rate where fuel_type = 'Wood Waste' order by start_rate desc $$,
+    $$ select start_rate from ggircs_swrs_load.pro_rated_carbon_tax_rate where fuel_type = 'Wood Waste' order by start_rate desc $$,
 
     $$
     with x as (
     select reporting_period_duration as rpd, fuel_type, ctr.carbon_tax_rate as rate
-    from ggircs_swrs.fuel as fuel
-    join ggircs_swrs.report as report
+    from ggircs_swrs_transform.fuel as fuel
+    join ggircs_swrs_transform.report as report
         on report.ghgr_import_id = fuel.ghgr_import_id
-    join ggircs_swrs.carbon_tax_rate_mapping as ctr
+    join ggircs_swrs_load.carbon_tax_rate_mapping as ctr
         on concat((report.reporting_period_duration::integer - 1)::text, '-04-01')::date >= ctr.rate_start_date
         and concat(report.reporting_period_duration::text, '-03-31')::date <= ctr.rate_end_date
     )
     select
            case
                when x.rpd::integer <= 2017 then 0
-               when x.rpd::integer > 2021 then (select carbon_tax_rate from ggircs_swrs.carbon_tax_rate_mapping where id = (select max(id) from ggircs_swrs.carbon_tax_rate_mapping))
+               when x.rpd::integer > 2021 then (select carbon_tax_rate from ggircs_swrs_load.carbon_tax_rate_mapping where id = (select max(id) from ggircs_swrs_load.carbon_tax_rate_mapping))
                else x.rate
            end as start_rate
     from x where x.fuel_type = 'Wood Waste' order by start_rate desc
@@ -233,15 +233,15 @@ select results_eq(
 );
 
 select results_eq(
-    $$ select start_duration from ggircs.pro_rated_carbon_tax_rate where fuel_type = 'Wood Waste' order by start_duration asc $$,
+    $$ select start_duration from ggircs_swrs_load.pro_rated_carbon_tax_rate where fuel_type = 'Wood Waste' order by start_duration asc $$,
 
     $$
     with x as (
     select reporting_period_duration as rpd, fuel_type, ctr.id as id
-    from ggircs_swrs.fuel as fuel
-    join ggircs_swrs.report as report
+    from ggircs_swrs_transform.fuel as fuel
+    join ggircs_swrs_transform.report as report
         on report.ghgr_import_id = fuel.ghgr_import_id
-    join ggircs_swrs.carbon_tax_rate_mapping as ctr
+    join ggircs_swrs_load.carbon_tax_rate_mapping as ctr
         on concat((report.reporting_period_duration::integer - 1)::text, '-04-01')::date >= ctr.rate_start_date
         and concat(report.reporting_period_duration::text, '-03-31')::date <= ctr.rate_end_date
     )
@@ -251,7 +251,7 @@ select results_eq(
             when x.rpd::integer <= 2017 then 0
             when x.rpd::integer > 2021 then concat((x.rpd::integer)::text, '-04-01')::date - concat((x.rpd::integer)::text, '-01-01')::date
             else (select rate_start_date
-                  from ggircs_swrs.carbon_tax_rate_mapping
+                  from ggircs_swrs_load.carbon_tax_rate_mapping
                   where id = x.id+1) - concat((x.rpd::integer)::text, '-01-01')::date
         end as start_duration
     from x where x.fuel_type = 'Wood Waste' order by start_duration asc
@@ -261,15 +261,15 @@ select results_eq(
 );
 
 select results_eq(
-    $$ select end_rate from ggircs.pro_rated_carbon_tax_rate where fuel_type = 'Wood Waste' order by end_rate desc $$,
+    $$ select end_rate from ggircs_swrs_load.pro_rated_carbon_tax_rate where fuel_type = 'Wood Waste' order by end_rate desc $$,
 
     $$
     with x as (
     select reporting_period_duration as rpd, fuel_type, ctr.carbon_tax_rate as rate, ctr.id as id
-    from ggircs_swrs.fuel as fuel
-    join ggircs_swrs.report as report
+    from ggircs_swrs_transform.fuel as fuel
+    join ggircs_swrs_transform.report as report
         on report.ghgr_import_id = fuel.ghgr_import_id
-    join ggircs_swrs.carbon_tax_rate_mapping as ctr
+    join ggircs_swrs_load.carbon_tax_rate_mapping as ctr
         on concat((report.reporting_period_duration::integer - 1)::text, '-04-01')::date >= ctr.rate_start_date
         and concat(report.reporting_period_duration::text, '-03-31')::date <= ctr.rate_end_date
     )
@@ -277,8 +277,8 @@ select results_eq(
            case
                when x.rpd::integer < 2017 then 0
                when x.rpd::integer = 2017 then 30
-               when x.rpd::integer > 2021 then (select carbon_tax_rate from ggircs_swrs.carbon_tax_rate_mapping where id = (select max(id) from ggircs_swrs.carbon_tax_rate_mapping))
-               else (select carbon_tax_rate from ggircs_swrs.carbon_tax_rate_mapping where id = x.id+1)
+               when x.rpd::integer > 2021 then (select carbon_tax_rate from ggircs_swrs_load.carbon_tax_rate_mapping where id = (select max(id) from ggircs_swrs_load.carbon_tax_rate_mapping))
+               else (select carbon_tax_rate from ggircs_swrs_load.carbon_tax_rate_mapping where id = x.id+1)
            end as end_rate
     from x where x.fuel_type = 'Wood Waste' order by end_rate desc
     $$,
@@ -287,15 +287,15 @@ select results_eq(
 );
 
 select results_eq(
-    $$ select end_duration from ggircs.pro_rated_carbon_tax_rate where fuel_type = 'Wood Waste' $$,
+    $$ select end_duration from ggircs_swrs_load.pro_rated_carbon_tax_rate where fuel_type = 'Wood Waste' $$,
 
     $$
     with x as (
     select reporting_period_duration as rpd, fuel_type, ctr.id as id
-    from ggircs_swrs.fuel as fuel
-    join ggircs_swrs.report as report
+    from ggircs_swrs_transform.fuel as fuel
+    join ggircs_swrs_transform.report as report
         on report.ghgr_import_id = fuel.ghgr_import_id
-    join ggircs_swrs.carbon_tax_rate_mapping as ctr
+    join ggircs_swrs_load.carbon_tax_rate_mapping as ctr
         on concat((report.reporting_period_duration::integer - 1)::text, '-04-01')::date >= ctr.rate_start_date
         and concat(report.reporting_period_duration::text, '-03-31')::date <= ctr.rate_end_date
     )
@@ -305,7 +305,7 @@ select results_eq(
                when x.rpd::integer = 2017 then '2017-12-31'::date - '2017-04-01'::date
                when x.rpd::integer > 2021 then concat((x.rpd::integer)::text, '-12-31')::date - concat((x.rpd::integer)::text, '-04-01')::date
                else concat((x.rpd::integer)::text, '-12-31')::date - (select rate_start_date
-                                                             from ggircs_swrs.carbon_tax_rate_mapping
+                                                             from ggircs_swrs_load.carbon_tax_rate_mapping
                                                              where id = x.id+1)
            end as end_duration
     from x where x.fuel_type = 'Wood Waste' order by end_duration asc
@@ -315,7 +315,7 @@ select results_eq(
 );
 
 select results_eq(
-    $$ select pro_rated_carbon_tax_rate from ggircs.pro_rated_carbon_tax_rate where fuel_type = 'Wood Waste' order by pro_rated_carbon_tax_rate asc $$,
+    $$ select pro_rated_carbon_tax_rate from ggircs_swrs_load.pro_rated_carbon_tax_rate where fuel_type = 'Wood Waste' order by pro_rated_carbon_tax_rate asc $$,
 
     $$
     with x as (
@@ -325,10 +325,10 @@ select results_eq(
                ctr.rate_end_date                as end,
                ctr.carbon_tax_rate              as rate,
                ctr.id                           as id
-        from ggircs_swrs.fuel
-                 join ggircs_swrs.report as report
+        from ggircs_swrs_transform.fuel
+                 join ggircs_swrs_transform.report as report
                       on fuel.ghgr_import_id = report.ghgr_import_id
-                 join ggircs_swrs.carbon_tax_rate_mapping as ctr
+                 join ggircs_swrs_load.carbon_tax_rate_mapping as ctr
                       on concat((report.reporting_period_duration::integer - 1)::text, '-04-01')::date >= ctr.rate_start_date
                       and concat(report.reporting_period_duration::text, '-03-31')::date <= ctr.rate_end_date
     ), y as (
@@ -336,22 +336,22 @@ select results_eq(
            x.fuel_type as fuel_type,
            case
                when x.rpd::integer <= 2017 then 0
-               when x.rpd::integer > 2021 then (select carbon_tax_rate from ggircs_swrs.carbon_tax_rate_mapping where id = (select max(id) from ggircs_swrs.carbon_tax_rate_mapping))
+               when x.rpd::integer > 2021 then (select carbon_tax_rate from ggircs_swrs_load.carbon_tax_rate_mapping where id = (select max(id) from ggircs_swrs_load.carbon_tax_rate_mapping))
                else x.rate
            end as start_rate,
 
            case
                when x.rpd::integer < 2017 then 0
                when x.rpd::integer = 2017 then 30
-               when x.rpd::integer > 2021 then (select carbon_tax_rate from ggircs_swrs.carbon_tax_rate_mapping where id = (select max(id) from ggircs_swrs.carbon_tax_rate_mapping))
-               else (select carbon_tax_rate from ggircs_swrs.carbon_tax_rate_mapping where id = x.id+1)
+               when x.rpd::integer > 2021 then (select carbon_tax_rate from ggircs_swrs_load.carbon_tax_rate_mapping where id = (select max(id) from ggircs_swrs_load.carbon_tax_rate_mapping))
+               else (select carbon_tax_rate from ggircs_swrs_load.carbon_tax_rate_mapping where id = x.id+1)
            end as end_rate,
 
            case
                when x.rpd::integer <= 2017 then 0
                when x.rpd::integer > 2021 then concat((x.rpd::integer)::text, '-04-01')::date - concat((x.rpd::integer)::text, '-01-01')::date
                else (select rate_start_date
-                     from ggircs_swrs.carbon_tax_rate_mapping
+                     from ggircs_swrs_load.carbon_tax_rate_mapping
                      where id = x.id+1) - concat((x.rpd::integer)::text, '-01-01')::date
            end as start_duration,
 
@@ -360,7 +360,7 @@ select results_eq(
                when x.rpd::integer = 2017 then '2017-12-31'::date - '2017-04-01'::date
                when x.rpd::integer > 2021 then concat((x.rpd::integer)::text, '-12-31')::date - concat((x.rpd::integer)::text, '-04-01')::date
                else concat((x.rpd::integer)::text, '-12-31')::date - (select rate_start_date
-                                                             from ggircs_swrs.carbon_tax_rate_mapping
+                                                             from ggircs_swrs_load.carbon_tax_rate_mapping
                                                              where id = x.id+1)
            end as end_duration,
 

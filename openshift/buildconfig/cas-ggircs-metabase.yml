@@ -21,7 +21,7 @@ objects:
     source:
       git:
         ref: ${GIT_BRANCH}
-        uri: https://github.com/bcgov/cas-ggircs.git
+        uri: https://github.com/bcgov/cas-ggircs_swrs_load.git
       contextDir: docker/metabase
       images:
       - from:

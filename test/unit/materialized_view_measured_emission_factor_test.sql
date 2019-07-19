@@ -9,12 +9,12 @@ select plan(43);
 
 select has_materialized_view(
     'ggircs_swrs', 'measured_emission_factor',
-    'ggircs_swrs.measured_emission_factor should be a materialized view'
+    'ggircs_swrs_transform.measured_emission_factor should be a materialized view'
 );
 
 select has_index(
     'ggircs_swrs', 'measured_emission_factor', 'ggircs_measured_emission_factor_primary_key',
-    'ggircs_swrs.measured_emission_factor should have a primary key'
+    'ggircs_swrs_transform.measured_emission_factor should have a primary key'
 );
 
 select columns_are('ggircs_swrs'::name, 'measured_emission_factor'::name, array[
@@ -97,7 +97,7 @@ select col_type_is(      'ggircs_swrs', 'measured_emission_factor', 'fuel_idx', 
 select col_is_null(      'ggircs_swrs', 'measured_emission_factor', 'fuel_idx', 'measured_emission_factor.fuel_idx column should not allow null');
 select col_hasnt_default('ggircs_swrs', 'measured_emission_factor', 'fuel_idx', 'measured_emission_factor.fuel_idx column should not  have a default');
 
-insert into ggircs_swrs.ghgr_import (xml_file) values ($$
+insert into ggircs_swrs_extract.ghgr_import (xml_file) values ($$
   <ActivityData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <ActivityPages>
       <Process ProcessName="ElectricityGeneration">
@@ -127,22 +127,22 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
     </ActivityPages>
   </ActivityData>$$);
 
-refresh materialized view ggircs_swrs.fuel with data;
-refresh materialized view ggircs_swrs.measured_emission_factor with data;
+refresh materialized view ggircs_swrs_transform.fuel with data;
+refresh materialized view ggircs_swrs_transform.measured_emission_factor with data;
 
 -- test foreign keys
 -- measured_emission_factor -> ghgr_import
 select results_eq(
-  'select distinct ghgr_import_id from ggircs_swrs.measured_emission_factor',
-  'select id from ggircs_swrs.ghgr_import',
-  'ggircs_swrs.measured_emission_factor.ghgr_import_id relates to ggircs_swrs.ghgr_import.id'
+  'select distinct ghgr_import_id from ggircs_swrs_transform.measured_emission_factor',
+  'select id from ggircs_swrs_extract.ghgr_import',
+  'ggircs_swrs_transform.measured_emission_factor.ghgr_import_id relates to ggircs_swrs_extract.ghgr_import.id'
 );
 
 -- measured_emission_factor -> fuel
 select results_eq(
     $$
-    select fuel.ghgr_import_id from ggircs_swrs.measured_emission_factor
-    join ggircs_swrs.fuel
+    select fuel.ghgr_import_id from ggircs_swrs_transform.measured_emission_factor
+    join ggircs_swrs_transform.fuel
     on (
     measured_emission_factor.ghgr_import_id =  fuel.ghgr_import_id
     and measured_emission_factor.process_idx = fuel.process_idx
@@ -153,26 +153,26 @@ select results_eq(
     and measured_emission_factor.fuel_idx = fuel.fuel_idx
     $$,
 
-    'select ghgr_import_id from ggircs_swrs.fuel',
+    'select ghgr_import_id from ggircs_swrs_transform.fuel',
 
-    'Foreign keys ghgr_import_id, process_idx, sub_process_idx, activity_name, units_idx, unit_idx and fuel.idx in ggircs_swrs_measured_emission_factor reference ggircs_swrs.fuel'
+    'Foreign keys ghgr_import_id, process_idx, sub_process_idx, activity_name, units_idx, unit_idx and fuel.idx in ggircs_swrs_measured_emission_factor reference ggircs_swrs_transform.fuel'
 );
 
 -- test xml imports
 select results_eq(
-  'select measured_emission_factor_amount from ggircs_swrs.measured_emission_factor',
+  'select measured_emission_factor_amount from ggircs_swrs_transform.measured_emission_factor',
   ARRAY[100::numeric],
   'measured_emission_factor parsed column measured_emission_factor_amount from xml'
 );
 
 select results_eq(
-  'select measured_emission_factor_gas from ggircs_swrs.measured_emission_factor',
+  'select measured_emission_factor_gas from ggircs_swrs_transform.measured_emission_factor',
   ARRAY['CO2'::varchar],
   'measured_emission_factor parsed column measured_emission_factor_gas from xml'
 );
 
 select results_eq(
-  'select measured_emission_factor_unit_type from ggircs_swrs.measured_emission_factor',
+  'select measured_emission_factor_unit_type from ggircs_swrs_transform.measured_emission_factor',
   ARRAY['g/GJ'::varchar],
   'measured_emission_factor parsed column measured_emission_factor_unit_type from xml'
 );

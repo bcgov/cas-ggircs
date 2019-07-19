@@ -8,12 +8,12 @@ select plan(42);
 
 select has_materialized_view(
     'ggircs_swrs', 'additional_data',
-    'ggircs_swrs.additional_data should be a materialized view'
+    'ggircs_swrs_transform.additional_data should be a materialized view'
 );
 
 select has_index(
     'ggircs_swrs', 'additional_data', 'ggircs_additional_data_primary_key',
-    'ggircs_swrs.additional_data should have a primary key'
+    'ggircs_swrs_transform.additional_data should have a primary key'
 );
 
 
@@ -82,7 +82,7 @@ select col_hasnt_default('ggircs_swrs', 'additional_data', 'node_value', 'additi
 
 -- Insert data for fixture based testing
 
-insert into ggircs_swrs.ghgr_import (xml_file) values ($$
+insert into ggircs_swrs_extract.ghgr_import (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <ActivityData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <ActivityPages>
@@ -119,105 +119,105 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
 </ReportData>
 $$);
 
-refresh materialized view ggircs_swrs.additional_data with data;
+refresh materialized view ggircs_swrs_transform.additional_data with data;
 
 --  Test ghgr_import_id fk relation
 select results_eq(
     $$
-    select ghgr_import.id from ggircs_swrs.additional_data
-    join ggircs_swrs.ghgr_import
+    select ghgr_import.id from ggircs_swrs_transform.additional_data
+    join ggircs_swrs_extract.ghgr_import
     on
     additional_data.ghgr_import_id =  ghgr_import.id
     and class='Amount'
     $$,
 
-    'select id from ggircs_swrs.ghgr_import',
+    'select id from ggircs_swrs_extract.ghgr_import',
 
-    'Foreign key ghgr_import_id ggircs_swrs_additional_data reference ggircs_swrs.ghgr_import'
+    'Foreign key ghgr_import_id ggircs_swrs_additional_data reference ggircs_swrs_extract.ghgr_import'
 );
 
 -- test the columns for matview additional_datas have been properly parsed from xml
 select results_eq(
-  $$ select ghgr_import_id from ggircs_swrs.additional_data where class='Amount' $$,
-  'select id from ggircs_swrs.ghgr_import',
-  'ggircs_swrs.additional_data.ghgr_import_id relates to ggircs_swrs.ghgr_import.id'
+  $$ select ghgr_import_id from ggircs_swrs_transform.additional_data where class='Amount' $$,
+  'select id from ggircs_swrs_extract.ghgr_import',
+  'ggircs_swrs_transform.additional_data.ghgr_import_id relates to ggircs_swrs_extract.ghgr_import.id'
 );
 
 -- test that root level additional_datas being extracted
 select results_eq(
-  $$ select node_value from ggircs_swrs.additional_data where class='NumberOfTimesMissingDataProcedures' $$,
+  $$ select node_value from ggircs_swrs_transform.additional_data where class='NumberOfTimesMissingDataProcedures' $$,
   Array['40'::varchar],
-  'ggircs_swrs.additional_data.node_value is extracted where class is NumberOfTimesMissingDataProcedures'
+  'ggircs_swrs_transform.additional_data.node_value is extracted where class is NumberOfTimesMissingDataProcedures'
 );
 
 -- test that medium level additional_datas being extracted
 select results_eq(
-  $$ select node_value from ggircs_swrs.additional_data where class='LimeTypeName' $$,
+  $$ select node_value from ggircs_swrs_transform.additional_data where class='LimeTypeName' $$,
   Array['Quicklime'::varchar],
-  'ggircs_swrs.additional_data.node_value is extracted where class is LimeTypeName'
+  'ggircs_swrs_transform.additional_data.node_value is extracted where class is LimeTypeName'
 );
 
 -- test that medium level additional_datas have the right parent
 select results_eq(
-  $$ select parent from ggircs_swrs.additional_data where class='LimeTypeName' $$,
+  $$ select parent from ggircs_swrs_transform.additional_data where class='LimeTypeName' $$,
   Array['LimeMonthlyDetails'::varchar],
-  'ggircs_swrs.additional_data.parent is extracted where class is LimeTypeName'
+  'ggircs_swrs_transform.additional_data.parent is extracted where class is LimeTypeName'
 );
 
 -- test that mutiple activity_names are being created based on child of ReportData (e.g. ActivityPages, ProcessFlowDiagram etc.)
 select results_eq(
-  $$ select activity_name from ggircs_swrs.additional_data where class='UploadedFileName' $$,
+  $$ select activity_name from ggircs_swrs_transform.additional_data where class='UploadedFileName' $$,
   Array['ProcessFlowDiagram'::varchar],
-  'ggircs_swrs.additional_data.activity_name is extracted where class is UploadedFileName'
+  'ggircs_swrs_transform.additional_data.activity_name is extracted where class is UploadedFileName'
 );
 
 -- test that values in the ProcessFlowDiagram activity_name is extracted
 select results_eq(
-  $$ select node_value from ggircs_swrs.additional_data where class='UploadedFileName' $$,
+  $$ select node_value from ggircs_swrs_transform.additional_data where class='UploadedFileName' $$,
   Array['all_our_base.pdf'::varchar],
-  'ggircs_swrs.additional_data.node_value is extracted where class is UploadedFileName'
+  'ggircs_swrs_transform.additional_data.node_value is extracted where class is UploadedFileName'
 );
 
 -- test that process_idx is being generated properly when multiple preciding siblings
 select results_eq(
-  $$ select process_idx from ggircs_swrs.additional_data where class='UploadedFileName' $$,
+  $$ select process_idx from ggircs_swrs_transform.additional_data where class='UploadedFileName' $$,
   Array[1::integer],
-  'ggircs_swrs.additional_data.process_idx is extracted where class is UploadedFileName'
+  'ggircs_swrs_transform.additional_data.process_idx is extracted where class is UploadedFileName'
 );
 
 -- test that sub_process_idx is being generated properly when multiple preciding siblings
 select results_eq(
-  $$ select sub_process_idx from ggircs_swrs.additional_data where class='UploadedFileName' $$,
+  $$ select sub_process_idx from ggircs_swrs_transform.additional_data where class='UploadedFileName' $$,
   Array[1::integer],
-  'ggircs_swrs.additional_data.sub_process_idx is extracted where class is UploadedFileName'
+  'ggircs_swrs_transform.additional_data.sub_process_idx is extracted where class is UploadedFileName'
 );
 
 -- test that parent_idx is being generated properly when multiple preciding siblings
 select results_eq(
-  $$ select parent_idx from ggircs_swrs.additional_data where class='LimeTypeName' $$,
+  $$ select parent_idx from ggircs_swrs_transform.additional_data where class='LimeTypeName' $$,
   Array[0::integer],
-  'ggircs_swrs.additional_data.process_idx is extracted where class is LimeTypeName'
+  'ggircs_swrs_transform.additional_data.process_idx is extracted where class is LimeTypeName'
 );
 
 -- test that grandparent_idx is being generated properly when multiple preciding siblings
 select results_eq(
-  $$ select grandparent_idx from ggircs_swrs.additional_data where class='LimeTypeName' $$,
+  $$ select grandparent_idx from ggircs_swrs_transform.additional_data where class='LimeTypeName' $$,
   Array[1::integer],
-  'ggircs_swrs.additional_data.process_idx is extracted where class is LimeTypeName'
+  'ggircs_swrs_transform.additional_data.process_idx is extracted where class is LimeTypeName'
 );
 
 -- test that sub_process_idx is being generated properly when multiple preciding siblings
 select results_eq(
-  $$ select sub_process_idx from ggircs_swrs.additional_data where class='UploadedFileName' $$,
+  $$ select sub_process_idx from ggircs_swrs_transform.additional_data where class='UploadedFileName' $$,
   Array[1::integer],
-  'ggircs_swrs.additional_data.sub_process_idx is extracted where class is UploadedFileName'
+  'ggircs_swrs_transform.additional_data.sub_process_idx is extracted where class is UploadedFileName'
 );
 
 -- test that multi-attribute concatenation is working
 select results_eq(
-  $$ select node_value from ggircs_swrs.additional_data where attr_value like '%Lime Produced Monthly%' $$,
+  $$ select node_value from ggircs_swrs_transform.additional_data where attr_value like '%Lime Produced Monthly%' $$,
   Array['2918.22'::varchar],
-  'ggircs_swrs.additional_data.sub_process_idx is extracted where class is Lime Produced Monthly'
+  'ggircs_swrs_transform.additional_data.sub_process_idx is extracted where class is Lime Produced Monthly'
 );
 
 select * from finish();
