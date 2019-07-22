@@ -23,7 +23,7 @@ The `contextDir` option (see below) instructs OpenShift to run docker from that 
 source:
   git:
     ref: ${GIT_BRANCH}
-    uri: https://github.com/bcgov/cas-ggircs_swrs_load.git
+    uri: https://github.com/bcgov/cas-ggircs.git
   contextDir: docker/metabase-builder
 strategy:
   type: Docker

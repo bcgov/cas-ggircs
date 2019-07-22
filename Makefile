@@ -301,7 +301,7 @@ s2i_build:
 	# localy build COMMITTED CHANGES ONLY
 	# @see https://github.com/sclorg/s2i-perl-container
 	# @see https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/building_running_and_managing_containers/using_red_hat_universal_base_images_standard_minimal_and_runtimes
-	s2i build https://github.com/bcgov/cas-ggircs_swrs_load.git -r $$(git rev-parse --verify HEAD) registry.access.redhat.com/ubi8/perl-526 cas-ggircs
+	s2i build https://github.com/bcgov/cas-ggircs.git -r $$(git rev-parse --verify HEAD) registry.access.redhat.com/ubi8/perl-526 cas-ggircs
 
 .PHONY: push
 push:
