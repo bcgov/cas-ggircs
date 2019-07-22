@@ -9,7 +9,7 @@ select * from no_plan();
 -- View should exist
 select has_view(
     'ggircs', 'pro_rated_implied_emission_factor',
-    'ggircs_swrs_load.pro_rated_implied_emission_factor should be a view'
+    'ggircs.pro_rated_implied_emission_factor should be a view'
 );
 
 -- Columns are correct
@@ -152,7 +152,7 @@ refresh materialized view ggircs_swrs_transform.fuel with data;
 
 
 -- REPORT
-    insert into ggircs_swrs_load.report (id, ghgr_import_id, source_xml, imported_at, swrs_report_id, prepop_report_id, report_type, swrs_facility_id, swrs_organisation_id,
+    insert into ggircs.report (id, ghgr_import_id, source_xml, imported_at, swrs_report_id, prepop_report_id, report_type, swrs_facility_id, swrs_organisation_id,
                                reporting_period_duration, status, version, submission_date, last_modified_by, last_modified_date, update_comment)
 
     select id, ghgr_import_id, source_xml, imported_at, swrs_report_id, prepop_report_id, report_type, swrs_facility_id, swrs_organisation_id,
@@ -161,7 +161,7 @@ refresh materialized view ggircs_swrs_transform.fuel with data;
     from ggircs_swrs_transform.report;
 
 -- FUEL
-    insert into ggircs_swrs_load.fuel(id, ghgr_import_id, report_id,
+    insert into ggircs.fuel(id, ghgr_import_id, report_id,
                             activity_name, sub_activity_name, unit_name, sub_unit_name, fuel_type, fuel_classification, fuel_description,
                             fuel_units, annual_fuel_amount, annual_weighted_avg_carbon_content, annual_weighted_avg_hhv, annual_steam_generation, alternative_methodology_description,
                             other_flare_details, q1, q2, q3, q4, wastewater_processing_factors, measured_conversion_factors)
@@ -178,12 +178,12 @@ refresh materialized view ggircs_swrs_transform.fuel with data;
     on _fuel.ghgr_import_id = _report.ghgr_import_id;
 
 select results_eq(
-    'select reporting_year from ggircs_swrs_load.pro_rated_implied_emission_factor order by reporting_year',
+    'select reporting_year from ggircs.pro_rated_implied_emission_factor order by reporting_year',
 
     $$
     select reporting_period_duration::integer
-    from ggircs_swrs_load.fuel as fuel
-    join ggircs_swrs_load.report as report
+    from ggircs.fuel as fuel
+    join ggircs.report as report
     on fuel.report_id = report.id
     order by reporting_period_duration
     $$,
@@ -192,12 +192,12 @@ select results_eq(
 );
 
 select set_eq(
-    'select fuel_mapping_id from ggircs_swrs_load.pro_rated_implied_emission_factor order by fuel_mapping_id',
+    'select fuel_mapping_id from ggircs.pro_rated_implied_emission_factor order by fuel_mapping_id',
 
     $$
     select fm.id
-    from ggircs_swrs_load.fuel as fuel
-    join ggircs_swrs_load.fuel_mapping as fm
+    from ggircs.fuel as fuel
+    join ggircs.fuel_mapping as fm
     on fuel.fuel_type = fm.fuel_type
     $$,
 
@@ -205,7 +205,7 @@ select set_eq(
 );
 
 select results_eq(
-    $$ select year_length from ggircs_swrs_load.pro_rated_implied_emission_factor where fuel_type != 'Wood Waste' order by year_length $$,
+    $$ select year_length from ggircs.pro_rated_implied_emission_factor where fuel_type != 'Wood Waste' order by year_length $$,
 
     ARRAY[364,365],
 
@@ -213,7 +213,7 @@ select results_eq(
 );
 
 select results_eq(
-    $$ select start_rate from ggircs_swrs_load.pro_rated_implied_emission_factor order by start_rate $$,
+    $$ select start_rate from ggircs.pro_rated_implied_emission_factor order by start_rate $$,
 
     ARRAY[0.315, 0.315, null, null],
 
@@ -221,7 +221,7 @@ select results_eq(
 );
 
 select results_eq(
-    $$ select start_duration from ggircs_swrs_load.pro_rated_implied_emission_factor order by start_duration $$,
+    $$ select start_duration from ggircs.pro_rated_implied_emission_factor order by start_duration $$,
 
     ARRAY[90, 90, 91, 91],
 
@@ -229,7 +229,7 @@ select results_eq(
 );
 
 select results_eq(
-    $$ select end_duration from ggircs_swrs_load.pro_rated_implied_emission_factor order by end_duration $$,
+    $$ select end_duration from ggircs.pro_rated_implied_emission_factor order by end_duration $$,
 
     ARRAY[274, 274, 274, 274],
 
@@ -237,11 +237,11 @@ select results_eq(
 );
 
 select results_eq(
-    $$ select pro_rated_implied_emission_factor from ggircs_swrs_load.pro_rated_implied_emission_factor order by pro_rated_implied_emission_factor $$,
+    $$ select pro_rated_implied_emission_factor from ggircs.pro_rated_implied_emission_factor order by pro_rated_implied_emission_factor $$,
 
     $$
     select ((y.start_rate * y.start_duration) + (y.end_rate * y.end_duration)) / y.year_length as pro_rated_implied_emission_factor
-    from ggircs_swrs_load.pro_rated_implied_emission_factor y
+    from ggircs.pro_rated_implied_emission_factor y
     order by pro_rated_implied_emission_factor
     $$,
 

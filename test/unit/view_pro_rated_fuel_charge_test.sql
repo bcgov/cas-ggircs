@@ -9,7 +9,7 @@ select * from no_plan();
 -- View should exist
 select has_view(
     'ggircs', 'pro_rated_fuel_charge',
-    'ggircs_swrs_load.pro_rated_fuel_charge should be a view'
+    'ggircs.pro_rated_fuel_charge should be a view'
 );
 
 -- Columns are correct
@@ -128,19 +128,19 @@ select ggircs_swrs_transform.load_emission();
 
 -- Properly selects fuel charge
 select results_eq(
-    $$ select flat_rate / unit_conversion_factor from ggircs_swrs_load.pro_rated_fuel_charge where fuel_type = 'Residual Fuel Oil (#5 & 6)'$$,
+    $$ select flat_rate / unit_conversion_factor from ggircs.pro_rated_fuel_charge where fuel_type = 'Residual Fuel Oil (#5 & 6)'$$,
 
     $$
 
-      select fuel_charge from ggircs_swrs_load.fuel
-      join ggircs_swrs_load.fuel_charge
+      select fuel_charge from ggircs.fuel
+      join ggircs.fuel_charge
       on fuel.fuel_mapping_id = fuel_charge.fuel_mapping_id
       where fuel.fuel_type = 'Residual Fuel Oil (#5 & 6)'
       and ('2013-12-31' between fuel_charge.start_date and fuel_charge.end_date)
 
     $$,
 
-    'ggircs_swrs_load.pro_rated_fuel_charge selects proper fuel_charge for fuel_type and year'
+    'ggircs.pro_rated_fuel_charge selects proper fuel_charge for fuel_type and year'
 );
 
 select * from finish();

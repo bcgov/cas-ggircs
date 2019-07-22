@@ -16,9 +16,9 @@ create or replace view ciip.compare_ciip_swrs_emission as
     swrs_data as (
         select facility.swrs_facility_id, emission.emission_category, emission.gas_type, sum(emission.quantity) as quantity,
                sum(emission.calculated_quantity) as calculated_quantity
-        from ggircs_swrs_load.emission
-        join ggircs_swrs_load.facility on emission.facility_id = facility.id
-        join ggircs_swrs_load.report on emission.report_id = report.id
+        from ggircs.emission
+        join ggircs.facility on emission.facility_id = facility.id
+        join ggircs.report on emission.report_id = report.id
         and report.reporting_period_duration = '2018'
         where emission.emission_category != 'BC_ScheduleB_WasteEmissions' and emission.emission_category != 'BC_ScheduleB_WastewaterEmissions'
         group by facility.swrs_facility_id, emission.emission_category, emission.gas_type
@@ -26,9 +26,9 @@ create or replace view ciip.compare_ciip_swrs_emission as
         select facility.swrs_facility_id, 'BC_ScheduleB_WasteAndWastewaterEmissions' as emission_category,
                emission.gas_type, sum(emission.quantity) as quantity,
                sum(emission.calculated_quantity) as calculated_quantity
-        from ggircs_swrs_load.emission
-        join ggircs_swrs_load.facility on emission.facility_id = facility.id
-        join ggircs_swrs_load.report on emission.report_id = report.id
+        from ggircs.emission
+        join ggircs.facility on emission.facility_id = facility.id
+        join ggircs.report on emission.report_id = report.id
         and report.reporting_period_duration = '2018'
         where emission.emission_category = 'BC_ScheduleB_WasteEmissions' or emission.emission_category = 'BC_ScheduleB_WastewaterEmissions'
         group by facility.swrs_facility_id, emission.gas_type

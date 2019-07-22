@@ -143,7 +143,7 @@ select ggircs_swrs_transform.load_organisation();
 select ggircs_swrs_transform.load_facility();
 select ggircs_swrs_transform.load_permit();
 
--- Table ggircs_swrs_load.permit exists
+-- Table ggircs.permit exists
 select has_table('ggircs'::name, 'permit'::name);
 
 -- Permit has pk
@@ -153,25 +153,25 @@ select has_pk('ggircs', 'permit', 'ggircs_permit has primary key');
 select has_fk('ggircs', 'permit', 'ggircs_permit has foreign key constraint(s)');
 
 -- Permit has data
-select isnt_empty('select * from ggircs_swrs_load.permit', 'there is data in ggircs_swrs_load.permit');
+select isnt_empty('select * from ggircs.permit', 'there is data in ggircs.permit');
 
 -- FKey tests
 -- Permit -> Facility
 select set_eq(
     $$
-    select facility.ghgr_import_id from ggircs_swrs_load.permit
-    join ggircs_swrs_load.facility
+    select facility.ghgr_import_id from ggircs.permit
+    join ggircs.facility
     on
       permit.facility_id = facility.id
       order by ghgr_import_id
     $$,
 
-    'select ghgr_import_id from ggircs_swrs_load.facility order by ghgr_import_id',
+    'select ghgr_import_id from ggircs.facility order by ghgr_import_id',
 
-    'Foreign key facility_id in ggircs_swrs_load.permit references ggircs_swrs_load.facility.id'
+    'Foreign key facility_id in ggircs.permit references ggircs.facility.id'
 );
 
--- Data in ggircs_swrs_transform.permit === data in ggircs_swrs_load.permit
+-- Data in ggircs_swrs_transform.permit === data in ggircs.permit
 select set_eq(
               $$
               select
@@ -194,14 +194,14 @@ select set_eq(
                   issuing_agency,
                   issuing_dept_agency_program,
                   permit_number
-                from ggircs_swrs_load.permit
+                from ggircs.permit
                 order by
                   ghgr_import_id,
                   path_context
                  asc
               $$,
 
-              'data in ggircs_swrs_transform.permit === ggircs_swrs_load.permit');
+              'data in ggircs_swrs_transform.permit === ggircs.permit');
 
 select * from finish();
 rollback;

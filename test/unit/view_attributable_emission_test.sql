@@ -452,7 +452,7 @@ select ggircs_swrs_transform.load_emission();
 
 select has_view(
     'ggircs', 'attributable_emission',
-    'ggircs_swrs_load.attributable_emission should be a view'
+    'ggircs.attributable_emission should be a view'
 );
 
 -- Columns are correct
@@ -481,29 +481,29 @@ select columns_are('ggircs'::name, 'attributable_emission'::name, array[
 ]);
 
 -- Attributable Emission has data
-select isnt_empty('select * from ggircs_swrs_load.attributable_emission', 'attributable_emission has data');
+select isnt_empty('select * from ggircs.attributable_emission', 'attributable_emission has data');
 
 -- No CO2bioC in attributable_emission
-select is_empty($$select * from ggircs_swrs_load.attributable_emission where gas_type='CO2bioC'$$, 'CO2bioC emissions are not in attributable_emission');
+select is_empty($$select * from ggircs.attributable_emission where gas_type='CO2bioC'$$, 'CO2bioC emissions are not in attributable_emission');
 
 -- FKey tests
 -- Attributable Emission -> Activity
 select set_eq(
     $$
-    select activity.activity_name from ggircs_swrs_load.attributable_emission
-    join ggircs_swrs_load.activity
+    select activity.activity_name from ggircs.attributable_emission
+    join ggircs.activity
     on
       attributable_emission.activity_id = activity.id
     $$,
 
-    $$ select activity.activity_name from ggircs_swrs_load.emission as emission
-       join ggircs_swrs_load.fuel as fuel
+    $$ select activity.activity_name from ggircs.emission as emission
+       join ggircs.fuel as fuel
        on emission.fuel_id = fuel.id
-       join ggircs_swrs_load.unit as unit
+       join ggircs.unit as unit
        on fuel.unit_id = unit.id
-       join ggircs_swrs_load.activity as activity
+       join ggircs.activity as activity
        on unit.activity_id = activity.id
-       join ggircs_swrs_load.facility as facility
+       join ggircs.facility as facility
        on activity.facility_id = facility.id
        and gas_type !='CO2bioC'
        and facility.facility_type != 'EIO'
@@ -517,46 +517,46 @@ select set_eq(
                                    'Additional reportable information')
     $$,
 
-    'Foreign key activity_id in ggircs_swrs_load.attributable_emission references ggircs_swrs_load.activity.id'
+    'Foreign key activity_id in ggircs.attributable_emission references ggircs.activity.id'
 );
 
 -- Attributable Emission -> Facility
 select set_eq(
     $$
-    select facility.facility_name from ggircs_swrs_load.attributable_emission
-    join ggircs_swrs_load.facility
+    select facility.facility_name from ggircs.attributable_emission
+    join ggircs.facility
     on
       attributable_emission.facility_id = facility.id
     $$,
 
-    $$ select facility.facility_name from ggircs_swrs_load.emission as emission
-       join ggircs_swrs_load.facility as facility
+    $$ select facility.facility_name from ggircs.emission as emission
+       join ggircs.facility as facility
        on emission.facility_id = facility.id
        and facility_type != 'EIO'
        and facility_type != 'LFO'
        and gas_type !='CO2bioC' $$,
 
-    'Foreign key facility_id in ggircs_swrs_load.attributable_emission references ggircs_swrs_load.facility.id'
+    'Foreign key facility_id in ggircs.attributable_emission references ggircs.facility.id'
 );
 
 
 -- Attributable Emission -> Fuel
 select set_eq(
     $$
-    select fuel.fuel_type from ggircs_swrs_load.attributable_emission
-    join ggircs_swrs_load.fuel
+    select fuel.fuel_type from ggircs.attributable_emission
+    join ggircs.fuel
     on
       attributable_emission.fuel_id = fuel.id
     $$,
 
-    $$ select fuel_type from ggircs_swrs_load.emission as emission
-       join ggircs_swrs_load.fuel as fuel
+    $$ select fuel_type from ggircs.emission as emission
+       join ggircs.fuel as fuel
        on emission.fuel_id = fuel.id
-       join ggircs_swrs_load.unit as unit
+       join ggircs.unit as unit
        on fuel.unit_id = unit.id
-       join ggircs_swrs_load.activity as activity
+       join ggircs.activity as activity
        on unit.activity_id = activity.id
-       join ggircs_swrs_load.facility as facility
+       join ggircs.facility as facility
        on activity.facility_id = facility.id
        and gas_type !='CO2bioC'
        and facility.facility_type != 'EIO'
@@ -570,28 +570,28 @@ select set_eq(
                                    'Additional reportable information')
     $$,
 
-    'Foreign key fuel_id in ggircs_swrs_load.attributable_emission references ggircs_swrs_load.fuel.id'
+    'Foreign key fuel_id in ggircs.attributable_emission references ggircs.fuel.id'
 );
 
 -- Attributable Emission -> Naics
 select set_eq(
     $$
-    select naics.naics_code from ggircs_swrs_load.attributable_emission
-    join ggircs_swrs_load.naics
+    select naics.naics_code from ggircs.attributable_emission
+    join ggircs.naics
     on
       attributable_emission.naics_id = naics.id
     $$,
 
-    $$ select naics.naics_code from ggircs_swrs_load.emission as emission
-       join ggircs_swrs_load.naics as naics
+    $$ select naics.naics_code from ggircs.emission as emission
+       join ggircs.naics as naics
        on emission.naics_id = naics.id
-       join ggircs_swrs_load.fuel as fuel
+       join ggircs.fuel as fuel
        on emission.fuel_id = fuel.id
-       join ggircs_swrs_load.unit as unit
+       join ggircs.unit as unit
        on fuel.unit_id = unit.id
-       join ggircs_swrs_load.activity as activity
+       join ggircs.activity as activity
        on unit.activity_id = activity.id
-       join ggircs_swrs_load.facility as facility
+       join ggircs.facility as facility
        on activity.facility_id = facility.id
        and gas_type !='CO2bioC'
        and facility.facility_type != 'EIO'
@@ -605,28 +605,28 @@ select set_eq(
                                    'Additional reportable information')
     $$,
 
-    'Foreign key naics_id in ggircs_swrs_load.attributable_emission references ggircs_swrs_load.naics.id'
+    'Foreign key naics_id in ggircs.attributable_emission references ggircs.naics.id'
 );
 
 -- Attributable Emission -> Organisation
 select set_eq(
     $$
-    select organisation.swrs_organisation_id from ggircs_swrs_load.attributable_emission
-    join ggircs_swrs_load.organisation
+    select organisation.swrs_organisation_id from ggircs.attributable_emission
+    join ggircs.organisation
     on
       attributable_emission.organisation_id = organisation.id
     $$,
 
-    $$ select organisation.swrs_organisation_id from ggircs_swrs_load.emission as emission
-       join ggircs_swrs_load.organisation as organisation
+    $$ select organisation.swrs_organisation_id from ggircs.emission as emission
+       join ggircs.organisation as organisation
        on emission.organisation_id = organisation.id
-       join ggircs_swrs_load.fuel as fuel
+       join ggircs.fuel as fuel
        on emission.fuel_id = fuel.id
-       join ggircs_swrs_load.unit as unit
+       join ggircs.unit as unit
        on fuel.unit_id = unit.id
-       join ggircs_swrs_load.activity as activity
+       join ggircs.activity as activity
        on unit.activity_id = activity.id
-       join ggircs_swrs_load.facility as facility
+       join ggircs.facility as facility
        on activity.facility_id = facility.id
        and gas_type !='CO2bioC'
        and facility.facility_type != 'EIO'
@@ -640,28 +640,28 @@ select set_eq(
                                    'Additional reportable information')
     $$,
 
-    'Foreign key organisation_id in ggircs_swrs_load.attributable_emission references ggircs_swrs_load.organisation.id'
+    'Foreign key organisation_id in ggircs.attributable_emission references ggircs.organisation.id'
 );
 
 -- Attributable Emission -> Report
 select set_eq(
     $$
-    select report.ghgr_import_id from ggircs_swrs_load.attributable_emission
-    join ggircs_swrs_load.report
+    select report.ghgr_import_id from ggircs.attributable_emission
+    join ggircs.report
     on
       attributable_emission.report_id = report.id
     $$,
 
-    $$ select report.ghgr_import_id from ggircs_swrs_load.emission as emission
-       join ggircs_swrs_load.report as report
+    $$ select report.ghgr_import_id from ggircs.emission as emission
+       join ggircs.report as report
        on emission.report_id = report.id
-       join ggircs_swrs_load.fuel as fuel
+       join ggircs.fuel as fuel
        on emission.fuel_id = fuel.id
-       join ggircs_swrs_load.unit as unit
+       join ggircs.unit as unit
        on fuel.unit_id = unit.id
-       join ggircs_swrs_load.activity as activity
+       join ggircs.activity as activity
        on unit.activity_id = activity.id
-       join ggircs_swrs_load.facility as facility
+       join ggircs.facility as facility
        on activity.facility_id = facility.id
        and gas_type !='CO2bioC'
        and facility.facility_type != 'EIO'
@@ -675,26 +675,26 @@ select set_eq(
                                    'Additional reportable information')
     $$,
 
-    'Foreign key report_id in ggircs_swrs_load.attributable_emission references ggircs_swrs_load.report.id'
+    'Foreign key report_id in ggircs.attributable_emission references ggircs.report.id'
 );
 
 -- Attributable Emission -> Unit
 select set_eq(
     $$
-    select unit.unit_name from ggircs_swrs_load.attributable_emission
-    join ggircs_swrs_load.unit
+    select unit.unit_name from ggircs.attributable_emission
+    join ggircs.unit
     on
       attributable_emission.unit_id = unit.id
     $$,
 
-    $$ select unit.unit_name from ggircs_swrs_load.emission as emission
-       join ggircs_swrs_load.fuel as fuel
+    $$ select unit.unit_name from ggircs.emission as emission
+       join ggircs.fuel as fuel
        on emission.fuel_id = fuel.id
-       join ggircs_swrs_load.unit as unit
+       join ggircs.unit as unit
        on fuel.unit_id = unit.id
-       join ggircs_swrs_load.activity as activity
+       join ggircs.activity as activity
        on unit.activity_id = activity.id
-       join ggircs_swrs_load.facility as facility
+       join ggircs.facility as facility
        on activity.facility_id = facility.id
        and gas_type !='CO2bioC'
        and facility.facility_type != 'EIO'
@@ -708,7 +708,7 @@ select set_eq(
                                    'Additional reportable information')
     $$,
 
-    'Foreign key unit_id in ggircs_swrs_load.attributable_emission references ggircs_swrs_load.unit.id'
+    'Foreign key unit_id in ggircs.attributable_emission references ggircs.unit.id'
 );
 
 

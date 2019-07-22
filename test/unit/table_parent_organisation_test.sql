@@ -177,7 +177,7 @@ select ggircs_swrs_transform.load_report();
 select ggircs_swrs_transform.load_organisation();
 select ggircs_swrs_transform.load_parent_organisation();
 
--- Table ggircs_swrs_load.parent_organisation exists
+-- Table ggircs.parent_organisation exists
 select has_table('ggircs'::name, 'parent_organisation'::name);
 
 -- Parent Organisation has pk
@@ -187,36 +187,36 @@ select has_pk('ggircs', 'parent_organisation', 'ggircs_parent_organisation has p
 select has_fk('ggircs', 'parent_organisation', 'ggircs_parent_organisation has foreign key constraint(s)');
 
 -- Parent Organisation has data
-select isnt_empty('select * from ggircs_swrs_load.parent_organisation', 'there is data in ggircs_swrs_load.parent_organisation');
+select isnt_empty('select * from ggircs.parent_organisation', 'there is data in ggircs.parent_organisation');
 
 -- FKey tests
 -- Parent Organisation -> Report
 select set_eq(
     $$
-    select distinct(report.ghgr_import_id) from ggircs_swrs_load.parent_organisation
-    join ggircs_swrs_load.report
+    select distinct(report.ghgr_import_id) from ggircs.parent_organisation
+    join ggircs.report
     on parent_organisation.report_id = report.id
     $$,
 
-    'select distinct(ghgr_import_id) from ggircs_swrs_load.report',
+    'select distinct(ghgr_import_id) from ggircs.report',
 
-    'Foreign key report_id in ggircs_swrs_load.parent_organisation references ggircs_swrs_load.report.id'
+    'Foreign key report_id in ggircs.parent_organisation references ggircs.report.id'
 );
 
 -- Parent Organisation -> Organisation
 select set_eq(
     $$
-    select distinct(organisation.ghgr_import_id) from ggircs_swrs_load.parent_organisation
-    join ggircs_swrs_load.organisation
+    select distinct(organisation.ghgr_import_id) from ggircs.parent_organisation
+    join ggircs.organisation
     on parent_organisation.organisation_id = organisation.id
     $$,
 
-    'select ghgr_import_id from ggircs_swrs_load.organisation',
+    'select ghgr_import_id from ggircs.organisation',
 
-    'Foreign key organisation_id in ggircs_swrs_load.parent_organisation references ggircs_swrs_load.organisation.id'
+    'Foreign key organisation_id in ggircs.parent_organisation references ggircs.organisation.id'
 );
 
--- Data in ggircs_swrs_transform.parent_organisation === data in ggircs_swrs_load.parent_organisation
+-- Data in ggircs_swrs_transform.parent_organisation === data in ggircs.parent_organisation
 select set_eq(
               $$
               select
@@ -245,14 +245,14 @@ select set_eq(
                   duns,
                   business_legal_name,
                   website
-                from ggircs_swrs_load.parent_organisation
+                from ggircs.parent_organisation
                 order by
                   ghgr_import_id,
                   path_context
                  asc
               $$,
 
-              'data in ggircs_swrs_transform.parent_organisation === ggircs_swrs_load.parent_organisation');
+              'data in ggircs_swrs_transform.parent_organisation === ggircs.parent_organisation');
 
 select * from finish();
 rollback;

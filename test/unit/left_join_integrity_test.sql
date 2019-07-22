@@ -1124,7 +1124,7 @@ select ggircs_swrs_transform.transform('with data');
 
 /** ACTIVITY **/
 select set_eq(
-    'select id from ggircs_swrs_load.activity',
+    'select id from ggircs.activity',
 
     $$
     select activity.id from ggircs_swrs_transform.activity
@@ -1132,12 +1132,12 @@ select set_eq(
     on activity.ghgr_import_id = _final_report.ghgr_import_id
     $$,
 
-    'Ensure left joins are not causing additional rows to be returned in ggircs_swrs_load.activity'
+    'Ensure left joins are not causing additional rows to be returned in ggircs.activity'
 );
 
 /** ADDITIONAL DATA **/
 select set_eq(
-    'select id from ggircs_swrs_load.additional_data',
+    'select id from ggircs.additional_data',
 
     $$
     select additional_data.id from ggircs_swrs_transform.additional_data
@@ -1145,12 +1145,12 @@ select set_eq(
     on additional_data.ghgr_import_id = _final_report.ghgr_import_id
     $$,
 
-    'Ensure left joins are not causing additional rows to be returned in ggircs_swrs_load.additional_data'
+    'Ensure left joins are not causing additional rows to be returned in ggircs.additional_data'
 );
 
 /** ADDRESS **/
 select set_eq(
-    'select id from ggircs_swrs_load.address',
+    'select id from ggircs.address',
 
     $$
     select address.id from ggircs_swrs_transform.address
@@ -1158,12 +1158,12 @@ select set_eq(
     on address.ghgr_import_id = _final_report.ghgr_import_id
     $$,
 
-    'Ensure left joins are not causing additional rows to be returned in ggircs_swrs_load.address'
+    'Ensure left joins are not causing additional rows to be returned in ggircs.address'
 );
 
 /** CONTACT **/
 select set_eq(
-    'select id from ggircs_swrs_load.contact',
+    'select id from ggircs.contact',
 
     $$
     select contact.id from ggircs_swrs_transform.contact
@@ -1171,12 +1171,12 @@ select set_eq(
     on contact.ghgr_import_id = _final_report.ghgr_import_id
     $$,
 
-    'Ensure left joins are not causing additional rows to be returned in ggircs_swrs_load.contact'
+    'Ensure left joins are not causing additional rows to be returned in ggircs.contact'
 );
 
 /** EMISSION **/
 select set_eq(
-    'select id from ggircs_swrs_load.emission',
+    'select id from ggircs.emission',
 
     $$
     select emission.id from ggircs_swrs_transform.emission
@@ -1184,12 +1184,12 @@ select set_eq(
     on emission.ghgr_import_id = _final_report.ghgr_import_id
     $$,
 
-    'Ensure left joins are not causing additional rows to be returned in ggircs_swrs_load.emission'
+    'Ensure left joins are not causing additional rows to be returned in ggircs.emission'
 );
 
 /** FUEL **/
 select set_eq(
-    'select id from ggircs_swrs_load.fuel',
+    'select id from ggircs.fuel',
 
     $$
     select fuel.id from ggircs_swrs_transform.fuel
@@ -1197,12 +1197,12 @@ select set_eq(
     on fuel.ghgr_import_id = _final_report.ghgr_import_id
     $$,
 
-    'Ensure left joins are not causing additional rows to be returned in ggircs_swrs_load.fuel'
+    'Ensure left joins are not causing additional rows to be returned in ggircs.fuel'
 );
 
 /** IDENTIFIER **/
 select set_eq(
-    'select id from ggircs_swrs_load.identifier',
+    'select id from ggircs.identifier',
 
     $$
     select identifier.id from ggircs_swrs_transform.identifier
@@ -1210,13 +1210,13 @@ select set_eq(
     on identifier.ghgr_import_id = _final_report.ghgr_import_id
     $$,
 
-    'Ensure left joins are not causing additional rows to be returned in ggircs_swrs_load.identifier'
+    'Ensure left joins are not causing additional rows to be returned in ggircs.identifier'
 );
 
 
 /** SINGLE FACILITY **/
 select set_eq(
-    'select id from ggircs_swrs_load.facility',
+    'select id from ggircs.facility',
 
     $$
     select facility.id from ggircs_swrs_transform.facility
@@ -1224,12 +1224,12 @@ select set_eq(
     on facility.ghgr_import_id = _final_report.ghgr_import_id
     $$,
 
-    'Ensure left joins are not causing additional rows to be returned in ggircs_swrs_load.facility'
+    'Ensure left joins are not causing additional rows to be returned in ggircs.facility'
 );
 
 /** MEASURED EMISSION FACTOR **/
 select set_eq(
-    'select id from ggircs_swrs_load.measured_emission_factor',
+    'select id from ggircs.measured_emission_factor',
 
     $$
     select measured_emission_factor.id from ggircs_swrs_transform.measured_emission_factor
@@ -1237,12 +1237,12 @@ select set_eq(
     on measured_emission_factor.ghgr_import_id = _final_report.ghgr_import_id
     $$,
 
-    'Ensure left joins are not causing additional rows to be returned in ggircs_swrs_load.measured_emission_factor'
+    'Ensure left joins are not causing additional rows to be returned in ggircs.measured_emission_factor'
 );
 
 /** NAICS **/
 select set_eq(
-    'select id from ggircs_swrs_load.naics',
+    'select id from ggircs.naics',
 
     $$
     select naics.id from ggircs_swrs_transform.naics
@@ -1250,12 +1250,12 @@ select set_eq(
     on naics.ghgr_import_id = _final_report.ghgr_import_id
     $$,
 
-    'Ensure left joins are not causing additional rows to be returned in ggircs_swrs_load.naics'
+    'Ensure left joins are not causing additional rows to be returned in ggircs.naics'
 );
 
 /** ORGANISATION **/
 select set_eq(
-    'select id from ggircs_swrs_load.organisation',
+    'select id from ggircs.organisation',
 
     $$
     select organisation.id from ggircs_swrs_transform.organisation
@@ -1263,12 +1263,12 @@ select set_eq(
     on organisation.ghgr_import_id = _final_report.ghgr_import_id
     $$,
 
-    'Ensure left joins are not causing additional rows to be returned in ggircs_swrs_load.organisation'
+    'Ensure left joins are not causing additional rows to be returned in ggircs.organisation'
 );
 
 /** PARENT ORGANISATION **/
 select set_eq(
-    'select id from ggircs_swrs_load.parent_organisation',
+    'select id from ggircs.parent_organisation',
 
     $$
     select parent_organisation.id from ggircs_swrs_transform.parent_organisation
@@ -1276,12 +1276,12 @@ select set_eq(
     on parent_organisation.ghgr_import_id = _final_report.ghgr_import_id
     $$,
 
-    'Ensure left joins are not causing additional rows to be returned in ggircs_swrs_load.parent_organisation'
+    'Ensure left joins are not causing additional rows to be returned in ggircs.parent_organisation'
 );
 
 /** PERMIT **/
 select set_eq(
-    'select id from ggircs_swrs_load.permit',
+    'select id from ggircs.permit',
 
     $$
     select permit.id from ggircs_swrs_transform.permit
@@ -1289,12 +1289,12 @@ select set_eq(
     on permit.ghgr_import_id = _final_report.ghgr_import_id
     $$,
 
-    'Ensure left joins are not causing additional rows to be returned in ggircs_swrs_load.permit'
+    'Ensure left joins are not causing additional rows to be returned in ggircs.permit'
 );
 
 /** UNIT **/
 select set_eq(
-    'select id from ggircs_swrs_load.unit',
+    'select id from ggircs.unit',
 
     $$
     select unit.id from ggircs_swrs_transform.unit
@@ -1302,7 +1302,7 @@ select set_eq(
     on unit.ghgr_import_id = _final_report.ghgr_import_id
     $$,
 
-    'Ensure left joins are not causing additional rows to be returned in ggircs_swrs_load.unit'
+    'Ensure left joins are not causing additional rows to be returned in ggircs.unit'
 );
 
 select * from finish();

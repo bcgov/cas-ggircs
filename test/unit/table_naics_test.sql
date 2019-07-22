@@ -262,7 +262,7 @@ select ggircs_swrs_transform.load_organisation();
 select ggircs_swrs_transform.load_facility();
 select ggircs_swrs_transform.load_naics();
 
--- Table ggircs_swrs_load.naics exists
+-- Table ggircs.naics exists
 select has_table('ggircs'::name, 'naics'::name);
 
 -- Naics has pk
@@ -272,57 +272,57 @@ select has_pk('ggircs', 'naics', 'ggircs_naics has primary key');
 select has_fk('ggircs', 'naics', 'ggircs_naics has foreign key constraint(s)');
 
 -- Naics has data
-select isnt_empty('select * from ggircs_swrs_load.naics', 'there is data in ggircs_swrs_load.naics');
+select isnt_empty('select * from ggircs.naics', 'there is data in ggircs.naics');
 
 -- FKey tests
 -- NAICS -> Facility
 select set_eq(
     $$
-    select distinct(facility.ghgr_import_id) from ggircs_swrs_load.naics
-    join ggircs_swrs_load.facility
+    select distinct(facility.ghgr_import_id) from ggircs.naics
+    join ggircs.facility
     on
       naics.facility_id = facility.id
       order by ghgr_import_id
     $$,
 
-    'select ghgr_import_id from ggircs_swrs_load.facility order by ghgr_import_id',
+    'select ghgr_import_id from ggircs.facility order by ghgr_import_id',
 
-    'Foreign key facility_id in ggircs_swrs_load.naics references ggircs_swrs_load.facility.id'
+    'Foreign key facility_id in ggircs.naics references ggircs.facility.id'
 );
 
 -- Naics -> Facility (path_context = RegistrationData)
 select set_eq(
     $$
-    select facility.ghgr_import_id from ggircs_swrs_load.naics
-    join ggircs_swrs_load.facility
+    select facility.ghgr_import_id from ggircs.naics
+    join ggircs.facility
     on
       naics.registration_data_facility_id = facility.id
     $$,
 
     $$ select facility.ghgr_import_id
-       from ggircs_swrs_load.naics
-       join ggircs_swrs_load.facility
+       from ggircs.naics
+       join ggircs.facility
        on
          naics.facility_id = facility.id
          and path_context = 'RegistrationData' order by naics_code $$,
 
-    'Foreign key registration_data_facility_id in ggircs_swrs_load.naics references ggircs_swrs_load.facility.id'
+    'Foreign key registration_data_facility_id in ggircs.naics references ggircs.facility.id'
 );
 
 -- Naics -> Report
 select set_eq(
     $$
-    select report.ghgr_import_id from ggircs_swrs_load.naics
-    join ggircs_swrs_load.report
+    select report.ghgr_import_id from ggircs.naics
+    join ggircs.report
     on naics.report_id = report.id
     $$,
 
-    'select ghgr_import_id from ggircs_swrs_load.report',
+    'select ghgr_import_id from ggircs.report',
 
-    'Foreign key report_id in ggircs_swrs_load.naics references ggircs_swrs_load.report.id'
+    'Foreign key report_id in ggircs.naics references ggircs.report.id'
 );
 
--- Data in ggircs_swrs_transform.naics === data in ggircs_swrs_load.naics
+-- Data in ggircs_swrs_transform.naics === data in ggircs.naics
 select set_eq(
               $$
               select
@@ -343,10 +343,10 @@ select set_eq(
                   naics_classification,
                   naics_code,
                   naics_priority
-                from ggircs_swrs_load.naics
+                from ggircs.naics
               $$,
 
-              'data in ggircs_swrs_transform.naics === ggircs_swrs_load.naics');
+              'data in ggircs_swrs_transform.naics === ggircs.naics');
 
 select * from finish();
 rollback;

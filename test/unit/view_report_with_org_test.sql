@@ -9,7 +9,7 @@ select * from no_plan();
 -- View should exist
 select has_view(
     'ggircs', 'report_with_org',
-    'ggircs_swrs_load.report_with_org should be a view'
+    'ggircs.report_with_org should be a view'
 );
 
 -- Columns are correct
@@ -182,7 +182,7 @@ select ggircs_swrs_transform.load_facility();
 select ggircs_swrs_transform.load_naics();
 
 select results_eq(
-  'select * from ggircs_swrs_load.report_with_org',
+  'select * from ggircs.report_with_org',
   $$
     select
        o.business_legal_name,
@@ -197,15 +197,15 @@ select results_eq(
        r.swrs_report_id,
        r.swrs_organisation_id,
        r.swrs_facility_id
-    from ggircs_swrs_load.naics as n
-        join ggircs_swrs_load.facility as fc
+    from ggircs.naics as n
+        join ggircs.facility as fc
         on n.facility_id = fc.id
-        join ggircs_swrs_load.organisation as o
+        join ggircs.organisation as o
         on fc.organisation_id = o.id
-        join ggircs_swrs_load.report as r
+        join ggircs.report as r
         on n.report_id = r.id
   $$,
-  'ggircs_swrs_load.report_with_org has the correct information'
+  'ggircs.report_with_org has the correct information'
 
 );
 

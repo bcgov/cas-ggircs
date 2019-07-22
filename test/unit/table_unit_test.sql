@@ -178,7 +178,7 @@ select ggircs_swrs_transform.load_facility();
 select ggircs_swrs_transform.load_activity();
 select ggircs_swrs_transform.load_unit();
 
--- Table ggircs_swrs_load.unit exists
+-- Table ggircs.unit exists
 select has_table('ggircs'::name, 'unit'::name);
 
 -- Unit has pk
@@ -188,22 +188,22 @@ select has_pk('ggircs', 'unit', 'ggircs_unit has primary key');
 select has_fk('ggircs', 'unit', 'ggircs_unit has foreign key constraint(s)');
 
 -- Unit has data
-select isnt_empty('select * from ggircs_swrs_load.unit', 'there is data in ggircs_swrs_load.unit');
+select isnt_empty('select * from ggircs.unit', 'there is data in ggircs.unit');
 
 -- Unit -> Activity
 select set_eq(
     $$
-    select distinct(activity.ghgr_import_id) from ggircs_swrs_load.unit
-    join ggircs_swrs_load.activity
+    select distinct(activity.ghgr_import_id) from ggircs.unit
+    join ggircs.activity
     on unit.activity_id = activity.id
     $$,
 
-    'select distinct(ghgr_import_id) from ggircs_swrs_load.activity',
+    'select distinct(ghgr_import_id) from ggircs.activity',
 
-    'Foreign key unit_id in ggircs_swrs_load.unit references ggircs_swrs_load.activity.id'
+    'Foreign key unit_id in ggircs.unit references ggircs.activity.id'
 );
 
--- Data in ggircs_swrs_transform.unit === data in ggircs_swrs_load.unit
+-- Data in ggircs_swrs_transform.unit === data in ggircs.unit
 select set_eq(
               $$
               select
@@ -244,10 +244,10 @@ select set_eq(
                   non_cogen_net_power,
                   non_cogen_unit_name
 
-                from ggircs_swrs_load.unit
+                from ggircs.unit
               $$,
 
-              'data in ggircs_swrs_transform.unit === ggircs_swrs_load.unit');
+              'data in ggircs_swrs_transform.unit === ggircs.unit');
 
 select * from finish();
 rollback;

@@ -612,7 +612,7 @@ select ggircs_swrs_transform.load_report();
 select ggircs_swrs_transform.load_organisation();
 select ggircs_swrs_transform.load_facility();
 
--- Table ggircs_swrs_load.facility exists
+-- Table ggircs.facility exists
 select has_table('ggircs'::name, 'facility'::name);
 
 -- Facility has pk
@@ -622,24 +622,24 @@ select has_pk('ggircs', 'facility', 'ggircs_facility has primary key');
 select has_fk('ggircs', 'facility', 'ggircs_facility has foreign key constraint(s)');
 
 -- Facility has data
-select isnt_empty('select * from ggircs_swrs_load.facility', 'there is data in ggircs_swrs_load.facility');
+select isnt_empty('select * from ggircs.facility', 'there is data in ggircs.facility');
 
 -- FKey tests
 -- Facility -> Organisation
 select set_eq(
     $$
     with _facility as (
-        select ghgr_import_id, organisation_id from ggircs_swrs_load.facility
+        select ghgr_import_id, organisation_id from ggircs.facility
     )
     select organisation.ghgr_import_id from _facility
-    join ggircs_swrs_load.organisation
+    join ggircs.organisation
     on
         _facility.organisation_id = organisation.id
     $$,
 
-    'select ghgr_import_id from ggircs_swrs_load.organisation',
+    'select ghgr_import_id from ggircs.organisation',
 
-    'Foreign key organisation_id in ggircs_swrs_load.facility references ggircs_swrs_load.organisation.id'
+    'Foreign key organisation_id in ggircs.facility references ggircs.organisation.id'
 
 );
 
@@ -647,24 +647,24 @@ select set_eq(
 select set_eq(
     $$
     with _facility as (
-        select report_id from ggircs_swrs_load.facility
+        select report_id from ggircs.facility
     )
     select report.swrs_facility_id from _facility
-    join ggircs_swrs_load.report
+    join ggircs.report
     on
       _facility.report_id = report.id
     $$,
 
-    'select swrs_facility_id from ggircs_swrs_load.report',
+    'select swrs_facility_id from ggircs.report',
 
-    'Foreign key report_id in ggircs_swrs_load.facility references ggircs_swrs_load.report.id'
+    'Foreign key report_id in ggircs.facility references ggircs.report.id'
 );
 
 -- Single Facility -> LFO Facility
 select set_eq(
     $$
     select facility.id, facility.parent_facility_id
-    from ggircs_swrs_load.facility where parent_facility_id is not null
+    from ggircs.facility where parent_facility_id is not null
     $$,
 
     $$
@@ -695,7 +695,7 @@ select set_eq(
         and _report.reporting_period_duration = _final_lfo_facility.reporting_period_duration
     $$,
 
-    'Foreign key parent_facility_id in ggircs_swrs_load.facility references ggircs_swrs_load.lfo_facility.id for IF_a, IF_b or L_c facilities'
+    'Foreign key parent_facility_id in ggircs.facility references ggircs.lfo_facility.id for IF_a, IF_b or L_c facilities'
 
 );
 

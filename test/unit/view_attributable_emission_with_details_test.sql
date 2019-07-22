@@ -9,7 +9,7 @@ select * from no_plan();
 -- View should exist
 select has_view(
     'ggircs', 'attributable_emissions_with_details',
-    'ggircs_swrs_load.attributable_emission should be a view'
+    'ggircs.attributable_emission should be a view'
 );
 
 -- Columns are correct
@@ -510,42 +510,42 @@ select ggircs_swrs_transform.load_emission();
 -- Test fk relations
 -- Report
 select set_eq(
-    $$ select report.id from ggircs_swrs_load.attributable_emissions_with_details as ae
-       join ggircs_swrs_load.report on ae.report_id = report.id
+    $$ select report.id from ggircs.attributable_emissions_with_details as ae
+       join ggircs.report on ae.report_id = report.id
     $$,
-    'select id from ggircs_swrs_load.report',
+    'select id from ggircs.report',
     'fk report_id references report'
 );
 
 select set_eq(
-    $$ select organisation.id from ggircs_swrs_load.attributable_emissions_with_details as ae
-       join ggircs_swrs_load.organisation on ae.organisation_id = organisation.id
+    $$ select organisation.id from ggircs.attributable_emissions_with_details as ae
+       join ggircs.organisation on ae.organisation_id = organisation.id
     $$,
-    'select id from ggircs_swrs_load.organisation',
+    'select id from ggircs.organisation',
     'fk organisation_id references organisation'
 );
 
 -- Facility
 select set_eq(
-    $$ select facility.id from ggircs_swrs_load.attributable_emissions_with_details as ae
-       join ggircs_swrs_load.facility on ae.facility_id = facility.id
+    $$ select facility.id from ggircs.attributable_emissions_with_details as ae
+       join ggircs.facility on ae.facility_id = facility.id
     $$,
-    'select id from ggircs_swrs_load.facility',
+    'select id from ggircs.facility',
     'fk facility_id references facility'
 );
 
 -- Unit
 select set_eq(
-    $$ select unit.id from ggircs_swrs_load.attributable_emissions_with_details as ae
-       join ggircs_swrs_load.unit on ae.unit_id = unit.id
+    $$ select unit.id from ggircs.attributable_emissions_with_details as ae
+       join ggircs.unit on ae.unit_id = unit.id
     $$,
-    'select id from ggircs_swrs_load.unit',
+    'select id from ggircs.unit',
     'fk unit_id references unit'
 );
 
 -- Attributable Emissions with details has correct information
 select set_eq(
-   'select * from ggircs_swrs_load.attributable_emissions_with_details',
+   'select * from ggircs.attributable_emissions_with_details',
     $$ select
         e.id,
         o.business_legal_name,
@@ -583,17 +583,17 @@ select set_eq(
         rp.swrs_report_id,
         o.swrs_organisation_id,
         fc.swrs_facility_id
-      from ggircs_swrs_load.emission as e
-        join ggircs_swrs_load.fuel as f on e.fuel_id = f.id
-        join ggircs_swrs_load.naics as n on e.naics_id = n.id
-        join ggircs_swrs_load.facility as fc on e.facility_id = fc.id
-        join ggircs_swrs_load.report as rp on e.report_id = rp.id
-        join ggircs_swrs_load.activity as ac on e.activity_id = ac.id
-        join ggircs_swrs_load.organisation as o on e.organisation_id = o.id
-        join ggircs_swrs_load.unit as u on e.unit_id = u.id
+      from ggircs.emission as e
+        join ggircs.fuel as f on e.fuel_id = f.id
+        join ggircs.naics as n on e.naics_id = n.id
+        join ggircs.facility as fc on e.facility_id = fc.id
+        join ggircs.report as rp on e.report_id = rp.id
+        join ggircs.activity as ac on e.activity_id = ac.id
+        join ggircs.organisation as o on e.organisation_id = o.id
+        join ggircs.unit as u on e.unit_id = u.id
 
         $$,
-    'ggircs_swrs_load.attributable_emissions_with_details has correct information'
+    'ggircs.attributable_emissions_with_details has correct information'
 
 );
 

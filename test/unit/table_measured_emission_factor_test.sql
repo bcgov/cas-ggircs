@@ -254,7 +254,7 @@ select ggircs_swrs_transform.load_unit();
 select ggircs_swrs_transform.load_fuel();
 select ggircs_swrs_transform.load_measured_emission_factor();
 
--- Table ggircs_swrs_load.measured_emission_factor exists
+-- Table ggircs.measured_emission_factor exists
 select has_table('ggircs'::name, 'measured_emission_factor'::name);
 
 -- Measured Emission Factor has pk
@@ -264,23 +264,23 @@ select has_pk('ggircs', 'measured_emission_factor', 'ggircs_measured_emission_fa
 select has_fk('ggircs', 'measured_emission_factor', 'ggircs_measured_emission_factor has foreign key constraint(s)');
 
 -- Measured Emission Factor has data
-select isnt_empty('select * from ggircs_swrs_load.measured_emission_factor', 'there is data in ggircs_swrs_load.measured_emission_factor');
+select isnt_empty('select * from ggircs.measured_emission_factor', 'there is data in ggircs.measured_emission_factor');
 
 -- FKey tests
 -- Measured Emission Factor -> Fuel
 select set_eq(
     $$
-    select distinct(fuel.ghgr_import_id) from ggircs_swrs_load.measured_emission_factor
-    join ggircs_swrs_load.fuel
+    select distinct(fuel.ghgr_import_id) from ggircs.measured_emission_factor
+    join ggircs.fuel
     on measured_emission_factor.fuel_id = fuel.id
     $$,
 
-    'select distinct(ghgr_import_id) from ggircs_swrs_load.fuel',
+    'select distinct(ghgr_import_id) from ggircs.fuel',
 
-    'Foreign key fuel_id in ggircs_swrs_load.measured_emission_factor references ggircs_swrs_load.fuel.id'
+    'Foreign key fuel_id in ggircs.measured_emission_factor references ggircs.fuel.id'
 );
 
--- Data in ggircs_swrs_transform.measured_emission_factor === data in ggircs_swrs_load.measured_emission_factor
+-- Data in ggircs_swrs_transform.measured_emission_factor === data in ggircs.measured_emission_factor
 select set_eq(
               $$
               select
@@ -307,13 +307,13 @@ select set_eq(
                   measured_emission_factor_amount,
                   measured_emission_factor_gas,
                   measured_emission_factor_unit_type
-                from ggircs_swrs_load.measured_emission_factor
+                from ggircs.measured_emission_factor
                 order by
                     ghgr_import_id
                  asc
               $$,
 
-              'data in ggircs_swrs_transform.measured_emission_factor === ggircs_swrs_load.measured_emission_factor');
+              'data in ggircs_swrs_transform.measured_emission_factor === ggircs.measured_emission_factor');
 
 
 

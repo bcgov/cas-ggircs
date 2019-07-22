@@ -29,18 +29,18 @@ refresh materialized view ggircs_swrs_transform.report with data;
 refresh materialized view ggircs_swrs_transform.final_report with data;
 select ggircs_swrs_transform.load_report();
 
-select ghgr_import_id from ggircs_swrs_load.report;
+select ghgr_import_id from ggircs.report;
 select '======';
 select ghgr_import_id from ggircs_swrs_transform.report;
 
--- Table ggircs_swrs_load.report exists
+-- Table ggircs.report exists
 select has_table('ggircs'::name, 'report'::name);
 
 -- Report has pk
 select has_pk('ggircs', 'report', 'ggircs_report has primary key');
 
 -- Report has data
-select isnt_empty('select * from ggircs_swrs_load.report', 'there is data in ggircs_swrs_load.report');
+select isnt_empty('select * from ggircs.report', 'there is data in ggircs.report');
 
 -- Data in ggircs_swrs_transform.report === data in ggircs_report
 select set_eq($$
@@ -78,10 +78,10 @@ select set_eq($$
                       last_modified_by,
                       last_modified_date,
                       update_comment
-                  from ggircs_swrs_load.report
+                  from ggircs.report
                   $$,
 
-    'data in ggircs_swrs_transform.report === ggircs_swrs_load.report');
+    'data in ggircs_swrs_transform.report === ggircs.report');
 
 select * from finish();
 rollback;

@@ -9,7 +9,7 @@ select * from no_plan();
 -- View should exist
 select has_view(
     'ggircs', 'carbon_tax_calculation',
-    'ggircs_swrs_load.carbon_tax_calculation should be a view'
+    'ggircs.carbon_tax_calculation should be a view'
 );
 
 -- Columns are correct
@@ -160,43 +160,43 @@ select ggircs_swrs_transform.load_emission();
 -- Test fk relations
 -- Organisation
 select results_eq(
-    $$ select organisation.swrs_organisation_id from ggircs_swrs_load.carbon_tax_calculation as ct
-       join ggircs_swrs_load.organisation on ct.organisation_id = organisation.id
+    $$ select organisation.swrs_organisation_id from ggircs.carbon_tax_calculation as ct
+       join ggircs.organisation on ct.organisation_id = organisation.id
     $$,
-    'select swrs_organisation_id from ggircs_swrs_load.organisation',
+    'select swrs_organisation_id from ggircs.organisation',
     'fk organisation_id references organisation'
 );
 
 -- Facility
 select set_eq(
-    $$ select facility.swrs_facility_id from ggircs_swrs_load.carbon_tax_calculation as ct
-       join ggircs_swrs_load.facility on ct.facility_id = facility.id
+    $$ select facility.swrs_facility_id from ggircs.carbon_tax_calculation as ct
+       join ggircs.facility on ct.facility_id = facility.id
     $$,
-    'select swrs_facility_id from ggircs_swrs_load.facility',
+    'select swrs_facility_id from ggircs.facility',
     'fk facility_id references facility'
 );
 
 -- Naics
 select set_eq(
-    $$ select naics.naics_code from ggircs_swrs_load.carbon_tax_calculation as ct
-       join ggircs_swrs_load.naics on ct.naics_id = naics.id
+    $$ select naics.naics_code from ggircs.carbon_tax_calculation as ct
+       join ggircs.naics on ct.naics_id = naics.id
     $$,
-    'select naics_code from ggircs_swrs_load.naics',
+    'select naics_code from ggircs.naics',
     'fk naics_id references naics'
 );
 
 -- Test validity of calculation
 select results_eq(
-    'select calculated_carbon_tax from ggircs_swrs_load.carbon_tax_calculation order by calculated_carbon_tax',
+    'select calculated_carbon_tax from ggircs.carbon_tax_calculation order by calculated_carbon_tax',
 
     $$
       with x as (
-        select flat_rate from ggircs_swrs_load.pro_rated_fuel_charge where fuel_type = 'Residual Fuel Oil (#5 & 6)'
+        select flat_rate from ggircs.pro_rated_fuel_charge where fuel_type = 'Residual Fuel Oil (#5 & 6)'
       )
-      select x.flat_rate * (select annual_fuel_amount from ggircs_swrs_load.fuel where fuel_type = 'Residual Fuel Oil (#5 & 6)') from x
+      select x.flat_rate * (select annual_fuel_amount from ggircs.fuel where fuel_type = 'Residual Fuel Oil (#5 & 6)') from x
     $$,
 
-    'ggircs_swrs_load.carbon_tax_calculation properly calculates carbon tax based on fuel_amount * pro-rated carbon tax rate * pro-rated implied emission factor'
+    'ggircs.carbon_tax_calculation properly calculates carbon tax based on fuel_amount * pro-rated carbon tax rate * pro-rated implied emission factor'
 );
 
 select * from finish();

@@ -281,7 +281,7 @@ select ggircs_swrs_transform.load_organisation();
 select ggircs_swrs_transform.load_facility();
 select ggircs_swrs_transform.load_identifier();
 
--- Table ggircs_swrs_load.identifier exists
+-- Table ggircs.identifier exists
 select has_table('ggircs'::name, 'identifier'::name);
 
 -- Identifier has pk
@@ -291,53 +291,53 @@ select has_pk('ggircs', 'identifier', 'ggircs_identifier has primary key');
 select has_fk('ggircs', 'identifier', 'ggircs_identifier has foreign key constraint(s)');
 
 -- Identifier has data
-select isnt_empty('select * from ggircs_swrs_load.identifier', 'there is data in ggircs_swrs_load.identifier');
+select isnt_empty('select * from ggircs.identifier', 'there is data in ggircs.identifier');
 
 -- FKey tests
 -- Identifier -> Facility
 select set_eq(
     $$
-    select distinct(facility.ghgr_import_id) from ggircs_swrs_load.identifier
-    join ggircs_swrs_load.facility
+    select distinct(facility.ghgr_import_id) from ggircs.identifier
+    join ggircs.facility
     on
       identifier.facility_id = facility.id
       order by ghgr_import_id
     $$,
 
-    'select ghgr_import_id from ggircs_swrs_load.facility order by ghgr_import_id',
+    'select ghgr_import_id from ggircs.facility order by ghgr_import_id',
 
-    'Foreign key facility_id in ggircs_swrs_load.identifier references ggircs_swrs_load.facility.id'
+    'Foreign key facility_id in ggircs.identifier references ggircs.facility.id'
 );
 
 -- Identifier (BCGHGID) -> Single Facility
 select results_eq(
     $$
-    select identifier.identifier_value as bcghgid from ggircs_swrs_load.facility
-    join ggircs_swrs_load.identifier
+    select identifier.identifier_value as bcghgid from ggircs.facility
+    join ggircs.identifier
     on
       facility.id = identifier.facility_bcghgid_id
     $$,
 
     ARRAY['VT_12345'::varchar, 'RD_123456'::varchar, 'RD_123456'::varchar],
 
-    'Foreign key facility_bcghgid_id in ggircs_swrs_load.identifier references ggircs_swrs_load.facility.id'
+    'Foreign key facility_bcghgid_id in ggircs.identifier references ggircs.facility.id'
 );
 
 
 -- Identifier -> Report
 select set_eq(
                $$
-    select distinct(report.ghgr_import_id) from ggircs_swrs_load.identifier
-    join ggircs_swrs_load.report
+    select distinct(report.ghgr_import_id) from ggircs.identifier
+    join ggircs.report
     on identifier.report_id = report.id
     $$,
 
-    'select distinct(ghgr_import_id) from ggircs_swrs_load.report',
+    'select distinct(ghgr_import_id) from ggircs.report',
 
-    'Foreign key report_id in ggircs_swrs_load.identifier references ggircs_swrs_load.report.id'
+    'Foreign key report_id in ggircs.identifier references ggircs.report.id'
 );
 
--- Data in ggircs_swrs_transform.identifier === data in ggircs_swrs_load.identifier
+-- Data in ggircs_swrs_transform.identifier === data in ggircs.identifier
 select set_eq(
               $$
               select
@@ -356,10 +356,10 @@ select set_eq(
                   path_context,
                   identifier_type,
                   identifier_value
-                from ggircs_swrs_load.identifier
+                from ggircs.identifier
               $$,
 
-              'data in ggircs_swrs_transform.identifier === ggircs_swrs_load.identifier');
+              'data in ggircs_swrs_transform.identifier === ggircs.identifier');
 
 select * from finish();
 rollback;

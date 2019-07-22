@@ -86,7 +86,7 @@ select ggircs_swrs_transform.load_organisation();
 select ggircs_swrs_transform.load_facility();
 select ggircs_swrs_transform.load_activity();
 
--- Table ggircs_swrs_load.activity exists
+-- Table ggircs.activity exists
 select has_table('ggircs'::name, 'activity'::name);
 
 -- Activity has pk
@@ -96,40 +96,40 @@ select has_pk('ggircs', 'activity', 'ggircs_activity has primary key');
 select has_fk('ggircs', 'activity', 'ggircs_activity has foreign key constraint(s)');
 
 -- Activity has data
-select isnt_empty('select * from ggircs_swrs_load.activity', 'there is data in ggircs_swrs_load.activity');
+select isnt_empty('select * from ggircs.activity', 'there is data in ggircs.activity');
 
 -- FKey tests
 -- Activity -> Facility
 select set_eq(
     $$
-    select distinct(facility.ghgr_import_id) from ggircs_swrs_load.activity
-    join ggircs_swrs_load.facility
+    select distinct(facility.ghgr_import_id) from ggircs.activity
+    join ggircs.facility
     on
       activity.facility_id = facility.id
       order by ghgr_import_id
     $$,
 
-    'select ghgr_import_id from ggircs_swrs_load.facility order by ghgr_import_id',
+    'select ghgr_import_id from ggircs.facility order by ghgr_import_id',
 
-    'Foreign key facility_id in ggircs_swrs_load.activity references ggircs_swrs_load.facility.id'
+    'Foreign key facility_id in ggircs.activity references ggircs.facility.id'
 );
 
 -- Activity -> Report
 select set_eq(
     $$
-    select distinct(report.ghgr_import_id) from ggircs_swrs_load.activity
-    join ggircs_swrs_load.report
+    select distinct(report.ghgr_import_id) from ggircs.activity
+    join ggircs.report
     on
       activity.report_id = report.id
       order by report.ghgr_import_id asc
     $$,
 
-    'select distinct(ghgr_import_id) from ggircs_swrs_load.report order by ghgr_import_id asc',
+    'select distinct(ghgr_import_id) from ggircs.report order by ghgr_import_id asc',
 
-    'Foreign key report_id in ggircs_swrs_load.activity references ggircs_swrs_load.report.id'
+    'Foreign key report_id in ggircs.activity references ggircs.report.id'
 );
 
--- Data in ggircs_swrs_transform.activity === data in ggircs_swrs_load.activity
+-- Data in ggircs_swrs_transform.activity === data in ggircs.activity
 select set_eq($$
                   select
                       ghgr_import_id,
@@ -147,10 +147,10 @@ select set_eq($$
                       process_name,
                       sub_process_name,
                       information_requirement
-                  from ggircs_swrs_load.activity
+                  from ggircs.activity
                   $$,
 
-    'data in ggircs_swrs_transform.activity === ggircs_swrs_load.activity');
+    'data in ggircs_swrs_transform.activity === ggircs.activity');
 
 select * from finish();
 rollback;

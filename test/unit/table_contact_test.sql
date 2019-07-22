@@ -462,7 +462,7 @@ select ggircs_swrs_transform.load_parent_organisation();
 select ggircs_swrs_transform.load_address();
 select ggircs_swrs_transform.load_contact();
 
--- Table ggircs_swrs_load.contact exists
+-- Table ggircs.contact exists
 select has_table('ggircs'::name, 'contact'::name);
 
 -- Contact has pk
@@ -472,62 +472,62 @@ select has_pk('ggircs', 'contact', 'ggircs_contact has primary key');
 select has_fk('ggircs', 'contact', 'ggircs_contact has foreign key constraint(s)');
 
 -- Contact has data
-select isnt_empty('select * from ggircs_swrs_load.contact', 'there is data in ggircs_swrs_load.contact');
+select isnt_empty('select * from ggircs.contact', 'there is data in ggircs.contact');
 
 -- FKey tests
 -- Contact -> Address
 select set_eq(
     $$
-    select distinct(address.ghgr_import_id) from ggircs_swrs_load.contact
-    join ggircs_swrs_load.address
+    select distinct(address.ghgr_import_id) from ggircs.contact
+    join ggircs.address
     on contact.address_id = address.id
     $$,
 
-    'select distinct(ghgr_import_id) from ggircs_swrs_load.address',
+    'select distinct(ghgr_import_id) from ggircs.address',
 
-    'Foreign key address_id in ggircs_swrs_load.contact references ggircs_swrs_load.address.id'
+    'Foreign key address_id in ggircs.contact references ggircs.address.id'
 );
 
 -- Contact -> Facility
 select set_eq(
                $$
-    select distinct(facility.ghgr_import_id) from ggircs_swrs_load.contact
-    join ggircs_swrs_load.facility
+    select distinct(facility.ghgr_import_id) from ggircs.contact
+    join ggircs.facility
     on
       contact.facility_id = facility.id
       order by ghgr_import_id
     $$,
-               'select ghgr_import_id from ggircs_swrs_load.facility order by ghgr_import_id',
-               'Foreign key facility_id in ggircs_swrs_load.contact references ggircs_swrs_load.facility.id'
+               'select ghgr_import_id from ggircs.facility order by ghgr_import_id',
+               'Foreign key facility_id in ggircs.contact references ggircs.facility.id'
 );
 
 -- Contact -> Report
 select set_eq(
     $$
-    select distinct(report.ghgr_import_id) from ggircs_swrs_load.contact
-    join ggircs_swrs_load.report
+    select distinct(report.ghgr_import_id) from ggircs.contact
+    join ggircs.report
     on contact.report_id = report.id
     $$,
 
-    'select distinct(ghgr_import_id) from ggircs_swrs_load.report',
+    'select distinct(ghgr_import_id) from ggircs.report',
 
-    'Foreign key report_id in ggircs_swrs_load.contact references ggircs_swrs_load.report.id'
+    'Foreign key report_id in ggircs.contact references ggircs.report.id'
 );
 
 -- Contact -> Report
 select set_eq(
     $$
-    select distinct(organisation.ghgr_import_id) from ggircs_swrs_load.contact
-    join ggircs_swrs_load.organisation
+    select distinct(organisation.ghgr_import_id) from ggircs.contact
+    join ggircs.organisation
     on contact.organisation_id = organisation.id
     $$,
 
-    'select distinct(ghgr_import_id) from ggircs_swrs_load.organisation',
+    'select distinct(ghgr_import_id) from ggircs.organisation',
 
-    'Foreign key organisation_id in ggircs_swrs_load.contact references ggircs_swrs_load.organisation.id'
+    'Foreign key organisation_id in ggircs.contact references ggircs.organisation.id'
 );
 
--- Data in ggircs_swrs_transform.contact === data in ggircs_swrs_load.contact
+-- Data in ggircs_swrs_transform.contact === data in ggircs.contact
 select set_eq(
               $$
               select
@@ -566,7 +566,7 @@ select set_eq(
                   email_address,
                   position,
                   language_correspondence
-                from ggircs_swrs_load.contact
+                from ggircs.contact
                 order by
                   ghgr_import_id,
                   path_context,
@@ -575,7 +575,7 @@ select set_eq(
                  asc
               $$,
 
-              'data in ggircs_swrs_transform.contact === ggircs_swrs_load.contact');
+              'data in ggircs_swrs_transform.contact === ggircs.contact');
 
 select * from finish();
 rollback;

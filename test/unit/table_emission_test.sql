@@ -409,7 +409,7 @@ select ggircs_swrs_transform.load_unit();
 select ggircs_swrs_transform.load_fuel();
 select ggircs_swrs_transform.load_emission();
 
--- Table ggircs_swrs_load.emission exists
+-- Table ggircs.emission exists
 select has_table('ggircs'::name, 'emission'::name);
 
 -- Emission has pk
@@ -419,90 +419,90 @@ select has_pk('ggircs', 'emission', 'ggircs_emission has primary key');
 select has_fk('ggircs', 'emission', 'ggircs_emission has foreign key constraint(s)');
 
 -- Emission has data
-select isnt_empty('select * from ggircs_swrs_load.emission', 'there is data in ggircs_swrs_load.emission');
+select isnt_empty('select * from ggircs.emission', 'there is data in ggircs.emission');
 
 -- FKey tests
 -- Emission -> Activity
 select set_eq(
     $$
-    select distinct(activity.ghgr_import_id) from ggircs_swrs_load.emission
-    join ggircs_swrs_load.activity
+    select distinct(activity.ghgr_import_id) from ggircs.emission
+    join ggircs.activity
     on emission.activity_id = activity.id
     $$,
 
-    'select distinct(ghgr_import_id) from ggircs_swrs_load.activity',
+    'select distinct(ghgr_import_id) from ggircs.activity',
 
-    'Foreign key activity_id in ggircs_swrs_load.emission references ggircs_swrs_load.activity.id'
+    'Foreign key activity_id in ggircs.emission references ggircs.activity.id'
 );
 
 -- Emission -> Naics
 select set_eq(
-    $$select distinct(naics.naics_code) from ggircs_swrs_load.emission
-      join ggircs_swrs_load.naics
+    $$select distinct(naics.naics_code) from ggircs.emission
+      join ggircs.naics
       on
         emission.naics_id = naics.id
     $$,
 
-    'select distinct(naics_code) from ggircs_swrs_load.naics',
+    'select distinct(naics_code) from ggircs.naics',
 
-    'Foreign key naics_id in ggircs_swrs_load.emission references ggircs_swrs_load.naics.id'
+    'Foreign key naics_id in ggircs.emission references ggircs.naics.id'
 );
 
 -- Emission -> Fuel
 select results_eq(
-    $$select distinct(fuel_type) from ggircs_swrs_load.emission
-      join ggircs_swrs_load.fuel
+    $$select distinct(fuel_type) from ggircs.emission
+      join ggircs.fuel
       on
         emission.fuel_id = fuel.id
       order by fuel_type
     $$,
 
-    'select distinct(fuel_type) from ggircs_swrs_load.fuel order by fuel_type',
+    'select distinct(fuel_type) from ggircs.fuel order by fuel_type',
 
-    'Foreign key fuel_id in ggircs_swrs_load.emission references ggircs_swrs_load.fuel.id'
+    'Foreign key fuel_id in ggircs.emission references ggircs.fuel.id'
 );
 
 -- Emission -> Organisation
 select set_eq(
-    $$select organisation.id from ggircs_swrs_load.emission
-      join ggircs_swrs_load.organisation
+    $$select organisation.id from ggircs.emission
+      join ggircs.organisation
       on
         emission.organisation_id = organisation.id
     $$,
 
-    'select id from ggircs_swrs_load.organisation',
+    'select id from ggircs.organisation',
 
-    'Foreign key organisation_id in ggircs_swrs_load.emission references ggircs_swrs_load.organisation.id'
+    'Foreign key organisation_id in ggircs.emission references ggircs.organisation.id'
 );
 
 -- Emission -> Report
 select set_eq(
-    $$select report.ghgr_import_id from ggircs_swrs_load.emission
-      join ggircs_swrs_load.report
+    $$select report.ghgr_import_id from ggircs.emission
+      join ggircs.report
       on
         emission.report_id = report.id
     $$,
 
-    'select ghgr_import_id from ggircs_swrs_load.report',
+    'select ghgr_import_id from ggircs.report',
 
-    'Foreign key report_id in ggircs_swrs_load.emission references ggircs_swrs_load.report.id'
+    'Foreign key report_id in ggircs.emission references ggircs.report.id'
 );
 
 -- Emission -> Unit
 select set_eq(
-    $$select distinct(unit.unit_name) from ggircs_swrs_load.emission
-      join ggircs_swrs_load.unit
+    $$select distinct(unit.unit_name) from ggircs.emission
+      join ggircs.unit
       on
         emission.unit_id = unit.id
       order by unit_name
     $$,
 
-    'select distinct(unit_name) from ggircs_swrs_load.unit order by unit_name',
+    'select distinct(unit_name) from ggircs.unit order by unit_name',
 
-    'Foreign key unit_id in ggircs_swrs_load.emission references ggircs_swrs_load.unit.id'
+    'Foreign key unit_id in ggircs.emission references ggircs.unit.id'
 );
 
--- Data in ggircs_swrs_transform.emission === data in ggircs_swrs_load.emission
+-- Data in ggircs_swrs_transform.emission === data in ggircs.emission
 select set_eq(
               $$
               select
@@ -539,10 +539,10 @@ select set_eq(
                   quantity,
                   calculated_quantity,
                   emission_category
-                from ggircs_swrs_load.emission
+                from ggircs.emission
               $$,
 
-              'data in ggircs_swrs_transform.emission === ggircs_swrs_load.emission');
+              'data in ggircs_swrs_transform.emission === ggircs.emission');
 
 select * from finish();
 rollback;

@@ -248,7 +248,7 @@ select ggircs_swrs_transform.load_activity();
 select ggircs_swrs_transform.load_unit();
 select ggircs_swrs_transform.load_fuel();
 
--- Table ggircs_swrs_load.fuel exists
+-- Table ggircs.fuel exists
 select has_table('ggircs'::name, 'fuel'::name);
 
 -- Fuel has pk
@@ -258,36 +258,36 @@ select has_pk('ggircs', 'fuel', 'ggircs_fuel has primary key');
 select has_fk('ggircs', 'fuel', 'ggircs_fuel has foreign key constraint(s)');
 
 -- Fuel has data
-select isnt_empty('select * from ggircs_swrs_load.fuel', 'there is data in ggircs_swrs_load.fuel');
+select isnt_empty('select * from ggircs.fuel', 'there is data in ggircs.fuel');
 
 -- FKey tests
 -- Fuel -> Report
 select set_eq(
     $$
-    select distinct(report.ghgr_import_id) from ggircs_swrs_load.fuel
-    join ggircs_swrs_load.report
+    select distinct(report.ghgr_import_id) from ggircs.fuel
+    join ggircs.report
     on fuel.report_id = report.id
     $$,
 
-    'select distinct(ghgr_import_id) from ggircs_swrs_load.report',
+    'select distinct(ghgr_import_id) from ggircs.report',
 
-    'Foreign key report_id in ggircs_swrs_load.fuel references ggircs_swrs_load.report.id'
+    'Foreign key report_id in ggircs.fuel references ggircs.report.id'
 );
 
 -- Fuel -> Unit
 select set_eq(
     $$
-    select distinct(fuel.ghgr_import_id) from ggircs_swrs_load.fuel
-    join ggircs_swrs_load.unit
+    select distinct(fuel.ghgr_import_id) from ggircs.fuel
+    join ggircs.unit
     on fuel.unit_id = unit.id
     $$,
 
-    'select distinct(ghgr_import_id) from ggircs_swrs_load.unit',
+    'select distinct(ghgr_import_id) from ggircs.unit',
 
-    'Foreign key unit_id in ggircs_swrs_load.fuel references ggircs_swrs_load.unit.id'
+    'Foreign key unit_id in ggircs.fuel references ggircs.unit.id'
 );
 
--- Data in ggircs_swrs_transform.fuel === data in ggircs_swrs_load.fuel
+-- Data in ggircs_swrs_transform.fuel === data in ggircs.fuel
 select set_eq(
               $$
               select
@@ -340,7 +340,7 @@ select set_eq(
                   q2,
                   q3,
                   q4
-                from ggircs_swrs_load.fuel
+                from ggircs.fuel
                 order by
                     ghgr_import_id,
                     activity_name,
@@ -349,7 +349,7 @@ select set_eq(
                  asc
               $$,
 
-              'data in ggircs_swrs_transform.fuel === ggircs_swrs_load.fuel');
+              'data in ggircs_swrs_transform.fuel === ggircs.fuel');
 
 select * from finish();
 rollback;

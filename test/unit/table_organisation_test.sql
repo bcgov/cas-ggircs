@@ -91,7 +91,7 @@ refresh materialized view ggircs_swrs_transform.final_report with data;
 select ggircs_swrs_transform.load_report();
 select ggircs_swrs_transform.load_organisation();
 
--- Table ggircs_swrs_load.organisation exists
+-- Table ggircs.organisation exists
 select has_table('ggircs'::name, 'organisation'::name);
 
 -- Organisation has pk
@@ -101,24 +101,24 @@ select has_pk('ggircs', 'organisation', 'ggircs_organisation has primary key');
 select has_fk('ggircs', 'organisation', 'ggircs_organisation has foreign key constraint(s)');
 
 -- Organisation has data
-select isnt_empty('select * from ggircs_swrs_load.organisation', 'there is data in ggircs_swrs_load.organisation');
+select isnt_empty('select * from ggircs.organisation', 'there is data in ggircs.organisation');
 
 -- FKey tests
 -- Organisation -> Report
 select set_eq(
 
     $$
-    select report.ghgr_import_id from ggircs_swrs_load.organisation
-    join ggircs_swrs_load.report
+    select report.ghgr_import_id from ggircs.organisation
+    join ggircs.report
     on organisation.report_id = report.id
     $$,
 
-    'select ghgr_import_id from ggircs_swrs_load.report',
+    'select ghgr_import_id from ggircs.report',
 
-    'Foreign key report_id in ggircs_swrs_load.organisation references ggircs_swrs_load.report'
+    'Foreign key report_id in ggircs.organisation references ggircs.report'
 );
 
--- Data in ggircs_swrs_transform.organisation === data in ggircs_swrs_load.organisation
+-- Data in ggircs_swrs_transform.organisation === data in ggircs.organisation
 select set_eq($$
                   select
                       ghgr_import_id,
@@ -142,10 +142,10 @@ select set_eq($$
                       cra_business_number,
                       duns,
                       website
-                  from ggircs_swrs_load.organisation
+                  from ggircs.organisation
                   $$,
 
-    'data in ggircs_swrs_transform.organisation === ggircs_swrs_load.organisation');
+    'data in ggircs_swrs_transform.organisation === ggircs.organisation');
 
 select * from finish();
 rollback;

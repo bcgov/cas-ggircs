@@ -28,6 +28,11 @@ $function$
     -- Refresh materialized views
     perform ggircs_swrs_transform.transform('with data');
 
+    -- Create the load schema, without records
+    drop schema if exists ggircs_swrs_load cascade;
+    raise notice '[%] Creating temporary schema ggircs_swrs_load...', timeofday()::timestamp;
+    perform ggircs_swrs_transform.clone_schema('ggircs', 'ggircs_swrs_load', false);
+
     -- Loop to populate ggircs tables with data from ggircs_swrs
         for i in 1 .. array_upper(mv_array, 1)
       loop
@@ -42,9 +47,6 @@ $function$
     raise notice 'Overriding to the live data schema';
     drop schema if exists ggircs cascade;
     alter schema ggircs_swrs_load rename to ggircs;
-
-    -- Recreate the load schema, without records
-    perform ggircs_swrs_transform.clone_schema('ggircs', 'ggircs_swrs_load', false);
 
   end;
 
