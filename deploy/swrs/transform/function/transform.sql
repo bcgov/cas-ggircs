@@ -9,20 +9,14 @@ create or replace function ggircs_swrs_transform.transform(data text)
 $function$
 
     declare
-
-       mv_array text[] := $$
-                          {report, organisation, facility,
-                          activity, unit, identifier, naics, emission,
-                          final_report, fuel, permit, parent_organisation, contact,
-                          address, additional_data, measured_emission_factor}
-                          $$;
+      row record;
 
 begin
   -- Refresh views with data
-  for i in 1 .. array_upper(mv_array, 1)
+  for row in select matviewname from pg_matviews where schemaname = 'ggircs_swrs_transform'
       loop
-        execute format('refresh materialized view ggircs_swrs_transform.%s %s', mv_array[i], data);
-        raise notice '[%] Transformed %...', timeofday()::timestamp, mv_array[i];
+        execute format('refresh materialized view ggircs_swrs_transform.%s %s', row.matviewname, data);
+        raise notice '[%] Transformed %...', timeofday()::timestamp, row.matviewname;
       end loop;
 
 
