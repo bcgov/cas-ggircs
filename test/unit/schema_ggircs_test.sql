@@ -6,7 +6,7 @@ begin;
 select plan(2);
 
 select has_schema('ggircs');
-select matches(obj_description('ggircs'::regnamespace, 'pg_namespace'), '.+', 'Schema ggircs has a description');
+select matches(obj_description('ggircs_swrs_load'::regnamespace, 'pg_namespace'), '.+', 'Schema ggircs has a description');
 
 select finish();
 rollback;

@@ -32,13 +32,15 @@ $function$
         for i in 1 .. array_upper(mv_array, 1)
       loop
         execute format('select ggircs_swrs_transform.load_%s()', mv_array[i]);
+        raise notice '[%] Loaded %...', timeofday()::timestamp, mv_array[i];
       end loop;
 
     -- Refresh materialized views with no data
     perform ggircs_swrs_transform.transform('with no data');
 
-    -- Override the live data schema
-    drop schema if exists ggircs;
+
+    raise notice 'Overriding to the live data schema';
+    drop schema if exists ggircs cascade;
     alter schema ggircs_swrs_load rename to ggircs;
 
     -- Recreate the load schema, without records

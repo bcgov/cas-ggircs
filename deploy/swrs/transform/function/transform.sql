@@ -22,6 +22,7 @@ begin
   for i in 1 .. array_upper(mv_array, 1)
       loop
         execute format('refresh materialized view ggircs_swrs_transform.%s %s', mv_array[i], data);
+        raise notice '[%] Transformed %...', timeofday()::timestamp, mv_array[i];
       end loop;
 
 

@@ -56,7 +56,7 @@ objects:
               - bash
               - -c
               - |
-                sqitch revert table_ghgr_import -y;
+                sqitch revert swrs/extract/table/ghgr_import -y;
         post:
           failurePolicy: Retry
           execNewPod:
