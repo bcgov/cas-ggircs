@@ -2,6 +2,6 @@
 
 BEGIN;
 
-select pg_get_functiondef('ggircs_swrs_transform.load()'::regprocedure);
+select pg_get_functiondef('ggircs_swrs_transform.load(boolean, boolean)'::regprocedure);
 
 ROLLBACK;

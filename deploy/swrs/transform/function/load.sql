@@ -10,23 +10,29 @@
 
 begin;
 
-create or replace function ggircs_swrs_transform.load()
+create or replace function ggircs_swrs_transform.load(
+    refresh_transform boolean default true,
+    clear_transform boolean default true
+)
   returns void as
 $function$
 
   declare
 
-       mv_array text[] := $$
-                          {report, organisation, facility,
-                          activity, unit, identifier, naics, fuel,
-                          emission, permit, parent_organisation, address,
-                          contact, additional_data, measured_emission_factor}
-                          $$;
+    mv_array text[] := $$
+      {report, organisation, facility,
+      activity, unit, identifier, naics, fuel,
+      emission, permit, parent_organisation, address,
+      contact, additional_data, measured_emission_factor}
+      $$;
 
+    view_to_recreate record;
   begin
 
     -- Refresh materialized views
-    perform ggircs_swrs_transform.transform('with data');
+    if refresh_transform then
+        perform ggircs_swrs_transform.transform('with data');
+    end if;
 
     -- Create the load schema, without records
     drop schema if exists ggircs_swrs_load cascade;
@@ -41,12 +47,44 @@ $function$
       end loop;
 
     -- Refresh materialized views with no data
-    perform ggircs_swrs_transform.transform('with no data');
+    if clear_transform then
+        perform ggircs_swrs_transform.transform('with no data');
+    end if;
 
+    -- Find views from other schemas referencing ggircs
+    create temp table views_to_recreate as
+    with dependent_view as (
+        select dependent_ns.nspname as dependent_schema, dependent_view.relname as view_name
+        from pg_depend
+                 join pg_rewrite on pg_depend.objid = pg_rewrite.oid
+                 join pg_class as dependent_view on pg_rewrite.ev_class = dependent_view.oid
+                 join pg_class as source_table on pg_depend.refobjid = source_table.oid
+                 join pg_attribute on pg_depend.refobjid = pg_attribute.attrelid
+            AND pg_depend.refobjsubid = pg_attribute.attnum
+                 join pg_namespace dependent_ns on dependent_ns.oid = dependent_view.relnamespace
+                 join pg_namespace source_ns on source_ns.oid = source_table.relnamespace
+        where source_ns.nspname = 'ggircs'
+          and dependent_ns.nspname != 'ggircs'
+        group by dependent_schema, view_name
+    )
+    select table_name::text, table_schema, view_definition
+    from information_schema.views
+    join dependent_view
+        on views.table_schema = dependent_view.dependent_schema
+        and views.table_name = dependent_view.view_name;
 
     raise notice 'Overriding to the live data schema';
     drop schema if exists ggircs cascade;
     alter schema ggircs_swrs_load rename to ggircs;
+
+    for view_to_recreate in select * from views_to_recreate
+    loop
+        raise notice 'Recreating view %.%', view_to_recreate.table_schema, view_to_recreate.table_name;
+        execute 'create view ' || view_to_recreate.table_schema ||'.'
+            || view_to_recreate.table_name || ' as ' || view_to_recreate.view_definition || ';';
+    end loop;
+
+    drop table views_to_recreate;
 
   end;
 
