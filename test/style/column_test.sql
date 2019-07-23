@@ -4,21 +4,21 @@ reset client_min_messages;
 
 begin;
 
--- create schema ggircs_swrs;
-set search_path to ggircs_swrs,public;
+-- create schema swrs_transform;
+set search_path to swrs_transform,public;
 
 select * from no_plan();
 
 /** Check Column Compliance **/
 
 -- GUIDELINE: DB should have descriptions for all columns
--- Get all table columns within schema ggircs_swrs that do not have a comment
+-- Get all table columns within schema swrs_transform that do not have a comment
 prepare null_table_comment as select pg_catalog.col_description(
                                       format('%s.%s', isc.table_schema, isc.table_name)::regclass::oid,
                                       isc.ordinal_position)
                                   as column_description
                        from information_schema.columns isc
-                       where table_schema = 'ggircs_swrs'
+                       where table_schema = 'swrs_transform'
                          and pg_catalog.col_description(
                                format('%s.%s', isc.table_schema, isc.table_name)::regclass::oid,
                                isc.ordinal_position) is null;
@@ -35,7 +35,7 @@ prepare null_mv_comment as select d.description
     left join pg_tablespace t on t.oid = c.reltablespace
     left join pg_description as d on (d.objoid = c.oid and d.objsubid = a.attnum)
     where  c.relkind in('m')
-      and  n.nspname = 'ggircs_swrs'
+      and  n.nspname = 'swrs_transform'
       and a.attnum > 0
       and d.description is null;
 -- Test that there are no results on the above query for null comments
@@ -47,7 +47,7 @@ select is_empty(
 -- Get all max char lengths from char tables
 prepare table_null_char_max as select columns.character_maximum_length
                    from information_schema.columns
-                   where table_schema = 'ggircs_swrs'
+                   where table_schema = 'swrs_transform'
                     and data_type like 'char%'
                     and columns.character_maximum_length is null;
 -- Check there are no nulls for character_max_length when datatype is like 'char%'
@@ -65,7 +65,7 @@ prepare mv_null_char_max as select a.attname,
         where a.attnum > 0
         and not a.attisdropped
         and t.relkind = 'm'
-        and s.nspname = 'ggircs_swrs'
+        and s.nspname = 'swrs_transform'
         and pg_catalog.format_type(a.atttypid, a.atttypmod) like '%char%'
         and a.atttypmod < 0;
 -- Check there are no nulls for character_max_length when datatype is like 'char%'
@@ -75,7 +75,7 @@ select is_empty('mv_null_char_max', 'Material view char columns have defined max
 -- Get all table numeric data types that return null when queried for their precision or scale
 prepare table_null_numeric_precision as select columns.numeric_precision, columns.numeric_scale
                       from information_schema.columns
-                      where table_schema = 'ggircs_swrs'
+                      where table_schema = 'swrs_transform'
                         and data_type = 'numeric'
                         and (columns.numeric_precision is null or columns.numeric_scale is null);
 -- Check that the result of the above query is empty
@@ -93,7 +93,7 @@ prepare mv_null_num_precision as select a.attname,
         where a.attnum > 0
         and not a.attisdropped
         and t.relkind = 'm'
-        and s.nspname = 'ggircs_swrs'
+        and s.nspname = 'swrs_transform'
         and a.atttypmod < 0
         and pg_catalog.format_type(a.atttypid, a.atttypmod) = 'numeric';
 -- Check there are no nulls for precision/scale when datatype is numeric
@@ -103,7 +103,7 @@ prepare mv_null_num_precision as select a.attname,
 -- Get all table columns that have an undefined data_type
 prepare table_improper_datatype as select data_type
                       from information_schema.columns
-                      where table_schema = 'ggircs_swrs'
+                      where table_schema = 'swrs_transform'
                         and (
                             data_type is null
                             or data_type = 'text'
@@ -122,7 +122,7 @@ prepare mv_improper_datatype as select pg_catalog.format_type(a.atttypid, a.attt
         where a.attnum > 0
         and not a.attisdropped
         and t.relkind = 'm'
-        and s.nspname = 'ggircs_swrs'
+        and s.nspname = 'swrs_transform'
         and (
             pg_catalog.format_type(a.atttypid, a.atttypmod) is null
             or pg_catalog.format_type(a.atttypid, a.atttypmod) = 'text'
@@ -136,7 +136,7 @@ select is_empty('mv_improper_datatype', 'materialized view columns must be defin
 -- GUIDELINE GROUP: Enforce column naming conventions
 -- GUIDELINE: Names are lower-case with underscores_as_word_separators
 -- Check that all columns in schema do not return a match of capital letters or non-word characters
-with cnames as (select column_name from information_schema.columns where table_schema = 'ggircs_swrs')
+with cnames as (select column_name from information_schema.columns where table_schema = 'swrs_transform')
 select doesnt_match(
                col,
                '[A-Z]|\W',
@@ -155,9 +155,9 @@ create table csv_import_fixture
 \copy csv_import_fixture from './test/fixture/sql_reserved_words.csv' delimiter ',' csv;
 -- test that all tables in schema do not contain any column names that intersect with reserved words csv dictionary
 with reserved_words as (select csv_column_fixture from csv_import_fixture),
-     tnames as (select table_name from information_schema.tables where table_schema = 'ggircs_swrs')
+     tnames as (select table_name from information_schema.tables where table_schema = 'swrs_transform')
 select hasnt_column(
-               'ggircs_swrs',
+               'swrs_transform',
                tbl,
                word,
                format('Column names avoid reserved keywords. Violation: col: %I, word: %I', tbl, word)
@@ -172,9 +172,9 @@ mv_names as (select a.attname
         where a.attnum > 0
         and not a.attisdropped
         and t.relkind = 'm'
-        and s.nspname = 'ggircs_swrs')
+        and s.nspname = 'swrs_transform')
 select hasnt_column(
-               'ggircs_swrs',
+               'swrs_transform',
                mv,
                word,
                format('Column names avoid reserved keywords. Violation: col: %I, word: %I', mv, word)

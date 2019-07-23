@@ -5,11 +5,11 @@ reset client_min_messages;
 begin;
 select plan(17);
 
--- Test matview report exists in schema ggircs_swrs
-select has_materialized_view('ggircs_swrs', 'identifier', 'Materialized view facility exists');
+-- Test matview report exists in schema swrs_transform
+select has_materialized_view('swrs_transform', 'identifier', 'Materialized view facility exists');
 
 -- Test column names in matview identifier exist
-select columns_are('ggircs_swrs'::name, 'identifier'::name,ARRAY[
+select columns_are('swrs_transform'::name, 'identifier'::name,ARRAY[
     'id'::name,
     'ghgr_import_id'::name,
     'swrs_facility_id'::name,
@@ -20,18 +20,18 @@ select columns_are('ggircs_swrs'::name, 'identifier'::name,ARRAY[
 ]);
 
 -- Test index names in matview report exist and are correct
-select has_index('ggircs_swrs', 'identifier', 'ggircs_identifier_primary_key', 'swrs_transform.identifier has index: ggircs_identifier_primary_key');
+select has_index('swrs_transform', 'identifier', 'ggircs_identifier_primary_key', 'swrs_transform.identifier has index: ggircs_identifier_primary_key');
 
 -- Test unique indicies are defined unique
-select index_is_unique('ggircs_swrs', 'identifier', 'ggircs_identifier_primary_key', 'Matview report index ggircs_identifier_primary_key is unique');
+select index_is_unique('swrs_transform', 'identifier', 'ggircs_identifier_primary_key', 'Matview report index ggircs_identifier_primary_key is unique');
 
 -- Test columns in matview report have correct types
-select col_type_is('ggircs_swrs', 'identifier', 'ghgr_import_id', 'integer', 'swrs_transform.identifier column ghgr_import_id has type integer');
-select col_type_is('ggircs_swrs', 'identifier', 'swrs_facility_id', 'integer', 'swrs_transform.identifier column swrs_facility_id has type numeric');
-select col_type_is('ggircs_swrs', 'identifier', 'path_context', 'character varying(1000)', 'swrs_transform.identifier column path_context has type varchar');
-select col_type_is('ggircs_swrs', 'identifier', 'identifier_idx', 'integer', 'swrs_transform.identifier column identifier_idx has type integer');
-select col_type_is('ggircs_swrs', 'identifier', 'identifier_type', 'character varying(1000)', 'swrs_transform.identifier column identifier_type has type varchar');
-select col_type_is('ggircs_swrs', 'identifier', 'identifier_value', 'character varying(1000)', 'swrs_transform.identifier column identifier_value has type varchar');
+select col_type_is('swrs_transform', 'identifier', 'ghgr_import_id', 'integer', 'swrs_transform.identifier column ghgr_import_id has type integer');
+select col_type_is('swrs_transform', 'identifier', 'swrs_facility_id', 'integer', 'swrs_transform.identifier column swrs_facility_id has type numeric');
+select col_type_is('swrs_transform', 'identifier', 'path_context', 'character varying(1000)', 'swrs_transform.identifier column path_context has type varchar');
+select col_type_is('swrs_transform', 'identifier', 'identifier_idx', 'integer', 'swrs_transform.identifier column identifier_idx has type integer');
+select col_type_is('swrs_transform', 'identifier', 'identifier_type', 'character varying(1000)', 'swrs_transform.identifier column identifier_type has type varchar');
+select col_type_is('swrs_transform', 'identifier', 'identifier_value', 'character varying(1000)', 'swrs_transform.identifier column identifier_value has type varchar');
 
 -- insert necessary data into table ghgr_import
 insert into swrs_extract.ghgr_import (xml_file) values ($$

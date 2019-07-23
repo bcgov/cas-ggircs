@@ -73,9 +73,6 @@ BEGIN
 
   EXECUTE 'CREATE SCHEMA ' || quote_ident(dest_schema) ;
 
-  -- Defaults search_path to destination schema
-  PERFORM set_config('search_path', dest_schema, true);
-
   -- Create sequences
   -- TODO: Find a way to make this sequence's owner is the correct table.
   FOR object IN
@@ -152,7 +149,7 @@ BEGIN
   --  add FK constraint
   FOR xrec IN
   SELECT ct.conname as fk_name, rn.relname as tb_name,  'ALTER TABLE ' || quote_ident(dest_schema) || '.' || quote_ident(rn.relname)
-         || ' ADD CONSTRAINT ' || quote_ident(ct.conname) || ' ' || replace(pg_get_constraintdef(ct.oid), source_schema_dot, '') || ';' as qry
+         || ' ADD CONSTRAINT ' || quote_ident(ct.conname) || ' ' || replace(pg_get_constraintdef(ct.oid), source_schema_dot, dest_schema_dot) || ';' as qry
   FROM pg_constraint ct
     JOIN pg_class rn ON rn.oid = ct.conrelid
   WHERE connamespace = src_oid
@@ -174,7 +171,7 @@ BEGIN
   LOOP
     IF show_details THEN RAISE NOTICE 'Creating function %...', xrec.func_name; END IF;
     SELECT pg_get_functiondef(xrec.func_oid) INTO qry;
-    SELECT replace(qry, source_schema_dot, '') INTO dest_qry;
+    SELECT replace(qry, source_schema_dot, dest_schema_dot) INTO dest_qry;
     EXECUTE dest_qry;
   END LOOP;
 
@@ -224,7 +221,7 @@ BEGIN
     IF show_details THEN RAISE NOTICE 'Creating trigger % % % ON %...', rec.trigger_name, rec.action_timing, rec.trigger_event, rec.trigger_table; END IF;
     EXECUTE 'CREATE TRIGGER ' || rec.trigger_name || ' ' || rec.action_timing
             || ' ' || rec.trigger_event || ' ON ' || buffer || ' FOR EACH '
-            || rec.trigger_level || ' ' || replace(rec.action_statement, source_schema_dot, '');
+            || rec.trigger_level || ' ' || replace(rec.action_statement, source_schema_dot, dest_schema_dot);
 
   END LOOP;
 
@@ -237,7 +234,7 @@ BEGIN
 
   LOOP
     buffer := dest_schema || '.' || quote_ident(object);
-    SELECT replace(view_definition, source_schema_dot, '') INTO v_def
+    SELECT replace(view_definition, source_schema_dot, dest_schema_dot) INTO v_def
     FROM information_schema.views
     WHERE table_schema = quote_ident(source_schema)
           AND table_name = quote_ident(object);

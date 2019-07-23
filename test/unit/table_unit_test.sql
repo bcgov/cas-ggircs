@@ -166,26 +166,18 @@ $$), ($$
 </ReportData>
 $$);
 
-refresh materialized view swrs_transform.report with data;
-refresh materialized view swrs_transform.organisation with data;
-refresh materialized view swrs_transform.facility with data;
-refresh materialized view swrs_transform.activity with data;
-refresh materialized view swrs_transform.unit with data;
-refresh materialized view swrs_transform.final_report with data;
-select swrs_transform.load_report();
-select swrs_transform.load_organisation();
-select swrs_transform.load_facility();
-select swrs_transform.load_activity();
-select swrs_transform.load_unit();
+-- Run table export function without clearing the materialized views (for data equality tests below)
+SET client_min_messages TO WARNING; -- load is a bit verbose
+select swrs_transform.load(true, false);
 
 -- Table swrs.unit exists
-select has_table('ggircs'::name, 'unit'::name);
+select has_table('swrs'::name, 'unit'::name);
 
 -- Unit has pk
-select has_pk('ggircs', 'unit', 'ggircs_unit has primary key');
+select has_pk('swrs', 'unit', 'ggircs_unit has primary key');
 
 -- Unit has fk
-select has_fk('ggircs', 'unit', 'ggircs_unit has foreign key constraint(s)');
+select has_fk('swrs', 'unit', 'ggircs_unit has foreign key constraint(s)');
 
 -- Unit has data
 select isnt_empty('select * from swrs.unit', 'there is data in swrs.unit');

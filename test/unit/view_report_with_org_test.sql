@@ -8,12 +8,12 @@ select * from no_plan();
 
 -- View should exist
 select has_view(
-    'ggircs', 'report_with_org',
+    'swrs', 'report_with_org',
     'swrs.report_with_org should be a view'
 );
 
 -- Columns are correct
-select columns_are('ggircs'::name, 'report_with_org'::name, array[
+select columns_are('swrs'::name, 'report_with_org'::name, array[
        'business_legal_name'::name,
        'facility_name'::name,
        'facility_type'::name,
@@ -30,41 +30,41 @@ select columns_are('ggircs'::name, 'report_with_org'::name, array[
 
 -- Column attributes are correct
 
-select col_type_is('ggircs', 'report_with_org', 'business_legal_name', 'character varying(1000)', 'attributable_emissions.emission_id column should be type varchar');
-select col_hasnt_default('ggircs', 'report_with_org', 'business_legal_name', 'report_with_org.business_legal_name column should not have a default value');
+select col_type_is('swrs', 'report_with_org', 'business_legal_name', 'character varying(1000)', 'attributable_emissions.emission_id column should be type varchar');
+select col_hasnt_default('swrs', 'report_with_org', 'business_legal_name', 'report_with_org.business_legal_name column should not have a default value');
 
-select col_type_is('ggircs', 'report_with_org', 'facility_name', 'character varying(1000)', 'attributable_emissions.emission_id column should be type varchar');
-select col_hasnt_default('ggircs', 'report_with_org', 'facility_name', 'report_with_org.facility_name column should not have a default value');
+select col_type_is('swrs', 'report_with_org', 'facility_name', 'character varying(1000)', 'attributable_emissions.emission_id column should be type varchar');
+select col_hasnt_default('swrs', 'report_with_org', 'facility_name', 'report_with_org.facility_name column should not have a default value');
 
-select col_type_is('ggircs', 'report_with_org', 'facility_type', 'character varying(1000)', 'attributable_emissions.emission_id column should be type varchar');
-select col_hasnt_default('ggircs', 'report_with_org', 'facility_type', 'report_with_org.facility_type column should not have a default value');
+select col_type_is('swrs', 'report_with_org', 'facility_type', 'character varying(1000)', 'attributable_emissions.emission_id column should be type varchar');
+select col_hasnt_default('swrs', 'report_with_org', 'facility_type', 'report_with_org.facility_type column should not have a default value');
 
-select col_type_is('ggircs', 'report_with_org', 'reporting_period_duration', 'character varying(1000)', 'attributable_emissions.emission_id column should be type varchar');
-select col_hasnt_default('ggircs', 'report_with_org', 'reporting_period_duration', 'report_with_org.reporting_period_duration column should not have a default value');
+select col_type_is('swrs', 'report_with_org', 'reporting_period_duration', 'character varying(1000)', 'attributable_emissions.emission_id column should be type varchar');
+select col_hasnt_default('swrs', 'report_with_org', 'reporting_period_duration', 'report_with_org.reporting_period_duration column should not have a default value');
 
-select col_type_is('ggircs', 'report_with_org', 'naics_classification', 'character varying(1000)', 'attributable_emissions.emission_id column should be type varchar');
-select col_hasnt_default('ggircs', 'report_with_org', 'naics_classification', 'report_with_org.naics_classification column should not have a default value');
+select col_type_is('swrs', 'report_with_org', 'naics_classification', 'character varying(1000)', 'attributable_emissions.emission_id column should be type varchar');
+select col_hasnt_default('swrs', 'report_with_org', 'naics_classification', 'report_with_org.naics_classification column should not have a default value');
 
-select col_type_is('ggircs', 'report_with_org', 'naics_code', 'integer', 'attributable_emissions.emission_id column should be type integer');
-select col_hasnt_default('ggircs', 'report_with_org', 'naics_code', 'report_with_org.naics_code column should not have a default value');
+select col_type_is('swrs', 'report_with_org', 'naics_code', 'integer', 'attributable_emissions.emission_id column should be type integer');
+select col_hasnt_default('swrs', 'report_with_org', 'naics_code', 'report_with_org.naics_code column should not have a default value');
 
-select col_type_is('ggircs', 'report_with_org', 'report_id', 'integer', 'attributable_emissions.emission_id column should be type integer');
-select col_hasnt_default('ggircs', 'report_with_org', 'report_id', 'report_with_org.report_id column should not have a default value');
+select col_type_is('swrs', 'report_with_org', 'report_id', 'integer', 'attributable_emissions.emission_id column should be type integer');
+select col_hasnt_default('swrs', 'report_with_org', 'report_id', 'report_with_org.report_id column should not have a default value');
 
-select col_type_is('ggircs', 'report_with_org', 'organisation_id', 'integer', 'attributable_emissions.emission_id column should be type integer');
-select col_hasnt_default('ggircs', 'report_with_org', 'organisation_id', 'report_with_org.organisation_id column should not have a default value');
+select col_type_is('swrs', 'report_with_org', 'organisation_id', 'integer', 'attributable_emissions.emission_id column should be type integer');
+select col_hasnt_default('swrs', 'report_with_org', 'organisation_id', 'report_with_org.organisation_id column should not have a default value');
 
-select col_type_is('ggircs', 'report_with_org', 'facility_id', 'integer', 'attributable_emissions.emission_id column should be type integer');
-select col_hasnt_default('ggircs', 'report_with_org', 'facility_id', 'report_with_org.facility_id column should not have a default value');
+select col_type_is('swrs', 'report_with_org', 'facility_id', 'integer', 'attributable_emissions.emission_id column should be type integer');
+select col_hasnt_default('swrs', 'report_with_org', 'facility_id', 'report_with_org.facility_id column should not have a default value');
 
-select col_type_is('ggircs', 'report_with_org', 'swrs_report_id', 'integer', 'attributable_emissions.emission_id column should be type integer');
-select col_hasnt_default('ggircs', 'report_with_org', 'swrs_report_id', 'report_with_org.swrs_report_id column should not have a default value');
+select col_type_is('swrs', 'report_with_org', 'swrs_report_id', 'integer', 'attributable_emissions.emission_id column should be type integer');
+select col_hasnt_default('swrs', 'report_with_org', 'swrs_report_id', 'report_with_org.swrs_report_id column should not have a default value');
 
-select col_type_is('ggircs', 'report_with_org', 'swrs_organisation_id', 'integer', 'attributable_emissions.emission_id column should be type integer');
-select col_hasnt_default('ggircs', 'report_with_org', 'swrs_organisation_id', 'report_with_org.swrs_organisation_id column should not have a default value');
+select col_type_is('swrs', 'report_with_org', 'swrs_organisation_id', 'integer', 'attributable_emissions.emission_id column should be type integer');
+select col_hasnt_default('swrs', 'report_with_org', 'swrs_organisation_id', 'report_with_org.swrs_organisation_id column should not have a default value');
 
-select col_type_is('ggircs', 'report_with_org', 'swrs_facility_id', 'integer', 'attributable_emissions.emission_id column should be type integer');
-select col_hasnt_default('ggircs', 'report_with_org', 'swrs_facility_id', 'report_with_org.swrs_facility_id column should not have a default value');
+select col_type_is('swrs', 'report_with_org', 'swrs_facility_id', 'integer', 'attributable_emissions.emission_id column should be type integer');
+select col_hasnt_default('swrs', 'report_with_org', 'swrs_facility_id', 'report_with_org.swrs_facility_id column should not have a default value');
 
 -- XML fixture for testing
 insert into swrs_extract.ghgr_import (xml_file) values ($$
@@ -168,18 +168,9 @@ insert into swrs_extract.ghgr_import (xml_file) values ($$
 </ReportData>
 $$);
 
--- Refresh necessary materialized views
-refresh materialized view swrs_transform.report with data;
-refresh materialized view swrs_transform.final_report with data;
-refresh materialized view swrs_transform.organisation with data;
-refresh materialized view swrs_transform.facility with data;
-refresh materialized view swrs_transform.naics with data;
-
--- Populate necessary ggircs tables
-select swrs_transform.load_report();
-select swrs_transform.load_organisation();
-select swrs_transform.load_facility();
-select swrs_transform.load_naics();
+-- Run table export function without clearing the materialized views (for data equality tests below)
+SET client_min_messages TO WARNING; -- load is a bit verbose
+select swrs_transform.load(true, false);
 
 select results_eq(
   'select * from swrs.report_with_org',

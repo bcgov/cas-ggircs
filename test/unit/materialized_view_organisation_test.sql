@@ -5,11 +5,11 @@ reset client_min_messages;
 begin;
 select plan(21);
 
--- Test matview report exists in schema ggircs_swrs
-select has_materialized_view('ggircs_swrs', 'organisation', 'swrs_transform.organisation exists as a materialized view');
+-- Test matview report exists in schema swrs_transform
+select has_materialized_view('swrs_transform', 'organisation', 'swrs_transform.organisation exists as a materialized view');
 
 -- -- Test column names in matview report exist and are correct
-select columns_are('ggircs_swrs'::name, 'organisation'::name, ARRAY[
+select columns_are('swrs_transform'::name, 'organisation'::name, ARRAY[
     'id'::name,
     'ghgr_import_id'::name,
     'swrs_organisation_id'::name,
@@ -23,20 +23,20 @@ select columns_are('ggircs_swrs'::name, 'organisation'::name, ARRAY[
 ]);
 
 -- -- Test index names in matview report exist and are correct
-select has_index('ggircs_swrs', 'organisation', 'ggircs_organisation_primary_key', 'swrs_transform.organisation has index: ggircs_organisation_primary_key');
+select has_index('swrs_transform', 'organisation', 'ggircs_organisation_primary_key', 'swrs_transform.organisation has index: ggircs_organisation_primary_key');
 --
 -- -- Test unique indicies are defined unique
-select index_is_unique('ggircs_swrs', 'organisation', 'ggircs_organisation_primary_key', 'swrs_transform.report index ggircs_organisation_primary_key is unique');
+select index_is_unique('swrs_transform', 'organisation', 'ggircs_organisation_primary_key', 'swrs_transform.report index ggircs_organisation_primary_key is unique');
 --
 -- -- Test columns in matview report have correct types
-select col_type_is('ggircs_swrs', 'organisation', 'ghgr_import_id', 'integer', 'swrs_transform.organisation column ghgr_import_id has type integer');
-select col_type_is('ggircs_swrs', 'organisation', 'swrs_organisation_id', 'integer', 'swrs_transform.organisation column id has type numeric(1000,0)');
-select col_type_is('ggircs_swrs', 'organisation', 'business_legal_name', 'character varying(1000)', 'swrs_transform.organisation column business_legal_name has type varchar');
-select col_type_is('ggircs_swrs', 'organisation', 'english_trade_name', 'character varying(1000)', 'swrs_transform.organisation column english_trade_name has type varchar');
-select col_type_is('ggircs_swrs', 'organisation', 'french_trade_name', 'character varying(1000)', 'swrs_transform.organisation column french_trade_name has type varchar');
-select col_type_is('ggircs_swrs', 'organisation', 'cra_business_number', 'character varying(1000)', 'swrs_transform.organisation column cra_business_number has type varchar');
-select col_type_is('ggircs_swrs', 'organisation', 'duns', 'character varying(1000)', 'swrs_transform.organisation column duns has type varchar');
-select col_type_is('ggircs_swrs', 'organisation', 'website', 'character varying(1000)', 'swrs_transform.organisation column website has type varchar');
+select col_type_is('swrs_transform', 'organisation', 'ghgr_import_id', 'integer', 'swrs_transform.organisation column ghgr_import_id has type integer');
+select col_type_is('swrs_transform', 'organisation', 'swrs_organisation_id', 'integer', 'swrs_transform.organisation column id has type numeric(1000,0)');
+select col_type_is('swrs_transform', 'organisation', 'business_legal_name', 'character varying(1000)', 'swrs_transform.organisation column business_legal_name has type varchar');
+select col_type_is('swrs_transform', 'organisation', 'english_trade_name', 'character varying(1000)', 'swrs_transform.organisation column english_trade_name has type varchar');
+select col_type_is('swrs_transform', 'organisation', 'french_trade_name', 'character varying(1000)', 'swrs_transform.organisation column french_trade_name has type varchar');
+select col_type_is('swrs_transform', 'organisation', 'cra_business_number', 'character varying(1000)', 'swrs_transform.organisation column cra_business_number has type varchar');
+select col_type_is('swrs_transform', 'organisation', 'duns', 'character varying(1000)', 'swrs_transform.organisation column duns has type varchar');
+select col_type_is('swrs_transform', 'organisation', 'website', 'character varying(1000)', 'swrs_transform.organisation column website has type varchar');
 
 insert into swrs_extract.ghgr_import (xml_file) values ($$
     <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">

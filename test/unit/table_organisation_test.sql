@@ -85,20 +85,18 @@ insert into swrs_extract.ghgr_import (xml_file) values ($$
 </ReportData>
 $$);
 
-refresh materialized view swrs_transform.report with data;
-refresh materialized view swrs_transform.organisation with data;
-refresh materialized view swrs_transform.final_report with data;
-select swrs_transform.load_report();
-select swrs_transform.load_organisation();
+-- Run table export function without clearing the materialized views (for data equality tests below)
+SET client_min_messages TO WARNING; -- load is a bit verbose
+select swrs_transform.load(true, false);
 
 -- Table swrs.organisation exists
-select has_table('ggircs'::name, 'organisation'::name);
+select has_table('swrs'::name, 'organisation'::name);
 
 -- Organisation has pk
-select has_pk('ggircs', 'organisation', 'ggircs_organisation has primary key');
+select has_pk('swrs', 'organisation', 'ggircs_organisation has primary key');
 
 -- Organisation has fk
-select has_fk('ggircs', 'organisation', 'ggircs_organisation has foreign key constraint(s)');
+select has_fk('swrs', 'organisation', 'ggircs_organisation has foreign key constraint(s)');
 
 -- Organisation has data
 select isnt_empty('select * from swrs.organisation', 'there is data in swrs.organisation');

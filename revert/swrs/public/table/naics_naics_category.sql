@@ -1,4 +1,4 @@
--- Revert ggircs_swrs:table_naics_naics_category from pg
+-- Revert swrs_transform:table_naics_naics_category from pg
 
 begin;
 

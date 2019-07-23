@@ -169,22 +169,18 @@ $$), ($$
 </ReportData>
 $$);
 
-refresh materialized view swrs_transform.report with data;
-refresh materialized view swrs_transform.organisation with data;
-refresh materialized view swrs_transform.parent_organisation with data;
-refresh materialized view swrs_transform.final_report with data;
-select swrs_transform.load_report();
-select swrs_transform.load_organisation();
-select swrs_transform.load_parent_organisation();
+-- Run table export function without clearing the materialized views (for data equality tests below)
+SET client_min_messages TO WARNING; -- load is a bit verbose
+select swrs_transform.load(true, false);
 
 -- Table swrs.parent_organisation exists
-select has_table('ggircs'::name, 'parent_organisation'::name);
+select has_table('swrs'::name, 'parent_organisation'::name);
 
 -- Parent Organisation has pk
-select has_pk('ggircs', 'parent_organisation', 'ggircs_parent_organisation has primary key');
+select has_pk('swrs', 'parent_organisation', 'ggircs_parent_organisation has primary key');
 
 -- Parent Organisation has fk
-select has_fk('ggircs', 'parent_organisation', 'ggircs_parent_organisation has foreign key constraint(s)');
+select has_fk('swrs', 'parent_organisation', 'ggircs_parent_organisation has foreign key constraint(s)');
 
 -- Parent Organisation has data
 select isnt_empty('select * from swrs.parent_organisation', 'there is data in swrs.parent_organisation');

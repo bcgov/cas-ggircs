@@ -447,29 +447,18 @@ $$), ($$
 </ReportData>
 $$);
 
-refresh materialized view swrs_transform.report with data;
-refresh materialized view swrs_transform.organisation with data;
-refresh materialized view swrs_transform.facility with data;
-refresh materialized view swrs_transform.parent_organisation with data;
-refresh materialized view swrs_transform.address with data;
-refresh materialized view swrs_transform.contact with data;
-
-refresh materialized view swrs_transform.final_report with data;
-select swrs_transform.load_report();
-select swrs_transform.load_organisation();
-select swrs_transform.load_facility();
-select swrs_transform.load_parent_organisation();
-select swrs_transform.load_address();
-select swrs_transform.load_contact();
+-- Run table export function without clearing the materialized views (for data equality tests below)
+SET client_min_messages TO WARNING; -- load is a bit verbose
+select swrs_transform.load(true, false);
 
 -- Table swrs.contact exists
-select has_table('ggircs'::name, 'contact'::name);
+select has_table('swrs'::name, 'contact'::name);
 
 -- Contact has pk
-select has_pk('ggircs', 'contact', 'ggircs_contact has primary key');
+select has_pk('swrs', 'contact', 'ggircs_contact has primary key');
 
 -- Contact has fk
-select has_fk('ggircs', 'contact', 'ggircs_contact has foreign key constraint(s)');
+select has_fk('swrs', 'contact', 'ggircs_contact has foreign key constraint(s)');
 
 -- Contact has data
 select isnt_empty('select * from swrs.contact', 'there is data in swrs.contact');

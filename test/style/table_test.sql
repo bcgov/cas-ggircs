@@ -7,10 +7,10 @@ reset client_min_messages;
 
 begin;
 
--- create schema ggircs_swrs;
+-- create schema swrs_transform;
 -- TODO: set search_path to change dynamically for each schema, I don't think this will work once
---       schemas other than ggircs_swrs become populated with tables
-set search_path to swrs,ggircs_swrs,public;
+--       schemas other than swrs_transform become populated with tables
+set search_path to swrs,swrs_transform,public;
 
 select * from no_plan();
 
@@ -19,7 +19,7 @@ select * from no_plan();
 -- GUIDELINE: All tables should have descriptions
 -- Check all tables for an existing description (regex '.+')
 with tnames as (select table_name from information_schema.tables
-                    where table_schema like 'ggircs%'
+                    where table_schema like 'swrs%'
                      and table_type != 'VIEW'
                )
 select matches(
@@ -32,7 +32,7 @@ from tnames f(tbl);
 --GUIDELINE GROUP: Enforce table naming conventions
 -- GUIDELINE: Names are lower-case with underscores_as_word_separators
 -- Check that all table names do not return a match of capital letters or non-word characters
-with tnames as (select table_name from information_schema.tables where table_schema like 'ggircs%')
+with tnames as (select table_name from information_schema.tables where table_schema like 'swrs%')
 select doesnt_match(
                tbl,
                '[A-Z]|\W',
@@ -53,7 +53,7 @@ create table csv_import_fixture
 \copy csv_import_fixture from './test/fixture/sql_reserved_words.csv' delimiter ',' csv;
 -- test that schema does not contain any table names that intersect with reserved words csv dictionary
 with reserved_words as (select csv_column_fixture from csv_import_fixture),
-schema_names as (select schema_name from information_schema.schemata where schema_name like 'ggircs%')
+schema_names as (select schema_name from information_schema.schemata where schema_name like 'swrs%')
 select hasnt_table(
                sch,
                res,
@@ -65,7 +65,7 @@ drop table csv_import_fixture;
 
 -- GUIDELINE: All tables must have a unique primary key
 -- pg_TAP built in test functuon for checking all tables in schema have a primary key
-with tnames as (select table_name from information_schema.tables where table_schema like 'ggircs_%' and table_type != 'VIEW')
+with tnames as (select table_name from information_schema.tables where table_schema like 'swrs%' and table_type != 'VIEW')
 select has_pk(
                tbl, format('Table has primary key. Violation: %I', tbl)
            )

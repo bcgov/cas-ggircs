@@ -8,16 +8,16 @@ begin;
 select plan(43);
 
 select has_materialized_view(
-    'ggircs_swrs', 'measured_emission_factor',
+    'swrs_transform', 'measured_emission_factor',
     'swrs_transform.measured_emission_factor should be a materialized view'
 );
 
 select has_index(
-    'ggircs_swrs', 'measured_emission_factor', 'ggircs_measured_emission_factor_primary_key',
+    'swrs_transform', 'measured_emission_factor', 'ggircs_measured_emission_factor_primary_key',
     'swrs_transform.measured_emission_factor should have a primary key'
 );
 
-select columns_are('ggircs_swrs'::name, 'measured_emission_factor'::name, array[
+select columns_are('swrs_transform'::name, 'measured_emission_factor'::name, array[
     'id'::name,
     'ghgr_import_id'::name,
     'activity_name'::name,
@@ -38,64 +38,64 @@ select columns_are('ggircs_swrs'::name, 'measured_emission_factor'::name, array[
 ]);
 
 
---  select has_column(       'ggircs_swrs', 'measured_emission_factor', 'ghgr_import_id', 'measured_emission_factor.ghgr_import_id column should exist');
-select col_type_is(      'ggircs_swrs', 'measured_emission_factor', 'ghgr_import_id', 'integer', 'measured_emission_factor.ghgr_import_id column should be type integer');
-select col_hasnt_default('ggircs_swrs', 'measured_emission_factor', 'ghgr_import_id', 'measured_emission_factor.ghgr_import_id column should not have a default value');
+--  select has_column(       'swrs_transform', 'measured_emission_factor', 'ghgr_import_id', 'measured_emission_factor.ghgr_import_id column should exist');
+select col_type_is(      'swrs_transform', 'measured_emission_factor', 'ghgr_import_id', 'integer', 'measured_emission_factor.ghgr_import_id column should be type integer');
+select col_hasnt_default('swrs_transform', 'measured_emission_factor', 'ghgr_import_id', 'measured_emission_factor.ghgr_import_id column should not have a default value');
 
---  select has_column(       'ggircs_swrs', 'measured_emission_factor', 'activity_name', 'measured_emission_factor.activity_id column should exist');
-select col_type_is(      'ggircs_swrs', 'measured_emission_factor', 'activity_name', 'character varying(1000)', 'measured_emission_factor.activity_name column should be type varchar');
-select col_is_null(      'ggircs_swrs', 'measured_emission_factor', 'activity_name', 'measured_emission_factor.activity_idx column should not allow null');
-select col_hasnt_default('ggircs_swrs', 'measured_emission_factor', 'activity_name', 'measured_emission_factor.activity_idx column should not have a default');
+--  select has_column(       'swrs_transform', 'measured_emission_factor', 'activity_name', 'measured_emission_factor.activity_id column should exist');
+select col_type_is(      'swrs_transform', 'measured_emission_factor', 'activity_name', 'character varying(1000)', 'measured_emission_factor.activity_name column should be type varchar');
+select col_is_null(      'swrs_transform', 'measured_emission_factor', 'activity_name', 'measured_emission_factor.activity_idx column should not allow null');
+select col_hasnt_default('swrs_transform', 'measured_emission_factor', 'activity_name', 'measured_emission_factor.activity_idx column should not have a default');
 
---  select has_column(       'ggircs_swrs', 'measured_emission_factor', 'sub_activity_name', 'measured_emission_factor.activity_id column should exist');
-select col_type_is(      'ggircs_swrs', 'measured_emission_factor', 'sub_activity_name', 'character varying(1000)', 'measured_emission_factor.sub_activity_name column should be type varchar');
-select col_is_null(      'ggircs_swrs', 'measured_emission_factor', 'sub_activity_name', 'measured_emission_factor.activity_idx column should not allow null');
-select col_hasnt_default('ggircs_swrs', 'measured_emission_factor', 'sub_activity_name', 'measured_emission_factor.activity_idx column should not have a default');
+--  select has_column(       'swrs_transform', 'measured_emission_factor', 'sub_activity_name', 'measured_emission_factor.activity_id column should exist');
+select col_type_is(      'swrs_transform', 'measured_emission_factor', 'sub_activity_name', 'character varying(1000)', 'measured_emission_factor.sub_activity_name column should be type varchar');
+select col_is_null(      'swrs_transform', 'measured_emission_factor', 'sub_activity_name', 'measured_emission_factor.activity_idx column should not allow null');
+select col_hasnt_default('swrs_transform', 'measured_emission_factor', 'sub_activity_name', 'measured_emission_factor.activity_idx column should not have a default');
 
---  select has_column(       'ggircs_swrs', 'measured_emission_factor', 'unit_name', 'measured_emission_factor.activity_id column should exist');
-select col_type_is(      'ggircs_swrs', 'measured_emission_factor', 'unit_name', 'character varying(1000)', 'measured_emission_factor.unit_name column should be type varchar');
-select col_is_null(      'ggircs_swrs', 'measured_emission_factor', 'unit_name', 'measured_emission_factor.activity_idx column should not allow null');
-select col_hasnt_default('ggircs_swrs', 'measured_emission_factor', 'unit_name', 'measured_emission_factor.activity_idx column should not have a default');
+--  select has_column(       'swrs_transform', 'measured_emission_factor', 'unit_name', 'measured_emission_factor.activity_id column should exist');
+select col_type_is(      'swrs_transform', 'measured_emission_factor', 'unit_name', 'character varying(1000)', 'measured_emission_factor.unit_name column should be type varchar');
+select col_is_null(      'swrs_transform', 'measured_emission_factor', 'unit_name', 'measured_emission_factor.activity_idx column should not allow null');
+select col_hasnt_default('swrs_transform', 'measured_emission_factor', 'unit_name', 'measured_emission_factor.activity_idx column should not have a default');
 
---  select has_column(       'ggircs_swrs', 'measured_emission_factor', 'sub_unit_name', 'measured_emission_factor.activity_id column should exist');
-select col_type_is(      'ggircs_swrs', 'measured_emission_factor', 'sub_unit_name', 'character varying(1000)', 'measured_emission_factor.sub_unit_name column should be type varchar');
-select col_is_null(      'ggircs_swrs', 'measured_emission_factor', 'sub_unit_name', 'measured_emission_factor.activity_idx column should not allow null');
-select col_hasnt_default('ggircs_swrs', 'measured_emission_factor', 'sub_unit_name', 'measured_emission_factor.activity_idx column should not have a default');
+--  select has_column(       'swrs_transform', 'measured_emission_factor', 'sub_unit_name', 'measured_emission_factor.activity_id column should exist');
+select col_type_is(      'swrs_transform', 'measured_emission_factor', 'sub_unit_name', 'character varying(1000)', 'measured_emission_factor.sub_unit_name column should be type varchar');
+select col_is_null(      'swrs_transform', 'measured_emission_factor', 'sub_unit_name', 'measured_emission_factor.activity_idx column should not allow null');
+select col_hasnt_default('swrs_transform', 'measured_emission_factor', 'sub_unit_name', 'measured_emission_factor.activity_idx column should not have a default');
 
---  select has_column(       'ggircs_swrs', 'measured_emission_factor', 'process_idx', 'measured_emission_factor.process_idx column should exist');
-select col_type_is(      'ggircs_swrs', 'measured_emission_factor', 'process_idx', 'integer', 'measured_emission_factor.process_idx column should be type integer');
-select col_is_null(      'ggircs_swrs', 'measured_emission_factor', 'process_idx', 'measured_emission_factor.process_idx column should not allow null');
-select col_hasnt_default('ggircs_swrs', 'measured_emission_factor', 'process_idx', 'measured_emission_factor.process_idx column should not  have a default');
+--  select has_column(       'swrs_transform', 'measured_emission_factor', 'process_idx', 'measured_emission_factor.process_idx column should exist');
+select col_type_is(      'swrs_transform', 'measured_emission_factor', 'process_idx', 'integer', 'measured_emission_factor.process_idx column should be type integer');
+select col_is_null(      'swrs_transform', 'measured_emission_factor', 'process_idx', 'measured_emission_factor.process_idx column should not allow null');
+select col_hasnt_default('swrs_transform', 'measured_emission_factor', 'process_idx', 'measured_emission_factor.process_idx column should not  have a default');
 
---  select has_column(       'ggircs_swrs', 'measured_emission_factor', 'sub_process_idx', 'measured_emission_factor.sub_process_idx column should exist');
-select col_type_is(      'ggircs_swrs', 'measured_emission_factor', 'sub_process_idx', 'integer', 'measured_emission_factor.sub_process_idx column should be type integer');
-select col_is_null(      'ggircs_swrs', 'measured_emission_factor', 'sub_process_idx', 'measured_emission_factor.sub_process_idx column should not allow null');
-select col_hasnt_default('ggircs_swrs', 'measured_emission_factor', 'sub_process_idx', 'measured_emission_factor.sub_process_idx column should not  have a default');
+--  select has_column(       'swrs_transform', 'measured_emission_factor', 'sub_process_idx', 'measured_emission_factor.sub_process_idx column should exist');
+select col_type_is(      'swrs_transform', 'measured_emission_factor', 'sub_process_idx', 'integer', 'measured_emission_factor.sub_process_idx column should be type integer');
+select col_is_null(      'swrs_transform', 'measured_emission_factor', 'sub_process_idx', 'measured_emission_factor.sub_process_idx column should not allow null');
+select col_hasnt_default('swrs_transform', 'measured_emission_factor', 'sub_process_idx', 'measured_emission_factor.sub_process_idx column should not  have a default');
 
---  select has_column(       'ggircs_swrs', 'measured_emission_factor', 'units_idx', 'measured_emission_factor.units_idx column should exist');
-select col_type_is(      'ggircs_swrs', 'measured_emission_factor', 'units_idx', 'integer', 'measured_emission_factor.units_idx column should be type integer');
-select col_is_null(      'ggircs_swrs', 'measured_emission_factor', 'units_idx', 'measured_emission_factor.units_idx column should not allow null');
-select col_hasnt_default('ggircs_swrs', 'measured_emission_factor', 'units_idx', 'measured_emission_factor.units_idx column should not  have a default');
+--  select has_column(       'swrs_transform', 'measured_emission_factor', 'units_idx', 'measured_emission_factor.units_idx column should exist');
+select col_type_is(      'swrs_transform', 'measured_emission_factor', 'units_idx', 'integer', 'measured_emission_factor.units_idx column should be type integer');
+select col_is_null(      'swrs_transform', 'measured_emission_factor', 'units_idx', 'measured_emission_factor.units_idx column should not allow null');
+select col_hasnt_default('swrs_transform', 'measured_emission_factor', 'units_idx', 'measured_emission_factor.units_idx column should not  have a default');
 
---  select has_column(       'ggircs_swrs', 'measured_emission_factor', 'unit_idx', 'measured_emission_factor.unit_idx column should exist');
-select col_type_is(      'ggircs_swrs', 'measured_emission_factor', 'unit_idx', 'integer', 'measured_emission_factor.unit_idx column should be type integer');
-select col_is_null(      'ggircs_swrs', 'measured_emission_factor', 'unit_idx', 'measured_emission_factor.unit_idx column should not allow null');
-select col_hasnt_default('ggircs_swrs', 'measured_emission_factor', 'unit_idx', 'measured_emission_factor.unit_idx column should not  have a default');
+--  select has_column(       'swrs_transform', 'measured_emission_factor', 'unit_idx', 'measured_emission_factor.unit_idx column should exist');
+select col_type_is(      'swrs_transform', 'measured_emission_factor', 'unit_idx', 'integer', 'measured_emission_factor.unit_idx column should be type integer');
+select col_is_null(      'swrs_transform', 'measured_emission_factor', 'unit_idx', 'measured_emission_factor.unit_idx column should not allow null');
+select col_hasnt_default('swrs_transform', 'measured_emission_factor', 'unit_idx', 'measured_emission_factor.unit_idx column should not  have a default');
 
---  select has_column(       'ggircs_swrs', 'measured_emission_factor', 'substances_idx', 'measured_emission_factor.substances_idx column should exist');
-select col_type_is(      'ggircs_swrs', 'measured_emission_factor', 'substances_idx', 'integer', 'measured_emission_factor.substances_idx column should be type integer');
-select col_is_null(      'ggircs_swrs', 'measured_emission_factor', 'substances_idx', 'measured_emission_factor.substances_idx column should not allow null');
-select col_hasnt_default('ggircs_swrs', 'measured_emission_factor', 'substances_idx', 'measured_emission_factor.substances_idx column should not  have a default');
+--  select has_column(       'swrs_transform', 'measured_emission_factor', 'substances_idx', 'measured_emission_factor.substances_idx column should exist');
+select col_type_is(      'swrs_transform', 'measured_emission_factor', 'substances_idx', 'integer', 'measured_emission_factor.substances_idx column should be type integer');
+select col_is_null(      'swrs_transform', 'measured_emission_factor', 'substances_idx', 'measured_emission_factor.substances_idx column should not allow null');
+select col_hasnt_default('swrs_transform', 'measured_emission_factor', 'substances_idx', 'measured_emission_factor.substances_idx column should not  have a default');
 
---  select has_column(       'ggircs_swrs', 'measured_emission_factor', 'substance_idx', 'measured_emission_factor.substance_idx column should exist');
-select col_type_is(      'ggircs_swrs', 'measured_emission_factor', 'substance_idx', 'integer', 'measured_emission_factor.substance_idx column should be type integer');
-select col_is_null(      'ggircs_swrs', 'measured_emission_factor', 'substance_idx', 'measured_emission_factor.substance_idx column should not allow null');
-select col_hasnt_default('ggircs_swrs', 'measured_emission_factor', 'substance_idx', 'measured_emission_factor.substance_idx column should not  have a default');
+--  select has_column(       'swrs_transform', 'measured_emission_factor', 'substance_idx', 'measured_emission_factor.substance_idx column should exist');
+select col_type_is(      'swrs_transform', 'measured_emission_factor', 'substance_idx', 'integer', 'measured_emission_factor.substance_idx column should be type integer');
+select col_is_null(      'swrs_transform', 'measured_emission_factor', 'substance_idx', 'measured_emission_factor.substance_idx column should not allow null');
+select col_hasnt_default('swrs_transform', 'measured_emission_factor', 'substance_idx', 'measured_emission_factor.substance_idx column should not  have a default');
 
---  select has_column(       'ggircs_swrs', 'measured_emission_factor', 'fuel_idx', 'measured_emission_factor.fuel_idx column should exist');
-select col_type_is(      'ggircs_swrs', 'measured_emission_factor', 'fuel_idx', 'integer', 'measured_emission_factor.fuel_idx column should be type integer');
-select col_is_null(      'ggircs_swrs', 'measured_emission_factor', 'fuel_idx', 'measured_emission_factor.fuel_idx column should not allow null');
-select col_hasnt_default('ggircs_swrs', 'measured_emission_factor', 'fuel_idx', 'measured_emission_factor.fuel_idx column should not  have a default');
+--  select has_column(       'swrs_transform', 'measured_emission_factor', 'fuel_idx', 'measured_emission_factor.fuel_idx column should exist');
+select col_type_is(      'swrs_transform', 'measured_emission_factor', 'fuel_idx', 'integer', 'measured_emission_factor.fuel_idx column should be type integer');
+select col_is_null(      'swrs_transform', 'measured_emission_factor', 'fuel_idx', 'measured_emission_factor.fuel_idx column should not allow null');
+select col_hasnt_default('swrs_transform', 'measured_emission_factor', 'fuel_idx', 'measured_emission_factor.fuel_idx column should not  have a default');
 
 insert into swrs_extract.ghgr_import (xml_file) values ($$
   <ActivityData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">

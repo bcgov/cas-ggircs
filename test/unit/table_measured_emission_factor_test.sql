@@ -233,35 +233,18 @@ $$), ($$
 </ReportData>
 $$);
 
-refresh materialized view swrs_transform.report with data;
-refresh materialized view swrs_transform.organisation with data;
-refresh materialized view swrs_transform.facility with data;
-refresh materialized view swrs_transform.activity with data;
-refresh materialized view swrs_transform.identifier with data;
-refresh materialized view swrs_transform.naics with data;
-refresh materialized view swrs_transform.unit with data;
-refresh materialized view swrs_transform.fuel with data;
-refresh materialized view swrs_transform.measured_emission_factor with data;
-refresh materialized view swrs_transform.final_report with data;
-
-select swrs_transform.load_report();
-select swrs_transform.load_organisation();
-select swrs_transform.load_facility();
-select swrs_transform.load_activity();
-select swrs_transform.load_identifier();
-select swrs_transform.load_naics();
-select swrs_transform.load_unit();
-select swrs_transform.load_fuel();
-select swrs_transform.load_measured_emission_factor();
+-- Run table export function without clearing the materialized views (for data equality tests below)
+SET client_min_messages TO WARNING; -- load is a bit verbose
+select swrs_transform.load(true, false);
 
 -- Table swrs.measured_emission_factor exists
-select has_table('ggircs'::name, 'measured_emission_factor'::name);
+select has_table('swrs'::name, 'measured_emission_factor'::name);
 
 -- Measured Emission Factor has pk
-select has_pk('ggircs', 'measured_emission_factor', 'ggircs_measured_emission_factor has primary key');
+select has_pk('swrs', 'measured_emission_factor', 'ggircs_measured_emission_factor has primary key');
 
 -- Measured Emission Factor has fk
-select has_fk('ggircs', 'measured_emission_factor', 'ggircs_measured_emission_factor has foreign key constraint(s)');
+select has_fk('swrs', 'measured_emission_factor', 'ggircs_measured_emission_factor has foreign key constraint(s)');
 
 -- Measured Emission Factor has data
 select isnt_empty('select * from swrs.measured_emission_factor', 'there is data in swrs.measured_emission_factor');

@@ -25,19 +25,19 @@ insert into swrs_extract.ghgr_import (xml_file) values ($$
 </ReportData>
 $$);
 
-refresh materialized view swrs_transform.report with data;
-refresh materialized view swrs_transform.final_report with data;
-select swrs_transform.load_report();
+-- Run table export function without clearing the materialized views (for data equality tests below)
+SET client_min_messages TO WARNING; -- load is a bit verbose
+select swrs_transform.load(true, false);
 
 select ghgr_import_id from swrs.report;
 select '======';
 select ghgr_import_id from swrs_transform.report;
 
 -- Table swrs.report exists
-select has_table('ggircs'::name, 'report'::name);
+select has_table('swrs'::name, 'report'::name);
 
 -- Report has pk
-select has_pk('ggircs', 'report', 'ggircs_report has primary key');
+select has_pk('swrs', 'report', 'ggircs_report has primary key');
 
 -- Report has data
 select isnt_empty('select * from swrs.report', 'there is data in swrs.report');

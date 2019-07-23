@@ -76,24 +76,18 @@ insert into swrs_extract.ghgr_import (xml_file) values ($$
 </ReportData>
 $$);
 
-refresh materialized view swrs_transform.report with data;
-refresh materialized view swrs_transform.organisation with data;
-refresh materialized view swrs_transform.facility with data;
-refresh materialized view swrs_transform.activity with data;
-refresh materialized view swrs_transform.final_report with data;
-select swrs_transform.load_report();
-select swrs_transform.load_organisation();
-select swrs_transform.load_facility();
-select swrs_transform.load_activity();
+-- Run table export function without clearing the materialized views (for data equality tests below)
+SET client_min_messages TO WARNING; -- load is a bit verbose
+select swrs_transform.load(true, false);
 
 -- Table swrs.activity exists
-select has_table('ggircs'::name, 'activity'::name);
+select has_table('swrs'::name, 'activity'::name);
 
 -- Activity has pk
-select has_pk('ggircs', 'activity', 'ggircs_activity has primary key');
+select has_pk('swrs', 'activity', 'ggircs_activity has primary key');
 
 -- Activity has fk
-select has_fk('ggircs', 'activity', 'ggircs_activity has foreign key constraint(s)');
+select has_fk('swrs', 'activity', 'ggircs_activity has foreign key constraint(s)');
 
 -- Activity has data
 select isnt_empty('select * from swrs.activity', 'there is data in swrs.activity');

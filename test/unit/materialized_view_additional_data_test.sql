@@ -7,17 +7,17 @@ begin;
 select plan(42);
 
 select has_materialized_view(
-    'ggircs_swrs', 'additional_data',
+    'swrs_transform', 'additional_data',
     'swrs_transform.additional_data should be a materialized view'
 );
 
 select has_index(
-    'ggircs_swrs', 'additional_data', 'ggircs_additional_data_primary_key',
+    'swrs_transform', 'additional_data', 'ggircs_additional_data_primary_key',
     'swrs_transform.additional_data should have a primary key'
 );
 
 
-select columns_are('ggircs_swrs'::name, 'additional_data'::name, array[
+select columns_are('swrs_transform'::name, 'additional_data'::name, array[
     'id'::name,
     'ghgr_import_id'::name,
     'activity_name'::name,
@@ -36,48 +36,48 @@ select columns_are('ggircs_swrs'::name, 'additional_data'::name, array[
 
 
 
-select col_type_is(      'ggircs_swrs', 'additional_data', 'ghgr_import_id', 'integer', 'additional_data.ghgr_import_id column should be type integer');
-select col_hasnt_default('ggircs_swrs', 'additional_data', 'ghgr_import_id', 'additional_data.ghgr_import_id column should not have a default value');
+select col_type_is(      'swrs_transform', 'additional_data', 'ghgr_import_id', 'integer', 'additional_data.ghgr_import_id column should be type integer');
+select col_hasnt_default('swrs_transform', 'additional_data', 'ghgr_import_id', 'additional_data.ghgr_import_id column should not have a default value');
 
-select col_type_is(      'ggircs_swrs', 'additional_data', 'activity_name', 'character varying(1000)', 'additional_data.activity_name column should be type text');
-select col_hasnt_default('ggircs_swrs', 'additional_data', 'activity_name', 'additional_data.activity_name column should not have a default');
+select col_type_is(      'swrs_transform', 'additional_data', 'activity_name', 'character varying(1000)', 'additional_data.activity_name column should be type text');
+select col_hasnt_default('swrs_transform', 'additional_data', 'activity_name', 'additional_data.activity_name column should not have a default');
 
---  select col_is_null(      'ggircs_swrs', 'additional_data', 'process_idx', 'additional_data.process_idx column should allow null');
-select col_type_is(      'ggircs_swrs', 'additional_data', 'process_idx', 'integer', 'additional_data.process_idx column should be type integer');
-select col_hasnt_default('ggircs_swrs', 'additional_data', 'process_idx', 'additional_data.process_idx column should not have a default');
+--  select col_is_null(      'swrs_transform', 'additional_data', 'process_idx', 'additional_data.process_idx column should allow null');
+select col_type_is(      'swrs_transform', 'additional_data', 'process_idx', 'integer', 'additional_data.process_idx column should be type integer');
+select col_hasnt_default('swrs_transform', 'additional_data', 'process_idx', 'additional_data.process_idx column should not have a default');
 
---  select col_is_null(      'ggircs_swrs', 'additional_data', 'sub_process_idx', 'additional_data.sub_process_idx column should allow null');
-select col_type_is(      'ggircs_swrs', 'additional_data', 'sub_process_idx', 'integer', 'additional_data.sub_process_idx column should be type integer');
-select col_hasnt_default('ggircs_swrs', 'additional_data', 'sub_process_idx', 'additional_data.sub_process_idx column should not have a default');
+--  select col_is_null(      'swrs_transform', 'additional_data', 'sub_process_idx', 'additional_data.sub_process_idx column should allow null');
+select col_type_is(      'swrs_transform', 'additional_data', 'sub_process_idx', 'integer', 'additional_data.sub_process_idx column should be type integer');
+select col_hasnt_default('swrs_transform', 'additional_data', 'sub_process_idx', 'additional_data.sub_process_idx column should not have a default');
 
---  select col_is_null(      'ggircs_swrs', 'additional_data', 'grandparent_idx', 'additional_data.grandparent_idx column should allow null');
-select col_type_is(      'ggircs_swrs', 'additional_data', 'grandparent_idx', 'integer', 'additional_data.grandparent_idx column should be type integer');
-select col_hasnt_default('ggircs_swrs', 'additional_data', 'grandparent_idx', 'additional_data.grandparent_idx column should not have a default');
+--  select col_is_null(      'swrs_transform', 'additional_data', 'grandparent_idx', 'additional_data.grandparent_idx column should allow null');
+select col_type_is(      'swrs_transform', 'additional_data', 'grandparent_idx', 'integer', 'additional_data.grandparent_idx column should be type integer');
+select col_hasnt_default('swrs_transform', 'additional_data', 'grandparent_idx', 'additional_data.grandparent_idx column should not have a default');
 
--- select col_is_null(      'ggircs_swrs', 'additional_data', 'parent_idx', 'additional_data.parent_idx column should allow null');
-select col_type_is(      'ggircs_swrs', 'additional_data', 'parent_idx', 'integer', 'additional_data.parent_idx column should be type integer');
-select col_hasnt_default('ggircs_swrs', 'additional_data', 'parent_idx', 'additional_data.parent_idx column should not have a default');
+-- select col_is_null(      'swrs_transform', 'additional_data', 'parent_idx', 'additional_data.parent_idx column should allow null');
+select col_type_is(      'swrs_transform', 'additional_data', 'parent_idx', 'integer', 'additional_data.parent_idx column should be type integer');
+select col_hasnt_default('swrs_transform', 'additional_data', 'parent_idx', 'additional_data.parent_idx column should not have a default');
 
-select col_type_is(      'ggircs_swrs', 'additional_data', 'class_idx', 'integer', 'additional_data.class_idx column should be type integer');
-select col_hasnt_default('ggircs_swrs', 'additional_data', 'class_idx', 'additional_data.class_idx column should not have a default');
+select col_type_is(      'swrs_transform', 'additional_data', 'class_idx', 'integer', 'additional_data.class_idx column should be type integer');
+select col_hasnt_default('swrs_transform', 'additional_data', 'class_idx', 'additional_data.class_idx column should not have a default');
 
-select col_type_is(      'ggircs_swrs', 'additional_data', 'grandparent', 'character varying(1000)', 'additional_data.grandparent column should be type text');
-select col_hasnt_default('ggircs_swrs', 'additional_data', 'grandparent', 'additional_data.grandparent column should not have a default');
+select col_type_is(      'swrs_transform', 'additional_data', 'grandparent', 'character varying(1000)', 'additional_data.grandparent column should be type text');
+select col_hasnt_default('swrs_transform', 'additional_data', 'grandparent', 'additional_data.grandparent column should not have a default');
 
-select col_type_is(      'ggircs_swrs', 'additional_data', 'parent', 'character varying(1000)', 'additional_data.parent column should be type text');
-select col_hasnt_default('ggircs_swrs', 'additional_data', 'parent', 'additional_data.parent column should not have a default');
+select col_type_is(      'swrs_transform', 'additional_data', 'parent', 'character varying(1000)', 'additional_data.parent column should be type text');
+select col_hasnt_default('swrs_transform', 'additional_data', 'parent', 'additional_data.parent column should not have a default');
 
-select col_type_is(      'ggircs_swrs', 'additional_data', 'class', 'character varying(1000)', 'additional_data.class column should be type text');
-select col_hasnt_default('ggircs_swrs', 'additional_data', 'class', 'additional_data.class column should not have a default');
+select col_type_is(      'swrs_transform', 'additional_data', 'class', 'character varying(1000)', 'additional_data.class column should be type text');
+select col_hasnt_default('swrs_transform', 'additional_data', 'class', 'additional_data.class column should not have a default');
 
-select col_type_is(      'ggircs_swrs', 'additional_data', 'attribute', 'character varying(1000)', 'additional_data.attribute column should be type text');
-select col_hasnt_default('ggircs_swrs', 'additional_data', 'attribute', 'additional_data.attribute column should not have a default');
+select col_type_is(      'swrs_transform', 'additional_data', 'attribute', 'character varying(1000)', 'additional_data.attribute column should be type text');
+select col_hasnt_default('swrs_transform', 'additional_data', 'attribute', 'additional_data.attribute column should not have a default');
 
-select col_type_is(      'ggircs_swrs', 'additional_data', 'attr_value', 'character varying(10000)', 'additional_data.attr_value column should be type text');
-select col_hasnt_default('ggircs_swrs', 'additional_data', 'attr_value', 'additional_data.attr_value column should not have a default');
+select col_type_is(      'swrs_transform', 'additional_data', 'attr_value', 'character varying(10000)', 'additional_data.attr_value column should be type text');
+select col_hasnt_default('swrs_transform', 'additional_data', 'attr_value', 'additional_data.attr_value column should not have a default');
 
-select col_type_is(      'ggircs_swrs', 'additional_data', 'node_value', 'character varying(10000)', 'additional_data.node_value column should be type text');
-select col_hasnt_default('ggircs_swrs', 'additional_data', 'node_value', 'additional_data.node_value column should not have a default');
+select col_type_is(      'swrs_transform', 'additional_data', 'node_value', 'character varying(10000)', 'additional_data.node_value column should be type text');
+select col_hasnt_default('swrs_transform', 'additional_data', 'node_value', 'additional_data.node_value column should not have a default');
 
 
 -- Insert data for fixture based testing

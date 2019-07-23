@@ -69,7 +69,7 @@ objects:
               - |
                 set -euo pipefail;
                 sqitch deploy;
-                echo "Exporting data to 'ggircs' schema";
+                echo "Exporting data to 'swrs' schema";
                 psql -c "select swrs_transform.load()";
     template:
       metadata:

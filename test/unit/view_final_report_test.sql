@@ -4,31 +4,26 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(11);
+select plan(10);
 
-select has_materialized_view(
-    'ggircs_swrs', 'final_report',
-    'swrs_transform.final_report should be a materialized view'
+select has_view(
+    'swrs_transform', 'final_report',
+    'swrs_transform.final_report should be a view'
 );
 
-select has_index(
-    'ggircs_swrs', 'final_report', 'ggircs_final_report_primary_key',
-    'swrs_transform.final_report should have a primary key'
-);
-
-select columns_are('ggircs_swrs'::name, 'final_report'::name, array[
+select columns_are('swrs_transform'::name, 'final_report'::name, array[
     'id'::name,
     'swrs_report_id'::name,
     'ghgr_import_id'::name
 ]);
 
---  select has_column(       'ggircs_swrs', 'final_report', 'swrs_report_id', 'final_report.swrs_report_id column should exist');
-select col_type_is(      'ggircs_swrs', 'final_report', 'swrs_report_id', 'integer', 'final_report.swrs_report_id column should be type bigint');
-select col_hasnt_default('ggircs_swrs', 'final_report', 'swrs_report_id', 'final_report.swrs_report_id column should not have a default value');
+--  select has_column(       'swrs_transform', 'final_report', 'swrs_report_id', 'final_report.swrs_report_id column should exist');
+select col_type_is(      'swrs_transform', 'final_report', 'swrs_report_id', 'integer', 'final_report.swrs_report_id column should be type bigint');
+select col_hasnt_default('swrs_transform', 'final_report', 'swrs_report_id', 'final_report.swrs_report_id column should not have a default value');
 
---  select has_column(       'ggircs_swrs', 'final_report', 'ghgr_import_id', 'final_report.ghgr_import_id column should exist');
-select col_type_is(      'ggircs_swrs', 'final_report', 'ghgr_import_id', 'integer', 'final_report.ghgr_import_id column should be type bigint');
-select col_hasnt_default('ggircs_swrs', 'final_report', 'ghgr_import_id', 'final_report.ghgr_import_id column should not have a default value');
+--  select has_column(       'swrs_transform', 'final_report', 'ghgr_import_id', 'final_report.ghgr_import_id column should exist');
+select col_type_is(      'swrs_transform', 'final_report', 'ghgr_import_id', 'integer', 'final_report.ghgr_import_id column should be type bigint');
+select col_hasnt_default('swrs_transform', 'final_report', 'ghgr_import_id', 'final_report.ghgr_import_id column should not have a default value');
 
 -- Setup fixture
 insert into swrs_extract.ghgr_import (imported_at, xml_file) VALUES
@@ -117,7 +112,6 @@ on conflict (swrs_organisation_id) do nothing;
 
 -- Ensure fixture is processed correctly
 refresh materialized view swrs_transform.report with data;
-refresh materialized view swrs_transform.final_report with data;
 
 -- Test ghgr_import_id fk relation
 select results_eq(

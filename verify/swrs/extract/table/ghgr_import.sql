@@ -1,4 +1,4 @@
--- Verify ggircs_swrs:table_ghgr_import on pg
+-- Verify swrs_transform:table_ghgr_import on pg
 
 begin;
 

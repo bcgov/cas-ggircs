@@ -252,24 +252,18 @@ $$), ($$
 </ReportData>
 $$);
 
-refresh materialized view swrs_transform.report with data;
-refresh materialized view swrs_transform.organisation with data;
-refresh materialized view swrs_transform.facility with data;
-refresh materialized view swrs_transform.naics with data;
-refresh materialized view swrs_transform.final_report with data;
-select swrs_transform.load_report();
-select swrs_transform.load_organisation();
-select swrs_transform.load_facility();
-select swrs_transform.load_naics();
+-- Run table export function without clearing the materialized views (for data equality tests below)
+SET client_min_messages TO WARNING; -- load is a bit verbose
+select swrs_transform.load(true, false);
 
 -- Table swrs.naics exists
-select has_table('ggircs'::name, 'naics'::name);
+select has_table('swrs'::name, 'naics'::name);
 
 -- Naics has pk
-select has_pk('ggircs', 'naics', 'ggircs_naics has primary key');
+select has_pk('swrs', 'naics', 'ggircs_naics has primary key');
 
 -- Naics has fk
-select has_fk('ggircs', 'naics', 'ggircs_naics has foreign key constraint(s)');
+select has_fk('swrs', 'naics', 'ggircs_naics has foreign key constraint(s)');
 
 -- Naics has data
 select isnt_empty('select * from swrs.naics', 'there is data in swrs.naics');

@@ -5,11 +5,11 @@ reset client_min_messages;
 begin;
 select plan(21);
 
--- Test matview report exists in schema ggircs_swrs
-select has_materialized_view('ggircs_swrs', 'facility', 'Materialized view facility exists');
+-- Test matview report exists in schema swrs_transform
+select has_materialized_view('swrs_transform', 'facility', 'Materialized view facility exists');
 
 -- Test column names in matview report exist and are correct
-select columns_are('ggircs_swrs'::name, 'facility'::name, ARRAY[
+select columns_are('swrs_transform'::name, 'facility'::name, ARRAY[
   'id'::name,
   'ghgr_import_id'::name,
   'swrs_facility_id'::name,
@@ -23,20 +23,20 @@ select columns_are('ggircs_swrs'::name, 'facility'::name, ARRAY[
 ]);
 
 -- Test index names in matview report exist and are correct
-select has_index('ggircs_swrs', 'facility', 'ggircs_facility_primary_key', 'swrs_transform.facility has index: ggircs_facility_primary_key');
+select has_index('swrs_transform', 'facility', 'ggircs_facility_primary_key', 'swrs_transform.facility has index: ggircs_facility_primary_key');
 
 -- Test unique indicies are defined unique
-select index_is_unique('ggircs_swrs', 'facility', 'ggircs_facility_primary_key', 'Matview report index ggircs_facility_primary_key is unique');
+select index_is_unique('swrs_transform', 'facility', 'ggircs_facility_primary_key', 'Matview report index ggircs_facility_primary_key is unique');
 
 -- Test columns in matview report have correct types
-select col_type_is('ggircs_swrs', 'facility', 'ghgr_import_id', 'integer', 'swrs_transform.facility column _ghgr_import_id has type integer');
-select col_type_is('ggircs_swrs', 'facility', 'swrs_facility_id', 'integer', 'swrs_transform.facility column swrs_facility_id has type numeric');
-select col_type_is('ggircs_swrs', 'facility', 'facility_name', 'character varying(1000)', 'swrs_transform.facility column facility_name has type varchar');
-select col_type_is('ggircs_swrs', 'facility', 'relationship_type', 'character varying(1000)', 'swrs_transform.facility column relationship_type has type varchar');
-select col_type_is('ggircs_swrs', 'facility', 'portability_indicator', 'character varying(1000)', 'swrs_transform.facility column portability_indicator has type varchar');
-select col_type_is('ggircs_swrs', 'facility', 'status', 'character varying(1000)', 'swrs_transform.facility column status has type varchar');
-select col_type_is('ggircs_swrs', 'facility', 'latitude', 'numeric', 'swrs_transform.facility column latitude has type varchar');
-select col_type_is('ggircs_swrs', 'facility', 'longitude', 'numeric', 'swrs_transform.facility column longitude has type varchar');
+select col_type_is('swrs_transform', 'facility', 'ghgr_import_id', 'integer', 'swrs_transform.facility column _ghgr_import_id has type integer');
+select col_type_is('swrs_transform', 'facility', 'swrs_facility_id', 'integer', 'swrs_transform.facility column swrs_facility_id has type numeric');
+select col_type_is('swrs_transform', 'facility', 'facility_name', 'character varying(1000)', 'swrs_transform.facility column facility_name has type varchar');
+select col_type_is('swrs_transform', 'facility', 'relationship_type', 'character varying(1000)', 'swrs_transform.facility column relationship_type has type varchar');
+select col_type_is('swrs_transform', 'facility', 'portability_indicator', 'character varying(1000)', 'swrs_transform.facility column portability_indicator has type varchar');
+select col_type_is('swrs_transform', 'facility', 'status', 'character varying(1000)', 'swrs_transform.facility column status has type varchar');
+select col_type_is('swrs_transform', 'facility', 'latitude', 'numeric', 'swrs_transform.facility column latitude has type varchar');
+select col_type_is('swrs_transform', 'facility', 'longitude', 'numeric', 'swrs_transform.facility column longitude has type varchar');
 
 -- insert necessary data into table ghgr_import
 insert into swrs_extract.ghgr_import (xml_file) values ($$

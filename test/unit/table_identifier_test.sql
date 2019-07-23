@@ -271,24 +271,18 @@ $$), ($$
 </ReportData>
 $$);
 
-refresh materialized view swrs_transform.report with data;
-refresh materialized view swrs_transform.organisation with data;
-refresh materialized view swrs_transform.facility with data;
-refresh materialized view swrs_transform.identifier with data;
-refresh materialized view swrs_transform.final_report with data;
-select swrs_transform.load_report();
-select swrs_transform.load_organisation();
-select swrs_transform.load_facility();
-select swrs_transform.load_identifier();
+-- Run table export function without clearing the materialized views (for data equality tests below)
+SET client_min_messages TO WARNING; -- load is a bit verbose
+select swrs_transform.load(true, false);
 
 -- Table swrs.identifier exists
-select has_table('ggircs'::name, 'identifier'::name);
+select has_table('swrs'::name, 'identifier'::name);
 
 -- Identifier has pk
-select has_pk('ggircs', 'identifier', 'ggircs_identifier has primary key');
+select has_pk('swrs', 'identifier', 'ggircs_identifier has primary key');
 
 -- Identifier has fk
-select has_fk('ggircs', 'identifier', 'ggircs_identifier has foreign key constraint(s)');
+select has_fk('swrs', 'identifier', 'ggircs_identifier has foreign key constraint(s)');
 
 -- Identifier has data
 select isnt_empty('select * from swrs.identifier', 'there is data in swrs.identifier');
@@ -310,7 +304,7 @@ select set_eq(
 );
 
 -- Identifier (BCGHGID) -> Single Facility
-select results_eq(
+select set_eq(
     $$
     select identifier.identifier_value as bcghgid from swrs.facility
     join swrs.identifier

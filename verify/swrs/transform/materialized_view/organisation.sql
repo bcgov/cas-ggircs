@@ -3,6 +3,6 @@
 BEGIN;
 
 select * from swrs_transform.organisation where false;
---  select false from pg_matviews where schemaname = 'ggircs_swrs' and matviewname = 'organisation';
+--  select false from pg_matviews where schemaname = 'swrs_transform' and matviewname = 'organisation';
 
 ROLLBACK;

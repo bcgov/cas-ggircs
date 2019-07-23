@@ -7,16 +7,16 @@ begin;
 select plan(75);
 
 select has_materialized_view(
-    'ggircs_swrs', 'unit',
+    'swrs_transform', 'unit',
     'swrs_transform.activity should be a materialized view'
 );
 
 select has_index(
-    'ggircs_swrs', 'unit', 'ggircs_unit_primary_key',
+    'swrs_transform', 'unit', 'ggircs_unit_primary_key',
     'swrs_transform.activity should have a primary key'
 );
 
-select columns_are('ggircs_swrs'::name, 'unit'::name, array[
+select columns_are('swrs_transform'::name, 'unit'::name, array[
     'id'::name,
     'ghgr_import_id'::name,
     'activity_name'::name,
@@ -39,99 +39,99 @@ select columns_are('ggircs_swrs'::name, 'unit'::name, array[
     'non_cogen_unit_name'::name
 ]);
 
---  select has_column(       'ggircs_swrs', 'unit', 'ghgr_import_id', 'unit.ghgr_import_id column should exist');
-select col_type_is(      'ggircs_swrs', 'unit', 'ghgr_import_id', 'integer', 'unit.ghgr_import_id column should be type integer');
-select col_hasnt_default('ggircs_swrs', 'unit', 'ghgr_import_id', 'unit.ghgr_import_id column should not have a default value');
+--  select has_column(       'swrs_transform', 'unit', 'ghgr_import_id', 'unit.ghgr_import_id column should exist');
+select col_type_is(      'swrs_transform', 'unit', 'ghgr_import_id', 'integer', 'unit.ghgr_import_id column should be type integer');
+select col_hasnt_default('swrs_transform', 'unit', 'ghgr_import_id', 'unit.ghgr_import_id column should not have a default value');
 
---  select has_column(       'ggircs_swrs', 'unit', 'activity_name', 'unit.activity_name column should exist');
-select col_type_is(      'ggircs_swrs', 'unit', 'activity_name', 'character varying(1000)', 'unit.activity_name column should be type varchar');
---  select col_is_null(      'ggircs_swrs', 'unit', 'activity_name', 'unit.activity_name column should allow null');
-select col_hasnt_default('ggircs_swrs', 'unit', 'activity_name', 'unit.activity_name column should not have a default');
+--  select has_column(       'swrs_transform', 'unit', 'activity_name', 'unit.activity_name column should exist');
+select col_type_is(      'swrs_transform', 'unit', 'activity_name', 'character varying(1000)', 'unit.activity_name column should be type varchar');
+--  select col_is_null(      'swrs_transform', 'unit', 'activity_name', 'unit.activity_name column should allow null');
+select col_hasnt_default('swrs_transform', 'unit', 'activity_name', 'unit.activity_name column should not have a default');
 
---  select has_column(       'ggircs_swrs', 'unit', 'process_idx', 'unit.process_idx column should exist');
-select col_type_is(      'ggircs_swrs', 'unit', 'process_idx', 'integer', 'unit.process_idx column should be type integer');
---  select col_is_null(      'ggircs_swrs', 'unit', 'process_idx', 'unit.process_idx column should allow null');
-select col_hasnt_default('ggircs_swrs', 'unit', 'process_idx', 'unit.process_idx column should not  have a default');
+--  select has_column(       'swrs_transform', 'unit', 'process_idx', 'unit.process_idx column should exist');
+select col_type_is(      'swrs_transform', 'unit', 'process_idx', 'integer', 'unit.process_idx column should be type integer');
+--  select col_is_null(      'swrs_transform', 'unit', 'process_idx', 'unit.process_idx column should allow null');
+select col_hasnt_default('swrs_transform', 'unit', 'process_idx', 'unit.process_idx column should not  have a default');
 
---  select has_column(       'ggircs_swrs', 'unit', 'sub_process_idx', 'unit.sub_process_idx column should exist');
-select col_type_is(      'ggircs_swrs', 'unit', 'sub_process_idx', 'integer', 'unit.sub_process_idx column should be type integer');
---  select col_is_null(      'ggircs_swrs', 'unit', 'sub_process_idx', 'unit.sub_process_idx column should allow null');
-select col_hasnt_default('ggircs_swrs', 'unit', 'sub_process_idx', 'unit.sub_process_idx column should not have a default');
+--  select has_column(       'swrs_transform', 'unit', 'sub_process_idx', 'unit.sub_process_idx column should exist');
+select col_type_is(      'swrs_transform', 'unit', 'sub_process_idx', 'integer', 'unit.sub_process_idx column should be type integer');
+--  select col_is_null(      'swrs_transform', 'unit', 'sub_process_idx', 'unit.sub_process_idx column should allow null');
+select col_hasnt_default('swrs_transform', 'unit', 'sub_process_idx', 'unit.sub_process_idx column should not have a default');
 
---  select has_column(       'ggircs_swrs', 'unit', 'units_idx', 'unit.units_idx column should exist');
-select col_type_is(      'ggircs_swrs', 'unit', 'units_idx', 'integer', 'unit.units_idx column should be type integer');
---  select col_is_null(      'ggircs_swrs', 'unit', 'units_idx', 'unit.units_idx column should allow null');
-select col_hasnt_default('ggircs_swrs', 'unit', 'units_idx', 'unit.units_idx column should not have a default');
+--  select has_column(       'swrs_transform', 'unit', 'units_idx', 'unit.units_idx column should exist');
+select col_type_is(      'swrs_transform', 'unit', 'units_idx', 'integer', 'unit.units_idx column should be type integer');
+--  select col_is_null(      'swrs_transform', 'unit', 'units_idx', 'unit.units_idx column should allow null');
+select col_hasnt_default('swrs_transform', 'unit', 'units_idx', 'unit.units_idx column should not have a default');
 
---  select has_column(       'ggircs_swrs', 'unit', 'unit_idx', 'unit.unit_idx column should exist');
-select col_type_is(      'ggircs_swrs', 'unit', 'unit_idx', 'integer', 'unit.unit_idx column should be type integer');
---  select col_is_null(      'ggircs_swrs', 'unit', 'unit_idx', 'unit.unit_idx column should allow null');
-select col_hasnt_default('ggircs_swrs', 'unit', 'unit_idx', 'unit.unit_idx column should not have a default');
+--  select has_column(       'swrs_transform', 'unit', 'unit_idx', 'unit.unit_idx column should exist');
+select col_type_is(      'swrs_transform', 'unit', 'unit_idx', 'integer', 'unit.unit_idx column should be type integer');
+--  select col_is_null(      'swrs_transform', 'unit', 'unit_idx', 'unit.unit_idx column should allow null');
+select col_hasnt_default('swrs_transform', 'unit', 'unit_idx', 'unit.unit_idx column should not have a default');
 
---  select has_column(       'ggircs_swrs', 'unit', 'unit_name', 'unit.unit_name column should exist');
-select col_type_is(      'ggircs_swrs', 'unit', 'unit_name', 'character varying(1000)', 'unit.unit_name column should be type varchar');
-select col_is_null(      'ggircs_swrs', 'unit', 'unit_name', 'unit.unit_name column should allow null');
-select col_hasnt_default('ggircs_swrs', 'unit', 'unit_name', 'unit.unit_name column should not have a default value');
+--  select has_column(       'swrs_transform', 'unit', 'unit_name', 'unit.unit_name column should exist');
+select col_type_is(      'swrs_transform', 'unit', 'unit_name', 'character varying(1000)', 'unit.unit_name column should be type varchar');
+select col_is_null(      'swrs_transform', 'unit', 'unit_name', 'unit.unit_name column should allow null');
+select col_hasnt_default('swrs_transform', 'unit', 'unit_name', 'unit.unit_name column should not have a default value');
 
---  select has_column(       'ggircs_swrs', 'unit', 'unit_description', 'unit.unit_description column should exist');
-select col_type_is(      'ggircs_swrs', 'unit', 'unit_description', 'character varying(1000)', 'unit.unit_description column should be type varchar');
-select col_is_null(      'ggircs_swrs', 'unit', 'unit_description', 'unit.unit_description column should allow null');
-select col_hasnt_default('ggircs_swrs', 'unit', 'unit_description', 'unit.unit_description column should not have a default value');
+--  select has_column(       'swrs_transform', 'unit', 'unit_description', 'unit.unit_description column should exist');
+select col_type_is(      'swrs_transform', 'unit', 'unit_description', 'character varying(1000)', 'unit.unit_description column should be type varchar');
+select col_is_null(      'swrs_transform', 'unit', 'unit_description', 'unit.unit_description column should allow null');
+select col_hasnt_default('swrs_transform', 'unit', 'unit_description', 'unit.unit_description column should not have a default value');
 
---  select has_column(       'ggircs_swrs', 'unit', 'cogen_cycle_type', 'unit.cogen_cycle_type column should exist');
-select col_type_is(      'ggircs_swrs', 'unit', 'cogen_cycle_type', 'character varying(1000)', 'unit.cogen_cycle_type column should be type varchar');
-select col_is_null(      'ggircs_swrs', 'unit', 'cogen_cycle_type', 'unit.cogen_cycle_type column should allow null');
-select col_hasnt_default('ggircs_swrs', 'unit', 'cogen_cycle_type', 'unit.cogen_cycle_type column should not have a default value');
+--  select has_column(       'swrs_transform', 'unit', 'cogen_cycle_type', 'unit.cogen_cycle_type column should exist');
+select col_type_is(      'swrs_transform', 'unit', 'cogen_cycle_type', 'character varying(1000)', 'unit.cogen_cycle_type column should be type varchar');
+select col_is_null(      'swrs_transform', 'unit', 'cogen_cycle_type', 'unit.cogen_cycle_type column should allow null');
+select col_hasnt_default('swrs_transform', 'unit', 'cogen_cycle_type', 'unit.cogen_cycle_type column should not have a default value');
 
---  select has_column(       'ggircs_swrs', 'unit', 'cogen_nameplate_capacity', 'unit.cogen_nameplate_capacity column should exist');
-select col_type_is(      'ggircs_swrs', 'unit', 'cogen_nameplate_capacity', 'numeric', 'unit.cogen_nameplate_capacity column should be type numeric');
-select col_is_null(      'ggircs_swrs', 'unit', 'cogen_nameplate_capacity', 'unit.cogen_nameplate_capacity column should allow null');
-select col_hasnt_default('ggircs_swrs', 'unit', 'cogen_nameplate_capacity', 'unit.cogen_nameplate_capacity column should not have a default value');
+--  select has_column(       'swrs_transform', 'unit', 'cogen_nameplate_capacity', 'unit.cogen_nameplate_capacity column should exist');
+select col_type_is(      'swrs_transform', 'unit', 'cogen_nameplate_capacity', 'numeric', 'unit.cogen_nameplate_capacity column should be type numeric');
+select col_is_null(      'swrs_transform', 'unit', 'cogen_nameplate_capacity', 'unit.cogen_nameplate_capacity column should allow null');
+select col_hasnt_default('swrs_transform', 'unit', 'cogen_nameplate_capacity', 'unit.cogen_nameplate_capacity column should not have a default value');
 
---  select has_column(       'ggircs_swrs', 'unit', 'cogen_net_power', 'unit.cogen_net_power column should exist');
-select col_type_is(      'ggircs_swrs', 'unit', 'cogen_net_power', 'numeric', 'unit.cogen_net_power column should be type numeric');
-select col_is_null(      'ggircs_swrs', 'unit', 'cogen_net_power', 'unit.cogen_net_power column should allow null');
-select col_hasnt_default('ggircs_swrs', 'unit', 'cogen_net_power', 'unit.cogen_net_power column should not have a default value');
+--  select has_column(       'swrs_transform', 'unit', 'cogen_net_power', 'unit.cogen_net_power column should exist');
+select col_type_is(      'swrs_transform', 'unit', 'cogen_net_power', 'numeric', 'unit.cogen_net_power column should be type numeric');
+select col_is_null(      'swrs_transform', 'unit', 'cogen_net_power', 'unit.cogen_net_power column should allow null');
+select col_hasnt_default('swrs_transform', 'unit', 'cogen_net_power', 'unit.cogen_net_power column should not have a default value');
 
---  select has_column(       'ggircs_swrs', 'unit', 'cogen_steam_heat_acq_name', 'unit.cogen_steam_heat_acq_name column should exist');
-select col_type_is(      'ggircs_swrs', 'unit', 'cogen_steam_heat_acq_name', 'character varying(1000)', 'unit.cogen_steam_heat_acq_name column should be type varchar');
-select col_is_null(      'ggircs_swrs', 'unit', 'cogen_steam_heat_acq_name', 'unit.cogen_steam_heat_acq_name column should allow null');
-select col_hasnt_default('ggircs_swrs', 'unit', 'cogen_steam_heat_acq_name', 'unit.cogen_steam_heat_acq_name column should not have a default value');
+--  select has_column(       'swrs_transform', 'unit', 'cogen_steam_heat_acq_name', 'unit.cogen_steam_heat_acq_name column should exist');
+select col_type_is(      'swrs_transform', 'unit', 'cogen_steam_heat_acq_name', 'character varying(1000)', 'unit.cogen_steam_heat_acq_name column should be type varchar');
+select col_is_null(      'swrs_transform', 'unit', 'cogen_steam_heat_acq_name', 'unit.cogen_steam_heat_acq_name column should allow null');
+select col_hasnt_default('swrs_transform', 'unit', 'cogen_steam_heat_acq_name', 'unit.cogen_steam_heat_acq_name column should not have a default value');
 
---  select has_column(       'ggircs_swrs', 'unit', 'cogen_steam_heat_acq_quantity', 'unit.cogen_steam_heat_acq_quantity column should exist');
-select col_type_is(      'ggircs_swrs', 'unit', 'cogen_steam_heat_acq_quantity', 'numeric', 'unit.cogen_steam_heat_acq_quantity column should be type numeric');
-select col_is_null(      'ggircs_swrs', 'unit', 'cogen_steam_heat_acq_quantity', 'unit.cogen_steam_heat_acq_quantity column should allow null');
-select col_hasnt_default('ggircs_swrs', 'unit', 'cogen_steam_heat_acq_quantity', 'unit.cogen_steam_heat_acq_quantity column should not have a default value');
+--  select has_column(       'swrs_transform', 'unit', 'cogen_steam_heat_acq_quantity', 'unit.cogen_steam_heat_acq_quantity column should exist');
+select col_type_is(      'swrs_transform', 'unit', 'cogen_steam_heat_acq_quantity', 'numeric', 'unit.cogen_steam_heat_acq_quantity column should be type numeric');
+select col_is_null(      'swrs_transform', 'unit', 'cogen_steam_heat_acq_quantity', 'unit.cogen_steam_heat_acq_quantity column should allow null');
+select col_hasnt_default('swrs_transform', 'unit', 'cogen_steam_heat_acq_quantity', 'unit.cogen_steam_heat_acq_quantity column should not have a default value');
 
---  select has_column(       'ggircs_swrs', 'unit', 'cogen_supplemental_firing_purpose', 'unit.cogen_supplemental_firing_purpose column should exist');
-select col_type_is(      'ggircs_swrs', 'unit', 'cogen_supplemental_firing_purpose', 'character varying(1000)', 'unit.cogen_supplemental_firing_purpose column should be type varchar');
-select col_is_null(      'ggircs_swrs', 'unit', 'cogen_supplemental_firing_purpose', 'unit.cogen_supplemental_firing_purpose column should allow null');
-select col_hasnt_default('ggircs_swrs', 'unit', 'cogen_supplemental_firing_purpose', 'unit.cogen_supplemental_firing_purpose column should not have a default value');
+--  select has_column(       'swrs_transform', 'unit', 'cogen_supplemental_firing_purpose', 'unit.cogen_supplemental_firing_purpose column should exist');
+select col_type_is(      'swrs_transform', 'unit', 'cogen_supplemental_firing_purpose', 'character varying(1000)', 'unit.cogen_supplemental_firing_purpose column should be type varchar');
+select col_is_null(      'swrs_transform', 'unit', 'cogen_supplemental_firing_purpose', 'unit.cogen_supplemental_firing_purpose column should allow null');
+select col_hasnt_default('swrs_transform', 'unit', 'cogen_supplemental_firing_purpose', 'unit.cogen_supplemental_firing_purpose column should not have a default value');
 
---  select has_column(       'ggircs_swrs', 'unit', 'cogen_thermal_output_quantity', 'unit.cogen_thermal_output_quantity column should exist');
-select col_type_is(      'ggircs_swrs', 'unit', 'cogen_thermal_output_quantity', 'numeric', 'unit.cogen_thermal_output_quantity column should be type numeric');
-select col_is_null(      'ggircs_swrs', 'unit', 'cogen_thermal_output_quantity', 'unit.cogen_thermal_output_quantity column should allow null');
-select col_hasnt_default('ggircs_swrs', 'unit', 'cogen_thermal_output_quantity', 'unit.cogen_thermal_output_quantity column should not have a default value');
+--  select has_column(       'swrs_transform', 'unit', 'cogen_thermal_output_quantity', 'unit.cogen_thermal_output_quantity column should exist');
+select col_type_is(      'swrs_transform', 'unit', 'cogen_thermal_output_quantity', 'numeric', 'unit.cogen_thermal_output_quantity column should be type numeric');
+select col_is_null(      'swrs_transform', 'unit', 'cogen_thermal_output_quantity', 'unit.cogen_thermal_output_quantity column should allow null');
+select col_hasnt_default('swrs_transform', 'unit', 'cogen_thermal_output_quantity', 'unit.cogen_thermal_output_quantity column should not have a default value');
 
---  select has_column(       'ggircs_swrs', 'unit', 'cogen_unit_name', 'unit.cogen_unit_name column should exist');
-select col_type_is(      'ggircs_swrs', 'unit', 'cogen_unit_name', 'character varying(1000)', 'unit.cogen_unit_name column should be type varchar');
-select col_is_null(      'ggircs_swrs', 'unit', 'cogen_unit_name', 'unit.cogen_unit_name column should allow null');
-select col_hasnt_default('ggircs_swrs', 'unit', 'cogen_unit_name', 'unit.cogen_unit_name column should not have a default value');
+--  select has_column(       'swrs_transform', 'unit', 'cogen_unit_name', 'unit.cogen_unit_name column should exist');
+select col_type_is(      'swrs_transform', 'unit', 'cogen_unit_name', 'character varying(1000)', 'unit.cogen_unit_name column should be type varchar');
+select col_is_null(      'swrs_transform', 'unit', 'cogen_unit_name', 'unit.cogen_unit_name column should allow null');
+select col_hasnt_default('swrs_transform', 'unit', 'cogen_unit_name', 'unit.cogen_unit_name column should not have a default value');
 
---  select has_column(       'ggircs_swrs', 'unit', 'non_cogen_nameplate_capacity', 'unit.non_cogen_nameplate_capacity column should exist');
-select col_type_is(      'ggircs_swrs', 'unit', 'non_cogen_nameplate_capacity', 'numeric', 'unit.non_cogen_nameplate_capacity column should be type varchar');
-select col_is_null(      'ggircs_swrs', 'unit', 'non_cogen_nameplate_capacity', 'unit.non_cogen_nameplate_capacity column should allow null');
-select col_hasnt_default('ggircs_swrs', 'unit', 'non_cogen_nameplate_capacity', 'unit.non_cogen_nameplate_capacity column should not have a default value');
+--  select has_column(       'swrs_transform', 'unit', 'non_cogen_nameplate_capacity', 'unit.non_cogen_nameplate_capacity column should exist');
+select col_type_is(      'swrs_transform', 'unit', 'non_cogen_nameplate_capacity', 'numeric', 'unit.non_cogen_nameplate_capacity column should be type varchar');
+select col_is_null(      'swrs_transform', 'unit', 'non_cogen_nameplate_capacity', 'unit.non_cogen_nameplate_capacity column should allow null');
+select col_hasnt_default('swrs_transform', 'unit', 'non_cogen_nameplate_capacity', 'unit.non_cogen_nameplate_capacity column should not have a default value');
 
---  select has_column(       'ggircs_swrs', 'unit', 'non_cogen_net_power', 'unit.non_cogen_net_power column should exist');
-select col_type_is(      'ggircs_swrs', 'unit', 'non_cogen_net_power', 'numeric', 'unit.non_cogen_net_power column should be type varchar');
-select col_is_null(      'ggircs_swrs', 'unit', 'non_cogen_net_power', 'unit.non_cogen_net_power column should allow null');
-select col_hasnt_default('ggircs_swrs', 'unit', 'non_cogen_net_power', 'unit.non_cogen_net_power column should not have a default value');
+--  select has_column(       'swrs_transform', 'unit', 'non_cogen_net_power', 'unit.non_cogen_net_power column should exist');
+select col_type_is(      'swrs_transform', 'unit', 'non_cogen_net_power', 'numeric', 'unit.non_cogen_net_power column should be type varchar');
+select col_is_null(      'swrs_transform', 'unit', 'non_cogen_net_power', 'unit.non_cogen_net_power column should allow null');
+select col_hasnt_default('swrs_transform', 'unit', 'non_cogen_net_power', 'unit.non_cogen_net_power column should not have a default value');
 
---  select has_column(       'ggircs_swrs', 'unit', 'non_cogen_unit_name', 'unit.non_cogen_unit_name column should exist');
-select col_type_is(      'ggircs_swrs', 'unit', 'non_cogen_unit_name', 'character varying(1000)', 'unit.non_cogen_unit_name column should be type varchar');
-select col_is_null(      'ggircs_swrs', 'unit', 'non_cogen_unit_name', 'unit.non_cogen_unit_name column should allow null');
-select col_hasnt_default('ggircs_swrs', 'unit', 'non_cogen_unit_name', 'unit.non_cogen_unit_name column should not have a default value');
+--  select has_column(       'swrs_transform', 'unit', 'non_cogen_unit_name', 'unit.non_cogen_unit_name column should exist');
+select col_type_is(      'swrs_transform', 'unit', 'non_cogen_unit_name', 'character varying(1000)', 'unit.non_cogen_unit_name column should be type varchar');
+select col_is_null(      'swrs_transform', 'unit', 'non_cogen_unit_name', 'unit.non_cogen_unit_name column should allow null');
+select col_hasnt_default('swrs_transform', 'unit', 'non_cogen_unit_name', 'unit.non_cogen_unit_name column should not have a default value');
 
 -- Insert data for fixture based testing
 insert into swrs_extract.ghgr_import (xml_file) values ($$

@@ -1,4 +1,4 @@
--- Deploy ggircs_swrs:table_naics_naics_category to pg
+-- Deploy swrs_transform:table_naics_naics_category to pg
 -- requires: schema_ggircs_swrs
 
 begin;

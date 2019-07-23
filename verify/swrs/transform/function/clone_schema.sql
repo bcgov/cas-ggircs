@@ -2,6 +2,6 @@
 
 BEGIN;
 
--- XXX Add verifications here.
+select pg_get_functiondef('swrs_transform.clone_schema(text, text, boolean, boolean)'::regprocedure);
 
 ROLLBACK;

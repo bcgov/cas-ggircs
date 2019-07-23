@@ -1,4 +1,4 @@
--- Verify ggircs_swrs:table_naics_naics_category on pg
+-- Verify swrs_transform:table_naics_naics_category on pg
 
 begin;
 

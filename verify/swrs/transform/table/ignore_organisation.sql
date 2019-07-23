@@ -1,4 +1,4 @@
--- Verify ggircs_swrs:ignore_organisation on pg
+-- Verify swrs_transform:ignore_organisation on pg
 
 begin;
 

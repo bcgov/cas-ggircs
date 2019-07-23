@@ -5,11 +5,11 @@ reset client_min_messages;
 begin;
 select plan(14);
 
--- Test matview report exists in schema ggircs_swrs
-select has_materialized_view('ggircs_swrs', 'flat', 'swrs_transform.flat exists as a materialized view');
+-- Test matview report exists in schema swrs_transform
+select has_materialized_view('swrs_transform', 'flat', 'swrs_transform.flat exists as a materialized view');
 
 -- Test column names in matview report exist and are correct
-select columns_are('ggircs_swrs'::name, 'flat'::name, array[
+select columns_are('swrs_transform'::name, 'flat'::name, array[
     'id'::name,
     'ghgr_import_id'::name,
     'element_id'::name,
@@ -23,20 +23,20 @@ select columns_are('ggircs_swrs'::name, 'flat'::name, array[
 ]);
 
 -- Test index names in matview report exist and are correct
-select has_index('ggircs_swrs', 'flat', 'ggircs_flat_primary_key', 'swrs_transform.flat has index: ggircs_flat_primary_key');
-select has_index('ggircs_swrs', 'flat', 'ggircs_flat_report', 'swrs_transform.flat has index: ggircs_flat_report');
+select has_index('swrs_transform', 'flat', 'ggircs_flat_primary_key', 'swrs_transform.flat has index: ggircs_flat_primary_key');
+select has_index('swrs_transform', 'flat', 'ggircs_flat_report', 'swrs_transform.flat has index: ggircs_flat_report');
 
 -- Test unique indicies are defined unique
-select index_is_unique('ggircs_swrs', 'flat', 'ggircs_flat_primary_key', 'swrs_transform.flat index ggircs_flat_primary_key is unique');
+select index_is_unique('swrs_transform', 'flat', 'ggircs_flat_primary_key', 'swrs_transform.flat index ggircs_flat_primary_key is unique');
 
 -- Test columns in matview report have correct types
-select col_type_is('ggircs_swrs', 'flat', 'ghgr_import_id', 'integer', 'swrs_transform.flat.ghgr_import_id has type integer');
-select col_type_is('ggircs_swrs', 'flat', 'element_id', 'bigint', 'swrs_transform.flat.element_id has type bigint');
-select col_type_is('ggircs_swrs', 'flat', 'swrs_report_id', 'numeric(1000,0)', 'swrs_transform.flat.element_id has type bigint');
-select col_type_is('ggircs_swrs', 'flat', 'class', 'character varying(10000)', 'swrs_transform.flat.class has type varchar');
-select col_type_is('ggircs_swrs', 'flat', 'attr', 'character varying(10000)', 'swrs_transform.flat.attr has type varchar');
-select col_type_is('ggircs_swrs', 'flat', 'value', 'character varying(10000)', 'swrs_transform.flat.value has type varchar');
-select col_type_is('ggircs_swrs', 'flat', 'context', 'character varying(10000)', 'swrs_transform.flat.value has type varchar');
+select col_type_is('swrs_transform', 'flat', 'ghgr_import_id', 'integer', 'swrs_transform.flat.ghgr_import_id has type integer');
+select col_type_is('swrs_transform', 'flat', 'element_id', 'bigint', 'swrs_transform.flat.element_id has type bigint');
+select col_type_is('swrs_transform', 'flat', 'swrs_report_id', 'numeric(1000,0)', 'swrs_transform.flat.element_id has type bigint');
+select col_type_is('swrs_transform', 'flat', 'class', 'character varying(10000)', 'swrs_transform.flat.class has type varchar');
+select col_type_is('swrs_transform', 'flat', 'attr', 'character varying(10000)', 'swrs_transform.flat.attr has type varchar');
+select col_type_is('swrs_transform', 'flat', 'value', 'character varying(10000)', 'swrs_transform.flat.value has type varchar');
+select col_type_is('swrs_transform', 'flat', 'context', 'character varying(10000)', 'swrs_transform.flat.value has type varchar');
 
 -- insert necessary data into table ghgr_import
 insert into swrs_extract.ghgr_import (imported_at, xml_file) values ('2018-09-29T11:55:39.423', $$

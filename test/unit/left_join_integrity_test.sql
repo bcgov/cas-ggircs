@@ -4,8 +4,8 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 /** This unit test tests the integrity of our left joins. Ensuring we have no row duplication as a result of a left join.
-    The id's from the original state of the ggircs table before any left joins is tested against the final state of the
-    ggircs table after all left joins have been done. **/
+    The id's from the original state of the swrs table before any left joins is tested against the final state of the
+    swrs table after all left joins have been done. **/
 
 begin;
 select plan(14);
@@ -1116,11 +1116,9 @@ $$), ($$
 </ReportData>
 $$);
 
--- Run table export function
-select swrs_transform.load();
-
--- Refresh all materialized views (run again so materialized views are populated for data equality tests below)
-select swrs_transform.transform('with data');
+-- Run table export function without clearing the materialized views (for data equality tests below)
+SET client_min_messages TO WARNING; -- load is a bit verbose
+select swrs_transform.load(true, false);
 
 /** ACTIVITY **/
 select set_eq(

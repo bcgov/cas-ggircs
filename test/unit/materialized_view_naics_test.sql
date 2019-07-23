@@ -5,12 +5,12 @@ reset client_min_messages;
 begin;
 select plan(19);
 
--- Test matview report exists in schema ggircs_swrs
-select has_materialized_view('ggircs_swrs', 'naics', 'swrs_transform.naics exists');
+-- Test matview report exists in schema swrs_transform
+select has_materialized_view('swrs_transform', 'naics', 'swrs_transform.naics exists');
 --
 -- -- Test column names in matview report exist
 
-select columns_are('ggircs_swrs'::name, 'naics'::name, ARRAY[
+select columns_are('swrs_transform'::name, 'naics'::name, ARRAY[
     'id'::name,
     'ghgr_import_id'::name,
     'swrs_facility_id'::name,
@@ -22,19 +22,19 @@ select columns_are('ggircs_swrs'::name, 'naics'::name, ARRAY[
 ]);
 
 -- -- Test index names in matview report exist and are correct
-select has_index('ggircs_swrs', 'naics', 'ggircs_naics_primary_key', 'swrs_transform.naics has index: ggircs_naics_primary_key');
+select has_index('swrs_transform', 'naics', 'ggircs_naics_primary_key', 'swrs_transform.naics has index: ggircs_naics_primary_key');
 
 -- -- Test unique indicies are defined unique
-select index_is_unique('ggircs_swrs', 'naics', 'ggircs_naics_primary_key', 'swrs_transform.naics index ggircs_facility_primary_key is unique');
+select index_is_unique('swrs_transform', 'naics', 'ggircs_naics_primary_key', 'swrs_transform.naics index ggircs_facility_primary_key is unique');
 
 -- -- Test columns in matview report have correct types
-select col_type_is('ggircs_swrs', 'naics', 'ghgr_import_id', 'integer', 'swrs_transform.naics.facility_id has type integer');
-select col_type_is('ggircs_swrs', 'naics', 'swrs_facility_id', 'integer', 'swrs_transform.naics.swrs_facility_id has type numeric');
-select col_type_is('ggircs_swrs', 'naics', 'path_context', 'character varying(1000)', 'swrs_transform.naics.path_context has type varchar');
-select col_type_is('ggircs_swrs', 'naics', 'naics_code_idx', 'integer', 'swrs_transform.naics.naics_code_idx has type integer');
-select col_type_is('ggircs_swrs', 'naics', 'naics_classification', 'character varying(1000)', 'swrs_transform.naics.naics_classification has type varchar');
-select col_type_is('ggircs_swrs', 'naics', 'naics_code', 'integer', 'swrs_transform.naics.naics_code has type integer');
-select col_type_is('ggircs_swrs', 'naics', 'naics_priority', 'character varying(1000)', 'swrs_transform.naics.naics_priority has type varchar');
+select col_type_is('swrs_transform', 'naics', 'ghgr_import_id', 'integer', 'swrs_transform.naics.facility_id has type integer');
+select col_type_is('swrs_transform', 'naics', 'swrs_facility_id', 'integer', 'swrs_transform.naics.swrs_facility_id has type numeric');
+select col_type_is('swrs_transform', 'naics', 'path_context', 'character varying(1000)', 'swrs_transform.naics.path_context has type varchar');
+select col_type_is('swrs_transform', 'naics', 'naics_code_idx', 'integer', 'swrs_transform.naics.naics_code_idx has type integer');
+select col_type_is('swrs_transform', 'naics', 'naics_classification', 'character varying(1000)', 'swrs_transform.naics.naics_classification has type varchar');
+select col_type_is('swrs_transform', 'naics', 'naics_code', 'integer', 'swrs_transform.naics.naics_code has type integer');
+select col_type_is('swrs_transform', 'naics', 'naics_priority', 'character varying(1000)', 'swrs_transform.naics.naics_priority has type varchar');
 
 -- insert necessary data into table ghgr_import
 insert into swrs_extract.ghgr_import (xml_file) values ($$

@@ -30,7 +30,7 @@ create view swrs_transform.final_report as (
 --create unique index ggircs_final_report_primary_key on swrs_transform.final_report (swrs_report_id, ghgr_import_id);
 
 comment on view swrs_transform.final_report is 'The view showing the latest submitted report by swrs_transform.report.id';
-comment on column swrs_transform.final_report.id is 'A generated index used for keying in the ggircs schema';
+comment on column swrs_transform.final_report.id is 'A generated index used for keying in the swrs schema';
 comment on column swrs_transform.final_report.swrs_report_id is 'The foreign key referencing swrs_transform.report.id';
 comment on column swrs_transform.final_report.ghgr_import_id is 'The foreign key referencing swrs_extract.ghgr_import.id';
 

@@ -233,29 +233,18 @@ $$), ($$
 </ReportData>
 $$);
 
-refresh materialized view swrs_transform.report with data;
-refresh materialized view swrs_transform.organisation with data;
-refresh materialized view swrs_transform.facility with data;
-refresh materialized view swrs_transform.activity with data;
-refresh materialized view swrs_transform.unit with data;
-refresh materialized view swrs_transform.fuel with data;
-refresh materialized view swrs_transform.final_report with data;
-
-select swrs_transform.load_report();
-select swrs_transform.load_organisation();
-select swrs_transform.load_facility();
-select swrs_transform.load_activity();
-select swrs_transform.load_unit();
-select swrs_transform.load_fuel();
+-- Run table export function without clearing the materialized views (for data equality tests below)
+SET client_min_messages TO WARNING; -- load is a bit verbose
+select swrs_transform.load(true, false);
 
 -- Table swrs.fuel exists
-select has_table('ggircs'::name, 'fuel'::name);
+select has_table('swrs'::name, 'fuel'::name);
 
 -- Fuel has pk
-select has_pk('ggircs', 'fuel', 'ggircs_fuel has primary key');
+select has_pk('swrs', 'fuel', 'ggircs_fuel has primary key');
 
 -- Fuel has fk
-select has_fk('ggircs', 'fuel', 'ggircs_fuel has foreign key constraint(s)');
+select has_fk('swrs', 'fuel', 'ggircs_fuel has foreign key constraint(s)');
 
 -- Fuel has data
 select isnt_empty('select * from swrs.fuel', 'there is data in swrs.fuel');

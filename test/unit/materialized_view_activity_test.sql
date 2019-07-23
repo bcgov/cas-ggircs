@@ -7,16 +7,16 @@ begin;
 select plan(28);
 
 select has_materialized_view(
-    'ggircs_swrs', 'activity',
+    'swrs_transform', 'activity',
     'swrs_transform.activity should be a materialized view'
 );
 
 select has_index(
-    'ggircs_swrs', 'activity', 'ggircs_activity_primary_key',
+    'swrs_transform', 'activity', 'ggircs_activity_primary_key',
     'swrs_transform.activity should have a primary key'
 );
 
-select columns_are('ggircs_swrs'::name, 'activity'::name, array[
+select columns_are('swrs_transform'::name, 'activity'::name, array[
     'id'::name,
     'ghgr_import_id'::name,
     'process_idx'::name,
@@ -27,39 +27,39 @@ select columns_are('ggircs_swrs'::name, 'activity'::name, array[
     'information_requirement'::name
 ]);
 
---  select has_column(       'ggircs_swrs', 'activity', 'ghgr_import_id', 'activity.ghgr_import_id column should exist');
-select col_type_is(      'ggircs_swrs', 'activity', 'ghgr_import_id', 'integer', 'activity.ghgr_import_id column should be type integer');
-select col_hasnt_default('ggircs_swrs', 'activity', 'ghgr_import_id', 'activity.ghgr_import_id column should not have a default value');
+--  select has_column(       'swrs_transform', 'activity', 'ghgr_import_id', 'activity.ghgr_import_id column should exist');
+select col_type_is(      'swrs_transform', 'activity', 'ghgr_import_id', 'integer', 'activity.ghgr_import_id column should be type integer');
+select col_hasnt_default('swrs_transform', 'activity', 'ghgr_import_id', 'activity.ghgr_import_id column should not have a default value');
 
---  select has_column(       'ggircs_swrs', 'activity', 'process_idx', 'activity.process_idx column should exist');
-select col_type_is(      'ggircs_swrs', 'activity', 'process_idx', 'integer', 'activity.process_idx column should be type integer');
---  select col_is_null(      'ggircs_swrs', 'activity', 'process_idx', 'activity.process_idx column should allow null');
-select col_hasnt_default('ggircs_swrs', 'activity', 'process_idx', 'activity.process_idx column should not have a default');
+--  select has_column(       'swrs_transform', 'activity', 'process_idx', 'activity.process_idx column should exist');
+select col_type_is(      'swrs_transform', 'activity', 'process_idx', 'integer', 'activity.process_idx column should be type integer');
+--  select col_is_null(      'swrs_transform', 'activity', 'process_idx', 'activity.process_idx column should allow null');
+select col_hasnt_default('swrs_transform', 'activity', 'process_idx', 'activity.process_idx column should not have a default');
 
---  select has_column(       'ggircs_swrs', 'activity', 'sub_process_idx', 'activity.sub_process_idx column should exist');
-select col_type_is(      'ggircs_swrs', 'activity', 'sub_process_idx', 'integer', 'activity.sub_process_idx column should be type integer');
---  select col_is_null(      'ggircs_swrs', 'activity', 'sub_process_idx', 'activity.sub_process_idx column should allow null');
-select col_hasnt_default('ggircs_swrs', 'activity', 'sub_process_idx', 'activity.sub_process_idx column should not have a default');
+--  select has_column(       'swrs_transform', 'activity', 'sub_process_idx', 'activity.sub_process_idx column should exist');
+select col_type_is(      'swrs_transform', 'activity', 'sub_process_idx', 'integer', 'activity.sub_process_idx column should be type integer');
+--  select col_is_null(      'swrs_transform', 'activity', 'sub_process_idx', 'activity.sub_process_idx column should allow null');
+select col_hasnt_default('swrs_transform', 'activity', 'sub_process_idx', 'activity.sub_process_idx column should not have a default');
 
---  select has_column(       'ggircs_swrs', 'activity', 'activity_name', 'activity.activity_name column should exist');
-select col_type_is(      'ggircs_swrs', 'activity', 'activity_name', 'character varying(1000)', 'activity.activity_name column should be type text');
---  select col_is_null(      'ggircs_swrs', 'activity', 'activity_name', 'activity.activity_name column should allow null');
-select col_hasnt_default('ggircs_swrs', 'activity', 'activity_name', 'activity.activity_name column should not have a default');
+--  select has_column(       'swrs_transform', 'activity', 'activity_name', 'activity.activity_name column should exist');
+select col_type_is(      'swrs_transform', 'activity', 'activity_name', 'character varying(1000)', 'activity.activity_name column should be type text');
+--  select col_is_null(      'swrs_transform', 'activity', 'activity_name', 'activity.activity_name column should allow null');
+select col_hasnt_default('swrs_transform', 'activity', 'activity_name', 'activity.activity_name column should not have a default');
 
---  select has_column(       'ggircs_swrs', 'activity', 'process_name', 'activity.process_name column should exist');
-select col_type_is(      'ggircs_swrs', 'activity', 'process_name', 'character varying(1000)', 'activity.process_name column should be type text');
-select col_is_null(      'ggircs_swrs', 'activity', 'process_name', 'activity.process_name column should allow null');
-select col_hasnt_default('ggircs_swrs', 'activity', 'process_name', 'activity.process_name column should not  have a default');
+--  select has_column(       'swrs_transform', 'activity', 'process_name', 'activity.process_name column should exist');
+select col_type_is(      'swrs_transform', 'activity', 'process_name', 'character varying(1000)', 'activity.process_name column should be type text');
+select col_is_null(      'swrs_transform', 'activity', 'process_name', 'activity.process_name column should allow null');
+select col_hasnt_default('swrs_transform', 'activity', 'process_name', 'activity.process_name column should not  have a default');
 
---  select has_column(       'ggircs_swrs', 'activity', 'sub_process_name', 'activity.sub_process_name column should exist');
-select col_type_is(      'ggircs_swrs', 'activity', 'sub_process_name', 'character varying(1000)', 'activity.sub_process_name column should be type text');
-select col_is_null(      'ggircs_swrs', 'activity', 'sub_process_name', 'activity.sub_process_name column should allow null');
-select col_hasnt_default('ggircs_swrs', 'activity', 'sub_process_name', 'activity.sub_process_name column should not have a default value');
+--  select has_column(       'swrs_transform', 'activity', 'sub_process_name', 'activity.sub_process_name column should exist');
+select col_type_is(      'swrs_transform', 'activity', 'sub_process_name', 'character varying(1000)', 'activity.sub_process_name column should be type text');
+select col_is_null(      'swrs_transform', 'activity', 'sub_process_name', 'activity.sub_process_name column should allow null');
+select col_hasnt_default('swrs_transform', 'activity', 'sub_process_name', 'activity.sub_process_name column should not have a default value');
 
---  select has_column(       'ggircs_swrs', 'activity', 'information_requirement', 'activity.information_requirement column should exist');
-select col_type_is(      'ggircs_swrs', 'activity', 'information_requirement', 'character varying(1000)', 'activity.information_requirement column should be type text');
-select col_is_null(      'ggircs_swrs', 'activity', 'information_requirement', 'activity.information_requirement column should allow null');
-select col_hasnt_default('ggircs_swrs', 'activity', 'information_requirement', 'activity.information_requirement column should not have a default value');
+--  select has_column(       'swrs_transform', 'activity', 'information_requirement', 'activity.information_requirement column should exist');
+select col_type_is(      'swrs_transform', 'activity', 'information_requirement', 'character varying(1000)', 'activity.information_requirement column should be type text');
+select col_is_null(      'swrs_transform', 'activity', 'information_requirement', 'activity.information_requirement column should allow null');
+select col_hasnt_default('swrs_transform', 'activity', 'information_requirement', 'activity.information_requirement column should not have a default value');
 
 -- Insert data for fixture based testing
 insert into swrs_extract.ghgr_import (xml_file) values ($$

@@ -2,6 +2,6 @@
 
 BEGIN;
 
--- XXX Add verifications here.
+select pg_catalog.has_schema_privilege('swrs_extract', 'usage');
 
 ROLLBACK;

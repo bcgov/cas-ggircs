@@ -33,7 +33,7 @@ select swrs_transform.transform('with data');
 select isnt_empty('select * from swrs_transform.report', 'transform() has populated materialized views');
 
 -- Function load exists
-select has_function( 'ggircs_swrs', 'load', 'Schema ggircs_swrs has function load()' );
+select has_function( 'swrs_transform', 'load', 'Schema swrs_transform has function load()' );
 
 -- refresh views with no data
 select swrs_transform.transform('with no data');

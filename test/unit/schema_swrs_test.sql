@@ -5,8 +5,8 @@ reset client_min_messages;
 begin;
 select plan(2);
 
-select has_schema('ggircs');
-select matches(obj_description('swrs'::regnamespace, 'pg_namespace'), '.+', 'Schema ggircs has a description');
+select has_schema('swrs');
+select matches(obj_description('swrs'::regnamespace, 'pg_namespace'), '.+', 'Schema swrs has a description');
 
 select finish();
 rollback;

@@ -603,23 +603,18 @@ $$), ($$
 </ReportData>
 $$);
 
--- Populate necessary tables
-refresh materialized view swrs_transform.report with data;
-refresh materialized view swrs_transform.organisation with data;
-refresh materialized view swrs_transform.facility with data;
-refresh materialized view swrs_transform.final_report with data;
-select swrs_transform.load_report();
-select swrs_transform.load_organisation();
-select swrs_transform.load_facility();
+-- Run table export function without clearing the materialized views (for data equality tests below)
+SET client_min_messages TO WARNING; -- load is a bit verbose
+select swrs_transform.load(true, false);
 
 -- Table swrs.facility exists
-select has_table('ggircs'::name, 'facility'::name);
+select has_table('swrs'::name, 'facility'::name);
 
 -- Facility has pk
-select has_pk('ggircs', 'facility', 'ggircs_facility has primary key');
+select has_pk('swrs', 'facility', 'ggircs_facility has primary key');
 
 -- Facility has fk
-select has_fk('ggircs', 'facility', 'ggircs_facility has foreign key constraint(s)');
+select has_fk('swrs', 'facility', 'ggircs_facility has foreign key constraint(s)');
 
 -- Facility has data
 select isnt_empty('select * from swrs.facility', 'there is data in swrs.facility');

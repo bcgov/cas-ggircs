@@ -133,24 +133,18 @@ $$), ($$
 </ReportData>
 $$);
 
-refresh materialized view swrs_transform.report with data;
-refresh materialized view swrs_transform.organisation with data;
-refresh materialized view swrs_transform.facility with data;
-refresh materialized view swrs_transform.permit with data;
-refresh materialized view swrs_transform.final_report with data;
-select swrs_transform.load_report();
-select swrs_transform.load_organisation();
-select swrs_transform.load_facility();
-select swrs_transform.load_permit();
+-- Run table export function without clearing the materialized views (for data equality tests below)
+SET client_min_messages TO WARNING; -- load is a bit verbose
+select swrs_transform.load(true, false);
 
 -- Table swrs.permit exists
-select has_table('ggircs'::name, 'permit'::name);
+select has_table('swrs'::name, 'permit'::name);
 
 -- Permit has pk
-select has_pk('ggircs', 'permit', 'ggircs_permit has primary key');
+select has_pk('swrs', 'permit', 'ggircs_permit has primary key');
 
 -- Permit has fk
-select has_fk('ggircs', 'permit', 'ggircs_permit has foreign key constraint(s)');
+select has_fk('swrs', 'permit', 'ggircs_permit has foreign key constraint(s)');
 
 -- Permit has data
 select isnt_empty('select * from swrs.permit', 'there is data in swrs.permit');
