@@ -2,6 +2,6 @@
 
 begin;
 
-select * from ggircs_swrs_transform.contact where false;
+select * from swrs_transform.contact where false;
 
 rollback;

@@ -2,6 +2,6 @@
 
 begin;
 
-drop view if exists ggircs.carbon_tax_calculation;
+drop view if exists swrs.carbon_tax_calculation;
 
 commit;

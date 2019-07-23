@@ -9,7 +9,7 @@ select plan(9);
 -- Test table exists in ggircs_swrs schema
 select has_table(
     'ggircs_swrs', 'fuel_mapping',
-    'ggircs.fuel_mapping should exist as a table'
+    'swrs.fuel_mapping should exist as a table'
 );
 
 -- Test table has a primary key

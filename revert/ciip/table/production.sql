@@ -2,6 +2,6 @@
 
 begin;
 
-drop table ciip.production;
+drop table ciip_2018.production;
 
 commit;

@@ -2,6 +2,6 @@
 
 begin;
 
-drop view if exists ggircs.pro_rated_fuel_charge;
+drop view if exists swrs.pro_rated_fuel_charge;
 
 commit;

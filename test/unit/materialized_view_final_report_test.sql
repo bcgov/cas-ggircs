@@ -8,12 +8,12 @@ select plan(11);
 
 select has_materialized_view(
     'ggircs_swrs', 'final_report',
-    'ggircs_swrs_transform.final_report should be a materialized view'
+    'swrs_transform.final_report should be a materialized view'
 );
 
 select has_index(
     'ggircs_swrs', 'final_report', 'ggircs_final_report_primary_key',
-    'ggircs_swrs_transform.final_report should have a primary key'
+    'swrs_transform.final_report should have a primary key'
 );
 
 select columns_are('ggircs_swrs'::name, 'final_report'::name, array[
@@ -31,7 +31,7 @@ select col_type_is(      'ggircs_swrs', 'final_report', 'ghgr_import_id', 'integ
 select col_hasnt_default('ggircs_swrs', 'final_report', 'ghgr_import_id', 'final_report.ghgr_import_id column should not have a default value');
 
 -- Setup fixture
-insert into ggircs_swrs_extract.ghgr_import (imported_at, xml_file) VALUES
+insert into swrs_extract.ghgr_import (imported_at, xml_file) VALUES
 ('2018-09-29T11:55:39.423', $$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <ReportDetails>
@@ -88,7 +88,7 @@ $$), ('2018-11-15T12:35:27.226', $$
 $$);
 
 
-insert into ggircs_swrs_transform.ignore_organisation (swrs_organisation_id)
+insert into swrs_transform.ignore_organisation (swrs_organisation_id)
 values (5367)
      , (5401)
      , (6432)
@@ -116,37 +116,37 @@ values (5367)
 on conflict (swrs_organisation_id) do nothing;
 
 -- Ensure fixture is processed correctly
-refresh materialized view ggircs_swrs_transform.report with data;
-refresh materialized view ggircs_swrs_transform.final_report with data;
+refresh materialized view swrs_transform.report with data;
+refresh materialized view swrs_transform.final_report with data;
 
 -- Test ghgr_import_id fk relation
 select results_eq(
     $$
-    select report.swrs_report_id from ggircs_swrs_transform.final_report
-    join ggircs_swrs_transform.report
+    select report.swrs_report_id from swrs_transform.final_report
+    join swrs_transform.report
     on
     final_report.swrs_report_id = report.swrs_report_id
     $$,
 
-    'select swrs_report_id from ggircs_swrs_transform.report',
+    'select swrs_report_id from swrs_transform.report',
 
-    'Foreign key ghgr_import_id in ggircs_swrs_final_report references ggircs_swrs_transform.report'
+    'Foreign key ghgr_import_id in ggircs_swrs_final_report references swrs_transform.report'
 );
 
 select results_eq(
-  'select swrs_report_id from ggircs_swrs_transform.final_report',
+  'select swrs_report_id from swrs_transform.final_report',
   array['800855555'::integer],
-  'ggircs_swrs_transform.final_report.swrs_report_id should contain one single value'
+  'swrs_transform.final_report.swrs_report_id should contain one single value'
 );
 
 select results_eq(
-  'select ghgr_import_id from ggircs_swrs_transform.final_report',
-  $$ select ghgr_import_id from ggircs_swrs_transform.report where status = 'Archived' $$,
-  'ggircs_swrs_transform.final_report.ghgr_import_id should refer to the correct version'
+  'select ghgr_import_id from swrs_transform.final_report',
+  $$ select ghgr_import_id from swrs_transform.report where status = 'Archived' $$,
+  'swrs_transform.final_report.ghgr_import_id should refer to the correct version'
 );
 
-delete from ggircs_swrs_extract.ghgr_import where id < 200;
-insert into ggircs_swrs_extract.ghgr_import (imported_at, xml_file) VALUES
+delete from swrs_extract.ghgr_import where id < 200;
+insert into swrs_extract.ghgr_import (imported_at, xml_file) VALUES
 ('2018-09-29T11:55:39.423', $$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <ReportDetails>
@@ -222,8 +222,8 @@ $$);
 
 -- Test that the ignore_list is properly ignoring reports by swrs_organisation_id
 select is_empty(
-    'select * from ggircs_swrs_transform.final_report where swrs_report_id = 12345',
-    'ggircs_swrs_transform.final_report ignored value from ignore_organisation'
+    'select * from swrs_transform.final_report where swrs_report_id = 12345',
+    'swrs_transform.final_report ignored value from ignore_organisation'
 );
 
 select * from finish();

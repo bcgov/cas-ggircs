@@ -6,7 +6,7 @@
 
 begin;
 
-create or replace view ggircs.carbon_tax_calculation as
+create or replace view swrs.carbon_tax_calculation as
     with fuel as (
         select _report.id                                                    as report_id,
                _organisation.id                                              as organisation_id,
@@ -23,29 +23,29 @@ create or replace view ggircs.carbon_tax_calculation as
                _fuel_carbon_tax_details.cta_rate_units                      as units,
                _fuel_carbon_tax_details.unit_conversion_factor              as unit_conversion_factor,
                _fuel_charge.fuel_charge
-        from ggircs.fuel as _fuel
-                 join ggircs.unit as _unit
+        from swrs.fuel as _fuel
+                 join swrs.unit as _unit
                       on _fuel.unit_id = _unit.id
-                 left join ggircs.emission as _emission
+                 left join swrs.emission as _emission
                       on _fuel.id = _emission.fuel_id
                       and _emission.fuel_mapping_id is not null
-                 join ggircs.fuel_mapping as _fuel_mapping
+                 join swrs.fuel_mapping as _fuel_mapping
                       on _fuel.fuel_mapping_id = _fuel_mapping.id
                       or _emission.fuel_mapping_id = _fuel_mapping.id
-                 join ggircs.report as _report
+                 join swrs.report as _report
                       on _fuel.report_id = _report.id
-                 join ggircs.organisation as _organisation
+                 join swrs.organisation as _organisation
                       on _report.id = _organisation.report_id
-                 left join ggircs.facility as _facility
+                 left join swrs.facility as _facility
                       on _report.id = _facility.report_id
-                 left join ggircs.naics as _naics
+                 left join swrs.naics as _naics
                       on _report.id = _naics.report_id
                       and ((_naics.path_context = 'RegistrationData'
                       and (_naics.naics_priority = 'Primary'
                             or _naics.naics_priority = '100.00'
                             or _naics.naics_priority = '100')
                       and (select count(ghgr_import_id)
-                           from ggircs.naics as __naics
+                           from swrs.naics as __naics
                            where ghgr_import_id = _emission.ghgr_import_id
                            and __naics.path_context = 'RegistrationData'
                            and (__naics.naics_priority = 'Primary'
@@ -54,20 +54,20 @@ create or replace view ggircs.carbon_tax_calculation as
                        or (_naics.path_context='VerifyTombstone'
                            and _naics.naics_code is not null
                            and (select count(ghgr_import_id)
-                           from ggircs.naics as __naics
+                           from swrs.naics as __naics
                            where ghgr_import_id = _emission.ghgr_import_id
                            and __naics.path_context = 'RegistrationData'
                            and (__naics.naics_priority = 'Primary'
                             or __naics.naics_priority = '100.00'
                             or __naics.naics_priority = '100')) > 1))
-                 join ggircs.activity as _activity
+                 join swrs.activity as _activity
                       on _unit.activity_id = _activity.id
-                 join ggircs.pro_rated_fuel_charge as _pro_rated_fuel_charge
+                 join swrs.pro_rated_fuel_charge as _pro_rated_fuel_charge
                       on _fuel_mapping.id = _pro_rated_fuel_charge.fuel_mapping_id
                       and _report.reporting_period_duration::integer = _pro_rated_fuel_charge.year
-                 join ggircs.fuel_carbon_tax_details as _fuel_carbon_tax_details
+                 join swrs.fuel_carbon_tax_details as _fuel_carbon_tax_details
                       on _fuel_mapping.fuel_carbon_tax_details_id = _fuel_carbon_tax_details.id
-                 join ggircs.fuel_charge as _fuel_charge
+                 join swrs.fuel_charge as _fuel_charge
                       on _fuel_charge.fuel_mapping_id = _fuel_mapping.id
                       and (concat(_report.reporting_period_duration::text, '-12-31')::date
                       between _fuel_charge.start_date and _fuel_charge.end_date)

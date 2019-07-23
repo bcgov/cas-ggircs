@@ -3,9 +3,9 @@
 
 begin;
 
-create materialized view ggircs_swrs_transform.activity as (
+create materialized view swrs_transform.activity as (
   select row_number() over () as id, id as ghgr_import_id, activity_details.*
-  from ggircs_swrs_extract.ghgr_import,
+  from swrs_extract.ghgr_import,
        xmltable(
            '//SubProcess'
            passing xml_file
@@ -19,16 +19,16 @@ create materialized view ggircs_swrs_transform.activity as (
          ) as activity_details
 ) with no data;
 
-create unique index ggircs_activity_primary_key on ggircs_swrs_transform.activity (ghgr_import_id, process_idx, sub_process_idx, activity_name);
+create unique index ggircs_activity_primary_key on swrs_transform.activity (ghgr_import_id, process_idx, sub_process_idx, activity_name);
 
-comment on materialized view ggircs_swrs_transform.activity is 'The materialized view for Process and SubProcess from each SWRS report (the "activity")';
-comment on column ggircs_swrs_transform.activity.id is 'A generated index used for keying in the ggircs schema';
-comment on column ggircs_swrs_transform.activity.ghgr_import_id is 'A foreign key reference to ggircs_swrs_extract.ghgr_import.id';
-comment on column ggircs_swrs_transform.activity.process_idx is 'The number of preceding Process siblings before this activity';
-comment on column ggircs_swrs_transform.activity.sub_process_idx is 'The number of preceding SubProcess siblings before this activity';
-comment on column ggircs_swrs_transform.activity.activity_name is 'The name of the activity (the name of the child class under the Activity)';
-comment on column ggircs_swrs_transform.activity.process_name is 'The name of the process';
-comment on column ggircs_swrs_transform.activity.sub_process_name is 'The name of the sub-process';
-comment on column ggircs_swrs_transform.activity.information_requirement is 'The requirement in reporting regulation to report this activity';
+comment on materialized view swrs_transform.activity is 'The materialized view for Process and SubProcess from each SWRS report (the "activity")';
+comment on column swrs_transform.activity.id is 'A generated index used for keying in the ggircs schema';
+comment on column swrs_transform.activity.ghgr_import_id is 'A foreign key reference to swrs_extract.ghgr_import.id';
+comment on column swrs_transform.activity.process_idx is 'The number of preceding Process siblings before this activity';
+comment on column swrs_transform.activity.sub_process_idx is 'The number of preceding SubProcess siblings before this activity';
+comment on column swrs_transform.activity.activity_name is 'The name of the activity (the name of the child class under the Activity)';
+comment on column swrs_transform.activity.process_name is 'The name of the process';
+comment on column swrs_transform.activity.sub_process_name is 'The name of the sub-process';
+comment on column swrs_transform.activity.information_requirement is 'The requirement in reporting regulation to report this activity';
 
 commit;

@@ -2,6 +2,6 @@
 
 begin;
 
-select * from ggircs.attributable_emission where false;
+select * from swrs.attributable_emission where false;
 
 rollback;

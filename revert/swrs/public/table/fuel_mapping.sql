@@ -2,6 +2,6 @@
 
 begin;
 
-drop table ggircs.fuel_mapping;
+drop table swrs.fuel_mapping;
 
 commit;

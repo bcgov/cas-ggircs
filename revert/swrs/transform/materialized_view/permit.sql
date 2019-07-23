@@ -2,6 +2,6 @@
 
 begin;
 
-drop materialized view ggircs_swrs_transform.permit;
+drop materialized view swrs_transform.permit;
 
 commit;

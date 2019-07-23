@@ -3,9 +3,9 @@
 
 begin;
 
-create materialized view ggircs_swrs_transform.measured_emission_factor as (
+create materialized view swrs_transform.measured_emission_factor as (
   select row_number() over () as id, id as ghgr_import_id, factor_details.*
-  from ggircs_swrs_extract.ghgr_import,
+  from swrs_extract.ghgr_import,
        xmltable(
            '//MeasuredEmissionFactor'
            passing xml_file
@@ -28,26 +28,26 @@ create materialized view ggircs_swrs_transform.measured_emission_factor as (
          ) as factor_details
 ) with no data;
 
-create unique index ggircs_measured_emission_factor_primary_key on ggircs_swrs_transform.measured_emission_factor (ghgr_import_id, activity_name, sub_activity_name, unit_name, sub_unit_name, process_idx, sub_process_idx, units_idx, unit_idx, substances_idx, substance_idx, fuel_idx, measured_emission_factor_idx);
+create unique index ggircs_measured_emission_factor_primary_key on swrs_transform.measured_emission_factor (ghgr_import_id, activity_name, sub_activity_name, unit_name, sub_unit_name, process_idx, sub_process_idx, units_idx, unit_idx, substances_idx, substance_idx, fuel_idx, measured_emission_factor_idx);
 
-comment on materialized view ggircs_swrs_transform.measured_emission_factor is 'The materialized view containing the information on fuels';
-comment on column ggircs_swrs_transform.measured_emission_factor.id is 'A generated index used for keying in the ggircs schema';
-comment on column ggircs_swrs_transform.measured_emission_factor.ghgr_import_id is 'A foreign key reference to ggircs_swrs_extract.ghgr_import';
-comment on column ggircs_swrs_transform.measured_emission_factor.activity_name is 'The name of the activity (partial fk reference)';
-comment on column ggircs_swrs_transform.measured_emission_factor.sub_activity_name is 'The name of the sub_activity (partial fk reference)';
-comment on column ggircs_swrs_transform.measured_emission_factor.unit_name is 'The name of the unit (partial fk reference)';
-comment on column ggircs_swrs_transform.measured_emission_factor.sub_unit_name is 'The name of the sub_unit (partial fk reference)';
-comment on column ggircs_swrs_transform.measured_emission_factor.process_idx is 'The number of preceding Process siblings before this Process (partial fk reference)';
-comment on column ggircs_swrs_transform.measured_emission_factor.sub_process_idx is 'The number of preceding SubProcess siblings before this SubProcess (partial fk reference)';
-comment on column ggircs_swrs_transform.measured_emission_factor.units_idx is 'The number of preceding Units siblings before this Units (partial fk reference)';
-comment on column ggircs_swrs_transform.measured_emission_factor.unit_idx is 'A foreign key reference to ggircs_swrs_transform.unit (partial fk reference)';
-comment on column ggircs_swrs_transform.measured_emission_factor.substances_idx is 'The number of preceding siblings before the Substances';
-comment on column ggircs_swrs_transform.measured_emission_factor.substance_idx is 'The number of preceding siblings before the Substance';
-comment on column ggircs_swrs_transform.measured_emission_factor.fuel_idx is 'The number of preceding siblings before the fuel';
-comment on column ggircs_swrs_transform.measured_emission_factor.measured_emission_factor_idx is 'The number of preceding siblings before the measured emission factor';
-comment on column ggircs_swrs_transform.measured_emission_factor.measured_emission_factor_amount is 'The amount of the measured_emission';
-comment on column ggircs_swrs_transform.measured_emission_factor.measured_emission_factor_gas is 'The gas type of the measured_emission';
-comment on column ggircs_swrs_transform.measured_emission_factor.measured_emission_factor_unit_type is 'The unit type of the measured_emission';
-comment on column ggircs_swrs_transform.measured_emission_factor.measured_emission_factor_unit_type is 'The measured emission factor unit type of the fuel';
+comment on materialized view swrs_transform.measured_emission_factor is 'The materialized view containing the information on fuels';
+comment on column swrs_transform.measured_emission_factor.id is 'A generated index used for keying in the ggircs schema';
+comment on column swrs_transform.measured_emission_factor.ghgr_import_id is 'A foreign key reference to swrs_extract.ghgr_import';
+comment on column swrs_transform.measured_emission_factor.activity_name is 'The name of the activity (partial fk reference)';
+comment on column swrs_transform.measured_emission_factor.sub_activity_name is 'The name of the sub_activity (partial fk reference)';
+comment on column swrs_transform.measured_emission_factor.unit_name is 'The name of the unit (partial fk reference)';
+comment on column swrs_transform.measured_emission_factor.sub_unit_name is 'The name of the sub_unit (partial fk reference)';
+comment on column swrs_transform.measured_emission_factor.process_idx is 'The number of preceding Process siblings before this Process (partial fk reference)';
+comment on column swrs_transform.measured_emission_factor.sub_process_idx is 'The number of preceding SubProcess siblings before this SubProcess (partial fk reference)';
+comment on column swrs_transform.measured_emission_factor.units_idx is 'The number of preceding Units siblings before this Units (partial fk reference)';
+comment on column swrs_transform.measured_emission_factor.unit_idx is 'A foreign key reference to swrs_transform.unit (partial fk reference)';
+comment on column swrs_transform.measured_emission_factor.substances_idx is 'The number of preceding siblings before the Substances';
+comment on column swrs_transform.measured_emission_factor.substance_idx is 'The number of preceding siblings before the Substance';
+comment on column swrs_transform.measured_emission_factor.fuel_idx is 'The number of preceding siblings before the fuel';
+comment on column swrs_transform.measured_emission_factor.measured_emission_factor_idx is 'The number of preceding siblings before the measured emission factor';
+comment on column swrs_transform.measured_emission_factor.measured_emission_factor_amount is 'The amount of the measured_emission';
+comment on column swrs_transform.measured_emission_factor.measured_emission_factor_gas is 'The gas type of the measured_emission';
+comment on column swrs_transform.measured_emission_factor.measured_emission_factor_unit_type is 'The unit type of the measured_emission';
+comment on column swrs_transform.measured_emission_factor.measured_emission_factor_unit_type is 'The measured emission factor unit type of the fuel';
 
 commit;

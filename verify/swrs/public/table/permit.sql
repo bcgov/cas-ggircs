@@ -2,6 +2,6 @@
 
 begin;
 
-select pg_catalog.has_table_privilege('ggircs.permit', 'select');
+select pg_catalog.has_table_privilege('swrs.permit', 'select');
 
 commit;

@@ -2,6 +2,6 @@
 
 begin;
 
-select pg_get_functiondef('ggircs_swrs_transform.transform(text)'::regprocedure);
+select pg_get_functiondef('swrs_transform.transform(text)'::regprocedure);
 
 rollback;

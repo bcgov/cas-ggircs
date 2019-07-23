@@ -3,11 +3,11 @@
 
 begin;
 
-create table ggircs_swrs_transform.ignore_organisation (
+create table swrs_transform.ignore_organisation (
   swrs_organisation_id integer not null primary key
 );
 
-insert into ggircs_swrs_transform.ignore_organisation (swrs_organisation_id)
+insert into swrs_transform.ignore_organisation (swrs_organisation_id)
 values   (5367)
        , (5401)
        , (6432)
@@ -62,7 +62,7 @@ values   (5367)
 
 on conflict (swrs_organisation_id) do nothing;
 
-comment on table ggircs_swrs_transform.ignore_organisation is 'The list of organisations from the federal single window reporting system to ignore';
-comment on column ggircs_swrs_transform.ignore_organisation.swrs_organisation_id is 'The foreign key from swrs of the organisation that should be ignored';
+comment on table swrs_transform.ignore_organisation is 'The list of organisations from the federal single window reporting system to ignore';
+comment on column swrs_transform.ignore_organisation.swrs_organisation_id is 'The foreign key from swrs of the organisation that should be ignored';
 
 commit;

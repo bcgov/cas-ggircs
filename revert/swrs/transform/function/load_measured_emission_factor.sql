@@ -2,6 +2,6 @@
 
 begin;
 
-drop function ggircs_swrs_transform.load_measured_emission_factor;
+drop function swrs_transform.load_measured_emission_factor;
 
 commit;

@@ -9,7 +9,7 @@ select plan(11);
 -- Test table exists in ggircs_swrs schema
 select has_table(
     'ggircs_swrs', 'carbon_tax_rate_mapping',
-    'ggircs.carbon_tax_rate_mapping should exist as a table'
+    'swrs.carbon_tax_rate_mapping should exist as a table'
 );
 
 -- Test table has a primary key

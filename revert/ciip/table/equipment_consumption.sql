@@ -3,6 +3,6 @@
 
 begin;
 
-drop table ciip.equipment_consumption;
+drop table ciip_2018.equipment_consumption;
 
 commit;

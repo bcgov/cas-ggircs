@@ -2,6 +2,6 @@
 
 begin;
 
-drop table ggircs.contact;
+drop table swrs.contact;
 
 commit;

@@ -9,12 +9,12 @@ select plan(67);
 
 select has_materialized_view(
     'ggircs_swrs', 'emission',
-    'ggircs_swrs_transform.emission should be a materialized view'
+    'swrs_transform.emission should be a materialized view'
 );
 
 select has_index(
     'ggircs_swrs', 'emission', 'ggircs_emission_primary_key',
-    'ggircs_swrs_transform.emission should have a primary key'
+    'swrs_transform.emission should have a primary key'
 );
 
 select columns_are('ggircs_swrs'::name, 'emission'::name, array[
@@ -135,7 +135,7 @@ select col_type_is(      'ggircs_swrs', 'emission', 'calculated_quantity', 'nume
 -- select col_has_default(  'ggircs_swrs', 'emission', 'calculated_quantity', 'emission.calculated_quantity column should have a default');
 
 -- Insert data for fixture based testing
-insert into ggircs_swrs_extract.ghgr_import (xml_file) values ($$
+insert into swrs_extract.ghgr_import (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <ActivityData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <ActivityPages>
@@ -178,116 +178,116 @@ $$);
 
 
 -- refresh necessary views with data
-refresh materialized view ggircs_swrs_transform.fuel with data;
-refresh materialized view ggircs_swrs_transform.emission with data;
+refresh materialized view swrs_transform.fuel with data;
+refresh materialized view swrs_transform.emission with data;
 
 --  Test ghgr_import_id fk relation
 select results_eq(
     $$
-    select fuel.ghgr_import_id from ggircs_swrs_transform.emission
-    join ggircs_swrs_transform.fuel
+    select fuel.ghgr_import_id from swrs_transform.emission
+    join swrs_transform.fuel
     on
     emission.ghgr_import_id =  fuel.ghgr_import_id
     and emission.fuel_idx = fuel.fuel_idx
     and emission.emission_idx=0
     $$,
 
-    'select ghgr_import_id from ggircs_swrs_transform.fuel',
+    'select ghgr_import_id from swrs_transform.fuel',
 
-    'Foreign keys ghgr_import_id, fuel_idx in ggircs_swrs_emission reference ggircs_swrs_transform.fuel'
+    'Foreign keys ghgr_import_id, fuel_idx in ggircs_swrs_emission reference swrs_transform.fuel'
 );
 
 -- test the columns for matview facility have been properly parsed from xml
 select results_eq(
-  $$ select ghgr_import_id from ggircs_swrs_transform.emission where fuel_idx=0 and emission_idx=0 $$,
-  'select id from ggircs_swrs_extract.ghgr_import',
-  'ggircs_swrs_transform.emission.ghgr_import_id relates to ggircs_swrs_extract.ghgr_import.id'
+  $$ select ghgr_import_id from swrs_transform.emission where fuel_idx=0 and emission_idx=0 $$,
+  'select id from swrs_extract.ghgr_import',
+  'swrs_transform.emission.ghgr_import_id relates to swrs_extract.ghgr_import.id'
 );
 
 -- Extract process_idx
 select results_eq(
-  $$ select process_idx from ggircs_swrs_transform.emission where fuel_idx=0 and emission_idx=0 $$,
+  $$ select process_idx from swrs_transform.emission where fuel_idx=0 and emission_idx=0 $$,
    ARRAY[0::integer],
-  'ggircs_swrs_transform.emission.process_idx is extracted'
+  'swrs_transform.emission.process_idx is extracted'
 );
 
 -- Extract sub_process_idx
 select results_eq(
-  $$ select sub_process_idx from ggircs_swrs_transform.emission where fuel_idx=0 and emission_idx=0 $$,
+  $$ select sub_process_idx from swrs_transform.emission where fuel_idx=0 and emission_idx=0 $$,
    ARRAY[0::integer],
-  'ggircs_swrs_transform.emission.sub_process_idx is extracted'
+  'swrs_transform.emission.sub_process_idx is extracted'
 );
 
 -- Extract unit_idx
 select results_eq(
-  $$ select unit_idx from ggircs_swrs_transform.emission where fuel_idx=0 and emission_idx=0 $$,
+  $$ select unit_idx from swrs_transform.emission where fuel_idx=0 and emission_idx=0 $$,
    ARRAY[0::integer],
-  'ggircs_swrs_transform.emission.unit_idx is extracted'
+  'swrs_transform.emission.unit_idx is extracted'
 );
 
 -- Extract fuel_idx
 select results_eq(
-  $$ select fuel_idx from ggircs_swrs_transform.emission where fuel_idx=0 and emission_idx=0 $$,
+  $$ select fuel_idx from swrs_transform.emission where fuel_idx=0 and emission_idx=0 $$,
    ARRAY[0::integer],
-  'ggircs_swrs_transform.emission.fuel_idx is extracted'
+  'swrs_transform.emission.fuel_idx is extracted'
 );
 
 
 -- Extract emission_idx
 select results_eq(
-  $$ select emission_idx from ggircs_swrs_transform.emission where fuel_idx=0 and emission_idx=0 $$,
+  $$ select emission_idx from swrs_transform.emission where fuel_idx=0 and emission_idx=0 $$,
    ARRAY[0::integer],
-  'ggircs_swrs_transform.emission.emission_idx is extracted'
+  'swrs_transform.emission.emission_idx is extracted'
 
 );
 
 -- Extract emission_type
 select results_eq(
-  $$ select emission_type from ggircs_swrs_transform.emission where fuel_idx=0 and emission_idx=0 $$,
+  $$ select emission_type from swrs_transform.emission where fuel_idx=0 and emission_idx=0 $$,
    ARRAY['Combustion: Field gas or Process Vent Gas'::varchar(1000)],
-  'ggircs_swrs_transform.emission.emission_type is extracted'
+  'swrs_transform.emission.emission_type is extracted'
 );
 
 -- Extract gas_type
 select results_eq(
-  $$ select gas_type from ggircs_swrs_transform.emission where fuel_idx=0 and emission_idx=0 $$,
+  $$ select gas_type from swrs_transform.emission where fuel_idx=0 and emission_idx=0 $$,
    ARRAY['CO2nonbio'::varchar(1000)],
-  'ggircs_swrs_transform.emission.gas_type is extracted'
+  'swrs_transform.emission.gas_type is extracted'
 );
 
 -- Extract methodology
 select results_eq(
-  $$ select methodology from ggircs_swrs_transform.emission where fuel_idx=0 and emission_idx=0 $$,
+  $$ select methodology from swrs_transform.emission where fuel_idx=0 and emission_idx=0 $$,
    ARRAY['Methodology 2 (measured HHV/Steam)'::varchar(1000)],
-  'ggircs_swrs_transform.emission.methodology is extracted'
+  'swrs_transform.emission.methodology is extracted'
 );
 
 -- Extract not_applicable
   select results_eq(
-  $$ select not_applicable from ggircs_swrs_transform.emission where fuel_idx=0 and emission_idx=0 $$,
+  $$ select not_applicable from swrs_transform.emission where fuel_idx=0 and emission_idx=0 $$,
    ARRAY['false'::bool],
-  'ggircs_swrs_transform.emission.not_applicable is extracted'
+  'swrs_transform.emission.not_applicable is extracted'
 );
 
 -- Extract quantity
   select results_eq(
-  $$ select quantity from ggircs_swrs_transform.emission where fuel_idx=0 and emission_idx=0 $$,
+  $$ select quantity from swrs_transform.emission where fuel_idx=0 and emission_idx=0 $$,
    ARRAY[28215::numeric(1000,0)],
-  'ggircs_swrs_transform.emission.quantity is extracted'
+  'swrs_transform.emission.quantity is extracted'
 );
 
 -- Extract calculated_quantity
   select results_eq(
-  $$ select calculated_quantity from ggircs_swrs_transform.emission where fuel_idx=0 and emission_idx=0 $$,
+  $$ select calculated_quantity from swrs_transform.emission where fuel_idx=0 and emission_idx=0 $$,
    ARRAY[28215::numeric(1000,0)],
-  'ggircs_swrs_transform.emission.calculated_quantity is extracted'
+  'swrs_transform.emission.calculated_quantity is extracted'
 );
 
 -- Extract emission_category
 select results_eq(
-  $$ select emission_category::varchar from ggircs_swrs_transform.emission where fuel_idx=0 and emission_idx=0 $$,
+  $$ select emission_category::varchar from swrs_transform.emission where fuel_idx=0 and emission_idx=0 $$,
    ARRAY['BC_ScheduleB_GeneralStationaryCombustionEmissions'::varchar(1000)],
-  'ggircs_swrs_transform.emission.emission_category is extracted'
+  'swrs_transform.emission.emission_category is extracted'
 );
 
 select * from finish();

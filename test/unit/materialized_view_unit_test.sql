@@ -8,12 +8,12 @@ select plan(75);
 
 select has_materialized_view(
     'ggircs_swrs', 'unit',
-    'ggircs_swrs_transform.activity should be a materialized view'
+    'swrs_transform.activity should be a materialized view'
 );
 
 select has_index(
     'ggircs_swrs', 'unit', 'ggircs_unit_primary_key',
-    'ggircs_swrs_transform.activity should have a primary key'
+    'swrs_transform.activity should have a primary key'
 );
 
 select columns_are('ggircs_swrs'::name, 'unit'::name, array[
@@ -134,7 +134,7 @@ select col_is_null(      'ggircs_swrs', 'unit', 'non_cogen_unit_name', 'unit.non
 select col_hasnt_default('ggircs_swrs', 'unit', 'non_cogen_unit_name', 'unit.non_cogen_unit_name column should not have a default value');
 
 -- Insert data for fixture based testing
-insert into ggircs_swrs_extract.ghgr_import (xml_file) values ($$
+insert into swrs_extract.ghgr_import (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <ActivityData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <ActivityPages>
@@ -176,14 +176,14 @@ insert into ggircs_swrs_extract.ghgr_import (xml_file) values ($$
 $$);
 
 -- refresh necessary views with data
-refresh materialized view ggircs_swrs_transform.unit with data;
-refresh materialized view ggircs_swrs_transform.activity with data;
+refresh materialized view swrs_transform.unit with data;
+refresh materialized view swrs_transform.activity with data;
 
 -- test the foreign keys in unit return a value when joined on activity
 select results_eq(
     $$
-    select activity.ghgr_import_id from ggircs_swrs_transform.unit
-     join ggircs_swrs_transform.activity
+    select activity.ghgr_import_id from swrs_transform.unit
+     join swrs_transform.activity
      on (
      unit.ghgr_import_id =  activity.ghgr_import_id
      and unit.process_idx = activity.process_idx
@@ -191,130 +191,130 @@ select results_eq(
      and unit.activity_name = activity.activity_name)
     $$,
 
-    'select ghgr_import_id from ggircs_swrs_transform.activity',
+    'select ghgr_import_id from swrs_transform.activity',
 
-    'Foreign keys ghgr_import_id, process_idx, sub_process_idx and activity_name in ggircs_swrs_unit reference ggircs_swrs_transform.activity'
+    'Foreign keys ghgr_import_id, process_idx, sub_process_idx and activity_name in ggircs_swrs_unit reference swrs_transform.activity'
 );
 
 -- test the columns for matview facility have been properly parsed from xml
 select results_eq(
-  'select distinct ghgr_import_id from ggircs_swrs_transform.unit',
-  'select id from ggircs_swrs_extract.ghgr_import',
-  'ggircs_swrs_transform.activity.ghgr_import_id relates to ggircs_swrs_extract.ghgr_import.id'
+  'select distinct ghgr_import_id from swrs_transform.unit',
+  'select id from swrs_extract.ghgr_import',
+  'swrs_transform.activity.ghgr_import_id relates to swrs_extract.ghgr_import.id'
 );
 
 select results_eq(
-  'select distinct activity_name from ggircs_swrs_transform.unit',
+  'select distinct activity_name from swrs_transform.unit',
   ARRAY['ActivityPages'::varchar],
-  'ggircs_swrs_transform.activity.activity_name is extracted'
+  'swrs_transform.activity.activity_name is extracted'
 );
 
 select results_eq(
-  'select process_idx from ggircs_swrs_transform.unit where sub_process_idx=0 and units_idx=0 and unit_idx=0',
+  'select process_idx from swrs_transform.unit where sub_process_idx=0 and units_idx=0 and unit_idx=0',
   ARRAY[0::integer],
-  'ggircs_swrs_transform.activity.process_idx is extracted'
+  'swrs_transform.activity.process_idx is extracted'
 );
 
 select results_eq(
-  'select sub_process_idx from ggircs_swrs_transform.unit where sub_process_idx=0 and units_idx=0 and unit_idx=0',
+  'select sub_process_idx from swrs_transform.unit where sub_process_idx=0 and units_idx=0 and unit_idx=0',
   ARRAY[0::integer],
-  'ggircs_swrs_transform.activity.sub_process_idx is extracted'
+  'swrs_transform.activity.sub_process_idx is extracted'
 );
 
 select results_eq(
-  'select units_idx from ggircs_swrs_transform.unit where sub_process_idx=0',
+  'select units_idx from swrs_transform.unit where sub_process_idx=0',
   ARRAY[0::integer],
-  'ggircs_swrs_transform.activity.units_idx is extracted'
+  'swrs_transform.activity.units_idx is extracted'
 );
 
 select results_eq(
-  'select unit_idx from ggircs_swrs_transform.unit where sub_process_idx=0',
+  'select unit_idx from swrs_transform.unit where sub_process_idx=0',
   ARRAY[0::integer],
-  'ggircs_swrs_transform.activity.unit_idx is extracted'
+  'swrs_transform.activity.unit_idx is extracted'
 );
 
 select results_eq(
-  'select unit_name from ggircs_swrs_transform.unit where sub_process_idx=0',
+  'select unit_name from swrs_transform.unit where sub_process_idx=0',
   ARRAY['Burner'::varchar],
-  'ggircs_swrs_transform.activity.unit_name is extracted'
+  'swrs_transform.activity.unit_name is extracted'
 );
 
 select results_eq(
-  'select unit_description from ggircs_swrs_transform.unit where sub_process_idx=0',
+  'select unit_description from swrs_transform.unit where sub_process_idx=0',
   ARRAY['Supply heat to bed dryer'::varchar],
-  'ggircs_swrs_transform.activity.unit_description is extracted'
+  'swrs_transform.activity.unit_description is extracted'
 );
 
 select results_eq(
-  'select unit_description from ggircs_swrs_transform.unit where sub_process_idx=0',
+  'select unit_description from swrs_transform.unit where sub_process_idx=0',
   ARRAY['Supply heat to bed dryer'::varchar],
-  'ggircs_swrs_transform.activity.unit_description is extracted'
+  'swrs_transform.activity.unit_description is extracted'
 );
 
 select results_eq(
-  'select cogen_cycle_type from ggircs_swrs_transform.unit where sub_process_idx=0',
+  'select cogen_cycle_type from swrs_transform.unit where sub_process_idx=0',
   ARRAY[1::varchar],
-  'ggircs_swrs_transform.activity.cogen_cycle_type is extracted'
+  'swrs_transform.activity.cogen_cycle_type is extracted'
 );
 
 select results_eq(
-  'select cogen_nameplate_capacity from ggircs_swrs_transform.unit where sub_process_idx=0',
+  'select cogen_nameplate_capacity from swrs_transform.unit where sub_process_idx=0',
   ARRAY[12::numeric],
-  'ggircs_swrs_transform.activity.cogen_nameplate_capacity is extracted'
+  'swrs_transform.activity.cogen_nameplate_capacity is extracted'
 );
 
 select results_eq(
-  'select cogen_net_power from ggircs_swrs_transform.unit where sub_process_idx=0',
+  'select cogen_net_power from swrs_transform.unit where sub_process_idx=0',
   ARRAY[100::numeric],
-  'ggircs_swrs_transform.activity.cogen_net_power is extracted'
+  'swrs_transform.activity.cogen_net_power is extracted'
 );
 
 select results_eq(
-  'select cogen_steam_heat_acq_quantity from ggircs_swrs_transform.unit where sub_process_idx=0',
+  'select cogen_steam_heat_acq_quantity from swrs_transform.unit where sub_process_idx=0',
   ARRAY[5::numeric],
-  'ggircs_swrs_transform.activity.cogen_steam_heat_acq_quantity is extracted'
+  'swrs_transform.activity.cogen_steam_heat_acq_quantity is extracted'
 );
 
 select results_eq(
-  'select cogen_steam_heat_acq_name from ggircs_swrs_transform.unit where sub_process_idx=0',
+  'select cogen_steam_heat_acq_name from swrs_transform.unit where sub_process_idx=0',
   ARRAY['steamy'::varchar],
-  'ggircs_swrs_transform.activity.cogen_steam_heat_acq_name is extracted'
+  'swrs_transform.activity.cogen_steam_heat_acq_name is extracted'
 );
 
 select results_eq(
-  'select cogen_supplemental_firing_purpose from ggircs_swrs_transform.unit where sub_process_idx=0',
+  'select cogen_supplemental_firing_purpose from swrs_transform.unit where sub_process_idx=0',
   ARRAY['none'::varchar],
-  'ggircs_swrs_transform.activity.cogen_supplemental_firing_purpose is extracted'
+  'swrs_transform.activity.cogen_supplemental_firing_purpose is extracted'
 );
 
 select results_eq(
-  'select cogen_thermal_output_quantity from ggircs_swrs_transform.unit where sub_process_idx=0',
+  'select cogen_thermal_output_quantity from swrs_transform.unit where sub_process_idx=0',
   ARRAY[10::numeric],
-  'ggircs_swrs_transform.activity.cogen_thermal_output_quantity is extracted'
+  'swrs_transform.activity.cogen_thermal_output_quantity is extracted'
 );
 
 select results_eq(
-  'select cogen_unit_name from ggircs_swrs_transform.unit where sub_process_idx=0',
+  'select cogen_unit_name from swrs_transform.unit where sub_process_idx=0',
   ARRAY['hello'::varchar],
-  'ggircs_swrs_transform.activity.cogen_unit_name is extracted'
+  'swrs_transform.activity.cogen_unit_name is extracted'
 );
 
 select results_eq(
-  'select non_cogen_nameplate_capacity from ggircs_swrs_transform.unit where sub_process_idx=0',
+  'select non_cogen_nameplate_capacity from swrs_transform.unit where sub_process_idx=0',
   ARRAY[5::numeric],
-  'ggircs_swrs_transform.activity.non_cogen_nameplate_capacity is extracted'
+  'swrs_transform.activity.non_cogen_nameplate_capacity is extracted'
 );
 
 select results_eq(
-  'select non_cogen_net_power from ggircs_swrs_transform.unit where sub_process_idx=0',
+  'select non_cogen_net_power from swrs_transform.unit where sub_process_idx=0',
   ARRAY[4::numeric],
-  'ggircs_swrs_transform.activity.non_cogen_net_power is extracted'
+  'swrs_transform.activity.non_cogen_net_power is extracted'
 );
 
 select results_eq(
-  'select non_cogen_unit_name from ggircs_swrs_transform.unit where sub_process_idx=0',
+  'select non_cogen_unit_name from swrs_transform.unit where sub_process_idx=0',
   ARRAY['noncogen'::varchar],
-  'ggircs_swrs_transform.activity.non_cogen_unit_name is extracted'
+  'swrs_transform.activity.non_cogen_unit_name is extracted'
 );
 
 select * from finish();

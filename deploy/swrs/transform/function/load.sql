@@ -10,7 +10,7 @@
 
 begin;
 
-create or replace function ggircs_swrs_transform.load(
+create or replace function swrs_transform.load(
     refresh_transform boolean default true,
     clear_transform boolean default true
 )
@@ -31,24 +31,24 @@ $function$
 
     -- Refresh materialized views
     if refresh_transform then
-        perform ggircs_swrs_transform.transform('with data');
+        perform swrs_transform.transform('with data');
     end if;
 
     -- Create the load schema, without records
-    drop schema if exists ggircs_swrs_load cascade;
-    raise notice '[%] Creating temporary schema ggircs_swrs_load...', timeofday()::timestamp;
-    perform ggircs_swrs_transform.clone_schema('ggircs', 'ggircs_swrs_load', false);
+    drop schema if exists swrs_load cascade;
+    raise notice '[%] Creating temporary schema swrs_load...', timeofday()::timestamp;
+    perform swrs_transform.clone_schema('ggircs', 'swrs_load', false);
 
     -- Loop to populate ggircs tables with data from ggircs_swrs
         for i in 1 .. array_upper(mv_array, 1)
       loop
-        execute format('select ggircs_swrs_transform.load_%s()', mv_array[i]);
+        execute format('select swrs_transform.load_%s()', mv_array[i]);
         raise notice '[%] Loaded %...', timeofday()::timestamp, mv_array[i];
       end loop;
 
     -- Refresh materialized views with no data
     if clear_transform then
-        perform ggircs_swrs_transform.transform('with no data');
+        perform swrs_transform.transform('with no data');
     end if;
 
     -- Find views from other schemas referencing ggircs
@@ -74,8 +74,8 @@ $function$
         and views.table_name = dependent_view.view_name;
 
     raise notice 'Overriding to the live data schema';
-    drop schema if exists ggircs cascade;
-    alter schema ggircs_swrs_load rename to ggircs;
+    drop schema if exists swrs cascade;
+    alter schema swrs_load rename to ggircs;
 
     for view_to_recreate in select * from views_to_recreate
     loop

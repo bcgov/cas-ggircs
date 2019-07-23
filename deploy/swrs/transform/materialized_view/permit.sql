@@ -3,9 +3,9 @@
 
 begin;
 
-create materialized view ggircs_swrs_transform.permit as (
+create materialized view swrs_transform.permit as (
   select row_number() over () as id, id as ghgr_import_id, permit_details.*
-  from ggircs_swrs_extract.ghgr_import,
+  from swrs_extract.ghgr_import,
        xmltable(
            '//Permit'
            passing xml_file
@@ -19,15 +19,15 @@ create materialized view ggircs_swrs_transform.permit as (
 ) with no data;
 
 create unique index ggircs_permit_primary_key
-    on ggircs_swrs_transform.permit (ghgr_import_id, path_context, permit_idx);
+    on swrs_transform.permit (ghgr_import_id, path_context, permit_idx);
 
-comment on materialized view ggircs_swrs_transform.permit is 'The materialized view housing permit information';
-comment on column ggircs_swrs_transform.permit.id is 'A generated index used for keying in the ggircs schema';
-comment on column ggircs_swrs_transform.permit.ghgr_import_id is 'The foreign key reference to ggircs_swrs_extract.ghgr_import';
-comment on column ggircs_swrs_transform.permit.path_context is 'The context of the parent path (from VerifyTombstone or RegistrationData';
-comment on column ggircs_swrs_transform.permit.permit_idx is 'The number of preceding Permit siblings before this Permit';
-comment on column ggircs_swrs_transform.permit.issuing_agency is 'The issuing agency for this permit';
-comment on column ggircs_swrs_transform.permit.issuing_dept_agency_program is 'The issuing agency program for this permit';
-comment on column ggircs_swrs_transform.permit.permit_number is 'The permit number';
+comment on materialized view swrs_transform.permit is 'The materialized view housing permit information';
+comment on column swrs_transform.permit.id is 'A generated index used for keying in the ggircs schema';
+comment on column swrs_transform.permit.ghgr_import_id is 'The foreign key reference to swrs_extract.ghgr_import';
+comment on column swrs_transform.permit.path_context is 'The context of the parent path (from VerifyTombstone or RegistrationData';
+comment on column swrs_transform.permit.permit_idx is 'The number of preceding Permit siblings before this Permit';
+comment on column swrs_transform.permit.issuing_agency is 'The issuing agency for this permit';
+comment on column swrs_transform.permit.issuing_dept_agency_program is 'The issuing agency program for this permit';
+comment on column swrs_transform.permit.permit_number is 'The permit number';
 
 commit;

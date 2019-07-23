@@ -2,7 +2,7 @@
 
 begin;
 
-drop table ciip.contact;
+drop table ciip_2018.contact;
 
 commit;
 

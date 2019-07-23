@@ -2,6 +2,6 @@
 
 begin;
 
-drop view if exists ggircs.pro_rated_carbon_tax_rate;
+drop view if exists swrs.pro_rated_carbon_tax_rate;
 
 commit;

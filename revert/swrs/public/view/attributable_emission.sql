@@ -2,6 +2,6 @@
 
 begin;
 
-drop view if exists ggircs.attributable_emission;
+drop view if exists swrs.attributable_emission;
 
 commit;

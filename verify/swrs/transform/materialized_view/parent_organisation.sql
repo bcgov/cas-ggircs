@@ -2,6 +2,6 @@
 
 begin;
 
-select * from ggircs_swrs_transform.parent_organisation where false;
+select * from swrs_transform.parent_organisation where false;
 
 rollback;

@@ -2,6 +2,6 @@
 
 begin;
 
-select * from ggircs.pro_rated_fuel_charge where false;
+select * from swrs.pro_rated_fuel_charge where false;
 
 rollback;

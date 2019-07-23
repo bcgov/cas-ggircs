@@ -6,7 +6,7 @@
 
 begin;
 
-create or replace view ggircs.pro_rated_fuel_charge as
+create or replace view swrs.pro_rated_fuel_charge as
     with x as (
         select _fuel_mapping.fuel_type,
                coalesce(fuel.fuel_mapping_id, _emission.fuel_mapping_id)        as fuel_mapping_id,
@@ -32,42 +32,42 @@ create or replace view ggircs.pro_rated_fuel_charge as
                     else
                     concat(_report.reporting_period_duration::text, '-12-31')::date - concat(_report.reporting_period_duration::text, '-01-01')::date
                 end as duration
-        from ggircs.fuel
-                 join ggircs.report as _report
+        from swrs.fuel
+                 join swrs.report as _report
                       on fuel.report_id = _report.id
-                 join ggircs.emission as _emission
+                 join swrs.emission as _emission
                       on fuel.id = _emission.fuel_id
-                 join ggircs.fuel_mapping as _fuel_mapping
+                 join swrs.fuel_mapping as _fuel_mapping
                       on fuel.fuel_mapping_id = _fuel_mapping.id
                       or _emission.fuel_mapping_id = _fuel_mapping.id
-                 join ggircs.fuel_carbon_tax_details as _fuel_carbon_tax_details
+                 join swrs.fuel_carbon_tax_details as _fuel_carbon_tax_details
                       on _fuel_mapping.fuel_carbon_tax_details_id = _fuel_carbon_tax_details.id
                       or _emission.fuel_mapping_id = _fuel_carbon_tax_details.id
-                 join ggircs.fuel_charge as _fuel_charge
+                 join swrs.fuel_charge as _fuel_charge
                       on _fuel_charge.fuel_mapping_id = _fuel_mapping.id
 
     ), y as (select year, fuel_mapping_id, fuel_type, year_length, duration, fuel_charge, unit_conversion_factor,
             (select _fuel_charge.fuel_charge * x.unit_conversion_factor
-                      from ggircs.fuel_charge as _fuel_charge
+                      from swrs.fuel_charge as _fuel_charge
                       where concat(x.year::text, '-12-31')::date between _fuel_charge.start_date and _fuel_charge.end_date
                       and _fuel_charge.fuel_mapping_id = x.fuel_mapping_id
                    ) as flat_rate,
              case when year <= 2017
                  then
                     (select distinct(fuel_charge) * unit_conversion_factor
-                       from ggircs.fuel_charge
+                       from swrs.fuel_charge
                        where id = (
                            select min(_fuel_charge.id)
-                           from ggircs.fuel_charge as _fuel_charge
+                           from swrs.fuel_charge as _fuel_charge
                            where _fuel_charge.fuel_mapping_id = x.fuel_mapping_id)
                        )
              when concat(year::text, '-01-01')::date > max(end_date)
                  then
                     (select distinct(fuel_charge) * unit_conversion_factor
-                       from ggircs.fuel_charge
+                       from swrs.fuel_charge
                        where id = (
                            select max(_fuel_charge.id)
-                           from ggircs.fuel_charge as _fuel_charge
+                           from swrs.fuel_charge as _fuel_charge
                            where _fuel_charge.fuel_mapping_id = x.fuel_mapping_id)
                        )
                  else

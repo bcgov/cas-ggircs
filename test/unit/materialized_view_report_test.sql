@@ -46,7 +46,7 @@ select col_type_is('ggircs_swrs', 'report', 'last_modified_by', 'character varyi
 select col_type_is('ggircs_swrs', 'report', 'update_comment', 'character varying(1000)', 'Matview report column update_comment has type character varying(1000)');
 
 -- Setup fixture
-insert into ggircs_swrs_extract.ghgr_import (imported_at, xml_file) VALUES ('2018-09-29T11:55:39.423', $$
+insert into swrs_extract.ghgr_import (imported_at, xml_file) VALUES ('2018-09-29T11:55:39.423', $$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <ReportDetails>
     <ReportID>800855555</ReportID>
@@ -66,10 +66,10 @@ insert into ggircs_swrs_extract.ghgr_import (imported_at, xml_file) VALUES ('201
 $$);
 
 -- Ensure fixture is processed correctly
-refresh materialized view ggircs_swrs_transform.report with data;
-select results_eq('select ghgr_import_id from ggircs_swrs_transform.report', 'select id from ggircs_swrs_extract.ghgr_import', 'Matview report parsed column ghgr_import_id');
+refresh materialized view swrs_transform.report with data;
+select results_eq('select ghgr_import_id from swrs_transform.report', 'select id from swrs_extract.ghgr_import', 'Matview report parsed column ghgr_import_id');
 -- TODO(wenzowski): need an xml comparison operator
-select results_eq('select source_xml::text from ggircs_swrs_transform.report', ARRAY[$$
+select results_eq('select source_xml::text from swrs_transform.report', ARRAY[$$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <ReportDetails>
     <ReportID>800855555</ReportID>
@@ -87,19 +87,19 @@ select results_eq('select source_xml::text from ggircs_swrs_transform.report', A
   </ReportDetails>
 </ReportData>
 $$::text], 'Matview report parsed column source_xml');
-select results_eq('select imported_at from ggircs_swrs_transform.report', ARRAY['2018-09-29T11:55:39.423'::timestamptz], 'Matview report parsed column imported_at');
-select results_eq('select swrs_report_id from ggircs_swrs_transform.report', ARRAY[800855555::integer], 'Matview report parsed column swrs_report_id');
-select results_eq('select prepop_report_id from ggircs_swrs_transform.report', ARRAY[null::integer], 'Matview report parsed column prepop_report_id');
-select results_eq('select report_type from ggircs_swrs_transform.report', ARRAY['R7'::varchar], 'Matview report parsed column report_type');
-select results_eq('select swrs_facility_id from ggircs_swrs_transform.report', ARRAY[666::integer], 'Matview report parsed column swrs_facility_id');
-select results_eq('select swrs_organisation_id from ggircs_swrs_transform.report', ARRAY[1337::integer], 'Matview report parsed column swrs_organisation_id');
-select results_eq('select reporting_period_duration from ggircs_swrs_transform.report', ARRAY[1999::varchar], 'Matview report parsed column reporting_period_duration');
-select results_eq('select status from ggircs_swrs_transform.report', ARRAY['In Progress'::varchar], 'Matview report parsed column status');
-select results_eq('select version from ggircs_swrs_transform.report', ARRAY[3::varchar], 'Matview report parsed column version');
-select results_eq('select submission_date from ggircs_swrs_transform.report', ARRAY[null::timestamptz], 'Matview report parsed column submission_date');
-select results_eq('select last_modified_by from ggircs_swrs_transform.report', ARRAY['Donny Donaldson McDonaldface'::varchar], 'Matview report parsed column last_modified_by');
-select results_eq('select last_modified_date from ggircs_swrs_transform.report', ARRAY['2018-09-28T11:55:39.423'::timestamptz], 'Matview report parsed column last_modified_date');
-select results_eq('select update_comment from ggircs_swrs_transform.report', ARRAY[null::varchar], 'Matview report parsed column update_comment');
+select results_eq('select imported_at from swrs_transform.report', ARRAY['2018-09-29T11:55:39.423'::timestamptz], 'Matview report parsed column imported_at');
+select results_eq('select swrs_report_id from swrs_transform.report', ARRAY[800855555::integer], 'Matview report parsed column swrs_report_id');
+select results_eq('select prepop_report_id from swrs_transform.report', ARRAY[null::integer], 'Matview report parsed column prepop_report_id');
+select results_eq('select report_type from swrs_transform.report', ARRAY['R7'::varchar], 'Matview report parsed column report_type');
+select results_eq('select swrs_facility_id from swrs_transform.report', ARRAY[666::integer], 'Matview report parsed column swrs_facility_id');
+select results_eq('select swrs_organisation_id from swrs_transform.report', ARRAY[1337::integer], 'Matview report parsed column swrs_organisation_id');
+select results_eq('select reporting_period_duration from swrs_transform.report', ARRAY[1999::varchar], 'Matview report parsed column reporting_period_duration');
+select results_eq('select status from swrs_transform.report', ARRAY['In Progress'::varchar], 'Matview report parsed column status');
+select results_eq('select version from swrs_transform.report', ARRAY[3::varchar], 'Matview report parsed column version');
+select results_eq('select submission_date from swrs_transform.report', ARRAY[null::timestamptz], 'Matview report parsed column submission_date');
+select results_eq('select last_modified_by from swrs_transform.report', ARRAY['Donny Donaldson McDonaldface'::varchar], 'Matview report parsed column last_modified_by');
+select results_eq('select last_modified_date from swrs_transform.report', ARRAY['2018-09-28T11:55:39.423'::timestamptz], 'Matview report parsed column last_modified_date');
+select results_eq('select update_comment from swrs_transform.report', ARRAY[null::varchar], 'Matview report parsed column update_comment');
 
 select finish();
 rollback;

@@ -2,7 +2,7 @@
 
 begin;
 
-drop view if exists ggircs.pro_rated_implied_emission_factor;
+drop view if exists swrs.pro_rated_implied_emission_factor;
 
 commit;
 

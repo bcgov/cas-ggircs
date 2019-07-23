@@ -2,6 +2,6 @@
 
 begin;
 
-select pg_catalog.has_table_privilege('ggircs_swrs_transform.ignore_organisation', 'select');
+select pg_catalog.has_table_privilege('swrs_transform.ignore_organisation', 'select');
 
 rollback;

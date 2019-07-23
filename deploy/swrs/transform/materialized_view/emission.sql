@@ -4,10 +4,10 @@
 begin;
 
 -- Emissions from Fuel
-create materialized view ggircs_swrs_transform.emission as (
+create materialized view swrs_transform.emission as (
   select row_number() over () as id, id as ghgr_import_id,
          emission_details.*
-  from ggircs_swrs_extract.ghgr_import,
+  from swrs_extract.ghgr_import,
        xmltable(
            '//Emission'
            passing xml_file
@@ -37,36 +37,36 @@ create materialized view ggircs_swrs_transform.emission as (
   order by ghgr_import_id
 ) with no data;
 
-create unique index ggircs_emission_primary_key on ggircs_swrs_transform.emission (ghgr_import_id, activity_name,
+create unique index ggircs_emission_primary_key on swrs_transform.emission (ghgr_import_id, activity_name,
                                                                          sub_activity_name, unit_name, sub_unit_name,
                                                                          process_idx, sub_process_idx, units_idx,
                                                                          unit_idx, substances_idx, substance_idx,
                                                                          fuel_idx, fuel_name, emissions_idx, emission_idx);
 
-comment on materialized view ggircs_swrs_transform.emission is 'The materialized view containing the information on emissions';
-comment on column ggircs_swrs_transform.emission.id is 'A generated index used for keying in the ggircs schema';
-comment on column ggircs_swrs_transform.emission.ghgr_import_id is 'A foreign key reference to ggircs_swrs_extract.ghgr_import';
-comment on column ggircs_swrs_transform.emission.activity_name is 'The name of the activity (partial fk reference)';
-comment on column ggircs_swrs_transform.emission.sub_activity_name is 'The name of the sub_activity (partial fk reference)';
-comment on column ggircs_swrs_transform.emission.unit_name is 'The name of the unit (partial fk reference)';
-comment on column ggircs_swrs_transform.emission.sub_unit_name is 'The name of the sub_unit (partial fk reference)';
-comment on column ggircs_swrs_transform.emission.process_idx is 'The number of preceding Process siblings before this emission';
-comment on column ggircs_swrs_transform.emission.sub_process_idx is 'The number of preceding SubProcess siblings before this emission';
-comment on column ggircs_swrs_transform.emission.units_idx is 'The number of preceding Units siblings before this Units (partial fk reference)';
-comment on column ggircs_swrs_transform.emission.unit_idx is 'The number of preceding Unit siblings before this emission';
-comment on column ggircs_swrs_transform.emission.substances_idx is 'The number of preceding siblings before the Substances';
-comment on column ggircs_swrs_transform.emission.substance_idx is 'The number of preceding siblings before the Substance';
-comment on column ggircs_swrs_transform.emission.fuel_idx is 'The number of preceding Fuel siblings before this emission';
-comment on column ggircs_swrs_transform.emission.fuel_name is 'The disambiguation string for Fuel (only on old reports)';
-comment on column ggircs_swrs_transform.emission.emissions_idx is 'The number of preceding Emissions siblings before this emission';
-comment on column ggircs_swrs_transform.emission.emission_idx is 'The number of preceding Emission siblings before this emission';
-comment on column ggircs_swrs_transform.emission.emission_type is 'The type of the emission';
-comment on column ggircs_swrs_transform.emission.gas_type is 'The type of the gas';
-comment on column ggircs_swrs_transform.emission.methodology is 'The emission methodology';
-comment on column ggircs_swrs_transform.emission.not_applicable is 'Is the emission applicable/NA';
-comment on column ggircs_swrs_transform.emission.quantity is 'The quantity of the emission';
-comment on column ggircs_swrs_transform.emission.calculated_quantity is 'The CO2 Equivalent quantity of the emission';
-comment on column ggircs_swrs_transform.emission.emission_category is 'The emissions category';
+comment on materialized view swrs_transform.emission is 'The materialized view containing the information on emissions';
+comment on column swrs_transform.emission.id is 'A generated index used for keying in the ggircs schema';
+comment on column swrs_transform.emission.ghgr_import_id is 'A foreign key reference to swrs_extract.ghgr_import';
+comment on column swrs_transform.emission.activity_name is 'The name of the activity (partial fk reference)';
+comment on column swrs_transform.emission.sub_activity_name is 'The name of the sub_activity (partial fk reference)';
+comment on column swrs_transform.emission.unit_name is 'The name of the unit (partial fk reference)';
+comment on column swrs_transform.emission.sub_unit_name is 'The name of the sub_unit (partial fk reference)';
+comment on column swrs_transform.emission.process_idx is 'The number of preceding Process siblings before this emission';
+comment on column swrs_transform.emission.sub_process_idx is 'The number of preceding SubProcess siblings before this emission';
+comment on column swrs_transform.emission.units_idx is 'The number of preceding Units siblings before this Units (partial fk reference)';
+comment on column swrs_transform.emission.unit_idx is 'The number of preceding Unit siblings before this emission';
+comment on column swrs_transform.emission.substances_idx is 'The number of preceding siblings before the Substances';
+comment on column swrs_transform.emission.substance_idx is 'The number of preceding siblings before the Substance';
+comment on column swrs_transform.emission.fuel_idx is 'The number of preceding Fuel siblings before this emission';
+comment on column swrs_transform.emission.fuel_name is 'The disambiguation string for Fuel (only on old reports)';
+comment on column swrs_transform.emission.emissions_idx is 'The number of preceding Emissions siblings before this emission';
+comment on column swrs_transform.emission.emission_idx is 'The number of preceding Emission siblings before this emission';
+comment on column swrs_transform.emission.emission_type is 'The type of the emission';
+comment on column swrs_transform.emission.gas_type is 'The type of the gas';
+comment on column swrs_transform.emission.methodology is 'The emission methodology';
+comment on column swrs_transform.emission.not_applicable is 'Is the emission applicable/NA';
+comment on column swrs_transform.emission.quantity is 'The quantity of the emission';
+comment on column swrs_transform.emission.calculated_quantity is 'The CO2 Equivalent quantity of the emission';
+comment on column swrs_transform.emission.emission_category is 'The emissions category';
 
 
 commit;

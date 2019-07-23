@@ -2,6 +2,6 @@
 
 begin;
 
-select pg_catalog.has_table_privilege('ciip.equipment_emission', 'select');
+select pg_catalog.has_table_privilege('ciip_2018.equipment_emission', 'select');
 
 rollback;

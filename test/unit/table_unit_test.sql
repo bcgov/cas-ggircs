@@ -6,7 +6,7 @@ reset client_min_messages;
 begin;
 select * from no_plan();
 
-insert into ggircs_swrs_extract.ghgr_import (xml_file) values ($$
+insert into swrs_extract.ghgr_import (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <RegistrationData>
     <Organisation>
@@ -166,19 +166,19 @@ $$), ($$
 </ReportData>
 $$);
 
-refresh materialized view ggircs_swrs_transform.report with data;
-refresh materialized view ggircs_swrs_transform.organisation with data;
-refresh materialized view ggircs_swrs_transform.facility with data;
-refresh materialized view ggircs_swrs_transform.activity with data;
-refresh materialized view ggircs_swrs_transform.unit with data;
-refresh materialized view ggircs_swrs_transform.final_report with data;
-select ggircs_swrs_transform.load_report();
-select ggircs_swrs_transform.load_organisation();
-select ggircs_swrs_transform.load_facility();
-select ggircs_swrs_transform.load_activity();
-select ggircs_swrs_transform.load_unit();
+refresh materialized view swrs_transform.report with data;
+refresh materialized view swrs_transform.organisation with data;
+refresh materialized view swrs_transform.facility with data;
+refresh materialized view swrs_transform.activity with data;
+refresh materialized view swrs_transform.unit with data;
+refresh materialized view swrs_transform.final_report with data;
+select swrs_transform.load_report();
+select swrs_transform.load_organisation();
+select swrs_transform.load_facility();
+select swrs_transform.load_activity();
+select swrs_transform.load_unit();
 
--- Table ggircs.unit exists
+-- Table swrs.unit exists
 select has_table('ggircs'::name, 'unit'::name);
 
 -- Unit has pk
@@ -188,22 +188,22 @@ select has_pk('ggircs', 'unit', 'ggircs_unit has primary key');
 select has_fk('ggircs', 'unit', 'ggircs_unit has foreign key constraint(s)');
 
 -- Unit has data
-select isnt_empty('select * from ggircs.unit', 'there is data in ggircs.unit');
+select isnt_empty('select * from swrs.unit', 'there is data in swrs.unit');
 
 -- Unit -> Activity
 select set_eq(
     $$
-    select distinct(activity.ghgr_import_id) from ggircs.unit
-    join ggircs.activity
+    select distinct(activity.ghgr_import_id) from swrs.unit
+    join swrs.activity
     on unit.activity_id = activity.id
     $$,
 
-    'select distinct(ghgr_import_id) from ggircs.activity',
+    'select distinct(ghgr_import_id) from swrs.activity',
 
-    'Foreign key unit_id in ggircs.unit references ggircs.activity.id'
+    'Foreign key unit_id in swrs.unit references swrs.activity.id'
 );
 
--- Data in ggircs_swrs_transform.unit === data in ggircs.unit
+-- Data in swrs_transform.unit === data in swrs.unit
 select set_eq(
               $$
               select
@@ -223,7 +223,7 @@ select set_eq(
                   non_cogen_net_power,
                   non_cogen_unit_name
 
-                from ggircs_swrs_transform.unit
+                from swrs_transform.unit
               $$,
 
               $$
@@ -244,10 +244,10 @@ select set_eq(
                   non_cogen_net_power,
                   non_cogen_unit_name
 
-                from ggircs.unit
+                from swrs.unit
               $$,
 
-              'data in ggircs_swrs_transform.unit === ggircs.unit');
+              'data in swrs_transform.unit === swrs.unit');
 
 select * from finish();
 rollback;

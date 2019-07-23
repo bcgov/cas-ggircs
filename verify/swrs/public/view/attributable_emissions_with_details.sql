@@ -2,6 +2,6 @@
 
 begin;
 
-select * from ggircs.attributable_emissions_with_details where false;
+select * from swrs.attributable_emissions_with_details where false;
 
 rollback;

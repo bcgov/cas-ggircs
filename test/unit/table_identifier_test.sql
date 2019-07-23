@@ -6,7 +6,7 @@ reset client_min_messages;
 begin;
 select * from no_plan();
 
-insert into ggircs_swrs_extract.ghgr_import (xml_file) values ($$
+insert into swrs_extract.ghgr_import (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <RegistrationData>
     <Organisation>
@@ -271,17 +271,17 @@ $$), ($$
 </ReportData>
 $$);
 
-refresh materialized view ggircs_swrs_transform.report with data;
-refresh materialized view ggircs_swrs_transform.organisation with data;
-refresh materialized view ggircs_swrs_transform.facility with data;
-refresh materialized view ggircs_swrs_transform.identifier with data;
-refresh materialized view ggircs_swrs_transform.final_report with data;
-select ggircs_swrs_transform.load_report();
-select ggircs_swrs_transform.load_organisation();
-select ggircs_swrs_transform.load_facility();
-select ggircs_swrs_transform.load_identifier();
+refresh materialized view swrs_transform.report with data;
+refresh materialized view swrs_transform.organisation with data;
+refresh materialized view swrs_transform.facility with data;
+refresh materialized view swrs_transform.identifier with data;
+refresh materialized view swrs_transform.final_report with data;
+select swrs_transform.load_report();
+select swrs_transform.load_organisation();
+select swrs_transform.load_facility();
+select swrs_transform.load_identifier();
 
--- Table ggircs.identifier exists
+-- Table swrs.identifier exists
 select has_table('ggircs'::name, 'identifier'::name);
 
 -- Identifier has pk
@@ -291,53 +291,53 @@ select has_pk('ggircs', 'identifier', 'ggircs_identifier has primary key');
 select has_fk('ggircs', 'identifier', 'ggircs_identifier has foreign key constraint(s)');
 
 -- Identifier has data
-select isnt_empty('select * from ggircs.identifier', 'there is data in ggircs.identifier');
+select isnt_empty('select * from swrs.identifier', 'there is data in swrs.identifier');
 
 -- FKey tests
 -- Identifier -> Facility
 select set_eq(
     $$
-    select distinct(facility.ghgr_import_id) from ggircs.identifier
-    join ggircs.facility
+    select distinct(facility.ghgr_import_id) from swrs.identifier
+    join swrs.facility
     on
       identifier.facility_id = facility.id
       order by ghgr_import_id
     $$,
 
-    'select ghgr_import_id from ggircs.facility order by ghgr_import_id',
+    'select ghgr_import_id from swrs.facility order by ghgr_import_id',
 
-    'Foreign key facility_id in ggircs.identifier references ggircs.facility.id'
+    'Foreign key facility_id in swrs.identifier references swrs.facility.id'
 );
 
 -- Identifier (BCGHGID) -> Single Facility
 select results_eq(
     $$
-    select identifier.identifier_value as bcghgid from ggircs.facility
-    join ggircs.identifier
+    select identifier.identifier_value as bcghgid from swrs.facility
+    join swrs.identifier
     on
       facility.id = identifier.facility_bcghgid_id
     $$,
 
     ARRAY['VT_12345'::varchar, 'RD_123456'::varchar, 'RD_123456'::varchar],
 
-    'Foreign key facility_bcghgid_id in ggircs.identifier references ggircs.facility.id'
+    'Foreign key facility_bcghgid_id in swrs.identifier references swrs.facility.id'
 );
 
 
 -- Identifier -> Report
 select set_eq(
                $$
-    select distinct(report.ghgr_import_id) from ggircs.identifier
-    join ggircs.report
+    select distinct(report.ghgr_import_id) from swrs.identifier
+    join swrs.report
     on identifier.report_id = report.id
     $$,
 
-    'select distinct(ghgr_import_id) from ggircs.report',
+    'select distinct(ghgr_import_id) from swrs.report',
 
-    'Foreign key report_id in ggircs.identifier references ggircs.report.id'
+    'Foreign key report_id in swrs.identifier references swrs.report.id'
 );
 
--- Data in ggircs_swrs_transform.identifier === data in ggircs.identifier
+-- Data in swrs_transform.identifier === data in swrs.identifier
 select set_eq(
               $$
               select
@@ -346,7 +346,7 @@ select set_eq(
                   path_context,
                   identifier_type,
                   identifier_value
-                from ggircs_swrs_transform.identifier
+                from swrs_transform.identifier
               $$,
 
               $$
@@ -356,10 +356,10 @@ select set_eq(
                   path_context,
                   identifier_type,
                   identifier_value
-                from ggircs.identifier
+                from swrs.identifier
               $$,
 
-              'data in ggircs_swrs_transform.identifier === ggircs.identifier');
+              'data in swrs_transform.identifier === swrs.identifier');
 
 select * from finish();
 rollback;

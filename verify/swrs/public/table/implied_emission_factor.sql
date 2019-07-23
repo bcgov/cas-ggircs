@@ -2,6 +2,6 @@
 
 begin;
 
-select pg_catalog.has_table_privilege('ggircs.implied_emission_factor', 'select');
+select pg_catalog.has_table_privilege('swrs.implied_emission_factor', 'select');
 
 rollback;

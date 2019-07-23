@@ -2,6 +2,6 @@
 
 begin;
 
-drop table ggircs.emission;
+drop table swrs.emission;
 
 commit;

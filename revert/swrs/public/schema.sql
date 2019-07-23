@@ -2,6 +2,6 @@
 
 begin;
 
-drop schema ggircs;
+drop schema swrs;
 
 commit;

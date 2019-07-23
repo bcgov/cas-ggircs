@@ -2,6 +2,6 @@
 
 begin;
 
-select * from ggircs_swrs_transform.permit where false;
+select * from swrs_transform.permit where false;
 
 rollback;

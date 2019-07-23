@@ -2,6 +2,6 @@
 
 begin;
 
-drop function ggircs_swrs_transform.load_organisation;
+drop function swrs_transform.load_organisation;
 
 commit;

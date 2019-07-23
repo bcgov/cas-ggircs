@@ -2,6 +2,6 @@
 
 begin;
 
-select * from ggircs.report_with_org where false;
+select * from swrs.report_with_org where false;
 
 rollback;

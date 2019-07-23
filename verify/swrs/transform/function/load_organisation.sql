@@ -2,6 +2,6 @@
 
 begin;
 
-select pg_get_functiondef('ggircs_swrs_transform.load_organisation()'::regprocedure);
+select pg_get_functiondef('swrs_transform.load_organisation()'::regprocedure);
 
 rollback;

@@ -2,6 +2,6 @@
 
 begin;
 
-drop materialized view ggircs_swrs_transform.parent_organisation;
+drop materialized view swrs_transform.parent_organisation;
 
 commit;

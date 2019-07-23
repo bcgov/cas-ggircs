@@ -66,7 +66,7 @@ def extract(ciip_book, cursor, application_id, operator_id, facility_id):
     addr_ids = []
 
     for a in addresses:
-        cursor.execute('''insert into ciip.address (application_id, facility_location_id, facility_mailing_id,
+        cursor.execute('''insert into ciip_2018.address (application_id, facility_location_id, facility_mailing_id,
         operator_id, street_address, municipality, postal_code, province)
         values (%s,%s,%s,%s,%s,%s,%s,%s)  returning id ''', (
             a.get('application_id'), a.get('facility_location_id'), a.get('facility_mailing_id'),
@@ -117,7 +117,7 @@ def extract(ciip_book, cursor, application_id, operator_id, facility_id):
 
     psycopg2.extras.execute_values(
         cursor,
-        '''insert into ciip.contact (application_id, application_co_id, address_id,
+        '''insert into ciip_2018.contact (application_id, application_co_id, address_id,
         facility_id, facility_rep_id, operator_id, given_name, family_name, telephone_number,
         fax_number, email_address, position)
         values %s''',

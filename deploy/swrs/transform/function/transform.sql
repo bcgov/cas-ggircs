@@ -4,7 +4,7 @@
 begin;
 
 -- @data string (with or without data)
-create or replace function ggircs_swrs_transform.transform(data text)
+create or replace function swrs_transform.transform(data text)
   returns void as
 $function$
 
@@ -13,9 +13,9 @@ $function$
 
 begin
   -- Refresh views with data
-  for row in select matviewname from pg_matviews where schemaname = 'ggircs_swrs_transform'
+  for row in select matviewname from pg_matviews where schemaname = 'swrs_transform'
       loop
-        execute format('refresh materialized view ggircs_swrs_transform.%s %s', row.matviewname, data);
+        execute format('refresh materialized view swrs_transform.%s %s', row.matviewname, data);
         raise notice '[%] Transformed %...', timeofday()::timestamp, row.matviewname;
       end loop;
 

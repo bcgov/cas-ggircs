@@ -2,6 +2,6 @@
 
 begin;
 
-drop table ggircs.permit;
+drop table swrs.permit;
 
 commit;

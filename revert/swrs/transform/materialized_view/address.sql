@@ -2,6 +2,6 @@
 
 begin;
 
-drop materialized view ggircs_swrs_transform.address;
+drop materialized view swrs_transform.address;
 
 commit;

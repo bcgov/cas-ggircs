@@ -3,7 +3,7 @@
 
 begin;
 
-create or replace view ggircs.report_with_org as
+create or replace view swrs.report_with_org as
 select
        _organisation.business_legal_name,
        _facility.facility_name,
@@ -17,9 +17,9 @@ select
        _report.swrs_report_id,
        _organisation.swrs_organisation_id,
        _facility.swrs_facility_id
-from ggircs.report as _report
-       left join ggircs.facility as _facility on _report.id = _facility.report_id
-       left join ggircs.naics as _naics on _report.id = _naics.report_id
-       left join ggircs.organisation as _organisation on _report.ghgr_import_id = _organisation.ghgr_import_id;
+from swrs.report as _report
+       left join swrs.facility as _facility on _report.id = _facility.report_id
+       left join swrs.naics as _naics on _report.id = _naics.report_id
+       left join swrs.organisation as _organisation on _report.ghgr_import_id = _organisation.ghgr_import_id;
 
 commit;

@@ -3,11 +3,11 @@
 
 begin;
 
-create materialized view ggircs_swrs_transform.additional_data as (
+create materialized view swrs_transform.additional_data as (
   with x as (
   select id as ghgr_import_id,
          depth_four_descriptors.*
-  from ggircs_swrs_extract.ghgr_import,
+  from swrs_extract.ghgr_import,
        xmltable(
            '(
        //Process/SubProcess/child::*[not(self::Units)]/child::*/child::*/child::*/*
@@ -32,7 +32,7 @@ create materialized view ggircs_swrs_transform.additional_data as (
 
   select id as ghgr_import_id,
          depth_three_descriptors.*
-  from ggircs_swrs_extract.ghgr_import,
+  from swrs_extract.ghgr_import,
        xmltable(
            '(
        //SubProcess/child::*[not(self::Units)]/child::*/*
@@ -57,7 +57,7 @@ create materialized view ggircs_swrs_transform.additional_data as (
 
   select id as ghgr_import_id,
          depth_one_descriptors.*
-  from ggircs_swrs_extract.ghgr_import,
+  from swrs_extract.ghgr_import,
        xmltable(
            '(
        //SubProcess/child::*[not(self::Units)] | //SubProcess/child::*[not(self::Units)]/*
@@ -80,7 +80,7 @@ create materialized view ggircs_swrs_transform.additional_data as (
 )
 select row_number() over () as id, x.* from x) with no data;
 
-create unique index ggircs_additional_data_primary_key on ggircs_swrs_transform.additional_data (ghgr_import_id, process_idx,
+create unique index ggircs_additional_data_primary_key on swrs_transform.additional_data (ghgr_import_id, process_idx,
                                                                              sub_process_idx, activity_name,
                                                                              grandparent_idx, parent_idx, class_idx,
                                                                              parent,
@@ -88,21 +88,21 @@ create unique index ggircs_additional_data_primary_key on ggircs_swrs_transform.
 
 
 
-comment on materialized view ggircs_swrs_transform.additional_data is 'The materialized view containing the information on additional_data (descriptors)';
-comment on column ggircs_swrs_transform.additional_data.id is 'A generated index used for keying in the ggircs schema';
-comment on column ggircs_swrs_transform.additional_data.ghgr_import_id is 'A foreign key reference to ggircs_swrs_extract.ghgr_import';
-comment on column ggircs_swrs_transform.additional_data.activity_name is 'The name of the node immediately after ReportData';
-comment on column ggircs_swrs_transform.additional_data.process_idx is 'The number of preceding Process siblings before this node';
-comment on column ggircs_swrs_transform.additional_data.sub_process_idx is 'The number of preceding SubProcess siblings before this node';
-comment on column ggircs_swrs_transform.additional_data.grandparent_idx is 'The count of grandparent node before this node';
-comment on column ggircs_swrs_transform.additional_data.parent_idx is 'The count of parent node before this node';
-comment on column ggircs_swrs_transform.additional_data.class_idx is 'The count of self node';
-comment on column ggircs_swrs_transform.additional_data.grandparent is 'The name of the grandparent node';
-comment on column ggircs_swrs_transform.additional_data.parent is 'The name of the parent node';
-comment on column ggircs_swrs_transform.additional_data.class is 'The name of the node itself';
-comment on column ggircs_swrs_transform.additional_data.attribute is 'The name of any attributes on this node';
-comment on column ggircs_swrs_transform.additional_data.attr_value is 'The value of the attributes on this node concatenated';
-comment on column ggircs_swrs_transform.additional_data.node_value is 'The text value of the node';
+comment on materialized view swrs_transform.additional_data is 'The materialized view containing the information on additional_data (descriptors)';
+comment on column swrs_transform.additional_data.id is 'A generated index used for keying in the ggircs schema';
+comment on column swrs_transform.additional_data.ghgr_import_id is 'A foreign key reference to swrs_extract.ghgr_import';
+comment on column swrs_transform.additional_data.activity_name is 'The name of the node immediately after ReportData';
+comment on column swrs_transform.additional_data.process_idx is 'The number of preceding Process siblings before this node';
+comment on column swrs_transform.additional_data.sub_process_idx is 'The number of preceding SubProcess siblings before this node';
+comment on column swrs_transform.additional_data.grandparent_idx is 'The count of grandparent node before this node';
+comment on column swrs_transform.additional_data.parent_idx is 'The count of parent node before this node';
+comment on column swrs_transform.additional_data.class_idx is 'The count of self node';
+comment on column swrs_transform.additional_data.grandparent is 'The name of the grandparent node';
+comment on column swrs_transform.additional_data.parent is 'The name of the parent node';
+comment on column swrs_transform.additional_data.class is 'The name of the node itself';
+comment on column swrs_transform.additional_data.attribute is 'The name of any attributes on this node';
+comment on column swrs_transform.additional_data.attr_value is 'The value of the attributes on this node concatenated';
+comment on column swrs_transform.additional_data.node_value is 'The text value of the node';
 
 
 commit;

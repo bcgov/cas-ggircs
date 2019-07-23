@@ -2,6 +2,6 @@
 
 begin;
 
-drop table ggircs.unit;
+drop table swrs.unit;
 
 commit;

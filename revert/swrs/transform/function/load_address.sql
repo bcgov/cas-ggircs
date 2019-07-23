@@ -2,6 +2,6 @@
 
 begin;
 
-drop function ggircs_swrs_transform.load_address;
+drop function swrs_transform.load_address;
 
 commit;

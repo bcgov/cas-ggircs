@@ -2,6 +2,6 @@
 
 begin;
 
- drop function ggircs_swrs_transform.transform;
+ drop function swrs_transform.transform;
 
 commit;

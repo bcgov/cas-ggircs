@@ -6,7 +6,7 @@ reset client_min_messages;
 begin;
 select * from no_plan();
 
-insert into ggircs_swrs_extract.ghgr_import (xml_file) values ($$
+insert into swrs_extract.ghgr_import (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <RegistrationData>
     <Organisation>
@@ -350,19 +350,19 @@ $$), ($$
 </ReportData>
 $$);
 
-refresh materialized view ggircs_swrs_transform.report with data;
-refresh materialized view ggircs_swrs_transform.organisation with data;
-refresh materialized view ggircs_swrs_transform.facility with data;
-refresh materialized view ggircs_swrs_transform.parent_organisation with data;
-refresh materialized view ggircs_swrs_transform.address with data;
-refresh materialized view ggircs_swrs_transform.final_report with data;
-select ggircs_swrs_transform.load_report();
-select ggircs_swrs_transform.load_organisation();
-select ggircs_swrs_transform.load_facility();
-select ggircs_swrs_transform.load_parent_organisation();
-select ggircs_swrs_transform.load_address();
+refresh materialized view swrs_transform.report with data;
+refresh materialized view swrs_transform.organisation with data;
+refresh materialized view swrs_transform.facility with data;
+refresh materialized view swrs_transform.parent_organisation with data;
+refresh materialized view swrs_transform.address with data;
+refresh materialized view swrs_transform.final_report with data;
+select swrs_transform.load_report();
+select swrs_transform.load_organisation();
+select swrs_transform.load_facility();
+select swrs_transform.load_parent_organisation();
+select swrs_transform.load_address();
 
--- Table ggircs.address exists
+-- Table swrs.address exists
 select has_table('ggircs'::name, 'address'::name);
 
 -- Address has pk
@@ -372,64 +372,64 @@ select has_pk('ggircs', 'address', 'ggircs_address has primary key');
 select has_fk('ggircs', 'address', 'ggircs_address has foreign key constraint(s)');
 
 -- Address has data
-select isnt_empty('select * from ggircs.address', 'there is data in ggircs.address');
+select isnt_empty('select * from swrs.address', 'there is data in swrs.address');
 
 -- FKey tests
 -- Address -> Facility
 select set_eq(
     $$
-    select distinct(facility.ghgr_import_id) from ggircs.address
-    join ggircs.facility
+    select distinct(facility.ghgr_import_id) from swrs.address
+    join swrs.facility
     on
       address.facility_id = facility.id
       order by ghgr_import_id
     $$,
 -- --
-    'select ghgr_import_id from ggircs.facility order by ghgr_import_id',
+    'select ghgr_import_id from swrs.facility order by ghgr_import_id',
 -- --
-    'Foreign key facility_id in ggircs.address references ggircs.facility.id'
+    'Foreign key facility_id in swrs.address references swrs.facility.id'
 );
 
 -- Address -> Organisation
 select set_eq(
     $$
-    select distinct(organisation.ghgr_import_id) from ggircs.address
-    join ggircs.organisation
+    select distinct(organisation.ghgr_import_id) from swrs.address
+    join swrs.organisation
     on address.organisation_id = organisation.id
     $$,
 
-    'select ghgr_import_id from ggircs.organisation',
+    'select ghgr_import_id from swrs.organisation',
 
-    'Foreign key organisation_id in ggircs.address references ggircs.organisation.id'
+    'Foreign key organisation_id in swrs.address references swrs.organisation.id'
 );
 
 -- Address -> Parent Organisation
 select set_eq(
     $$
-    select distinct(parent_organisation.ghgr_import_id) from ggircs.address
-    join ggircs.parent_organisation
+    select distinct(parent_organisation.ghgr_import_id) from swrs.address
+    join swrs.parent_organisation
     on address.parent_organisation_id = parent_organisation.id
     $$,
 
-    'select ghgr_import_id from ggircs.parent_organisation',
+    'select ghgr_import_id from swrs.parent_organisation',
 
-    'Foreign key parent_organisation_id in ggircs.address references ggircs.parent_organisation.id'
+    'Foreign key parent_organisation_id in swrs.address references swrs.parent_organisation.id'
 );
 
 -- Address -> Report
 select set_eq(
     $$
-    select distinct(report.ghgr_import_id) from ggircs.address
-    join ggircs.report
+    select distinct(report.ghgr_import_id) from swrs.address
+    join swrs.report
     on address.report_id = report.id
     $$,
 
-    'select distinct(ghgr_import_id) from ggircs.report',
+    'select distinct(ghgr_import_id) from swrs.report',
 
-    'Foreign key report_id in ggircs.address references ggircs.report.id'
+    'Foreign key report_id in swrs.address references swrs.report.id'
 );
 
--- Data in ggircs_swrs_transform.address === data in ggircs.address
+-- Data in swrs_transform.address === data in swrs.address
 select set_eq(
               $$
               select
@@ -467,7 +467,7 @@ select set_eq(
                   mailing_address_additional_information,
                   geographic_address_latitude,
                   geographic_address_longitude
-                from ggircs_swrs_transform.address
+                from swrs_transform.address
                 order by
                   ghgr_import_id,
                   swrs_facility_id,
@@ -513,7 +513,7 @@ select set_eq(
                   mailing_address_additional_information,
                   geographic_address_latitude,
                   geographic_address_longitude
-                from ggircs.address
+                from swrs.address
                 order by
                   ghgr_import_id,
                   swrs_facility_id,
@@ -523,7 +523,7 @@ select set_eq(
                  asc
               $$,
 
-              'data in ggircs_swrs_transform.address === ggircs.address');
+              'data in swrs_transform.address === swrs.address');
 
 select * from finish();
 rollback;

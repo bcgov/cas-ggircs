@@ -2,6 +2,6 @@
 
 begin;
 
-drop function ggircs_swrs_transform.load_fuel;
+drop function swrs_transform.load_fuel;
 
 commit;

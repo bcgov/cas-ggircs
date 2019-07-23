@@ -2,6 +2,6 @@
 
 begin;
 
-select pg_catalog.has_table_privilege('ggircs.identifier', 'select');
+select pg_catalog.has_table_privilege('swrs.identifier', 'select');
 
 rollback;

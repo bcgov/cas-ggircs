@@ -2,6 +2,6 @@
 
 begin;
 
-drop view if exists ggircs.report_with_org;
+drop view if exists swrs.report_with_org;
 
 commit;

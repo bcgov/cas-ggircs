@@ -2,6 +2,6 @@
 
 begin;
 
-drop table ggircs.organisation;
+drop table swrs.organisation;
 
 commit;

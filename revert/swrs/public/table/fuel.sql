@@ -2,6 +2,6 @@
 
 begin;
 
-drop table ggircs.fuel;
+drop table swrs.fuel;
 
 commit;

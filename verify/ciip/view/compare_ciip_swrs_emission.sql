@@ -2,6 +2,6 @@
 
 begin;
 
-select * from ciip.compare_ciip_swrs_emission where false;
+select * from ciip_2018.compare_ciip_swrs_emission where false;
 
 rollback;

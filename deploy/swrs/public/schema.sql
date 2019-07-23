@@ -3,6 +3,6 @@
 begin;
 
 create schema ggircs;
-comment on schema ggircs is 'A schema containing the loaded data from SWRS. This schema contains the data available in Metabase';
+comment on schema swrs is 'A schema containing the loaded data from SWRS. This schema contains the data available in Metabase';
 
 commit;

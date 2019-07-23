@@ -2,6 +2,6 @@
 
 begin;
 
-select * from ggircs_swrs_transform.additional_data where false;
+select * from swrs_transform.additional_data where false;
 
 rollback;

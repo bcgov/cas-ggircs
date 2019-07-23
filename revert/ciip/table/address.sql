@@ -2,6 +2,6 @@
 
 begin;
 
-drop table ciip.address;
+drop table ciip_2018.address;
 
 commit;

@@ -2,6 +2,6 @@
 
 BEGIN;
 
-select * from ggircs.facility_details where false;
+select * from swrs.facility_details where false;
 
 ROLLBACK;

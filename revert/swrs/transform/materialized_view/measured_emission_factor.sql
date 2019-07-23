@@ -2,6 +2,6 @@
 
 begin;
 
-drop materialized view ggircs_swrs_transform.measured_emission_factor;
+drop materialized view swrs_transform.measured_emission_factor;
 
 commit;

@@ -2,6 +2,6 @@
 
 begin;
 
-select pg_catalog.has_table_privilege('ggircs.measured_emission_factor', 'select');
+select pg_catalog.has_table_privilege('swrs.measured_emission_factor', 'select');
 
 rollback;

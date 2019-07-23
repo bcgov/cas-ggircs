@@ -2,6 +2,6 @@
 
 begin;
 
-drop table ggircs.measured_emission_factor;
+drop table swrs.measured_emission_factor;
 
 commit;

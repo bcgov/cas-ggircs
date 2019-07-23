@@ -9,7 +9,7 @@ select plan(13);
 -- Test table exists in ggircs_swrs schema
 select has_table(
     'ggircs_swrs', 'implied_emission_factor',
-    'ggircs.implied_emission_factor should exist as a table'
+    'swrs.implied_emission_factor should exist as a table'
 );
 
 -- Test table has a primary key

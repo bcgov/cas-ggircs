@@ -2,7 +2,7 @@
 
 begin;
 
-select pg_catalog.has_table_privilege('ciip.energy', 'select');
+select pg_catalog.has_table_privilege('ciip_2018.energy', 'select');
 
 rollback;
 

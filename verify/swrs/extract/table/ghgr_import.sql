@@ -2,6 +2,6 @@
 
 begin;
 
-select pg_catalog.has_table_privilege('ggircs_swrs_extract.ghgr_import', 'select');
+select pg_catalog.has_table_privilege('swrs_extract.ghgr_import', 'select');
 
 rollback;

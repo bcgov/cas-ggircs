@@ -6,7 +6,7 @@ reset client_min_messages;
 begin;
 select * from no_plan();
 
-insert into ggircs_swrs_extract.ghgr_import (xml_file) values ($$
+insert into swrs_extract.ghgr_import (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <RegistrationData>
     <Organisation>
@@ -447,22 +447,22 @@ $$), ($$
 </ReportData>
 $$);
 
-refresh materialized view ggircs_swrs_transform.report with data;
-refresh materialized view ggircs_swrs_transform.organisation with data;
-refresh materialized view ggircs_swrs_transform.facility with data;
-refresh materialized view ggircs_swrs_transform.parent_organisation with data;
-refresh materialized view ggircs_swrs_transform.address with data;
-refresh materialized view ggircs_swrs_transform.contact with data;
+refresh materialized view swrs_transform.report with data;
+refresh materialized view swrs_transform.organisation with data;
+refresh materialized view swrs_transform.facility with data;
+refresh materialized view swrs_transform.parent_organisation with data;
+refresh materialized view swrs_transform.address with data;
+refresh materialized view swrs_transform.contact with data;
 
-refresh materialized view ggircs_swrs_transform.final_report with data;
-select ggircs_swrs_transform.load_report();
-select ggircs_swrs_transform.load_organisation();
-select ggircs_swrs_transform.load_facility();
-select ggircs_swrs_transform.load_parent_organisation();
-select ggircs_swrs_transform.load_address();
-select ggircs_swrs_transform.load_contact();
+refresh materialized view swrs_transform.final_report with data;
+select swrs_transform.load_report();
+select swrs_transform.load_organisation();
+select swrs_transform.load_facility();
+select swrs_transform.load_parent_organisation();
+select swrs_transform.load_address();
+select swrs_transform.load_contact();
 
--- Table ggircs.contact exists
+-- Table swrs.contact exists
 select has_table('ggircs'::name, 'contact'::name);
 
 -- Contact has pk
@@ -472,62 +472,62 @@ select has_pk('ggircs', 'contact', 'ggircs_contact has primary key');
 select has_fk('ggircs', 'contact', 'ggircs_contact has foreign key constraint(s)');
 
 -- Contact has data
-select isnt_empty('select * from ggircs.contact', 'there is data in ggircs.contact');
+select isnt_empty('select * from swrs.contact', 'there is data in swrs.contact');
 
 -- FKey tests
 -- Contact -> Address
 select set_eq(
     $$
-    select distinct(address.ghgr_import_id) from ggircs.contact
-    join ggircs.address
+    select distinct(address.ghgr_import_id) from swrs.contact
+    join swrs.address
     on contact.address_id = address.id
     $$,
 
-    'select distinct(ghgr_import_id) from ggircs.address',
+    'select distinct(ghgr_import_id) from swrs.address',
 
-    'Foreign key address_id in ggircs.contact references ggircs.address.id'
+    'Foreign key address_id in swrs.contact references swrs.address.id'
 );
 
 -- Contact -> Facility
 select set_eq(
                $$
-    select distinct(facility.ghgr_import_id) from ggircs.contact
-    join ggircs.facility
+    select distinct(facility.ghgr_import_id) from swrs.contact
+    join swrs.facility
     on
       contact.facility_id = facility.id
       order by ghgr_import_id
     $$,
-               'select ghgr_import_id from ggircs.facility order by ghgr_import_id',
-               'Foreign key facility_id in ggircs.contact references ggircs.facility.id'
+               'select ghgr_import_id from swrs.facility order by ghgr_import_id',
+               'Foreign key facility_id in swrs.contact references swrs.facility.id'
 );
 
 -- Contact -> Report
 select set_eq(
     $$
-    select distinct(report.ghgr_import_id) from ggircs.contact
-    join ggircs.report
+    select distinct(report.ghgr_import_id) from swrs.contact
+    join swrs.report
     on contact.report_id = report.id
     $$,
 
-    'select distinct(ghgr_import_id) from ggircs.report',
+    'select distinct(ghgr_import_id) from swrs.report',
 
-    'Foreign key report_id in ggircs.contact references ggircs.report.id'
+    'Foreign key report_id in swrs.contact references swrs.report.id'
 );
 
 -- Contact -> Report
 select set_eq(
     $$
-    select distinct(organisation.ghgr_import_id) from ggircs.contact
-    join ggircs.organisation
+    select distinct(organisation.ghgr_import_id) from swrs.contact
+    join swrs.organisation
     on contact.organisation_id = organisation.id
     $$,
 
-    'select distinct(ghgr_import_id) from ggircs.organisation',
+    'select distinct(ghgr_import_id) from swrs.organisation',
 
-    'Foreign key organisation_id in ggircs.contact references ggircs.organisation.id'
+    'Foreign key organisation_id in swrs.contact references swrs.organisation.id'
 );
 
--- Data in ggircs_swrs_transform.contact === data in ggircs.contact
+-- Data in swrs_transform.contact === data in swrs.contact
 select set_eq(
               $$
               select
@@ -543,7 +543,7 @@ select set_eq(
                   email_address,
                   position,
                   language_correspondence
-                from ggircs_swrs_transform.contact
+                from swrs_transform.contact
                 order by
                   ghgr_import_id,
                   path_context,
@@ -566,7 +566,7 @@ select set_eq(
                   email_address,
                   position,
                   language_correspondence
-                from ggircs.contact
+                from swrs.contact
                 order by
                   ghgr_import_id,
                   path_context,
@@ -575,7 +575,7 @@ select set_eq(
                  asc
               $$,
 
-              'data in ggircs_swrs_transform.contact === ggircs.contact');
+              'data in swrs_transform.contact === swrs.contact');
 
 select * from finish();
 rollback;

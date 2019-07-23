@@ -2,6 +2,6 @@
 
 begin;
 
-select pg_catalog.has_table_privilege('ggircs.naics_category', 'select');
+select pg_catalog.has_table_privilege('swrs.naics_category', 'select');
 
 rollback;

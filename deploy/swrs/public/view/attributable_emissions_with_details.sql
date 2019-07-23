@@ -3,7 +3,7 @@
 
 begin;
 
-create or replace view ggircs.attributable_emissions_with_details as
+create or replace view swrs.attributable_emissions_with_details as
 select
        ae.id as emission_id,
        org.business_legal_name,
@@ -42,13 +42,13 @@ select
        org.swrs_organisation_id,
        fc.swrs_facility_id
 
-from ggircs.attributable_emission as ae
-       left join ggircs.fuel as f on ae.fuel_id = f.id
-       left join ggircs.activity as ac on ac.id = ae.activity_id
-       left join ggircs.report as rp on rp.id = ae.report_id
-       left join ggircs.facility as fc on fc.id = ae.facility_id
-       left join ggircs.organisation as org on org.id = ae.organisation_id
-       left join ggircs.unit as u on u.id = ae.unit_id
-       left join ggircs.naics as n on n.id = ae.naics_id;
+from swrs.attributable_emission as ae
+       left join swrs.fuel as f on ae.fuel_id = f.id
+       left join swrs.activity as ac on ac.id = ae.activity_id
+       left join swrs.report as rp on rp.id = ae.report_id
+       left join swrs.facility as fc on fc.id = ae.facility_id
+       left join swrs.organisation as org on org.id = ae.organisation_id
+       left join swrs.unit as u on u.id = ae.unit_id
+       left join swrs.naics as n on n.id = ae.naics_id;
 
 commit;

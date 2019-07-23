@@ -2,6 +2,6 @@
 
 BEGIN;
 
-drop table ggircs.fuel_carbon_tax_details;
+drop table swrs.fuel_carbon_tax_details;
 
 COMMIT;

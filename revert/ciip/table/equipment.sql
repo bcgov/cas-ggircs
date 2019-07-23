@@ -2,6 +2,6 @@
 
 begin;
 
-drop table ciip.equipment;
+drop table ciip_2018.equipment;
 
 commit;

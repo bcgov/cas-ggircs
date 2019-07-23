@@ -3,7 +3,7 @@
 
 begin;
 
-create materialized view ggircs_swrs_transform.facility as (
+create materialized view swrs_transform.facility as (
   -- Select the XML reports from ghgr_imports table and get the Facility ID and Report ID from reports table
   -- Walk the XML to extract facility details
   -- coalesce results from VerifyTombstone (vt) and RegistrationData (rd)
@@ -20,7 +20,7 @@ create materialized view ggircs_swrs_transform.facility as (
          substring(coalesce(vt_facility_details.latitude, rd_facility_details.latitude) from '-*[0-9]+\.*[0-9]+')::numeric   as latitude,
          substring(coalesce(vt_facility_details.longitude, rd_facility_details.longitude) from '-*[0-9]+\.*[0-9]+')::numeric as longitude
 
-  from ggircs_swrs_extract.ghgr_import,
+  from swrs_extract.ghgr_import,
        xmltable(
            '/ReportData'
            passing xml_file
@@ -49,18 +49,18 @@ create materialized view ggircs_swrs_transform.facility as (
   order by ghgr_import_id desc
 ) with no data;
 
-create unique index ggircs_facility_primary_key on ggircs_swrs_transform.facility (ghgr_import_id);
+create unique index ggircs_facility_primary_key on swrs_transform.facility (ghgr_import_id);
 
-comment on materialized view ggircs_swrs_transform.facility is 'the materialized view housing all report data pertaining to the reporting facility';
-comment on column ggircs_swrs_transform.facility.id is 'A generated index used for keying in the ggircs schema';
-comment on column ggircs_swrs_transform.facility.ghgr_import_id is 'The primary key for the materialized view';
-comment on column ggircs_swrs_transform.facility.swrs_facility_id is 'The reporting facility swrs id';
-comment on column ggircs_swrs_transform.facility.facility_name is 'The name of the reporting facility';
-comment on column ggircs_swrs_transform.facility.facility_type is 'The type of the reporting facility';
-comment on column ggircs_swrs_transform.facility.relationship_type is 'The type of relationship';
-comment on column ggircs_swrs_transform.facility.portability_indicator is 'The portability indicator';
-comment on column ggircs_swrs_transform.facility.status is 'The status of the facility';
-comment on column ggircs_swrs_transform.facility.latitude is 'The latitude of the reporting facility';
-comment on column ggircs_swrs_transform.facility.longitude is 'The longitude of the reporting facility';
+comment on materialized view swrs_transform.facility is 'the materialized view housing all report data pertaining to the reporting facility';
+comment on column swrs_transform.facility.id is 'A generated index used for keying in the ggircs schema';
+comment on column swrs_transform.facility.ghgr_import_id is 'The primary key for the materialized view';
+comment on column swrs_transform.facility.swrs_facility_id is 'The reporting facility swrs id';
+comment on column swrs_transform.facility.facility_name is 'The name of the reporting facility';
+comment on column swrs_transform.facility.facility_type is 'The type of the reporting facility';
+comment on column swrs_transform.facility.relationship_type is 'The type of relationship';
+comment on column swrs_transform.facility.portability_indicator is 'The portability indicator';
+comment on column swrs_transform.facility.status is 'The status of the facility';
+comment on column swrs_transform.facility.latitude is 'The latitude of the reporting facility';
+comment on column swrs_transform.facility.longitude is 'The longitude of the reporting facility';
 
 commit;

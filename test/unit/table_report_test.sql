@@ -6,7 +6,7 @@ reset client_min_messages;
 begin;
 select * from no_plan();
 
-insert into ggircs_swrs_extract.ghgr_import (xml_file) values ($$
+insert into swrs_extract.ghgr_import (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <ReportDetails>
     <ReportID>1234</ReportID>
@@ -25,24 +25,24 @@ insert into ggircs_swrs_extract.ghgr_import (xml_file) values ($$
 </ReportData>
 $$);
 
-refresh materialized view ggircs_swrs_transform.report with data;
-refresh materialized view ggircs_swrs_transform.final_report with data;
-select ggircs_swrs_transform.load_report();
+refresh materialized view swrs_transform.report with data;
+refresh materialized view swrs_transform.final_report with data;
+select swrs_transform.load_report();
 
-select ghgr_import_id from ggircs.report;
+select ghgr_import_id from swrs.report;
 select '======';
-select ghgr_import_id from ggircs_swrs_transform.report;
+select ghgr_import_id from swrs_transform.report;
 
--- Table ggircs.report exists
+-- Table swrs.report exists
 select has_table('ggircs'::name, 'report'::name);
 
 -- Report has pk
 select has_pk('ggircs', 'report', 'ggircs_report has primary key');
 
 -- Report has data
-select isnt_empty('select * from ggircs.report', 'there is data in ggircs.report');
+select isnt_empty('select * from swrs.report', 'there is data in swrs.report');
 
--- Data in ggircs_swrs_transform.report === data in ggircs_report
+-- Data in swrs_transform.report === data in ggircs_report
 select set_eq($$
                   select
                       ghgr_import_id,
@@ -59,7 +59,7 @@ select set_eq($$
                       last_modified_by,
                       last_modified_date,
                       update_comment
-                  from ggircs_swrs_transform.report
+                  from swrs_transform.report
                   $$,
 
                  $$
@@ -78,10 +78,10 @@ select set_eq($$
                       last_modified_by,
                       last_modified_date,
                       update_comment
-                  from ggircs.report
+                  from swrs.report
                   $$,
 
-    'data in ggircs_swrs_transform.report === ggircs.report');
+    'data in swrs_transform.report === swrs.report');
 
 select * from finish();
 rollback;

@@ -8,12 +8,12 @@ select plan(51);
 
 select has_materialized_view(
     'ggircs_swrs', 'contact',
-    'ggircs_swrs_transform.contact should be a materialized view'
+    'swrs_transform.contact should be a materialized view'
 );
 
 select has_index(
     'ggircs_swrs', 'contact', 'ggircs_contact_primary_key',
-    'ggircs_swrs_transform.contact should have a primary key'
+    'swrs_transform.contact should have a primary key'
 );
 
 select columns_are('ggircs_swrs'::name, 'contact'::name, array[
@@ -97,7 +97,7 @@ select col_is_null(      'ggircs_swrs', 'contact', 'language_correspondence', 'c
 select col_hasnt_default('ggircs_swrs', 'contact', 'language_correspondence', 'contact.language_correspondence column should not have a default');
 
 -- XML fixture for testing
-insert into ggircs_swrs_extract.ghgr_import (xml_file) values ($$<ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+insert into swrs_extract.ghgr_import (xml_file) values ($$<ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <RegistrationData>
     <Contacts>
       <Contact>
@@ -124,78 +124,78 @@ insert into ggircs_swrs_extract.ghgr_import (xml_file) values ($$<ReportData xml
 </ReportData>
 $$);
 
-refresh materialized view ggircs_swrs_transform.facility with data;
-refresh materialized view ggircs_swrs_transform.contact with data;
+refresh materialized view swrs_transform.facility with data;
+refresh materialized view swrs_transform.contact with data;
 
 --  Test ghgr_import_id fk relation
 select results_eq(
    $$
-   select facility.ghgr_import_id from ggircs_swrs_transform.contact
-   join ggircs_swrs_transform.facility
+   select facility.ghgr_import_id from swrs_transform.contact
+   join swrs_transform.facility
    on
    contact.ghgr_import_id =  facility.ghgr_import_id
    and contact.contact_idx=0
    $$,
 
-   'select ghgr_import_id from ggircs_swrs_transform.facility',
+   'select ghgr_import_id from swrs_transform.facility',
 
-   'Foreign key ghgr_import_id in ggircs_swrs_contact references ggircs_swrs_transform.facility'
+   'Foreign key ghgr_import_id in ggircs_swrs_contact references swrs_transform.facility'
 );
 
 -- TODO: tests on the veracity of what is being pulled in to this view from xml
--- Test the xml imports for ggircs_swrs_transform.contact
+-- Test the xml imports for swrs_transform.contact
 select results_eq(
-    'select contact_type from ggircs_swrs_transform.contact where contact_idx=0',
+    'select contact_type from swrs_transform.contact where contact_idx=0',
     ARRAY['Operator Contact'::varchar],
-    'Column contact_type in ggircs_swrs_transform.contact has correctly parsed the xml'
+    'Column contact_type in swrs_transform.contact has correctly parsed the xml'
 );
 
 select results_eq(
-    'select given_name from ggircs_swrs_transform.contact where contact_idx=0',
+    'select given_name from swrs_transform.contact where contact_idx=0',
     ARRAY['Simon'::varchar],
-    'Column given_name in ggircs_swrs_transform.contact has correctly parsed the xml'
+    'Column given_name in swrs_transform.contact has correctly parsed the xml'
 );
 
 select results_eq(
-    'select family_name from ggircs_swrs_transform.contact where contact_idx=0',
+    'select family_name from swrs_transform.contact where contact_idx=0',
     ARRAY['Belmont'::varchar],
-    'Column family_name in ggircs_swrs_transform.contact has correctly parsed the xml'
+    'Column family_name in swrs_transform.contact has correctly parsed the xml'
 );
 
 select results_eq(
-    'select telephone_number from ggircs_swrs_transform.contact where contact_idx=0',
+    'select telephone_number from swrs_transform.contact where contact_idx=0',
     ARRAY['123456789'::varchar],
-    'Column telephone_number in ggircs_swrs_transform.contact has correctly parsed the xml'
+    'Column telephone_number in swrs_transform.contact has correctly parsed the xml'
 );
 
 select results_eq(
-    'select fax_number from ggircs_swrs_transform.contact where contact_idx=0',
+    'select fax_number from swrs_transform.contact where contact_idx=0',
     ARRAY['987654321'::varchar],
-    'Column fax_number in ggircs_swrs_transform.contact has correctly parsed the xml'
+    'Column fax_number in swrs_transform.contact has correctly parsed the xml'
 );
 
 select results_eq(
-    'select extension_number from ggircs_swrs_transform.contact where contact_idx=0',
+    'select extension_number from swrs_transform.contact where contact_idx=0',
     ARRAY['1'::varchar],
-    'Column extension_number in ggircs_swrs_transform.contact has correctly parsed the xml'
+    'Column extension_number in swrs_transform.contact has correctly parsed the xml'
 );
 
 select results_eq(
-    'select email_address from ggircs_swrs_transform.contact where contact_idx=0',
+    'select email_address from swrs_transform.contact where contact_idx=0',
     ARRAY['dead@vampires.com'::varchar],
-    'Column email_address in ggircs_swrs_transform.contact has correctly parsed the xml'
+    'Column email_address in swrs_transform.contact has correctly parsed the xml'
 );
 
 select results_eq(
-    'select position from ggircs_swrs_transform.contact where contact_idx=0',
+    'select position from swrs_transform.contact where contact_idx=0',
     ARRAY['Vampire Hunter'::varchar],
-    'Column position in ggircs_swrs_transform.contact has correctly parsed the xml'
+    'Column position in swrs_transform.contact has correctly parsed the xml'
 );
 
 select results_eq(
-    'select language_correspondence from ggircs_swrs_transform.contact where contact_idx=0',
+    'select language_correspondence from swrs_transform.contact where contact_idx=0',
     ARRAY['english'::varchar],
-    'Column language_correspondence in ggircs_swrs_transform.contact has correctly parsed the xml'
+    'Column language_correspondence in swrs_transform.contact has correctly parsed the xml'
 );
 
 select * from finish();

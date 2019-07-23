@@ -2,6 +2,6 @@
 
 begin;
 
-drop table ggircs.additional_data;
+drop table swrs.additional_data;
 
 commit;

@@ -4,13 +4,13 @@
 
 BEGIN;
 
-create or replace function ggircs_swrs_transform.load_facility()
+create or replace function swrs_transform.load_facility()
   returns void as
 $function$
 
   begin
 
-    delete from ggircs_swrs_load.facility;
+    delete from swrs_load.facility;
 
     set constraints all deferred;
 
@@ -18,16 +18,16 @@ $function$
         -- facility.id will as the parent facility FK.
         -- swrs_organisation_id and reporting_period_duration are the join constraints
         select _facility.id, _organisation.swrs_organisation_id, _report.reporting_period_duration
-        from ggircs_swrs_transform.facility as _facility
-        inner join ggircs_swrs_transform.final_report as _final_report
+        from swrs_transform.facility as _facility
+        inner join swrs_transform.final_report as _final_report
             on _facility.ghgr_import_id = _final_report.ghgr_import_id
             and _facility.facility_type = 'LFO'
-        left join ggircs_swrs_transform.organisation as _organisation
+        left join swrs_transform.organisation as _organisation
             on _facility.ghgr_import_id = _organisation.ghgr_import_id
-        left join ggircs_swrs_transform.report as _report
+        left join swrs_transform.report as _report
             on _facility.ghgr_import_id = _report.ghgr_import_id
     )
-    insert into ggircs_swrs_load.facility (id, ghgr_import_id, organisation_id, report_id,
+    insert into swrs_load.facility (id, ghgr_import_id, organisation_id, report_id,
                                  swrs_facility_id,
                                  parent_facility_id,
                                  facility_name, facility_type,
@@ -41,13 +41,13 @@ $function$
            _facility.relationship_type, _facility.portability_indicator,
            _facility.status, _facility.latitude, _facility.longitude
 
-    from ggircs_swrs_transform.facility as _facility
-    inner join ggircs_swrs_transform.final_report as _final_report on _facility.ghgr_import_id = _final_report.ghgr_import_id
+    from swrs_transform.facility as _facility
+    inner join swrs_transform.final_report as _final_report on _facility.ghgr_import_id = _final_report.ghgr_import_id
     -- FK Facility -> Organisation
-    left join ggircs_swrs_transform.organisation as _organisation
+    left join swrs_transform.organisation as _organisation
         on _facility.ghgr_import_id = _organisation.ghgr_import_id
     -- FK Facility -> Report
-    left join ggircs_swrs_transform.report as _report
+    left join swrs_transform.report as _report
         on _facility.ghgr_import_id = _report.ghgr_import_id
     -- FK Single Facility -> LFO Facility
     left join _final_lfo_facility

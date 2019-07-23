@@ -2,6 +2,6 @@
 
 begin;
 
-drop table ggircs.naics;
+drop table swrs.naics;
 
 commit;

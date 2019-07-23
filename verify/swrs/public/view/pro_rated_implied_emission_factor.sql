@@ -2,6 +2,6 @@
 
 begin;
 
-select * from ggircs.pro_rated_implied_emission_factor where false;
+select * from swrs.pro_rated_implied_emission_factor where false;
 
 rollback;

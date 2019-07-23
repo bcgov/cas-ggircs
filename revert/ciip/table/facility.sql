@@ -2,7 +2,7 @@
 
 begin;
 
-drop table ciip.facility;
+drop table ciip_2018.facility;
 
 commit;
 

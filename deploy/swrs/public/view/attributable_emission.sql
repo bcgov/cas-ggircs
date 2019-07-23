@@ -3,7 +3,7 @@
 
 begin;
 
-create or replace view ggircs.attributable_emission as(
+create or replace view swrs.attributable_emission as(
           select
              row_number() over () as id,
              x.ghgr_import_id,
@@ -27,10 +27,10 @@ create or replace view ggircs.attributable_emission as(
              x.calculated_quantity,
              x.emission_category
 
-          from ggircs.emission as x
-          join ggircs.facility as _facility
+          from swrs.emission as x
+          join swrs.facility as _facility
           on x.facility_id = _facility.id
-          join ggircs.activity as _activity
+          join swrs.activity as _activity
           on x.activity_id = _activity.id
           and x.gas_type != 'CO2bioC'
           and _facility.facility_type != 'EIO'

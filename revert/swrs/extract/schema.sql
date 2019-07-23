@@ -2,6 +2,6 @@
 
 begin;
 
-drop schema ggircs_swrs_extract;
+drop schema swrs_extract
 
 commit;

@@ -2,6 +2,6 @@
 
 begin;
 
-select * from ggircs.carbon_tax_calculation where false;
+select * from swrs.carbon_tax_calculation where false;
 
 commit;

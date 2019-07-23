@@ -2,6 +2,6 @@
 
 begin;
 
-select * from ggircs_swrs_transform.emission where false;
+select * from swrs_transform.emission where false;
 
 rollback;

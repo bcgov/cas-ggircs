@@ -2,6 +2,6 @@
 
 BEGIN;
 
-DROP FUNCTION ggircs_swrs_transform.clone_schema(text, text, boolean, boolean);
+DROP FUNCTION swrs_transform.clone_schema(text, text, boolean, boolean);
 
 COMMIT;

@@ -4,7 +4,7 @@
 
 begin;
 
-create materialized view ggircs_swrs_transform.report as (
+create materialized view swrs_transform.report as (
   select
     row_number() over () as id,
     id as ghgr_import_id,
@@ -17,7 +17,7 @@ create materialized view ggircs_swrs_transform.report as (
     report_details.swrs_organisation_id,
     (regexp_matches(report_details.reporting_period_duration, '\d\d\d\d'))[1]::varchar(1000) as reporting_period_duration,
     report_status.*
-  from ggircs_swrs_extract.ghgr_import,
+  from swrs_extract.ghgr_import,
        xmltable(
            '/ReportData/ReportDetails'
            passing xml_file
@@ -44,24 +44,24 @@ create materialized view ggircs_swrs_transform.report as (
 ) with no data;
 
 
-create unique index ggircs_report_primary_key on ggircs_swrs_transform.report (ghgr_import_id);
+create unique index ggircs_report_primary_key on swrs_transform.report (ghgr_import_id);
 
-comment on materialized view ggircs_swrs_transform.report is 'The materialized view housing all report data, derived from ghgr_import table';
-comment on column ggircs_swrs_transform.report.id is 'A generated index used for keying in the ggircs schema';
-comment on column ggircs_swrs_transform.report.ghgr_import_id is 'The internal primary key for the file';
-comment on column ggircs_swrs_transform.report.source_xml is 'The raw xml file imported from GHGR';
-comment on column ggircs_swrs_transform.report.imported_at is 'The timestamp noting when the file was imported';
-comment on column ggircs_swrs_transform.report.swrs_report_id is 'The swrs report id';
-comment on column ggircs_swrs_transform.report.prepop_report_id is 'The prepop report id';
-comment on column ggircs_swrs_transform.report.report_type is 'The type of report';
-comment on column ggircs_swrs_transform.report.swrs_facility_id is 'The ID for the reporting facility';
-comment on column ggircs_swrs_transform.report.swrs_organisation_id is 'The ID for the reporting organisation';
-comment on column ggircs_swrs_transform.report.reporting_period_duration is 'The length of the reporting period contained in report';
-comment on column ggircs_swrs_transform.report.status is 'The status of the report';
-comment on column ggircs_swrs_transform.report.version is 'The report version';
-comment on column ggircs_swrs_transform.report.submission_date is 'The date the report was submitted';
-comment on column ggircs_swrs_transform.report.last_modified_by is 'The person who last modified the report';
-comment on column ggircs_swrs_transform.report.last_modified_date is 'The timestamp recorded in SWRS when the report was last modified';
-comment on column ggircs_swrs_transform.report.update_comment is 'The description of the update';
+comment on materialized view swrs_transform.report is 'The materialized view housing all report data, derived from ghgr_import table';
+comment on column swrs_transform.report.id is 'A generated index used for keying in the ggircs schema';
+comment on column swrs_transform.report.ghgr_import_id is 'The internal primary key for the file';
+comment on column swrs_transform.report.source_xml is 'The raw xml file imported from GHGR';
+comment on column swrs_transform.report.imported_at is 'The timestamp noting when the file was imported';
+comment on column swrs_transform.report.swrs_report_id is 'The swrs report id';
+comment on column swrs_transform.report.prepop_report_id is 'The prepop report id';
+comment on column swrs_transform.report.report_type is 'The type of report';
+comment on column swrs_transform.report.swrs_facility_id is 'The ID for the reporting facility';
+comment on column swrs_transform.report.swrs_organisation_id is 'The ID for the reporting organisation';
+comment on column swrs_transform.report.reporting_period_duration is 'The length of the reporting period contained in report';
+comment on column swrs_transform.report.status is 'The status of the report';
+comment on column swrs_transform.report.version is 'The report version';
+comment on column swrs_transform.report.submission_date is 'The date the report was submitted';
+comment on column swrs_transform.report.last_modified_by is 'The person who last modified the report';
+comment on column swrs_transform.report.last_modified_date is 'The timestamp recorded in SWRS when the report was last modified';
+comment on column swrs_transform.report.update_comment is 'The description of the update';
 
 commit;

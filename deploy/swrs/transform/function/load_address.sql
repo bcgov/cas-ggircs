@@ -8,13 +8,13 @@
 
 begin;
 
-create or replace function ggircs_swrs_transform.load_address()
+create or replace function swrs_transform.load_address()
   returns void as
 $function$
     begin
 
-        delete from ggircs_swrs_load.address;
-        insert into ggircs_swrs_load.address (id, ghgr_import_id, facility_id,  organisation_id, parent_organisation_id, report_id, swrs_facility_id, swrs_organisation_id, path_context, type, physical_address_municipality, physical_address_unit_number,
+        delete from swrs_load.address;
+        insert into swrs_load.address (id, ghgr_import_id, facility_id,  organisation_id, parent_organisation_id, report_id, swrs_facility_id, swrs_organisation_id, path_context, type, physical_address_municipality, physical_address_unit_number,
                                     physical_address_street_number, physical_address_street_number_suffix, physical_address_street_name, physical_address_street_type,
                                     physical_address_street_direction, physical_address_prov_terr_state, physical_address_postal_code_zip_code, physical_address_country,
                                     physical_address_national_topographical_description, physical_address_additional_information, physical_address_land_survey_description,
@@ -33,18 +33,18 @@ $function$
                _address.mailing_address_street_direction, _address.mailing_address_municipality, _address.mailing_address_prov_terr_state, _address.mailing_address_postal_code_zip_code,
                _address.mailing_address_country, _address.mailing_address_additional_information, _address.geographic_address_latitude, _address.geographic_address_longitude
 
-        from ggircs_swrs_transform.address as _address
+        from swrs_transform.address as _address
 
-        inner join ggircs_swrs_transform.final_report as _final_report on _address.ghgr_import_id = _final_report.ghgr_import_id
+        inner join swrs_transform.final_report as _final_report on _address.ghgr_import_id = _final_report.ghgr_import_id
         -- FK Address -> Facility
-        left join ggircs_swrs_transform.facility as _facility
+        left join swrs_transform.facility as _facility
             on _address.ghgr_import_id = _facility.ghgr_import_id
         --FK Address -> Organisation
-        left join ggircs_swrs_transform.organisation as _organisation
+        left join swrs_transform.organisation as _organisation
           on _address.ghgr_import_id = _organisation.ghgr_import_id
           and _address.type = 'Organisation'
         -- FK Address -> Parent Organisation
-        left join ggircs_swrs_transform.parent_organisation as _parent_organisation
+        left join swrs_transform.parent_organisation as _parent_organisation
           on _address.ghgr_import_id = _parent_organisation.ghgr_import_id
           and _address.type = 'ParentOrganisation'
           and _address.parent_organisation_idx = _parent_organisation.parent_organisation_idx
@@ -56,7 +56,7 @@ $function$
                 and _address.path_context = 'VerifyTombstone')
               )
         -- FK Address -> Report
-        left join ggircs_swrs_transform.report as _report
+        left join swrs_transform.report as _report
           on _address.ghgr_import_id = _report.ghgr_import_id;
 
     end

@@ -3,7 +3,7 @@
 
 begin;
 
-create materialized view ggircs_swrs_transform.identifier as (
+create materialized view swrs_transform.identifier as (
   select
          row_number() over () as id, id as ghgr_import_id,
          swrs_identifier.swrs_facility_id,
@@ -12,7 +12,7 @@ create materialized view ggircs_swrs_transform.identifier as (
          swrs_identifier.identifier_type,
          -- coalesce needed for getting the bcghgid value from ProgramID if exists, otherwise from IdentifierValue
          coalesce(swrs_identifier.identifier_value, swrs_identifier.idv2) as identifier_value
-  from ggircs_swrs_extract.ghgr_import,
+  from swrs_extract.ghgr_import,
        xmltable(
            '//Identifier'
            passing xml_file
@@ -27,16 +27,16 @@ create materialized view ggircs_swrs_transform.identifier as (
   order by ghgr_import_id
 ) with no data;
 
-create unique index ggircs_identifier_primary_key on ggircs_swrs_transform.identifier (ghgr_import_id, swrs_facility_id, path_context, identifier_idx);
+create unique index ggircs_identifier_primary_key on swrs_transform.identifier (ghgr_import_id, swrs_facility_id, path_context, identifier_idx);
 
-comment on materialized view ggircs_swrs_transform.identifier is 'The materialized view housing information regarding identifiers';
-comment on column ggircs_swrs_transform.identifier.id is 'A generated index used for keying in the ggircs schema';
-comment on column ggircs_swrs_transform.identifier.ghgr_import_id is 'The foreign key referencing ggrics_swrs.ghgr_import.id';
-comment on column ggircs_swrs_transform.identifier.swrs_facility_id is 'The swrs facility id';
-comment on column ggircs_swrs_transform.identifier.path_context is 'The path context to the Identifier node (from VerifyTombstone or RegistrationDetails)';
-comment on column ggircs_swrs_transform.identifier.identifier_idx is 'The number of preceding Identifier siblings before this Identifier';
-comment on column ggircs_swrs_transform.identifier.identifier_type is 'The type of identifier';
-comment on column ggircs_swrs_transform.identifier.identifier_value is 'The value of the identifier';
+comment on materialized view swrs_transform.identifier is 'The materialized view housing information regarding identifiers';
+comment on column swrs_transform.identifier.id is 'A generated index used for keying in the ggircs schema';
+comment on column swrs_transform.identifier.ghgr_import_id is 'The foreign key referencing ggrics_swrs.ghgr_import.id';
+comment on column swrs_transform.identifier.swrs_facility_id is 'The swrs facility id';
+comment on column swrs_transform.identifier.path_context is 'The path context to the Identifier node (from VerifyTombstone or RegistrationDetails)';
+comment on column swrs_transform.identifier.identifier_idx is 'The number of preceding Identifier siblings before this Identifier';
+comment on column swrs_transform.identifier.identifier_type is 'The type of identifier';
+comment on column swrs_transform.identifier.identifier_value is 'The value of the identifier';
 
 commit;
 

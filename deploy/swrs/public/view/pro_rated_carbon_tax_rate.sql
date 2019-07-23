@@ -8,7 +8,7 @@
 
 begin;
 
-create or replace view ggircs.pro_rated_carbon_tax_rate as
+create or replace view swrs.pro_rated_carbon_tax_rate as
     with x as (
         select fuel.fuel_type                   as fuel_type,
                report.reporting_period_duration::integer as rpd,
@@ -16,36 +16,36 @@ create or replace view ggircs.pro_rated_carbon_tax_rate as
                ctr.rate_end_date                as end,
                ctr.carbon_tax_rate              as rate,
                ctr.id                           as id
-        from ggircs.fuel
-                 join ggircs.report as report
+        from swrs.fuel
+                 join swrs.report as report
                       on fuel.ghgr_import_id = report.ghgr_import_id
-                 join ggircs.carbon_tax_rate_mapping as ctr
+                 join swrs.carbon_tax_rate_mapping as ctr
                       on concat((report.reporting_period_duration::integer - 1)::text, '-04-01')::date >= ctr.rate_start_date
                       and concat(report.reporting_period_duration::text, '-03-31')::date <= ctr.rate_end_date
     ), y as (
     select x.rpd::integer as reporting_year,
            x.fuel_type as fuel_type,
            case
-               when x.rpd > 2021 then (select carbon_tax_rate from ggircs.carbon_tax_rate_mapping where id = (select max(id) from ggircs.carbon_tax_rate_mapping))
+               when x.rpd > 2021 then (select carbon_tax_rate from swrs.carbon_tax_rate_mapping where id = (select max(id) from swrs.carbon_tax_rate_mapping))
                else x.rate
            end as start_rate,
 
            case
-               when x.rpd > 2021 then (select carbon_tax_rate from ggircs.carbon_tax_rate_mapping where id = (select max(id) from ggircs.carbon_tax_rate_mapping))
-               else (select carbon_tax_rate from ggircs.carbon_tax_rate_mapping where id = x.id+1)
+               when x.rpd > 2021 then (select carbon_tax_rate from swrs.carbon_tax_rate_mapping where id = (select max(id) from swrs.carbon_tax_rate_mapping))
+               else (select carbon_tax_rate from swrs.carbon_tax_rate_mapping where id = x.id+1)
            end as end_rate,
 
            case
                when x.rpd > 2021 then concat((x.rpd)::text, '-04-01')::date - concat((x.rpd)::text, '-01-01')::date
                else (select rate_start_date
-                     from ggircs.carbon_tax_rate_mapping
+                     from swrs.carbon_tax_rate_mapping
                      where id = x.id+1) - concat((x.rpd)::text, '-01-01')::date
            end as start_duration,
 
            case
                when x.rpd > 2021 then concat((x.rpd)::text, '-12-31')::date - concat((x.rpd)::text, '-04-01')::date
                else concat((x.rpd)::text, '-12-31')::date - (select rate_start_date
-                                                             from ggircs.carbon_tax_rate_mapping
+                                                             from swrs.carbon_tax_rate_mapping
                                                              where id = x.id+1)
            end as end_duration,
 

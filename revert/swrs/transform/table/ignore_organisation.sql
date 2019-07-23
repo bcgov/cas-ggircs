@@ -2,6 +2,6 @@
 
 begin;
 
-drop table ggircs_swrs_transform.ignore_organisation;
+drop table swrs_transform.ignore_organisation;
 
 commit;

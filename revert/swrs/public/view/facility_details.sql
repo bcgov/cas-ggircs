@@ -2,6 +2,6 @@
 
 BEGIN;
 
-drop view if exists ggircs.facility_details;
+drop view if exists swrs.facility_details;
 
 COMMIT;

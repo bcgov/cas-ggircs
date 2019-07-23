@@ -3,6 +3,6 @@
 
 begin;
 
-drop table ciip.equipment_emission;
+drop table ciip_2018.equipment_emission;
 
 commit;

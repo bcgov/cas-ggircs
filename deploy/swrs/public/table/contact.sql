@@ -3,12 +3,12 @@
 
 begin;
 
-create table ggircs.contact (
+create table swrs.contact (
 
     id                        integer primary key,
-    report_id                 integer references ggircs.report(id),
-    address_id                integer references ggircs.address(id),
-    facility_id               integer references ggircs.facility(id),
+    report_id                 integer references swrs.report(id),
+    address_id                integer references swrs.address(id),
+    facility_id               integer references swrs.facility(id),
     ghgr_import_id            integer,
     organisation_id           integer,
     path_context              varchar(1000),
@@ -24,28 +24,28 @@ create table ggircs.contact (
     language_correspondence   varchar(1000)
 );
 
-create index ggircs_contact_report_foreign_key on ggircs.contact(report_id);
-create index ggircs_contact_address_foreign_key on ggircs.contact(address_id);
-create index ggircs_contact_facility_foreign_key on ggircs.contact(facility_id);
+create index ggircs_contact_report_foreign_key on swrs.contact(report_id);
+create index ggircs_contact_address_foreign_key on swrs.contact(address_id);
+create index ggircs_contact_facility_foreign_key on swrs.contact(facility_id);
 
 
-comment on table ggircs.contact is 'The table housing contact information';
-comment on column ggircs.contact.id is 'The primary key';
-comment on column ggircs.contact.report_id is 'A foreign key reference to ggircs.report';
-comment on column ggircs.contact.address_id is 'A foreign key reference to ggircs.address';
-comment on column ggircs.contact.facility_id is 'A foreign key reference to ggircs.facility';
-comment on column ggircs.contact.ghgr_import_id is 'The foreign key reference to ggircs.ghgr_import';
-comment on column ggircs.contact.organisation_id is 'A foreign key reference to ggircs.organisation';
-comment on column ggircs.contact.path_context is 'The umbrella context from which the contact was pulled from the xml (VerifyTombstone or RegistrationData';
-comment on column ggircs.contact.contact_type is 'The type of contact';
-comment on column ggircs.contact.given_name is 'The given name of the contact';
-comment on column ggircs.contact.family_name is 'The family name of the contact';
-comment on column ggircs.contact.initials is 'The initials of the contact';
-comment on column ggircs.contact.telephone_number is 'The phone number attached to this contact';
-comment on column ggircs.contact.extension_number is 'The extension number attached to this contact';
-comment on column ggircs.contact.fax_number is 'The fax number attached to this contact';
-comment on column ggircs.contact.email_address is 'The email address attached to this contact';
-comment on column ggircs.contact.position is 'The position of this contact';
-comment on column ggircs.contact.language_correspondence is 'The language of correspondence for thsi contact';
+comment on table swrs.contact is 'The table housing contact information';
+comment on column swrs.contact.id is 'The primary key';
+comment on column swrs.contact.report_id is 'A foreign key reference to swrs.report';
+comment on column swrs.contact.address_id is 'A foreign key reference to swrs.address';
+comment on column swrs.contact.facility_id is 'A foreign key reference to swrs.facility';
+comment on column swrs.contact.ghgr_import_id is 'The foreign key reference to swrs.ghgr_import';
+comment on column swrs.contact.organisation_id is 'A foreign key reference to swrs.organisation';
+comment on column swrs.contact.path_context is 'The umbrella context from which the contact was pulled from the xml (VerifyTombstone or RegistrationData';
+comment on column swrs.contact.contact_type is 'The type of contact';
+comment on column swrs.contact.given_name is 'The given name of the contact';
+comment on column swrs.contact.family_name is 'The family name of the contact';
+comment on column swrs.contact.initials is 'The initials of the contact';
+comment on column swrs.contact.telephone_number is 'The phone number attached to this contact';
+comment on column swrs.contact.extension_number is 'The extension number attached to this contact';
+comment on column swrs.contact.fax_number is 'The fax number attached to this contact';
+comment on column swrs.contact.email_address is 'The email address attached to this contact';
+comment on column swrs.contact.position is 'The position of this contact';
+comment on column swrs.contact.language_correspondence is 'The language of correspondence for thsi contact';
 
 commit;

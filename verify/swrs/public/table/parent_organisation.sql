@@ -2,6 +2,6 @@
 
 begin;
 
-select pg_catalog.has_table_privilege('ggircs.parent_organisation', 'select');
+select pg_catalog.has_table_privilege('swrs.parent_organisation', 'select');
 
 rollback;

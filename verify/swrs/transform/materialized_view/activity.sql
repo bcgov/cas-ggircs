@@ -2,6 +2,6 @@
 
 BEGIN;
 
-select * from ggircs_swrs_transform.activity where false;
+select * from swrs_transform.activity where false;
 
 ROLLBACK;

@@ -7,7 +7,7 @@ BEGIN;
 
 -- DROP FUNCTION clone_schema(text, text, boolean, boolean);
 
-CREATE OR REPLACE FUNCTION ggircs_swrs_transform.clone_schema(
+CREATE OR REPLACE FUNCTION swrs_transform.clone_schema(
   source_schema text,
   dest_schema text,
   include_recs boolean DEFAULT true,

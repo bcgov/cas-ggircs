@@ -8,7 +8,7 @@
 
 begin;
 
-create or replace view ggircs.pro_rated_implied_emission_factor as
+create or replace view swrs.pro_rated_implied_emission_factor as
     with x as (
         select fuel.fuel_type                   as fuel_type,
                report.reporting_period_duration::integer as rpd,
@@ -18,12 +18,12 @@ create or replace view ggircs.pro_rated_implied_emission_factor as
                ief.implied_emission_factor      as implied_emission_factor,
                ief.id                           as id,
                ief.fuel_mapping_id              as fuel_mapping_id
-        from ggircs.fuel
-                 join ggircs.report as report
+        from swrs.fuel
+                 join swrs.report as report
                       on fuel.report_id = report.id
-                 join ggircs.fuel_mapping as fmap
+                 join swrs.fuel_mapping as fmap
                       on fuel.fuel_type = fmap.fuel_type
-                 join ggircs.implied_emission_factor as ief
+                 join swrs.implied_emission_factor as ief
                       on ief.fuel_mapping_id = fmap.id
                       and concat((report.reporting_period_duration::integer - 1)::text, '-04-01')::date >= ief.start_date
                       and concat(report.reporting_period_duration::text, '-03-31')::date <= ief.end_date
@@ -36,11 +36,11 @@ create or replace view ggircs.pro_rated_implied_emission_factor as
            case
                when x.rpd > 2021
                then (select implied_emission_factor
-                       from ggircs.implied_emission_factor
+                       from swrs.implied_emission_factor
                        where id = (
                            select max(ief.id)
-                           from ggircs.implied_emission_factor as ief
-                           join ggircs.fuel_mapping as fm
+                           from swrs.implied_emission_factor as ief
+                           join swrs.fuel_mapping as fm
                            on ief.fuel_mapping_id = fm.id
                            and fm.fuel_type = x.fuel_type)
                        )
@@ -50,21 +50,21 @@ create or replace view ggircs.pro_rated_implied_emission_factor as
            case
                when x.rpd > 2021
                  then (select implied_emission_factor
-                       from ggircs.implied_emission_factor
+                       from swrs.implied_emission_factor
                        where id = (
                            select max(ief.id)
-                           from ggircs.implied_emission_factor as ief
-                           join ggircs.fuel_mapping as fm
+                           from swrs.implied_emission_factor as ief
+                           join swrs.fuel_mapping as fm
                            on ief.fuel_mapping_id = fm.id
                            and fm.fuel_type = x.fuel_type)
                        )
-               else (select implied_emission_factor from ggircs.implied_emission_factor where id = x.id+1)
+               else (select implied_emission_factor from swrs.implied_emission_factor where id = x.id+1)
            end as end_rate,
 
            case
                when x.rpd > 2021 then concat((x.rpd)::text, '-04-01')::date - concat((x.rpd)::text, '-01-01')::date
                else (select start_date
-                     from ggircs.implied_emission_factor
+                     from swrs.implied_emission_factor
                      where id = x.id+1) - concat((x.rpd)::text, '-01-01')::date
            end as start_duration,
 
@@ -72,7 +72,7 @@ create or replace view ggircs.pro_rated_implied_emission_factor as
                when x.rpd = 2017 then '2017-12-31'::date - '2017-04-01'::date
                when x.rpd > 2021 then concat((x.rpd)::text, '-12-31')::date - concat((x.rpd)::text, '-04-01')::date
                else concat((x.rpd)::text, '-12-31')::date - (select start_date
-                                                             from ggircs.implied_emission_factor
+                                                             from swrs.implied_emission_factor
                                                              where id = x.id+1)
            end as end_duration,
 

@@ -8,12 +8,12 @@ select plan(38);
 
 select has_materialized_view(
     'ggircs_swrs', 'parent_organisation',
-    'ggircs_swrs_transform.parent_organisation should be a materialized view'
+    'swrs_transform.parent_organisation should be a materialized view'
 );
 
 select has_index(
     'ggircs_swrs', 'parent_organisation', 'ggircs_parent_organisation_primary_key',
-    'ggircs_swrs_transform.parent_organisation should have a primary key'
+    'swrs_transform.parent_organisation should have a primary key'
 );
 
 select columns_are('ggircs_swrs'::name, 'parent_organisation'::name, array[
@@ -73,8 +73,8 @@ select col_is_null(      'ggircs_swrs', 'parent_organisation', 'website', 'paren
 select col_hasnt_default('ggircs_swrs', 'parent_organisation', 'website', 'parent_organisation.website column should not have a default');
 
 
-refresh materialized view ggircs_swrs_transform.parent_organisation with data;
-insert into ggircs_swrs_extract.ghgr_import (xml_file) values ($$<ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+refresh materialized view swrs_transform.parent_organisation with data;
+insert into swrs_extract.ghgr_import (xml_file) values ($$<ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <RegistrationData>
     <ParentOrganisations>
       <ParentOrganisation>
@@ -95,67 +95,67 @@ insert into ggircs_swrs_extract.ghgr_import (xml_file) values ($$<ReportData xml
 </ReportData>
 $$);
 
-refresh materialized view ggircs_swrs_transform.organisation with data;
-refresh materialized view ggircs_swrs_transform.parent_organisation with data;
+refresh materialized view swrs_transform.organisation with data;
+refresh materialized view swrs_transform.parent_organisation with data;
 
 select results_eq(
      $$
-     select organisation.ghgr_import_id from ggircs_swrs_transform.parent_organisation
-     join ggircs_swrs_transform.organisation
+     select organisation.ghgr_import_id from swrs_transform.parent_organisation
+     join swrs_transform.organisation
      on
      parent_organisation.ghgr_import_id = organisation.ghgr_import_id
      $$,
 
-    'select ghgr_import_id from ggircs_swrs_transform.organisation',
+    'select ghgr_import_id from swrs_transform.organisation',
 
-    'Foreign key ghgr_import_id in ggircs_swrs_parent_organisation references ggircs_swrs_transform.organisation'
+    'Foreign key ghgr_import_id in ggircs_swrs_parent_organisation references swrs_transform.organisation'
 );
 
 -- XML import tests
 select results_eq(
-    'select ghgr_import_id from ggircs_swrs_transform.parent_organisation',
-    'select id from ggircs_swrs_extract.ghgr_import',
+    'select ghgr_import_id from swrs_transform.parent_organisation',
+    'select id from swrs_extract.ghgr_import',
     'column ghgr_import_id in parent_organisation correctly parsed xml'
 );
 
 select results_eq(
-    'select path_context from ggircs_swrs_transform.parent_organisation',
+    'select path_context from swrs_transform.parent_organisation',
     ARRAY['RegistrationData'::varchar],
     'column path_context in parent_organisation correctly parsed xml'
 );
 
 select results_eq(
-    'select parent_organisation_idx from ggircs_swrs_transform.parent_organisation',
+    'select parent_organisation_idx from swrs_transform.parent_organisation',
     ARRAY[0::integer],
     'column parent_organisation_idx in parent_organisation correctly parsed xml'
 );
 
 select results_eq(
-    'select percentage_owned from ggircs_swrs_transform.parent_organisation',
+    'select percentage_owned from swrs_transform.parent_organisation',
     ARRAY[99.98::numeric],
     'column percentage_owned in parent_organisation correctly parsed xml'
 );
 
 select results_eq(
-    'select french_trade_name from ggircs_swrs_transform.parent_organisation',
+    'select french_trade_name from swrs_transform.parent_organisation',
     ARRAY['abc'::varchar],
     'column french_trade_name in parent_organisation correctly parsed xml'
 );
 
 select results_eq(
-    'select english_trade_name from ggircs_swrs_transform.parent_organisation',
+    'select english_trade_name from swrs_transform.parent_organisation',
     ARRAY['abc'::varchar],
     'column french_trade_name in parent_organisation correctly parsed xml'
 );
 
 select results_eq(
-    'select duns from ggircs_swrs_transform.parent_organisation',
+    'select duns from swrs_transform.parent_organisation',
     ARRAY[1::varchar],
     'column duns in parent_organisation correctly parsed xml'
 );
 
 select results_eq(
-    'select website from ggircs_swrs_transform.parent_organisation',
+    'select website from swrs_transform.parent_organisation',
     ARRAY['www.hockeyisgood.com'::varchar],
     'column website in parent_organisation correctly parsed xml'
 );

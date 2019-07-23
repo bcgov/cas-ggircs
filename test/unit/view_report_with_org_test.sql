@@ -9,7 +9,7 @@ select * from no_plan();
 -- View should exist
 select has_view(
     'ggircs', 'report_with_org',
-    'ggircs.report_with_org should be a view'
+    'swrs.report_with_org should be a view'
 );
 
 -- Columns are correct
@@ -67,7 +67,7 @@ select col_type_is('ggircs', 'report_with_org', 'swrs_facility_id', 'integer', '
 select col_hasnt_default('ggircs', 'report_with_org', 'swrs_facility_id', 'report_with_org.swrs_facility_id column should not have a default value');
 
 -- XML fixture for testing
-insert into ggircs_swrs_extract.ghgr_import (xml_file) values ($$
+insert into swrs_extract.ghgr_import (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <RegistrationData>
     <Organisation>
@@ -169,20 +169,20 @@ insert into ggircs_swrs_extract.ghgr_import (xml_file) values ($$
 $$);
 
 -- Refresh necessary materialized views
-refresh materialized view ggircs_swrs_transform.report with data;
-refresh materialized view ggircs_swrs_transform.final_report with data;
-refresh materialized view ggircs_swrs_transform.organisation with data;
-refresh materialized view ggircs_swrs_transform.facility with data;
-refresh materialized view ggircs_swrs_transform.naics with data;
+refresh materialized view swrs_transform.report with data;
+refresh materialized view swrs_transform.final_report with data;
+refresh materialized view swrs_transform.organisation with data;
+refresh materialized view swrs_transform.facility with data;
+refresh materialized view swrs_transform.naics with data;
 
 -- Populate necessary ggircs tables
-select ggircs_swrs_transform.load_report();
-select ggircs_swrs_transform.load_organisation();
-select ggircs_swrs_transform.load_facility();
-select ggircs_swrs_transform.load_naics();
+select swrs_transform.load_report();
+select swrs_transform.load_organisation();
+select swrs_transform.load_facility();
+select swrs_transform.load_naics();
 
 select results_eq(
-  'select * from ggircs.report_with_org',
+  'select * from swrs.report_with_org',
   $$
     select
        o.business_legal_name,
@@ -197,15 +197,15 @@ select results_eq(
        r.swrs_report_id,
        r.swrs_organisation_id,
        r.swrs_facility_id
-    from ggircs.naics as n
-        join ggircs.facility as fc
+    from swrs.naics as n
+        join swrs.facility as fc
         on n.facility_id = fc.id
-        join ggircs.organisation as o
+        join swrs.organisation as o
         on fc.organisation_id = o.id
-        join ggircs.report as r
+        join swrs.report as r
         on n.report_id = r.id
   $$,
-  'ggircs.report_with_org has the correct information'
+  'swrs.report_with_org has the correct information'
 
 );
 

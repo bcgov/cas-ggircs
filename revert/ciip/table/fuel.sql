@@ -2,6 +2,6 @@
 
 begin;
 
-drop table ciip.fuel;
+drop table ciip_2018.fuel;
 
 commit;

@@ -3,6 +3,6 @@
 
 begin;
 
-drop table ciip.equipment_output_stream;
+drop table ciip_2018.equipment_output_stream;
 
 commit;

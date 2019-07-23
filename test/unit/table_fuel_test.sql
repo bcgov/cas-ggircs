@@ -6,7 +6,7 @@ reset client_min_messages;
 begin;
 select * from no_plan();
 
-insert into ggircs_swrs_extract.ghgr_import (xml_file) values ($$
+insert into swrs_extract.ghgr_import (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <RegistrationData>
     <Organisation>
@@ -233,22 +233,22 @@ $$), ($$
 </ReportData>
 $$);
 
-refresh materialized view ggircs_swrs_transform.report with data;
-refresh materialized view ggircs_swrs_transform.organisation with data;
-refresh materialized view ggircs_swrs_transform.facility with data;
-refresh materialized view ggircs_swrs_transform.activity with data;
-refresh materialized view ggircs_swrs_transform.unit with data;
-refresh materialized view ggircs_swrs_transform.fuel with data;
-refresh materialized view ggircs_swrs_transform.final_report with data;
+refresh materialized view swrs_transform.report with data;
+refresh materialized view swrs_transform.organisation with data;
+refresh materialized view swrs_transform.facility with data;
+refresh materialized view swrs_transform.activity with data;
+refresh materialized view swrs_transform.unit with data;
+refresh materialized view swrs_transform.fuel with data;
+refresh materialized view swrs_transform.final_report with data;
 
-select ggircs_swrs_transform.load_report();
-select ggircs_swrs_transform.load_organisation();
-select ggircs_swrs_transform.load_facility();
-select ggircs_swrs_transform.load_activity();
-select ggircs_swrs_transform.load_unit();
-select ggircs_swrs_transform.load_fuel();
+select swrs_transform.load_report();
+select swrs_transform.load_organisation();
+select swrs_transform.load_facility();
+select swrs_transform.load_activity();
+select swrs_transform.load_unit();
+select swrs_transform.load_fuel();
 
--- Table ggircs.fuel exists
+-- Table swrs.fuel exists
 select has_table('ggircs'::name, 'fuel'::name);
 
 -- Fuel has pk
@@ -258,36 +258,36 @@ select has_pk('ggircs', 'fuel', 'ggircs_fuel has primary key');
 select has_fk('ggircs', 'fuel', 'ggircs_fuel has foreign key constraint(s)');
 
 -- Fuel has data
-select isnt_empty('select * from ggircs.fuel', 'there is data in ggircs.fuel');
+select isnt_empty('select * from swrs.fuel', 'there is data in swrs.fuel');
 
 -- FKey tests
 -- Fuel -> Report
 select set_eq(
     $$
-    select distinct(report.ghgr_import_id) from ggircs.fuel
-    join ggircs.report
+    select distinct(report.ghgr_import_id) from swrs.fuel
+    join swrs.report
     on fuel.report_id = report.id
     $$,
 
-    'select distinct(ghgr_import_id) from ggircs.report',
+    'select distinct(ghgr_import_id) from swrs.report',
 
-    'Foreign key report_id in ggircs.fuel references ggircs.report.id'
+    'Foreign key report_id in swrs.fuel references swrs.report.id'
 );
 
 -- Fuel -> Unit
 select set_eq(
     $$
-    select distinct(fuel.ghgr_import_id) from ggircs.fuel
-    join ggircs.unit
+    select distinct(fuel.ghgr_import_id) from swrs.fuel
+    join swrs.unit
     on fuel.unit_id = unit.id
     $$,
 
-    'select distinct(ghgr_import_id) from ggircs.unit',
+    'select distinct(ghgr_import_id) from swrs.unit',
 
-    'Foreign key unit_id in ggircs.fuel references ggircs.unit.id'
+    'Foreign key unit_id in swrs.fuel references swrs.unit.id'
 );
 
--- Data in ggircs_swrs_transform.fuel === data in ggircs.fuel
+-- Data in swrs_transform.fuel === data in swrs.fuel
 select set_eq(
               $$
               select
@@ -310,7 +310,7 @@ select set_eq(
                   q2,
                   q3,
                   q4
-                from ggircs_swrs_transform.fuel
+                from swrs_transform.fuel
                 order by
                     ghgr_import_id,
                     activity_name,
@@ -340,7 +340,7 @@ select set_eq(
                   q2,
                   q3,
                   q4
-                from ggircs.fuel
+                from swrs.fuel
                 order by
                     ghgr_import_id,
                     activity_name,
@@ -349,7 +349,7 @@ select set_eq(
                  asc
               $$,
 
-              'data in ggircs_swrs_transform.fuel === ggircs.fuel');
+              'data in swrs_transform.fuel === swrs.fuel');
 
 select * from finish();
 rollback;

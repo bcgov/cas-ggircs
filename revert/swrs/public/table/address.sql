@@ -2,6 +2,6 @@
 
 begin;
 
-drop table ggircs.address;
+drop table swrs.address;
 
 commit;

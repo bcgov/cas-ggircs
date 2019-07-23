@@ -4,21 +4,21 @@
 
 begin;
 
-create or replace view ciip.compare_ciip_swrs_emission as
+create or replace view ciip_2018.compare_ciip_swrs_emission as
     with ciip_data as (select application.application_type, application.source_file_name, operator.business_legal_name, operator.swrs_operator_id,
        facility.facility_name, facility.swrs_facility_id,
        emission.emission_category, emission.gas_type, emission.quantity, emission.calculated_quantity
-    from ciip.emission
-    join ciip.facility on emission.facility_id = facility.id
-    join ciip.operator on emission.operator_id = operator.id
-    join ciip.application on facility.application_id = application.id),
+    from ciip_2018.emission
+    join ciip_2018.facility on emission.facility_id = facility.id
+    join ciip_2018.operator on emission.operator_id = operator.id
+    join ciip_2018.application on facility.application_id = application.id),
 
     swrs_data as (
         select facility.swrs_facility_id, emission.emission_category, emission.gas_type, sum(emission.quantity) as quantity,
                sum(emission.calculated_quantity) as calculated_quantity
-        from ggircs.emission
-        join ggircs.facility on emission.facility_id = facility.id
-        join ggircs.report on emission.report_id = report.id
+        from swrs.emission
+        join swrs.facility on emission.facility_id = facility.id
+        join swrs.report on emission.report_id = report.id
         and report.reporting_period_duration = '2018'
         where emission.emission_category != 'BC_ScheduleB_WasteEmissions' and emission.emission_category != 'BC_ScheduleB_WastewaterEmissions'
         group by facility.swrs_facility_id, emission.emission_category, emission.gas_type
@@ -26,9 +26,9 @@ create or replace view ciip.compare_ciip_swrs_emission as
         select facility.swrs_facility_id, 'BC_ScheduleB_WasteAndWastewaterEmissions' as emission_category,
                emission.gas_type, sum(emission.quantity) as quantity,
                sum(emission.calculated_quantity) as calculated_quantity
-        from ggircs.emission
-        join ggircs.facility on emission.facility_id = facility.id
-        join ggircs.report on emission.report_id = report.id
+        from swrs.emission
+        join swrs.facility on emission.facility_id = facility.id
+        join swrs.report on emission.report_id = report.id
         and report.reporting_period_duration = '2018'
         where emission.emission_category = 'BC_ScheduleB_WasteEmissions' or emission.emission_category = 'BC_ScheduleB_WastewaterEmissions'
         group by facility.swrs_facility_id, emission.gas_type

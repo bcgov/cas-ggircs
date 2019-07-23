@@ -2,6 +2,6 @@
 
 begin;
 
-select pg_catalog.has_table_privilege('ciip.operator', 'select');
+select pg_catalog.has_table_privilege('ciip_2018.operator', 'select');
 
 rollback;

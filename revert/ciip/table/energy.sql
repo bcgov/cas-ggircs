@@ -2,7 +2,7 @@
 
 begin;
 
-drop table ciip.energy;
+drop table ciip_2018.energy;
 
 commit;
 

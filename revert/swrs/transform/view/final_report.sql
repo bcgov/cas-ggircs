@@ -2,6 +2,6 @@
 
 begin;
 
-drop view ggircs_swrs_transform.final_report;
+drop view swrs_transform.final_report;
 
 commit;

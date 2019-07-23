@@ -2,6 +2,6 @@
 
 begin;
 
-drop table ciip.operator;
+drop table ciip_2018.operator;
 
 commit;

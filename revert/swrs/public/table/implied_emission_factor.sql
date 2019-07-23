@@ -2,6 +2,6 @@
 
 begin;
 
-drop table ggircs.implied_emission_factor;
+drop table swrs.implied_emission_factor;
 
 commit;

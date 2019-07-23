@@ -3,11 +3,11 @@
 
 begin;
 
-create table ggircs.activity (
+create table swrs.activity (
 
     id                        integer primary key,
-    report_id                 integer references ggircs.report(id),
-    facility_id               integer references ggircs.facility(id),
+    report_id                 integer references swrs.report(id),
+    facility_id               integer references swrs.facility(id),
     ghgr_import_id            integer,
     activity_name             varchar(1000),
     process_name              varchar(1000),
@@ -15,18 +15,18 @@ create table ggircs.activity (
     information_requirement   varchar(1000)
 );
 
-create index ggircs_activity_report_foreign_key on ggircs.activity(report_id);
-create index ggircs_activity_facility_foreign_key on ggircs.activity(facility_id);
+create index ggircs_activity_report_foreign_key on swrs.activity(report_id);
+create index ggircs_activity_facility_foreign_key on swrs.activity(facility_id);
 
 
-comment on table ggircs.activity is 'The table for Process and SubProcess from each SWRS report (the "activity")';
-comment on column ggircs.activity.id is 'The primary key';
-comment on column ggircs.activity.facility_id is 'A foreign key reference to ggircs.facility';
-comment on column ggircs.activity.report_id is 'A foreign key reference to ggircs.report';
-comment on column ggircs.activity.ghgr_import_id is 'A foreign key reference to ggircs.ghgr_import.id';
-comment on column ggircs.activity.activity_name is 'The name of the activity (the name of the child class under the Activity)';
-comment on column ggircs.activity.process_name is 'The name of the process';
-comment on column ggircs.activity.sub_process_name is 'The name of the sub-process';
-comment on column ggircs.activity.information_requirement is 'The requirement in reporting regulation to report this activity';
+comment on table swrs.activity is 'The table for Process and SubProcess from each SWRS report (the "activity")';
+comment on column swrs.activity.id is 'The primary key';
+comment on column swrs.activity.facility_id is 'A foreign key reference to swrs.facility';
+comment on column swrs.activity.report_id is 'A foreign key reference to swrs.report';
+comment on column swrs.activity.ghgr_import_id is 'A foreign key reference to swrs.ghgr_import.id';
+comment on column swrs.activity.activity_name is 'The name of the activity (the name of the child class under the Activity)';
+comment on column swrs.activity.process_name is 'The name of the process';
+comment on column swrs.activity.sub_process_name is 'The name of the sub-process';
+comment on column swrs.activity.information_requirement is 'The requirement in reporting regulation to report this activity';
 
 commit;

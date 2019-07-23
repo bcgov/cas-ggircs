@@ -4,7 +4,7 @@
 
 begin;
 
-create materialized view ggircs_swrs_transform.organisation as (
+create materialized view swrs_transform.organisation as (
   select
          row_number() over () as id,
          id as ghgr_import_id,
@@ -15,7 +15,7 @@ create materialized view ggircs_swrs_transform.organisation as (
          coalesce(vt_cra_business_number, rd_cra_business_number)       as cra_business_number,
          translate(coalesce(vt_duns, rd_duns), '-', '')::varchar(1000)  as duns,
          coalesce(vt_web_site, rd_web_site)                             as website
-  from ggircs_swrs_extract.ghgr_import,
+  from swrs_extract.ghgr_import,
        xmltable(
            '/ReportData/ReportDetails'
            passing xml_file
@@ -45,17 +45,17 @@ create materialized view ggircs_swrs_transform.organisation as (
              vt_web_site varchar(1000) path './VerifyTombstone/Organisation/Details/WebSite'
          ) as vt_organisation_details
 ) with no data;
-create unique index ggircs_organisation_primary_key on ggircs_swrs_transform.organisation (ghgr_import_id);
+create unique index ggircs_organisation_primary_key on swrs_transform.organisation (ghgr_import_id);
 
-comment on materialized view ggircs_swrs_transform.organisation is 'the materialized view housing all report data pertaining to the reporting organisation';
-comment on column ggircs_swrs_transform.organisation.id is 'A generated index used for keying in the ggircs schema';
-comment on column ggircs_swrs_transform.organisation.ghgr_import_id is 'The internal reference to the file imported from ghgr';
-comment on column ggircs_swrs_transform.organisation.swrs_organisation_id is 'The reporting organisation swrs id';
-comment on column ggircs_swrs_transform.organisation.business_legal_name is 'The legal business name of the reporting organisation';
-comment on column ggircs_swrs_transform.organisation.english_trade_name is 'The trade name in english';
-comment on column ggircs_swrs_transform.organisation.french_trade_name is 'The trade name in french';
-comment on column ggircs_swrs_transform.organisation.cra_business_number is 'The organisation business number according to cra';
-comment on column ggircs_swrs_transform.organisation.duns is 'The organisation duns number';
-comment on column ggircs_swrs_transform.organisation.website is 'The organisation website address';
+comment on materialized view swrs_transform.organisation is 'the materialized view housing all report data pertaining to the reporting organisation';
+comment on column swrs_transform.organisation.id is 'A generated index used for keying in the ggircs schema';
+comment on column swrs_transform.organisation.ghgr_import_id is 'The internal reference to the file imported from ghgr';
+comment on column swrs_transform.organisation.swrs_organisation_id is 'The reporting organisation swrs id';
+comment on column swrs_transform.organisation.business_legal_name is 'The legal business name of the reporting organisation';
+comment on column swrs_transform.organisation.english_trade_name is 'The trade name in english';
+comment on column swrs_transform.organisation.french_trade_name is 'The trade name in french';
+comment on column swrs_transform.organisation.cra_business_number is 'The organisation business number according to cra';
+comment on column swrs_transform.organisation.duns is 'The organisation duns number';
+comment on column swrs_transform.organisation.website is 'The organisation website address';
 
 commit;

@@ -2,6 +2,6 @@
 
 begin;
 
-select * from ggircs.naics_category_mapping where false;
+select * from swrs.naics_category_mapping where false;
 
 commit;

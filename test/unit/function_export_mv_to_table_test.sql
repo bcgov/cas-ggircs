@@ -7,9 +7,9 @@ begin;
 select * from no_plan();
 
 -- Run table export function
-select ggircs_swrs_transform.load();
+select swrs_transform.load();
 
-insert into ggircs_swrs_extract.ghgr_import (xml_file) values ($$
+insert into swrs_extract.ghgr_import (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <ReportDetails>
     <ReportID>1234</ReportID>
@@ -29,17 +29,17 @@ insert into ggircs_swrs_extract.ghgr_import (xml_file) values ($$
 $$);
 
 -- Refresh function populates materialized views
-select ggircs_swrs_transform.transform('with data');
-select isnt_empty('select * from ggircs_swrs_transform.report', 'transform() has populated materialized views');
+select swrs_transform.transform('with data');
+select isnt_empty('select * from swrs_transform.report', 'transform() has populated materialized views');
 
 -- Function load exists
 select has_function( 'ggircs_swrs', 'load', 'Schema ggircs_swrs has function load()' );
 
 -- refresh views with no data
-select ggircs_swrs_transform.transform('with no data');
+select swrs_transform.transform('with no data');
 
 -- Refresh function has cleared materialized views
-select is_empty('select * from ggircs_swrs_transform.report where false', 'transform() has cleared materialized views');
+select is_empty('select * from swrs_transform.report where false', 'transform() has cleared materialized views');
 
 select * from finish();
 rollback;
