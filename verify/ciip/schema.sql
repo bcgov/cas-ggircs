@@ -2,6 +2,6 @@
 
 BEGIN;
 
-select pg_catalog.has_schema_privilege('ciip', 'usage');
+select pg_catalog.has_schema_privilege('ciip_2018', 'usage');
 
 ROLLBACK;

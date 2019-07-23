@@ -37,9 +37,9 @@ $function$
     -- Create the load schema, without records
     drop schema if exists swrs_load cascade;
     raise notice '[%] Creating temporary schema swrs_load...', timeofday()::timestamp;
-    perform swrs_transform.clone_schema('ggircs', 'swrs_load', false);
+    perform swrs_transform.clone_schema('swrs', 'swrs_load', false);
 
-    -- Loop to populate ggircs tables with data from ggircs_swrs
+    -- Loop to populate swrs tables with data from swrs_transform
         for i in 1 .. array_upper(mv_array, 1)
       loop
         execute format('select swrs_transform.load_%s()', mv_array[i]);
@@ -63,8 +63,8 @@ $function$
             AND pg_depend.refobjsubid = pg_attribute.attnum
                  join pg_namespace dependent_ns on dependent_ns.oid = dependent_view.relnamespace
                  join pg_namespace source_ns on source_ns.oid = source_table.relnamespace
-        where source_ns.nspname = 'ggircs'
-          and dependent_ns.nspname != 'ggircs'
+        where source_ns.nspname = 'swrs'
+          and dependent_ns.nspname != 'swrs'
         group by dependent_schema, view_name
     )
     select table_name::text, table_schema, view_definition
@@ -75,7 +75,7 @@ $function$
 
     raise notice 'Overriding to the live data schema';
     drop schema if exists swrs cascade;
-    alter schema swrs_load rename to ggircs;
+    alter schema swrs_load rename to swrs;
 
     for view_to_recreate in select * from views_to_recreate
     loop
