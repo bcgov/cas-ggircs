@@ -16,11 +16,4 @@ comment on column swrs.carbon_tax_rate_mapping.rate_start_date is 'The date that
 comment on column swrs.carbon_tax_rate_mapping.rate_end_date is 'The date that the tax rate stops applying';
 comment on column swrs.carbon_tax_rate_mapping.carbon_tax_rate is 'The carbon tax rate for the date range';
 
-insert into swrs.carbon_tax_rate_mapping(rate_start_date, rate_end_date, carbon_tax_rate) values ('0001-01-01', '2017-03-31', 30);
-insert into swrs.carbon_tax_rate_mapping(rate_start_date, rate_end_date, carbon_tax_rate) values ('2017-04-01', '2018-03-31', 30);
-insert into swrs.carbon_tax_rate_mapping(rate_start_date, rate_end_date, carbon_tax_rate) values ('2018-04-01', '2019-03-31', 35);
-insert into swrs.carbon_tax_rate_mapping(rate_start_date, rate_end_date, carbon_tax_rate) values ('2019-04-01', '2020-03-31', 40);
-insert into swrs.carbon_tax_rate_mapping(rate_start_date, rate_end_date, carbon_tax_rate) values ('2020-04-01', '2021-03-31', 45);
-insert into swrs.carbon_tax_rate_mapping(rate_start_date, rate_end_date, carbon_tax_rate) values ('2021-04-01', '9999-03-31', 50);
-
 commit;

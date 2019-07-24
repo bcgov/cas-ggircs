@@ -14,7 +14,4 @@ comment on column swrs.naics_category_type.id is 'The internal primary key for t
 comment on column swrs.naics_category_type.naics_category_type is 'The naics category type';
 comment on column swrs.naics_category_type.description is 'The description of the category type';
 
-insert into swrs.naics_category_type (naics_category_type, description) values ('hhw', $$Hilary's high level category type$$);
-insert into swrs.naics_category_type (naics_category_type, description) values ('irc', 'Industrial Reporting Category sector');
-
 commit;
