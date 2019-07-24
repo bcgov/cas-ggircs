@@ -2,6 +2,6 @@
 
 begin;
 
-drop table swrs_extractmport;
+drop table swrs_extract.ghgr_import;
 
 commit;
