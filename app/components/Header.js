@@ -24,6 +24,7 @@ const Header = () => {
               <div className="other">
                   &nbsp;
               </div>
+
               <style jsx>{`
                 header {
                   background-color: #036;
@@ -37,7 +38,9 @@ const Header = () => {
                   width: 100%;
                   margin-bottom: 40px;
                 }
-
+                body{
+                    padding:40px;
+                }
                 header h1 {
                   font-family: ‘Noto Sans’, Verdana, Arial, sans-serif;
                   font-weight: normal;  /* 400 */

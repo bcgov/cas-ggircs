@@ -4,3 +4,4 @@
 
 schema_ggircs_portal 2019-07-11T18:30:51Z Hamza Javed <hamza@button.is> # Add a schema for the GGIRCS Industry Portal (GIP)
 table_user [schema_ggircs_portal] 2019-07-11T18:32:05Z Hamza Javed <hamza@button.is> # Create a User table for GGIRCS Industry Portal (GIP)
+table_form_json [schema_ggircs_portal] 2019-07-24T20:00:52Z Hamza Javed <hamza@button.is> # Table for the survey js forms (in JSON)

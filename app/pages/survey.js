@@ -1,44 +1,30 @@
 import React , { Component } from 'react'
-import SignIn from '../components/SignIn'
-import {Col, Container, Row} from "react-bootstrap";
-import Header from '../components/Header'
-import UserList from "../components/UserList";
+import Header from '../components/Header';
+import FormLoader from '../components/Forms/FormLoader';
 
 
-class Survey extends Component {
-  static displayName = `Survey`;
+class BaseForm extends Component {
 
-  render(props) {
-  //    var surveyCreator = new SurveyCreator.SurveyCreator("surveyCreatorDivElementID");
-
-      return (
-        <React.Fragment>
-          <Header/>
-          <Container>
-            <Row>
-              <Col>
-                  <h1>About GGIRCS</h1>
-                  <p>We are creating a web-application to provide reliable access to a database for BC's industrial greenhouse gas (GHG) emissions data. This interface will initially work with an existing database and industrial reporting system. Over time, the project may extend to database improvements or other parts of BC’s GHG data system. We are looking for a collaborative team, ready to learn, and passionate about providing solutions that will contribute to reducing industrial GHG emissions in BC and improving reporting to the public about our progress to our GHG targets.</p>
-              </Col>
-            </Row>
-              <br/><br/>
-            <Row>
-                <Col md={6}>
-                    <UserList/>
-                </Col>
-                <Col md={6}>
-                    <SignIn/>
-                </Col>
-            </Row>
-              <br/><br/>
-            <Row>
-
-            </Row>
-          </Container>
-        </React.Fragment>
-    );
-  }
+    render() {
+        return (
+            <React.Fragment>
+                <Header/>
+                <FormLoader/>
+            </React.Fragment>
+            );
+    }
 }
 
+export default BaseForm;
 
-export default Survey;
+/*
+1: create a table called forms - done
+2: add two forms to the table - done
+2.1 - why isn't graphile creating a formById? - done, needs unique index
+3: fetch forms using graphql
+4: create a component that takes form id and loads form json
+5: pass component to baseform
+6: create table to store results of form (user id, form id, key, value)
+7: create a mutation (postgraphile should do this?) to store json results
+8: call mutation on save form
+ */

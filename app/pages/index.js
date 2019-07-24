@@ -1,9 +1,9 @@
 import React , { Component } from 'react'
 import SignIn from '../components/SignIn'
-import {Col, Container, Row} from "react-bootstrap";
+import {Col, Container, Row, Jumbotron, Button} from "react-bootstrap";
 import Header from '../components/Header'
 import UserList from "../components/UserList";
-
+import Link from 'next/link';
 
 class Index extends Component {
   static displayName = `Index`
@@ -30,13 +30,26 @@ class Index extends Component {
             </Row>
               <br/><br/>
             <Row>
-              <iframe
-                  src="https://metabase-wksv3k-dev.pathfinder.gov.bc.ca/public/question/2b7ec16a-5793-4788-a2da-0fe08a100e55"
-                  frameBorder="0"
-                  width="100%"
-                  height="600"
-                  allowTransparency
-              ></iframe>
+            <Col md={12}>
+                <Jumbotron>
+                    <h1>I bet you want to build some fun forms?</h1>
+                    <p>
+
+                    </p>
+                    <p>
+
+                            <a href='/survey' className="btn btn-lg btn-primary">Yes Please!</a>
+
+                    </p>
+                </Jumbotron>
+                  <iframe
+                      src="https://metabase-wksv3k-dev.pathfinder.gov.bc.ca/public/question/2b7ec16a-5793-4788-a2da-0fe08a100e55"
+                      frameBorder="0"
+                      width="100%"
+                      height="600"
+                      allowTransparency
+                  ></iframe>
+            </Col>
             </Row>
           </Container>
         </React.Fragment>
