@@ -93,4 +93,21 @@ $function$
 
 $function$ language plpgsql volatile ;
 
+comment on function swrs_transform.load is
+$$
+Transforms and loads the extracted data.
+
+The load function has two parameters:
+  refresh_transform boolean default true : whether the materialized views in the swrs_transform schema are refreshed with data before loading
+  clear_transform boolean default true : whether the materialized views in the swrs_transform schema are refreshed without data after loading
+
+Besides refreshing the materialized views as required, the load function does the following
+  - create a swrs_load schema which is a clone of the swrs schema without records.
+  - populate the tables in the swrs_load schema
+  - find the views that are outside of the swrs schema and depend on the swrs schema; save their definitions in a temporary table
+  - drop the swrs schema
+  - rename the srwrs_load schema to swrs
+  - recreate the views depending on swrs which were dropped by cascade
+$$;
+
 commit;
