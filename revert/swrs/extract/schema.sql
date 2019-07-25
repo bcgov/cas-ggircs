@@ -2,6 +2,6 @@
 
 begin;
 
-drop schema swrs_extract
+drop schema swrs_extract;
 
 commit;
