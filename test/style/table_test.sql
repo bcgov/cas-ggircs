@@ -10,7 +10,8 @@ begin;
 -- create schema swrs_transform;
 -- TODO: set search_path to change dynamically for each schema, I don't think this will work once
 --       schemas other than swrs_transform become populated with tables
-set search_path to swrs,swrs_transform,public;
+--       use this: select table_schema || '.' || table_name
+set search_path to swrs,swrs_transform,swrs_extract,public;
 
 select * from no_plan();
 
