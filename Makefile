@@ -164,15 +164,6 @@ else
 	@@$(MAKE) -C pgtap -s $(MAKEFLAGS) install
 endif
 
-.PHONY: install_sqitch
-install_sqitch:
-	# install postgres driver for sqitch
-	@@${CPAN} DBD::Pg
-	# install sqitch
-	@@${CPAN} App::Sqitch
-	# install pg_prove
-	@@${CPAN} TAP::Parser::SourceHandler::pgTAP
-
 .PHONY: install_cpanm
 install_cpanm:
 ifeq (${shell which ${CPANM}},)
@@ -182,6 +173,8 @@ endif
 
 .PHONY: install_cpandeps
 install_cpandeps:
+	# install sqitch
+	${CPANM} -n https://github.com/matthieu-foucault/sqitch/releases/download/v1.0.1.TRIAL/App-Sqitch-v1.0.1-TRIAL.tar.gz
 	# install Perl dependencies from cpanfile
 	${CPANM} --installdeps .
 
