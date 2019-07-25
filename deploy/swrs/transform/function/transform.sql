@@ -17,8 +17,8 @@ begin
       loop
         if row.matviewname != 'flat' then
           execute format('refresh materialized view swrs_transform.%s %s', row.matviewname, data);
+          raise notice '[%] Transformed %...', timeofday()::timestamp, row.matviewname;
         end if;
-        raise notice '[%] Transformed %...', timeofday()::timestamp, row.matviewname;
       end loop;
 
 
