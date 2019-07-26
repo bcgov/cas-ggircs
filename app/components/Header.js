@@ -1,6 +1,7 @@
 import React from 'react'
 import Head from 'next/head'
-
+import {ButtonToolbar, Row, Col} from "react-bootstrap";
+import Link from 'next/link'
 const Header = () => {
   return (
       <React.Fragment>
@@ -19,10 +20,18 @@ const Header = () => {
                       <img src="/static/logo-banner.png"
                            alt="Go to the Government of British Columbia website" />
                   </a>
-                  <h1>GGIRCS Industry Portal</h1>
+                  <h1>CleanBC Industrial Initiative Program</h1>
               </div>
-              <div className="other">
-                  &nbsp;
+              <div className="buttons">
+                  <Row>
+                      <Col>
+                          <ButtonToolbar>
+                              <a style={{marginLeft:"20px"}} href='/ciip-application' className='btn btn-primary'>Apply to CIIP</a>
+                              <a style={{marginLeft:"20px"}} href='/form-builder' className='btn btn-secondary'>Build a form</a>
+                              <a style={{marginLeft:"20px"}} target="_blank" href='http://localhost:3000/question/66' className='btn btn-info'>Admin</a>
+                          </ButtonToolbar>
+                      </Col>
+                  </Row>
               </div>
 
               <style jsx>{`
@@ -66,6 +75,14 @@ const Header = () => {
                   border-color: lightgrey; */
                 }
 
+                .buttons{
+                    display:flex;
+                    flex-grow: 1;
+                    align-items: center;
+                    justify-content:flex-end;
+
+                }
+
                 /*
                   These are sample media queries only. Media queries are quite subjective
                   but, in general, should be made for the three different classes of screen
@@ -81,7 +98,7 @@ const Header = () => {
 
                 @media screen and (min-width: 900px) {
                   header h1 {
-                    font-size: 2.0em;
+                    font-size: 1.4em;
                     visibility: visible;
                   }
                 }

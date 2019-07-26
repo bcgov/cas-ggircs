@@ -1815,6 +1815,11 @@ body-parser@1.19.0, body-parser@^1.15.2, body-parser@^1.18.3:
     raw-body "2.4.0"
     type-is "~1.6.17"
 
+bootstrap-slider@^10.0.0:
+  version "10.6.2"
+  resolved "https://registry.yarnpkg.com/bootstrap-slider/-/bootstrap-slider-10.6.2.tgz#7341f468c012bdaa6a1d8625d989fdeb8ed7dd38"
+  integrity sha512-8JTPZB9QVOdrGzYF3YgC3YW6ssfPeBvBwZnXffiZ7YH/zz1D0EKlZvmQsm/w3N0XjVNYQEoQ0ax+jHrErV4K1Q==
+
 bootstrap@^4.3.1:
   version "4.3.1"
   resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-4.3.1.tgz#280ca8f610504d99d7b6b4bfc4b68cec601704ac"
@@ -2849,6 +2854,13 @@ duplexify@^3.4.2, duplexify@^3.6.0:
     inherits "^2.0.1"
     readable-stream "^2.0.0"
     stream-shift "^1.0.0"
+
+easy-autocomplete@^1.3.5:
+  version "1.3.5"
+  resolved "https://registry.yarnpkg.com/easy-autocomplete/-/easy-autocomplete-1.3.5.tgz#2a2d2df699f13ddc48661c9375b9437acf1a0a9c"
+  integrity sha1-Ki0t9pnxPdxIZhyTdblDes8aCpw=
+  dependencies:
+    jquery "*"
 
 ecc-jsbn@~0.1.1:
   version "0.1.2"
@@ -4024,6 +4036,11 @@ https-proxy-agent@^2.2.1:
     agent-base "^4.3.0"
     debug "^3.1.0"
 
+icheck@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/icheck/-/icheck-1.0.2.tgz#06d08da3d47ae448c153b2639b86e9ad7fdf7128"
+  integrity sha1-BtCNo9R65EjBU7Jjm4bprX/fcSg=
+
 iconv-lite@0.4.24, iconv-lite@^0.4.24, iconv-lite@^0.4.4, iconv-lite@~0.4.13:
   version "0.4.24"
   resolved "https://registry.yarnpkg.com/iconv-lite/-/iconv-lite-0.4.24.tgz#2022b4b25fbddc21d2f524974a474aafe733908b"
@@ -4134,6 +4151,11 @@ ini@^1.3.4, ini@~1.3.0:
   version "1.3.5"
   resolved "https://registry.yarnpkg.com/ini/-/ini-1.3.5.tgz#eee25f56db1c9ec6085e0c22778083f596abf927"
   integrity sha512-RZY5huIKCMRWDUqZlEi72f/lmXKMvuszcMBduliQ3nnWbx9X/ZBQO7DijMEYS9EhHBb2qacRUMtC7svLwe0lcw==
+
+inputmask@^3.3.10:
+  version "3.3.11"
+  resolved "https://registry.yarnpkg.com/inputmask/-/inputmask-3.3.11.tgz#1421c94ae28c3dcd1b4d26337b508bb34998e2d8"
+  integrity sha1-FCHJSuKMPc0bTSYze1CLs0mY4tg=
 
 inquirer@6.2.0:
   version "6.2.0"
@@ -4477,6 +4499,23 @@ iterall@^1.0.2, iterall@^1.2.1, iterall@^1.2.2:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/iterall/-/iterall-1.2.2.tgz#92d70deb8028e0c39ff3164fdbf4d8b088130cd7"
   integrity sha512-yynBb1g+RFUPY64fTrFv7nsjRrENBQJaX2UL+2Szc9REFrSNm1rpSXHGzhmAy7a9uv3vlvgBlXnf9RqmPH1/DA==
+
+jquery-bar-rating@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/jquery-bar-rating/-/jquery-bar-rating-1.2.2.tgz#9594d662cff9deb0fe7b372511bb2492a436f392"
+  integrity sha1-lZTWYs/53rD+ezclEbskkqQ285I=
+  dependencies:
+    jquery ">=1.7.2"
+
+jquery-ui@^1.12.1:
+  version "1.12.1"
+  resolved "https://registry.yarnpkg.com/jquery-ui/-/jquery-ui-1.12.1.tgz#bcb4045c8dd0539c134bc1488cdd3e768a7a9e51"
+  integrity sha1-vLQEXI3QU5wTS8FIjN0+dop6nlE=
+
+jquery@*, jquery@>=1.7.2, jquery@^3.2.1, jquery@^3.3.1:
+  version "3.4.1"
+  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.4.1.tgz#714f1f8d9dde4bdfa55764ba37ef214630d80ef2"
+  integrity sha512-36+AdBzCL+y6qjw5Tx7HgzeGCzC81MDDgaUP8ld2zhx58HdqXGoBd+tHdrBMiyjGQs0Hxs/MLZTu/eHNJJuWPw==
 
 js-base64@^2.3.2:
   version "2.5.1"
@@ -5371,6 +5410,11 @@ normalize-path@^3.0.0:
   resolved "https://registry.yarnpkg.com/normalize-path/-/normalize-path-3.0.0.tgz#0dcd69ff23a1c9b11fd0978316644a0388216a65"
   integrity sha512-6eZs5Ls3WtCisHWp9S2GUy8dqkpGi4BVSz3GaqiE6ezub0512ESztXUwUB6C6IKbQkY2Pnb/mD4WYojCRwcwLA==
 
+nouislider@^10.1.0:
+  version "10.1.0"
+  resolved "https://registry.yarnpkg.com/nouislider/-/nouislider-10.1.0.tgz#7bdd0411fd62d4584bfe88cb92bb8d06e64c6b47"
+  integrity sha512-lENwxlpoYg4/5gjdaY/PMNHeVL+CMJyrO+7RzXi1MqhSSGwuJsQSJteXCQV5bE2UKEdSLARWrqIF8XSWAq7h+A==
+
 npm-bundled@^1.0.1:
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/npm-bundled/-/npm-bundled-1.0.6.tgz#e7ba9aadcef962bb61248f91721cd932b3fe6bdd"
@@ -6096,6 +6140,11 @@ prettier@^1.16.0:
   resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.18.2.tgz#6823e7c5900017b4bd3acf46fe9ac4b4d7bda9ea"
   integrity sha512-OeHeMc0JhFE9idD4ZdtNibzY0+TPHSpSSb9h8FqtP+YnoZZ1sl8Vc9b1sasjfymH3SonAF4QcA2+mzHPhMvIiw==
 
+pretty-checkbox@^3.0.3:
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/pretty-checkbox/-/pretty-checkbox-3.0.3.tgz#d49c8013a8fc08ee0c2d6ebde453464bfdbc428e"
+  integrity sha1-1JyAE6j8CO4MLW695FNGS/28Qo4=
+
 prisma-json-schema@0.1.3:
   version "0.1.3"
   resolved "https://registry.yarnpkg.com/prisma-json-schema/-/prisma-json-schema-0.1.3.tgz#6c302db8f464f8b92e8694d3f7dd3f41ac9afcbe"
@@ -6481,6 +6530,11 @@ readdirp@^2.2.1:
     micromatch "^3.1.10"
     readable-stream "^2.0.2"
 
+recordrtc@^5.4.6:
+  version "5.5.8"
+  resolved "https://registry.yarnpkg.com/recordrtc/-/recordrtc-5.5.8.tgz#46eaf3500651701fda13a3d5826270270f9178a9"
+  integrity sha512-+BzbllHyL6Q8gAuaqjO8RdqofL4C6yI670hicMaUW/0dDsKHeKyz0S4M+n7sHnr4dP0LGWqcod6gazRMtXob6A==
+
 reflect.ownkeys@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/reflect.ownkeys/-/reflect.ownkeys-0.2.0.tgz#749aceec7f3fdf8b63f927a04809e90c5c0b3460"
@@ -6820,6 +6874,11 @@ scuid@^1.0.2:
   resolved "https://registry.yarnpkg.com/scuid/-/scuid-1.1.0.tgz#d3f9f920956e737a60f72d0e4ad280bf324d5dab"
   integrity sha512-MuCAyrGZcTLfQoH2XoBlQ8C6bzwN88XT/0slOGz0pn8+gIP85BOAfYa44ZXQUTOwRwPU0QvgU+V+OSajl/59Xg==
 
+select2@^4.0.4:
+  version "4.0.8"
+  resolved "https://registry.yarnpkg.com/select2/-/select2-4.0.8.tgz#3773bec1e5b96620ed98ca5ded53c0da47e7753f"
+  integrity sha512-H/I2mq71oiEe51S74hdUv4QubH1EJNLEMnjfQucftLa8GiuT5+RKIHwlV/7I/YUqZg0wsYQM946eFG/ntRPF/Q==
+
 semver-diff@^2.0.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/semver-diff/-/semver-diff-2.1.0.tgz#4bbb8437c8d37e4b0cf1a68fd726ec6d645d6d36"
@@ -6975,6 +7034,11 @@ signal-exit@^3.0.0, signal-exit@^3.0.2:
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.2.tgz#b5fdc08f1287ea1178628e415e25132b73646c6d"
   integrity sha1-tf3AjxKH6hF4Yo5BXiUTK3NkbG0=
 
+signature_pad@^2.3.2:
+  version "2.3.2"
+  resolved "https://registry.yarnpkg.com/signature_pad/-/signature_pad-2.3.2.tgz#ca7230021c89cedeead27b33d8d16ff254e5f04a"
+  integrity sha512-peYXLxOsIY6MES2TrRLDiNg2T++8gGbpP2yaC+6Ohtxr+a2dzoaqWosWDY9sWqTAAk6E/TyQO+LJw9zQwyu5kA==
+
 signedsource@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/signedsource/-/signedsource-1.0.0.tgz#1ddace4981798f93bd833973803d80d52e93ad6a"
@@ -7023,6 +7087,11 @@ snapdragon@^0.8.1:
     source-map "^0.5.6"
     source-map-resolve "^0.5.0"
     use "^3.1.0"
+
+sortablejs@^1.6.1:
+  version "1.9.0"
+  resolved "https://registry.yarnpkg.com/sortablejs/-/sortablejs-1.9.0.tgz#2d1e74ae6bac2cb4ad0622908f340848969eb88d"
+  integrity sha512-Ot6bYJ6PoqPmpsqQYXjn1+RKrY2NWQvQt/o4jfd/UYwVWndyO5EPO8YHbnm5HIykf8ENsm4JUrdAvolPT86yYA==
 
 source-list-map@^2.0.0:
   version "2.0.1"
@@ -7336,6 +7405,25 @@ survey-react@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/survey-react/-/survey-react-1.1.1.tgz#217217537019521565aedd8c7627753e7308b63d"
   integrity sha512-KrA5nDmtqx/1/Zw7L9IKLh1g+jrF+BWqyILUrPFNqGyuhezche7RvB/qCcZrphOTFbDkMscoijfq/3C94s8rWA==
+
+surveyjs-widgets@latest:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/surveyjs-widgets/-/surveyjs-widgets-1.1.1.tgz#bc96c031054dee66a283469182f80a44223c48c9"
+  integrity sha512-94QUy/aIhESaMrTqZ6xK391iT3Ea+v4DlXob/J6DKQ0PDVw31e7SOL+LaxWvz6eqYCyFR99fKo8aEpbi9UjUjQ==
+  dependencies:
+    bootstrap-slider "^10.0.0"
+    easy-autocomplete "^1.3.5"
+    icheck "^1.0.2"
+    inputmask "^3.3.10"
+    jquery "^3.2.1"
+    jquery-bar-rating "^1.2.2"
+    jquery-ui "^1.12.1"
+    nouislider "^10.1.0"
+    pretty-checkbox "^3.0.3"
+    recordrtc "^5.4.6"
+    select2 "^4.0.4"
+    signature_pad "^2.3.2"
+    sortablejs "^1.6.1"
 
 swap-case@^1.1.0:
   version "1.1.2"
