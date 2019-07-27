@@ -11,7 +11,7 @@ FIRST_DATA_ROW = HEADER_ROW + 1
 
 
 def extract(ciip_book, cursor, application_id, operator_id, facility_id):
-    INSERT_EQUIPMENT = '''insert into ciip.equipment
+    INSERT_EQUIPMENT = '''insert into ciip_2018.equipment
         (
             application_id, equipment_category, equipment_identifier, equipment_type,
             power_rating, load_factor, utilization, runtime_hours, design_efficiency,
@@ -30,7 +30,7 @@ def extract(ciip_book, cursor, application_id, operator_id, facility_id):
 
     cursor.execute(
         '''
-        select id, product from ciip.production
+        select id, product from ciip_2018.production
         where application_id = %s
         ''',
         (application_id,)
@@ -90,7 +90,7 @@ def extract(ciip_book, cursor, application_id, operator_id, facility_id):
 
             psycopg2.extras.execute_values(
                 cursor,
-                '''insert into ciip.equipment_consumption
+                '''insert into ciip_2018.equipment_consumption
                 (application_id, equipment_id, processing_unit_name, processing_unit_id, consumption_allocation)
                 values %s''',
                 allocations
@@ -131,7 +131,7 @@ def extract(ciip_book, cursor, application_id, operator_id, facility_id):
                     ))
             psycopg2.extras.execute_values(
                 cursor,
-                '''insert into ciip.equipment_emission
+                '''insert into ciip_2018.equipment_emission
                 (application_id, equipment_id, processing_unit_name, processing_unit_id, emission_allocation)
                 values %s''',
                 allocations
@@ -148,7 +148,7 @@ def extract(ciip_book, cursor, application_id, operator_id, facility_id):
 
             psycopg2.extras.execute_values(
                 cursor,
-                '''insert into ciip.equipment_output_stream
+                '''insert into ciip_2018.equipment_output_stream
                 (application_id, equipment_id, output_stream_label, output_stream_value)
                 values %s''',
                 output_streams

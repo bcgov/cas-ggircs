@@ -56,7 +56,7 @@ objects:
               - bash
               - -c
               - |
-                sqitch revert table_ghgr_import -y;
+                sqitch revert swrs/extract/table/ghgr_import -y;
         post:
           failurePolicy: Retry
           execNewPod:
@@ -69,8 +69,8 @@ objects:
               - |
                 set -euo pipefail;
                 sqitch deploy;
-                echo "Exporting data to 'ggircs' schema";
-                psql -c "select ggircs_swrs.export_mv_to_table()";
+                echo "Exporting data to 'swrs' schema";
+                psql -c "select swrs_transform.load()";
     template:
       metadata:
         labels:

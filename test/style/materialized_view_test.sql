@@ -8,8 +8,8 @@ reset client_min_messages;
 begin;
 
 -- TODO: set search_path to change dynamically for each schema, I don't think this will work once
---       schemas other than ggircs_swrs become populated with tables
-set search_path to ggircs_swrs,public;
+--       schemas other than swrs_transform become populated with tables
+set search_path to swrs_transform,public;
 
 select * from no_plan();
 
@@ -17,7 +17,7 @@ select * from no_plan();
 
 -- GUIDELINE: All tables should have descriptions
 -- Check all tables for an existing description (regex '.+')
-with mvnames as (select matviewname from pg_matviews where schemaname like 'ggircs%')
+with mvnames as (select matviewname from pg_matviews where schemaname like 'swrs%')
 select matches(
                obj_description(mv::regclass, 'pg_class'),
                '.+',
@@ -28,7 +28,7 @@ from mvnames f(mv);
 -- --GUIDELINE GROUP: Enforce table naming conventions
 -- -- GUIDELINE: Names are lower-case with underscores_as_word_separators
 -- -- Check that all materialized view names do not return a match of capital letters or non-word characters
-with mvnames as (select matviewname from pg_matviews where schemaname like 'ggircs%')
+with mvnames as (select matviewname from pg_matviews where schemaname like 'swrs%')
 select doesnt_match(
                mv,
                '[A-Z]|\W',
@@ -49,7 +49,7 @@ create table csv_import_fixture
 \copy csv_import_fixture from './test/fixture/sql_reserved_words.csv' delimiter ',' csv;
 -- -- test that schema does not contain any table names that intersect with reserved words csv dictionary
 with reserved_words as (select csv_column_fixture from csv_import_fixture),
-mv_names as (select matviewname from pg_matviews where schemaname like 'ggircs%')
+mv_names as (select matviewname from pg_matviews where schemaname like 'swrs%')
 select hasnt_materialized_view(
                mv,
                res,
@@ -61,7 +61,7 @@ drop table csv_import_fixture;
 --
 -- GUIDELINE: All materialized views must have a primary key
 -- Get all materialized views in schema that do not have an index matching %primary%
-prepare null_pkey as select tablename from pg_indexes where not exists (select indexname from pg_indexes where indexname like '%primary%') and schemaname = 'ggircs_swrs';
+prepare null_pkey as select tablename from pg_indexes where not exists (select indexname from pg_indexes where indexname like '%primary%') and schemaname = 'swrs_transform';
 -- Test that the above query returns nothing, else throw an error
 select is_empty('null_pkey', 'All materialized views must have a primary key');
 

@@ -38,7 +38,7 @@ def extract(ciip_book, cursor, application_id, operator_id, facility_id):
 
     psycopg2.extras.execute_values(
         cursor,
-        '''insert into ciip.fuel(
+        '''insert into ciip_2018.fuel(
             fuel_type, fuel_type_alt, fuel_description, quantity, fuel_units, carbon_emissions,
             application_id, operator_id, facility_id)
         values %s''',

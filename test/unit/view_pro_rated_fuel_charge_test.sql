@@ -8,12 +8,12 @@ select * from no_plan();
 
 -- View should exist
 select has_view(
-    'ggircs', 'pro_rated_fuel_charge',
-    'ggircs.pro_rated_fuel_charge should be a view'
+    'swrs', 'pro_rated_fuel_charge',
+    'swrs.pro_rated_fuel_charge should be a view'
 );
 
 -- Columns are correct
-select columns_are('ggircs'::name, 'pro_rated_fuel_charge'::name, array[
+select columns_are('swrs'::name, 'pro_rated_fuel_charge'::name, array[
     'fuel_type'::name,
     'fuel_mapping_id'::name,
     'year'::name,
@@ -23,27 +23,27 @@ select columns_are('ggircs'::name, 'pro_rated_fuel_charge'::name, array[
 ]);
 
 -- Column attributes are correct
-select col_type_is('ggircs', 'pro_rated_fuel_charge', 'fuel_type', 'character varying(1000)', 'pro_rated_fuel_charge.fuel_type column should be type varchar');
-select col_hasnt_default('ggircs', 'pro_rated_fuel_charge', 'fuel_type', 'pro_rated_fuel_charge.fuel_type column should not have a default value');
+select col_type_is('swrs', 'pro_rated_fuel_charge', 'fuel_type', 'character varying(1000)', 'pro_rated_fuel_charge.fuel_type column should be type varchar');
+select col_hasnt_default('swrs', 'pro_rated_fuel_charge', 'fuel_type', 'pro_rated_fuel_charge.fuel_type column should not have a default value');
 
-select col_type_is('ggircs', 'pro_rated_fuel_charge', 'fuel_mapping_id', 'integer', 'pro_rated_fuel_charge.fuel_mapping_id column should be type integer');
-select col_hasnt_default('ggircs', 'pro_rated_fuel_charge', 'fuel_mapping_id', 'pro_rated_fuel_charge.fuel_mapping_id column should not have a default value');
+select col_type_is('swrs', 'pro_rated_fuel_charge', 'fuel_mapping_id', 'integer', 'pro_rated_fuel_charge.fuel_mapping_id column should be type integer');
+select col_hasnt_default('swrs', 'pro_rated_fuel_charge', 'fuel_mapping_id', 'pro_rated_fuel_charge.fuel_mapping_id column should not have a default value');
 
-select col_type_is('ggircs', 'pro_rated_fuel_charge', 'year', 'integer', 'pro_rated_fuel_charge.year column should be type integer');
-select col_hasnt_default('ggircs', 'pro_rated_fuel_charge', 'year', 'pro_rated_fuel_charge.year column should not have a default value');
+select col_type_is('swrs', 'pro_rated_fuel_charge', 'year', 'integer', 'pro_rated_fuel_charge.year column should be type integer');
+select col_hasnt_default('swrs', 'pro_rated_fuel_charge', 'year', 'pro_rated_fuel_charge.year column should not have a default value');
 
-select col_type_is('ggircs', 'pro_rated_fuel_charge', 'unit_conversion_factor', 'integer', 'pro_rated_fuel_charge.unit_conversion_factor column should be type integer');
-select col_hasnt_default('ggircs', 'pro_rated_fuel_charge', 'unit_conversion_factor', 'pro_rated_fuel_charge.unit_conversion_factor column should not have a default value');
+select col_type_is('swrs', 'pro_rated_fuel_charge', 'unit_conversion_factor', 'integer', 'pro_rated_fuel_charge.unit_conversion_factor column should be type integer');
+select col_hasnt_default('swrs', 'pro_rated_fuel_charge', 'unit_conversion_factor', 'pro_rated_fuel_charge.unit_conversion_factor column should not have a default value');
 
-select col_type_is('ggircs', 'pro_rated_fuel_charge', 'flat_rate', 'numeric', 'pro_rated_fuel_charge.flat_rate column should be type numeric');
-select col_hasnt_default('ggircs', 'pro_rated_fuel_charge', 'flat_rate', 'pro_rated_fuel_charge.flat_rate column should not have a default value');
+select col_type_is('swrs', 'pro_rated_fuel_charge', 'flat_rate', 'numeric', 'pro_rated_fuel_charge.flat_rate column should be type numeric');
+select col_hasnt_default('swrs', 'pro_rated_fuel_charge', 'flat_rate', 'pro_rated_fuel_charge.flat_rate column should not have a default value');
 
-select col_type_is('ggircs', 'pro_rated_fuel_charge', 'pro_rated_fuel_charge', 'numeric', 'pro_rated_fuel_charge.pro_rated_fuel_charge column should be type numeric');
-select col_hasnt_default('ggircs', 'pro_rated_fuel_charge', 'pro_rated_fuel_charge', 'pro_rated_fuel_charge.pro_rated_fuel_charge column should not have a default value');
+select col_type_is('swrs', 'pro_rated_fuel_charge', 'pro_rated_fuel_charge', 'numeric', 'pro_rated_fuel_charge.pro_rated_fuel_charge column should be type numeric');
+select col_hasnt_default('swrs', 'pro_rated_fuel_charge', 'pro_rated_fuel_charge', 'pro_rated_fuel_charge.pro_rated_fuel_charge column should not have a default value');
 
 
 -- XML fixture for testing
-insert into ggircs_swrs.ghgr_import (xml_file) values ($$
+insert into swrs_extract.ghgr_import (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <RegistrationData>
   <Facility>
@@ -103,44 +103,25 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
 </ReportData>
 $$);
 
--- Refresh necessary materialized views
-refresh materialized view ggircs_swrs.report with data;
-refresh materialized view ggircs_swrs.final_report with data;
-refresh materialized view ggircs_swrs.organisation with data;
-refresh materialized view ggircs_swrs.facility with data;
-refresh materialized view ggircs_swrs.activity with data;
-refresh materialized view ggircs_swrs.unit with data;
-refresh materialized view ggircs_swrs.identifier with data;
-refresh materialized view ggircs_swrs.naics with data;
-refresh materialized view ggircs_swrs.fuel with data;
-refresh materialized view ggircs_swrs.emission with data;
-
--- Populate necessary ggircs tables
-select ggircs_swrs.export_report_to_ggircs();
-select ggircs_swrs.export_organisation_to_ggircs();
-select ggircs_swrs.export_facility_to_ggircs();
-select ggircs_swrs.export_activity_to_ggircs();
-select ggircs_swrs.export_unit_to_ggircs();
-select ggircs_swrs.export_identifier_to_ggircs();
-select ggircs_swrs.export_naics_to_ggircs();
-select ggircs_swrs.export_fuel_to_ggircs();
-select ggircs_swrs.export_emission_to_ggircs();
+-- Run table export function without clearing the materialized views (for data equality tests below)
+SET client_min_messages TO WARNING; -- load is a bit verbose
+select swrs_transform.load(true, false);
 
 -- Properly selects fuel charge
 select results_eq(
-    $$ select flat_rate / unit_conversion_factor from ggircs.pro_rated_fuel_charge where fuel_type = 'Residual Fuel Oil (#5 & 6)'$$,
+    $$ select flat_rate / unit_conversion_factor from swrs.pro_rated_fuel_charge where fuel_type = 'Residual Fuel Oil (#5 & 6)'$$,
 
     $$
 
-      select fuel_charge from ggircs.fuel
-      join ggircs_swrs.fuel_charge
+      select fuel_charge from swrs.fuel
+      join swrs.fuel_charge
       on fuel.fuel_mapping_id = fuel_charge.fuel_mapping_id
       where fuel.fuel_type = 'Residual Fuel Oil (#5 & 6)'
       and ('2013-12-31' between fuel_charge.start_date and fuel_charge.end_date)
 
     $$,
 
-    'ggircs.pro_rated_fuel_charge selects proper fuel_charge for fuel_type and year'
+    'swrs.pro_rated_fuel_charge selects proper fuel_charge for fuel_type and year'
 );
 
 select * from finish();

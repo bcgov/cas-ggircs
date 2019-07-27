@@ -8,12 +8,12 @@ select * from no_plan();
 
 -- View should exist
 select has_view(
-    'ggircs', 'carbon_tax_calculation',
-    'ggircs.carbon_tax_calculation should be a view'
+    'swrs', 'carbon_tax_calculation',
+    'swrs.carbon_tax_calculation should be a view'
 );
 
 -- Columns are correct
-select columns_are('ggircs'::name, 'carbon_tax_calculation'::name, array[
+select columns_are('swrs'::name, 'carbon_tax_calculation'::name, array[
     'report_id'::name,
     'organisation_id'::name,
     'facility_id'::name,
@@ -34,47 +34,47 @@ select columns_are('ggircs'::name, 'carbon_tax_calculation'::name, array[
 ]);
 
 -- Column attributes are correct
-select col_type_is('ggircs', 'carbon_tax_calculation', 'organisation_id', 'integer', 'carbon_tax_calculation.organisation_id column should be type integer');
-select col_hasnt_default('ggircs', 'carbon_tax_calculation', 'organisation_id', 'carbon_tax_calculation.organisation_id column should not have a default value');
+select col_type_is('swrs', 'carbon_tax_calculation', 'organisation_id', 'integer', 'carbon_tax_calculation.organisation_id column should be type integer');
+select col_hasnt_default('swrs', 'carbon_tax_calculation', 'organisation_id', 'carbon_tax_calculation.organisation_id column should not have a default value');
 
-select col_type_is('ggircs', 'carbon_tax_calculation', 'facility_id', 'integer', 'carbon_tax_calculation.facility_id column should be type integer');
-select col_hasnt_default('ggircs', 'carbon_tax_calculation', 'facility_id', 'carbon_tax_calculation.facility_id column should not have a default value');
+select col_type_is('swrs', 'carbon_tax_calculation', 'facility_id', 'integer', 'carbon_tax_calculation.facility_id column should be type integer');
+select col_hasnt_default('swrs', 'carbon_tax_calculation', 'facility_id', 'carbon_tax_calculation.facility_id column should not have a default value');
 
-select col_type_is('ggircs', 'carbon_tax_calculation', 'naics_id', 'integer', 'carbon_tax_calculation.naics_id column should be type integer');
-select col_hasnt_default('ggircs', 'carbon_tax_calculation', 'naics_id', 'carbon_tax_calculation.naics_id column should not have a default value');
+select col_type_is('swrs', 'carbon_tax_calculation', 'naics_id', 'integer', 'carbon_tax_calculation.naics_id column should be type integer');
+select col_hasnt_default('swrs', 'carbon_tax_calculation', 'naics_id', 'carbon_tax_calculation.naics_id column should not have a default value');
 
-select col_type_is('ggircs', 'carbon_tax_calculation', 'year', 'integer', 'carbon_tax_calculation.reporting_year column should be type integer');
-select col_hasnt_default('ggircs', 'carbon_tax_calculation', 'year', 'carbon_tax_calculation.reporting_year column should not have a default value');
+select col_type_is('swrs', 'carbon_tax_calculation', 'year', 'integer', 'carbon_tax_calculation.reporting_year column should be type integer');
+select col_hasnt_default('swrs', 'carbon_tax_calculation', 'year', 'carbon_tax_calculation.reporting_year column should not have a default value');
 
-select col_type_is('ggircs', 'carbon_tax_calculation', 'fuel_type', 'character varying(1000)', 'carbon_tax_calculation.fuel_type column should be type varchar');
-select col_hasnt_default('ggircs', 'carbon_tax_calculation', 'fuel_type', 'carbon_tax_calculation.fuel_type column should not have a default value');
+select col_type_is('swrs', 'carbon_tax_calculation', 'fuel_type', 'character varying(1000)', 'carbon_tax_calculation.fuel_type column should be type varchar');
+select col_hasnt_default('swrs', 'carbon_tax_calculation', 'fuel_type', 'carbon_tax_calculation.fuel_type column should not have a default value');
 
-select col_type_is('ggircs', 'carbon_tax_calculation', 'fuel_amount', 'numeric', 'carbon_tax_calculation.fuel_amount column should be type numeric');
-select col_hasnt_default('ggircs', 'carbon_tax_calculation', 'fuel_amount', 'carbon_tax_calculation.fuel_amount column should not have a default value');
+select col_type_is('swrs', 'carbon_tax_calculation', 'fuel_amount', 'numeric', 'carbon_tax_calculation.fuel_amount column should be type numeric');
+select col_hasnt_default('swrs', 'carbon_tax_calculation', 'fuel_amount', 'carbon_tax_calculation.fuel_amount column should not have a default value');
 
-select col_type_is('ggircs', 'carbon_tax_calculation', 'fuel_charge', 'numeric', 'carbon_tax_calculation.fuel_charge column should be type numeric');
-select col_hasnt_default('ggircs', 'carbon_tax_calculation', 'fuel_charge', 'carbon_tax_calculation.fuel_charge column should not have a default value');
+select col_type_is('swrs', 'carbon_tax_calculation', 'fuel_charge', 'numeric', 'carbon_tax_calculation.fuel_charge column should be type numeric');
+select col_hasnt_default('swrs', 'carbon_tax_calculation', 'fuel_charge', 'carbon_tax_calculation.fuel_charge column should not have a default value');
 
-select col_type_is('ggircs', 'carbon_tax_calculation', 'pro_rated_fuel_charge', 'numeric', 'carbon_tax_calculation.pro_rated_fuel_charge column should be type numeric');
-select col_hasnt_default('ggircs', 'carbon_tax_calculation', 'pro_rated_fuel_charge', 'carbon_tax_calculation.pro_rated_fuel_charge column should not have a default value');
+select col_type_is('swrs', 'carbon_tax_calculation', 'pro_rated_fuel_charge', 'numeric', 'carbon_tax_calculation.pro_rated_fuel_charge column should be type numeric');
+select col_hasnt_default('swrs', 'carbon_tax_calculation', 'pro_rated_fuel_charge', 'carbon_tax_calculation.pro_rated_fuel_charge column should not have a default value');
 
-select col_type_is('ggircs', 'carbon_tax_calculation', 'unit_conversion_factor', 'integer', 'carbon_tax_calculation.unit_conversion_factor column should be type integer');
-select col_hasnt_default('ggircs', 'carbon_tax_calculation', 'unit_conversion_factor', 'carbon_tax_calculation.unit_conversion_factor column should not have a default value');
+select col_type_is('swrs', 'carbon_tax_calculation', 'unit_conversion_factor', 'integer', 'carbon_tax_calculation.unit_conversion_factor column should be type integer');
+select col_hasnt_default('swrs', 'carbon_tax_calculation', 'unit_conversion_factor', 'carbon_tax_calculation.unit_conversion_factor column should not have a default value');
 
-select col_type_is('ggircs', 'carbon_tax_calculation', 'flat_calculation', 'character varying(1000)', 'carbon_tax_calculation.flat_calculation column should be type varchar');
-select col_hasnt_default('ggircs', 'carbon_tax_calculation', 'flat_calculation', 'carbon_tax_calculation.flat_calculation column should not have a default value');
+select col_type_is('swrs', 'carbon_tax_calculation', 'flat_calculation', 'character varying(1000)', 'carbon_tax_calculation.flat_calculation column should be type varchar');
+select col_hasnt_default('swrs', 'carbon_tax_calculation', 'flat_calculation', 'carbon_tax_calculation.flat_calculation column should not have a default value');
 
-select col_type_is('ggircs', 'carbon_tax_calculation', 'pro_rated_calculation', 'character varying(1000)', 'carbon_tax_calculation.pro_rated_calculation column should be type varchar');
-select col_hasnt_default('ggircs', 'carbon_tax_calculation', 'pro_rated_calculation', 'carbon_tax_calculation.pro_rated_calculation column should not have a default value');
+select col_type_is('swrs', 'carbon_tax_calculation', 'pro_rated_calculation', 'character varying(1000)', 'carbon_tax_calculation.pro_rated_calculation column should be type varchar');
+select col_hasnt_default('swrs', 'carbon_tax_calculation', 'pro_rated_calculation', 'carbon_tax_calculation.pro_rated_calculation column should not have a default value');
 
-select col_type_is('ggircs', 'carbon_tax_calculation', 'calculated_carbon_tax', 'numeric', 'carbon_tax_calculation.calculated_carbon_tax column should be type numeric');
-select col_hasnt_default('ggircs', 'carbon_tax_calculation', 'calculated_carbon_tax', 'carbon_tax_calculation.calculated_carbon_tax column should not have a default value');
+select col_type_is('swrs', 'carbon_tax_calculation', 'calculated_carbon_tax', 'numeric', 'carbon_tax_calculation.calculated_carbon_tax column should be type numeric');
+select col_hasnt_default('swrs', 'carbon_tax_calculation', 'calculated_carbon_tax', 'carbon_tax_calculation.calculated_carbon_tax column should not have a default value');
 
-select col_type_is('ggircs', 'carbon_tax_calculation', 'pro_rated_calculated_carbon_tax', 'numeric', 'carbon_tax_calculation.pro_rated_calculated_carbon_tax column should be type numeric');
-select col_hasnt_default('ggircs', 'carbon_tax_calculation', 'pro_rated_calculated_carbon_tax', 'carbon_tax_calculation.pro_rated_calculated_carbon_tax column should not have a default value');
+select col_type_is('swrs', 'carbon_tax_calculation', 'pro_rated_calculated_carbon_tax', 'numeric', 'carbon_tax_calculation.pro_rated_calculated_carbon_tax column should be type numeric');
+select col_hasnt_default('swrs', 'carbon_tax_calculation', 'pro_rated_calculated_carbon_tax', 'carbon_tax_calculation.pro_rated_calculated_carbon_tax column should not have a default value');
 
 -- XML fixture for testing
-insert into ggircs_swrs.ghgr_import (xml_file) values ($$
+insert into swrs_extract.ghgr_import (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <RegistrationData>
   <Facility>
@@ -134,69 +134,50 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
 </ReportData>
 $$);
 
--- Refresh necessary materialized views
-refresh materialized view ggircs_swrs.report with data;
-refresh materialized view ggircs_swrs.final_report with data;
-refresh materialized view ggircs_swrs.organisation with data;
-refresh materialized view ggircs_swrs.facility with data;
-refresh materialized view ggircs_swrs.activity with data;
-refresh materialized view ggircs_swrs.unit with data;
-refresh materialized view ggircs_swrs.identifier with data;
-refresh materialized view ggircs_swrs.naics with data;
-refresh materialized view ggircs_swrs.fuel with data;
-refresh materialized view ggircs_swrs.emission with data;
-
--- Populate necessary ggircs tables
-select ggircs_swrs.export_report_to_ggircs();
-select ggircs_swrs.export_organisation_to_ggircs();
-select ggircs_swrs.export_facility_to_ggircs();
-select ggircs_swrs.export_activity_to_ggircs();
-select ggircs_swrs.export_unit_to_ggircs();
-select ggircs_swrs.export_identifier_to_ggircs();
-select ggircs_swrs.export_naics_to_ggircs();
-select ggircs_swrs.export_fuel_to_ggircs();
-select ggircs_swrs.export_emission_to_ggircs();
+-- Run table export function without clearing the materialized views (for data equality tests below)
+SET client_min_messages TO WARNING; -- load is a bit verbose
+select swrs_transform.load(true, false);
 
 -- Test fk relations
 -- Organisation
 select results_eq(
-    $$ select organisation.swrs_organisation_id from ggircs.carbon_tax_calculation as ct
-       join ggircs.organisation on ct.organisation_id = organisation.id
+    $$ select organisation.swrs_organisation_id from swrs.carbon_tax_calculation as ct
+       join swrs.organisation on ct.organisation_id = organisation.id
     $$,
-    'select swrs_organisation_id from ggircs.organisation',
+    'select swrs_organisation_id from swrs.organisation',
     'fk organisation_id references organisation'
 );
 
 -- Facility
 select set_eq(
-    $$ select facility.swrs_facility_id from ggircs.carbon_tax_calculation as ct
-       join ggircs.facility on ct.facility_id = facility.id
+    $$ select facility.swrs_facility_id from swrs.carbon_tax_calculation as ct
+       join swrs.facility on ct.facility_id = facility.id
     $$,
-    'select swrs_facility_id from ggircs.facility',
+    'select swrs_facility_id from swrs.facility',
     'fk facility_id references facility'
 );
 
 -- Naics
 select set_eq(
-    $$ select naics.naics_code from ggircs.carbon_tax_calculation as ct
-       join ggircs.naics on ct.naics_id = naics.id
+    $$ select naics.naics_code from swrs.carbon_tax_calculation as ct
+       join swrs.naics on ct.naics_id = naics.id
     $$,
-    'select naics_code from ggircs.naics',
+    'select naics_code from swrs.naics',
     'fk naics_id references naics'
 );
 
 -- Test validity of calculation
 select results_eq(
-    'select calculated_carbon_tax from ggircs.carbon_tax_calculation order by calculated_carbon_tax',
+    'select calculated_carbon_tax from swrs.carbon_tax_calculation order by calculated_carbon_tax',
 
     $$
       with x as (
-        select flat_rate from ggircs.pro_rated_fuel_charge where fuel_type = 'Residual Fuel Oil (#5 & 6)'
+        select flat_rate from swrs.pro_rated_fuel_charge where fuel_type = 'Residual Fuel Oil (#5 & 6)'
       )
-      select x.flat_rate * (select annual_fuel_amount from ggircs.fuel where fuel_type = 'Residual Fuel Oil (#5 & 6)') from x
+      select x.flat_rate * (select annual_fuel_amount from swrs.fuel where fuel_type = 'Residual Fuel Oil (#5 & 6)') from x
     $$,
 
-    'ggircs.carbon_tax_calculation properly calculates carbon tax based on fuel_amount * pro-rated carbon tax rate * pro-rated implied emission factor'
+    'swrs.carbon_tax_calculation properly calculates carbon tax based on fuel_amount * pro-rated carbon tax rate * pro-rated implied emission factor'
 );
 
 select * from finish();

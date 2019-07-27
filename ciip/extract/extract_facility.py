@@ -15,7 +15,7 @@ def extract(ciip_book, cursor, application_id, operator):
 
     cursor.execute(
         '''
-        select distinct swrs_facility_id from ggircs.identifier
+        select distinct swrs_facility_id from swrs.identifier
         where identifier_value = %s
         ''',
         (facility['bcghg_id'],)
@@ -27,7 +27,7 @@ def extract(ciip_book, cursor, application_id, operator):
     else: # try using  the facility name
         cursor.execute(
             '''
-            select distinct swrs_facility_id from ggircs.facility
+            select distinct swrs_facility_id from swrs.facility
             where facility_name = %s
             ''',
             (facility['name'],)
@@ -46,7 +46,7 @@ def extract(ciip_book, cursor, application_id, operator):
 
     cursor.execute(
         ('''
-        insert into ciip.facility
+        insert into ciip_2018.facility
         (
             application_id, operator_id, facility_name, facility_type,
             bc_ghg_id, facility_description, naics, swrs_facility_id,

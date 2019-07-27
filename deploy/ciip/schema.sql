@@ -2,7 +2,7 @@
 
 begin;
 
-create schema ciip;
-comment on schema ciip is 'A schema for the CleanBC Industrial Incentive Program (CIIP)';
+create schema ciip_2018;
+comment on schema ciip_2018 is 'A schema for the CleanBC Industrial Incentive Program (CIIP)';
 
 commit;

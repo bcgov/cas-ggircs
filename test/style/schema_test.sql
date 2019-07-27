@@ -4,18 +4,18 @@ reset client_min_messages;
 
 begin;
 
-select plan(4);
+select plan(6);
 
 /** Check schema compliance **/
 
--- Check schemas like ggircs%  exist
-with schema_names as (select schema_name from information_schema.schemata where schema_name like 'ggircs%')
+-- Check schemas like swrs%  exist
+with schema_names as (select schema_name from information_schema.schemata where schema_name like 'swrs%')
 select has_schema(sch)
 from schema_names f(sch);
 
 -- GUIDELINE: Schema has a description
 -- Check schema for an existing description (regex '.+')
-with schema_names as (select schema_name from information_schema.schemata where schema_name like 'ggircs%')
+with schema_names as (select schema_name from information_schema.schemata where schema_name like 'swrs%')
 select matches(
                obj_description(sch::regnamespace, 'pg_namespace'),
                '.+',

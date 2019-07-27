@@ -6,7 +6,7 @@ reset client_min_messages;
 begin;
 select * from no_plan();
 
-insert into ggircs_swrs.ghgr_import (xml_file) values ($$
+insert into swrs_extract.ghgr_import (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <RegistrationData>
     <Organisation>
@@ -76,58 +76,50 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
 </ReportData>
 $$);
 
-refresh materialized view ggircs_swrs.report with data;
-refresh materialized view ggircs_swrs.organisation with data;
-refresh materialized view ggircs_swrs.facility with data;
-refresh materialized view ggircs_swrs.activity with data;
-refresh materialized view ggircs_swrs.additional_data with data;
-refresh materialized view ggircs_swrs.final_report with data;
-select ggircs_swrs.export_report_to_ggircs();
-select ggircs_swrs.export_organisation_to_ggircs();
-select ggircs_swrs.export_facility_to_ggircs();
-select ggircs_swrs.export_activity_to_ggircs();
-select ggircs_swrs.export_additional_data_to_ggircs();
+-- Run table export function without clearing the materialized views (for data equality tests below)
+SET client_min_messages TO WARNING; -- load is a bit verbose
+select swrs_transform.load(true, false);
 
--- Table ggircs.additional_data exists
-select has_table('ggircs'::name, 'additional_data'::name);
+-- Table swrs.additional_data exists
+select has_table('swrs'::name, 'additional_data'::name);
 
 -- Additional Data has pk
-select has_pk('ggircs', 'additional_data', 'ggircs_additional_data has primary key');
+select has_pk('swrs', 'additional_data', 'ggircs_additional_data has primary key');
 
 -- Additional Data has fk
-select has_fk('ggircs', 'additional_data', 'ggircs_additional_data has foreign key constraint(s)');
+select has_fk('swrs', 'additional_data', 'ggircs_additional_data has foreign key constraint(s)');
 
 -- Additional Data has data
-select isnt_empty('select * from ggircs.additional_data', 'there is data in ggircs.additional_data');
+select isnt_empty('select * from swrs.additional_data', 'there is data in swrs.additional_data');
 
 -- FKey tests
 -- Additional Data -> Activity
 select set_eq(
     $$
-    select distinct(activity.ghgr_import_id) from ggircs.additional_data
-    join ggircs.activity
+    select distinct(activity.ghgr_import_id) from swrs.additional_data
+    join swrs.activity
     on additional_data.activity_id = activity.id
     $$,
 
-    'select distinct(ghgr_import_id) from ggircs.activity',
+    'select distinct(ghgr_import_id) from swrs.activity',
 
-    'Foreign key activity_id in ggircs.additional_data references ggircs.activity.id'
+    'Foreign key activity_id in swrs.additional_data references swrs.activity.id'
 );
 
 -- Additional Data -> Report
 select set_eq(
     $$
-    select distinct(report.ghgr_import_id) from ggircs.additional_data
-    join ggircs.report
+    select distinct(report.ghgr_import_id) from swrs.additional_data
+    join swrs.report
     on additional_data.report_id = report.id
     $$,
 
-    'select distinct(ghgr_import_id) from ggircs.report',
+    'select distinct(ghgr_import_id) from swrs.report',
 
-    'Foreign key report_id in ggircs.additional_data references ggircs.report.id'
+    'Foreign key report_id in swrs.additional_data references swrs.report.id'
 );
 
--- Data in ggircs_swrs.additional_data === data in ggircs.additional_data
+-- Data in swrs_transform.additional_data === data in swrs.additional_data
 select set_eq(
               $$
               select
@@ -138,7 +130,7 @@ select set_eq(
                     attribute,
                     attr_value,
                     node_value
-                from ggircs_swrs.additional_data
+                from swrs_transform.additional_data
                 order by
                   ghgr_import_id,
                   grandparent,
@@ -157,7 +149,7 @@ select set_eq(
                     attribute,
                     attr_value,
                     node_value
-                from ggircs.additional_data
+                from swrs.additional_data
                 order by
                   ghgr_import_id,
                   grandparent,
@@ -167,7 +159,7 @@ select set_eq(
                  asc
               $$,
 
-              'data in ggircs_swrs.additional_data === ggircs.additional_data');
+              'data in swrs_transform.additional_data === swrs.additional_data');
 
 
 select * from finish();

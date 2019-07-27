@@ -6,7 +6,7 @@ reset client_min_messages;
 begin;
 select * from no_plan();
 
-insert into ggircs_swrs.ghgr_import (xml_file) values ($$
+insert into swrs_extract.ghgr_import (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <RegistrationData>
     <Organisation>
@@ -133,45 +133,39 @@ $$), ($$
 </ReportData>
 $$);
 
-refresh materialized view ggircs_swrs.report with data;
-refresh materialized view ggircs_swrs.organisation with data;
-refresh materialized view ggircs_swrs.facility with data;
-refresh materialized view ggircs_swrs.permit with data;
-refresh materialized view ggircs_swrs.final_report with data;
-select ggircs_swrs.export_report_to_ggircs();
-select ggircs_swrs.export_organisation_to_ggircs();
-select ggircs_swrs.export_facility_to_ggircs();
-select ggircs_swrs.export_permit_to_ggircs();
+-- Run table export function without clearing the materialized views (for data equality tests below)
+SET client_min_messages TO WARNING; -- load is a bit verbose
+select swrs_transform.load(true, false);
 
--- Table ggircs.permit exists
-select has_table('ggircs'::name, 'permit'::name);
+-- Table swrs.permit exists
+select has_table('swrs'::name, 'permit'::name);
 
 -- Permit has pk
-select has_pk('ggircs', 'permit', 'ggircs_permit has primary key');
+select has_pk('swrs', 'permit', 'ggircs_permit has primary key');
 
 -- Permit has fk
-select has_fk('ggircs', 'permit', 'ggircs_permit has foreign key constraint(s)');
+select has_fk('swrs', 'permit', 'ggircs_permit has foreign key constraint(s)');
 
 -- Permit has data
-select isnt_empty('select * from ggircs.permit', 'there is data in ggircs.permit');
+select isnt_empty('select * from swrs.permit', 'there is data in swrs.permit');
 
 -- FKey tests
 -- Permit -> Facility
 select set_eq(
     $$
-    select facility.ghgr_import_id from ggircs.permit
-    join ggircs.facility
+    select facility.ghgr_import_id from swrs.permit
+    join swrs.facility
     on
       permit.facility_id = facility.id
       order by ghgr_import_id
     $$,
 
-    'select ghgr_import_id from ggircs.facility order by ghgr_import_id',
+    'select ghgr_import_id from swrs.facility order by ghgr_import_id',
 
-    'Foreign key facility_id in ggircs.permit references ggircs.facility.id'
+    'Foreign key facility_id in swrs.permit references swrs.facility.id'
 );
 
--- Data in ggircs_swrs.permit === data in ggircs.permit
+-- Data in swrs_transform.permit === data in swrs.permit
 select set_eq(
               $$
               select
@@ -180,7 +174,7 @@ select set_eq(
                   issuing_agency,
                   issuing_dept_agency_program,
                   permit_number
-                from ggircs_swrs.permit
+                from swrs_transform.permit
                 order by
                   ghgr_import_id,
                   path_context
@@ -194,14 +188,14 @@ select set_eq(
                   issuing_agency,
                   issuing_dept_agency_program,
                   permit_number
-                from ggircs.permit
+                from swrs.permit
                 order by
                   ghgr_import_id,
                   path_context
                  asc
               $$,
 
-              'data in ggircs_swrs.permit === ggircs.permit');
+              'data in swrs_transform.permit === swrs.permit');
 
 select * from finish();
 rollback;

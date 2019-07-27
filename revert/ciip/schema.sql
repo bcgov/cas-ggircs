@@ -2,6 +2,6 @@
 
 begin;
 
-drop schema ciip;
+drop schema ciip_2018;
 
 commit;

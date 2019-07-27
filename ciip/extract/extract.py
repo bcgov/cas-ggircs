@@ -46,7 +46,7 @@ cur = conn.cursor()
 directories = args.dirslist.read().split('\n')
 
 try:
-    cur.execute('truncate table ciip.application cascade;')
+    cur.execute('truncate table ciip_2018.application cascade;')
     for directory in directories:
         if directory.strip() == '':
             continue

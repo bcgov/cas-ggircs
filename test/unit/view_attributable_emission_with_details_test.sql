@@ -8,12 +8,12 @@ select * from no_plan();
 
 -- View should exist
 select has_view(
-    'ggircs', 'attributable_emissions_with_details',
-    'ggircs.attributable_emission should be a view'
+    'swrs', 'attributable_emissions_with_details',
+    'swrs.attributable_emission should be a view'
 );
 
 -- Columns are correct
-select columns_are('ggircs'::name, 'attributable_emissions_with_details'::name, array[
+select columns_are('swrs'::name, 'attributable_emissions_with_details'::name, array[
     'emission_id'::name,
     'business_legal_name'::name,
     'facility_name'::name,
@@ -51,107 +51,107 @@ select columns_are('ggircs'::name, 'attributable_emissions_with_details'::name, 
 
 -- Column attributes are correct
 
-select col_type_is('ggircs', 'attributable_emissions_with_details', 'emission_id', 'bigint', 'attributable_emissions.emission_id column should be type bigint');
-select col_hasnt_default('ggircs', 'attributable_emissions_with_details', 'emission_id', 'attributable_emissions_with_details.emission_id column should not have a default value');
+select col_type_is('swrs', 'attributable_emissions_with_details', 'emission_id', 'bigint', 'attributable_emissions.emission_id column should be type bigint');
+select col_hasnt_default('swrs', 'attributable_emissions_with_details', 'emission_id', 'attributable_emissions_with_details.emission_id column should not have a default value');
 
-select col_type_is('ggircs', 'attributable_emissions_with_details', 'business_legal_name', 'character varying(1000)', 'attributable_emissions.business_legal_name column should be type varchar');
-select col_hasnt_default('ggircs', 'attributable_emissions_with_details', 'business_legal_name', 'attributable_emissions_with_details.business_legal_name column should not have a default value');
+select col_type_is('swrs', 'attributable_emissions_with_details', 'business_legal_name', 'character varying(1000)', 'attributable_emissions.business_legal_name column should be type varchar');
+select col_hasnt_default('swrs', 'attributable_emissions_with_details', 'business_legal_name', 'attributable_emissions_with_details.business_legal_name column should not have a default value');
 
-select col_type_is('ggircs', 'attributable_emissions_with_details', 'facility_name', 'character varying(1000)', 'attributable_emissions.facility_name column should be type varchar');
-select col_hasnt_default('ggircs', 'attributable_emissions_with_details', 'facility_name', 'attributable_emissions_with_details.facility_name column should not have a default value');
+select col_type_is('swrs', 'attributable_emissions_with_details', 'facility_name', 'character varying(1000)', 'attributable_emissions.facility_name column should be type varchar');
+select col_hasnt_default('swrs', 'attributable_emissions_with_details', 'facility_name', 'attributable_emissions_with_details.facility_name column should not have a default value');
 
-select col_type_is('ggircs', 'attributable_emissions_with_details', 'facility_type', 'character varying(1000)', 'attributable_emissions.facility_type column should be type varchar');
-select col_hasnt_default('ggircs', 'attributable_emissions_with_details', 'facility_type', 'attributable_emissions_with_details.facility_type column should not have a default value');
+select col_type_is('swrs', 'attributable_emissions_with_details', 'facility_type', 'character varying(1000)', 'attributable_emissions.facility_type column should be type varchar');
+select col_hasnt_default('swrs', 'attributable_emissions_with_details', 'facility_type', 'attributable_emissions_with_details.facility_type column should not have a default value');
 
-select col_type_is('ggircs', 'attributable_emissions_with_details', 'process_name', 'character varying(1000)', 'attributable_emissions.process_name column should be type varchar');
-select col_hasnt_default('ggircs', 'attributable_emissions_with_details', 'process_name', 'attributable_emissions_with_details.process_name column should not have a default value');
+select col_type_is('swrs', 'attributable_emissions_with_details', 'process_name', 'character varying(1000)', 'attributable_emissions.process_name column should be type varchar');
+select col_hasnt_default('swrs', 'attributable_emissions_with_details', 'process_name', 'attributable_emissions_with_details.process_name column should not have a default value');
 
-select col_type_is('ggircs', 'attributable_emissions_with_details', 'sub_process_name', 'character varying(1000)', 'attributable_emissions.sub_process_name column should be type varchar');
-select col_hasnt_default('ggircs', 'attributable_emissions_with_details', 'sub_process_name', 'attributable_emissions_with_details.sub_process_name column should not have a default value');
+select col_type_is('swrs', 'attributable_emissions_with_details', 'sub_process_name', 'character varying(1000)', 'attributable_emissions.sub_process_name column should be type varchar');
+select col_hasnt_default('swrs', 'attributable_emissions_with_details', 'sub_process_name', 'attributable_emissions_with_details.sub_process_name column should not have a default value');
 
-select col_type_is('ggircs', 'attributable_emissions_with_details', 'emission_type', 'character varying(1000)', 'attributable_emissions.emission_type column should be type varchar');
-select col_hasnt_default('ggircs', 'attributable_emissions_with_details', 'emission_type', 'attributable_emissions_with_details.emission_type column should not have a default value');
+select col_type_is('swrs', 'attributable_emissions_with_details', 'emission_type', 'character varying(1000)', 'attributable_emissions.emission_type column should be type varchar');
+select col_hasnt_default('swrs', 'attributable_emissions_with_details', 'emission_type', 'attributable_emissions_with_details.emission_type column should not have a default value');
 
-select col_type_is('ggircs', 'attributable_emissions_with_details', 'gas_type', 'character varying(1000)', 'attributable_emissions.gas_type column should be type varchar');
-select col_hasnt_default('ggircs', 'attributable_emissions_with_details', 'gas_type', 'attributable_emissions_with_details.gas_type column should not have a default value');
+select col_type_is('swrs', 'attributable_emissions_with_details', 'gas_type', 'character varying(1000)', 'attributable_emissions.gas_type column should be type varchar');
+select col_hasnt_default('swrs', 'attributable_emissions_with_details', 'gas_type', 'attributable_emissions_with_details.gas_type column should not have a default value');
 
-select col_type_is('ggircs', 'attributable_emissions_with_details', 'quantity', 'numeric', 'attributable_emissions.quantity column should be type numeric');
-select col_hasnt_default('ggircs', 'attributable_emissions_with_details', 'quantity', 'attributable_emission.quantity column should not have a default value');
+select col_type_is('swrs', 'attributable_emissions_with_details', 'quantity', 'numeric', 'attributable_emissions.quantity column should be type numeric');
+select col_hasnt_default('swrs', 'attributable_emissions_with_details', 'quantity', 'attributable_emission.quantity column should not have a default value');
 
-select col_type_is('ggircs', 'attributable_emissions_with_details', 'calculated_quantity', 'numeric', 'attributable_emissions.calculated_quantity column should be type numeric');
-select col_hasnt_default('ggircs', 'attributable_emissions_with_details', 'calculated_quantity', 'attributable_emission.calculated_quantity column should not have a default value');
+select col_type_is('swrs', 'attributable_emissions_with_details', 'calculated_quantity', 'numeric', 'attributable_emissions.calculated_quantity column should be type numeric');
+select col_hasnt_default('swrs', 'attributable_emissions_with_details', 'calculated_quantity', 'attributable_emission.calculated_quantity column should not have a default value');
 
-select col_type_is('ggircs', 'attributable_emissions_with_details', 'methodology', 'character varying(1000)', 'attributable_emissions.methodology column should be type varchar');
-select col_hasnt_default('ggircs', 'attributable_emissions_with_details', 'methodology', 'attributable_emission.methodology column should not have a default value');
+select col_type_is('swrs', 'attributable_emissions_with_details', 'methodology', 'character varying(1000)', 'attributable_emissions.methodology column should be type varchar');
+select col_hasnt_default('swrs', 'attributable_emissions_with_details', 'methodology', 'attributable_emission.methodology column should not have a default value');
 
-select col_type_is('ggircs', 'attributable_emissions_with_details', 'emission_category', 'character varying(1000)', 'attributable_emissions.emission_category column should be type varchar');
-select col_hasnt_default('ggircs', 'attributable_emissions_with_details', 'emission_category', 'attributable_emission.emission_category column should not have a default value');
+select col_type_is('swrs', 'attributable_emissions_with_details', 'emission_category', 'character varying(1000)', 'attributable_emissions.emission_category column should be type varchar');
+select col_hasnt_default('swrs', 'attributable_emissions_with_details', 'emission_category', 'attributable_emission.emission_category column should not have a default value');
 
-select col_type_is('ggircs', 'attributable_emissions_with_details', 'reporting_period_duration', 'character varying(1000)', 'attributable_emissions.reporting_period_duration column should be type varchar');
-select col_hasnt_default('ggircs', 'attributable_emissions_with_details', 'reporting_period_duration', 'attributable_emission.reporting_period_duration column should not have a default value');
+select col_type_is('swrs', 'attributable_emissions_with_details', 'reporting_period_duration', 'character varying(1000)', 'attributable_emissions.reporting_period_duration column should be type varchar');
+select col_hasnt_default('swrs', 'attributable_emissions_with_details', 'reporting_period_duration', 'attributable_emission.reporting_period_duration column should not have a default value');
 
-select col_type_is('ggircs', 'attributable_emissions_with_details', 'fuel_type', 'character varying(1000)', 'attributable_emissions.fuel_type column should be type varchar');
-select col_hasnt_default('ggircs', 'attributable_emissions_with_details', 'fuel_type', 'attributable_emission.fuel_type column should not have a default value');
+select col_type_is('swrs', 'attributable_emissions_with_details', 'fuel_type', 'character varying(1000)', 'attributable_emissions.fuel_type column should be type varchar');
+select col_hasnt_default('swrs', 'attributable_emissions_with_details', 'fuel_type', 'attributable_emission.fuel_type column should not have a default value');
 
-select col_type_is('ggircs', 'attributable_emissions_with_details', 'fuel_units', 'character varying(1000)', 'attributable_emissions.fuel_units column should be type varchar');
-select col_hasnt_default('ggircs', 'attributable_emissions_with_details', 'fuel_units', 'attributable_emission.fuel_units column should not have a default value');
+select col_type_is('swrs', 'attributable_emissions_with_details', 'fuel_units', 'character varying(1000)', 'attributable_emissions.fuel_units column should be type varchar');
+select col_hasnt_default('swrs', 'attributable_emissions_with_details', 'fuel_units', 'attributable_emission.fuel_units column should not have a default value');
 
-select col_type_is('ggircs', 'attributable_emissions_with_details', 'fuel_classification', 'character varying(1000)', 'attributable_emissions.fuel_classification column should be type varchar');
-select col_hasnt_default('ggircs', 'attributable_emissions_with_details', 'fuel_classification', 'attributable_emission.fuel_classification column should not have a default value');
+select col_type_is('swrs', 'attributable_emissions_with_details', 'fuel_classification', 'character varying(1000)', 'attributable_emissions.fuel_classification column should be type varchar');
+select col_hasnt_default('swrs', 'attributable_emissions_with_details', 'fuel_classification', 'attributable_emission.fuel_classification column should not have a default value');
 
-select col_type_is('ggircs', 'attributable_emissions_with_details', 'fuel_description', 'character varying(1000)', 'attributable_emissions.fuel_description column should be type varchar');
-select col_hasnt_default('ggircs', 'attributable_emissions_with_details', 'fuel_description', 'attributable_emission.fuel_description column should not have a default value');
+select col_type_is('swrs', 'attributable_emissions_with_details', 'fuel_description', 'character varying(1000)', 'attributable_emissions.fuel_description column should be type varchar');
+select col_hasnt_default('swrs', 'attributable_emissions_with_details', 'fuel_description', 'attributable_emission.fuel_description column should not have a default value');
 
-select col_type_is('ggircs', 'attributable_emissions_with_details', 'annual_fuel_amount', 'numeric', 'attributable_emissions.annual_fuel_amount column should be type numeric');
-select col_hasnt_default('ggircs', 'attributable_emissions_with_details', 'annual_fuel_amount', 'attributable_emission.annual_fuel_amount column should not have a default value');
+select col_type_is('swrs', 'attributable_emissions_with_details', 'annual_fuel_amount', 'numeric', 'attributable_emissions.annual_fuel_amount column should be type numeric');
+select col_hasnt_default('swrs', 'attributable_emissions_with_details', 'annual_fuel_amount', 'attributable_emission.annual_fuel_amount column should not have a default value');
 
-select col_type_is('ggircs', 'attributable_emissions_with_details', 'annual_weighted_avg_carbon_content', 'numeric', 'attributable_emissions.annual_weighted_avg_carbon_content column should be type numeric');
-select col_hasnt_default('ggircs', 'attributable_emissions_with_details', 'annual_weighted_avg_carbon_content', 'attributable_emission.annual_weighted_avg_carbon_content column should not have a default value');
+select col_type_is('swrs', 'attributable_emissions_with_details', 'annual_weighted_avg_carbon_content', 'numeric', 'attributable_emissions.annual_weighted_avg_carbon_content column should be type numeric');
+select col_hasnt_default('swrs', 'attributable_emissions_with_details', 'annual_weighted_avg_carbon_content', 'attributable_emission.annual_weighted_avg_carbon_content column should not have a default value');
 
-select col_type_is('ggircs', 'attributable_emissions_with_details', 'annual_weighted_avg_hhv', 'numeric', 'attributable_emissions.annual_weighted_avg_hhv column should be type numeric');
-select col_hasnt_default('ggircs', 'attributable_emissions_with_details', 'annual_weighted_avg_hhv', 'attributable_emission.annual_weighted_avg_hhv column should not have a default value');
+select col_type_is('swrs', 'attributable_emissions_with_details', 'annual_weighted_avg_hhv', 'numeric', 'attributable_emissions.annual_weighted_avg_hhv column should be type numeric');
+select col_hasnt_default('swrs', 'attributable_emissions_with_details', 'annual_weighted_avg_hhv', 'attributable_emission.annual_weighted_avg_hhv column should not have a default value');
 
-select col_type_is('ggircs', 'attributable_emissions_with_details', 'annual_steam_generation', 'numeric', 'attributable_emissions.annual_steam_generation column should be type numeric');
-select col_hasnt_default('ggircs', 'attributable_emissions_with_details', 'annual_steam_generation', 'attributable_emission.annual_steam_generation column should not have a default value');
+select col_type_is('swrs', 'attributable_emissions_with_details', 'annual_steam_generation', 'numeric', 'attributable_emissions.annual_steam_generation column should be type numeric');
+select col_hasnt_default('swrs', 'attributable_emissions_with_details', 'annual_steam_generation', 'attributable_emission.annual_steam_generation column should not have a default value');
 
-select col_type_is('ggircs', 'attributable_emissions_with_details', 'alternative_methodology_description', 'character varying(10000)', 'attributable_emissions.alternative_methodology_description column should be type varchar');
-select col_hasnt_default('ggircs', 'attributable_emissions_with_details', 'alternative_methodology_description', 'attributable_emission.alternative_methodology_description column should not have a default value');
+select col_type_is('swrs', 'attributable_emissions_with_details', 'alternative_methodology_description', 'character varying(10000)', 'attributable_emissions.alternative_methodology_description column should be type varchar');
+select col_hasnt_default('swrs', 'attributable_emissions_with_details', 'alternative_methodology_description', 'attributable_emission.alternative_methodology_description column should not have a default value');
 
-select col_type_is('ggircs', 'attributable_emissions_with_details', 'naics_classification', 'character varying(1000)', 'attributable_emissions.naics_classification column should be type varchar');
-select col_hasnt_default('ggircs', 'attributable_emissions_with_details', 'naics_classification', 'attributable_emission.naics_classification column should not have a default value');
+select col_type_is('swrs', 'attributable_emissions_with_details', 'naics_classification', 'character varying(1000)', 'attributable_emissions.naics_classification column should be type varchar');
+select col_hasnt_default('swrs', 'attributable_emissions_with_details', 'naics_classification', 'attributable_emission.naics_classification column should not have a default value');
 
-select col_type_is('ggircs', 'attributable_emissions_with_details', 'naics_code', 'integer', 'attributable_emissions.naics_code column should be type integer');
-select col_hasnt_default('ggircs', 'attributable_emissions_with_details', 'naics_code', 'attributable_emission.naics_code column should not have a default value');
+select col_type_is('swrs', 'attributable_emissions_with_details', 'naics_code', 'integer', 'attributable_emissions.naics_code column should be type integer');
+select col_hasnt_default('swrs', 'attributable_emissions_with_details', 'naics_code', 'attributable_emission.naics_code column should not have a default value');
 
-select col_type_is('ggircs', 'attributable_emissions_with_details', 'unit_name', 'character varying(1000)', 'attributable_emissions.unit_name column should be type varchar');
-select col_hasnt_default('ggircs', 'attributable_emissions_with_details', 'unit_name', 'attributable_emission.unit_name column should not have a default value');
+select col_type_is('swrs', 'attributable_emissions_with_details', 'unit_name', 'character varying(1000)', 'attributable_emissions.unit_name column should be type varchar');
+select col_hasnt_default('swrs', 'attributable_emissions_with_details', 'unit_name', 'attributable_emission.unit_name column should not have a default value');
 
-select col_type_is('ggircs', 'attributable_emissions_with_details', 'unit_id', 'integer', 'attributable_emissions.unit_id column should be type integer');
-select col_hasnt_default('ggircs', 'attributable_emissions_with_details', 'unit_id', 'attributable_emission.unit_id column should not have a default value');
+select col_type_is('swrs', 'attributable_emissions_with_details', 'unit_id', 'integer', 'attributable_emissions.unit_id column should be type integer');
+select col_hasnt_default('swrs', 'attributable_emissions_with_details', 'unit_id', 'attributable_emission.unit_id column should not have a default value');
 
-select col_type_is('ggircs', 'attributable_emissions_with_details', 'ghgr_import_id', 'integer', 'attributable_emissions.ghgr_import_id column should be type integer');
-select col_hasnt_default('ggircs', 'attributable_emissions_with_details', 'ghgr_import_id', 'attributable_emission.ghgr_import_id column should not have a default value');
+select col_type_is('swrs', 'attributable_emissions_with_details', 'ghgr_import_id', 'integer', 'attributable_emissions.ghgr_import_id column should be type integer');
+select col_hasnt_default('swrs', 'attributable_emissions_with_details', 'ghgr_import_id', 'attributable_emission.ghgr_import_id column should not have a default value');
 
-select col_type_is('ggircs', 'attributable_emissions_with_details', 'report_id', 'integer', 'attributable_emissions.report_id column should be type integer');
-select col_hasnt_default('ggircs', 'attributable_emissions_with_details', 'report_id', 'attributable_emission.report_id column should not have a default value');
+select col_type_is('swrs', 'attributable_emissions_with_details', 'report_id', 'integer', 'attributable_emissions.report_id column should be type integer');
+select col_hasnt_default('swrs', 'attributable_emissions_with_details', 'report_id', 'attributable_emission.report_id column should not have a default value');
 
-select col_type_is('ggircs', 'attributable_emissions_with_details', 'organisation_id', 'integer', 'attributable_emission.organisation_id column should be type integer');
-select col_hasnt_default('ggircs', 'attributable_emissions_with_details', 'organisation_id', 'attributable_emission.organisation_id column should not have a default value');
+select col_type_is('swrs', 'attributable_emissions_with_details', 'organisation_id', 'integer', 'attributable_emission.organisation_id column should be type integer');
+select col_hasnt_default('swrs', 'attributable_emissions_with_details', 'organisation_id', 'attributable_emission.organisation_id column should not have a default value');
 
-select col_type_is('ggircs', 'attributable_emissions_with_details', 'facility_id', 'integer', 'attributable_emission.facility_id column should be type integer');
-select col_hasnt_default('ggircs', 'attributable_emissions_with_details', 'facility_id', 'attributable_emission.facility_id column should not have a default value');
+select col_type_is('swrs', 'attributable_emissions_with_details', 'facility_id', 'integer', 'attributable_emission.facility_id column should be type integer');
+select col_hasnt_default('swrs', 'attributable_emissions_with_details', 'facility_id', 'attributable_emission.facility_id column should not have a default value');
 
-select col_type_is('ggircs', 'attributable_emissions_with_details', 'swrs_report_id', 'integer', 'attributable_emission.swrs_report_id column should be type integer');
-select col_hasnt_default('ggircs', 'attributable_emissions_with_details', 'swrs_report_id', 'attributable_emission.swrs_report_id column should not have a default value');
+select col_type_is('swrs', 'attributable_emissions_with_details', 'swrs_report_id', 'integer', 'attributable_emission.swrs_report_id column should be type integer');
+select col_hasnt_default('swrs', 'attributable_emissions_with_details', 'swrs_report_id', 'attributable_emission.swrs_report_id column should not have a default value');
 
-select col_type_is('ggircs', 'attributable_emissions_with_details', 'swrs_organisation_id', 'integer', 'attributable_emissions.swrs_organisation_id column should be type integer');
-select col_hasnt_default('ggircs', 'attributable_emissions_with_details', 'swrs_organisation_id', 'attributable_emission.swrs_organisation_id column should not have a default value');
+select col_type_is('swrs', 'attributable_emissions_with_details', 'swrs_organisation_id', 'integer', 'attributable_emissions.swrs_organisation_id column should be type integer');
+select col_hasnt_default('swrs', 'attributable_emissions_with_details', 'swrs_organisation_id', 'attributable_emission.swrs_organisation_id column should not have a default value');
 
-select col_type_is('ggircs', 'attributable_emissions_with_details', 'swrs_facility_id', 'integer', 'attributable_emissions.swrs_facility_id column should be type integer');
-select col_hasnt_default('ggircs', 'attributable_emissions_with_details', 'swrs_facility_id', 'attributable_emission.swrs_facility_id column should not have a default value');
+select col_type_is('swrs', 'attributable_emissions_with_details', 'swrs_facility_id', 'integer', 'attributable_emissions.swrs_facility_id column should be type integer');
+select col_hasnt_default('swrs', 'attributable_emissions_with_details', 'swrs_facility_id', 'attributable_emission.swrs_facility_id column should not have a default value');
 
 -- XML fixture for testing
-insert into ggircs_swrs.ghgr_import (xml_file) values ($$
+insert into swrs_extract.ghgr_import (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <RegistrationData>
     <Organisation>
@@ -486,66 +486,49 @@ insert into ggircs_swrs.ghgr_import (xml_file) values ($$
 </ReportData>
 $$);
 
--- Refresh necessary materialized views
-refresh materialized view ggircs_swrs.report with data;
-refresh materialized view ggircs_swrs.final_report with data;
-refresh materialized view ggircs_swrs.organisation with data;
-refresh materialized view ggircs_swrs.facility with data;
-refresh materialized view ggircs_swrs.activity with data;
-refresh materialized view ggircs_swrs.naics with data;
-refresh materialized view ggircs_swrs.fuel with data;
-refresh materialized view ggircs_swrs.unit with data;
-refresh materialized view ggircs_swrs.emission with data;
-
--- Populate necessary ggircs tables
-select ggircs_swrs.export_report_to_ggircs();
-select ggircs_swrs.export_organisation_to_ggircs();
-select ggircs_swrs.export_facility_to_ggircs();
-select ggircs_swrs.export_activity_to_ggircs();
-select ggircs_swrs.export_unit_to_ggircs();
-select ggircs_swrs.export_naics_to_ggircs();
-select ggircs_swrs.export_fuel_to_ggircs();
-select ggircs_swrs.export_emission_to_ggircs();
+-- Run table export function without clearing the materialized views (for data equality tests below)
+SET client_min_messages TO WARNING; -- load is a bit verbose
+select swrs_transform.load(true, false);
 
 -- Test fk relations
 -- Report
 select set_eq(
-    $$ select report.id from ggircs.attributable_emissions_with_details as ae
-       join ggircs.report on ae.report_id = report.id
+    $$ select report.id from swrs.attributable_emissions_with_details as ae
+       join swrs.report on ae.report_id = report.id
     $$,
-    'select id from ggircs.report',
+    'select id from swrs.report',
     'fk report_id references report'
 );
 
 select set_eq(
-    $$ select organisation.id from ggircs.attributable_emissions_with_details as ae
-       join ggircs.organisation on ae.organisation_id = organisation.id
+    $$ select organisation.id from swrs.attributable_emissions_with_details as ae
+       join swrs.organisation on ae.organisation_id = organisation.id
     $$,
-    'select id from ggircs.organisation',
+    'select id from swrs.organisation',
     'fk organisation_id references organisation'
 );
 
 -- Facility
 select set_eq(
-    $$ select facility.id from ggircs.attributable_emissions_with_details as ae
-       join ggircs.facility on ae.facility_id = facility.id
+    $$ select facility.id from swrs.attributable_emissions_with_details as ae
+       join swrs.facility on ae.facility_id = facility.id
     $$,
-    'select id from ggircs.facility',
+    'select id from swrs.facility',
     'fk facility_id references facility'
 );
 
 -- Unit
 select set_eq(
-    $$ select unit.id from ggircs.attributable_emissions_with_details as ae
-       join ggircs.unit on ae.unit_id = unit.id
+    $$ select unit.id from swrs.attributable_emissions_with_details as ae
+       join swrs.unit on ae.unit_id = unit.id
     $$,
-    'select id from ggircs.unit',
+    'select id from swrs.unit',
     'fk unit_id references unit'
 );
 
 -- Attributable Emissions with details has correct information
 select set_eq(
-   'select * from ggircs.attributable_emissions_with_details',
+   'select * from swrs.attributable_emissions_with_details',
     $$ select
         e.id,
         o.business_legal_name,
@@ -583,17 +566,17 @@ select set_eq(
         rp.swrs_report_id,
         o.swrs_organisation_id,
         fc.swrs_facility_id
-      from ggircs.emission as e
-        join ggircs.fuel as f on e.fuel_id = f.id
-        join ggircs.naics as n on e.naics_id = n.id
-        join ggircs.facility as fc on e.facility_id = fc.id
-        join ggircs.report as rp on e.report_id = rp.id
-        join ggircs.activity as ac on e.activity_id = ac.id
-        join ggircs.organisation as o on e.organisation_id = o.id
-        join ggircs.unit as u on e.unit_id = u.id
+      from swrs.emission as e
+        join swrs.fuel as f on e.fuel_id = f.id
+        join swrs.naics as n on e.naics_id = n.id
+        join swrs.facility as fc on e.facility_id = fc.id
+        join swrs.report as rp on e.report_id = rp.id
+        join swrs.activity as ac on e.activity_id = ac.id
+        join swrs.organisation as o on e.organisation_id = o.id
+        join swrs.unit as u on e.unit_id = u.id
 
         $$,
-    'ggircs.attributable_emissions_with_details has correct information'
+    'swrs.attributable_emissions_with_details has correct information'
 
 );
 

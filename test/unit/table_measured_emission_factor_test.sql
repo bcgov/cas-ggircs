@@ -6,7 +6,7 @@ reset client_min_messages;
 begin;
 select * from no_plan();
 
-insert into ggircs_swrs.ghgr_import (xml_file) values ($$
+insert into swrs_extract.ghgr_import (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <RegistrationData>
     <Organisation>
@@ -233,54 +233,37 @@ $$), ($$
 </ReportData>
 $$);
 
-refresh materialized view ggircs_swrs.report with data;
-refresh materialized view ggircs_swrs.organisation with data;
-refresh materialized view ggircs_swrs.facility with data;
-refresh materialized view ggircs_swrs.activity with data;
-refresh materialized view ggircs_swrs.identifier with data;
-refresh materialized view ggircs_swrs.naics with data;
-refresh materialized view ggircs_swrs.unit with data;
-refresh materialized view ggircs_swrs.fuel with data;
-refresh materialized view ggircs_swrs.measured_emission_factor with data;
-refresh materialized view ggircs_swrs.final_report with data;
+-- Run table export function without clearing the materialized views (for data equality tests below)
+SET client_min_messages TO WARNING; -- load is a bit verbose
+select swrs_transform.load(true, false);
 
-select ggircs_swrs.export_report_to_ggircs();
-select ggircs_swrs.export_organisation_to_ggircs();
-select ggircs_swrs.export_facility_to_ggircs();
-select ggircs_swrs.export_activity_to_ggircs();
-select ggircs_swrs.export_identifier_to_ggircs();
-select ggircs_swrs.export_naics_to_ggircs();
-select ggircs_swrs.export_unit_to_ggircs();
-select ggircs_swrs.export_fuel_to_ggircs();
-select ggircs_swrs.export_measured_emission_factor_to_ggircs();
-
--- Table ggircs.measured_emission_factor exists
-select has_table('ggircs'::name, 'measured_emission_factor'::name);
+-- Table swrs.measured_emission_factor exists
+select has_table('swrs'::name, 'measured_emission_factor'::name);
 
 -- Measured Emission Factor has pk
-select has_pk('ggircs', 'measured_emission_factor', 'ggircs_measured_emission_factor has primary key');
+select has_pk('swrs', 'measured_emission_factor', 'ggircs_measured_emission_factor has primary key');
 
 -- Measured Emission Factor has fk
-select has_fk('ggircs', 'measured_emission_factor', 'ggircs_measured_emission_factor has foreign key constraint(s)');
+select has_fk('swrs', 'measured_emission_factor', 'ggircs_measured_emission_factor has foreign key constraint(s)');
 
 -- Measured Emission Factor has data
-select isnt_empty('select * from ggircs.measured_emission_factor', 'there is data in ggircs.measured_emission_factor');
+select isnt_empty('select * from swrs.measured_emission_factor', 'there is data in swrs.measured_emission_factor');
 
 -- FKey tests
 -- Measured Emission Factor -> Fuel
 select set_eq(
     $$
-    select distinct(fuel.ghgr_import_id) from ggircs.measured_emission_factor
-    join ggircs.fuel
+    select distinct(fuel.ghgr_import_id) from swrs.measured_emission_factor
+    join swrs.fuel
     on measured_emission_factor.fuel_id = fuel.id
     $$,
 
-    'select distinct(ghgr_import_id) from ggircs.fuel',
+    'select distinct(ghgr_import_id) from swrs.fuel',
 
-    'Foreign key fuel_id in ggircs.measured_emission_factor references ggircs.fuel.id'
+    'Foreign key fuel_id in swrs.measured_emission_factor references swrs.fuel.id'
 );
 
--- Data in ggircs_swrs.measured_emission_factor === data in ggircs.measured_emission_factor
+-- Data in swrs_transform.measured_emission_factor === data in swrs.measured_emission_factor
 select set_eq(
               $$
               select
@@ -292,7 +275,7 @@ select set_eq(
                 measured_emission_factor_amount,
                 measured_emission_factor_gas,
                 measured_emission_factor_unit_type
-              from ggircs_swrs.measured_emission_factor
+              from swrs_transform.measured_emission_factor
               order by
                 ghgr_import_id
               $$,
@@ -307,13 +290,13 @@ select set_eq(
                   measured_emission_factor_amount,
                   measured_emission_factor_gas,
                   measured_emission_factor_unit_type
-                from ggircs.measured_emission_factor
+                from swrs.measured_emission_factor
                 order by
                     ghgr_import_id
                  asc
               $$,
 
-              'data in ggircs_swrs.measured_emission_factor === ggircs.measured_emission_factor');
+              'data in swrs_transform.measured_emission_factor === swrs.measured_emission_factor');
 
 
 
