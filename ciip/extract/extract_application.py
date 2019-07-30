@@ -16,7 +16,7 @@ def extract(ciip_book, cursor, book_path):
         raise "could not find certyfing official header"
 
     signature_date = get_sheet_value(cert_sheet, co_header_idx + 7, 6)
-    signature_date = dateutil.parser.parse(signature_date) if signature_date is not None else None
+    signature_date = dateutil.parser.parse(signature_date) if isinstance(signature_date, str) else None
     application_type = 'SFO' if 'Production' in ciip_book.sheet_names() else 'LFO'
     cursor.execute(
         ('insert into ciip_2018.application '
