@@ -27,8 +27,8 @@ def extract(ciip_book, cursor, application_id, operator_id, facility_id):
                     operator_id,
                     facility_id,
                     product,
-                    get_sheet_value(production_sheet, row, 6),
-                    get_sheet_value(production_sheet, row, 8),
+                    none_if_not_number(get_sheet_value(production_sheet, row, 6)),
+                    none_if_not_number(get_sheet_value(production_sheet, row, 8)),
                     emission
                 ))
     else:
