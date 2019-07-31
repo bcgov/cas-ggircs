@@ -43,8 +43,7 @@ DECLARE
   sq_cache_value   bigint;
   sq_log_cnt       bigint;
   sq_is_called     boolean;
-  sq_is_cycled     boolean;
-  sq_cycled        char(10);
+  sq_cycle_option  char(10);
   rec              record;
   source_schema_dot text = source_schema || '.';
   dest_schema_dot text = dest_schema || '.';
@@ -75,44 +74,38 @@ BEGIN
 
   -- Create sequences
   -- TODO: Find a way to make this sequence's owner is the correct table.
-  -- TODO: sequence cloning is broken, fix this.
-  -- FOR object IN
-  -- SELECT sequence_name::text
-  -- FROM information_schema.sequences
-  -- WHERE sequence_schema = quote_ident(source_schema)
-  -- LOOP
-  --   EXECUTE 'CREATE SEQUENCE ' || quote_ident(dest_schema) || '.' || quote_ident(object);
-  --   srctbl := quote_ident(source_schema) || '.' || quote_ident(object);
+  FOR object IN
+  SELECT sequence_name::text
+  FROM information_schema.sequences
+  WHERE sequence_schema = quote_ident(source_schema)
+  LOOP
+    EXECUTE 'CREATE SEQUENCE ' || quote_ident(dest_schema) || '.' || quote_ident(object);
+    srctbl := quote_ident(source_schema) || '.' || quote_ident(object);
 
-  --   EXECUTE 'SELECT last_value, max_value, start_value, increment_by, min_value, cache_value, log_cnt, is_cycled, is_called
-  --             FROM ' || quote_ident(source_schema) || '.' || quote_ident(object) || ';'
-  --   INTO sq_last_value, sq_max_value, sq_start_value, sq_increment_by, sq_min_value, sq_cache_value, sq_log_cnt, sq_is_cycled, sq_is_called ;
+    EXECUTE 'SELECT maximum_value, start_value, increment, minimum_value, cycle_option
+              FROM information_schema.sequences where sequence_schema=''' || quote_ident(source_schema) || ''' and sequence_name=''' || quote_ident(object) || ''';'
+    INTO sq_max_value, sq_start_value, sq_increment_by, sq_min_value, sq_cycle_option ;
 
-  --   IF sq_is_cycled
-  --   THEN
-  --     sq_cycled := 'CYCLE';
-  --   ELSE
-  --     sq_cycled := 'NO CYCLE';
-  --   END IF;
+    EXECUTE 'select last_value, log_cnt, is_called from ' || srctbl || ';'
+    INTO sq_last_value, sq_log_cnt, sq_is_called;
 
-  --   EXECUTE 'ALTER SEQUENCE '   || quote_ident(dest_schema) || '.' || quote_ident(object)
-  --           || ' INCREMENT BY ' || sq_increment_by
-  --           || ' MINVALUE '     || sq_min_value
-  --           || ' MAXVALUE '     || sq_max_value
-  --           || ' START WITH '   || sq_start_value
-  --           || ' RESTART '      || sq_min_value
-  --           || ' CACHE '        || sq_cache_value
-  --           || sq_cycled || ' ;' ;
+    EXECUTE 'ALTER SEQUENCE '   || quote_ident(dest_schema) || '.' || quote_ident(object)
+            || ' INCREMENT BY ' || sq_increment_by
+            || ' MINVALUE '     || sq_min_value
+            || ' MAXVALUE '     || sq_max_value
+            || ' START WITH '   || sq_start_value
+            || ' RESTART '      || sq_min_value
+            || sq_cycle_option || ' CYCLE ;' ;
 
-  --   buffer := quote_ident(dest_schema) || '.' || quote_ident(object);
-  --   IF include_recs
-  --   THEN
-  --     EXECUTE 'SELECT setval( ''' || buffer || ''', ' || sq_last_value || ', ' || sq_is_called || ');' ;
-  --   ELSE
-  --     EXECUTE 'SELECT setval( ''' || buffer || ''', ' || sq_start_value || ', ' || sq_is_called || ');' ;
-  --   END IF;
-  --   IF show_details THEN RAISE NOTICE 'Sequence created: %', object; END IF;
-  -- END LOOP;
+    buffer := quote_ident(dest_schema) || '.' || quote_ident(object);
+    IF include_recs
+    THEN
+      EXECUTE 'SELECT setval( ''' || buffer || ''', ' || sq_last_value || ', ' || sq_is_called || ');' ;
+    ELSE
+      EXECUTE 'SELECT setval( ''' || buffer || ''', ' || sq_start_value || ', ' || sq_is_called || ');' ;
+    END IF;
+    IF show_details THEN RAISE NOTICE 'Sequence created: %', object; END IF;
+  END LOOP;
 
   -- Create tables
   FOR object IN
