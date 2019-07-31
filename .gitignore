@@ -3,3 +3,5 @@ pgtap
 .vscode
 data/*
 __pycache__
+.gradle/
+build/

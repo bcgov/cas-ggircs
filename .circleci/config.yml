@@ -20,11 +20,43 @@ jobs:
       - run:
           name: Test database using Make
           command: make test PSQL="psql -h localhost"
+  scan:
+    environment:
+      # Configure the JVM and Gradle to avoid OOM errors
+      _JAVA_OPTIONS: "-Xmx3g"
+      GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
+    docker:
+      - image: circleci/openjdk:11.0.3-jdk-stretch
+    steps:
+      - checkout
+      - restore_cache:
+          key: v1-gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
+      - restore_cache:
+          key: v1-gradle-cache-{{ checksum "build.gradle" }}
+      - run:
+          name: Scan with SonarQube
+          command: |
+            ./gradlew sonarqube \
+              -Dsonar.projectKey="$SONAR_PROJECT_KEY" \
+              -Dsonar.organization="$SONAR_ORGANIZATION" \
+              -Dsonar.host.url="$SONAR_HOST_URL" \
+              -Dsonar.login="$SONAR_LOGIN" \
+              -Dsonar.pullrequest.key="$CIRCLE_PR_NUMBER" \
+              -Dsonar.pullrequest.branch="$CIRCLE_BRANCH"
+      - save_cache:
+          paths:
+            - ~/.gradle/wrapper
+          key: v1-gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
+      - save_cache:
+          paths:
+            - ~/.gradle/caches
+          key: v1-gradle-cache-{{ checksum "build.gradle" }}
 workflows:
   version: 2
   test:
     jobs:
        - test
+       - scan
 notify:
   webhooks:
     - url: https://outlook.office.com/webhook/a00d3135-7e96-47a0-817e-0086ec993205@55bc71c2-5150-4ff8-bbcd-d94bc32bf20c/CircleCI/4dd288af085245bf96cc07dce642e3ed/c436c63a-5475-4837-ae24-c21c300bd4e1
