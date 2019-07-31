@@ -40,9 +40,7 @@ jobs:
               -Dsonar.projectKey="$SONAR_PROJECT_KEY" \
               -Dsonar.organization="$SONAR_ORGANIZATION" \
               -Dsonar.host.url="$SONAR_HOST_URL" \
-              -Dsonar.login="$SONAR_LOGIN" \
-              -Dsonar.pullrequest.key="$CIRCLE_PR_NUMBER" \
-              -Dsonar.pullrequest.branch="$CIRCLE_BRANCH"
+              -Dsonar.login="$SONAR_LOGIN"
       - save_cache:
           paths:
             - ~/.gradle/wrapper
