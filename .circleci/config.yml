@@ -37,6 +37,7 @@ jobs:
           name: Scan with SonarQube
           command: |
             ./gradlew sonarqube \
+              -Dsonar.projectName=cas-ggircs \
               -Dsonar.projectKey="$SONAR_PROJECT_KEY" \
               -Dsonar.organization="$SONAR_ORGANIZATION" \
               -Dsonar.host.url="$SONAR_HOST_URL" \
