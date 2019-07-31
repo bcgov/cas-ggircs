@@ -203,7 +203,6 @@ endef
 define build
 	@@echo Add all image streams and build in the tools project...
 	$(call oc_process,imagestream/cas-ggircs-perl,)
-	$(call oc_process,imagestream/cas-ggircs-python,)
 	$(call oc_process,imagestream/cas-ggircs-postgres,)
 	$(call oc_process,imagestream/cas-ggircs,)
 	$(call oc_process,buildconfig/cas-ggircs,GIT_BRANCH=${GIT_BRANCH} GIT_BRANCH_NORM=${GIT_BRANCH_NORM})
