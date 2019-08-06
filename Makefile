@@ -175,7 +175,7 @@ endif
 .PHONY: install_cpandeps
 install_cpandeps:
 	# install sqitch
-	${CPANM} -n https://github.com/matthieu-foucault/sqitch/releases/download/v1.0.1.TRIAL/App-Sqitch-v1.0.1-TRIAL.tar.gz
+	${CPANM} -n https://github.com/bc-gov/cas-sqitch/releases/download/v1.0.1.TRIAL/App-Sqitch-v1.0.1-TRIAL.tar.gz
 	# install Perl dependencies from cpanfile
 	${CPANM} --installdeps .
 
