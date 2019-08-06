@@ -219,12 +219,28 @@ BEGIN
 
   END LOOP;
 
-  -- Create views
+  -- Create views on order of dependency
   FOR object IN
-  SELECT table_name::text,
-    view_definition
-  FROM information_schema.views
-  WHERE table_schema = quote_ident(source_schema)
+    with deps as (
+        select dependent_view.relname as dep_view_name, source_table.relname as src_view_name
+        from pg_depend
+        join pg_rewrite on pg_depend.objid = pg_rewrite.oid
+        join pg_class as dependent_view on pg_rewrite.ev_class = dependent_view.oid
+        join pg_class as source_table on pg_depend.refobjid = source_table.oid
+        join pg_attribute on pg_depend.refobjid = pg_attribute.attrelid
+        and pg_depend.refobjsubid = pg_attribute.attnum
+        join pg_namespace dependent_ns on dependent_ns.oid = dependent_view.relnamespace
+        join pg_namespace source_ns on source_ns.oid = source_table.relnamespace
+        join information_schema.views source_views on source_views.table_name = source_table.relname
+        and source_views.table_schema = quote_ident(source_schema)
+        where source_ns.nspname = quote_ident(source_schema)
+        and dependent_ns.nspname = quote_ident(source_schema)
+        group by dependent_view.relname, source_table.relname)
+select views.table_name::text, views.view_definition
+    from information_schema.views
+    left join deps on views.table_name = deps.dep_view_name
+    where views.table_schema = quote_ident(source_schema)
+    order by greatest(views.table_name, deps.src_view_name)
 
   LOOP
     buffer := dest_schema || '.' || quote_ident(object);
