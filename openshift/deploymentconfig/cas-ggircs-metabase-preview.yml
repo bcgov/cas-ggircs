@@ -9,17 +9,17 @@ objects:
   metadata:
     annotations:
       template.alpha.openshift.io/wait-for-ready: "true"
-    name: cas-ggircs-metabase
+    name: cas-ggircs-metabase-preview
   spec:
     replicas: 2
     selector:
-      name: cas-ggircs-metabase
+      name: cas-ggircs-metabase-preview
     strategy:
       type: Rolling
     template:
       metadata:
         labels:
-          name: cas-ggircs-metabase
+          name: cas-ggircs-metabase-preview
       spec:
         containers:
         - capabilities: {}
@@ -47,7 +47,7 @@ objects:
             value: cas-ggircs-metabase-postgres
           - name: JAVA_TIMEZONE
             value: US/Pacific
-          image: cas-ggircs-metabase-mirror:${GIT_BRANCH_NORM}
+          image: cas-ggircs-metabase-mirror:${METABASE_VERSION}
           imagePullPolicy: IfNotPresent
           name: cas-ggircs-metabase
           ports:
@@ -82,14 +82,14 @@ objects:
         - cas-ggircs-metabase
         from:
           kind: ImageStreamTag
-          name: cas-ggircs-metabase-mirror:${GIT_BRANCH_NORM}
+          name: cas-ggircs-metabase-mirror:${METABASE_VERSION}
         lastTriggeredImage: ""
       type: ImageChange
     - type: ConfigChange
   status: {}
 
 parameters:
-- description: Git source code branch currently deployed, where slashes are replaced by dashes, to be able to use it in image tags.
-  displayName: Git branch (normalized)
-  name: GIT_BRANCH_NORM
+- description: Git tag of the metabase version
+  displayName: Metabase version
+  name: METABASE_VERSION
   required: true

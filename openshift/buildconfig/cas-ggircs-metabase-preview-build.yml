@@ -42,4 +42,3 @@ parameters:
   displayName: Metabase version
   name: METABASE_VERSION
   required: true
-  value: v0.33.0-RC1

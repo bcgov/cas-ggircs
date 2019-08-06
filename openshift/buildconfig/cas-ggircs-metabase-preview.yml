@@ -41,8 +41,11 @@ objects:
           name: cas-ggircs-metabase-build:${METABASE_VERSION}
 
 parameters:
+- description: Git source code branch currently deployed, where slashes are replaced by dashes, to be able to use it in image tags.
+  displayName: Git branch (normalized)
+  name: GIT_BRANCH
+  required: true
 - description: Git tag of the metabase version
   displayName: Metabase version
   name: METABASE_VERSION
   required: true
-  value: v0.33.0-RC1

@@ -1,0 +1,35 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+labels:
+  template: deploy-template
+objects:
+
+- apiVersion: route.openshift.io/v1
+  kind: Route
+  metadata:
+    name: cas-ggircs-metabase-preview
+  spec:
+    host: metabase-preview-${OC_PROJECT}.pathfinder.gov.bc.ca
+    port:
+      targetPort: cas-ggircs-metabase-preview
+    tls:
+      termination: edge
+    to:
+      kind: Service
+      name: cas-ggircs-metabase-preview
+      weight: 100
+    wildcardPolicy: None
+  status:
+    ingress:
+    - conditions:
+      - type: Admitted
+      host: metabase-preview-${OC_PROJECT}.pathfinder.gov.bc.ca
+      routerName: router
+      wildcardPolicy: None
+
+parameters:
+- description: Version of PostgreSQL image to be used (10 for now).
+  displayName: Version of PostgreSQL Image
+  name: OC_PROJECT
+  required: true
+
