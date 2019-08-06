@@ -84,18 +84,3 @@ swrs/transform/function/load_naics_category [swrs/transform/schema swrs/public/t
 swrs/transform/function/load_naics_mapping [swrs/transform/schema swrs/public/table/naics_mapping] 2019-07-24T21:32:11Z Matthieu Foucault <matthieu@button.is> # Add a function to load the naics_mapping data
 swrs/transform/function/load_naics_naics_category [swrs/transform/schema swrs/public/table/naics_naics_category] 2019-07-24T21:33:07Z Matthieu Foucault <matthieu@button.is> # Add a function to load the naics_naics_category data
 swrs/transform/function/load [swrs/transform/function/clone_schema swrs/extract/table/ghgr_import swrs/transform/materialized_view/report swrs/transform/view/final_report swrs/transform/materialized_view/facility swrs/transform/materialized_view/organisation swrs/transform/materialized_view/address swrs/transform/materialized_view/contact swrs/transform/materialized_view/naics swrs/transform/materialized_view/identifier swrs/transform/materialized_view/permit swrs/transform/materialized_view/parent_organisation swrs/transform/materialized_view/activity swrs/transform/materialized_view/unit swrs/transform/materialized_view/fuel swrs/transform/materialized_view/emission swrs/transform/materialized_view/additional_data] 2019-05-13T20:26:20Z Hamza Javed <hamza@button.is> # Add a function that exports all materialized views to tables
-ciip/schema 2019-06-24T22:54:49Z Matthieu Foucault <matthieu@button.is> # Add a schema for ciip
-ciip/table/application [ciip/schema] 2019-06-25T00:00:28Z Matthieu Foucault <matthieu@button.is> # Add a table for ciip applications
-ciip/table/operator [ciip/table/application] 2019-06-25T17:34:46Z Matthieu Foucault <matthieu@button.is> # Add an operator table in ciip schema
-ciip/table/facility [ciip/table/application ciip/table/operator] 2019-06-25T17:36:52Z Matthieu Foucault <matthieu@button.is> # Add a facility table in ciip schema
-ciip/table/address [ciip/table/application ciip/table/facility ciip/table/operator] 2019-06-25T17:39:10Z Matthieu Foucault <matthieu@button.is> # Add an address table in ciip schema
-ciip/table/contact [ciip/table/application ciip/table/address] 2019-06-25T17:37:54Z Matthieu Foucault <matthieu@button.is> # Add a contact table in ciip schema
-ciip/table/fuel [ciip/table/application] 2019-07-03T17:28:15Z Matthieu Foucault <matthieu@button.is> # Add a fuel table in ciip schema
-ciip/table/production [ciip/table/application] 2019-07-04T20:52:24Z Matthieu Foucault <matthieu@button.is> # Add a production table in ciip schema
-ciip/table/energy [ciip/table/application] 2019-07-04T21:51:10Z Matthieu Foucault <matthieu@button.is> # Add an energy table in ciip schema
-ciip/table/equipment [ciip/table/application] 2019-07-05T16:46:28Z Matthieu Foucault <matthieu@button.is> # Add an equipment table in ciip schema
-ciip/table/equipment_consumption [ciip/table/application] 2019-07-05T20:18:28Z Matthieu Foucault <matthieu@button.is> # Add an equipment consumption table in ciip schema
-ciip/table/equipment_emission [ciip/table/application] 2019-07-05T20:21:07Z Matthieu Foucault <matthieu@button.is> # Add an equipment emission table in ciip schema
-ciip/table/emission [ciip/table/application] 2019-07-05T20:21:18Z Matthieu Foucault <matthieu@button.is> # Add an emission table in ciip schema
-ciip/table/equipment_output_stream [ciip/table/application] 2019-07-05T20:42:00Z Matthieu Foucault <matthieu@button.is> # Add an equipment output stream table in ciip schema
-ciip/view/compare_ciip_swrs_emission [ciip/table/emission swrs/public/table/emission] 2019-07-16T20:51:40Z Matthieu Foucault <matthieu@button.is> # Add a view to compare emissions between CIIP and SWRS data
