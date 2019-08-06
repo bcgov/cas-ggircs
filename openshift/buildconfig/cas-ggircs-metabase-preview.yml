@@ -1,0 +1,48 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+objects:
+
+- apiVersion: build.openshift.io/v1
+  kind: BuildConfig
+  metadata:
+    name: cas-ggircs-metabase-preview
+  spec:
+    output:
+      to:
+        kind: ImageStreamTag
+        name: cas-ggircs-metabase:${METABASE_VERSION}
+    resources:
+      limits:
+        cpu: "4"
+        memory: 8Gi
+      requests:
+        cpu: 100m
+        memory: 256Mi
+    source:
+      git:
+        ref: ${GIT_BRANCH}
+        uri: https://github.com/bcgov/cas-ggircs.git
+      contextDir: docker/metabase
+      images:
+      - from:
+          kind: ImageStreamTag
+          name: cas-ggircs-metabase-build:${METABASE_VERSION}
+        paths:
+        - destinationDir: docker/metabase
+          sourcePath: /opt/app-root/src/src/target/uberjar/metabase.jar
+    strategy:
+      type: Docker
+    triggers:
+    - type: ConfigChange
+    - type: ImageChange
+      imageChange:
+        from:
+          kind: ImageStreamTag
+          name: cas-ggircs-metabase-build:${METABASE_VERSION}
+
+parameters:
+- description: Git tag of the metabase version
+  displayName: Metabase version
+  name: METABASE_VERSION
+  required: true
+  value: v0.33.0-RC1
