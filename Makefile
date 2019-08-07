@@ -7,6 +7,7 @@ CPANM=cpanm
 SQITCH=sqitch
 SQITCH_VERSION=${word 3,${shell ${SQITCH} --version}}
 SQITCH_MIN_VERSION=0.97
+METABASE_PREVIEW_VERSION=v0.33.0-RC1
 GREP=grep
 GIT=git
 GIT_BRANCH=${shell ${GIT} rev-parse --abbrev-ref HEAD}
@@ -210,8 +211,10 @@ define build
 	$(call oc_process,buildconfig/cas-ggircs-metabase-builder,GIT_BRANCH=${GIT_BRANCH} GIT_BRANCH_NORM=${GIT_BRANCH_NORM})
 	$(call oc_process,imagestream/cas-ggircs-metabase-build,)
 	$(call oc_process,buildconfig/cas-ggircs-metabase-build,GIT_BRANCH_NORM=${GIT_BRANCH_NORM})
+	$(call oc_process,buildconfig/cas-ggircs-metabase-preview-build,GIT_BRANCH_NORM=${GIT_BRANCH_NORM} METABASE_VERSION=${METABASE_PREVIEW_VERSION})
 	$(call oc_process,imagestream/cas-ggircs-metabase,)
 	$(call oc_process,buildconfig/cas-ggircs-metabase,GIT_BRANCH=${GIT_BRANCH} GIT_BRANCH_NORM=${GIT_BRANCH_NORM})
+	$(call oc_process,buildconfig/cas-ggircs-metabase-preview,GIT_BRANCH=${GIT_BRANCH} METABASE_VERSION=${METABASE_PREVIEW_VERSION})
 endef
 
 define deploy
@@ -240,11 +243,15 @@ define deploy
 	$(call oc_process,service/cas-ggircs-postgres,)
 	$(call oc_process,imagestream/cas-ggircs-metabase-mirror,)
 	$(call oc_promote,cas-ggircs-metabase,${GIT_BRANCH_NORM})
+	$(call oc_promote,cas-ggircs-metabase,${METABASE_PREVIEW_VERSION})
 	$(call oc_process,deploymentconfig/cas-ggircs-metabase-postgres)
 	$(call oc_process,deploymentconfig/cas-ggircs-metabase,GIT_BRANCH_NORM=${GIT_BRANCH_NORM})
+	$(call oc_process,deploymentconfig/cas-ggircs-metabase-preview,METABASE_VERSION=${METABASE_PREVIEW_VERSION})
 	$(call oc_process,service/cas-ggircs-metabase-postgres,)
 	$(call oc_process,service/cas-ggircs-metabase,)
+	$(call oc_process,service/cas-ggircs-metabase-preview,)
 	$(call oc_process,route/cas-ggircs-metabase,OC_PROJECT=${OC_PROJECT})
+	$(call oc_process,route/cas-ggircs-metabase-preview,OC_PROJECT=${OC_PROJECT})
 endef
 
 .PHONY: deploy_tools

@@ -1,0 +1,22 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+objects:
+
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: cas-ggircs-metabase-preview
+  spec:
+    ports:
+    - name: cas-ggircs-metabase-preview
+      nodePort: 0
+      port: 3000
+      protocol: TCP
+      targetPort: 3000
+    selector:
+      name: cas-ggircs-metabase-preview
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+
