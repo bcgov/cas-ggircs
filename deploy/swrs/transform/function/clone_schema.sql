@@ -240,7 +240,7 @@ select views.table_name::text, views.view_definition
     from information_schema.views
     left join deps on views.table_name = deps.dep_view_name
     where views.table_schema = quote_ident(source_schema)
-    order by greatest(views.table_name, deps.src_view_name)
+    order by deps.src_view_name nulls first
 
   LOOP
     buffer := dest_schema || '.' || quote_ident(object);
