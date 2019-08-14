@@ -1,11 +1,17 @@
 apiVersion: template.openshift.io/v1
 kind: Template
-objects:
 
+parameters:
+- description: Prefix to prepend to object name.
+  displayName: Prefix
+  name: PREFIX
+  required: true
+
+objects:
 - apiVersion: v1
   kind: PersistentVolumeClaim
   metadata:
-    name: cas-ggircs-data
+    name: ${PREFIX}data
   spec:
     storageClassName: gluster-file
     accessModes:

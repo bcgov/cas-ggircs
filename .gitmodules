@@ -1,0 +1,6 @@
+[submodule ".pipeline"]
+	path = .pipeline
+	url = https://github.com/bcgov/cas-pipeline.git
+[submodule "common"]
+	path = common
+	url = https://github.com/sclorg/container-common-scripts.git

@@ -3,6 +3,22 @@ kind: Template
 labels:
   template: deploy-template
 
+parameters:
+- description: Prefix to prepend to object name.
+  displayName: Prefix
+  name: PREFIX
+  required: true
+- description: Version of PostgreSQL image to be used (10 for now).
+  displayName: Version of PostgreSQL Image
+  name: POSTGRES_VERSION
+  required: true
+  value: "latest"
+- description: SHA1 of git revision to be deployed.
+  displayName: Git SHA1
+  name: GIT_SHA1
+  required: true
+
+
 envDefaults: &envDefaults
   env:
     - name: SQITCH_TARGET
@@ -11,21 +27,21 @@ envDefaults: &envDefaults
       valueFrom:
         secretKeyRef:
           key: database-user
-          name: cas-ggircs-postgres
+          name: ${PREFIX}postgres
     - name: PGPASSWORD
       valueFrom:
         secretKeyRef:
           key: database-password
-          name: cas-ggircs-postgres
+          name: ${PREFIX}postgres
     - name: PGDATABASE
       valueFrom:
         secretKeyRef:
           key: database-name
-          name: cas-ggircs-postgres
+          name: ${PREFIX}postgres
     - name: PGPORT
       value: "5432"
     - name: PGHOST
-      value: cas-ggircs-postgres
+      value: ${PREFIX}postgres
     - name: SQITCH_FULLNAME
       value: OpenShift Deployer
     - name: SQITCH_EMAIL
@@ -38,11 +54,11 @@ objects:
   metadata:
     annotations:
       template.alpha.openshift.io/wait-for-ready: "true"
-    name: cas-ggircs
+    name: ${PREFIX}elt
   spec:
     replicas: 1
     selector:
-      name: cas-ggircs
+      name: ${PREFIX}etl
     strategy:
       type: Recreate
       recreateParams:
@@ -50,7 +66,7 @@ objects:
           failurePolicy: Retry
           execNewPod:
             <<: *envDefaults
-            containerName: cas-ggircs
+            containerName: ${PREFIX}etl
             command:
               - /usr/bin/env
               - bash
@@ -61,7 +77,7 @@ objects:
           failurePolicy: Retry
           execNewPod:
             <<: *envDefaults
-            containerName: cas-ggircs
+            containerName: ${PREFIX}etl
             command:
               - /usr/bin/env
               - bash
@@ -74,14 +90,13 @@ objects:
     template:
       metadata:
         labels:
-          name: cas-ggircs
+          name: ${PREFIX}etl
       spec:
         containers:
-        - capabilities: {}
-          <<: *envDefaults
-          image: cas-ggircs-mirror:${GIT_BRANCH_NORM}
+        - <<: *envDefaults
+          image: ${PREFIX}etl:${GIT_SHA1}
           imagePullPolicy: IfNotPresent
-          name: cas-ggircs
+          name: ${PREFIX}etl
           resources:
             limits:
               cpu: 1000m
@@ -95,33 +110,11 @@ objects:
           terminationMessagePath: /dev/termination-log
           volumeMounts:
           - mountPath: /opt/app-root/src/data
-            name: cas-ggircs-data
+            name: ${PREFIX}data
         dnsPolicy: ClusterFirst
         restartPolicy: Always
         volumes:
-        - name: cas-ggircs-data
+        - name: ${PREFIX}data
           persistentVolumeClaim:
-            claimName: cas-ggircs-data
-    triggers:
-    - imageChangeParams:
-        automatic: true
-        containerNames:
-        - cas-ggircs
-        from:
-          kind: ImageStreamTag
-          name: cas-ggircs-mirror:${GIT_BRANCH_NORM}
-        lastTriggeredImage: ""
-      type: ImageChange
-    - type: ConfigChange
-  status: {}
-
-parameters:
-- description: Version of PostgreSQL image to be used (10 for now).
-  displayName: Version of PostgreSQL Image
-  name: POSTGRES_VERSION
-  required: true
-  value: "latest"
-- description: Git source code branch currently deployed, where slashes are replaced by dashes, to be able to use it in image tags.
-  displayName: Git branch (normalized)
-  name: GIT_BRANCH_NORM
-  required: true
+            claimName: ${PREFIX}data
+    triggers: []
