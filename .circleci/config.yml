@@ -120,10 +120,10 @@ workflows:
           context: cas-pipeline
           requires:
             - lint
-      - test-local-cluster:
-          context: cas-pipeline
-          requires:
-            - lint
+      # - test-local-cluster:
+      #     context: cas-pipeline
+      #     requires:
+      #       - lint
 
 notify:
   webhooks:

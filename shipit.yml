@@ -1,3 +1,3 @@
 deploy:
   override:
-    - make deploy
+    - make install
