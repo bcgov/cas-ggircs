@@ -212,3 +212,4 @@ build: whoami
 .PHONY: install
 install: whoami
 	$(call oc_promote,$(PROJECT_PREFIX)etl)
+	$(call oc_deploy)
