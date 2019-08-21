@@ -1,9 +1,9 @@
 SHELL := /usr/bin/env bash
+include .pipeline/oc.mk
 PATHFINDER_PREFIX := wksv3k
 PROJECT_PREFIX := cas-ggircs-
 
 THIS_FILE := $(lastword $(MAKEFILE_LIST))
-include .pipeline/*.mk
 
 PERL=perl
 RSYNC=rsync
