@@ -1,13 +1,3 @@
-SHELL := /usr/bin/env bash
-THIS_FILE := $(lastword $(MAKEFILE_LIST))
-THIS_FOLDER := $(abspath $(realpath $(lastword $(MAKEFILE_LIST)))/../)
-ifndef CI_NO_PIPELINE
-include $(THIS_FOLDER)/.pipeline/oc.mk
-endif
-
-PATHFINDER_PREFIX := wksv3k
-PROJECT_PREFIX := cas-ggircs-
-
 ifndef CI_NO_POSTGRES
 PERL=perl
 RSYNC=rsync
@@ -29,7 +19,6 @@ TEST_DB=ggircs_test
 PG_PROVE=pg_prove -h localhost
 PG_SHAREDIR=$(shell pg_config --sharedir)
 PG_ROLE=$(shell whoami)
-endif
 
 .PHONY: test
 test:
@@ -178,7 +167,16 @@ postinstall_check:
 
 .PHONY: dev_install
 dev_install: install_cpanm install_cpandeps postinstall_check install_pgtap
+endif
 
+ifndef CI_NO_PIPELINE
+SHELL := /usr/bin/env bash
+THIS_FILE := $(lastword $(MAKEFILE_LIST))
+THIS_FOLDER := $(abspath $(realpath $(lastword $(MAKEFILE_LIST)))/../)
+include $(THIS_FOLDER)/.pipeline/oc.mk
+
+PATHFINDER_PREFIX := wksv3k
+PROJECT_PREFIX := cas-ggircs-
 
 
 .PHONY: help
@@ -226,3 +224,4 @@ install: whoami
 .PHONY: install_test
 install_test: OC_PROJECT=$(OC_TEST_PROJECT)
 install_test: install
+endif
