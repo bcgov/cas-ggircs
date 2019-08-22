@@ -1,10 +1,14 @@
 SHELL := /usr/bin/env bash
 THIS_FILE := $(lastword $(MAKEFILE_LIST))
 THIS_FOLDER := $(abspath $(realpath $(lastword $(MAKEFILE_LIST)))/../)
+ifndef CI_NO_PIPELINE
 include $(THIS_FOLDER)/.pipeline/oc.mk
+endif
 
 PATHFINDER_PREFIX := wksv3k
 PROJECT_PREFIX := cas-ggircs-
+
+ifndef CI_NO_POSTGRES
 PERL=perl
 RSYNC=rsync
 PERL_VERSION=$(shell $(PERL) -e 'print substr($$^V, 1)')
@@ -25,6 +29,7 @@ TEST_DB=ggircs_test
 PG_PROVE=pg_prove -h localhost
 PG_SHAREDIR=$(shell pg_config --sharedir)
 PG_ROLE=$(shell whoami)
+endif
 
 .PHONY: test
 test:

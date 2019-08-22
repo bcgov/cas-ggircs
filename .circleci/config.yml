@@ -28,7 +28,7 @@ jobs:
             createdb -O sqitch ggircs_test -U postgres -h localhost
       - run:
           name: Test database using Make
-          command: make test PSQL="psql -h localhost"
+          command: make test PSQL="psql -h localhost" CI_NO_PIPELINE=true
 
   test-local-cluster:
     executor: redhat-openshift/machine-for-local-cluster
@@ -84,7 +84,7 @@ jobs:
           server-address: $OC_SERVER_ADDRESS
           token: $OC_TOKEN
       - run:
-          command: make lint
+          command: make lint CI_NO_POSTGRES=true
           name: Lint the openshift yaml
 
   build:
@@ -102,10 +102,10 @@ jobs:
           server-address: $OC_SERVER_ADDRESS
           token: $OC_TOKEN
       - run:
-          command: make configure
+          command: make configure CI_NO_POSTGRES=true
           name: Configure imagestream to point at the current SHA1
       - run:
-          command: make build
+          command: make build CI_NO_POSTGRES=true
           name: Build image on the remote cluster
 
 
