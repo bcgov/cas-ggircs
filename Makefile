@@ -213,3 +213,9 @@ build: whoami
 install: whoami
 	$(call oc_promote,$(PROJECT_PREFIX)etl)
 	$(call oc_deploy)
+	$(call oc_run_job,$(PROJECT_PREFIX)etl-revert)
+	$(call oc_run_job,$(PROJECT_PREFIX)etl)
+
+.PHONY: install_test
+install_test: OC_PROJECT=$(OC_TEST_PROJECT)
+install_test: install

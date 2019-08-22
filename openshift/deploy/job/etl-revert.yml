@@ -17,6 +17,15 @@ parameters:
   displayName: Git SHA1
   name: GIT_SHA1
   required: true
+- description: Openshift project name
+  displayName: Project
+  name: OC_PROJECT
+  required: true
+- description: Openshift registry URL
+  displayName: Registry
+  name: OC_REGISTRY
+  required: true
+
 
 objects:
 - apiVersion: batch/v1
@@ -24,11 +33,14 @@ objects:
   metadata:
     name: ${PREFIX}etl-revert
   spec:
+    backoffLimit: 0
+    activeDeadlineSeconds: 120
     template:
       metadata:
         labels:
           name: ${PREFIX}etl-revert
       spec:
+        restartPolicy: Never
         containers:
         - env:
           - name: SQITCH_TARGET
@@ -57,7 +69,7 @@ objects:
           - name: SQITCH_EMAIL
             value: deployer@pathfinder.gov.bc.ca
           name: ${PREFIX}etl-revert
-          image: ${PREFIX}etl:${GIT_SHA1}
+          image: ${OC_REGISTRY}/${OC_PROJECT}/${PREFIX}etl:${GIT_SHA1}
           resources:
             limits:
               cpu: 1000m
