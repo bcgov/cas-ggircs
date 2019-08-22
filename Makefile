@@ -1,10 +1,10 @@
 SHELL := /usr/bin/env bash
-include .pipeline/oc.mk
+THIS_FILE := $(lastword $(MAKEFILE_LIST))
+THIS_FOLDER := $(abspath $(realpath $(lastword $(MAKEFILE_LIST)))/../)
+include $(THIS_FOLDER)/.pipeline/oc.mk
+
 PATHFINDER_PREFIX := wksv3k
 PROJECT_PREFIX := cas-ggircs-
-
-THIS_FILE := $(lastword $(MAKEFILE_LIST))
-
 PERL=perl
 RSYNC=rsync
 PERL_VERSION=$(shell $(PERL) -e 'print substr($$^V, 1)')
@@ -173,6 +173,8 @@ postinstall_check:
 
 .PHONY: dev_install
 dev_install: install_cpanm install_cpandeps postinstall_check install_pgtap
+
+
 
 .PHONY: help
 help: $(call make_help,help,Explains how to use this Makefile)
