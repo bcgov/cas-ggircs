@@ -218,6 +218,7 @@ build: whoami
 .PHONY: install
 install: whoami
 	$(call oc_promote,$(PROJECT_PREFIX)etl)
+	$(call oc_wait_for_deploy_ready,$(PROJECT_PREFIX)postgres)
 	$(call oc_deploy)
 	$(call oc_run_job,$(PROJECT_PREFIX)etl-revert,GIT_SHA1=$(PREVIOUS_DEPLOY_SHA1))
 	$(call oc_run_job,$(PROJECT_PREFIX)etl)
