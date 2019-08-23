@@ -178,7 +178,7 @@ include $(THIS_FOLDER)/.pipeline/oc.mk
 PATHFINDER_PREFIX := wksv3k
 PROJECT_PREFIX := cas-ggircs-
 
-PREVIOUS_DEPLOY_SHA1=$(shell $(OC) get job $(PROJECT_PREFIX)etl -o go-template='{{index .metadata.labels "cas-pipeline/commit.id"}}')
+PREVIOUS_DEPLOY_SHA1 := $(shell $(OC) get job $(PROJECT_PREFIX)etl -o go-template='{{index .metadata.labels "cas-pipeline/commit.id"}}')
 
 .PHONY: help
 help: $(call make_help,help,Explains how to use this Makefile)
@@ -219,7 +219,7 @@ build: whoami
 install: whoami
 	$(call oc_promote,$(PROJECT_PREFIX)etl)
 	$(call oc_deploy)
-	$(call oc_run_job,$(PROJECT_PREFIX)etl-revert,GIT_SHA1=PREVIOUS_DEPLOY_SHA1)
+	$(call oc_run_job,$(PROJECT_PREFIX)etl-revert,GIT_SHA1=$(PREVIOUS_DEPLOY_SHA1))
 	$(call oc_run_job,$(PROJECT_PREFIX)etl)
 
 .PHONY: install_test
