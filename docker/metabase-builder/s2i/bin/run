@@ -1,4 +1,0 @@
-#!/bin/bash
-
-echo "Don't run with this image, use a runtime image instead";
-exit 0;
