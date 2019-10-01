@@ -213,31 +213,22 @@ build: OC_PROJECT=$(OC_TOOLS_PROJECT)
 build: whoami
 	$(call oc_build,$(PROJECT_PREFIX)ggircs-etl)
 
-.PHONY: create_postgres_user
-create_postgres_user:
-	$(call oc_exec_all_pods,cas-postgres-master,create-user-db ggircs ggircs)
-	$(call oc_exec_all_pods,cas-postgres-workers,create-citus-in-db ggircs)
+GGIRCS_DB_NAME = "ggircs"
+GGIRCS_USER_NAME = "ggircs"
 
-.PHONY: create_postgres_user_dev
-create_postgres_user_dev: OC_PROJECT=$(OC_DEV_PROJECT)
-create_postgres_user_dev: create_postgres_user
-
-.PHONY: create_postgres_user_test
-create_postgres_user_test: OC_PROJECT=$(OC_TEST_PROJECT)
-create_postgres_user_test: create_postgres_user
-
-.PHONY: create_postgres_user_prod
-create_postgres_user_prod: OC_PROJECT=$(OC_PROD_PROJECT)
-create_postgres_user_prod: create_postgres_user
-
-OC_TEMPLATE_VARS += GGIRCS_PASSWORD="$(shell echo -n "$(GGIRCS_PASSWORD)" | base64)" GGIRCS_USER="$(shell echo -n "ggircs" | base64)" GGIRCS_DB="$(shell echo -n "ggircs" | base64)"
-PREVIOUS_DEPLOY_SHA1 := $(shell $(OC) -n "$(OC_PROJECT)" get job $(PROJECT_PREFIX)ggircs-etl-deploy --ignore-not-found -o go-template='{{index .metadata.labels "cas-pipeline/commit.id"}}')
 
 .PHONY: install
 install: whoami
-	$(if $(GGIRCS_PASSWORD), $(call oc_create_secrets))
-	$(call oc_promote,$(PROJECT_PREFIX)ggircs-etl)
+	$(eval GGIRCS_PASSWORD = $(shell if [ -n "$$($(OC) -n "$(OC_PROJECT)" get secret/cas-ggircs-postgres --ignore-not-found -o name)" ]; then \
+$(OC) -n "$(OC_PROJECT)" get secret/cas-ggircs-postgres -o go-template='{{index .data "database-password"}}' | base64 -d; else \
+openssl rand -base64 32 | tr -d /=+ | cut -c -16; fi))
+	$(eval OC_TEMPLATE_VARS += GGIRCS_PASSWORD="$(shell echo -n "$(GGIRCS_PASSWORD)" | base64)" GGIRCS_USER="$(shell echo -n "ggircs" | base64)" GGIRCS_DB="$(shell echo -n "ggircs" | base64)")
+	$(eval PREVIOUS_DEPLOY_SHA1 = $(shell $(OC) -n "$(OC_PROJECT)" get job $(PROJECT_PREFIX)ggircs-etl-deploy --ignore-not-found -o go-template='{{index .metadata.labels "cas-pipeline/commit.id"}}'))
 	$(call oc_wait_for_deploy_ready,cas-postgres-master)
+	$(call oc_create_secrets)
+	$(call oc_exec_all_pods,cas-postgres-master,create-user-db $(GGIRCS_USER_NAME) $(GGIRCS_DB_NAME) $(GGIRCS_PASSWORD))
+	$(call oc_exec_all_pods,cas-postgres-workers,create-citus-in-db $(GGIRCS_DB_NAME))
+	$(call oc_promote,$(PROJECT_PREFIX)ggircs-etl)
 	$(call oc_deploy)
 	$(if $(PREVIOUS_DEPLOY_SHA1), $(call oc_run_job,$(PROJECT_PREFIX)ggircs-etl-revert,GIT_SHA1=$(PREVIOUS_DEPLOY_SHA1)))
 	$(call oc_run_job,$(PROJECT_PREFIX)ggircs-etl-revert,GIT_SHA1=$(PREVIOUS_DEPLOY_SHA1))
