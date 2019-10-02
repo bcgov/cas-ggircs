@@ -176,9 +176,7 @@ THIS_FOLDER := $(abspath $(realpath $(lastword $(MAKEFILE_LIST)))/../)
 include $(THIS_FOLDER)/.pipeline/oc.mk
 
 PATHFINDER_PREFIX := wksv3k
-PROJECT_PREFIX := cas-ggircs-
-
-PREVIOUS_DEPLOY_SHA1 := $(shell $(OC) get job $(PROJECT_PREFIX)etl -o go-template='{{index .metadata.labels "cas-pipeline/commit.id"}}')
+PROJECT_PREFIX := cas-
 
 .PHONY: help
 help: $(call make_help,help,Explains how to use this Makefile)
@@ -213,17 +211,38 @@ configure: whoami
 build: $(call make_help,build,Builds the source into an image in the tools project namespace)
 build: OC_PROJECT=$(OC_TOOLS_PROJECT)
 build: whoami
-	$(call oc_build,$(PROJECT_PREFIX)etl)
+	$(call oc_build,$(PROJECT_PREFIX)ggircs-etl)
+
+GGIRCS_DB_NAME = "ggircs"
+GGIRCS_USER_NAME = "ggircs"
+
 
 .PHONY: install
 install: whoami
-	$(call oc_promote,$(PROJECT_PREFIX)etl)
-	$(call oc_wait_for_deploy_ready,$(PROJECT_PREFIX)postgres)
+	$(eval GGIRCS_PASSWORD = $(shell if [ -n "$$($(OC) -n "$(OC_PROJECT)" get secret/cas-ggircs-postgres --ignore-not-found -o name)" ]; then \
+$(OC) -n "$(OC_PROJECT)" get secret/cas-ggircs-postgres -o go-template='{{index .data "database-password"}}' | base64 -d; else \
+openssl rand -base64 32 | tr -d /=+ | cut -c -16; fi))
+	$(eval OC_TEMPLATE_VARS += GGIRCS_PASSWORD="$(shell echo -n "$(GGIRCS_PASSWORD)" | base64)" GGIRCS_USER="$(shell echo -n "ggircs" | base64)" GGIRCS_DB="$(shell echo -n "ggircs" | base64)")
+	$(eval PREVIOUS_DEPLOY_SHA1 = $(shell $(OC) -n "$(OC_PROJECT)" get job $(PROJECT_PREFIX)ggircs-etl-deploy --ignore-not-found -o go-template='{{index .metadata.labels "cas-pipeline/commit.id"}}'))
+	$(call oc_wait_for_deploy_ready,cas-postgres-master)
+	$(call oc_create_secrets)
+	$(call oc_exec_all_pods,cas-postgres-master,create-user-db $(GGIRCS_USER_NAME) $(GGIRCS_DB_NAME) $(GGIRCS_PASSWORD))
+	$(call oc_exec_all_pods,cas-postgres-workers,create-citus-in-db $(GGIRCS_DB_NAME))
+	$(call oc_promote,$(PROJECT_PREFIX)ggircs-etl)
 	$(call oc_deploy)
-	$(call oc_run_job,$(PROJECT_PREFIX)etl-revert,GIT_SHA1=$(PREVIOUS_DEPLOY_SHA1))
-	$(call oc_run_job,$(PROJECT_PREFIX)etl)
+	$(if $(PREVIOUS_DEPLOY_SHA1), $(call oc_run_job,$(PROJECT_PREFIX)ggircs-etl-revert,GIT_SHA1=$(PREVIOUS_DEPLOY_SHA1)))
+	$(call oc_run_job,$(PROJECT_PREFIX)ggircs-etl-revert,GIT_SHA1=$(PREVIOUS_DEPLOY_SHA1))
+	$(call oc_run_job,$(PROJECT_PREFIX)ggircs-etl-deploy)
+
+.PHONY: install_dev
+install_dev: OC_PROJECT=$(OC_DEV_PROJECT)
+install_dev: install
 
 .PHONY: install_test
 install_test: OC_PROJECT=$(OC_TEST_PROJECT)
 install_test: install
+
+.PHONY: install_prod
+install_prod: OC_PROJECT=$(OC_PROD_PROJECT)
+install_prod: install
 endif

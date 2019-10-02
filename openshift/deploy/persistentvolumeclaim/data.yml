@@ -2,21 +2,20 @@ apiVersion: template.openshift.io/v1
 kind: Template
 
 parameters:
-- description: Prefix to prepend to object name.
-  displayName: Prefix
-  name: PREFIX
-  required: true
+  - description: Prefix to prepend to object name.
+    displayName: Prefix
+    name: PREFIX
+    required: true
 
 objects:
-- apiVersion: v1
-  kind: PersistentVolumeClaim
-  metadata:
-    name: ${PREFIX}data
-  spec:
-    storageClassName: gluster-file
-    accessModes:
-    - ReadWriteMany
-    resources:
-      requests:
-        storage: 10Gi
-
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      name: ${PREFIX}ggircs-data
+    spec:
+      storageClassName: gluster-file
+      accessModes:
+        - ReadWriteMany
+      resources:
+        requests:
+          storage: 10Gi

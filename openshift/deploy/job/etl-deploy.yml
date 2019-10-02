@@ -30,14 +30,14 @@ objects:
   - apiVersion: batch/v1
     kind: Job
     metadata:
-      name: ${PREFIX}ggircs-etl-revert
+      name: ${PREFIX}ggircs-etl-deploy
     spec:
       backoffLimit: 0
-      activeDeadlineSeconds: 120
+      activeDeadlineSeconds: 3600
       template:
         metadata:
           labels:
-            name: ${PREFIX}ggircs-etl-revert
+            name: ${PREFIX}ggircs-etl-deploy
         spec:
           restartPolicy: Never
           containers:
@@ -67,7 +67,7 @@ objects:
                   value: OpenShift Deployer
                 - name: SQITCH_EMAIL
                   value: deployer@pathfinder.gov.bc.ca
-              name: ${PREFIX}ggircs-etl-revert
+              name: ${PREFIX}ggircs-etl-deploy
               image: ${OC_REGISTRY}/${OC_PROJECT}/${PREFIX}ggircs-etl:${GIT_SHA1}
               resources:
                 limits:
@@ -84,7 +84,10 @@ objects:
                 - bash
                 - -c
                 - |
-                  sqitch revert swrs/extract/table/ghgr_import -y;
+                  set -euo pipefail;
+                  sqitch deploy;
+                  echo "Exporting data to 'swrs' schema";
+                  psql -c "select swrs_transform.load()";
           volumes:
             - name: ${PREFIX}ggircs-data
               persistentVolumeClaim:
