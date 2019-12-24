@@ -233,7 +233,6 @@ openssl rand -base64 32 | tr -d /=+ | cut -c -16; fi))
 	$(call oc_promote,$(PROJECT_PREFIX)ggircs-etl)
 	$(call oc_deploy)
 	$(if $(PREVIOUS_DEPLOY_SHA1), $(call oc_run_job,$(PROJECT_PREFIX)ggircs-etl-revert,GIT_SHA1=$(PREVIOUS_DEPLOY_SHA1)))
-	$(call oc_run_job,$(PROJECT_PREFIX)ggircs-etl-revert,GIT_SHA1=$(PREVIOUS_DEPLOY_SHA1))
 	$(call oc_run_job,$(PROJECT_PREFIX)ggircs-etl-deploy)
 
 .PHONY: install_dev
@@ -248,3 +247,14 @@ install_test: install
 install_prod: OC_PROJECT=$(OC_PROD_PROJECT)
 install_prod: install
 endif
+
+.PHONY: mock_storageclass
+mock_storageclass:
+	$(call oc_mock_storageclass,gluster-file gluster-file-db gluster-block)
+
+.PHONY: provision
+provision:
+	$(call oc_new_project,$(OC_TOOLS_PROJECT))
+	$(call oc_new_project,$(OC_TEST_PROJECT))
+	$(call oc_new_project,$(OC_DEV_PROJECT))
+	$(call oc_new_project,$(OC_PROD_PROJECT))
