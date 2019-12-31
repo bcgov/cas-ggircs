@@ -35,10 +35,9 @@ jobs:
     steps:
       - checkout
       - run:
-          name: "Pull Submodules"
+          name: "Checkout Submodules"
           command: |
-            git submodule init
-            git submodule update --remote
+            git submodule update --init
       - run:
           name: Add Docker registry to /etc/hosts
           command: echo "172.30.1.1 docker-registry.default.svc" | sudo tee -a /etc/hosts
