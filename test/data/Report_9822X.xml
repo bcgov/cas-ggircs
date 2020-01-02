@@ -21,7 +21,7 @@
                     <PostalCodeZipCode>V8Q1Z1</PostalCodeZipCode>
                     <Country>Canada</Country>
                     <AdditionalInformation/>
-                    <LandSurveyDescription>
+                    <LandSurveyDescription/>
                     <NationalTopographicalDescription/>
                 </PhysicalAddress>
                 <MailingAddress>
@@ -1750,7 +1750,7 @@
                 <SubProcess SubprocessName="A Process Flow Diagram is required for SFO and LFO (Parent) reports" InformationRequirement="Required">
                     <FileDetails>
                         <File>44</File>
-                        <UploadedFileName>Ablkte.pdf/UploadedFileName>
+                        <UploadedFileName>Ablkte.pdf</UploadedFileName>
                         <UploadedBy>Iatosxv Kegldlxhep</UploadedBy>
                         <UploadedDate>04/04/2017 6:32:45 PM</UploadedDate>
                     </FileDetails>
