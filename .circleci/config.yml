@@ -67,9 +67,9 @@ jobs:
             git clone --single-branch --branch shipit-deploy/wksv3k-dev https://github.com/bcgov/cas-postgres.git
             pushd cas-postgres || exit 1
             git submodule update --init
-            make configure GIT_SHA1=`git rev-parse HEAD`
-            make build GIT_SHA1=`git rev-parse HEAD`
-            make install_dev GIT_SHA1=`git rev-parse HEAD` MASTER_CPU_REQUEST="300m" MASTER_CPU_LIMIT="300m" WORKER_CPU_REQUEST="300m" WORKER_CPU_LIMIT="300m" MASTER_MEMORY_REQUEST="512Mi" MASTER_MEMORY_LIMIT="512Mi" WORKER_MEMORY_REQUEST="512Mi" WORKER_MEMORY_LIMIT="512Mi" POSTGRESQL_WORKERS=2
+            make configure
+            make build
+            make install_dev MASTER_CPU_REQUEST="300m" MASTER_CPU_LIMIT="300m" WORKER_CPU_REQUEST="300m" WORKER_CPU_LIMIT="300m" MASTER_MEMORY_REQUEST="512Mi" MASTER_MEMORY_LIMIT="512Mi" WORKER_MEMORY_REQUEST="512Mi" WORKER_MEMORY_LIMIT="512Mi" POSTGRESQL_WORKERS=2
             popd
           name: Install cas-postgres dependency
       - run:
