@@ -135,6 +135,11 @@ workflows:
             - lint
       - test-local-cluster:
           context: cas-pipeline
+          filters:
+            branches:
+              only:
+                - master
+                - develop
 
 notify:
   webhooks:
