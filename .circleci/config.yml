@@ -13,8 +13,7 @@ jobs:
       - run:
           name: "Pull Submodules"
           command: |
-            git submodule init
-            git submodule update --remote
+            git submodule update --init
       - run:
           name: Create testing db
           command: |
@@ -89,8 +88,7 @@ jobs:
       - run:
           name: "Pull Submodules"
           command: |
-            git submodule init
-            git submodule update --remote
+            git submodule update --init
       - redhat-openshift/login-and-update-kubeconfig:
           insecure-skip-tls-verify: true
           openshift-platform-version: 3.x
@@ -107,8 +105,7 @@ jobs:
       - run:
           name: "Pull Submodules"
           command: |
-            git submodule init
-            git submodule update --remote
+            git submodule update --init
       - redhat-openshift/login-and-update-kubeconfig:
           insecure-skip-tls-verify: true
           openshift-platform-version: 3.x
