@@ -496,8 +496,8 @@
                             </Fuels>
                         </Unit>
                         <Unit>
-                            <UnitName>Konus</UnitName>
-                            <UnitDesc>Shavings (Biomass) is combusted in konus to heat thermal oil which in turn dries lumber in the kiln</UnitDesc>
+                            <UnitName>Fyepgg</UnitName>
+                            <UnitDesc>Stuff happens here</UnitDesc>
                             <Fuels>
                                 <Fuel>
                                     <FuelType>Wood Waste (bone dry tonnes)</FuelType>
