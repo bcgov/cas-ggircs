@@ -1,0 +1,1209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <RegistrationData>
+        <Organisation>
+            <Details>
+                <BusinessLegalName>Ihnbvhfci, Inc.</BusinessLegalName>
+                <EnglishTradeName/>
+                <FrenchTradeName/>
+                <CRABusinessNumber>375265176</CRABusinessNumber>
+                <DUNSNumber>946361417</DUNSNumber>
+                <WebSite/>
+            </Details>
+            <Address>
+                <PhysicalAddress>
+                    <UnitNumber>1284</UnitNumber>
+                    <StreetNumber>3390</StreetNumber>
+                    <StreetNumberSuffix/>
+                    <StreetName>Fyepgg</StreetName>
+                    <StreetType>Avenue</StreetType>
+                    <Municipality>Euorlh</Municipality>
+                    <ProvTerrState>British Columbia</ProvTerrState>
+                    <PostalCodeZipCode>V1T5N6</PostalCodeZipCode>
+                    <Country>Canada</Country>
+                </PhysicalAddress>
+                <MailingAddress>
+                    <DeliveryMode>General Delivery</DeliveryMode>
+                    <UnitNumber>1284</UnitNumber>
+                    <StreetNumber>3390</StreetNumber>
+                    <StreetNumberSuffix/>
+                    <StreetName>Fyepgg</StreetName>
+                    <StreetType>Avenue</StreetType>
+                    <Municipality>Euorlh</Municipality>
+                    <ProvTerrState>British Columbia</ProvTerrState>
+                    <PostalCodeZipCode>V1T5N6</PostalCodeZipCode>
+                    <Country>Canada</Country>
+                    <AdditionalInformation/>
+                </MailingAddress>
+            </Address>
+        </Organisation>
+        <Facility>
+            <Details>
+                <FacilityName>Gavrqpo</FacilityName>
+                <RelationshipType>Owned and Operated</RelationshipType>
+                <PortabilityIndicator>N</PortabilityIndicator>
+                <Status>Active</Status>
+            </Details>
+            <Identifiers>
+                <IdentifierList>
+                    <Identifier>
+                        <IdentifierType>BCGHGID</IdentifierType>
+                        <IdentifierValue>12858779597</IdentifierValue>
+                    </Identifier>
+                    <Identifier>
+                        <IdentifierType>National Pollutant Release Inventory Identifier</IdentifierType>
+                        <IdentifierValue>0000002566</IdentifierValue>
+                    </Identifier>
+                </IdentifierList>
+                <NAICSCodeList>
+                    <NAICSCode>
+                        <NAICSClassification>Sawmills (except Shingle and Shake Mills) </NAICSClassification>
+                        <Code>321111</Code>
+                        <NaicsPriority>Primary</NaicsPriority>
+                    </NAICSCode>
+                </NAICSCodeList>
+                <Permits>
+                    <Permit>
+                        <IssuingAgency>BC MOE</IssuingAgency>
+                        <PermitNumber>PF-2022</PermitNumber>
+                    </Permit>
+                </Permits>
+            </Identifiers>
+            <Address>
+                <PhysicalAddress>
+                    <UnitNumber/>
+                    <StreetNumber>0</StreetNumber>
+                    <StreetNumberSuffix/>
+                    <StreetName>Jiwmscno</StreetName>
+                    <StreetType>Street</StreetType>
+                    <Municipality>Vcmnwbhtao</Municipality>
+                    <ProvTerrState>British Columbia</ProvTerrState>
+                    <PostalCodeZipCode>V4X1H3</PostalCodeZipCode>
+                    <Country>Canada</Country>
+                    <AdditionalInformation/>
+                    <LandSurveyDescription/>
+                    <NationalTopographicalDescription/>
+                </PhysicalAddress>
+                <MailingAddress>
+                    <DeliveryMode>Post Office Box</DeliveryMode>
+                    <POBoxNumber>5173</POBoxNumber>
+                    <StreetNumber>0</StreetNumber>
+                    <StreetNumberSuffix/>
+                    <StreetName>Jiwmscno</StreetName>
+                    <StreetType>Street</StreetType>
+                    <Municipality>Vcmnwbhtao</Municipality>
+                    <ProvTerrState>British Columbia</ProvTerrState>
+                    <PostalCodeZipCode>V4X1H3</PostalCodeZipCode>
+                    <Country>Canada</Country>
+                    <AdditionalInformation/>
+                </MailingAddress>
+                <GeographicAddress>
+                    <Latitude>53.61225</Latitude>
+                    <Longitude>-136.27687</Longitude>
+                </GeographicAddress>
+            </Address>
+        </Facility>
+        <Contacts>
+            <Contact>
+                <Details>
+                    <ContactType>Operator Contact</ContactType>
+                    <GivenName>Uclxoicg</GivenName>
+                    <FamilyName>Eldjh</FamilyName>
+                    <TelephoneNumber>2507404738</TelephoneNumber>
+                    <EmailAddress>Uclxoicg.Eldjh@akhv.xxx</EmailAddress>
+                    <Position>Manager</Position>
+                    <LanguageCorrespondence>English</LanguageCorrespondence>
+                </Details>
+                <Address>
+                    <MailingAddress>
+                        <DeliveryMode>Post Office Box</DeliveryMode>
+                        <POBoxNumber>5173</POBoxNumber>
+                        <StreetNumber>712</StreetNumber>
+                        <StreetName>Tdadcdr</StreetName>
+                        <StreetType>Street</StreetType>
+                        <Municipality>Vcmnwbhtao</Municipality>
+                        <ProvTerrState>British Columbia</ProvTerrState>
+                        <PostalCodeZipCode>V4X1H3</PostalCodeZipCode>
+                        <Country>Canada</Country>
+                        <AdditionalInformation/>
+                    </MailingAddress>
+                </Address>
+            </Contact>
+            <Contact>
+                <Details>
+                    <ContactType>Operator Representative</ContactType>
+                    <GivenName>Uclxoicg</GivenName>
+                    <FamilyName>Eldjh</FamilyName>
+                    <TelephoneNumber>2507404738</TelephoneNumber>
+                    <EmailAddress>Uclxoicg.Eldjh@akhv.xxx</EmailAddress>
+                    <Position>Manager</Position>
+                    <LanguageCorrespondence>English</LanguageCorrespondence>
+                </Details>
+                <Address>
+                    <MailingAddress>
+                        <DeliveryMode>Post Office Box</DeliveryMode>
+                        <POBoxNumber>5173</POBoxNumber>
+                        <StreetNumber>712</StreetNumber>
+                        <StreetName>Tdadcdr</StreetName>
+                        <StreetType>Street</StreetType>
+                        <Municipality>Vcmnwbhtao</Municipality>
+                        <ProvTerrState>British Columbia</ProvTerrState>
+                        <PostalCodeZipCode>V4X1H3</PostalCodeZipCode>
+                        <Country>Canada</Country>
+                        <AdditionalInformation/>
+                    </MailingAddress>
+                </Address>
+            </Contact>
+            <Contact>
+                <Details>
+                    <ContactType>Person Who Prepared Report</ContactType>
+                    <GivenName>Uclxoicg</GivenName>
+                    <FamilyName>Eldjh</FamilyName>
+                    <TelephoneNumber>2507404738</TelephoneNumber>
+                    <EmailAddress>Uclxoicg.Eldjh@akhv.xxx</EmailAddress>
+                    <Position>Manager</Position>
+                    <LanguageCorrespondence>English</LanguageCorrespondence>
+                </Details>
+                <Address>
+                    <MailingAddress>
+                        <DeliveryMode>Post Office Box</DeliveryMode>
+                        <POBoxNumber>5173</POBoxNumber>
+                        <StreetNumber>712</StreetNumber>
+                        <StreetName>Tdadcdr</StreetName>
+                        <StreetType>Street</StreetType>
+                        <Municipality>Vcmnwbhtao</Municipality>
+                        <ProvTerrState>British Columbia</ProvTerrState>
+                        <PostalCodeZipCode>V4X1H3</PostalCodeZipCode>
+                        <Country>Canada</Country>
+                        <AdditionalInformation/>
+                    </MailingAddress>
+                </Address>
+            </Contact>
+            <Contact>
+                <Details>
+                    <ContactType>Submitted Contact</ContactType>
+                    <GivenName>Uclxoicg</GivenName>
+                    <FamilyName>Eldjh</FamilyName>
+                    <TelephoneNumber>2507404738</TelephoneNumber>
+                    <EmailAddress>Uclxoicg.Eldjh@akhv.xxx</EmailAddress>
+                    <Position>Manager</Position>
+                    <LanguageCorrespondence>English</LanguageCorrespondence>
+                </Details>
+                <Address>
+                    <MailingAddress>
+                        <DeliveryMode>Post Office Box</DeliveryMode>
+                        <POBoxNumber>5173</POBoxNumber>
+                        <StreetNumber>712</StreetNumber>
+                        <StreetName>Tdadcdr</StreetName>
+                        <StreetType>Street</StreetType>
+                        <Municipality>Vcmnwbhtao</Municipality>
+                        <ProvTerrState>British Columbia</ProvTerrState>
+                        <PostalCodeZipCode>V4X1H3</PostalCodeZipCode>
+                        <Country>Canada</Country>
+                        <AdditionalInformation/>
+                    </MailingAddress>
+                </Address>
+            </Contact>
+        </Contacts>
+        <ParentOrganisations>
+            <ParentOrganisation>
+                <Details>
+                    <BusinessLegalName>Cexexfx, Inc.</BusinessLegalName>
+                    <EnglishTradeName/>
+                    <FrenchTradeName/>
+                    <CRABusinessNumber>375265176</CRABusinessNumber>
+                    <DUNSNumber>0</DUNSNumber>
+                    <WebSite/>
+                    <PercentageOwned>100</PercentageOwned>
+                </Details>
+                <Address>
+                    <PhysicalAddress>
+                    <UnitNumber>1284</UnitNumber>
+                    <StreetNumber>3390</StreetNumber>
+                    <StreetNumberSuffix/>
+                    <StreetName>Fyepgg</StreetName>
+                    <StreetType>Avenue</StreetType>
+                    <Municipality>Euorlh</Municipality>
+                    <ProvTerrState>British Columbia</ProvTerrState>
+                    <PostalCodeZipCode>V1T5N6</PostalCodeZipCode>
+                        <Country>Canada</Country>
+                    </PhysicalAddress>
+                    <MailingAddress>
+                        <DeliveryMode>General Delivery</DeliveryMode>
+                    <UnitNumber>1284</UnitNumber>
+                    <StreetNumber>3390</StreetNumber>
+                    <StreetNumberSuffix/>
+                    <StreetName>Fyepgg</StreetName>
+                    <StreetType>Avenue</StreetType>
+                    <Municipality>Euorlh</Municipality>
+                    <ProvTerrState>British Columbia</ProvTerrState>
+                    <PostalCodeZipCode>V1T5N6</PostalCodeZipCode>
+                        <Country>Canada</Country>
+                        <AdditionalInformation/>
+                    </MailingAddress>
+                </Address>
+            </ParentOrganisation>
+        </ParentOrganisations>
+    </RegistrationData>
+    <ReportDetails>
+        <ReportID>79375</ReportID>
+        <ReportType>R1</ReportType>
+        <FacilityId>63505</FacilityId>
+        <FacilityType>SFO</FacilityType>
+        <OrganisationId>5597</OrganisationId>
+        <ReportingPeriodDuration>2017</ReportingPeriodDuration>
+        <ReportStatus>
+            <Status>Submitted</Status>
+            <Version>1</Version>
+            <SubmissionDate>2018-05-17T16:42:23.127</SubmissionDate>
+            <LastModifiedBy>Uclxoicg Eldjh</LastModifiedBy>
+            <LastModifiedDate>2018-05-17T16:42:23.237</LastModifiedDate>
+        </ReportStatus>
+        <ActivityOrSource>
+            <ActivityList>
+                <Activity>
+                    <ActivityName>GeneralStationaryCombustion</ActivityName>
+                    <TableNumber>1</TableNumber>
+                </Activity>
+                <Activity>
+                    <ActivityName>MobileCombustion</ActivityName>
+                    <TableNumber>1</TableNumber>
+                </Activity>
+                <Activity>
+                    <ActivityName>ElectricityGeneration</ActivityName>
+                    <TableNumber>1</TableNumber>
+                </Activity>
+            </ActivityList>
+        </ActivityOrSource>
+    </ReportDetails>
+    <OperationalWorkerReport>
+        <ProgramID>11807538375</ProgramID>
+        <ProgramIDDate>2018-08-01T16:14:38.620</ProgramIDDate>
+        <ProgramIDCreator>Ldtswt Wxzma</ProgramIDCreator>
+    </OperationalWorkerReport>
+    <VerifyTombstone>
+        <AlwaysSaveToSwimOnCommit>false</AlwaysSaveToSwimOnCommit>
+        <Organisation>
+            <Details>
+                <BusinessLegalName>Ihnbvhfci, Inc.</BusinessLegalName>
+                <EnglishTradeName>Bqfibeuuky</EnglishTradeName>
+                <CRABusinessNumber>375265176</CRABusinessNumber>
+                <DUNSNumber>946361417</DUNSNumber>
+            </Details>
+            <Address>
+                <MailingAddress>
+                    <UnitNumber>1284</UnitNumber>
+                    <StreetNumber>3390</StreetNumber>
+                    <StreetNumberSuffix/>
+                    <StreetName>Fyepgg</StreetName>
+                    <StreetType>Avenue</StreetType>
+                    <Municipality>Euorlh</Municipality>
+                    <ProvTerrState>British Columbia</ProvTerrState>
+                    <PostalCodeZipCode>V1T5N6</PostalCodeZipCode>
+                    <Country>Canada</Country>
+                </MailingAddress>
+            </Address>
+        </Organisation>
+        <Facility>
+            <Details>
+                <FacilityName>Gavrqpo</FacilityName>
+                <Identifiers>
+                    <IdentifierList>
+                        <Identifier>
+                            <IdentifierType>NPRI</IdentifierType>
+                            <IdentifierValue>0000002566</IdentifierValue>
+                        </Identifier>
+                        <Identifier>
+                            <IdentifierType>BCGHGID</IdentifierType>
+                            <IdentifierValue>0</IdentifierValue>
+                        </Identifier>
+                    </IdentifierList>
+                    <NAICSCodeList>
+                        <NAICSCode>
+                            <Code>321111</Code>
+                        </NAICSCode>
+                    </NAICSCodeList>
+                    <Permits>
+                        <Permit>
+                            <IssuingAgency>BC MOE</IssuingAgency>
+                            <PermitNumber>PF-2022</PermitNumber>
+                        </Permit>
+                    </Permits>
+                </Identifiers>
+            </Details>
+            <Address>
+                <PhysicalAddress>
+                    <StreetNumber>712</StreetNumber>
+                    <StreetName>Jiwmscno</StreetName>
+                    <StreetType>Street</StreetType>
+                    <Municipality>Vcmnwbhtao</Municipality>
+                    <ProvTerrState>British Columbia</ProvTerrState>
+                    <PostalCodeZipCode>V4X1H3</PostalCodeZipCode>
+                    <Country>Canada</Country>
+                </PhysicalAddress>
+                <GeographicalAddress>
+                    <Latitude>53.93493</Latitude>
+                    <Longitude>-135.72191</Longitude>
+                </GeographicalAddress>
+            </Address>
+        </Facility>
+        <Contacts>
+            <Contact>
+                <Details>
+                    <ContactType>Operator Contact</ContactType>
+                    <GivenName>Uclxoicg</GivenName>
+                    <FamilyName>Eldjh</FamilyName>
+                    <TelephoneNumber>2507404738</TelephoneNumber>
+                    <EmailAddress>Uclxoicg.Eldjh@akhv.xxx</EmailAddress>
+                    <Position>Manager</Position>
+                </Details>
+                <Address>
+                    <MailingAddress>
+                        <POBoxNumber>5173</POBoxNumber>
+                        <StreetNumber>712</StreetNumber>
+                        <StreetName>Tdadcdr</StreetName>
+                        <StreetType>Street</StreetType>
+                        <Municipality>Vcmnwbhtao</Municipality>
+                        <ProvTerrState>British Columbia</ProvTerrState>
+                        <PostalCodeZipCode>V4X1H3</PostalCodeZipCode>
+                        <Country>Canada</Country>
+                    </MailingAddress>
+                </Address>
+            </Contact>
+            <Contact>
+                <Details>
+                    <ContactType>Operator Representative</ContactType>
+                    <GivenName>Uclxoicg</GivenName>
+                    <FamilyName>Eldjh</FamilyName>
+                    <TelephoneNumber>2507404738</TelephoneNumber>
+                    <EmailAddress>Uclxoicg.Eldjh@akhv.xxx</EmailAddress>
+                    <Position>Manager</Position>
+                </Details>
+                <Address>
+                    <MailingAddress>
+                        <POBoxNumber>5173</POBoxNumber>
+                        <StreetNumber>712</StreetNumber>
+                        <StreetName>Tdadcdr</StreetName>
+                        <StreetType>Street</StreetType>
+                        <Municipality>Vcmnwbhtao</Municipality>
+                        <ProvTerrState>British Columbia</ProvTerrState>
+                        <PostalCodeZipCode>V4X1H3</PostalCodeZipCode>
+                        <Country>Canada</Country>
+                    </MailingAddress>
+                </Address>
+            </Contact>
+            <Contact>
+                <Details>
+                    <ContactType>Person Who Prepared Report</ContactType>
+                    <GivenName>Uclxoicg</GivenName>
+                    <FamilyName>Eldjh</FamilyName>
+                    <TelephoneNumber>2507404738</TelephoneNumber>
+                    <EmailAddress>Uclxoicg.Eldjh@akhv.xxx</EmailAddress>
+                    <Position>Manager</Position>
+                </Details>
+                <Address>
+                    <MailingAddress>
+                        <POBoxNumber>5173</POBoxNumber>
+                        <StreetNumber>712</StreetNumber>
+                        <StreetName>Tdadcdr</StreetName>
+                        <StreetType>Street</StreetType>
+                        <Municipality>Vcmnwbhtao</Municipality>
+                        <ProvTerrState>British Columbia</ProvTerrState>
+                        <PostalCodeZipCode>V4X1H3</PostalCodeZipCode>
+                        <Country>Canada</Country>
+                    </MailingAddress>
+                </Address>
+            </Contact>
+        </Contacts>
+        <ParentOrganisations>
+            <ParentOrganisation>
+                <Details>
+                    <BusinessLegalName>Cexexfx, Inc.</BusinessLegalName>
+                    <PercentageOwned>100.00</PercentageOwned>
+                </Details>
+                <Address>
+                    <MailingAddress>
+                    <UnitNumber>1284</UnitNumber>
+                    <StreetNumber>3390</StreetNumber>
+                    <StreetNumberSuffix/>
+                    <StreetName>Fyepgg</StreetName>
+                    <StreetType>Avenue</StreetType>
+                    <Municipality>Euorlh</Municipality>
+                    <ProvTerrState>British Columbia</ProvTerrState>
+                    <PostalCodeZipCode>V1T5N6</PostalCodeZipCode>
+                        <Country>Canada</Country>
+                    </MailingAddress>
+                </Address>
+            </ParentOrganisation>
+        </ParentOrganisations>
+    </VerifyTombstone>
+    <ActivityData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ActivityPages>
+            <Process ProcessName="GeneralStationaryCombustion">
+                <SubProcess SubprocessName="(a) general stationary combustion, useful energy" InformationRequirement="Required">
+                    <Units>
+                        <Unit>
+                            <UnitName>Gas fired kilns</UnitName>
+                            <UnitDesc>Natural gas is used in kilns to dry lumber </UnitDesc>
+                            <Fuels>
+                                <Fuel>
+                                    <FuelType>Natural Gas (Sm^3)</FuelType>
+                                    <FuelClassification>non-biomass</FuelClassification>
+                                    <FuelUnits>Sm^3</FuelUnits>
+                                    <AnnualFuelAmount>3275522</AnnualFuelAmount>
+                                    <AnnualWeightedAverageHighHeatingValue>0.03832</AnnualWeightedAverageHighHeatingValue>
+                                    <MeasuredEmissionFactors/>
+                                    <Emissions>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_GeneralStationaryCombustionEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_GeneralStationaryCombustionEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>false</NotApplicable>
+                                            <Quantity>6275.9</Quantity>
+                                            <CalculatedQuantity>6275.9</CalculatedQuantity>
+                                            <GasType>CO2nonbio</GasType>
+                                            <Methodology>Methodology 1 (default HHV)</Methodology>
+                                        </Emission>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_GeneralStationaryCombustionEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_GeneralStationaryCombustionEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>false</NotApplicable>
+                                            <Quantity>0.1213</Quantity>
+                                            <CalculatedQuantity>3.0325</CalculatedQuantity>
+                                            <GasType>CH4</GasType>
+                                            <Methodology>Default HHV/EFc</Methodology>
+                                        </Emission>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_GeneralStationaryCombustionEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_GeneralStationaryCombustionEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>false</NotApplicable>
+                                            <Quantity>0.1081</Quantity>
+                                            <CalculatedQuantity>32.2138</CalculatedQuantity>
+                                            <GasType>N2O</GasType>
+                                            <Methodology>Default HHV/EFc</Methodology>
+                                        </Emission>
+                                    </Emissions>
+                                    <AlternativeMethodologyDescription/>
+                                </Fuel>
+                            </Fuels>
+                        </Unit>
+                        <Unit>
+                            <UnitName>Fyepgg</UnitName>
+                            <UnitDesc>Stuff happens here</UnitDesc>
+                            <Fuels>
+                                <Fuel>
+                                    <FuelType>Wood Waste (bone dry tonnes)</FuelType>
+                                    <FuelClassification>Biomass in Schedule C</FuelClassification>
+                                    <FuelUnits>bone dry tonnes</FuelUnits>
+                                    <AnnualFuelAmount>8567</AnnualFuelAmount>
+                                    <MeasuredEmissionFactors/>
+                                    <Emissions>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_GeneralStationaryCombustionEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_GeneralStationaryCombustionEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ReportingOnlyEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>false</NotApplicable>
+                                            <Quantity>0</Quantity>
+                                            <CalculatedQuantity>0</CalculatedQuantity>
+                                            <GasType>CO2bioC</GasType>
+                                            <Methodology>Methodology 1 (default HHV)</Methodology>
+                                        </Emission>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_GeneralStationaryCombustionEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_GeneralStationaryCombustionEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>false</NotApplicable>
+                                            <Quantity>0.771</Quantity>
+                                            <CalculatedQuantity>19.275</CalculatedQuantity>
+                                            <GasType>CH4</GasType>
+                                            <Methodology>Default HHV/EFc</Methodology>
+                                        </Emission>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_GeneralStationaryCombustionEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_GeneralStationaryCombustionEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>false</NotApplicable>
+                                            <Quantity>0.514</Quantity>
+                                            <CalculatedQuantity>153.172</CalculatedQuantity>
+                                            <GasType>N2O</GasType>
+                                            <Methodology>Default HHV/EFc</Methodology>
+                                        </Emission>
+                                    </Emissions>
+                                    <AlternativeMethodologyDescription/>
+                                </Fuel>
+                            </Fuels>
+                        </Unit>
+                    </Units>
+                </SubProcess>
+                <SubProcess SubprocessName="(b) general stationary combustion, no useful energy" InformationRequirement="Required">
+                    <Units/>
+                </SubProcess>
+                <SubProcess SubprocessName="Additional information for cement and lime production facilities only (not aggregated in totals)" InformationRequirement="MandatoryAdditional">
+                    <Units UnitType="Fuel combustion emissions from all kilns combined">
+                        <Unit>
+                            <Fuels>
+                                <Fuel>
+                                    <Emissions>
+                                        <Emission>
+                                            <Groups/>
+                                            <NotApplicable>false</NotApplicable>
+                                            <CalculatedQuantity>0</CalculatedQuantity>
+                                            <GasType>CO2</GasType>
+                                        </Emission>
+                                        <Emission>
+                                            <Groups/>
+                                            <NotApplicable>false</NotApplicable>
+                                            <CalculatedQuantity>0</CalculatedQuantity>
+                                            <GasType>CH4</GasType>
+                                        </Emission>
+                                        <Emission>
+                                            <Groups/>
+                                            <NotApplicable>false</NotApplicable>
+                                            <CalculatedQuantity>0</CalculatedQuantity>
+                                            <GasType>N2O</GasType>
+                                        </Emission>
+                                    </Emissions>
+                                </Fuel>
+                            </Fuels>
+                        </Unit>
+                    </Units>
+                    <Units UnitType="Fuel combustion emissions from all other fuel combustion units (kilns excluded)">
+                        <Unit>
+                            <Fuels>
+                                <Fuel>
+                                    <Emissions>
+                                        <Emission>
+                                            <NotApplicable>false</NotApplicable>
+                                            <CalculatedQuantity>0</CalculatedQuantity>
+                                            <GasType>CO2</GasType>
+                                        </Emission>
+                                        <Emission>
+                                            <NotApplicable>false</NotApplicable>
+                                            <CalculatedQuantity>0</CalculatedQuantity>
+                                            <GasType>CH4</GasType>
+                                        </Emission>
+                                        <Emission>
+                                            <NotApplicable>false</NotApplicable>
+                                            <CalculatedQuantity>0</CalculatedQuantity>
+                                            <GasType>N2O</GasType>
+                                        </Emission>
+                                    </Emissions>
+                                </Fuel>
+                            </Fuels>
+                        </Unit>
+                    </Units>
+                </SubProcess>
+            </Process>
+            <Process ProcessName="MobileCombustion">
+                <SubProcess SubprocessName="Emissions from fuel combustion by mobile equipment that is part of the facility" InformationRequirement="Required">
+                    <Units>
+                        <Unit>
+                            <Fuels>
+                                <Fuel>
+                                    <FuelType>Diesel (kilolitres)</FuelType>
+                                    <FuelClassification>non-biomass</FuelClassification>
+                                    <FuelUnits>kilolitres</FuelUnits>
+                                    <AnnualFuelAmount>936.48</AnnualFuelAmount>
+                                    <Q1>234.12</Q1>
+                                    <Q2>234.12</Q2>
+                                    <Q3>234.12</Q3>
+                                    <Q4>234.12</Q4>
+                                    <Emissions>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ReportingOnlyEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_OnSiteTransportationEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_OnSiteTransportationEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>false</NotApplicable>
+                                            <Quantity>2493.79</Quantity>
+                                            <CalculatedQuantity>2493.79</CalculatedQuantity>
+                                            <GasType>CO2nonbio</GasType>
+                                            <Methodology>Default EF</Methodology>
+                                        </Emission>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ReportingOnlyEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_OnSiteTransportationEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_OnSiteTransportationEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>false</NotApplicable>
+                                            <Quantity>0.1245</Quantity>
+                                            <CalculatedQuantity>3.1125</CalculatedQuantity>
+                                            <GasType>CH4</GasType>
+                                            <Methodology>Default EF</Methodology>
+                                        </Emission>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ReportingOnlyEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_OnSiteTransportationEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_OnSiteTransportationEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>false</NotApplicable>
+                                            <Quantity>0.3746</Quantity>
+                                            <CalculatedQuantity>111.6308</CalculatedQuantity>
+                                            <GasType>N2O</GasType>
+                                            <Methodology>Default EF</Methodology>
+                                        </Emission>
+                                    </Emissions>
+                                    <AlternativeMethodologyDescription/>
+                                </Fuel>
+                                <Fuel>
+                                    <FuelType>Motor Gasoline (kilolitres)</FuelType>
+                                    <FuelClassification>non-biomass</FuelClassification>
+                                    <FuelUnits>kilolitres</FuelUnits>
+                                    <AnnualFuelAmount>104.44</AnnualFuelAmount>
+                                    <Q1>26.11</Q1>
+                                    <Q2>26.11</Q2>
+                                    <Q3>26.11</Q3>
+                                    <Q4>26.11</Q4>
+                                    <Emissions>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ReportingOnlyEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_OnSiteTransportationEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_OnSiteTransportationEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>false</NotApplicable>
+                                            <Quantity>239.08</Quantity>
+                                            <CalculatedQuantity>239.08</CalculatedQuantity>
+                                            <GasType>CO2nonbio</GasType>
+                                            <Methodology>Default EF</Methodology>
+                                        </Emission>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ReportingOnlyEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_OnSiteTransportationEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_OnSiteTransportationEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>false</NotApplicable>
+                                            <Quantity>0.282</Quantity>
+                                            <CalculatedQuantity>7.050</CalculatedQuantity>
+                                            <GasType>CH4</GasType>
+                                            <Methodology>Default EF</Methodology>
+                                        </Emission>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ReportingOnlyEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_OnSiteTransportationEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_OnSiteTransportationEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>false</NotApplicable>
+                                            <Quantity>0.0052</Quantity>
+                                            <CalculatedQuantity>1.5496</CalculatedQuantity>
+                                            <GasType>N2O</GasType>
+                                            <Methodology>Default EF</Methodology>
+                                        </Emission>
+                                    </Emissions>
+                                    <AlternativeMethodologyDescription/>
+                                </Fuel>
+                            </Fuels>
+                        </Unit>
+                    </Units>
+                </SubProcess>
+            </Process>
+            <Process ProcessName="ElectricityGeneration">
+                <SubProcess SubprocessName="Emissions from fuel combustion for electricity generation" InformationRequirement="Required">
+                    <Units UnitType="Non-Cogen Units">
+                        <Unit>
+                            <NonCOGenUnit>
+                                <NonCogenUnitName>ORC plant</NonCogenUnitName>
+                                <NameplateCapacity>12</NameplateCapacity>
+                                <NetPower>87120</NetPower>
+                            </NonCOGenUnit>
+                            <Fuels>
+                                <Fuel>
+                                    <FuelType>Wood Waste (bone dry tonnes)</FuelType>
+                                    <FuelClassification>Biomass in Schedule C</FuelClassification>
+                                    <FuelUnits>bone dry tonnes</FuelUnits>
+                                    <AnnualFuelAmount>85609</AnnualFuelAmount>
+                                    <MeasuredEmissionFactors/>
+                                    <Emissions>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_GeneralStationaryCombustionEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_GeneralStationaryCombustionEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ReportingOnlyEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>false</NotApplicable>
+                                            <Quantity>0</Quantity>
+                                            <CalculatedQuantity>0</CalculatedQuantity>
+                                            <GasType>CO2bioC</GasType>
+                                            <Methodology>Methodology 1 (default HHV)</Methodology>
+                                        </Emission>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_GeneralStationaryCombustionEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_GeneralStationaryCombustionEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>false</NotApplicable>
+                                            <Quantity>7.7048</Quantity>
+                                            <CalculatedQuantity>192.6200</CalculatedQuantity>
+                                            <GasType>CH4</GasType>
+                                            <Methodology>Default HHV/EFc</Methodology>
+                                        </Emission>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_GeneralStationaryCombustionEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_GeneralStationaryCombustionEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>false</NotApplicable>
+                                            <Quantity>5.1365</Quantity>
+                                            <CalculatedQuantity>1530.6770</CalculatedQuantity>
+                                            <GasType>N2O</GasType>
+                                            <Methodology>Default HHV/EFc</Methodology>
+                                        </Emission>
+                                    </Emissions>
+                                    <AlternativeMethodologyDescription/>
+                                </Fuel>
+                            </Fuels>
+                        </Unit>
+                    </Units>
+                </SubProcess>
+                <SubProcess SubprocessName="Emissions from acid gas scrubbers and acid gas reagents" InformationRequirement="Required">
+                    <Units>
+                        <Unit>
+                            <Fuels>
+                                <Fuel>
+                                    <Emissions>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_IndustrialProcessEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_IndustrialProcessEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>CO2nonbio</GasType>
+                                        </Emission>
+                                    </Emissions>
+                                    <AlternativeMethodologyDescription/>
+                                </Fuel>
+                            </Fuels>
+                        </Unit>
+                    </Units>
+                </SubProcess>
+                <SubProcess SubprocessName="Emissions from cooling units" InformationRequirement="Required">
+                    <Units>
+                        <Unit>
+                            <Fuels>
+                                <Fuel>
+                                    <Emissions>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_FugitiveEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_SpeciatedHFCs</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>HFC23_CHF3</GasType>
+                                        </Emission>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_FugitiveEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_SpeciatedHFCs</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>HFC32_CH2F2</GasType>
+                                        </Emission>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_FugitiveEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_SpeciatedHFCs</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>HFC41_CH3F</GasType>
+                                        </Emission>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_FugitiveEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_SpeciatedHFCs</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>HFC4310mee_C5H2F10</GasType>
+                                        </Emission>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_FugitiveEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_SpeciatedHFCs</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>HFC125_C2HF5</GasType>
+                                        </Emission>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_FugitiveEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_SpeciatedHFCs</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>HFC134_C2H2F4</GasType>
+                                        </Emission>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_FugitiveEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_SpeciatedHFCs</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>HFC134a_C2H2F4</GasType>
+                                        </Emission>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_FugitiveEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_SpeciatedHFCs</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>HFC143_C2H3F3</GasType>
+                                        </Emission>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_FugitiveEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_SpeciatedHFCs</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>HFC143a_C2H3F3</GasType>
+                                        </Emission>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_FugitiveEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_SpeciatedHFCs</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>HFC152a_C2H4F2</GasType>
+                                        </Emission>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_FugitiveEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_SpeciatedHFCs</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>HFC227ea_C3HF7</GasType>
+                                        </Emission>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_FugitiveEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_SpeciatedHFCs</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>HFC236fa_C3H2F6</GasType>
+                                        </Emission>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_FugitiveEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_SpeciatedHFCs</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>HFC245ca_C3H3F5</GasType>
+                                        </Emission>
+                                    </Emissions>
+                                    <AlternativeMethodologyDescription/>
+                                </Fuel>
+                            </Fuels>
+                        </Unit>
+                    </Units>
+                </SubProcess>
+                <SubProcess SubprocessName="Emissions from geothermal geyser steam or fluids" InformationRequirement="Required">
+                    <Units>
+                        <Unit>
+                            <Fuels>
+                                <Fuel>
+                                    <Emissions>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_FugitiveEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_FugitiveEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>CO2nonbio</GasType>
+                                        </Emission>
+                                    </Emissions>
+                                    <AlternativeMethodologyDescription/>
+                                </Fuel>
+                            </Fuels>
+                        </Unit>
+                    </Units>
+                </SubProcess>
+                <SubProcess SubprocessName="Emissions from installation, maintenance, operation and decommissioning of electrical equipment" InformationRequirement="Required">
+                    <Units>
+                        <Unit>
+                            <Fuels>
+                                <Fuel>
+                                    <Emissions>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_FugitiveEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_SF6Emissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>SF6</GasType>
+                                        </Emission>
+                                    </Emissions>
+                                    <AlternativeMethodologyDescription/>
+                                </Fuel>
+                            </Fuels>
+                        </Unit>
+                    </Units>
+                </SubProcess>
+            </Process>
+        </ActivityPages>
+        <NonAttributableEmissions>
+            <NonAttribEmissions>
+                <NonAttribEmission>
+                    <Activity>N/A</Activity>
+                    <SourceType>N/A</SourceType>
+                    <SourceCategory>Stationary Fuel Combustion Emissions</SourceCategory>
+                    <GHGTypesThatApplys>
+                        <GHGTypesThatApply>CO2</GHGTypesThatApply>
+                        <GHGTypesThatApply>CH4</GHGTypesThatApply>
+                        <GHGTypesThatApply>N2O</GHGTypesThatApply>
+                        <GHGTypesThatApply>PFCs</GHGTypesThatApply>
+                        <GHGTypesThatApply>HFCs</GHGTypesThatApply>
+                        <GHGTypesThatApply>SF6</GHGTypesThatApply>
+                    </GHGTypesThatApplys>
+                </NonAttribEmission>
+            </NonAttribEmissions>
+        </NonAttributableEmissions>
+        <TotalCO2Captured>
+            <TotalGroups TotalGroupType="TotalCO2CapturedEmissions">
+                <Totals>
+                    <Emissions EmissionsGasType="CO2Captured">
+                        <TotalRow>
+                            <Groups>
+                                <EmissionGroupTypes>BC_CO2Captured</EmissionGroupTypes>
+                            </Groups>
+                            <NotApplicable>true</NotApplicable>
+                            <CalculatedQuantity xsi:nil="true"/>
+                            <GasType>CO2nonbio</GasType>
+                        </TotalRow>
+                    </Emissions>
+                </Totals>
+            </TotalGroups>
+        </TotalCO2Captured>
+        <TotalEmissions>
+            <TotalGroups TotalGroupType="TotalGHGEmissionGas">
+                <Totals>
+                    <Emissions EmissionsGasType="GHGEmissionGas">
+                        <TotalRow>
+                            <Quantity>0.00000000</Quantity>
+                            <CalculatedQuantity>0.00000000</CalculatedQuantity>
+                            <GasType>CO2bioC</GasType>
+                            <GasGroupType>None</GasGroupType>
+                        </TotalRow>
+                        <TotalRow>
+                            <Quantity>0.00000000</Quantity>
+                            <CalculatedQuantity>0.00000000</CalculatedQuantity>
+                            <GasType>CO2bionC</GasType>
+                            <GasGroupType>None</GasGroupType>
+                        </TotalRow>
+                        <TotalRow>
+                            <Quantity>9008.77000000</Quantity>
+                            <CalculatedQuantity>9008.77000000</CalculatedQuantity>
+                            <GasType>CO2nonbio</GasType>
+                            <GasGroupType>None</GasGroupType>
+                        </TotalRow>
+                        <TotalRow>
+                            <Quantity>9.00360000</Quantity>
+                            <CalculatedQuantity>225.09000000</CalculatedQuantity>
+                            <GasType>CH4</GasType>
+                            <GasGroupType>None</GasGroupType>
+                        </TotalRow>
+                        <TotalRow>
+                            <Quantity>6.13840000</Quantity>
+                            <CalculatedQuantity>1829.24320000</CalculatedQuantity>
+                            <GasType>N2O</GasType>
+                            <GasGroupType>None</GasGroupType>
+                        </TotalRow>
+                        <GrandTotal>
+                            <Total>11063.10320000</Total>
+                        </GrandTotal>
+                    </Emissions>
+                </Totals>
+            </TotalGroups>
+            <TotalGroups TotalGroupType="ReportingOnlyEmissions">
+                <Totals>
+                    <Emissions EmissionsGasType="ReportingOnlyByGas">
+                        <TotalRow>
+                            <Quantity>0.00000000</Quantity>
+                            <CalculatedQuantity>0.00000000</CalculatedQuantity>
+                            <GasType>CO2bioC</GasType>
+                            <GasGroupType>None</GasGroupType>
+                        </TotalRow>
+                        <TotalRow>
+                            <Quantity>0.00000000</Quantity>
+                            <CalculatedQuantity>0.00000000</CalculatedQuantity>
+                            <GasType>CO2bionC</GasType>
+                            <GasGroupType>None</GasGroupType>
+                        </TotalRow>
+                        <TotalRow>
+                            <Quantity>2732.87000000</Quantity>
+                            <CalculatedQuantity>2732.87000000</CalculatedQuantity>
+                            <GasType>CO2nonbio</GasType>
+                            <GasGroupType>None</GasGroupType>
+                        </TotalRow>
+                        <TotalRow>
+                            <Quantity>0.40650000</Quantity>
+                            <CalculatedQuantity>10.16250000</CalculatedQuantity>
+                            <GasType>CH4</GasType>
+                            <GasGroupType>None</GasGroupType>
+                        </TotalRow>
+                        <TotalRow>
+                            <Quantity>0.37980000</Quantity>
+                            <CalculatedQuantity>113.18040000</CalculatedQuantity>
+                            <GasType>N2O</GasType>
+                            <GasGroupType>None</GasGroupType>
+                        </TotalRow>
+                        <GrandTotal>
+                            <Total>2856.21290000</Total>
+                        </GrandTotal>
+                    </Emissions>
+                </Totals>
+            </TotalGroups>
+            <TotalGroups TotalGroupType="TotalEmissionsSchedB">
+                <Totals>
+                    <Emissions EmissionsGasType="OnSiteTransportationEmissions">
+                        <TotalRow>
+                            <Quantity>2732.87000000</Quantity>
+                            <CalculatedQuantity>2732.87000000</CalculatedQuantity>
+                            <GasType>CO2</GasType>
+                            <GasGroupType>None</GasGroupType>
+                        </TotalRow>
+                        <TotalRow>
+                            <Quantity>0.40650000</Quantity>
+                            <CalculatedQuantity>10.16250000</CalculatedQuantity>
+                            <GasType>CH4</GasType>
+                            <GasGroupType>None</GasGroupType>
+                        </TotalRow>
+                        <TotalRow>
+                            <Quantity>0.37980000</Quantity>
+                            <CalculatedQuantity>113.18040000</CalculatedQuantity>
+                            <GasType>N2O</GasType>
+                            <GasGroupType>None</GasGroupType>
+                        </TotalRow>
+                        <GrandTotal>
+                            <Total>2856.21290000</Total>
+                        </GrandTotal>
+                    </Emissions>
+                    <Emissions EmissionsGasType="StationaryFuelCombustionEmissions">
+                        <TotalRow>
+                            <Quantity>6275.90000000</Quantity>
+                            <CalculatedQuantity>6275.90000000</CalculatedQuantity>
+                            <GasType>CO2</GasType>
+                            <GasGroupType>None</GasGroupType>
+                        </TotalRow>
+                        <TotalRow>
+                            <Quantity>8.59710000</Quantity>
+                            <CalculatedQuantity>214.92750000</CalculatedQuantity>
+                            <GasType>CH4</GasType>
+                            <GasGroupType>None</GasGroupType>
+                        </TotalRow>
+                        <TotalRow>
+                            <Quantity>5.75860000</Quantity>
+                            <CalculatedQuantity>1716.06280000</CalculatedQuantity>
+                            <GasType>N2O</GasType>
+                            <GasGroupType>None</GasGroupType>
+                        </TotalRow>
+                        <GrandTotal>
+                            <Total>8206.89030000</Total>
+                        </GrandTotal>
+                    </Emissions>
+                </Totals>
+            </TotalGroups>
+        </TotalEmissions>
+        <ReportComments>
+            <Process ProcessName="Comments">
+                <SubProcess SubprocessName="This section is optional" InformationRequirement="Optional">
+                    <ApplicableFacilities xsi:nil="true"/>
+                    <FileDetails>
+                        <File>38</File>
+                        <UploadedFileName/>
+                        <UploadedDate/>
+                    </FileDetails>
+                </SubProcess>
+            </Process>
+        </ReportComments>
+        <ConfidentialityRequest>
+            <Process ProcessName="ConfidentialityRequest">
+                <SubProcess SubprocessName="Confidentiality Request" InformationRequirement="Required">
+                    <IsRequestingConfidentiality>No</IsRequestingConfidentiality>
+                    <FileDetails>
+                        <File>39</File>
+                        <UploadedFileName/>
+                        <UploadedDate/>
+                    </FileDetails>
+                </SubProcess>
+            </Process>
+        </ConfidentialityRequest>
+        <SubmitConfirmation>
+            <Process ProcessName="SubmitConfirmation">
+                <SubProcess SubprocessName="Approval" InformationRequirement="Required">
+                    <SubmittedBy>Uclxoicg Eldjh</SubmittedBy>
+                    <SubmissionDate>17/05/2018 13:42:23 [PM] [PDT]</SubmissionDate>
+                </SubProcess>
+            </Process>
+        </SubmitConfirmation>
+        <ProcessFlowDiagram>
+            <Process ProcessName="ProcessFlowDiagram">
+                <SubProcess SubprocessName="A Process Flow Diagram is required for SFO and LFO (Parent) reports" InformationRequirement="Required">
+                    <FileDetails>
+                        <File>44</File>
+                        <UploadedFileName>PFD diagram.pdf</UploadedFileName>
+                        <UploadedBy>Uclxoicg Eldjh</UploadedBy>
+                        <UploadedDate>16/05/2018 4:26:02 PM</UploadedDate>
+                    </FileDetails>
+                </SubProcess>
+            </Process>
+        </ProcessFlowDiagram>
+    </ActivityData>
+</ReportData>

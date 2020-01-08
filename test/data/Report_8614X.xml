@@ -1,0 +1,1197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <RegistrationData>
+        <Organisation>
+            <Details>
+                <BusinessLegalName>Fvothac Tdazlefag Ltd.</BusinessLegalName>
+                <EnglishTradeName>Fvothac Tdazlefag Ltd.</EnglishTradeName>
+                <FrenchTradeName/>
+                <CRABusinessNumber>670654234</CRABusinessNumber>
+                <DUNSNumber>784608481</DUNSNumber>
+                <WebSite/>
+            </Details>
+            <Address>
+                <PhysicalAddress>
+                    <StreetNumber>449</StreetNumber>
+                    <StreetNumberSuffix/>
+                    <StreetName>67</StreetName>
+                    <StreetType>Street</StreetType>
+                    <StreetDirection>South</StreetDirection>
+                    <Municipality>Glnajt</Municipality>
+                    <ProvTerrState>British Columbia</ProvTerrState>
+                    <PostalCodeZipCode>V9B4R3</PostalCodeZipCode>
+                    <Country>Canada</Country>
+                </PhysicalAddress>
+                <MailingAddress>
+                    <StreetNumber>449</StreetNumber>
+                    <StreetName>67</StreetName>
+                    <StreetType>Street</StreetType>
+                    <StreetDirection>South</StreetDirection>
+                    <Municipality>Glnajt</Municipality>
+                    <ProvTerrState>British Columbia</ProvTerrState>
+                    <PostalCodeZipCode>V9B4R3</PostalCodeZipCode>
+                    <Country>Canada</Country>
+                    <AdditionalInformation/>
+                </MailingAddress>
+            </Address>
+        </Organisation>
+        <Facility>
+            <Details>
+                <FacilityName>Nufzlvw</FacilityName>
+                <RelationshipType>Owned</RelationshipType>
+                <PortabilityIndicator>N</PortabilityIndicator>
+                <Status>Active</Status>
+            </Details>
+            <Identifiers>
+                <IdentifierList>
+                    <Identifier>
+                        <IdentifierType>BCGHGID</IdentifierType>
+                        <IdentifierValue>19257835361</IdentifierValue>
+                    </Identifier>
+                </IdentifierList>
+                <NAICSCodeList>
+                    <NAICSCode>
+                        <NAICSClassification>Conventional Oil and Gas Extraction </NAICSClassification>
+                        <Code>211113</Code>
+                        <NaicsPriority>Primary</NaicsPriority>
+                    </NAICSCode>
+                </NAICSCodeList>
+            </Identifiers>
+            <Address>
+                <PhysicalAddress>
+                    <Municipality>N/A</Municipality>
+                    <ProvTerrState>British Columbia</ProvTerrState>
+                    <Country>Canada</Country>
+                </PhysicalAddress>
+                <MailingAddress>
+                    <DeliveryMode>General Delivery</DeliveryMode>
+                    <StreetNumber>449</StreetNumber>
+                    <StreetNumberSuffix/>
+                    <StreetName>67</StreetName>
+                    <StreetType>Avenue</StreetType>
+                    <StreetDirection>South</StreetDirection>
+                    <Municipality>Glnajt</Municipality>
+                    <ProvTerrState>British Columbia</ProvTerrState>
+                    <PostalCodeZipCode>V1Q3T6</PostalCodeZipCode>
+                    <Country>Canada</Country>
+                    <AdditionalInformation/>
+                </MailingAddress>
+                <GeographicAddress>
+                    <Latitude>58.30365</Latitude>
+                    <Longitude>-117.60335</Longitude>
+                </GeographicAddress>
+            </Address>
+        </Facility>
+        <Contacts>
+            <Contact>
+                <Details>
+                    <ContactType>Operator Representative</ContactType>
+                    <GivenName>Tzsct</GivenName>
+                    <FamilyName>Utykd</FamilyName>
+                    <TelephoneNumber>2509506819</TelephoneNumber>
+                    <EmailAddress>Tzsct.Utykd@rjjbl.xxx</EmailAddress>
+                    <Position>Bwefp</Position>
+                    <LanguageCorrespondence>English</LanguageCorrespondence>
+                </Details>
+                <Address>
+                    <MailingAddress>
+                        <DeliveryMode>General Delivery</DeliveryMode>
+                        <POBoxNumber>6756</POBoxNumber>
+                        <UnitNumber>107836</UnitNumber>
+                        <StreetNumber>8962</StreetNumber>
+                        <StreetName>37th</StreetName>
+                        <StreetType>Street</StreetType>
+                        <StreetDirection>East</StreetDirection>
+                        <Municipality>Qeerymaht</Municipality>
+                        <ProvTerrState>British Columbia</ProvTerrState>
+                        <PostalCodeZipCode>V8M3G4</PostalCodeZipCode>
+                        <Country>Canada</Country>
+                        <AdditionalInformation>Asvmln</AdditionalInformation>
+                    </MailingAddress>
+                </Address>
+            </Contact>
+        </Contacts>
+        <ParentOrganisations/>
+    </RegistrationData>
+    <ReportDetails>
+        <ReportID>2316</ReportID>
+        <ReportType>R2a</ReportType>
+        <FacilityId>45944</FacilityId>
+        <FacilityType>IF_b</FacilityType>
+        <OrganisationId>8469</OrganisationId>
+        <ReportingPeriodDuration>2015</ReportingPeriodDuration>
+        <ReportStatus>
+            <Status>Submitted</Status>
+            <Version>1</Version>
+            <SubmissionDate>2016-03-30T10:10:47.073</SubmissionDate>
+            <LastModifiedBy>Sruec Gdxjzjh</LastModifiedBy>
+            <LastModifiedDate>2016-03-30T10:10:47.14</LastModifiedDate>
+        </ReportStatus>
+        <ActivityOrSource>
+            <ActivityList>
+                <Activity>
+                    <ActivityName>GeneralStationaryCombustion2</ActivityName>
+                    <TableNumber>2</TableNumber>
+                </Activity>
+                <Activity>
+                    <ActivityName>OGExtractionProcessing</ActivityName>
+                    <TableNumber>2</TableNumber>
+                </Activity>
+            </ActivityList>
+        </ActivityOrSource>
+        <SelectSourceCategories>
+            <OnshoreNGTransmissionCompressionPipelines>false</OnshoreNGTransmissionCompressionPipelines>
+            <UndergroundNGStorage>false</UndergroundNGStorage>
+            <LNGStorage>false</LNGStorage>
+            <LNGImportExportEquipment>false</LNGImportExportEquipment>
+            <NGDistribution>false</NGDistribution>
+            <OnshorePetroleumAndNGProduction>true</OnshorePetroleumAndNGProduction>
+            <OnshoreNGProcessing>false</OnshoreNGProcessing>
+        </SelectSourceCategories>
+    </ReportDetails>
+    <OperationalWorkerReport>
+        <ProgramID>52510276336</ProgramID>
+        <ProgramIDDate>2018-08-01T16:10:34.560</ProgramIDDate>
+        <ProgramIDCreator>Ldtswt Wxzma</ProgramIDCreator>
+    </OperationalWorkerReport>
+    <VerifyTombstone>
+        <AlwaysSaveToSwimOnCommit>true</AlwaysSaveToSwimOnCommit>
+        <Organisation>
+            <Details>
+                <BusinessLegalName>Rotoirc Ltd.</BusinessLegalName>
+                <EnglishTradeName>Fvothac Tdazlefag Ltd.</EnglishTradeName>
+                <CRABusinessNumber>670654234</CRABusinessNumber>
+                <DUNSNumber>784608481</DUNSNumber>
+            </Details>
+            <Address>
+                <MailingAddress>
+                    <StreetNumber>494</StreetNumber>
+                    <StreetName>67</StreetName>
+                    <StreetType>Street</StreetType>
+                    <StreetDirection>South</StreetDirection>
+                    <Municipality>Glnajt</Municipality>
+                    <ProvTerrState>British Columbia</ProvTerrState>
+                    <PostalCodeZipCode>V4T4E3</PostalCodeZipCode>
+                    <Country>Canada</Country>
+                </MailingAddress>
+            </Address>
+        </Organisation>
+        <Facility>
+            <Details>
+                <FacilityName>Aafjfj</FacilityName>
+                <Identifiers>
+                    <IdentifierList>
+                        <Identifier>
+                            <IdentifierType>BCGHGID</IdentifierType>
+                            <IdentifierValue>0</IdentifierValue>
+                        </Identifier>
+                    </IdentifierList>
+                    <NAICSCodeList>
+                        <NAICSCode>
+                            <Code>211113</Code>
+                        </NAICSCode>
+                    </NAICSCodeList>
+                    <Permits/>
+                </Identifiers>
+            </Details>
+            <Address>
+                <PhysicalAddress>
+                    <Municipality>N/A</Municipality>
+                    <ProvTerrState>British Columbia</ProvTerrState>
+                    <Country>Canada</Country>
+                </PhysicalAddress>
+                <GeographicalAddress>
+                    <Latitude>58.30365</Latitude>
+                    <Longitude>-117.60335</Longitude>
+                </GeographicalAddress>
+            </Address>
+        </Facility>
+        <Contacts>
+            <Contact>
+                <Details>
+                    <ContactType>Operator Contact</ContactType>
+                    <GivenName>Sruec Gdxjzjh</GivenName>
+                    <TelephoneNumber>2509103134</TelephoneNumber>
+                    <FaxNumber>2502574904</FaxNumber>
+                    <EmailAddress>Sruec.Gdxjzjh@rjjbl.xxx</EmailAddress>
+                    <Position>Sr. Engineer - Environment</Position>
+                </Details>
+                <Address>
+                    <MailingAddress>
+                        <StreetNumber>494</StreetNumber>
+                        <StreetName>67th</StreetName>
+                        <StreetType>Street</StreetType>
+                        <StreetDirection>South</StreetDirection>
+                        <Municipality>Glnajt</Municipality>
+                        <ProvTerrState>British Columbia</ProvTerrState>
+                        <PostalCodeZipCode>V8V3A6</PostalCodeZipCode>
+                        <Country>Canada</Country>
+                    </MailingAddress>
+                </Address>
+            </Contact>
+            <Contact>
+                <Details>
+                    <ContactType>Operator Representative</ContactType>
+                    <GivenName>Tzsct Utykd</GivenName>
+                    <TelephoneNumber>2509506819</TelephoneNumber>
+                    <EmailAddress>Tzsct.Utykd@rjjbl.xxx</EmailAddress>
+                    <Position>Sr. Manager-Production, Shale Gas</Position>
+                </Details>
+                <Address>
+                    <MailingAddress>
+                        <POBoxNumber>6756</POBoxNumber>
+                        <UnitNumber>783</UnitNumber>
+                        <StreetNumber>8962</StreetNumber>
+                        <StreetName>37th</StreetName>
+                        <StreetType>Street</StreetType>
+                        <StreetDirection>East</StreetDirection>
+                        <Municipality>Qeerymaht</Municipality>
+                        <ProvTerrState>British Columbia</ProvTerrState>
+                        <PostalCodeZipCode>V8M 3G4</PostalCodeZipCode>
+                        <Country>Canada</Country>
+                    </MailingAddress>
+                </Address>
+            </Contact>
+            <Contact>
+                <Details>
+                    <ContactType>Person Who Prepared Report</ContactType>
+                    <GivenName>Sruec Gdxjzjh</GivenName>
+                    <TelephoneNumber>2509103134</TelephoneNumber>
+                    <FaxNumber>2502574904</FaxNumber>
+                    <EmailAddress>Sruec.Gdxjzjh@rjjbl.xxx</EmailAddress>
+                    <Position>Sr. Engineer - Environment</Position>
+                </Details>
+                <Address>
+                    <MailingAddress>
+                        <StreetNumber>494</StreetNumber>
+                        <StreetName>67th</StreetName>
+                        <StreetType>Street</StreetType>
+                        <StreetDirection>South</StreetDirection>
+                        <Municipality>Glnajt</Municipality>
+                        <ProvTerrState>British Columbia</ProvTerrState>
+                        <PostalCodeZipCode>V6P2A1</PostalCodeZipCode>
+                        <Country>Canada</Country>
+                    </MailingAddress>
+                </Address>
+            </Contact>
+        </Contacts>
+        <ParentOrganisations/>
+    </VerifyTombstone>
+    <ActivityData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <ActivityPages>
+            <Process ProcessName="GeneralStationaryCombustion2">
+                <SubProcess SubprocessName="(a) general stationary combustion, useful energy" InformationRequirement="Required">
+                    <Units>
+                        <Unit>
+                            <Fuels>
+                                <Fuel>
+                                    <Emissions>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_GeneralStationaryCombustionEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_GeneralStationaryCombustionEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>false</NotApplicable>
+                                            <Quantity>1180.0</Quantity>
+                                            <CalculatedQuantity>1180.0</CalculatedQuantity>
+                                            <GasType>CO2nonbio</GasType>
+                                        </Emission>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_GeneralStationaryCombustionEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_CO2BiomassCombustion</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>CO2bionC</GasType>
+                                        </Emission>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_GeneralStationaryCombustionEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_CO2BiomassCombustion</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ReportingOnlyEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>CO2bioC</GasType>
+                                        </Emission>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_GeneralStationaryCombustionEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_GeneralStationaryCombustionEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>false</NotApplicable>
+                                            <Quantity>3.01</Quantity>
+                                            <CalculatedQuantity>75.25</CalculatedQuantity>
+                                            <GasType>CH4</GasType>
+                                        </Emission>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_GeneralStationaryCombustionEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_GeneralStationaryCombustionEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>false</NotApplicable>
+                                            <Quantity>0.052</Quantity>
+                                            <CalculatedQuantity>15.496</CalculatedQuantity>
+                                            <GasType>N2O</GasType>
+                                        </Emission>
+                                    </Emissions>
+                                </Fuel>
+                            </Fuels>
+                        </Unit>
+                    </Units>
+                </SubProcess>
+                <SubProcess SubprocessName="(b) general stationary combustion, no useful energy" InformationRequirement="Required">
+                    <Units>
+                        <Unit>
+                            <Fuels>
+                                <Fuel>
+                                    <Emissions>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_WasteEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_GeneralStationaryCombustionEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>CO2nonbio</GasType>
+                                        </Emission>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_WasteEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_CO2BiomassCombustion</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>CO2bionC</GasType>
+                                        </Emission>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_WasteEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_CO2BiomassCombustion</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ReportingOnlyEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>CO2bioC</GasType>
+                                        </Emission>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_WasteEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_GeneralStationaryCombustionEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>CH4</GasType>
+                                        </Emission>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_WasteEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_GeneralStationaryCombustionEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>N2O</GasType>
+                                        </Emission>
+                                    </Emissions>
+                                </Fuel>
+                            </Fuels>
+                        </Unit>
+                    </Units>
+                </SubProcess>
+            </Process>
+            <Process ProcessName="OGExtractionProcessing">
+                <SubProcess SubprocessName="Flaring" InformationRequirement="Required">
+                    <Units>
+                        <Unit>
+                            <Fuels>
+                                <Fuel>
+                                    <Emissions EmissionsType="Onshore Petroleum and NG Production: Well Testing Flaring">
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_FlaringEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_FlaringEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>CO2nonbio</GasType>
+                                        </Emission>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_FlaringEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_FlaringEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>CH4</GasType>
+                                        </Emission>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_FlaringEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_FlaringEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>N2O</GasType>
+                                        </Emission>
+                                    </Emissions>
+                                    <Emissions EmissionsType="Onshore Petroleum and NG Production: Associated Gas Flaring">
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_FlaringEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_FlaringEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>CO2nonbio</GasType>
+                                        </Emission>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_FlaringEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_FlaringEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>CH4</GasType>
+                                        </Emission>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_FlaringEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_FlaringEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>N2O</GasType>
+                                        </Emission>
+                                    </Emissions>
+                                    <Emissions EmissionsType="Onshore Petroleum and NG Production: Flare Stacks">
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_FlaringEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_FlaringEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>CO2nonbio</GasType>
+                                        </Emission>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_FlaringEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_FlaringEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>CH4</GasType>
+                                        </Emission>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_FlaringEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_FlaringEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>N2O</GasType>
+                                        </Emission>
+                                    </Emissions>
+                                    <AlternativeMethodologyDescription/>
+                                </Fuel>
+                            </Fuels>
+                        </Unit>
+                    </Units>
+                </SubProcess>
+                <SubProcess SubprocessName="Venting" InformationRequirement="Required">
+                    <Units>
+                        <Unit>
+                            <Fuels>
+                                <Fuel>
+                                    <Emissions EmissionsType="Onshore Petroleum and NG Production: NG continuous high bleed devices venting">
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_VentingEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_VentingEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>CO2nonbio</GasType>
+                                        </Emission>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_VentingEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_VentingEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>CH4</GasType>
+                                        </Emission>
+                                    </Emissions>
+                                    <Emissions EmissionsType="Onshore Petroleum and NG Production: NG pneumatic pump venting">
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_VentingEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_VentingEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>CO2nonbio</GasType>
+                                        </Emission>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_VentingEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_VentingEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>CH4</GasType>
+                                        </Emission>
+                                    </Emissions>
+                                    <Emissions EmissionsType="Onshore Petroleum and NG Production: NG continuous low bleed devices venting">
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_VentingEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_VentingEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>CO2nonbio</GasType>
+                                        </Emission>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_VentingEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_VentingEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>CH4</GasType>
+                                        </Emission>
+                                    </Emissions>
+                                    <Emissions EmissionsType="Onshore Petroleum and NG Production: NG intermittent devices venting">
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_VentingEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_VentingEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>CO2nonbio</GasType>
+                                        </Emission>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_VentingEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_VentingEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>CH4</GasType>
+                                        </Emission>
+                                    </Emissions>
+                                    <Emissions EmissionsType="Onshore Petroleum and NG Production: acid gas removal venting or incineration process">
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_VentingEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_VentingEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>CO2nonbio</GasType>
+                                        </Emission>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_VentingEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_VentingEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>CH4</GasType>
+                                        </Emission>
+                                    </Emissions>
+                                    <Emissions EmissionsType="Onshore Petroleum and NG Production: Dehydrator Vents">
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_VentingEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_VentingEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>CO2nonbio</GasType>
+                                        </Emission>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_VentingEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_VentingEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>CH4</GasType>
+                                        </Emission>
+                                    </Emissions>
+                                    <Emissions EmissionsType="Onshore Petroleum and NG Production: Well Venting for Liquids Unloading">
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_VentingEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_VentingEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>CO2nonbio</GasType>
+                                        </Emission>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_VentingEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_VentingEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>CH4</GasType>
+                                        </Emission>
+                                    </Emissions>
+                                    <Emissions EmissionsType="Onshore Petroleum and NG Production: gas well venting during well completion or workovers">
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_VentingEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_VentingEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>CO2nonbio</GasType>
+                                        </Emission>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_VentingEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_VentingEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>CH4</GasType>
+                                        </Emission>
+                                    </Emissions>
+                                    <Emissions EmissionsType="Onshore Petroleum and NG Production: Well Testing Venting">
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_VentingEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_VentingEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>CO2nonbio</GasType>
+                                        </Emission>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_VentingEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_VentingEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>CH4</GasType>
+                                        </Emission>
+                                    </Emissions>
+                                    <Emissions EmissionsType="Onshore Petroleum and NG Production: Associated Gas Venting">
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_VentingEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_VentingEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>CO2nonbio</GasType>
+                                        </Emission>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_VentingEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_VentingEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>CH4</GasType>
+                                        </Emission>
+                                    </Emissions>
+                                    <Emissions EmissionsType="Onshore Petroleum and NG Production: EOR Injection Pump Blowdown">
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_VentingEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_VentingEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>CO2nonbio</GasType>
+                                        </Emission>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_VentingEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_VentingEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>CH4</GasType>
+                                        </Emission>
+                                    </Emissions>
+                                    <Emissions EmissionsType="Onshore Petroleum and NG Production: blowdown vent stacks">
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_VentingEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_VentingEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>CO2nonbio</GasType>
+                                        </Emission>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_VentingEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_VentingEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>CH4</GasType>
+                                        </Emission>
+                                    </Emissions>
+                                    <Emissions EmissionsType="Onshore Petroleum and NG Production: Centrifugal compressor venting">
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_VentingEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_VentingEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>CO2nonbio</GasType>
+                                        </Emission>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_VentingEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_VentingEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>CH4</GasType>
+                                        </Emission>
+                                    </Emissions>
+                                    <Emissions EmissionsType="Onshore Petroleum and NG Production: reciprocating compressor venting">
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_VentingEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_VentingEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>CO2nonbio</GasType>
+                                        </Emission>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_VentingEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_VentingEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>CH4</GasType>
+                                        </Emission>
+                                    </Emissions>
+                                    <Emissions EmissionsType="Onshore Petroleum and NG Production: production/processing storage tanks">
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_VentingEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_VentingEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>CO2nonbio</GasType>
+                                        </Emission>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_VentingEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_VentingEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>CH4</GasType>
+                                        </Emission>
+                                    </Emissions>
+                                    <Emissions EmissionsType="Onshore Petroleum and NG Production: transmission storage tanks">
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_VentingEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_VentingEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>CO2nonbio</GasType>
+                                        </Emission>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_VentingEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_VentingEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>CH4</GasType>
+                                        </Emission>
+                                    </Emissions>
+                                    <Emissions EmissionsType="Onshore Petroleum and NG Production: other venting sources">
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_VentingEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_VentingEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>false</NotApplicable>
+                                            <Quantity>0.2</Quantity>
+                                            <CalculatedQuantity>0.2</CalculatedQuantity>
+                                            <GasType>CO2nonbio</GasType>
+                                        </Emission>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_VentingEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_VentingEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>false</NotApplicable>
+                                            <Quantity>0.60</Quantity>
+                                            <CalculatedQuantity>15.00</CalculatedQuantity>
+                                            <GasType>CH4</GasType>
+                                        </Emission>
+                                    </Emissions>
+                                    <AlternativeMethodologyDescription/>
+                                </Fuel>
+                            </Fuels>
+                        </Unit>
+                    </Units>
+                </SubProcess>
+                <SubProcess SubprocessName="Fugitive" InformationRequirement="Required">
+                    <Units>
+                        <Unit>
+                            <Fuels>
+                                <Fuel>
+                                    <Emissions EmissionsType="Onshore Petroleum and NG Production: gathering pipeline equipment leaks">
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_FugitiveEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_FugitiveEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>CO2nonbio</GasType>
+                                        </Emission>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_FugitiveEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_FugitiveEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>CH4</GasType>
+                                        </Emission>
+                                    </Emissions>
+                                    <Emissions EmissionsType="Onshore Petroleum and NG Production: production equipment leaks from valves, connectors, etc.">
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_FugitiveEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_FugitiveEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>false</NotApplicable>
+                                            <Quantity>0</Quantity>
+                                            <CalculatedQuantity>0</CalculatedQuantity>
+                                            <GasType>CO2nonbio</GasType>
+                                        </Emission>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_FugitiveEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_FugitiveEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>false</NotApplicable>
+                                            <Quantity>0</Quantity>
+                                            <CalculatedQuantity>0</CalculatedQuantity>
+                                            <GasType>CH4</GasType>
+                                        </Emission>
+                                    </Emissions>
+                                    <Emissions EmissionsType="Onshore Petroleum and NG Production: third-party line hits">
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_FugitiveEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_FugitiveEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>CO2nonbio</GasType>
+                                        </Emission>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_FugitiveEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_FugitiveEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>CH4</GasType>
+                                        </Emission>
+                                    </Emissions>
+                                    <Emissions EmissionsType="Onshore Petroleum and NG Production: other fugitive sources">
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_FugitiveEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_FugitiveEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>CO2nonbio</GasType>
+                                        </Emission>
+                                        <Emission>
+                                            <Groups>
+                                                <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                                <EmissionGroupTypes>BC_ScheduleB_FugitiveEmissions</EmissionGroupTypes>
+                                                <EmissionGroupTypes>EC_FugitiveEmissions</EmissionGroupTypes>
+                                            </Groups>
+                                            <NotApplicable>true</NotApplicable>
+                                            <CalculatedQuantity xsi:nil="true"/>
+                                            <GasType>CH4</GasType>
+                                        </Emission>
+                                    </Emissions>
+                                    <AlternativeMethodologyDescription/>
+                                </Fuel>
+                            </Fuels>
+                        </Unit>
+                    </Units>
+                </SubProcess>
+                <SubProcess SubprocessName="Mandatory Additional Reportable Information as per WCI.362(g)(1)-(20)" InformationRequirement="MandatoryAdditional" InfoType="WCI362g120">
+                    <ThroughputBOE ThroughputType="OnshorePetroleumNaturalGasThroughput">3828341</ThroughputBOE>
+                    <FileDetails>
+                        <File>26</File>
+                        <UploadedFileName>Omcblpnbdm.pdf</UploadedFileName>
+                        <UploadedBy>Sruec Gdxjzjh</UploadedBy>
+                        <UploadedDate>26/02/2016 4:35:12 PM</UploadedDate>
+                    </FileDetails>
+                </SubProcess>
+            </Process>
+        </ActivityPages>
+        <NonAttributableEmissions>
+            <NonAttribEmissions/>
+        </NonAttributableEmissions>
+        <TotalCO2Captured>
+            <TotalGroups TotalGroupType="TotalCO2CapturedEmissions">
+                <Totals>
+                    <Emissions EmissionsGasType="CO2Captured">
+                        <TotalRow>
+                            <Groups>
+                                <EmissionGroupTypes>BC_CO2Captured</EmissionGroupTypes>
+                            </Groups>
+                            <NotApplicable>true</NotApplicable>
+                            <CalculatedQuantity xsi:nil="true"/>
+                            <GasType>CO2nonbio</GasType>
+                        </TotalRow>
+                    </Emissions>
+                </Totals>
+            </TotalGroups>
+        </TotalCO2Captured>
+        <TotalEmissions>
+            <TotalGroups TotalGroupType="TotalGHGEmissionGas">
+                <Totals>
+                    <Emissions EmissionsGasType="GHGEmissionGas">
+                        <TotalRow>
+                            <Quantity>1180.20000000</Quantity>
+                            <CalculatedQuantity>1180.20000000</CalculatedQuantity>
+                            <GasType>CO2nonbio</GasType>
+                            <GasGroupType>None</GasGroupType>
+                        </TotalRow>
+                        <TotalRow>
+                            <Quantity>3.61000000</Quantity>
+                            <CalculatedQuantity>90.25000000</CalculatedQuantity>
+                            <GasType>CH4</GasType>
+                            <GasGroupType>None</GasGroupType>
+                        </TotalRow>
+                        <TotalRow>
+                            <Quantity>0.05200000</Quantity>
+                            <CalculatedQuantity>15.49600000</CalculatedQuantity>
+                            <GasType>N2O</GasType>
+                            <GasGroupType>None</GasGroupType>
+                        </TotalRow>
+                        <GrandTotal>
+                            <Total>1285.94600000</Total>
+                        </GrandTotal>
+                    </Emissions>
+                </Totals>
+            </TotalGroups>
+            <TotalGroups TotalGroupType="TotalEmissionsSchedB">
+                <Totals>
+                    <Emissions EmissionsGasType="FlaringEmissions">
+                        <TotalRow>
+                            <Quantity>0.00000000</Quantity>
+                            <CalculatedQuantity>0.00000000</CalculatedQuantity>
+                            <GasType>CO2</GasType>
+                            <GasGroupType>None</GasGroupType>
+                        </TotalRow>
+                        <TotalRow>
+                            <Quantity>0.00000000</Quantity>
+                            <CalculatedQuantity>0.00000000</CalculatedQuantity>
+                            <GasType>CH4</GasType>
+                            <GasGroupType>None</GasGroupType>
+                        </TotalRow>
+                        <TotalRow>
+                            <Quantity>0.00000000</Quantity>
+                            <CalculatedQuantity>0.00000000</CalculatedQuantity>
+                            <GasType>N2O</GasType>
+                            <GasGroupType>None</GasGroupType>
+                        </TotalRow>
+                        <GrandTotal>
+                            <Total>0.00000000</Total>
+                        </GrandTotal>
+                    </Emissions>
+                    <Emissions EmissionsGasType="FugitiveEmissions">
+                        <TotalRow>
+                            <Quantity>0.00000000</Quantity>
+                            <CalculatedQuantity>0.00000000</CalculatedQuantity>
+                            <GasType>CO2</GasType>
+                            <GasGroupType>None</GasGroupType>
+                        </TotalRow>
+                        <TotalRow>
+                            <Quantity>0.00000000</Quantity>
+                            <CalculatedQuantity>0.00000000</CalculatedQuantity>
+                            <GasType>CH4</GasType>
+                            <GasGroupType>None</GasGroupType>
+                        </TotalRow>
+                        <GrandTotal>
+                            <Total>0.00000000</Total>
+                        </GrandTotal>
+                    </Emissions>
+                    <Emissions EmissionsGasType="StationaryFuelCombustionEmissions">
+                        <TotalRow>
+                            <Quantity>1180.00000000</Quantity>
+                            <CalculatedQuantity>1180.00000000</CalculatedQuantity>
+                            <GasType>CO2</GasType>
+                            <GasGroupType>None</GasGroupType>
+                        </TotalRow>
+                        <TotalRow>
+                            <Quantity>3.01000000</Quantity>
+                            <CalculatedQuantity>75.25000000</CalculatedQuantity>
+                            <GasType>CH4</GasType>
+                            <GasGroupType>None</GasGroupType>
+                        </TotalRow>
+                        <TotalRow>
+                            <Quantity>0.05200000</Quantity>
+                            <CalculatedQuantity>15.49600000</CalculatedQuantity>
+                            <GasType>N2O</GasType>
+                            <GasGroupType>None</GasGroupType>
+                        </TotalRow>
+                        <GrandTotal>
+                            <Total>1270.74600000</Total>
+                        </GrandTotal>
+                    </Emissions>
+                    <Emissions EmissionsGasType="VentingEmissions">
+                        <TotalRow>
+                            <Quantity>0.20000000</Quantity>
+                            <CalculatedQuantity>0.20000000</CalculatedQuantity>
+                            <GasType>CO2</GasType>
+                            <GasGroupType>None</GasGroupType>
+                        </TotalRow>
+                        <TotalRow>
+                            <Quantity>0.60000000</Quantity>
+                            <CalculatedQuantity>15.00000000</CalculatedQuantity>
+                            <GasType>CH4</GasType>
+                            <GasGroupType>None</GasGroupType>
+                        </TotalRow>
+                        <GrandTotal>
+                            <Total>15.20000000</Total>
+                        </GrandTotal>
+                    </Emissions>
+                </Totals>
+            </TotalGroups>
+        </TotalEmissions>
+        <ReportComments>
+            <Process ProcessName="Comments">
+                <SubProcess SubprocessName="This section is optional" InformationRequirement="Optional">
+                    <ApplicableFacilities xsi:nil="true"/>
+                    <FileDetails>
+                        <File>38</File>
+                        <UploadedFileName/>
+                        <UploadedDate/>
+                    </FileDetails>
+                </SubProcess>
+            </Process>
+        </ReportComments>
+        <ConfidentialityRequest>
+            <Process ProcessName="ConfidentialityRequest">
+                <SubProcess SubprocessName="Confidentiality Request" InformationRequirement="Required">
+                    <IsRequestingConfidentiality>No</IsRequestingConfidentiality>
+                    <FileDetails>
+                        <File>39</File>
+                        <UploadedFileName/>
+                        <UploadedDate/>
+                    </FileDetails>
+                </SubProcess>
+            </Process>
+        </ConfidentialityRequest>
+        <SubmitConfirmation>
+            <Process ProcessName="SubmitConfirmation">
+                <SubProcess SubprocessName="Approval" InformationRequirement="Required">
+                    <SubmittedBy>Sruec Gdxjzjh</SubmittedBy>
+                    <SubmissionDate>30/03/2016 07:10:47 [AM] [PDT]</SubmissionDate>
+                </SubProcess>
+            </Process>
+        </SubmitConfirmation>
+        <ReportVerification>
+            <Process ProcessName="ReportVerification">
+                <SubProcess SubprocessName="A verification statement is required if E greater than or equal to 25,000 t CO2e or E has been larger than 25,000 t CO2e in the past 3 reporting periods" InformationRequirement="Required">
+                    <FileDetails>
+                        <File>40</File>
+                        <UploadedFileName>kjhg.pdf</UploadedFileName>
+                        <UploadedBy>Sruec Gdxjzjh</UploadedBy>
+                        <UploadedDate>29/03/2016 4:41:16 PM</UploadedDate>
+                    </FileDetails>
+                </SubProcess>
+            </Process>
+        </ReportVerification>
+    </ActivityData>
+</ReportData>
