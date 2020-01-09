@@ -152,7 +152,7 @@ select results_eq(
     'select reporting_year from swrs.pro_rated_carbon_tax_rate order by reporting_year',
 
     $$
-    select reporting_period_duration::integer
+    select reporting_period_duration
     from swrs_transform.fuel as fuel
     join swrs_transform.report as report
     on report.ghgr_import_id = fuel.ghgr_import_id
@@ -172,7 +172,7 @@ select results_eq(
     join swrs_transform.report as report
     on report.ghgr_import_id = fuel.ghgr_import_id
     )
-    select concat((x.rpd::integer)::text, '-12-31')::date - concat((x.rpd::integer)::text, '-01-01')::date as year_length
+    select concat((x.rpd)::text, '-12-31')::date - concat((x.rpd)::text, '-01-01')::date as year_length
     from x where x.fuel_type = 'Wood Waste'
     order by year_length
     $$,
@@ -190,13 +190,13 @@ select results_eq(
     join swrs_transform.report as report
         on report.ghgr_import_id = fuel.ghgr_import_id
     join swrs.carbon_tax_rate_mapping as ctr
-        on concat((report.reporting_period_duration::integer - 1)::text, '-04-01')::date >= ctr.rate_start_date
+        on concat((report.reporting_period_duration - 1)::text, '-04-01')::date >= ctr.rate_start_date
         and concat(report.reporting_period_duration::text, '-03-31')::date <= ctr.rate_end_date
     )
     select
            case
-               when x.rpd::integer <= 2017 then 0
-               when x.rpd::integer > 2021 then (select carbon_tax_rate from swrs.carbon_tax_rate_mapping where id = (select max(id) from swrs.carbon_tax_rate_mapping))
+               when x.rpd <= 2017 then 0
+               when x.rpd > 2021 then (select carbon_tax_rate from swrs.carbon_tax_rate_mapping where id = (select max(id) from swrs.carbon_tax_rate_mapping))
                else x.rate
            end as start_rate
     from x where x.fuel_type = 'Wood Waste' order by start_rate desc
@@ -215,17 +215,17 @@ select results_eq(
     join swrs_transform.report as report
         on report.ghgr_import_id = fuel.ghgr_import_id
     join swrs.carbon_tax_rate_mapping as ctr
-        on concat((report.reporting_period_duration::integer - 1)::text, '-04-01')::date >= ctr.rate_start_date
+        on concat((report.reporting_period_duration - 1)::text, '-04-01')::date >= ctr.rate_start_date
         and concat(report.reporting_period_duration::text, '-03-31')::date <= ctr.rate_end_date
     )
 
     select
         case
-            when x.rpd::integer <= 2017 then 0
-            when x.rpd::integer > 2021 then concat((x.rpd::integer)::text, '-04-01')::date - concat((x.rpd::integer)::text, '-01-01')::date
+            when x.rpd <= 2017 then 0
+            when x.rpd > 2021 then concat(x.rpd)::text, '-04-01')::date - concat((x.rpd)::text, '-01-01')::date
             else (select rate_start_date
                   from swrs.carbon_tax_rate_mapping
-                  where id = x.id+1) - concat((x.rpd::integer)::text, '-01-01')::date
+                  where id = x.id+1) - concat((x.rpd)::text, '-01-01')::date
         end as start_duration
     from x where x.fuel_type = 'Wood Waste' order by start_duration asc
     $$,
@@ -243,14 +243,14 @@ select results_eq(
     join swrs_transform.report as report
         on report.ghgr_import_id = fuel.ghgr_import_id
     join swrs.carbon_tax_rate_mapping as ctr
-        on concat((report.reporting_period_duration::integer - 1)::text, '-04-01')::date >= ctr.rate_start_date
+        on concat((report.reporting_period_duration - 1)::text, '-04-01')::date >= ctr.rate_start_date
         and concat(report.reporting_period_duration::text, '-03-31')::date <= ctr.rate_end_date
     )
     select
            case
-               when x.rpd::integer < 2017 then 0
-               when x.rpd::integer = 2017 then 30
-               when x.rpd::integer > 2021 then (select carbon_tax_rate from swrs.carbon_tax_rate_mapping where id = (select max(id) from swrs.carbon_tax_rate_mapping))
+               when x.rpd < 2017 then 0
+               when x.rpd = 2017 then 30
+               when x.rpd > 2021 then (select carbon_tax_rate from swrs.carbon_tax_rate_mapping where id = (select max(id) from swrs.carbon_tax_rate_mapping))
                else (select carbon_tax_rate from swrs.carbon_tax_rate_mapping where id = x.id+1)
            end as end_rate
     from x where x.fuel_type = 'Wood Waste' order by end_rate desc
@@ -269,15 +269,15 @@ select results_eq(
     join swrs_transform.report as report
         on report.ghgr_import_id = fuel.ghgr_import_id
     join swrs.carbon_tax_rate_mapping as ctr
-        on concat((report.reporting_period_duration::integer - 1)::text, '-04-01')::date >= ctr.rate_start_date
+        on concat((report.reporting_period_duration - 1)::text, '-04-01')::date >= ctr.rate_start_date
         and concat(report.reporting_period_duration::text, '-03-31')::date <= ctr.rate_end_date
     )
 
     select case
-               when x.rpd::integer < 2017 then 0
-               when x.rpd::integer = 2017 then '2017-12-31'::date - '2017-04-01'::date
-               when x.rpd::integer > 2021 then concat((x.rpd::integer)::text, '-12-31')::date - concat((x.rpd::integer)::text, '-04-01')::date
-               else concat((x.rpd::integer)::text, '-12-31')::date - (select rate_start_date
+               when x.rpd < 2017 then 0
+               when x.rpd = 2017 then '2017-12-31'::date - '2017-04-01'::date
+               when x.rpd > 2021 then concat((x.rpd)::text, '-12-31')::date - concat((x.rpd)::text, '-04-01')::date
+               else concat((x.rpd)::text, '-12-31')::date - (select rate_start_date
                                                              from swrs.carbon_tax_rate_mapping
                                                              where id = x.id+1)
            end as end_duration
@@ -302,42 +302,42 @@ select results_eq(
                  join swrs_transform.report as report
                       on fuel.ghgr_import_id = report.ghgr_import_id
                  join swrs.carbon_tax_rate_mapping as ctr
-                      on concat((report.reporting_period_duration::integer - 1)::text, '-04-01')::date >= ctr.rate_start_date
+                      on concat((report.reporting_period_duration - 1)::text, '-04-01')::date >= ctr.rate_start_date
                       and concat(report.reporting_period_duration::text, '-03-31')::date <= ctr.rate_end_date
     ), y as (
-    select x.rpd::integer as reporting_year,
+    select x.rpd as reporting_year,
            x.fuel_type as fuel_type,
            case
-               when x.rpd::integer <= 2017 then 0
-               when x.rpd::integer > 2021 then (select carbon_tax_rate from swrs.carbon_tax_rate_mapping where id = (select max(id) from swrs.carbon_tax_rate_mapping))
+               when x.rpd <= 2017 then 0
+               when x.rpd > 2021 then (select carbon_tax_rate from swrs.carbon_tax_rate_mapping where id = (select max(id) from swrs.carbon_tax_rate_mapping))
                else x.rate
            end as start_rate,
 
            case
-               when x.rpd::integer < 2017 then 0
-               when x.rpd::integer = 2017 then 30
-               when x.rpd::integer > 2021 then (select carbon_tax_rate from swrs.carbon_tax_rate_mapping where id = (select max(id) from swrs.carbon_tax_rate_mapping))
+               when x.rpd < 2017 then 0
+               when x.rpd = 2017 then 30
+               when x.rpd > 2021 then (select carbon_tax_rate from swrs.carbon_tax_rate_mapping where id = (select max(id) from swrs.carbon_tax_rate_mapping))
                else (select carbon_tax_rate from swrs.carbon_tax_rate_mapping where id = x.id+1)
            end as end_rate,
 
            case
-               when x.rpd::integer <= 2017 then 0
-               when x.rpd::integer > 2021 then concat((x.rpd::integer)::text, '-04-01')::date - concat((x.rpd::integer)::text, '-01-01')::date
+               when x.rpd <= 2017 then 0
+               when x.rpd > 2021 then concat((x.rpd)::text, '-04-01')::date - concat((x.rpd)::text, '-01-01')::date
                else (select rate_start_date
                      from swrs.carbon_tax_rate_mapping
-                     where id = x.id+1) - concat((x.rpd::integer)::text, '-01-01')::date
+                     where id = x.id+1) - concat((x.rpd)::text, '-01-01')::date
            end as start_duration,
 
            case
-               when x.rpd::integer < 2017 then 0
-               when x.rpd::integer = 2017 then '2017-12-31'::date - '2017-04-01'::date
-               when x.rpd::integer > 2021 then concat((x.rpd::integer)::text, '-12-31')::date - concat((x.rpd::integer)::text, '-04-01')::date
-               else concat((x.rpd::integer)::text, '-12-31')::date - (select rate_start_date
+               when x.rpd < 2017 then 0
+               when x.rpd = 2017 then '2017-12-31'::date - '2017-04-01'::date
+               when x.rpd > 2021 then concat((x.rpd)::text, '-12-31')::date - concat((x.rpd)::text, '-04-01')::date
+               else concat((x.rpd)::text, '-12-31')::date - (select rate_start_date
                                                              from swrs.carbon_tax_rate_mapping
                                                              where id = x.id+1)
            end as end_duration,
 
-           concat((x.rpd::integer)::text, '-12-31')::date - concat((x.rpd::integer)::text, '-01-01')::date as year_length
+           concat((x.rpd)::text, '-12-31')::date - concat((x.rpd)::text, '-01-01')::date as year_length
     from x)
     select
            ((y.start_rate * y.start_duration) + (y.end_rate * y.end_duration)) / y.year_length as pro_rated_carbon_tax_rate

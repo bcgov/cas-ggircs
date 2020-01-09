@@ -14,7 +14,7 @@ create table swrs.report
     report_type               varchar(1000),
     swrs_facility_id          integer,
     swrs_organisation_id      integer,
-    reporting_period_duration varchar(1000),
+    reporting_period_duration integer,
     status                    varchar(1000),
     version                   varchar(1000),
     submission_date           timestamptz,

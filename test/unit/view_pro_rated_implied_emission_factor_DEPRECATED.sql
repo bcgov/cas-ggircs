@@ -155,7 +155,7 @@ select results_eq(
     'select reporting_year from swrs.pro_rated_implied_emission_factor order by reporting_year',
 
     $$
-    select reporting_period_duration::integer
+    select reporting_period_duration
     from swrs.fuel as fuel
     join swrs.report as report
     on fuel.report_id = report.id

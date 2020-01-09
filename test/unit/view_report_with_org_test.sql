@@ -39,7 +39,7 @@ select col_hasnt_default('swrs', 'report_with_org', 'facility_name', 'report_wit
 select col_type_is('swrs', 'report_with_org', 'facility_type', 'character varying(1000)', 'attributable_emissions.emission_id column should be type varchar');
 select col_hasnt_default('swrs', 'report_with_org', 'facility_type', 'report_with_org.facility_type column should not have a default value');
 
-select col_type_is('swrs', 'report_with_org', 'reporting_period_duration', 'character varying(1000)', 'attributable_emissions.emission_id column should be type varchar');
+select col_type_is('swrs', 'report_with_org', 'reporting_period_duration', 'integer', 'attributable_emissions.emission_id column should be type varchar');
 select col_hasnt_default('swrs', 'report_with_org', 'reporting_period_duration', 'report_with_org.reporting_period_duration column should not have a default value');
 
 select col_type_is('swrs', 'report_with_org', 'naics_classification', 'character varying(1000)', 'attributable_emissions.emission_id column should be type varchar');
