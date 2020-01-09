@@ -2,6 +2,7 @@ version: 2.1
 
 orbs:
   redhat-openshift: circleci/redhat-openshift@0.2.0
+  sonarcloud: sonarsource/sonarcloud@1.0.0
 
 jobs:
   test:
@@ -28,6 +29,13 @@ jobs:
       - run:
           name: Test database using Make
           command: make test PSQL="psql -h localhost" CI_NO_PIPELINE=true
+
+  scan:
+    docker:
+      - image: 'circleci/python:3.7.4'
+    steps:
+      - checkout
+      - sonarcloud/scan
 
   test-local-cluster:
     executor: redhat-openshift/machine-for-local-cluster
@@ -125,6 +133,8 @@ workflows:
     jobs:
       - test
       - lint:
+          context: cas-pipeline
+      - scan:
           context: cas-pipeline
       - build:
           context: cas-pipeline
