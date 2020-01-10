@@ -17,7 +17,7 @@ create or replace view swrs.carbon_tax_calculation as
                _naics.id                                                     as naics_id,
                _fuel_mapping.fuel_type                                       as fuel_type,
                coalesce(_fuel.annual_fuel_amount, _emission.quantity)        as fuel_amount,
-               _report.reporting_period_duration::integer as year,
+               _report.reporting_period_duration as year,
                _pro_rated_fuel_charge.pro_rated_fuel_charge,
                _pro_rated_fuel_charge.flat_rate,
                _fuel_carbon_tax_details.cta_rate_units                      as units,

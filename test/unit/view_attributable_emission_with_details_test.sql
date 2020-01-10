@@ -87,7 +87,7 @@ select col_hasnt_default('swrs', 'attributable_emissions_with_details', 'methodo
 select col_type_is('swrs', 'attributable_emissions_with_details', 'emission_category', 'character varying(1000)', 'attributable_emissions.emission_category column should be type varchar');
 select col_hasnt_default('swrs', 'attributable_emissions_with_details', 'emission_category', 'attributable_emission.emission_category column should not have a default value');
 
-select col_type_is('swrs', 'attributable_emissions_with_details', 'reporting_period_duration', 'character varying(1000)', 'attributable_emissions.reporting_period_duration column should be type varchar');
+select col_type_is('swrs', 'attributable_emissions_with_details', 'reporting_period_duration', 'integer', 'attributable_emissions.reporting_period_duration column should be type varchar');
 select col_hasnt_default('swrs', 'attributable_emissions_with_details', 'reporting_period_duration', 'attributable_emission.reporting_period_duration column should not have a default value');
 
 select col_type_is('swrs', 'attributable_emissions_with_details', 'fuel_type', 'character varying(1000)', 'attributable_emissions.fuel_type column should be type varchar');

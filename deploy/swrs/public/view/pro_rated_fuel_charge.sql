@@ -10,7 +10,7 @@ create or replace view swrs.pro_rated_fuel_charge as
     with x as (
         select _fuel_mapping.fuel_type,
                coalesce(fuel.fuel_mapping_id, _emission.fuel_mapping_id)        as fuel_mapping_id,
-               _report.reporting_period_duration::integer                       as year,
+               _report.reporting_period_duration                                as year,
                _fuel_charge.start_date,
                _fuel_charge.end_date,
                _fuel_charge.fuel_charge,

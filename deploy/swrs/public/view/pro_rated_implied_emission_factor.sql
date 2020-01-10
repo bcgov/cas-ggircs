@@ -11,7 +11,7 @@ begin;
 create or replace view swrs.pro_rated_implied_emission_factor as
     with x as (
         select fuel.fuel_type                   as fuel_type,
-               report.reporting_period_duration::integer as rpd,
+               report.reporting_period_duration as rpd,
                fmap.id                           as fmap_id,
                ief.start_date                   as start,
                ief.end_date                     as end,
@@ -25,7 +25,7 @@ create or replace view swrs.pro_rated_implied_emission_factor as
                       on fuel.fuel_type = fmap.fuel_type
                  join swrs.implied_emission_factor as ief
                       on ief.fuel_mapping_id = fmap.id
-                      and concat((report.reporting_period_duration::integer - 1)::text, '-04-01')::date >= ief.start_date
+                      and concat((report.reporting_period_duration - 1)::text, '-04-01')::date >= ief.start_date
                       and concat(report.reporting_period_duration::text, '-03-31')::date <= ief.end_date
 
     ), y as (
