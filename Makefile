@@ -215,25 +215,38 @@ build: whoami
 
 GGIRCS_DB_NAME = "ggircs"
 GGIRCS_USER_NAME = "ggircs"
-
+GGIRCS_READONLY_USER_NAME = $(GGIRCS_USER_NAME)_readonly
 
 .PHONY: install
 install: whoami
+	# Retrieve or generate password for the user owning the ggircs database
 	$(eval GGIRCS_PASSWORD = $(shell if [ -n "$$($(OC) -n "$(OC_PROJECT)" get secret/cas-ggircs-postgres --ignore-not-found -o name)" ]; then \
 $(OC) -n "$(OC_PROJECT)" get secret/cas-ggircs-postgres -o go-template='{{index .data "database-password"}}' | base64 -d; else \
 openssl rand -base64 32 | tr -d /=+ | cut -c -16; fi))
-	$(eval OC_TEMPLATE_VARS += GGIRCS_PASSWORD="$(shell echo -n "$(GGIRCS_PASSWORD)" | base64)" GGIRCS_USER="$(shell echo -n "ggircs" | base64)" GGIRCS_DB="$(shell echo -n "ggircs" | base64)")
+	# Retrieve or generate password for the user with read-only access to the ggircs database
+	$(eval GGIRCS_READONLY_PASSWORD = $(shell if [ -n "$$($(OC) -n "$(OC_PROJECT)" get secret/cas-ggircs-postgres --ignore-not-found -o name)" ]; then \
+$(OC) -n "$(OC_PROJECT)" get secret/cas-ggircs-postgres -o go-template='{{index .data "database-password"}}' | base64 -d; else \
+openssl rand -base64 32 | tr -d /=+ | cut -c -16; fi))
+	# Add database name, user names and passwords to the OC template variables
+	$(eval OC_TEMPLATE_VARS += GGIRCS_PASSWORD="$(shell echo -n "$(GGIRCS_PASSWORD)" | base64)" GGIRCS_USER="$(shell echo -n "$(GGIRCS_USER_NAME)" | base64)" GGIRCS_DB="$(shell echo -n "$(GGIRCS_DB_NAME)" | base64)")
+	$(eval OC_TEMPLATE_VARS += GGIRCS_READONLY_PASSWORD="$(shell echo -n "$(GGIRCS_READONLY_PASSWORD)" | base64)" GGIRCS_READONLY_USER="$(shell echo -n "$(GGIRCS_READONLY_USER_NAME)" | base64)")
+	# Retrieve the git sha1 of the last etl deploy
 	$(eval PREVIOUS_DEPLOY_SHA1 = $(shell $(OC) -n "$(OC_PROJECT)" get job $(PROJECT_PREFIX)ggircs-etl-deploy --ignore-not-found -o go-template='{{index .metadata.labels "cas-pipeline/commit.id"}}'))
 	$(call oc_wait_for_deploy_ready,cas-postgres-master)
+	# Create secrets if they don't exist yet
 	$(call oc_create_secrets)
-	$(call oc_exec_all_pods,cas-postgres-master,create-user-db $(GGIRCS_USER_NAME) $(GGIRCS_DB_NAME) $(GGIRCS_PASSWORD))
+	# Create the ggircs db and user
+	$(call oc_exec_all_pods,cas-postgres-master,create-user-db -u $(GGIRCS_USER_NAME) -d $(GGIRCS_DB_NAME) -p $(GGIRCS_PASSWORD) --enable-citus --owner)
 	$(call oc_exec_all_pods,cas-postgres-workers,create-citus-in-db $(GGIRCS_DB_NAME))
+	# TODO: remove pgcrypto extension after ciip-portal uses separate db
 	$(call oc_exec_all_pods,cas-postgres-master,psql -d $(GGIRCS_DB_NAME) -c "create extension if not exists pgcrypto;")
 	$(call oc_exec_all_pods,cas-postgres-workers,psql -d $(GGIRCS_DB_NAME) -c "create extension if not exists pgcrypto;")
 	$(call oc_promote,$(PROJECT_PREFIX)ggircs-etl)
 	$(call oc_deploy)
 	$(if $(PREVIOUS_DEPLOY_SHA1), $(call oc_run_job,$(PROJECT_PREFIX)ggircs-etl-revert,GIT_SHA1=$(PREVIOUS_DEPLOY_SHA1)))
 	$(call oc_run_job,$(PROJECT_PREFIX)ggircs-etl-deploy)
+	# Create read-only user. This must be executed after the deploy job so that the swrs schema exists
+	$(call oc_exec_all_pods,cas-postgres-master,create-user-db -u $(GGIRCS_READONLY_USER_NAME) -d $(GGIRCS_DB_NAME) -p $(GGIRCS_READONLY_PASSWORD) --schemas swrs --privileges select)
 
 .PHONY: install_dev
 install_dev: OC_PROJECT=$(OC_DEV_PROJECT)
