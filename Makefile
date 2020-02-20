@@ -225,7 +225,7 @@ $(OC) -n "$(OC_PROJECT)" get secret/cas-ggircs-postgres -o go-template='{{index 
 openssl rand -base64 32 | tr -d /=+ | cut -c -16; fi))
 	# Retrieve or generate password for the user with read-only access to the ggircs database
 	$(eval GGIRCS_READONLY_PASSWORD = $(shell if [ -n "$$($(OC) -n "$(OC_PROJECT)" get secret/cas-ggircs-postgres --ignore-not-found -o name)" ]; then \
-$(OC) -n "$(OC_PROJECT)" get secret/cas-ggircs-postgres -o go-template='{{index .data "database-password"}}' | base64 -d; else \
+$(OC) -n "$(OC_PROJECT)" get secret/cas-ggircs-postgres -o go-template='{{index .data "database-readonly-password"}}' | base64 -d; else \
 openssl rand -base64 32 | tr -d /=+ | cut -c -16; fi))
 	# Add database name, user names and passwords to the OC template variables
 	$(eval OC_TEMPLATE_VARS += GGIRCS_PASSWORD="$(shell echo -n "$(GGIRCS_PASSWORD)" | base64)" GGIRCS_USER="$(shell echo -n "$(GGIRCS_USER_NAME)" | base64)" GGIRCS_DB="$(shell echo -n "$(GGIRCS_DB_NAME)" | base64)")
@@ -246,7 +246,7 @@ openssl rand -base64 32 | tr -d /=+ | cut -c -16; fi))
 	$(if $(PREVIOUS_DEPLOY_SHA1), $(call oc_run_job,$(PROJECT_PREFIX)ggircs-etl-revert,GIT_SHA1=$(PREVIOUS_DEPLOY_SHA1)))
 	$(call oc_run_job,$(PROJECT_PREFIX)ggircs-etl-deploy)
 	# Create read-only user. This must be executed after the deploy job so that the swrs schema exists
-	$(call oc_exec_all_pods,cas-postgres-master,create-user-db -u $(GGIRCS_READONLY_USER_NAME) -d $(GGIRCS_DB_NAME) -p $(GGIRCS_READONLY_PASSWORD) --schemas swrs --privileges select)
+	$(call oc_exec_all_pods,cas-postgres-master,create-user-db -u $(GGIRCS_READONLY_USER_NAME) -d $(GGIRCS_DB_NAME) -p $(GGIRCS_READONLY_PASSWORD) --enable-citus --schemas swrs --privileges select)
 
 .PHONY: install_dev
 install_dev: OC_PROJECT=$(OC_DEV_PROJECT)
