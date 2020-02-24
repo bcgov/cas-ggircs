@@ -263,7 +263,7 @@ endif
 
 .PHONY: mock_storageclass
 mock_storageclass:
-	$(call oc_mock_storageclass,gluster-file gluster-file-db gluster-block)
+	$(call oc_mock_storageclass,netapp-block-standard)
 
 .PHONY: provision
 provision:
