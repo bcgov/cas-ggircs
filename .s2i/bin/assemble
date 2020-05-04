@@ -68,7 +68,6 @@ if [ -f "cpanfile" ]; then
   echo "---> Installing modules from cpanfile ..."
   cpanm $MIRROR_ARGS $ENABLE_CPAN_TEST -l extlib Module::CoreList
   # Installing Sqitch from url
-  cpanm $MIRROR_ARGS $ENABLE_CPAN_TEST -l extlib https://github.com/bcgov/cas-sqitch/releases/download/v1.0.1.TRIAL/App-Sqitch-v1.0.1-TRIAL.tar.gz
   cpanm $MIRROR_ARGS $ENABLE_CPAN_TEST -l extlib --installdeps .
 else
   echo "---> No cpanfile found, nothing to install"
