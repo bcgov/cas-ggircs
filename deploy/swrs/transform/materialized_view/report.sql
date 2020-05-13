@@ -1,13 +1,13 @@
 -- Deploy ggircs:materialized_view_report to pg
 -- requires: schema_ggircs_swrs
--- requires: table_ghgr_import
+-- requires: table_eccc_xml_file
 
 begin;
 
 create materialized view swrs_transform.report as (
   select
     row_number() over () as id,
-    id as ghgr_import_id,
+    id as eccc_xml_file_id,
     xml_file as source_xml,
     imported_at,
     report_details.swrs_report_id,
@@ -17,7 +17,7 @@ create materialized view swrs_transform.report as (
     report_details.swrs_organisation_id,
     (regexp_matches(report_details.reporting_period_duration::varchar(1000), '\d\d\d\d'))[1]::integer as reporting_period_duration,
     report_status.*
-  from swrs_extract.ghgr_import,
+  from swrs_extract.eccc_xml_file,
        xmltable(
            '/ReportData/ReportDetails'
            passing xml_file
@@ -44,11 +44,11 @@ create materialized view swrs_transform.report as (
 ) with no data;
 
 
-create unique index ggircs_report_primary_key on swrs_transform.report (ghgr_import_id);
+create unique index ggircs_report_primary_key on swrs_transform.report (eccc_xml_file_id);
 
-comment on materialized view swrs_transform.report is 'The materialized view housing all report data, derived from ghgr_import table';
+comment on materialized view swrs_transform.report is 'The materialized view housing all report data, derived from eccc_xml_file table';
 comment on column swrs_transform.report.id is 'A generated index used for keying in the ggircs schema';
-comment on column swrs_transform.report.ghgr_import_id is 'The internal primary key for the file';
+comment on column swrs_transform.report.eccc_xml_file_id is 'The internal primary key for the file';
 comment on column swrs_transform.report.source_xml is 'The raw xml file imported from GHGR';
 comment on column swrs_transform.report.imported_at is 'The timestamp noting when the file was imported';
 comment on column swrs_transform.report.swrs_report_id is 'The swrs report id';

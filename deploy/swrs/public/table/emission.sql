@@ -6,7 +6,7 @@ begin;
 create table swrs.emission (
 
     id                        integer primary key,
-    ghgr_import_id            integer,
+    eccc_xml_file_id            integer,
     activity_id               integer references swrs.activity(id),
     facility_id               integer references swrs.facility(id),
     fuel_id                   integer references swrs.fuel(id),
@@ -40,7 +40,7 @@ create index ggircs_emission_unit_foreign_key on swrs.emission(unit_id);
 
 comment on table swrs.emission is 'The table containing the information on emissions';
 comment on column swrs.emission.id is 'The primary key';
-comment on column swrs.emission.ghgr_import_id is 'A foreign key reference to swrs.ghgr_import';
+comment on column swrs.emission.eccc_xml_file_id is 'A foreign key reference to swrs.eccc_xml_file';
 comment on column swrs.emission.activity_id is 'A foreign key reference to swrs.activity';
 comment on column swrs.emission.facility_id is 'A foreign key reference to swrs.facility';
 comment on column swrs.emission.fuel_id is 'A foreign key reference to swrs.fuel';

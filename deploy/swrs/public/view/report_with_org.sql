@@ -20,6 +20,6 @@ select
 from swrs.report as _report
        left join swrs.facility as _facility on _report.id = _facility.report_id
        left join swrs.naics as _naics on _report.id = _naics.report_id
-       left join swrs.organisation as _organisation on _report.ghgr_import_id = _organisation.ghgr_import_id;
+       left join swrs.organisation as _organisation on _report.eccc_xml_file_id = _organisation.eccc_xml_file_id;
 
 commit;

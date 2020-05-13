@@ -18,7 +18,7 @@ create or replace view swrs.pro_rated_carbon_tax_rate as
                ctr.id                           as id
         from swrs.fuel
                  join swrs.report as report
-                      on fuel.ghgr_import_id = report.ghgr_import_id
+                      on fuel.eccc_xml_file_id = report.eccc_xml_file_id
                  join swrs.carbon_tax_rate_mapping as ctr
                       on concat((report.reporting_period_duration - 1)::text, '-04-01')::date >= ctr.rate_start_date
                       and concat(report.reporting_period_duration::text, '-03-31')::date <= ctr.rate_end_date

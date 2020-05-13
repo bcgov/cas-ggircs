@@ -1,14 +1,14 @@
 -- Deploy ggircs:materialized_view_facility to pg
--- requires: table_ghgr_import
+-- requires: table_eccc_xml_file
 
 begin;
 
 create materialized view swrs_transform.facility as (
-  -- Select the XML reports from ghgr_imports table and get the Facility ID and Report ID from reports table
+  -- Select the XML reports from eccc_xml_files table and get the Facility ID and Report ID from reports table
   -- Walk the XML to extract facility details
   -- coalesce results from VerifyTombstone (vt) and RegistrationData (rd)
   select row_number() over () as id,
-         id as ghgr_import_id,
+         id as eccc_xml_file_id,
          rd_facility_details.swrs_facility_id,
          coalesce(vt_facility_details.facility_name, rd_facility_details.facility_name) as facility_name,
          rd_facility_details.facility_type,
@@ -20,7 +20,7 @@ create materialized view swrs_transform.facility as (
          substring(coalesce(vt_facility_details.latitude, rd_facility_details.latitude) from '-*[0-9]+\.*[0-9]+')::numeric   as latitude,
          substring(coalesce(vt_facility_details.longitude, rd_facility_details.longitude) from '-*[0-9]+\.*[0-9]+')::numeric as longitude
 
-  from swrs_extract.ghgr_import,
+  from swrs_extract.eccc_xml_file,
        xmltable(
            '/ReportData'
            passing xml_file
@@ -46,14 +46,14 @@ create materialized view swrs_transform.facility as (
              latitude varchar(1000) path './VerifyTombstone/Facility/Address/GeographicalAddress/Latitude',
              longitude varchar(1000) path './VerifyTombstone/Facility/Address/GeographicalAddress/Longitude'
          ) as vt_facility_details
-  order by ghgr_import_id desc
+  order by eccc_xml_file_id desc
 ) with no data;
 
-create unique index ggircs_facility_primary_key on swrs_transform.facility (ghgr_import_id);
+create unique index ggircs_facility_primary_key on swrs_transform.facility (eccc_xml_file_id);
 
 comment on materialized view swrs_transform.facility is 'the materialized view housing all report data pertaining to the reporting facility';
 comment on column swrs_transform.facility.id is 'A generated index used for keying in the ggircs schema';
-comment on column swrs_transform.facility.ghgr_import_id is 'The primary key for the materialized view';
+comment on column swrs_transform.facility.eccc_xml_file_id is 'The primary key for the materialized view';
 comment on column swrs_transform.facility.swrs_facility_id is 'The reporting facility swrs id';
 comment on column swrs_transform.facility.facility_name is 'The name of the reporting facility';
 comment on column swrs_transform.facility.facility_type is 'The type of the reporting facility';

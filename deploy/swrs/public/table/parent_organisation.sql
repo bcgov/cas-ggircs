@@ -8,7 +8,7 @@ create table swrs.parent_organisation (
     id                        integer primary key,
     report_id                 integer references swrs.report(id),
     organisation_id           integer references swrs.organisation(id),
-    ghgr_import_id            integer,
+    eccc_xml_file_id            integer,
     path_context              varchar(1000),
     percentage_owned          numeric,
     french_trade_name         varchar(1000),
@@ -25,7 +25,7 @@ comment on table swrs.parent_organisation is 'The table housing parent organisat
 comment on column swrs.parent_organisation.id is 'The primary key';
 comment on column swrs.parent_organisation.report_id is 'A foreign key reference to swrs.report';
 comment on column swrs.parent_organisation.organisation_id is 'A foreign key reference to swrs.organisation';
-comment on column swrs.parent_organisation.ghgr_import_id is 'The foreign key reference to swrs.ghgr_import';
+comment on column swrs.parent_organisation.eccc_xml_file_id is 'The foreign key reference to swrs.eccc_xml_file';
 comment on column swrs.parent_organisation.path_context is 'The path context used to reach the ParentOrganisation node (VerifyTombstone or RegistrationData';
 comment on column swrs.parent_organisation.percentage_owned is 'The % owned by this parent organisation';
 comment on column swrs.parent_organisation.french_trade_name is 'The french trade name of this parent organisation';

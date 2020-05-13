@@ -11,7 +11,7 @@ select has_materialized_view('swrs_transform', 'organisation', 'swrs_transform.o
 -- -- Test column names in matview report exist and are correct
 select columns_are('swrs_transform'::name, 'organisation'::name, ARRAY[
     'id'::name,
-    'ghgr_import_id'::name,
+    'eccc_xml_file_id'::name,
     'swrs_organisation_id'::name,
     'business_legal_name'::name,
     'english_trade_name'::name,
@@ -29,7 +29,7 @@ select has_index('swrs_transform', 'organisation', 'ggircs_organisation_primary_
 select index_is_unique('swrs_transform', 'organisation', 'ggircs_organisation_primary_key', 'swrs_transform.report index ggircs_organisation_primary_key is unique');
 --
 -- -- Test columns in matview report have correct types
-select col_type_is('swrs_transform', 'organisation', 'ghgr_import_id', 'integer', 'swrs_transform.organisation column ghgr_import_id has type integer');
+select col_type_is('swrs_transform', 'organisation', 'eccc_xml_file_id', 'integer', 'swrs_transform.organisation column eccc_xml_file_id has type integer');
 select col_type_is('swrs_transform', 'organisation', 'swrs_organisation_id', 'integer', 'swrs_transform.organisation column id has type numeric(1000,0)');
 select col_type_is('swrs_transform', 'organisation', 'business_legal_name', 'character varying(1000)', 'swrs_transform.organisation column business_legal_name has type varchar');
 select col_type_is('swrs_transform', 'organisation', 'english_trade_name', 'character varying(1000)', 'swrs_transform.organisation column english_trade_name has type varchar');
@@ -38,7 +38,7 @@ select col_type_is('swrs_transform', 'organisation', 'cra_business_number', 'cha
 select col_type_is('swrs_transform', 'organisation', 'duns', 'character varying(1000)', 'swrs_transform.organisation column duns has type varchar');
 select col_type_is('swrs_transform', 'organisation', 'website', 'character varying(1000)', 'swrs_transform.organisation column website has type varchar');
 
-insert into swrs_extract.ghgr_import (xml_file) values ($$
+insert into swrs_extract.eccc_xml_file (xml_file) values ($$
     <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
       <RegistrationData>
         <Organisation>
@@ -72,21 +72,21 @@ $$);
 
 refresh materialized view swrs_transform.organisation with data;
 
---  Test ghgr_import_id fk relation
+--  Test eccc_xml_file_id fk relation
 select results_eq(
     $$
-    select ghgr_import.id from swrs_transform.organisation
-    join swrs_extract.ghgr_import
+    select eccc_xml_file.id from swrs_transform.organisation
+    join swrs_extract.eccc_xml_file
     on
-    organisation.ghgr_import_id =  ghgr_import.id
+    organisation.eccc_xml_file_id =  eccc_xml_file.id
     $$,
 
-    'select id from swrs_extract.ghgr_import',
+    'select id from swrs_extract.eccc_xml_file',
 
-    'Foreign key ghgr_import_id ggircs_swrs_organisation reference swrs_extract.ghgr_import'
+    'Foreign key eccc_xml_file_id ggircs_swrs_organisation reference swrs_extract.eccc_xml_file'
 );
 
-select results_eq('select ghgr_import_id from swrs_transform.organisation', 'select id from swrs_extract.ghgr_import', 'ghgr_swrs.organisation.ghgr_import_id references ghgr_swrs.ghgr_import.id');
+select results_eq('select eccc_xml_file_id from swrs_transform.organisation', 'select id from swrs_extract.eccc_xml_file', 'ghgr_swrs.organisation.eccc_xml_file_id references ghgr_swrs.eccc_xml_file.id');
 select results_eq('select swrs_organisation_id from swrs_transform.organisation', ARRAY[1337::integer], 'ghgr_swrs.organisation.swrs_organisation_id parsed from xml');
 select results_eq('select business_legal_name from swrs_transform.organisation', ARRAY['Ren and Stimpys House'::varchar(1000)], 'ghgr_swrs.organisation.business_legal_name parsed from xml');
 select results_eq('select english_trade_name from swrs_transform.organisation', ARRAY[''::varchar], 'ghgr_swrs.organisation.english_trade_name parsed from xml');

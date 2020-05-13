@@ -12,7 +12,7 @@ select has_materialized_view('swrs_transform', 'naics', 'swrs_transform.naics ex
 
 select columns_are('swrs_transform'::name, 'naics'::name, ARRAY[
     'id'::name,
-    'ghgr_import_id'::name,
+    'eccc_xml_file_id'::name,
     'swrs_facility_id'::name,
     'path_context'::name,
     'naics_code_idx'::name,
@@ -28,7 +28,7 @@ select has_index('swrs_transform', 'naics', 'ggircs_naics_primary_key', 'swrs_tr
 select index_is_unique('swrs_transform', 'naics', 'ggircs_naics_primary_key', 'swrs_transform.naics index ggircs_facility_primary_key is unique');
 
 -- -- Test columns in matview report have correct types
-select col_type_is('swrs_transform', 'naics', 'ghgr_import_id', 'integer', 'swrs_transform.naics.facility_id has type integer');
+select col_type_is('swrs_transform', 'naics', 'eccc_xml_file_id', 'integer', 'swrs_transform.naics.facility_id has type integer');
 select col_type_is('swrs_transform', 'naics', 'swrs_facility_id', 'integer', 'swrs_transform.naics.swrs_facility_id has type numeric');
 select col_type_is('swrs_transform', 'naics', 'path_context', 'character varying(1000)', 'swrs_transform.naics.path_context has type varchar');
 select col_type_is('swrs_transform', 'naics', 'naics_code_idx', 'integer', 'swrs_transform.naics.naics_code_idx has type integer');
@@ -36,8 +36,8 @@ select col_type_is('swrs_transform', 'naics', 'naics_classification', 'character
 select col_type_is('swrs_transform', 'naics', 'naics_code', 'integer', 'swrs_transform.naics.naics_code has type integer');
 select col_type_is('swrs_transform', 'naics', 'naics_priority', 'character varying(1000)', 'swrs_transform.naics.naics_priority has type varchar');
 
--- insert necessary data into table ghgr_import
-insert into swrs_extract.ghgr_import (xml_file) values ($$
+-- insert necessary data into table eccc_xml_file
+insert into swrs_extract.eccc_xml_file (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <RegistrationData>
     <Facility>
@@ -65,22 +65,22 @@ refresh materialized view swrs_transform.naics with data;
 --  Test the foreign key join on facility
 select results_eq(
     $$
-    select facility.ghgr_import_id from swrs_transform.naics
+    select facility.eccc_xml_file_id from swrs_transform.naics
     join swrs_transform.facility
     on
-    naics.ghgr_import_id = facility.ghgr_import_id
+    naics.eccc_xml_file_id = facility.eccc_xml_file_id
     $$,
 
-    'select ghgr_import_id from swrs_transform.facility',
+    'select eccc_xml_file_id from swrs_transform.facility',
 
-    'Foreign keys ghgr_import_id, swrs_facility_id in ggircs_swrs_naics reference swrs_transform.facility'
+    'Foreign keys eccc_xml_file_id, swrs_facility_id in ggircs_swrs_naics reference swrs_transform.facility'
 );
 
 -- test that the columns in swrs_transform.naics have been properly parsed from xml
 select results_eq(
-  'select ghgr_import_id from swrs_transform.naics',
-  'select id from swrs_extract.ghgr_import',
-  'swrs_transform.naics parsed column ghgr_import_id'
+  'select eccc_xml_file_id from swrs_transform.naics',
+  'select id from swrs_extract.eccc_xml_file',
+  'swrs_transform.naics parsed column eccc_xml_file_id'
 );
 
 select results_eq(

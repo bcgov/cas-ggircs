@@ -44,18 +44,18 @@ create or replace view swrs.carbon_tax_calculation as
                       and (_naics.naics_priority = 'Primary'
                             or _naics.naics_priority = '100.00'
                             or _naics.naics_priority = '100')
-                      and (select count(ghgr_import_id)
+                      and (select count(eccc_xml_file_id)
                            from swrs.naics as __naics
-                           where ghgr_import_id = _emission.ghgr_import_id
+                           where eccc_xml_file_id = _emission.eccc_xml_file_id
                            and __naics.path_context = 'RegistrationData'
                            and (__naics.naics_priority = 'Primary'
                             or __naics.naics_priority = '100.00'
                             or __naics.naics_priority = '100')) < 2)
                        or (_naics.path_context='VerifyTombstone'
                            and _naics.naics_code is not null
-                           and (select count(ghgr_import_id)
+                           and (select count(eccc_xml_file_id)
                            from swrs.naics as __naics
-                           where ghgr_import_id = _emission.ghgr_import_id
+                           where eccc_xml_file_id = _emission.eccc_xml_file_id
                            and __naics.path_context = 'RegistrationData'
                            and (__naics.naics_priority = 'Primary'
                             or __naics.naics_priority = '100.00'

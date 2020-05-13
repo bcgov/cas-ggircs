@@ -10,7 +10,7 @@ reset client_min_messages;
 begin;
 select plan(14);
 
-insert into swrs_extract.ghgr_import (xml_file) values ($$
+insert into swrs_extract.eccc_xml_file (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <RegistrationData>
     <Organisation>
@@ -1127,7 +1127,7 @@ select set_eq(
     $$
     select activity.id from swrs_transform.activity
     inner join swrs_transform.final_report as _final_report
-    on activity.ghgr_import_id = _final_report.ghgr_import_id
+    on activity.eccc_xml_file_id = _final_report.eccc_xml_file_id
     $$,
 
     'Ensure left joins are not causing additional rows to be returned in swrs.activity'
@@ -1140,7 +1140,7 @@ select set_eq(
     $$
     select additional_data.id from swrs_transform.additional_data
     inner join swrs_transform.final_report as _final_report
-    on additional_data.ghgr_import_id = _final_report.ghgr_import_id
+    on additional_data.eccc_xml_file_id = _final_report.eccc_xml_file_id
     $$,
 
     'Ensure left joins are not causing additional rows to be returned in swrs.additional_data'
@@ -1153,7 +1153,7 @@ select set_eq(
     $$
     select address.id from swrs_transform.address
     inner join swrs_transform.final_report as _final_report
-    on address.ghgr_import_id = _final_report.ghgr_import_id
+    on address.eccc_xml_file_id = _final_report.eccc_xml_file_id
     $$,
 
     'Ensure left joins are not causing additional rows to be returned in swrs.address'
@@ -1166,7 +1166,7 @@ select set_eq(
     $$
     select contact.id from swrs_transform.contact
     inner join swrs_transform.final_report as _final_report
-    on contact.ghgr_import_id = _final_report.ghgr_import_id
+    on contact.eccc_xml_file_id = _final_report.eccc_xml_file_id
     $$,
 
     'Ensure left joins are not causing additional rows to be returned in swrs.contact'
@@ -1179,7 +1179,7 @@ select set_eq(
     $$
     select emission.id from swrs_transform.emission
     inner join swrs_transform.final_report as _final_report
-    on emission.ghgr_import_id = _final_report.ghgr_import_id
+    on emission.eccc_xml_file_id = _final_report.eccc_xml_file_id
     $$,
 
     'Ensure left joins are not causing additional rows to be returned in swrs.emission'
@@ -1192,7 +1192,7 @@ select set_eq(
     $$
     select fuel.id from swrs_transform.fuel
     inner join swrs_transform.final_report as _final_report
-    on fuel.ghgr_import_id = _final_report.ghgr_import_id
+    on fuel.eccc_xml_file_id = _final_report.eccc_xml_file_id
     $$,
 
     'Ensure left joins are not causing additional rows to be returned in swrs.fuel'
@@ -1205,7 +1205,7 @@ select set_eq(
     $$
     select identifier.id from swrs_transform.identifier
     inner join swrs_transform.final_report as _final_report
-    on identifier.ghgr_import_id = _final_report.ghgr_import_id
+    on identifier.eccc_xml_file_id = _final_report.eccc_xml_file_id
     $$,
 
     'Ensure left joins are not causing additional rows to be returned in swrs.identifier'
@@ -1219,7 +1219,7 @@ select set_eq(
     $$
     select facility.id from swrs_transform.facility
     inner join swrs_transform.final_report as _final_report
-    on facility.ghgr_import_id = _final_report.ghgr_import_id
+    on facility.eccc_xml_file_id = _final_report.eccc_xml_file_id
     $$,
 
     'Ensure left joins are not causing additional rows to be returned in swrs.facility'
@@ -1232,7 +1232,7 @@ select set_eq(
     $$
     select measured_emission_factor.id from swrs_transform.measured_emission_factor
     inner join swrs_transform.final_report as _final_report
-    on measured_emission_factor.ghgr_import_id = _final_report.ghgr_import_id
+    on measured_emission_factor.eccc_xml_file_id = _final_report.eccc_xml_file_id
     $$,
 
     'Ensure left joins are not causing additional rows to be returned in swrs.measured_emission_factor'
@@ -1245,7 +1245,7 @@ select set_eq(
     $$
     select naics.id from swrs_transform.naics
     inner join swrs_transform.final_report as _final_report
-    on naics.ghgr_import_id = _final_report.ghgr_import_id
+    on naics.eccc_xml_file_id = _final_report.eccc_xml_file_id
     $$,
 
     'Ensure left joins are not causing additional rows to be returned in swrs.naics'
@@ -1258,7 +1258,7 @@ select set_eq(
     $$
     select organisation.id from swrs_transform.organisation
     inner join swrs_transform.final_report as _final_report
-    on organisation.ghgr_import_id = _final_report.ghgr_import_id
+    on organisation.eccc_xml_file_id = _final_report.eccc_xml_file_id
     $$,
 
     'Ensure left joins are not causing additional rows to be returned in swrs.organisation'
@@ -1271,7 +1271,7 @@ select set_eq(
     $$
     select parent_organisation.id from swrs_transform.parent_organisation
     inner join swrs_transform.final_report as _final_report
-    on parent_organisation.ghgr_import_id = _final_report.ghgr_import_id
+    on parent_organisation.eccc_xml_file_id = _final_report.eccc_xml_file_id
     $$,
 
     'Ensure left joins are not causing additional rows to be returned in swrs.parent_organisation'
@@ -1284,7 +1284,7 @@ select set_eq(
     $$
     select permit.id from swrs_transform.permit
     inner join swrs_transform.final_report as _final_report
-    on permit.ghgr_import_id = _final_report.ghgr_import_id
+    on permit.eccc_xml_file_id = _final_report.eccc_xml_file_id
     $$,
 
     'Ensure left joins are not causing additional rows to be returned in swrs.permit'
@@ -1297,7 +1297,7 @@ select set_eq(
     $$
     select unit.id from swrs_transform.unit
     inner join swrs_transform.final_report as _final_report
-    on unit.ghgr_import_id = _final_report.ghgr_import_id
+    on unit.eccc_xml_file_id = _final_report.eccc_xml_file_id
     $$,
 
     'Ensure left joins are not causing additional rows to be returned in swrs.unit'

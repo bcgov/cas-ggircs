@@ -1,13 +1,13 @@
 -- Deploy ggircs:materialized_view_additional_data to pg
--- requires: table_ghgr_import
+-- requires: table_eccc_xml_file
 
 begin;
 
 create materialized view swrs_transform.additional_data as (
   with x as (
-  select id as ghgr_import_id,
+  select id as eccc_xml_file_id,
          depth_four_descriptors.*
-  from swrs_extract.ghgr_import,
+  from swrs_extract.eccc_xml_file,
        xmltable(
            '(
        //Process/SubProcess/child::*[not(self::Units)]/child::*/child::*/child::*/*
@@ -30,9 +30,9 @@ create materialized view swrs_transform.additional_data as (
 
   union all
 
-  select id as ghgr_import_id,
+  select id as eccc_xml_file_id,
          depth_three_descriptors.*
-  from swrs_extract.ghgr_import,
+  from swrs_extract.eccc_xml_file,
        xmltable(
            '(
        //SubProcess/child::*[not(self::Units)]/child::*/*
@@ -55,9 +55,9 @@ create materialized view swrs_transform.additional_data as (
 
   union all
 
-  select id as ghgr_import_id,
+  select id as eccc_xml_file_id,
          depth_one_descriptors.*
-  from swrs_extract.ghgr_import,
+  from swrs_extract.eccc_xml_file,
        xmltable(
            '(
        //SubProcess/child::*[not(self::Units)] | //SubProcess/child::*[not(self::Units)]/*
@@ -80,7 +80,7 @@ create materialized view swrs_transform.additional_data as (
 )
 select row_number() over () as id, x.* from x) with no data;
 
-create unique index ggircs_additional_data_primary_key on swrs_transform.additional_data (ghgr_import_id, process_idx,
+create unique index ggircs_additional_data_primary_key on swrs_transform.additional_data (eccc_xml_file_id, process_idx,
                                                                              sub_process_idx, activity_name,
                                                                              grandparent_idx, parent_idx, class_idx,
                                                                              parent,
@@ -90,7 +90,7 @@ create unique index ggircs_additional_data_primary_key on swrs_transform.additio
 
 comment on materialized view swrs_transform.additional_data is 'The materialized view containing the information on additional_data (descriptors)';
 comment on column swrs_transform.additional_data.id is 'A generated index used for keying in the ggircs schema';
-comment on column swrs_transform.additional_data.ghgr_import_id is 'A foreign key reference to swrs_extract.ghgr_import';
+comment on column swrs_transform.additional_data.eccc_xml_file_id is 'A foreign key reference to swrs_extract.eccc_xml_file';
 comment on column swrs_transform.additional_data.activity_name is 'The name of the node immediately after ReportData';
 comment on column swrs_transform.additional_data.process_idx is 'The number of preceding Process siblings before this node';
 comment on column swrs_transform.additional_data.sub_process_idx is 'The number of preceding SubProcess siblings before this node';
@@ -106,7 +106,3 @@ comment on column swrs_transform.additional_data.node_value is 'The text value o
 
 
 commit;
-
-
-
-

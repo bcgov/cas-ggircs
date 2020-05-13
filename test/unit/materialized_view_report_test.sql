@@ -9,7 +9,7 @@ select plan(45);
 select has_materialized_view('swrs_transform', 'report', 'Materialized view report exists');
 
 -- Test column names in matview report exist and are correct
-select has_column('swrs_transform', 'report', 'ghgr_import_id', 'Matview report has column: ghgr_import_id');
+select has_column('swrs_transform', 'report', 'eccc_xml_file_id', 'Matview report has column: eccc_xml_file_id');
 select has_column('swrs_transform', 'report', 'source_xml', 'Matview report has column: source_xml');
 select has_column('swrs_transform', 'report', 'imported_at', 'Matview report has column: imported_at');
 select has_column('swrs_transform', 'report', 'swrs_report_id', 'Matview report has column: swrs_report_id');
@@ -30,7 +30,7 @@ select has_index('swrs_transform', 'report', 'ggircs_report_primary_key', 'Matvi
 select index_is_unique('swrs_transform', 'report', 'ggircs_report_primary_key', 'Matview report index ggircs_report_primary_key is unique');
 
 -- Test columns in matview report have correct types
-select col_type_is('swrs_transform', 'report', 'ghgr_import_id', 'integer', 'Matview report column ghgr has type integer');
+select col_type_is('swrs_transform', 'report', 'eccc_xml_file_id', 'integer', 'Matview report column ghgr has type integer');
 select col_type_is('swrs_transform', 'report', 'source_xml', 'xml', 'Matview report column source_xml has type xml');
 select col_type_is('swrs_transform', 'report', 'imported_at', 'timestamp with time zone', 'Matview report column imported_at has type timestamp with time zone');
 select col_type_is('swrs_transform', 'report', 'swrs_report_id', 'integer', 'Matview report column swrs_report_id has type integer');
@@ -46,7 +46,7 @@ select col_type_is('swrs_transform', 'report', 'last_modified_by', 'character va
 select col_type_is('swrs_transform', 'report', 'update_comment', 'character varying(1000)', 'Matview report column update_comment has type character varying(1000)');
 
 -- Setup fixture
-insert into swrs_extract.ghgr_import (imported_at, xml_file) VALUES ('2018-09-29T11:55:39.423', $$
+insert into swrs_extract.eccc_xml_file (imported_at, xml_file) VALUES ('2018-09-29T11:55:39.423', $$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <ReportDetails>
     <ReportID>800855555</ReportID>
@@ -67,7 +67,7 @@ $$);
 
 -- Ensure fixture is processed correctly
 refresh materialized view swrs_transform.report with data;
-select results_eq('select ghgr_import_id from swrs_transform.report', 'select id from swrs_extract.ghgr_import', 'Matview report parsed column ghgr_import_id');
+select results_eq('select eccc_xml_file_id from swrs_transform.report', 'select id from swrs_extract.eccc_xml_file', 'Matview report parsed column eccc_xml_file_id');
 -- TODO(wenzowski): need an xml comparison operator
 select results_eq('select source_xml::text from swrs_transform.report', ARRAY[$$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">

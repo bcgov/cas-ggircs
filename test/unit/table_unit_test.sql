@@ -6,7 +6,7 @@ reset client_min_messages;
 begin;
 select * from no_plan();
 
-insert into swrs_extract.ghgr_import (xml_file) values ($$
+insert into swrs_extract.eccc_xml_file (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <RegistrationData>
     <Organisation>
@@ -185,12 +185,12 @@ select isnt_empty('select * from swrs.unit', 'there is data in swrs.unit');
 -- Unit -> Activity
 select set_eq(
     $$
-    select distinct(activity.ghgr_import_id) from swrs.unit
+    select distinct(activity.eccc_xml_file_id) from swrs.unit
     join swrs.activity
     on unit.activity_id = activity.id
     $$,
 
-    'select distinct(ghgr_import_id) from swrs.activity',
+    'select distinct(eccc_xml_file_id) from swrs.activity',
 
     'Foreign key unit_id in swrs.unit references swrs.activity.id'
 );
@@ -199,7 +199,7 @@ select set_eq(
 select set_eq(
               $$
               select
-                  ghgr_import_id,
+                  eccc_xml_file_id,
                   activity_name,
                   unit_name,
                   unit_description,
@@ -220,7 +220,7 @@ select set_eq(
 
               $$
               select
-                  ghgr_import_id,
+                  eccc_xml_file_id,
                   activity_name,
                   unit_name,
                   unit_description,

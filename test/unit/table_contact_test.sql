@@ -6,7 +6,7 @@ reset client_min_messages;
 begin;
 select * from no_plan();
 
-insert into swrs_extract.ghgr_import (xml_file) values ($$
+insert into swrs_extract.eccc_xml_file (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <RegistrationData>
     <Organisation>
@@ -467,12 +467,12 @@ select isnt_empty('select * from swrs.contact', 'there is data in swrs.contact')
 -- Contact -> Address
 select set_eq(
     $$
-    select distinct(address.ghgr_import_id) from swrs.contact
+    select distinct(address.eccc_xml_file_id) from swrs.contact
     join swrs.address
     on contact.address_id = address.id
     $$,
 
-    'select distinct(ghgr_import_id) from swrs.address',
+    'select distinct(eccc_xml_file_id) from swrs.address',
 
     'Foreign key address_id in swrs.contact references swrs.address.id'
 );
@@ -480,25 +480,25 @@ select set_eq(
 -- Contact -> Facility
 select set_eq(
                $$
-    select distinct(facility.ghgr_import_id) from swrs.contact
+    select distinct(facility.eccc_xml_file_id) from swrs.contact
     join swrs.facility
     on
       contact.facility_id = facility.id
-      order by ghgr_import_id
+      order by eccc_xml_file_id
     $$,
-               'select ghgr_import_id from swrs.facility order by ghgr_import_id',
+               'select eccc_xml_file_id from swrs.facility order by eccc_xml_file_id',
                'Foreign key facility_id in swrs.contact references swrs.facility.id'
 );
 
 -- Contact -> Report
 select set_eq(
     $$
-    select distinct(report.ghgr_import_id) from swrs.contact
+    select distinct(report.eccc_xml_file_id) from swrs.contact
     join swrs.report
     on contact.report_id = report.id
     $$,
 
-    'select distinct(ghgr_import_id) from swrs.report',
+    'select distinct(eccc_xml_file_id) from swrs.report',
 
     'Foreign key report_id in swrs.contact references swrs.report.id'
 );
@@ -506,12 +506,12 @@ select set_eq(
 -- Contact -> Report
 select set_eq(
     $$
-    select distinct(organisation.ghgr_import_id) from swrs.contact
+    select distinct(organisation.eccc_xml_file_id) from swrs.contact
     join swrs.organisation
     on contact.organisation_id = organisation.id
     $$,
 
-    'select distinct(ghgr_import_id) from swrs.organisation',
+    'select distinct(eccc_xml_file_id) from swrs.organisation',
 
     'Foreign key organisation_id in swrs.contact references swrs.organisation.id'
 );
@@ -520,7 +520,7 @@ select set_eq(
 select set_eq(
               $$
               select
-                  ghgr_import_id,
+                  eccc_xml_file_id,
                   path_context,
                   contact_type,
                   given_name,
@@ -534,7 +534,7 @@ select set_eq(
                   language_correspondence
                 from swrs_transform.contact
                 order by
-                  ghgr_import_id,
+                  eccc_xml_file_id,
                   path_context,
                   contact_type,
                   given_name
@@ -543,7 +543,7 @@ select set_eq(
 
               $$
               select
-                  ghgr_import_id,
+                  eccc_xml_file_id,
                   path_context,
                   contact_type,
                   given_name,
@@ -557,7 +557,7 @@ select set_eq(
                   language_correspondence
                 from swrs.contact
                 order by
-                  ghgr_import_id,
+                  eccc_xml_file_id,
                   path_context,
                   contact_type,
                   given_name

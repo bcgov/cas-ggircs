@@ -1,5 +1,5 @@
 -- Deploy ggircs:materialized_view_unit to pg
--- requires: table_ghgr_import
+-- requires: table_eccc_xml_file
 
 begin;
 
@@ -7,9 +7,9 @@ begin;
 -- todo: explore any other attributes for units
 create materialized view swrs_transform.unit as (
   select row_number() over () as id,
-         id as ghgr_import_id,
+         id as eccc_xml_file_id,
          unit_details.*
-  from swrs_extract.ghgr_import,
+  from swrs_extract.eccc_xml_file,
        xmltable(
            '//Unit'
            passing xml_file
@@ -38,11 +38,11 @@ create materialized view swrs_transform.unit as (
          ) as unit_details
 ) with no data;
 
-create unique index ggircs_unit_primary_key on swrs_transform.unit (ghgr_import_id, activity_name, process_idx, sub_process_idx, units_idx, unit_idx);
+create unique index ggircs_unit_primary_key on swrs_transform.unit (eccc_xml_file_id, activity_name, process_idx, sub_process_idx, units_idx, unit_idx);
 
 comment on materialized view swrs_transform.unit is 'The materialized view containing the information on swrs machinery units';
 comment on column swrs_transform.unit.id is 'A generated index used for keying in the ggircs schema';
-comment on column swrs_transform.unit.ghgr_import_id is 'A foreign key reference to swrs_extract.ghgr_import.id';
+comment on column swrs_transform.unit.eccc_xml_file_id is 'A foreign key reference to swrs_extract.eccc_xml_file.id';
 comment on column swrs_transform.unit.activity_name is 'The name of the activity';
 comment on column swrs_transform.unit.process_idx is 'The number of preceding Process siblings before this Process';
 comment on column swrs_transform.unit.sub_process_idx is 'The number of preceding SubProcess siblings before this SubProcess';

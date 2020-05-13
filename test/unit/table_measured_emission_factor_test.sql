@@ -6,7 +6,7 @@ reset client_min_messages;
 begin;
 select * from no_plan();
 
-insert into swrs_extract.ghgr_import (xml_file) values ($$
+insert into swrs_extract.eccc_xml_file (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <RegistrationData>
     <Organisation>
@@ -253,12 +253,12 @@ select isnt_empty('select * from swrs.measured_emission_factor', 'there is data 
 -- Measured Emission Factor -> Fuel
 select set_eq(
     $$
-    select distinct(fuel.ghgr_import_id) from swrs.measured_emission_factor
+    select distinct(fuel.eccc_xml_file_id) from swrs.measured_emission_factor
     join swrs.fuel
     on measured_emission_factor.fuel_id = fuel.id
     $$,
 
-    'select distinct(ghgr_import_id) from swrs.fuel',
+    'select distinct(eccc_xml_file_id) from swrs.fuel',
 
     'Foreign key fuel_id in swrs.measured_emission_factor references swrs.fuel.id'
 );
@@ -267,7 +267,7 @@ select set_eq(
 select set_eq(
               $$
               select
-                ghgr_import_id,
+                eccc_xml_file_id,
                 activity_name,
                 sub_activity_name,
                 unit_name,
@@ -277,12 +277,12 @@ select set_eq(
                 measured_emission_factor_unit_type
               from swrs_transform.measured_emission_factor
               order by
-                ghgr_import_id
+                eccc_xml_file_id
               $$,
 
               $$
               select
-                  ghgr_import_id,
+                  eccc_xml_file_id,
                   activity_name,
                   sub_activity_name,
                   unit_name,
@@ -292,7 +292,7 @@ select set_eq(
                   measured_emission_factor_unit_type
                 from swrs.measured_emission_factor
                 order by
-                    ghgr_import_id
+                    eccc_xml_file_id
                  asc
               $$,
 

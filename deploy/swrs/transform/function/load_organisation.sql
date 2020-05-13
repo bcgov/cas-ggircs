@@ -11,17 +11,17 @@ $function$
     begin
 
         delete from swrs_load.organisation;
-        insert into swrs_load.organisation (id, ghgr_import_id, report_id, swrs_organisation_id, business_legal_name, english_trade_name, french_trade_name, cra_business_number, duns, website)
+        insert into swrs_load.organisation (id, eccc_xml_file_id, report_id, swrs_organisation_id, business_legal_name, english_trade_name, french_trade_name, cra_business_number, duns, website)
 
-        select _organisation.id, _organisation.ghgr_import_id, _report.id, _organisation.swrs_organisation_id, _organisation.business_legal_name,
+        select _organisation.id, _organisation.eccc_xml_file_id, _report.id, _organisation.swrs_organisation_id, _organisation.business_legal_name,
                _organisation.english_trade_name, _organisation.french_trade_name, _organisation.cra_business_number, _organisation.duns, _organisation.website
 
         from swrs_transform.organisation as _organisation
 
-        inner join swrs_transform.final_report as _final_report on _organisation.ghgr_import_id = _final_report.ghgr_import_id
+        inner join swrs_transform.final_report as _final_report on _organisation.eccc_xml_file_id = _final_report.eccc_xml_file_id
         --FK Organisation -> Report
         left join swrs_transform.report as _report
-          on _organisation.ghgr_import_id = _report.ghgr_import_id;
+          on _organisation.eccc_xml_file_id = _report.eccc_xml_file_id;
 
     end
 $function$ language plpgsql volatile;

@@ -10,7 +10,7 @@ create table swrs.address (
     facility_id                                         integer references swrs.facility(id),
     organisation_id                                     integer references swrs.organisation(id),
     parent_organisation_id                              integer references swrs.parent_organisation(id),
-    ghgr_import_id                                      integer,
+    eccc_xml_file_id                                      integer,
     swrs_facility_id                                    integer,
     swrs_organisation_id                                integer,
     path_context                                        varchar(1000),
@@ -55,7 +55,7 @@ create index ggircs_address_parent_organisation_foreign_key on swrs.address(pare
 
 comment on table swrs.address is 'The table housing address information for facilities, organisations and contacts';
 comment on column swrs.address.id is 'The primary key';
-comment on column swrs.address.ghgr_import_id is 'The foreign key that references swrs.ghgr_import';
+comment on column swrs.address.eccc_xml_file_id is 'The foreign key that references swrs.eccc_xml_file';
 comment on column swrs.address.facility_id is 'A foreign key reference to swrs.facility';
 comment on column swrs.address.organisation_id is 'A foreign key reference to swrs.organisation';
 comment on column swrs.address.parent_organisation_id is 'A foreign key reference to swrs.parent_organisation';

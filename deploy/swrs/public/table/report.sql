@@ -6,7 +6,7 @@ begin;
 create table swrs.report
 (
     id                        integer primary key,
-    ghgr_import_id            integer,
+    eccc_xml_file_id            integer,
     source_xml                xml,
     imported_at               timestamptz,
     swrs_report_id            integer not null,
@@ -23,9 +23,9 @@ create table swrs.report
     update_comment            varchar(1000)
 );
 
-comment on table swrs.report is 'The table housing all report data, derived from ghgr_import table';
+comment on table swrs.report is 'The table housing all report data, derived from eccc_xml_file table';
 comment on column swrs.report.id is 'The primary key';
-comment on column swrs.report.ghgr_import_id is 'The internal primary key for the file';
+comment on column swrs.report.eccc_xml_file_id is 'The internal primary key for the file';
 comment on column swrs.report.source_xml is 'The raw xml file imported from GHGR';
 comment on column swrs.report.imported_at is 'The timestamp noting when the file was imported';
 comment on column swrs.report.swrs_report_id is 'The swrs report id';

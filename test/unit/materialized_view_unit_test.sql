@@ -18,7 +18,7 @@ select has_index(
 
 select columns_are('swrs_transform'::name, 'unit'::name, array[
     'id'::name,
-    'ghgr_import_id'::name,
+    'eccc_xml_file_id'::name,
     'activity_name'::name,
     'process_idx'::name,
     'sub_process_idx'::name,
@@ -39,9 +39,9 @@ select columns_are('swrs_transform'::name, 'unit'::name, array[
     'non_cogen_unit_name'::name
 ]);
 
---  select has_column(       'swrs_transform', 'unit', 'ghgr_import_id', 'unit.ghgr_import_id column should exist');
-select col_type_is(      'swrs_transform', 'unit', 'ghgr_import_id', 'integer', 'unit.ghgr_import_id column should be type integer');
-select col_hasnt_default('swrs_transform', 'unit', 'ghgr_import_id', 'unit.ghgr_import_id column should not have a default value');
+--  select has_column(       'swrs_transform', 'unit', 'eccc_xml_file_id', 'unit.eccc_xml_file_id column should exist');
+select col_type_is(      'swrs_transform', 'unit', 'eccc_xml_file_id', 'integer', 'unit.eccc_xml_file_id column should be type integer');
+select col_hasnt_default('swrs_transform', 'unit', 'eccc_xml_file_id', 'unit.eccc_xml_file_id column should not have a default value');
 
 --  select has_column(       'swrs_transform', 'unit', 'activity_name', 'unit.activity_name column should exist');
 select col_type_is(      'swrs_transform', 'unit', 'activity_name', 'character varying(1000)', 'unit.activity_name column should be type varchar');
@@ -134,7 +134,7 @@ select col_is_null(      'swrs_transform', 'unit', 'non_cogen_unit_name', 'unit.
 select col_hasnt_default('swrs_transform', 'unit', 'non_cogen_unit_name', 'unit.non_cogen_unit_name column should not have a default value');
 
 -- Insert data for fixture based testing
-insert into swrs_extract.ghgr_import (xml_file) values ($$
+insert into swrs_extract.eccc_xml_file (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <ActivityData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <ActivityPages>
@@ -182,25 +182,25 @@ refresh materialized view swrs_transform.activity with data;
 -- test the foreign keys in unit return a value when joined on activity
 select results_eq(
     $$
-    select activity.ghgr_import_id from swrs_transform.unit
+    select activity.eccc_xml_file_id from swrs_transform.unit
      join swrs_transform.activity
      on (
-     unit.ghgr_import_id =  activity.ghgr_import_id
+     unit.eccc_xml_file_id =  activity.eccc_xml_file_id
      and unit.process_idx = activity.process_idx
      and unit.sub_process_idx = activity.sub_process_idx
      and unit.activity_name = activity.activity_name)
     $$,
 
-    'select ghgr_import_id from swrs_transform.activity',
+    'select eccc_xml_file_id from swrs_transform.activity',
 
-    'Foreign keys ghgr_import_id, process_idx, sub_process_idx and activity_name in ggircs_swrs_unit reference swrs_transform.activity'
+    'Foreign keys eccc_xml_file_id, process_idx, sub_process_idx and activity_name in ggircs_swrs_unit reference swrs_transform.activity'
 );
 
 -- test the columns for matview facility have been properly parsed from xml
 select results_eq(
-  'select distinct ghgr_import_id from swrs_transform.unit',
-  'select id from swrs_extract.ghgr_import',
-  'swrs_transform.activity.ghgr_import_id relates to swrs_extract.ghgr_import.id'
+  'select distinct eccc_xml_file_id from swrs_transform.unit',
+  'select id from swrs_extract.eccc_xml_file',
+  'swrs_transform.activity.eccc_xml_file_id relates to swrs_extract.eccc_xml_file.id'
 );
 
 select results_eq(

@@ -6,7 +6,7 @@ reset client_min_messages;
 begin;
 select * from no_plan();
 
-insert into swrs_extract.ghgr_import (xml_file) values ($$
+insert into swrs_extract.eccc_xml_file (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <RegistrationData>
     <Organisation>
@@ -624,15 +624,15 @@ select isnt_empty('select * from swrs.facility', 'there is data in swrs.facility
 select set_eq(
     $$
     with _facility as (
-        select ghgr_import_id, organisation_id from swrs.facility
+        select eccc_xml_file_id, organisation_id from swrs.facility
     )
-    select organisation.ghgr_import_id from _facility
+    select organisation.eccc_xml_file_id from _facility
     join swrs.organisation
     on
         _facility.organisation_id = organisation.id
     $$,
 
-    'select ghgr_import_id from swrs.organisation',
+    'select eccc_xml_file_id from swrs.organisation',
 
     'Foreign key organisation_id in swrs.facility references swrs.organisation.id'
 
@@ -670,11 +670,11 @@ select set_eq(
             on facility.id = _facility.id
             and _facility.facility_type = 'LFO'
         left join swrs_transform.organisation as _organisation
-            on _facility.ghgr_import_id = _organisation.ghgr_import_id
+            on _facility.eccc_xml_file_id = _organisation.eccc_xml_file_id
         left join swrs_transform.report as _report
-            on _facility.ghgr_import_id = _report.ghgr_import_id
+            on _facility.eccc_xml_file_id = _report.eccc_xml_file_id
         inner join swrs_transform.final_report as _final_report
-            on _facility.ghgr_import_id = _final_report.ghgr_import_id
+            on _facility.eccc_xml_file_id = _final_report.eccc_xml_file_id
     )
     select facility.id, _final_lfo_facility.id as parent_facility_id
     from swrs_transform.facility
@@ -682,9 +682,9 @@ select set_eq(
         on facility.id = _facility.id
         and (_facility.facility_type = 'IF_a' or _facility.facility_type = 'IF_b' or _facility.facility_type = 'L_c')
     left join swrs_transform.organisation as _organisation
-        on _facility.ghgr_import_id = _organisation.ghgr_import_id
+        on _facility.eccc_xml_file_id = _organisation.eccc_xml_file_id
     left join swrs_transform.report as _report
-        on _facility.ghgr_import_id = _report.ghgr_import_id
+        on _facility.eccc_xml_file_id = _report.eccc_xml_file_id
     inner join _final_lfo_facility
         on _organisation.swrs_organisation_id = _final_lfo_facility.swrs_organisation_id
         and _report.reporting_period_duration = _final_lfo_facility.reporting_period_duration

@@ -6,7 +6,7 @@ reset client_min_messages;
 begin;
 select * from no_plan();
 
-insert into swrs_extract.ghgr_import (xml_file) values ($$
+insert into swrs_extract.eccc_xml_file (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <RegistrationData>
     <Organisation>
@@ -370,14 +370,14 @@ select isnt_empty('select * from swrs.address', 'there is data in swrs.address')
 -- Address -> Facility
 select set_eq(
     $$
-    select distinct(facility.ghgr_import_id) from swrs.address
+    select distinct(facility.eccc_xml_file_id) from swrs.address
     join swrs.facility
     on
       address.facility_id = facility.id
-      order by ghgr_import_id
+      order by eccc_xml_file_id
     $$,
 -- --
-    'select ghgr_import_id from swrs.facility order by ghgr_import_id',
+    'select eccc_xml_file_id from swrs.facility order by eccc_xml_file_id',
 -- --
     'Foreign key facility_id in swrs.address references swrs.facility.id'
 );
@@ -385,12 +385,12 @@ select set_eq(
 -- Address -> Organisation
 select set_eq(
     $$
-    select distinct(organisation.ghgr_import_id) from swrs.address
+    select distinct(organisation.eccc_xml_file_id) from swrs.address
     join swrs.organisation
     on address.organisation_id = organisation.id
     $$,
 
-    'select ghgr_import_id from swrs.organisation',
+    'select eccc_xml_file_id from swrs.organisation',
 
     'Foreign key organisation_id in swrs.address references swrs.organisation.id'
 );
@@ -398,12 +398,12 @@ select set_eq(
 -- Address -> Parent Organisation
 select set_eq(
     $$
-    select distinct(parent_organisation.ghgr_import_id) from swrs.address
+    select distinct(parent_organisation.eccc_xml_file_id) from swrs.address
     join swrs.parent_organisation
     on address.parent_organisation_id = parent_organisation.id
     $$,
 
-    'select ghgr_import_id from swrs.parent_organisation',
+    'select eccc_xml_file_id from swrs.parent_organisation',
 
     'Foreign key parent_organisation_id in swrs.address references swrs.parent_organisation.id'
 );
@@ -411,12 +411,12 @@ select set_eq(
 -- Address -> Report
 select set_eq(
     $$
-    select distinct(report.ghgr_import_id) from swrs.address
+    select distinct(report.eccc_xml_file_id) from swrs.address
     join swrs.report
     on address.report_id = report.id
     $$,
 
-    'select distinct(ghgr_import_id) from swrs.report',
+    'select distinct(eccc_xml_file_id) from swrs.report',
 
     'Foreign key report_id in swrs.address references swrs.report.id'
 );
@@ -425,7 +425,7 @@ select set_eq(
 select set_eq(
               $$
               select
-                  ghgr_import_id,
+                  eccc_xml_file_id,
                   swrs_facility_id,
                   swrs_organisation_id,
                   path_context,
@@ -461,7 +461,7 @@ select set_eq(
                   geographic_address_longitude
                 from swrs_transform.address
                 order by
-                  ghgr_import_id,
+                  eccc_xml_file_id,
                   swrs_facility_id,
                   swrs_organisation_id,
                   type,
@@ -471,7 +471,7 @@ select set_eq(
 
               $$
               select
-                  ghgr_import_id,
+                  eccc_xml_file_id,
                   swrs_facility_id,
                   swrs_organisation_id,
                   path_context,
@@ -507,7 +507,7 @@ select set_eq(
                   geographic_address_longitude
                 from swrs.address
                 order by
-                  ghgr_import_id,
+                  eccc_xml_file_id,
                   swrs_facility_id,
                   swrs_organisation_id,
                   type,

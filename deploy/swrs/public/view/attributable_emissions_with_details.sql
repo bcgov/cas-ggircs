@@ -34,7 +34,7 @@ select
        n.naics_code,
        u.unit_name,
        u.id as unit_id,
-       ae.ghgr_import_id,
+       ae.eccc_xml_file_id,
        rp.id as report_id,
        org.id as organisation_id,
        fc.id as facility_id,

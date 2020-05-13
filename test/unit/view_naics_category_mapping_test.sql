@@ -24,7 +24,7 @@ select columns_are('swrs'::name, 'naics_category_mapping'::name, array[
 ]);
 
 -- XML fixture for testing
-insert into swrs_extract.ghgr_import (xml_file) values ($$
+insert into swrs_extract.eccc_xml_file (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <RegistrationData>
   <Facility>

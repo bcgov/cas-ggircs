@@ -6,7 +6,7 @@ begin;
 create table swrs.identifier(
 
     id                              integer primary key,
-    ghgr_import_id                  integer,
+    eccc_xml_file_id                  integer,
     report_id                       integer references swrs.report (id),
     facility_id                     integer references swrs.facility(id),
     facility_bcghgid_id             integer references swrs.facility(id),
@@ -22,7 +22,7 @@ create index ggircs_identifier_facility_bcghgid_foreign_key on swrs.identifier(f
 
 comment on table swrs.identifier is 'The table housing information regarding identifiers';
 comment on column swrs.identifier.id is 'The primary key';
-comment on column swrs.identifier.ghgr_import_id is 'The foreign key referencing ggrics_swrs.ghgr_import.id';
+comment on column swrs.identifier.eccc_xml_file_id is 'The foreign key referencing ggrics_swrs.eccc_xml_file.id';
 comment on column swrs.identifier.facility_bcghgid_id is 'A foreign key reference to swrs.facility with correct bcghgid';
 comment on column swrs.identifier.facility_id is 'A foreign key reference to swrs.facility';
 comment on column swrs.identifier.report_id is 'A foreign key reference to swrs.report';

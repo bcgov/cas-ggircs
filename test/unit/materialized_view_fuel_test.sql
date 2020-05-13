@@ -20,7 +20,7 @@ select has_index(
 
 select columns_are('swrs_transform'::name, 'fuel'::name, array[
     'id'::name,
-    'ghgr_import_id'::name,
+    'eccc_xml_file_id'::name,
     'activity_name'::name,
     'sub_activity_name'::name,
     'unit_name'::name,
@@ -52,9 +52,9 @@ select columns_are('swrs_transform'::name, 'fuel'::name, array[
 ]);
 
 
---  select has_column(       'swrs_transform', 'fuel', 'ghgr_import_id', 'fuel.ghgr_import_id column should exist');
-select col_type_is(      'swrs_transform', 'fuel', 'ghgr_import_id', 'integer', 'fuel.ghgr_import_id column should be type integer');
-select col_hasnt_default('swrs_transform', 'fuel', 'ghgr_import_id', 'fuel.ghgr_import_id column should not have a default value');
+--  select has_column(       'swrs_transform', 'fuel', 'eccc_xml_file_id', 'fuel.eccc_xml_file_id column should exist');
+select col_type_is(      'swrs_transform', 'fuel', 'eccc_xml_file_id', 'integer', 'fuel.eccc_xml_file_id column should be type integer');
+select col_hasnt_default('swrs_transform', 'fuel', 'eccc_xml_file_id', 'fuel.eccc_xml_file_id column should not have a default value');
 
 
 --  select has_column(       'swrs_transform', 'fuel', 'activity_name', 'fuel.activity_id column should exist');
@@ -198,7 +198,7 @@ select col_hasnt_default('swrs_transform', 'fuel', 'measured_conversion_factors'
 
 
 
-insert into swrs_extract.ghgr_import (xml_file) values ($$
+insert into swrs_extract.eccc_xml_file (xml_file) values ($$
   <ActivityData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <ActivityPages>
       <Process ProcessName="ElectricityGeneration">
@@ -252,17 +252,17 @@ refresh materialized view swrs_transform.unit with data;
 
 -- test foreign keys
 select results_eq(
-  'select distinct ghgr_import_id from swrs_transform.fuel',
-  'select id from swrs_extract.ghgr_import',
-  'swrs_transform.fuel.ghgr_import_id relates to swrs_extract.ghgr_import.id'
+  'select distinct eccc_xml_file_id from swrs_transform.fuel',
+  'select id from swrs_extract.eccc_xml_file',
+  'swrs_transform.fuel.eccc_xml_file_id relates to swrs_extract.eccc_xml_file.id'
 );
 
 select results_eq(
     $$
-    select unit.ghgr_import_id from swrs_transform.fuel
+    select unit.eccc_xml_file_id from swrs_transform.fuel
     join swrs_transform.unit
     on (
-    fuel.ghgr_import_id =  unit.ghgr_import_id
+    fuel.eccc_xml_file_id =  unit.eccc_xml_file_id
     and fuel.process_idx = unit.process_idx
     and fuel.sub_process_idx = unit.sub_process_idx
     and fuel.activity_name = unit.activity_name
@@ -270,16 +270,16 @@ select results_eq(
     and fuel.unit_idx = unit.unit_idx)
     $$,
 
-    'select ghgr_import_id from swrs_transform.unit',
+    'select eccc_xml_file_id from swrs_transform.unit',
 
-    'Foreign keys ghgr_import_id, process_idx, sub_process_idx, activity_name, units_idx and unit_idx in ggircs_swrs_fuel reference swrs_transform.unit'
+    'Foreign keys eccc_xml_file_id, process_idx, sub_process_idx, activity_name, units_idx and unit_idx in ggircs_swrs_fuel reference swrs_transform.unit'
 );
 
 -- Test xml column parsing
 select results_eq(
-    'select ghgr_import_id from swrs_transform.fuel where fuel_idx=0 and unit_idx=0',
-    'select id from swrs_extract.ghgr_import',
-    'column ghgr_import_id in swrs_transform.fuel was properly parsed from xml'
+    'select eccc_xml_file_id from swrs_transform.fuel where fuel_idx=0 and unit_idx=0',
+    'select id from swrs_extract.eccc_xml_file',
+    'column eccc_xml_file_id in swrs_transform.fuel was properly parsed from xml'
 );
 
 select results_eq(

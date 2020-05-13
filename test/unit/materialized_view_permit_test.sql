@@ -18,7 +18,7 @@ select has_index(
 
 select columns_are('swrs_transform'::name, 'permit'::name, array[
     'id'::name,
-    'ghgr_import_id'::name,
+    'eccc_xml_file_id'::name,
     'path_context'::name,
     'permit_idx'::name,
     'issuing_agency'::name,
@@ -26,8 +26,8 @@ select columns_are('swrs_transform'::name, 'permit'::name, array[
     'permit_number'::name
 ]);
 
-select col_type_is(      'swrs_transform', 'permit', 'ghgr_import_id', 'integer', 'permit.ghgr_import_id column should be type integer');
-select col_hasnt_default('swrs_transform', 'permit', 'ghgr_import_id', 'permit.ghgr_import_id column should not have a default value');
+select col_type_is(      'swrs_transform', 'permit', 'eccc_xml_file_id', 'integer', 'permit.eccc_xml_file_id column should be type integer');
+select col_hasnt_default('swrs_transform', 'permit', 'eccc_xml_file_id', 'permit.eccc_xml_file_id column should not have a default value');
 
 --  select has_column(       'swrs_transform', 'permit', 'path_context', 'permit.path_context column should exist');
 select col_type_is(      'swrs_transform', 'permit', 'path_context', 'character varying(1000)', 'permit.path_context column should be type varchar');
@@ -55,7 +55,7 @@ select col_is_null(      'swrs_transform', 'permit', 'permit_number', 'permit.pe
 select col_hasnt_default('swrs_transform', 'permit', 'permit_number', 'permit.permit_number column should not have a default');
 
 
-insert into swrs_extract.ghgr_import (xml_file) values ($$<ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+insert into swrs_extract.eccc_xml_file (xml_file) values ($$<ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <RegistrationData>
     <Facility>
       <Identifiers>
@@ -84,19 +84,19 @@ select results_eq(
      select facility.swrs_facility_id from swrs_transform.permit
      join swrs_transform.facility
      on
-     permit.ghgr_import_id = facility.ghgr_import_id
+     permit.eccc_xml_file_id = facility.eccc_xml_file_id
      $$,
 
     'select swrs_facility_id from swrs_transform.facility',
 
-    'Foreign key ghgr_import_id in ggircs_swrs_parent_facility references swrs_transform.facility'
+    'Foreign key eccc_xml_file_id in ggircs_swrs_parent_facility references swrs_transform.facility'
 );
 
 -- XML import tests
 select results_eq(
-    'select ghgr_import_id from swrs_transform.permit',
-    'select id from swrs_extract.ghgr_import',
-    'column ghgr_import_id in permit correctly parsed xml'
+    'select eccc_xml_file_id from swrs_transform.permit',
+    'select id from swrs_extract.eccc_xml_file',
+    'column eccc_xml_file_id in permit correctly parsed xml'
 );
 
 select results_eq(

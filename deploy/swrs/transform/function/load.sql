@@ -1,6 +1,6 @@
 -- Deploy ggircs:function_load to pg
 -- requires:
-  -- table_ghgr_import materialized_view_report materialized_view_final_report
+  -- table_eccc_xml_file materialized_view_report materialized_view_final_report
   -- materialized_view_facility materialized_view_organisation
   -- materialized_view_address materialized_view_contact
   -- materialized_view_naics materialized_view_identifier

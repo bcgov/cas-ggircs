@@ -14,19 +14,19 @@ select has_view(
 select columns_are('swrs_transform'::name, 'final_report'::name, array[
     'id'::name,
     'swrs_report_id'::name,
-    'ghgr_import_id'::name
+    'eccc_xml_file_id'::name
 ]);
 
 --  select has_column(       'swrs_transform', 'final_report', 'swrs_report_id', 'final_report.swrs_report_id column should exist');
 select col_type_is(      'swrs_transform', 'final_report', 'swrs_report_id', 'integer', 'final_report.swrs_report_id column should be type bigint');
 select col_hasnt_default('swrs_transform', 'final_report', 'swrs_report_id', 'final_report.swrs_report_id column should not have a default value');
 
---  select has_column(       'swrs_transform', 'final_report', 'ghgr_import_id', 'final_report.ghgr_import_id column should exist');
-select col_type_is(      'swrs_transform', 'final_report', 'ghgr_import_id', 'integer', 'final_report.ghgr_import_id column should be type bigint');
-select col_hasnt_default('swrs_transform', 'final_report', 'ghgr_import_id', 'final_report.ghgr_import_id column should not have a default value');
+--  select has_column(       'swrs_transform', 'final_report', 'eccc_xml_file_id', 'final_report.eccc_xml_file_id column should exist');
+select col_type_is(      'swrs_transform', 'final_report', 'eccc_xml_file_id', 'integer', 'final_report.eccc_xml_file_id column should be type bigint');
+select col_hasnt_default('swrs_transform', 'final_report', 'eccc_xml_file_id', 'final_report.eccc_xml_file_id column should not have a default value');
 
 -- Setup fixture
-insert into swrs_extract.ghgr_import (imported_at, xml_file) VALUES
+insert into swrs_extract.eccc_xml_file (imported_at, xml_file) VALUES
 ('2018-09-29T11:55:39.423', $$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <ReportDetails>
@@ -113,7 +113,7 @@ on conflict (swrs_organisation_id) do nothing;
 -- Ensure fixture is processed correctly
 refresh materialized view swrs_transform.report with data;
 
--- Test ghgr_import_id fk relation
+-- Test eccc_xml_file_id fk relation
 select results_eq(
     $$
     select report.swrs_report_id from swrs_transform.final_report
@@ -124,7 +124,7 @@ select results_eq(
 
     'select swrs_report_id from swrs_transform.report',
 
-    'Foreign key ghgr_import_id in ggircs_swrs_final_report references swrs_transform.report'
+    'Foreign key eccc_xml_file_id in ggircs_swrs_final_report references swrs_transform.report'
 );
 
 select results_eq(
@@ -134,13 +134,13 @@ select results_eq(
 );
 
 select results_eq(
-  'select ghgr_import_id from swrs_transform.final_report',
-  $$ select ghgr_import_id from swrs_transform.report where status = 'Archived' $$,
-  'swrs_transform.final_report.ghgr_import_id should refer to the correct version'
+  'select eccc_xml_file_id from swrs_transform.final_report',
+  $$ select eccc_xml_file_id from swrs_transform.report where status = 'Archived' $$,
+  'swrs_transform.final_report.eccc_xml_file_id should refer to the correct version'
 );
 
-delete from swrs_extract.ghgr_import where id < 200;
-insert into swrs_extract.ghgr_import (imported_at, xml_file) VALUES
+delete from swrs_extract.eccc_xml_file where id < 200;
+insert into swrs_extract.eccc_xml_file (imported_at, xml_file) VALUES
 ('2018-09-29T11:55:39.423', $$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <ReportDetails>

@@ -1,5 +1,5 @@
 -- Deploy ggircs:function_transform to pg
--- requires: table_ghgr_import
+-- requires: table_eccc_xml_file
 
 begin;
 

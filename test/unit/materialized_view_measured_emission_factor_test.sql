@@ -19,7 +19,7 @@ select has_index(
 
 select columns_are('swrs_transform'::name, 'measured_emission_factor'::name, array[
     'id'::name,
-    'ghgr_import_id'::name,
+    'eccc_xml_file_id'::name,
     'activity_name'::name,
     'sub_activity_name'::name,
     'unit_name'::name,
@@ -38,9 +38,9 @@ select columns_are('swrs_transform'::name, 'measured_emission_factor'::name, arr
 ]);
 
 
---  select has_column(       'swrs_transform', 'measured_emission_factor', 'ghgr_import_id', 'measured_emission_factor.ghgr_import_id column should exist');
-select col_type_is(      'swrs_transform', 'measured_emission_factor', 'ghgr_import_id', 'integer', 'measured_emission_factor.ghgr_import_id column should be type integer');
-select col_hasnt_default('swrs_transform', 'measured_emission_factor', 'ghgr_import_id', 'measured_emission_factor.ghgr_import_id column should not have a default value');
+--  select has_column(       'swrs_transform', 'measured_emission_factor', 'eccc_xml_file_id', 'measured_emission_factor.eccc_xml_file_id column should exist');
+select col_type_is(      'swrs_transform', 'measured_emission_factor', 'eccc_xml_file_id', 'integer', 'measured_emission_factor.eccc_xml_file_id column should be type integer');
+select col_hasnt_default('swrs_transform', 'measured_emission_factor', 'eccc_xml_file_id', 'measured_emission_factor.eccc_xml_file_id column should not have a default value');
 
 --  select has_column(       'swrs_transform', 'measured_emission_factor', 'activity_name', 'measured_emission_factor.activity_id column should exist');
 select col_type_is(      'swrs_transform', 'measured_emission_factor', 'activity_name', 'character varying(1000)', 'measured_emission_factor.activity_name column should be type varchar');
@@ -97,7 +97,7 @@ select col_type_is(      'swrs_transform', 'measured_emission_factor', 'fuel_idx
 select col_is_null(      'swrs_transform', 'measured_emission_factor', 'fuel_idx', 'measured_emission_factor.fuel_idx column should not allow null');
 select col_hasnt_default('swrs_transform', 'measured_emission_factor', 'fuel_idx', 'measured_emission_factor.fuel_idx column should not  have a default');
 
-insert into swrs_extract.ghgr_import (xml_file) values ($$
+insert into swrs_extract.eccc_xml_file (xml_file) values ($$
   <ActivityData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <ActivityPages>
       <Process ProcessName="ElectricityGeneration">
@@ -131,20 +131,20 @@ refresh materialized view swrs_transform.fuel with data;
 refresh materialized view swrs_transform.measured_emission_factor with data;
 
 -- test foreign keys
--- measured_emission_factor -> ghgr_import
+-- measured_emission_factor -> eccc_xml_file
 select results_eq(
-  'select distinct ghgr_import_id from swrs_transform.measured_emission_factor',
-  'select id from swrs_extract.ghgr_import',
-  'swrs_transform.measured_emission_factor.ghgr_import_id relates to swrs_extract.ghgr_import.id'
+  'select distinct eccc_xml_file_id from swrs_transform.measured_emission_factor',
+  'select id from swrs_extract.eccc_xml_file',
+  'swrs_transform.measured_emission_factor.eccc_xml_file_id relates to swrs_extract.eccc_xml_file.id'
 );
 
 -- measured_emission_factor -> fuel
 select results_eq(
     $$
-    select fuel.ghgr_import_id from swrs_transform.measured_emission_factor
+    select fuel.eccc_xml_file_id from swrs_transform.measured_emission_factor
     join swrs_transform.fuel
     on (
-    measured_emission_factor.ghgr_import_id =  fuel.ghgr_import_id
+    measured_emission_factor.eccc_xml_file_id =  fuel.eccc_xml_file_id
     and measured_emission_factor.process_idx = fuel.process_idx
     and measured_emission_factor.sub_process_idx = fuel.sub_process_idx
     and measured_emission_factor.activity_name = fuel.activity_name
@@ -153,9 +153,9 @@ select results_eq(
     and measured_emission_factor.fuel_idx = fuel.fuel_idx
     $$,
 
-    'select ghgr_import_id from swrs_transform.fuel',
+    'select eccc_xml_file_id from swrs_transform.fuel',
 
-    'Foreign keys ghgr_import_id, process_idx, sub_process_idx, activity_name, units_idx, unit_idx and fuel.idx in ggircs_swrs_measured_emission_factor reference swrs_transform.fuel'
+    'Foreign keys eccc_xml_file_id, process_idx, sub_process_idx, activity_name, units_idx, unit_idx and fuel.idx in ggircs_swrs_measured_emission_factor reference swrs_transform.fuel'
 );
 
 -- test xml imports

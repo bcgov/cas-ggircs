@@ -1,11 +1,11 @@
 -- Deploy ggircs:materialized_view_permit to pg
--- requires: table_ghgr_import
+-- requires: table_eccc_xml_file
 
 begin;
 
 create materialized view swrs_transform.permit as (
-  select row_number() over () as id, id as ghgr_import_id, permit_details.*
-  from swrs_extract.ghgr_import,
+  select row_number() over () as id, id as eccc_xml_file_id, permit_details.*
+  from swrs_extract.eccc_xml_file,
        xmltable(
            '//Permit'
            passing xml_file
@@ -19,11 +19,11 @@ create materialized view swrs_transform.permit as (
 ) with no data;
 
 create unique index ggircs_permit_primary_key
-    on swrs_transform.permit (ghgr_import_id, path_context, permit_idx);
+    on swrs_transform.permit (eccc_xml_file_id, path_context, permit_idx);
 
 comment on materialized view swrs_transform.permit is 'The materialized view housing permit information';
 comment on column swrs_transform.permit.id is 'A generated index used for keying in the ggircs schema';
-comment on column swrs_transform.permit.ghgr_import_id is 'The foreign key reference to swrs_extract.ghgr_import';
+comment on column swrs_transform.permit.eccc_xml_file_id is 'The foreign key reference to swrs_extract.eccc_xml_file';
 comment on column swrs_transform.permit.path_context is 'The context of the parent path (from VerifyTombstone or RegistrationData';
 comment on column swrs_transform.permit.permit_idx is 'The number of preceding Permit siblings before this Permit';
 comment on column swrs_transform.permit.issuing_agency is 'The issuing agency for this permit';

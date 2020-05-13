@@ -1,13 +1,13 @@
 -- Deploy ggircs:materialized_view_fuel to pg
--- requires: table_ghgr_import
+-- requires: table_eccc_xml_file
 
 begin;
 
 -- Fuels from Units
 -- todo: explore any other attributes for units
 create materialized view swrs_transform.fuel as (
-  select row_number() over () as id, id as ghgr_import_id, fuel_details.*
-  from swrs_extract.ghgr_import,
+  select row_number() over () as id, id as eccc_xml_file_id, fuel_details.*
+  from swrs_extract.eccc_xml_file,
        xmltable(
            '//Fuel'
            passing xml_file
@@ -42,11 +42,11 @@ create materialized view swrs_transform.fuel as (
          ) as fuel_details
 ) with no data;
 
-create unique index ggircs_fuel_primary_key on swrs_transform.fuel (ghgr_import_id, activity_name, sub_activity_name, unit_name, sub_unit_name, process_idx, sub_process_idx, units_idx, unit_idx, substances_idx, substance_idx, fuel_idx);
+create unique index ggircs_fuel_primary_key on swrs_transform.fuel (eccc_xml_file_id, activity_name, sub_activity_name, unit_name, sub_unit_name, process_idx, sub_process_idx, units_idx, unit_idx, substances_idx, substance_idx, fuel_idx);
 
 comment on materialized view swrs_transform.fuel is 'The materialized view containing the information on fuels';
 comment on column swrs_transform.fuel.id is 'A generated index used for keying in the ggircs schema';
-comment on column swrs_transform.fuel.ghgr_import_id is 'A foreign key reference to swrs_extract.ghgr_import';
+comment on column swrs_transform.fuel.eccc_xml_file_id is 'A foreign key reference to swrs_extract.eccc_xml_file';
 comment on column swrs_transform.fuel.activity_name is 'The name of the activity (partial fk reference)';
 comment on column swrs_transform.fuel.sub_activity_name is 'The name of the sub_activity (partial fk reference)';
 comment on column swrs_transform.fuel.unit_name is 'The name of the unit (partial fk reference)';
@@ -77,4 +77,3 @@ comment on column swrs_transform.fuel.wastewater_processing_factors is 'Details 
 comment on column swrs_transform.fuel.measured_conversion_factors is 'Details on the measured_conversion_factors for this fuel';
 
 commit;
-
