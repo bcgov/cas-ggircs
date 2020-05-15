@@ -19,7 +19,7 @@ select has_index(
 
 select columns_are('swrs_transform'::name, 'emission'::name, array[
     'id'::name,
-    'ghgr_import_id'::name,
+    'eccc_xml_file_id'::name,
     'activity_name'::name,
     'sub_activity_name'::name,
     'unit_name'::name,
@@ -44,8 +44,8 @@ select columns_are('swrs_transform'::name, 'emission'::name, array[
 ]);
 
 
-select col_type_is(      'swrs_transform', 'emission', 'ghgr_import_id', 'integer', 'emission.ghgr_import_id column should be type integer');
-select col_hasnt_default('swrs_transform', 'emission', 'ghgr_import_id', 'emission.ghgr_import_id column should not have a default value');
+select col_type_is(      'swrs_transform', 'emission', 'eccc_xml_file_id', 'integer', 'emission.eccc_xml_file_id column should be type integer');
+select col_hasnt_default('swrs_transform', 'emission', 'eccc_xml_file_id', 'emission.eccc_xml_file_id column should not have a default value');
 
 
 --  select has_column(       'swrs_transform', 'emission', 'activity_name', 'emission.activity_id column should exist');
@@ -135,7 +135,7 @@ select col_type_is(      'swrs_transform', 'emission', 'calculated_quantity', 'n
 -- select col_has_default(  'swrs_transform', 'emission', 'calculated_quantity', 'emission.calculated_quantity column should have a default');
 
 -- Insert data for fixture based testing
-insert into swrs_extract.ghgr_import (xml_file) values ($$
+insert into swrs_extract.eccc_xml_file (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <ActivityData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <ActivityPages>
@@ -181,27 +181,27 @@ $$);
 refresh materialized view swrs_transform.fuel with data;
 refresh materialized view swrs_transform.emission with data;
 
---  Test ghgr_import_id fk relation
+--  Test eccc_xml_file_id fk relation
 select results_eq(
     $$
-    select fuel.ghgr_import_id from swrs_transform.emission
+    select fuel.eccc_xml_file_id from swrs_transform.emission
     join swrs_transform.fuel
     on
-    emission.ghgr_import_id =  fuel.ghgr_import_id
+    emission.eccc_xml_file_id =  fuel.eccc_xml_file_id
     and emission.fuel_idx = fuel.fuel_idx
     and emission.emission_idx=0
     $$,
 
-    'select ghgr_import_id from swrs_transform.fuel',
+    'select eccc_xml_file_id from swrs_transform.fuel',
 
-    'Foreign keys ghgr_import_id, fuel_idx in ggircs_swrs_emission reference swrs_transform.fuel'
+    'Foreign keys eccc_xml_file_id, fuel_idx in ggircs_swrs_emission reference swrs_transform.fuel'
 );
 
 -- test the columns for matview facility have been properly parsed from xml
 select results_eq(
-  $$ select ghgr_import_id from swrs_transform.emission where fuel_idx=0 and emission_idx=0 $$,
-  'select id from swrs_extract.ghgr_import',
-  'swrs_transform.emission.ghgr_import_id relates to swrs_extract.ghgr_import.id'
+  $$ select eccc_xml_file_id from swrs_transform.emission where fuel_idx=0 and emission_idx=0 $$,
+  'select id from swrs_extract.eccc_xml_file',
+  'swrs_transform.emission.eccc_xml_file_id relates to swrs_extract.eccc_xml_file.id'
 );
 
 -- Extract process_idx

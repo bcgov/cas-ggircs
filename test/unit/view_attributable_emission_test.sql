@@ -6,7 +6,7 @@ reset client_min_messages;
 begin;
 select * from no_plan();
 
-insert into swrs_extract.ghgr_import (xml_file) values ($$
+insert into swrs_extract.eccc_xml_file (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <RegistrationData>
     <Organisation>
@@ -441,7 +441,7 @@ select has_view(
 -- Columns are correct
 select columns_are('swrs'::name, 'attributable_emission'::name, array[
      'id'::name::name,
-     'ghgr_import_id'::name,
+     'eccc_xml_file_id'::name,
      'fuel_id'::name,
      'activity_id'::name,
      'report_id'::name,
@@ -629,13 +629,13 @@ select set_eq(
 -- Attributable Emission -> Report
 select set_eq(
     $$
-    select report.ghgr_import_id from swrs.attributable_emission
+    select report.eccc_xml_file_id from swrs.attributable_emission
     join swrs.report
     on
       attributable_emission.report_id = report.id
     $$,
 
-    $$ select report.ghgr_import_id from swrs.emission as emission
+    $$ select report.eccc_xml_file_id from swrs.emission as emission
        join swrs.report as report
        on emission.report_id = report.id
        join swrs.fuel as fuel

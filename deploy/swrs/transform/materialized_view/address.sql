@@ -1,10 +1,10 @@
 -- Deploy ggircs:materialized_view_address to pg
--- requires: table_ghgr_import
+-- requires: table_eccc_xml_file
 
 begin;
 
 create materialized view swrs_transform.address as (
-  select row_number() over () as id, id as ghgr_import_id,
+  select row_number() over () as id, id as eccc_xml_file_id,
          address_details.swrs_facility_id,
          swrs_organisation_id,
          path_context,
@@ -41,7 +41,7 @@ create materialized view swrs_transform.address as (
          substring(geographic_address_latitude from '-*[0-9]+\.*[0-9]+')::numeric as geographic_address_latitude,
          substring(geographic_address_longitude from '-*[0-9]+\.*[0-9]+')::numeric as geographic_address_longitude
 
-  from swrs_extract.ghgr_import,
+  from swrs_extract.eccc_xml_file,
        xmltable(
            '//Address[not(ancestor::Stack)]'
            passing xml_file
@@ -87,11 +87,11 @@ create materialized view swrs_transform.address as (
 ) with no data;
 
 create unique index ggircs_address_primary_key
-    on swrs_transform.address (ghgr_import_id, swrs_facility_id, swrs_organisation_id, type, contact_idx, parent_organisation_idx);
+    on swrs_transform.address (eccc_xml_file_id, swrs_facility_id, swrs_organisation_id, type, contact_idx, parent_organisation_idx);
 
 comment on materialized view swrs_transform.address is 'The materialized view housing address information for facilities, organisations and contacts';
 comment on column swrs_transform.address.id is 'A generated index used for keying in the ggircs schema';
-comment on column swrs_transform.address.ghgr_import_id is 'The foreign key that references swrs_extract.ghgr_import';
+comment on column swrs_transform.address.eccc_xml_file_id is 'The foreign key that references swrs_extract.eccc_xml_file';
 comment on column swrs_transform.address.swrs_facility_id is 'The foreign key that references swrs_transform.facility';
 comment on column swrs_transform.address.swrs_organisation_id is 'The foreign key that references swrs_transform.organisation';
 comment on column swrs_transform.address.path_context is 'The ancestor path context (VerifyTombstone or RegistrationData)';

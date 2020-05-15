@@ -6,7 +6,7 @@ begin;
 create table swrs.fuel (
 
     id                                  integer primary key,
-    ghgr_import_id                      integer,
+    eccc_xml_file_id                      integer,
     report_id                           integer references swrs.report(id),
     unit_id                             integer references swrs.unit(id),
     fuel_mapping_id                     integer references swrs.fuel_mapping(id),
@@ -36,7 +36,7 @@ create index ggircs_fuel_fuel_mapping_foreign_key on swrs.fuel(fuel_mapping_id);
 
 comment on table swrs.fuel is 'The table containing the information on fuels';
 comment on column swrs.fuel.id is 'The primary key';
-comment on column swrs.fuel.ghgr_import_id is 'A foreign key reference to swrs.ghgr_import';
+comment on column swrs.fuel.eccc_xml_file_id is 'A foreign key reference to swrs.eccc_xml_file';
 comment on column swrs.fuel.report_id is 'A foreign key reference to swrs.report';
 comment on column swrs.fuel.unit_id is 'A foreign key reference to swrs.unit';
 comment on column swrs.fuel.fuel_mapping_id is 'A foreign key reference to swrs.fuel_mapping';

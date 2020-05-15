@@ -7,7 +7,7 @@ create table swrs.organisation
 (
     id                        integer primary key,
     report_id                 integer references swrs.report(id),
-    ghgr_import_id            integer,
+    eccc_xml_file_id            integer,
     swrs_organisation_id      integer,
     business_legal_name       varchar(1000),
     english_trade_name        varchar(1000),
@@ -22,7 +22,7 @@ create index ggircs_organisaion_report_foreign_key on swrs.organisation(report_i
 comment on table swrs.organisation is 'the table housing all report data pertaining to the reporting organisation';
 comment on column swrs.organisation.id is 'The primary key';
 comment on column swrs.organisation.report_id is 'A foreign key reference to swrs.report';
-comment on column swrs.organisation.ghgr_import_id is 'The internal reference to the file imported from ghgr';
+comment on column swrs.organisation.eccc_xml_file_id is 'The internal reference to the file imported from ghgr';
 comment on column swrs.organisation.swrs_organisation_id is 'The reporting organisation swrs id';
 comment on column swrs.organisation.business_legal_name is 'The legal business name of the reporting organisation';
 comment on column swrs.organisation.english_trade_name is 'The trade name in english';

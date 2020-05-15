@@ -19,7 +19,7 @@ select has_index(
 
 select columns_are('swrs_transform'::name, 'additional_data'::name, array[
     'id'::name,
-    'ghgr_import_id'::name,
+    'eccc_xml_file_id'::name,
     'activity_name'::name,
     'process_idx'::name,
     'sub_process_idx'::name,
@@ -36,8 +36,8 @@ select columns_are('swrs_transform'::name, 'additional_data'::name, array[
 
 
 
-select col_type_is(      'swrs_transform', 'additional_data', 'ghgr_import_id', 'integer', 'additional_data.ghgr_import_id column should be type integer');
-select col_hasnt_default('swrs_transform', 'additional_data', 'ghgr_import_id', 'additional_data.ghgr_import_id column should not have a default value');
+select col_type_is(      'swrs_transform', 'additional_data', 'eccc_xml_file_id', 'integer', 'additional_data.eccc_xml_file_id column should be type integer');
+select col_hasnt_default('swrs_transform', 'additional_data', 'eccc_xml_file_id', 'additional_data.eccc_xml_file_id column should not have a default value');
 
 select col_type_is(      'swrs_transform', 'additional_data', 'activity_name', 'character varying(1000)', 'additional_data.activity_name column should be type text');
 select col_hasnt_default('swrs_transform', 'additional_data', 'activity_name', 'additional_data.activity_name column should not have a default');
@@ -82,7 +82,7 @@ select col_hasnt_default('swrs_transform', 'additional_data', 'node_value', 'add
 
 -- Insert data for fixture based testing
 
-insert into swrs_extract.ghgr_import (xml_file) values ($$
+insert into swrs_extract.eccc_xml_file (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <ActivityData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <ActivityPages>
@@ -121,26 +121,26 @@ $$);
 
 refresh materialized view swrs_transform.additional_data with data;
 
---  Test ghgr_import_id fk relation
+--  Test eccc_xml_file_id fk relation
 select results_eq(
     $$
-    select ghgr_import.id from swrs_transform.additional_data
-    join swrs_extract.ghgr_import
+    select eccc_xml_file.id from swrs_transform.additional_data
+    join swrs_extract.eccc_xml_file
     on
-    additional_data.ghgr_import_id =  ghgr_import.id
+    additional_data.eccc_xml_file_id =  eccc_xml_file.id
     and class='Amount'
     $$,
 
-    'select id from swrs_extract.ghgr_import',
+    'select id from swrs_extract.eccc_xml_file',
 
-    'Foreign key ghgr_import_id ggircs_swrs_additional_data reference swrs_extract.ghgr_import'
+    'Foreign key eccc_xml_file_id ggircs_swrs_additional_data reference swrs_extract.eccc_xml_file'
 );
 
 -- test the columns for matview additional_datas have been properly parsed from xml
 select results_eq(
-  $$ select ghgr_import_id from swrs_transform.additional_data where class='Amount' $$,
-  'select id from swrs_extract.ghgr_import',
-  'swrs_transform.additional_data.ghgr_import_id relates to swrs_extract.ghgr_import.id'
+  $$ select eccc_xml_file_id from swrs_transform.additional_data where class='Amount' $$,
+  'select id from swrs_extract.eccc_xml_file',
+  'swrs_transform.additional_data.eccc_xml_file_id relates to swrs_extract.eccc_xml_file.id'
 );
 
 -- test that root level additional_datas being extracted
@@ -222,4 +222,3 @@ select results_eq(
 
 select * from finish();
 rollback;
-

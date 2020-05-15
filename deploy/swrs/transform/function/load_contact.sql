@@ -14,19 +14,19 @@ $function$
     begin
 
         delete from swrs_load.contact;
-        insert into swrs_load.contact (id, ghgr_import_id, address_id, facility_id,  report_id, organisation_id, path_context, contact_type, given_name, family_name, initials, telephone_number, extension_number,
+        insert into swrs_load.contact (id, eccc_xml_file_id, address_id, facility_id,  report_id, organisation_id, path_context, contact_type, given_name, family_name, initials, telephone_number, extension_number,
                                     fax_number, email_address, position, language_correspondence)
 
-        select _contact.id, _contact.ghgr_import_id, _address.id, _facility.id,  _report.id, _organisation.id, _contact.path_context, _contact.contact_type, _contact.given_name, _contact.family_name,
+        select _contact.id, _contact.eccc_xml_file_id, _address.id, _facility.id,  _report.id, _organisation.id, _contact.path_context, _contact.contact_type, _contact.given_name, _contact.family_name,
                _contact.initials, _contact.telephone_number, _contact.extension_number, _contact.fax_number, _contact.email_address, _contact.position, _contact.language_correspondence
 
         from swrs_transform.contact as _contact
 
-        inner join swrs_transform.final_report as _final_report on _contact.ghgr_import_id = _final_report.ghgr_import_id
+        inner join swrs_transform.final_report as _final_report on _contact.eccc_xml_file_id = _final_report.eccc_xml_file_id
         -- todo: this could be re-worked when we get a better idea how to handle path_context
         --FK Contact -> Address
         left join swrs_transform.address as _address
-          on _contact.ghgr_import_id = _address.ghgr_import_id
+          on _contact.eccc_xml_file_id = _address.eccc_xml_file_id
           and _address.type = 'Contact'
           and _contact.contact_idx = _address.contact_idx
           and(
@@ -38,14 +38,14 @@ $function$
               )
         -- FK Contact ->  Facility
         left join swrs_transform.facility as _facility
-            on _contact.ghgr_import_id = _facility.ghgr_import_id
+            on _contact.eccc_xml_file_id = _facility.eccc_xml_file_id
 
         --FK Contact -> Report
         left join swrs_transform.report as _report
-          on _contact.ghgr_import_id = _report.ghgr_import_id
+          on _contact.eccc_xml_file_id = _report.eccc_xml_file_id
         --FK Contact -> Organisation
         left join swrs_transform.organisation as _organisation
-            on _contact.ghgr_import_id = _organisation.ghgr_import_id;
+            on _contact.eccc_xml_file_id = _organisation.eccc_xml_file_id;
 
     end
 $function$ language plpgsql volatile;

@@ -6,7 +6,7 @@ reset client_min_messages;
 begin;
 select * from no_plan();
 
-insert into swrs_extract.ghgr_import (xml_file) values ($$
+insert into swrs_extract.eccc_xml_file (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <RegistrationData>
     <Organisation>
@@ -153,14 +153,14 @@ select isnt_empty('select * from swrs.permit', 'there is data in swrs.permit');
 -- Permit -> Facility
 select set_eq(
     $$
-    select facility.ghgr_import_id from swrs.permit
+    select facility.eccc_xml_file_id from swrs.permit
     join swrs.facility
     on
       permit.facility_id = facility.id
-      order by ghgr_import_id
+      order by eccc_xml_file_id
     $$,
 
-    'select ghgr_import_id from swrs.facility order by ghgr_import_id',
+    'select eccc_xml_file_id from swrs.facility order by eccc_xml_file_id',
 
     'Foreign key facility_id in swrs.permit references swrs.facility.id'
 );
@@ -169,28 +169,28 @@ select set_eq(
 select set_eq(
               $$
               select
-                  ghgr_import_id,
+                  eccc_xml_file_id,
                   path_context,
                   issuing_agency,
                   issuing_dept_agency_program,
                   permit_number
                 from swrs_transform.permit
                 order by
-                  ghgr_import_id,
+                  eccc_xml_file_id,
                   path_context
                  asc
               $$,
 
               $$
               select
-                  ghgr_import_id,
+                  eccc_xml_file_id,
                   path_context,
                   issuing_agency,
                   issuing_dept_agency_program,
                   permit_number
                 from swrs.permit
                 order by
-                  ghgr_import_id,
+                  eccc_xml_file_id,
                   path_context
                  asc
               $$,

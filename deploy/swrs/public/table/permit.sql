@@ -6,7 +6,7 @@ begin;
 create table swrs.permit (
 
     id                              integer primary key,
-    ghgr_import_id                  integer,
+    eccc_xml_file_id                  integer,
     report_id                       integer references swrs.report(id),
     facility_id                     integer references swrs.facility(id),
     path_context                    varchar(1000),
@@ -21,7 +21,7 @@ create index ggircs_permit_facility_foreign_key on swrs.permit(facility_id);
 
 comment on table swrs.permit is 'The table housing permit information';
 comment on column swrs.permit.id is 'The primary key';
-comment on column swrs.permit.ghgr_import_id is 'The foreign key reference to swrs.ghgr_import';
+comment on column swrs.permit.eccc_xml_file_id is 'The foreign key reference to swrs.eccc_xml_file';
 comment on column swrs.permit.report_id is 'A foreign key reference to swrs.report';
 comment on column swrs.permit.facility_id is 'A foreign key reference to swrs.facility';
 comment on column swrs.permit.path_context is 'The context of the parent path (from VerifyTombstone or RegistrationData';

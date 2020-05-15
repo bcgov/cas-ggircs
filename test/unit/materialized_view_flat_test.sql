@@ -11,7 +11,7 @@ select has_materialized_view('swrs_transform', 'flat', 'swrs_transform.flat exis
 -- Test column names in matview report exist and are correct
 select columns_are('swrs_transform'::name, 'flat'::name, array[
     'id'::name,
-    'ghgr_import_id'::name,
+    'eccc_xml_file_id'::name,
     'element_id'::name,
     'swrs_report_id'::name,
     'class'::name,
@@ -30,7 +30,7 @@ select has_index('swrs_transform', 'flat', 'ggircs_flat_report', 'swrs_transform
 select index_is_unique('swrs_transform', 'flat', 'ggircs_flat_primary_key', 'swrs_transform.flat index ggircs_flat_primary_key is unique');
 
 -- Test columns in matview report have correct types
-select col_type_is('swrs_transform', 'flat', 'ghgr_import_id', 'integer', 'swrs_transform.flat.ghgr_import_id has type integer');
+select col_type_is('swrs_transform', 'flat', 'eccc_xml_file_id', 'integer', 'swrs_transform.flat.eccc_xml_file_id has type integer');
 select col_type_is('swrs_transform', 'flat', 'element_id', 'bigint', 'swrs_transform.flat.element_id has type bigint');
 select col_type_is('swrs_transform', 'flat', 'swrs_report_id', 'numeric(1000,0)', 'swrs_transform.flat.element_id has type bigint');
 select col_type_is('swrs_transform', 'flat', 'class', 'character varying(10000)', 'swrs_transform.flat.class has type varchar');
@@ -38,8 +38,8 @@ select col_type_is('swrs_transform', 'flat', 'attr', 'character varying(10000)',
 select col_type_is('swrs_transform', 'flat', 'value', 'character varying(10000)', 'swrs_transform.flat.value has type varchar');
 select col_type_is('swrs_transform', 'flat', 'context', 'character varying(10000)', 'swrs_transform.flat.value has type varchar');
 
--- insert necessary data into table ghgr_import
-insert into swrs_extract.ghgr_import (imported_at, xml_file) values ('2018-09-29T11:55:39.423', $$
+-- insert necessary data into table eccc_xml_file
+insert into swrs_extract.eccc_xml_file (imported_at, xml_file) values ('2018-09-29T11:55:39.423', $$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <ReportDetails>
     <ReportID>800855555</ReportID>
@@ -70,19 +70,19 @@ $$);
 -- refresh necessary views with data
 refresh materialized view swrs_transform.flat with data;
 
--- test the fk relation to ghgr_import
---  Test ghgr_import_id fk relation
+-- test the fk relation to eccc_xml_file
+--  Test eccc_xml_file_id fk relation
 select results_eq(
     $$
-    select ghgr_import.id from swrs_transform.flat
-    join swrs_extract.ghgr_import
+    select eccc_xml_file.id from swrs_transform.flat
+    join swrs_extract.eccc_xml_file
     on
-    flat.ghgr_import_id =  ghgr_import.id limit 1
+    flat.eccc_xml_file_id =  eccc_xml_file.id limit 1
     $$,
 
-    'select id from swrs_extract.ghgr_import',
+    'select id from swrs_extract.eccc_xml_file',
 
-    'Foreign key ghgr_import_id in ggircs_swrs_flat reference swrs_extract.ghgr_import'
+    'Foreign key eccc_xml_file_id in ggircs_swrs_flat reference swrs_extract.eccc_xml_file'
 );
 
 -- test the columnns for matview facility have been properly parsed from xml

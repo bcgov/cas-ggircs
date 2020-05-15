@@ -6,7 +6,7 @@ reset client_min_messages;
 begin;
 select * from no_plan();
 
-insert into swrs_extract.ghgr_import (xml_file) values ($$
+insert into swrs_extract.eccc_xml_file (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <RegistrationData>
     <Organisation>
@@ -96,12 +96,12 @@ select isnt_empty('select * from swrs.additional_data', 'there is data in swrs.a
 -- Additional Data -> Activity
 select set_eq(
     $$
-    select distinct(activity.ghgr_import_id) from swrs.additional_data
+    select distinct(activity.eccc_xml_file_id) from swrs.additional_data
     join swrs.activity
     on additional_data.activity_id = activity.id
     $$,
 
-    'select distinct(ghgr_import_id) from swrs.activity',
+    'select distinct(eccc_xml_file_id) from swrs.activity',
 
     'Foreign key activity_id in swrs.additional_data references swrs.activity.id'
 );
@@ -109,12 +109,12 @@ select set_eq(
 -- Additional Data -> Report
 select set_eq(
     $$
-    select distinct(report.ghgr_import_id) from swrs.additional_data
+    select distinct(report.eccc_xml_file_id) from swrs.additional_data
     join swrs.report
     on additional_data.report_id = report.id
     $$,
 
-    'select distinct(ghgr_import_id) from swrs.report',
+    'select distinct(eccc_xml_file_id) from swrs.report',
 
     'Foreign key report_id in swrs.additional_data references swrs.report.id'
 );
@@ -123,7 +123,7 @@ select set_eq(
 select set_eq(
               $$
               select
-                    ghgr_import_id,
+                    eccc_xml_file_id,
                     grandparent,
                     parent,
                     class,
@@ -132,7 +132,7 @@ select set_eq(
                     node_value
                 from swrs_transform.additional_data
                 order by
-                  ghgr_import_id,
+                  eccc_xml_file_id,
                   grandparent,
                   parent,
                   class,
@@ -142,7 +142,7 @@ select set_eq(
 
               $$
               select
-                    ghgr_import_id,
+                    eccc_xml_file_id,
                     grandparent,
                     parent,
                     class,
@@ -151,7 +151,7 @@ select set_eq(
                     node_value
                 from swrs.additional_data
                 order by
-                  ghgr_import_id,
+                  eccc_xml_file_id,
                   grandparent,
                   parent,
                   class,

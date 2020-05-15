@@ -6,7 +6,7 @@ begin;
 create or replace view swrs.attributable_emission as(
           select
              row_number() over () as id,
-             x.ghgr_import_id,
+             x.eccc_xml_file_id,
              x.fuel_id,
              x.activity_id,
              x.report_id,

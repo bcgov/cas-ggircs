@@ -8,7 +8,7 @@ create table swrs.additional_data (
     id                        integer primary key,
     report_id                 integer references swrs.report(id),
     activity_id               integer references swrs.activity(id),
-    ghgr_import_id            integer,
+    eccc_xml_file_id            integer,
     activity_name             varchar(1000),
     grandparent               varchar(1000),
     parent                    varchar(1000),
@@ -25,7 +25,7 @@ comment on table swrs.additional_data is 'The table containing the information o
 comment on column swrs.additional_data.id is 'The primary key';
 comment on column swrs.additional_data.report_id is 'A foreign key reference to swrs.report';
 comment on column swrs.additional_data.activity_id is 'A foreign key reference to swrs.activity';
-comment on column swrs.additional_data.ghgr_import_id is 'A foreign key reference to swrs.ghgr_import';
+comment on column swrs.additional_data.eccc_xml_file_id is 'A foreign key reference to swrs.eccc_xml_file';
 comment on column swrs.additional_data.activity_name is 'The name of the node immediately after ReportData';
 comment on column swrs.additional_data.grandparent is 'The name of the grandparent node';
 comment on column swrs.additional_data.parent is 'The name of the parent node';

@@ -5,10 +5,10 @@ reset client_min_messages;
 begin;
 select plan(6);
 
--- Test table ghgr_import exists in schema swrs_transform
+-- Test table eccc_xml_file exists in schema swrs_transform
 select has_table('swrs_transform', 'ignore_organisation', 'Table ignore_organisation exists');
 
--- Test column names in table ghgr_import are correct
+-- Test column names in table eccc_xml_file are correct
 select columns_are('swrs_transform'::name, 'ignore_organisation'::name, ARRAY[
   'swrs_organisation_id'::name
 ]);

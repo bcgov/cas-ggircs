@@ -1,13 +1,13 @@
 -- Deploy ggircs:materialized_view_organisation to pg
 -- requires: schema_ggircs_swrs
--- requires: table_ghgr_import
+-- requires: table_eccc_xml_file
 
 begin;
 
 create materialized view swrs_transform.organisation as (
   select
          row_number() over () as id,
-         id as ghgr_import_id,
+         id as eccc_xml_file_id,
          report_details.swrs_organisation_id,
          coalesce(vt_business_legal_name, rd_business_legal_name)       as business_legal_name,
          coalesce(vt_english_trade_name, rd_english_trade_name)         as english_trade_name,
@@ -15,7 +15,7 @@ create materialized view swrs_transform.organisation as (
          coalesce(vt_cra_business_number, rd_cra_business_number)       as cra_business_number,
          translate(coalesce(vt_duns, rd_duns), '-', '')::varchar(1000)  as duns,
          coalesce(vt_web_site, rd_web_site)                             as website
-  from swrs_extract.ghgr_import,
+  from swrs_extract.eccc_xml_file,
        xmltable(
            '/ReportData/ReportDetails'
            passing xml_file
@@ -45,11 +45,11 @@ create materialized view swrs_transform.organisation as (
              vt_web_site varchar(1000) path './VerifyTombstone/Organisation/Details/WebSite'
          ) as vt_organisation_details
 ) with no data;
-create unique index ggircs_organisation_primary_key on swrs_transform.organisation (ghgr_import_id);
+create unique index ggircs_organisation_primary_key on swrs_transform.organisation (eccc_xml_file_id);
 
 comment on materialized view swrs_transform.organisation is 'the materialized view housing all report data pertaining to the reporting organisation';
 comment on column swrs_transform.organisation.id is 'A generated index used for keying in the ggircs schema';
-comment on column swrs_transform.organisation.ghgr_import_id is 'The internal reference to the file imported from ghgr';
+comment on column swrs_transform.organisation.eccc_xml_file_id is 'The internal reference to the file imported from ghgr';
 comment on column swrs_transform.organisation.swrs_organisation_id is 'The reporting organisation swrs id';
 comment on column swrs_transform.organisation.business_legal_name is 'The legal business name of the reporting organisation';
 comment on column swrs_transform.organisation.english_trade_name is 'The trade name in english';

@@ -6,7 +6,7 @@ reset client_min_messages;
 begin;
 select * from no_plan();
 
-insert into swrs_extract.ghgr_import (xml_file) values ($$
+insert into swrs_extract.eccc_xml_file (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <RegistrationData>
     <Organisation>
@@ -106,12 +106,12 @@ select isnt_empty('select * from swrs.organisation', 'there is data in swrs.orga
 select set_eq(
 
     $$
-    select report.ghgr_import_id from swrs.organisation
+    select report.eccc_xml_file_id from swrs.organisation
     join swrs.report
     on organisation.report_id = report.id
     $$,
 
-    'select ghgr_import_id from swrs.report',
+    'select eccc_xml_file_id from swrs.report',
 
     'Foreign key report_id in swrs.organisation references swrs.report'
 );
@@ -119,7 +119,7 @@ select set_eq(
 -- Data in swrs_transform.organisation === data in swrs.organisation
 select set_eq($$
                   select
-                      ghgr_import_id,
+                      eccc_xml_file_id,
                       swrs_organisation_id,
                       business_legal_name,
                       english_trade_name,
@@ -132,7 +132,7 @@ select set_eq($$
 
                  $$
                  select
-                      ghgr_import_id,
+                      eccc_xml_file_id,
                       swrs_organisation_id,
                       business_legal_name,
                       english_trade_name,

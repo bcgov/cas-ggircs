@@ -6,7 +6,7 @@ reset client_min_messages;
 begin;
 select * from no_plan();
 
-insert into swrs_extract.ghgr_import (xml_file) values ($$
+insert into swrs_extract.eccc_xml_file (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <RegistrationData>
     <Organisation>
@@ -189,12 +189,12 @@ select isnt_empty('select * from swrs.parent_organisation', 'there is data in sw
 -- Parent Organisation -> Report
 select set_eq(
     $$
-    select distinct(report.ghgr_import_id) from swrs.parent_organisation
+    select distinct(report.eccc_xml_file_id) from swrs.parent_organisation
     join swrs.report
     on parent_organisation.report_id = report.id
     $$,
 
-    'select distinct(ghgr_import_id) from swrs.report',
+    'select distinct(eccc_xml_file_id) from swrs.report',
 
     'Foreign key report_id in swrs.parent_organisation references swrs.report.id'
 );
@@ -202,12 +202,12 @@ select set_eq(
 -- Parent Organisation -> Organisation
 select set_eq(
     $$
-    select distinct(organisation.ghgr_import_id) from swrs.parent_organisation
+    select distinct(organisation.eccc_xml_file_id) from swrs.parent_organisation
     join swrs.organisation
     on parent_organisation.organisation_id = organisation.id
     $$,
 
-    'select ghgr_import_id from swrs.organisation',
+    'select eccc_xml_file_id from swrs.organisation',
 
     'Foreign key organisation_id in swrs.parent_organisation references swrs.organisation.id'
 );
@@ -216,7 +216,7 @@ select set_eq(
 select set_eq(
               $$
               select
-                  ghgr_import_id,
+                  eccc_xml_file_id,
                   path_context,
                   percentage_owned,
                   french_trade_name,
@@ -226,14 +226,14 @@ select set_eq(
                   website
                 from swrs_transform.parent_organisation
                 order by
-                  ghgr_import_id,
+                  eccc_xml_file_id,
                   path_context
                  asc
               $$,
 
               $$
               select
-                  ghgr_import_id,
+                  eccc_xml_file_id,
                   path_context,
                   percentage_owned,
                   french_trade_name,
@@ -243,7 +243,7 @@ select set_eq(
                   website
                 from swrs.parent_organisation
                 order by
-                  ghgr_import_id,
+                  eccc_xml_file_id,
                   path_context
                  asc
               $$,

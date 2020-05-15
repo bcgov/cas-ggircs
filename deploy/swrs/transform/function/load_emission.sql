@@ -18,29 +18,29 @@ $function$
     begin
 
         delete from swrs_load.emission;
-        insert into swrs_load.emission (id, ghgr_import_id, activity_id, facility_id,  fuel_id, naics_id, organisation_id, report_id, unit_id, activity_name, sub_activity_name,
+        insert into swrs_load.emission (id, eccc_xml_file_id, activity_id, facility_id,  fuel_id, naics_id, organisation_id, report_id, unit_id, activity_name, sub_activity_name,
                                      unit_name, sub_unit_name, fuel_name, emission_type,
                                      gas_type, methodology, not_applicable, quantity, calculated_quantity, emission_category)
 
-        select _emission.id, _emission.ghgr_import_id, _activity.id, _facility.id,  _fuel.id, _naics.id, _organisation.id, _report.id, _unit.id,
+        select _emission.id, _emission.eccc_xml_file_id, _activity.id, _facility.id,  _fuel.id, _naics.id, _organisation.id, _report.id, _unit.id,
                _emission.activity_name, _emission.sub_activity_name, _emission.unit_name, _emission.sub_unit_name, _emission.fuel_name, _emission.emission_type,
                _emission.gas_type, _emission.methodology, _emission.not_applicable, _emission.quantity, _emission.calculated_quantity, _emission.emission_category
 
         from swrs_transform.emission as _emission
         -- join swrs_transform.emission to use _idx columns in FK creations
-        inner join swrs_transform.final_report as _final_report on _emission.ghgr_import_id = _final_report.ghgr_import_id
+        inner join swrs_transform.final_report as _final_report on _emission.eccc_xml_file_id = _final_report.eccc_xml_file_id
         -- FK Emission -> Activity
         left join swrs_transform.activity as _activity
-          on _emission.ghgr_import_id = _activity.ghgr_import_id
+          on _emission.eccc_xml_file_id = _activity.eccc_xml_file_id
           and _emission.process_idx = _activity.process_idx
           and _emission.sub_process_idx = _activity.sub_process_idx
           and _emission.activity_name = _activity.activity_name
         -- FK Emission -> Facility
         left join swrs_transform.facility as _facility
-            on _emission.ghgr_import_id = _facility.ghgr_import_id
+            on _emission.eccc_xml_file_id = _facility.eccc_xml_file_id
         -- FK Emission -> Fuel
         left join swrs_transform.fuel as _fuel
-          on _emission.ghgr_import_id = _fuel.ghgr_import_id
+          on _emission.eccc_xml_file_id = _fuel.eccc_xml_file_id
           and _emission.process_idx = _fuel.process_idx
           and _emission.sub_process_idx = _fuel.sub_process_idx
           and _emission.activity_name = _fuel.activity_name
@@ -57,23 +57,23 @@ $function$
             -- This long join gets id for the NAICS code from RegistrationData if the code exists and is unique (1 Primary per report)
             -- If there are 2 primary NAICS codes defined in RegistrationData the id for the code is derived from VerifyTombstone
         left outer join swrs_transform.naics as _naics
-          on  _emission.ghgr_import_id = _naics.ghgr_import_id
+          on  _emission.eccc_xml_file_id = _naics.eccc_xml_file_id
           and ((_naics.path_context = 'RegistrationData'
           and (_naics.naics_priority = 'Primary'
                 or _naics.naics_priority = '100.00'
                 or _naics.naics_priority = '100')
-          and (select count(ghgr_import_id)
+          and (select count(eccc_xml_file_id)
                from swrs_transform.naics as __naics
-               where ghgr_import_id = _emission.ghgr_import_id
+               where eccc_xml_file_id = _emission.eccc_xml_file_id
                and __naics.path_context = 'RegistrationData'
                and (__naics.naics_priority = 'Primary'
                 or __naics.naics_priority = '100.00'
                 or __naics.naics_priority = '100')) < 2)
            or (_naics.path_context='VerifyTombstone'
                and _naics.naics_code is not null
-               and (select count(ghgr_import_id)
+               and (select count(eccc_xml_file_id)
                from swrs_transform.naics as __naics
-               where ghgr_import_id = _emission.ghgr_import_id
+               where eccc_xml_file_id = _emission.eccc_xml_file_id
                and __naics.path_context = 'RegistrationData'
                and (__naics.naics_priority = 'Primary'
                 or __naics.naics_priority = '100.00'
@@ -117,13 +117,13 @@ $function$
                        )))
         -- FK Emission -> Organisation
         left join swrs_transform.organisation as _organisation
-          on _emission.ghgr_import_id = _organisation.ghgr_import_id
+          on _emission.eccc_xml_file_id = _organisation.eccc_xml_file_id
         -- FK Emisison -> Report
         left join swrs_transform.report as _report
-          on _emission.ghgr_import_id = _report.ghgr_import_id
+          on _emission.eccc_xml_file_id = _report.eccc_xml_file_id
         -- FK Emission -> Unit
         left join swrs_transform.unit as _unit
-          on _emission.ghgr_import_id = _unit.ghgr_import_id
+          on _emission.eccc_xml_file_id = _unit.eccc_xml_file_id
           and _emission.process_idx = _unit.process_idx
           and _emission.sub_process_idx = _unit.sub_process_idx
           and _emission.activity_name = _unit.activity_name

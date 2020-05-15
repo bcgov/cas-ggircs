@@ -9,7 +9,7 @@ create table swrs.contact (
     report_id                 integer references swrs.report(id),
     address_id                integer references swrs.address(id),
     facility_id               integer references swrs.facility(id),
-    ghgr_import_id            integer,
+    eccc_xml_file_id            integer,
     organisation_id           integer,
     path_context              varchar(1000),
     contact_type              varchar(1000),
@@ -34,7 +34,7 @@ comment on column swrs.contact.id is 'The primary key';
 comment on column swrs.contact.report_id is 'A foreign key reference to swrs.report';
 comment on column swrs.contact.address_id is 'A foreign key reference to swrs.address';
 comment on column swrs.contact.facility_id is 'A foreign key reference to swrs.facility';
-comment on column swrs.contact.ghgr_import_id is 'The foreign key reference to swrs.ghgr_import';
+comment on column swrs.contact.eccc_xml_file_id is 'The foreign key reference to swrs.eccc_xml_file';
 comment on column swrs.contact.organisation_id is 'A foreign key reference to swrs.organisation';
 comment on column swrs.contact.path_context is 'The umbrella context from which the contact was pulled from the xml (VerifyTombstone or RegistrationData';
 comment on column swrs.contact.contact_type is 'The type of contact';

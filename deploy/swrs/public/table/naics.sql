@@ -6,7 +6,7 @@ begin;
 create table swrs.naics (
 
     id                                      integer primary key,
-    ghgr_import_id                          integer,
+    eccc_xml_file_id                          integer,
     report_id                               integer references swrs.report(id),
     facility_id                             integer references swrs.facility(id),
     registration_data_facility_id           integer references swrs.facility(id),
@@ -24,7 +24,7 @@ create index ggircs_naics_registration_data_facility_foreign_key on swrs.naics(f
 
 comment on table swrs.naics is 'The table housing all report data pertaining to naics';
 comment on column swrs.naics.id is 'The primary key';
-comment on column swrs.naics.ghgr_import_id is 'The foreign key reference to swrs.ghgr_import.id';
+comment on column swrs.naics.eccc_xml_file_id is 'The foreign key reference to swrs.eccc_xml_file.id';
 comment on column swrs.naics.report_id is 'A foreign key reference to swrs.report';
 comment on column swrs.naics.facility_id is 'A foreign key reference to swrs.facility';
 comment on column swrs.naics.registration_data_facility_id is 'A foreign key reference to swrs.facility where naics path context = RegistrationData';

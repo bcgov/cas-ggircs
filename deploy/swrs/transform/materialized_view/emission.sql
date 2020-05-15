@@ -5,9 +5,9 @@ begin;
 
 -- Emissions from Fuel
 create materialized view swrs_transform.emission as (
-  select row_number() over () as id, id as ghgr_import_id,
+  select row_number() over () as id, id as eccc_xml_file_id,
          emission_details.*
-  from swrs_extract.ghgr_import,
+  from swrs_extract.eccc_xml_file,
        xmltable(
            '//Emission'
            passing xml_file
@@ -23,7 +23,7 @@ create materialized view swrs_transform.emission as (
              substances_idx integer path 'string(count(./ancestor::Substance/parent::*/preceding-sibling::*))' not null,
              substance_idx integer path 'string(count(./ancestor::Substance/preceding-sibling::Substance))' not null,
              fuel_idx integer path 'string(count(./ancestor::Fuel/preceding-sibling::Fuel))' not null,
-             fuel_name varchar(1000) path 'name((./ancestor::Emissions/parent::*[not(name() = "Substance")][not(name() = "Substances")] | ./parent::*[not(name() = "Emissions")])[1])' not null, -- ghgr_import_id=2514
+             fuel_name varchar(1000) path 'name((./ancestor::Emissions/parent::*[not(name() = "Substance")][not(name() = "Substances")] | ./parent::*[not(name() = "Emissions")])[1])' not null, -- eccc_xml_file_id=2514
              emissions_idx integer path 'string(count(./ancestor::Emissions/preceding-sibling::Emissions))' not null,
              emission_idx integer path 'string(count(./preceding-sibling::Emission))' not null,
              emission_type varchar(1000) path '../@EmissionsType[normalize-space(.)]',
@@ -34,10 +34,10 @@ create materialized view swrs_transform.emission as (
              calculated_quantity numeric path 'CalculatedQuantity[normalize-space(.)]' default 0,
              emission_category varchar(1000) path '(Groups/EmissionGroupTypes/text()[contains(normalize-space(.), "BC_ScheduleB_")])[1]'
          ) as emission_details
-  order by ghgr_import_id
+  order by eccc_xml_file_id
 ) with no data;
 
-create unique index ggircs_emission_primary_key on swrs_transform.emission (ghgr_import_id, activity_name,
+create unique index ggircs_emission_primary_key on swrs_transform.emission (eccc_xml_file_id, activity_name,
                                                                          sub_activity_name, unit_name, sub_unit_name,
                                                                          process_idx, sub_process_idx, units_idx,
                                                                          unit_idx, substances_idx, substance_idx,
@@ -45,7 +45,7 @@ create unique index ggircs_emission_primary_key on swrs_transform.emission (ghgr
 
 comment on materialized view swrs_transform.emission is 'The materialized view containing the information on emissions';
 comment on column swrs_transform.emission.id is 'A generated index used for keying in the ggircs schema';
-comment on column swrs_transform.emission.ghgr_import_id is 'A foreign key reference to swrs_extract.ghgr_import';
+comment on column swrs_transform.emission.eccc_xml_file_id is 'A foreign key reference to swrs_extract.eccc_xml_file';
 comment on column swrs_transform.emission.activity_name is 'The name of the activity (partial fk reference)';
 comment on column swrs_transform.emission.sub_activity_name is 'The name of the sub_activity (partial fk reference)';
 comment on column swrs_transform.emission.unit_name is 'The name of the unit (partial fk reference)';

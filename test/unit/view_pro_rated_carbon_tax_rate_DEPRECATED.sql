@@ -50,7 +50,7 @@ select col_type_is('swrs', 'pro_rated_carbon_tax_rate', 'pro_rated_carbon_tax_ra
 select col_hasnt_default('swrs', 'pro_rated_carbon_tax_rate', 'pro_rated_carbon_tax_rate', 'pro_rated_carbon_tax_rate.pro_rated_carbon_tax_rate column should not have a default value');
 
 -- XML fixture for testing
-insert into swrs_extract.ghgr_import (xml_file) values ($$<ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+insert into swrs_extract.eccc_xml_file (xml_file) values ($$<ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <ReportDetails>
     <ReportID>1234</ReportID>
     <ReportType>R1</ReportType>
@@ -155,7 +155,7 @@ select results_eq(
     select reporting_period_duration
     from swrs_transform.fuel as fuel
     join swrs_transform.report as report
-    on report.ghgr_import_id = fuel.ghgr_import_id
+    on report.eccc_xml_file_id = fuel.eccc_xml_file_id
     order by reporting_period_duration
     $$,
 
@@ -170,7 +170,7 @@ select results_eq(
     select reporting_period_duration as rpd, fuel_type
     from swrs_transform.fuel as fuel
     join swrs_transform.report as report
-    on report.ghgr_import_id = fuel.ghgr_import_id
+    on report.eccc_xml_file_id = fuel.eccc_xml_file_id
     )
     select concat((x.rpd)::text, '-12-31')::date - concat((x.rpd)::text, '-01-01')::date as year_length
     from x where x.fuel_type = 'Wood Waste'
@@ -188,7 +188,7 @@ select results_eq(
     select reporting_period_duration as rpd, fuel_type, ctr.carbon_tax_rate as rate
     from swrs_transform.fuel as fuel
     join swrs_transform.report as report
-        on report.ghgr_import_id = fuel.ghgr_import_id
+        on report.eccc_xml_file_id = fuel.eccc_xml_file_id
     join swrs.carbon_tax_rate_mapping as ctr
         on concat((report.reporting_period_duration - 1)::text, '-04-01')::date >= ctr.rate_start_date
         and concat(report.reporting_period_duration::text, '-03-31')::date <= ctr.rate_end_date
@@ -213,7 +213,7 @@ select results_eq(
     select reporting_period_duration as rpd, fuel_type, ctr.id as id
     from swrs_transform.fuel as fuel
     join swrs_transform.report as report
-        on report.ghgr_import_id = fuel.ghgr_import_id
+        on report.eccc_xml_file_id = fuel.eccc_xml_file_id
     join swrs.carbon_tax_rate_mapping as ctr
         on concat((report.reporting_period_duration - 1)::text, '-04-01')::date >= ctr.rate_start_date
         and concat(report.reporting_period_duration::text, '-03-31')::date <= ctr.rate_end_date
@@ -241,7 +241,7 @@ select results_eq(
     select reporting_period_duration as rpd, fuel_type, ctr.carbon_tax_rate as rate, ctr.id as id
     from swrs_transform.fuel as fuel
     join swrs_transform.report as report
-        on report.ghgr_import_id = fuel.ghgr_import_id
+        on report.eccc_xml_file_id = fuel.eccc_xml_file_id
     join swrs.carbon_tax_rate_mapping as ctr
         on concat((report.reporting_period_duration - 1)::text, '-04-01')::date >= ctr.rate_start_date
         and concat(report.reporting_period_duration::text, '-03-31')::date <= ctr.rate_end_date
@@ -267,7 +267,7 @@ select results_eq(
     select reporting_period_duration as rpd, fuel_type, ctr.id as id
     from swrs_transform.fuel as fuel
     join swrs_transform.report as report
-        on report.ghgr_import_id = fuel.ghgr_import_id
+        on report.eccc_xml_file_id = fuel.eccc_xml_file_id
     join swrs.carbon_tax_rate_mapping as ctr
         on concat((report.reporting_period_duration - 1)::text, '-04-01')::date >= ctr.rate_start_date
         and concat(report.reporting_period_duration::text, '-03-31')::date <= ctr.rate_end_date
@@ -300,7 +300,7 @@ select results_eq(
                ctr.id                           as id
         from swrs_transform.fuel
                  join swrs_transform.report as report
-                      on fuel.ghgr_import_id = report.ghgr_import_id
+                      on fuel.eccc_xml_file_id = report.eccc_xml_file_id
                  join swrs.carbon_tax_rate_mapping as ctr
                       on concat((report.reporting_period_duration - 1)::text, '-04-01')::date >= ctr.rate_start_date
                       and concat(report.reporting_period_duration::text, '-03-31')::date <= ctr.rate_end_date

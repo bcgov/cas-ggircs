@@ -6,7 +6,7 @@ begin;
 create table swrs.unit (
 
     id                                  integer primary key,
-    ghgr_import_id                      integer,
+    eccc_xml_file_id                      integer,
     activity_id                         integer references swrs.activity(id),
     activity_name                       varchar(1000),
     unit_name                           varchar(1000),
@@ -29,7 +29,7 @@ create index ggircs_unit_activity_id_foreign_key on swrs.unit(activity_id);
 
 comment on table swrs.unit is 'The table containing the information on swrs machinery units';
 comment on column swrs.unit.id is 'The primary key';
-comment on column swrs.unit.ghgr_import_id is 'A foreign key reference to swrs.ghgr_import.id';
+comment on column swrs.unit.eccc_xml_file_id is 'A foreign key reference to swrs.eccc_xml_file.id';
 comment on column swrs.unit.activity_id is 'A foreign key reference to swrs.activity';
 comment on column swrs.unit.activity_name is 'The name of the activity';
 comment on column swrs.unit.unit_name is 'The name of the unit of machinery emitting greenhouse gas';

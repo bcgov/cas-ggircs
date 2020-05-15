@@ -74,7 +74,7 @@ select col_type_is('swrs', 'carbon_tax_calculation', 'pro_rated_calculated_carbo
 select col_hasnt_default('swrs', 'carbon_tax_calculation', 'pro_rated_calculated_carbon_tax', 'carbon_tax_calculation.pro_rated_calculated_carbon_tax column should not have a default value');
 
 -- XML fixture for testing
-insert into swrs_extract.ghgr_import (xml_file) values ($$
+insert into swrs_extract.eccc_xml_file (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <RegistrationData>
   <Facility>

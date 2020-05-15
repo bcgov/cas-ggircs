@@ -18,7 +18,7 @@ select has_index(
 
 select columns_are('swrs_transform'::name, 'contact'::name, array[
     'id'::name,
-    'ghgr_import_id'::name,
+    'eccc_xml_file_id'::name,
     'path_context'::name,
     'contact_idx'::name,
     'contact_type'::name,
@@ -33,8 +33,8 @@ select columns_are('swrs_transform'::name, 'contact'::name, array[
     'language_correspondence'::name
 ]);
 
-select col_type_is(      'swrs_transform', 'contact', 'ghgr_import_id', 'integer', 'contact.ghgr_import_id column should be type integer');
-select col_hasnt_default('swrs_transform', 'contact', 'ghgr_import_id', 'contact.ghgr_import_id column should not have a default value');
+select col_type_is(      'swrs_transform', 'contact', 'eccc_xml_file_id', 'integer', 'contact.eccc_xml_file_id column should be type integer');
+select col_hasnt_default('swrs_transform', 'contact', 'eccc_xml_file_id', 'contact.eccc_xml_file_id column should not have a default value');
 
 --  select has_column(       'swrs_transform', 'contact', 'path_context', 'contact.path_context column should exist');
 select col_type_is(      'swrs_transform', 'contact', 'path_context', 'character varying(1000)', 'contact.path_context column should be type varchar');
@@ -97,7 +97,7 @@ select col_is_null(      'swrs_transform', 'contact', 'language_correspondence',
 select col_hasnt_default('swrs_transform', 'contact', 'language_correspondence', 'contact.language_correspondence column should not have a default');
 
 -- XML fixture for testing
-insert into swrs_extract.ghgr_import (xml_file) values ($$<ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+insert into swrs_extract.eccc_xml_file (xml_file) values ($$<ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <RegistrationData>
     <Contacts>
       <Contact>
@@ -127,19 +127,19 @@ $$);
 refresh materialized view swrs_transform.facility with data;
 refresh materialized view swrs_transform.contact with data;
 
---  Test ghgr_import_id fk relation
+--  Test eccc_xml_file_id fk relation
 select results_eq(
    $$
-   select facility.ghgr_import_id from swrs_transform.contact
+   select facility.eccc_xml_file_id from swrs_transform.contact
    join swrs_transform.facility
    on
-   contact.ghgr_import_id =  facility.ghgr_import_id
+   contact.eccc_xml_file_id =  facility.eccc_xml_file_id
    and contact.contact_idx=0
    $$,
 
-   'select ghgr_import_id from swrs_transform.facility',
+   'select eccc_xml_file_id from swrs_transform.facility',
 
-   'Foreign key ghgr_import_id in ggircs_swrs_contact references swrs_transform.facility'
+   'Foreign key eccc_xml_file_id in ggircs_swrs_contact references swrs_transform.facility'
 );
 
 -- TODO: tests on the veracity of what is being pulled in to this view from xml

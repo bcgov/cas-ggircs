@@ -1,11 +1,11 @@
 -- Deploy ggircs:materialized_view_measured_emission_factor to pg
--- requires: table_ghgr_import
+-- requires: table_eccc_xml_file
 
 begin;
 
 create materialized view swrs_transform.measured_emission_factor as (
-  select row_number() over () as id, id as ghgr_import_id, factor_details.*
-  from swrs_extract.ghgr_import,
+  select row_number() over () as id, id as eccc_xml_file_id, factor_details.*
+  from swrs_extract.eccc_xml_file,
        xmltable(
            '//MeasuredEmissionFactor'
            passing xml_file
@@ -28,11 +28,11 @@ create materialized view swrs_transform.measured_emission_factor as (
          ) as factor_details
 ) with no data;
 
-create unique index ggircs_measured_emission_factor_primary_key on swrs_transform.measured_emission_factor (ghgr_import_id, activity_name, sub_activity_name, unit_name, sub_unit_name, process_idx, sub_process_idx, units_idx, unit_idx, substances_idx, substance_idx, fuel_idx, measured_emission_factor_idx);
+create unique index ggircs_measured_emission_factor_primary_key on swrs_transform.measured_emission_factor (eccc_xml_file_id, activity_name, sub_activity_name, unit_name, sub_unit_name, process_idx, sub_process_idx, units_idx, unit_idx, substances_idx, substance_idx, fuel_idx, measured_emission_factor_idx);
 
 comment on materialized view swrs_transform.measured_emission_factor is 'The materialized view containing the information on fuels';
 comment on column swrs_transform.measured_emission_factor.id is 'A generated index used for keying in the ggircs schema';
-comment on column swrs_transform.measured_emission_factor.ghgr_import_id is 'A foreign key reference to swrs_extract.ghgr_import';
+comment on column swrs_transform.measured_emission_factor.eccc_xml_file_id is 'A foreign key reference to swrs_extract.eccc_xml_file';
 comment on column swrs_transform.measured_emission_factor.activity_name is 'The name of the activity (partial fk reference)';
 comment on column swrs_transform.measured_emission_factor.sub_activity_name is 'The name of the sub_activity (partial fk reference)';
 comment on column swrs_transform.measured_emission_factor.unit_name is 'The name of the unit (partial fk reference)';

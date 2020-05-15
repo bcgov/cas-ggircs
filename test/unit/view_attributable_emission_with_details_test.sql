@@ -40,7 +40,7 @@ select columns_are('swrs'::name, 'attributable_emissions_with_details'::name, ar
     'naics_code'::name,
     'unit_name'::name,
     'unit_id'::name,
-    'ghgr_import_id'::name,
+    'eccc_xml_file_id'::name,
     'report_id'::name,
     'organisation_id'::name,
     'facility_id'::name,
@@ -129,8 +129,8 @@ select col_hasnt_default('swrs', 'attributable_emissions_with_details', 'unit_na
 select col_type_is('swrs', 'attributable_emissions_with_details', 'unit_id', 'integer', 'attributable_emissions.unit_id column should be type integer');
 select col_hasnt_default('swrs', 'attributable_emissions_with_details', 'unit_id', 'attributable_emission.unit_id column should not have a default value');
 
-select col_type_is('swrs', 'attributable_emissions_with_details', 'ghgr_import_id', 'integer', 'attributable_emissions.ghgr_import_id column should be type integer');
-select col_hasnt_default('swrs', 'attributable_emissions_with_details', 'ghgr_import_id', 'attributable_emission.ghgr_import_id column should not have a default value');
+select col_type_is('swrs', 'attributable_emissions_with_details', 'eccc_xml_file_id', 'integer', 'attributable_emissions.eccc_xml_file_id column should be type integer');
+select col_hasnt_default('swrs', 'attributable_emissions_with_details', 'eccc_xml_file_id', 'attributable_emission.eccc_xml_file_id column should not have a default value');
 
 select col_type_is('swrs', 'attributable_emissions_with_details', 'report_id', 'integer', 'attributable_emissions.report_id column should be type integer');
 select col_hasnt_default('swrs', 'attributable_emissions_with_details', 'report_id', 'attributable_emission.report_id column should not have a default value');
@@ -151,7 +151,7 @@ select col_type_is('swrs', 'attributable_emissions_with_details', 'swrs_facility
 select col_hasnt_default('swrs', 'attributable_emissions_with_details', 'swrs_facility_id', 'attributable_emission.swrs_facility_id column should not have a default value');
 
 -- XML fixture for testing
-insert into swrs_extract.ghgr_import (xml_file) values ($$
+insert into swrs_extract.eccc_xml_file (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <RegistrationData>
     <Organisation>
@@ -559,7 +559,7 @@ select set_eq(
         n.naics_code,
         u.unit_name,
         u.id as unit_id,
-        e.ghgr_import_id,
+        e.eccc_xml_file_id,
         e.report_id,
         e.organisation_id,
         e.facility_id,

@@ -6,7 +6,7 @@ reset client_min_messages;
 begin;
 select * from no_plan();
 
-insert into swrs_extract.ghgr_import (xml_file) values ($$
+insert into swrs_extract.eccc_xml_file (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <RegistrationData>
     <Organisation>
@@ -272,14 +272,14 @@ select isnt_empty('select * from swrs.naics', 'there is data in swrs.naics');
 -- NAICS -> Facility
 select set_eq(
     $$
-    select distinct(facility.ghgr_import_id) from swrs.naics
+    select distinct(facility.eccc_xml_file_id) from swrs.naics
     join swrs.facility
     on
       naics.facility_id = facility.id
-      order by ghgr_import_id
+      order by eccc_xml_file_id
     $$,
 
-    'select ghgr_import_id from swrs.facility order by ghgr_import_id',
+    'select eccc_xml_file_id from swrs.facility order by eccc_xml_file_id',
 
     'Foreign key facility_id in swrs.naics references swrs.facility.id'
 );
@@ -287,13 +287,13 @@ select set_eq(
 -- Naics -> Facility (path_context = RegistrationData)
 select set_eq(
     $$
-    select facility.ghgr_import_id from swrs.naics
+    select facility.eccc_xml_file_id from swrs.naics
     join swrs.facility
     on
       naics.registration_data_facility_id = facility.id
     $$,
 
-    $$ select facility.ghgr_import_id
+    $$ select facility.eccc_xml_file_id
        from swrs.naics
        join swrs.facility
        on
@@ -306,12 +306,12 @@ select set_eq(
 -- Naics -> Report
 select set_eq(
     $$
-    select report.ghgr_import_id from swrs.naics
+    select report.eccc_xml_file_id from swrs.naics
     join swrs.report
     on naics.report_id = report.id
     $$,
 
-    'select ghgr_import_id from swrs.report',
+    'select eccc_xml_file_id from swrs.report',
 
     'Foreign key report_id in swrs.naics references swrs.report.id'
 );
@@ -320,7 +320,7 @@ select set_eq(
 select set_eq(
               $$
               select
-                  ghgr_import_id,
+                  eccc_xml_file_id,
                   swrs_facility_id,
                   path_context,
                   naics_classification,
@@ -331,7 +331,7 @@ select set_eq(
 
               $$
               select
-                  ghgr_import_id,
+                  eccc_xml_file_id,
                   swrs_facility_id,
                   path_context,
                   naics_classification,

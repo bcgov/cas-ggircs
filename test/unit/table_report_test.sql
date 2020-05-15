@@ -6,7 +6,7 @@ reset client_min_messages;
 begin;
 select * from no_plan();
 
-insert into swrs_extract.ghgr_import (xml_file) values ($$
+insert into swrs_extract.eccc_xml_file (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <ReportDetails>
     <ReportID>1234</ReportID>
@@ -29,9 +29,9 @@ $$);
 SET client_min_messages TO WARNING; -- load is a bit verbose
 select swrs_transform.load(true, false);
 
-select ghgr_import_id from swrs.report;
+select eccc_xml_file_id from swrs.report;
 select '======';
-select ghgr_import_id from swrs_transform.report;
+select eccc_xml_file_id from swrs_transform.report;
 
 -- Table swrs.report exists
 select has_table('swrs'::name, 'report'::name);
@@ -45,7 +45,7 @@ select isnt_empty('select * from swrs.report', 'there is data in swrs.report');
 -- Data in swrs_transform.report === data in ggircs_report
 select set_eq($$
                   select
-                      ghgr_import_id,
+                      eccc_xml_file_id,
                       imported_at,
                       swrs_report_id,
                       prepop_report_id,
@@ -64,7 +64,7 @@ select set_eq($$
 
                  $$
                  select
-                      ghgr_import_id,
+                      eccc_xml_file_id,
                       imported_at,
                       swrs_report_id,
                       prepop_report_id,

@@ -1,11 +1,11 @@
 -- Deploy ggircs:materialized_view_contact to pg
--- requires: table_ghgr_import
+-- requires: table_eccc_xml_file
 
 begin;
 
 create materialized view swrs_transform.contact as (
-  select row_number() over () as id, id as ghgr_import_id, contact_details.*
-  from swrs_extract.ghgr_import,
+  select row_number() over () as id, id as eccc_xml_file_id, contact_details.*
+  from swrs_extract.eccc_xml_file,
        xmltable(
            '//Contact[not(ancestor::ConfidentialityRequest)]'
            passing xml_file
@@ -26,11 +26,11 @@ create materialized view swrs_transform.contact as (
 ) with no data;
 
 create unique index ggircs_contact_primary_key
-    on swrs_transform.contact (ghgr_import_id, path_context, contact_idx);
+    on swrs_transform.contact (eccc_xml_file_id, path_context, contact_idx);
 
 comment on materialized view swrs_transform.contact is 'The materialized view housing contact information';
 comment on column swrs_transform.contact.id is 'A generated index used for keying in the ggircs schema';
-comment on column swrs_transform.contact.ghgr_import_id is 'The foreign key reference to swrs_extract.ghgr_import';
+comment on column swrs_transform.contact.eccc_xml_file_id is 'The foreign key reference to swrs_extract.eccc_xml_file';
 comment on column swrs_transform.contact.path_context is 'The umbrella context from which the contact was pulled from the xml (VerifyTombstone or RegistrationData';
 comment on column swrs_transform.contact.contact_idx is 'The number of preceding Contact siblings before this Contact node';
 comment on column swrs_transform.contact.contact_type is 'The type of contact';
@@ -45,4 +45,3 @@ comment on column swrs_transform.contact.position is 'The position of this conta
 comment on column swrs_transform.contact.language_correspondence is 'The language of correspondence for thsi contact';
 
 commit;
-

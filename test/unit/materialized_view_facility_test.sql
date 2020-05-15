@@ -11,7 +11,7 @@ select has_materialized_view('swrs_transform', 'facility', 'Materialized view fa
 -- Test column names in matview report exist and are correct
 select columns_are('swrs_transform'::name, 'facility'::name, ARRAY[
   'id'::name,
-  'ghgr_import_id'::name,
+  'eccc_xml_file_id'::name,
   'swrs_facility_id'::name,
   'facility_name'::name,
   'facility_type'::name,
@@ -29,7 +29,7 @@ select has_index('swrs_transform', 'facility', 'ggircs_facility_primary_key', 's
 select index_is_unique('swrs_transform', 'facility', 'ggircs_facility_primary_key', 'Matview report index ggircs_facility_primary_key is unique');
 
 -- Test columns in matview report have correct types
-select col_type_is('swrs_transform', 'facility', 'ghgr_import_id', 'integer', 'swrs_transform.facility column _ghgr_import_id has type integer');
+select col_type_is('swrs_transform', 'facility', 'eccc_xml_file_id', 'integer', 'swrs_transform.facility column _eccc_xml_file_id has type integer');
 select col_type_is('swrs_transform', 'facility', 'swrs_facility_id', 'integer', 'swrs_transform.facility column swrs_facility_id has type numeric');
 select col_type_is('swrs_transform', 'facility', 'facility_name', 'character varying(1000)', 'swrs_transform.facility column facility_name has type varchar');
 select col_type_is('swrs_transform', 'facility', 'relationship_type', 'character varying(1000)', 'swrs_transform.facility column relationship_type has type varchar');
@@ -38,8 +38,8 @@ select col_type_is('swrs_transform', 'facility', 'status', 'character varying(10
 select col_type_is('swrs_transform', 'facility', 'latitude', 'numeric', 'swrs_transform.facility column latitude has type varchar');
 select col_type_is('swrs_transform', 'facility', 'longitude', 'numeric', 'swrs_transform.facility column longitude has type varchar');
 
--- insert necessary data into table ghgr_import
-insert into swrs_extract.ghgr_import (xml_file) values ($$
+-- insert necessary data into table eccc_xml_file
+insert into swrs_extract.eccc_xml_file (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <RegistrationData>
     <Facility>
@@ -104,26 +104,26 @@ $$);
 -- refresh necessary views with data
 refresh materialized view swrs_transform.facility with data;
 
--- Test ghgr_import_id fk relation
+-- Test eccc_xml_file_id fk relation
 select results_eq(
     $$
-    select ghgr_import.id from swrs_transform.facility
-    join swrs_extract.ghgr_import
+    select eccc_xml_file.id from swrs_transform.facility
+    join swrs_extract.eccc_xml_file
     on
-    facility.ghgr_import_id =  ghgr_import.id
-    order by ghgr_import.id desc limit 1
+    facility.eccc_xml_file_id =  eccc_xml_file.id
+    order by eccc_xml_file.id desc limit 1
     $$,
 
-    'select id from swrs_extract.ghgr_import order by id desc limit 1',
+    'select id from swrs_extract.eccc_xml_file order by id desc limit 1',
 
-    'Foreign key ghgr_import_id ggircs_swrs_facility reference swrs_extract.ghgr_import'
+    'Foreign key eccc_xml_file_id ggircs_swrs_facility reference swrs_extract.eccc_xml_file'
 );
 
 -- test the columnns for swrs_transform.facility have been properly parsed from xml
 select results_eq(
-  'select ghgr_import_id from swrs_transform.facility',
-  'select id from swrs_extract.ghgr_import order by id desc',
-  'swrs_transform.facility parsed column ghgr_import_id'
+  'select eccc_xml_file_id from swrs_transform.facility',
+  'select id from swrs_extract.eccc_xml_file order by id desc',
+  'swrs_transform.facility parsed column eccc_xml_file_id'
 );
 select results_eq(
   'select swrs_facility_id from swrs_transform.facility',

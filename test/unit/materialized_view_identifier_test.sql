@@ -11,7 +11,7 @@ select has_materialized_view('swrs_transform', 'identifier', 'Materialized view 
 -- Test column names in matview identifier exist
 select columns_are('swrs_transform'::name, 'identifier'::name,ARRAY[
     'id'::name,
-    'ghgr_import_id'::name,
+    'eccc_xml_file_id'::name,
     'swrs_facility_id'::name,
     'path_context'::name,
     'identifier_idx'::name,
@@ -26,15 +26,15 @@ select has_index('swrs_transform', 'identifier', 'ggircs_identifier_primary_key'
 select index_is_unique('swrs_transform', 'identifier', 'ggircs_identifier_primary_key', 'Matview report index ggircs_identifier_primary_key is unique');
 
 -- Test columns in matview report have correct types
-select col_type_is('swrs_transform', 'identifier', 'ghgr_import_id', 'integer', 'swrs_transform.identifier column ghgr_import_id has type integer');
+select col_type_is('swrs_transform', 'identifier', 'eccc_xml_file_id', 'integer', 'swrs_transform.identifier column eccc_xml_file_id has type integer');
 select col_type_is('swrs_transform', 'identifier', 'swrs_facility_id', 'integer', 'swrs_transform.identifier column swrs_facility_id has type numeric');
 select col_type_is('swrs_transform', 'identifier', 'path_context', 'character varying(1000)', 'swrs_transform.identifier column path_context has type varchar');
 select col_type_is('swrs_transform', 'identifier', 'identifier_idx', 'integer', 'swrs_transform.identifier column identifier_idx has type integer');
 select col_type_is('swrs_transform', 'identifier', 'identifier_type', 'character varying(1000)', 'swrs_transform.identifier column identifier_type has type varchar');
 select col_type_is('swrs_transform', 'identifier', 'identifier_value', 'character varying(1000)', 'swrs_transform.identifier column identifier_value has type varchar');
 
--- insert necessary data into table ghgr_import
-insert into swrs_extract.ghgr_import (xml_file) values ($$
+-- insert necessary data into table eccc_xml_file
+insert into swrs_extract.eccc_xml_file (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <RegistrationData>
     <Facility>
@@ -84,9 +84,9 @@ refresh materialized view swrs_transform.identifier with data;
 
 -- test the columnns for swrs_transform.identifier have been properly parsed from xml
 select results_eq(
-  'select distinct(ghgr_import_id) from swrs_transform.identifier order by ghgr_import_id',
-  'select id from swrs_extract.ghgr_import order by id',
-  'swrs_transform.identifier references column ghgr_import_id'
+  'select distinct(eccc_xml_file_id) from swrs_transform.identifier order by eccc_xml_file_id',
+  'select id from swrs_extract.eccc_xml_file order by id',
+  'swrs_transform.identifier references column eccc_xml_file_id'
 );
 
 select results_eq(
@@ -128,14 +128,14 @@ refresh materialized view swrs_transform.facility with data;
 -- test the fk join on facility
 select results_eq(
   $$
-    select facility.ghgr_import_id from swrs_transform.identifier
+    select facility.eccc_xml_file_id from swrs_transform.identifier
     join swrs_transform.facility
-    on identifier.ghgr_import_id = facility.ghgr_import_id
+    on identifier.eccc_xml_file_id = facility.eccc_xml_file_id
     and identifier_idx=0
-    order by facility.ghgr_import_id
+    order by facility.eccc_xml_file_id
   $$,
-  'select ghgr_import_id from swrs_transform.facility order by ghgr_import_id',
-  'Foreign keys ghgr_import_idin ggircs_swrs_identifier reference swrs_transform.facility'
+  'select eccc_xml_file_id from swrs_transform.facility order by eccc_xml_file_id',
+  'Foreign keys eccc_xml_file_idin ggircs_swrs_identifier reference swrs_transform.facility'
 );
 
 select finish();

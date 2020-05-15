@@ -6,7 +6,7 @@ reset client_min_messages;
 begin;
 select * from no_plan();
 
-insert into swrs_extract.ghgr_import (xml_file) values ($$
+insert into swrs_extract.eccc_xml_file (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <RegistrationData>
     <Organisation>
@@ -408,12 +408,12 @@ select isnt_empty('select * from swrs.emission', 'there is data in swrs.emission
 -- Emission -> Activity
 select set_eq(
     $$
-    select distinct(activity.ghgr_import_id) from swrs.emission
+    select distinct(activity.eccc_xml_file_id) from swrs.emission
     join swrs.activity
     on emission.activity_id = activity.id
     $$,
 
-    'select distinct(ghgr_import_id) from swrs.activity',
+    'select distinct(eccc_xml_file_id) from swrs.activity',
 
     'Foreign key activity_id in swrs.emission references swrs.activity.id'
 );
@@ -460,13 +460,13 @@ select set_eq(
 
 -- Emission -> Report
 select set_eq(
-    $$select report.ghgr_import_id from swrs.emission
+    $$select report.eccc_xml_file_id from swrs.emission
       join swrs.report
       on
         emission.report_id = report.id
     $$,
 
-    'select ghgr_import_id from swrs.report',
+    'select eccc_xml_file_id from swrs.report',
 
     'Foreign key report_id in swrs.emission references swrs.report.id'
 );
@@ -489,7 +489,7 @@ select set_eq(
 select set_eq(
               $$
               select
-                emission.ghgr_import_id,
+                emission.eccc_xml_file_id,
                 activity_name,
                 sub_activity_name,
                 unit_name,
@@ -504,12 +504,12 @@ select set_eq(
                 emission_category
               from swrs_transform.emission
               order by
-                ghgr_import_id asc
+                eccc_xml_file_id asc
               $$,
 
               $$
               select
-                  ghgr_import_id,
+                  eccc_xml_file_id,
                   activity_name,
                   sub_activity_name,
                   unit_name,

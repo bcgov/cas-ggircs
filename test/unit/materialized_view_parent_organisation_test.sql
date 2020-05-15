@@ -18,7 +18,7 @@ select has_index(
 
 select columns_are('swrs_transform'::name, 'parent_organisation'::name, array[
     'id'::name,
-    'ghgr_import_id'::name,
+    'eccc_xml_file_id'::name,
     'path_context'::name,
     'parent_organisation_idx'::name,
     'percentage_owned'::name,
@@ -29,8 +29,8 @@ select columns_are('swrs_transform'::name, 'parent_organisation'::name, array[
     'website'::name
 ]);
 
-select col_type_is(      'swrs_transform', 'parent_organisation', 'ghgr_import_id', 'integer', 'parent_organisation.ghgr_import_id column should be type integer');
-select col_hasnt_default('swrs_transform', 'parent_organisation', 'ghgr_import_id', 'parent_organisation.ghgr_import_id column should not have a default value');
+select col_type_is(      'swrs_transform', 'parent_organisation', 'eccc_xml_file_id', 'integer', 'parent_organisation.eccc_xml_file_id column should be type integer');
+select col_hasnt_default('swrs_transform', 'parent_organisation', 'eccc_xml_file_id', 'parent_organisation.eccc_xml_file_id column should not have a default value');
 
 --  select has_column(       'swrs_transform', 'parent_organisation', 'path_context', 'parent_organisation.path_context column should exist');
 select col_type_is(      'swrs_transform', 'parent_organisation', 'path_context', 'character varying(1000)', 'parent_organisation.path_context column should be type varchar');
@@ -74,7 +74,7 @@ select col_hasnt_default('swrs_transform', 'parent_organisation', 'website', 'pa
 
 
 refresh materialized view swrs_transform.parent_organisation with data;
-insert into swrs_extract.ghgr_import (xml_file) values ($$<ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+insert into swrs_extract.eccc_xml_file (xml_file) values ($$<ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <RegistrationData>
     <ParentOrganisations>
       <ParentOrganisation>
@@ -100,22 +100,22 @@ refresh materialized view swrs_transform.parent_organisation with data;
 
 select results_eq(
      $$
-     select organisation.ghgr_import_id from swrs_transform.parent_organisation
+     select organisation.eccc_xml_file_id from swrs_transform.parent_organisation
      join swrs_transform.organisation
      on
-     parent_organisation.ghgr_import_id = organisation.ghgr_import_id
+     parent_organisation.eccc_xml_file_id = organisation.eccc_xml_file_id
      $$,
 
-    'select ghgr_import_id from swrs_transform.organisation',
+    'select eccc_xml_file_id from swrs_transform.organisation',
 
-    'Foreign key ghgr_import_id in ggircs_swrs_parent_organisation references swrs_transform.organisation'
+    'Foreign key eccc_xml_file_id in ggircs_swrs_parent_organisation references swrs_transform.organisation'
 );
 
 -- XML import tests
 select results_eq(
-    'select ghgr_import_id from swrs_transform.parent_organisation',
-    'select id from swrs_extract.ghgr_import',
-    'column ghgr_import_id in parent_organisation correctly parsed xml'
+    'select eccc_xml_file_id from swrs_transform.parent_organisation',
+    'select id from swrs_extract.eccc_xml_file',
+    'column eccc_xml_file_id in parent_organisation correctly parsed xml'
 );
 
 select results_eq(

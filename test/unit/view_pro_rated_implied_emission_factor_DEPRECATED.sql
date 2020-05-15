@@ -54,7 +54,7 @@ select col_type_is('swrs', 'pro_rated_implied_emission_factor', 'pro_rated_impli
 select col_hasnt_default('swrs', 'pro_rated_implied_emission_factor', 'pro_rated_implied_emission_factor', 'pro_rated_implied_emission_factor.pro_rated_implied_emission_factor column should not have a default value');
 
 -- XML fixture for testing
-insert into swrs_extract.ghgr_import (xml_file) values ($$<ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+insert into swrs_extract.eccc_xml_file (xml_file) values ($$<ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <ReportDetails>
     <ReportID>1234</ReportID>
     <ReportType>R1</ReportType>

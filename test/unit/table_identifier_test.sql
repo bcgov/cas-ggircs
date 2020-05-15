@@ -6,7 +6,7 @@ reset client_min_messages;
 begin;
 select * from no_plan();
 
-insert into swrs_extract.ghgr_import (xml_file) values ($$
+insert into swrs_extract.eccc_xml_file (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <RegistrationData>
     <Organisation>
@@ -291,14 +291,14 @@ select isnt_empty('select * from swrs.identifier', 'there is data in swrs.identi
 -- Identifier -> Facility
 select set_eq(
     $$
-    select distinct(facility.ghgr_import_id) from swrs.identifier
+    select distinct(facility.eccc_xml_file_id) from swrs.identifier
     join swrs.facility
     on
       identifier.facility_id = facility.id
-      order by ghgr_import_id
+      order by eccc_xml_file_id
     $$,
 
-    'select ghgr_import_id from swrs.facility order by ghgr_import_id',
+    'select eccc_xml_file_id from swrs.facility order by eccc_xml_file_id',
 
     'Foreign key facility_id in swrs.identifier references swrs.facility.id'
 );
@@ -321,12 +321,12 @@ select set_eq(
 -- Identifier -> Report
 select set_eq(
                $$
-    select distinct(report.ghgr_import_id) from swrs.identifier
+    select distinct(report.eccc_xml_file_id) from swrs.identifier
     join swrs.report
     on identifier.report_id = report.id
     $$,
 
-    'select distinct(ghgr_import_id) from swrs.report',
+    'select distinct(eccc_xml_file_id) from swrs.report',
 
     'Foreign key report_id in swrs.identifier references swrs.report.id'
 );
@@ -335,7 +335,7 @@ select set_eq(
 select set_eq(
               $$
               select
-                  ghgr_import_id,
+                  eccc_xml_file_id,
                   swrs_facility_id,
                   path_context,
                   identifier_type,
@@ -345,7 +345,7 @@ select set_eq(
 
               $$
               select
-                  ghgr_import_id,
+                  eccc_xml_file_id,
                   swrs_facility_id,
                   path_context,
                   identifier_type,

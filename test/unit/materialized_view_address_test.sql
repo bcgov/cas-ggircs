@@ -17,7 +17,7 @@ select has_index(
 
 select columns_are('swrs_transform'::name, 'address'::name, array[
     'id'::name,
-    'ghgr_import_id'::name,
+    'eccc_xml_file_id'::name,
     'swrs_facility_id'::name,
     'swrs_organisation_id'::name,
     'path_context'::name,
@@ -57,8 +57,8 @@ select columns_are('swrs_transform'::name, 'address'::name, array[
     'geographic_address_longitude'::name
 ]);
 
-select col_type_is(      'swrs_transform', 'address', 'ghgr_import_id', 'integer', 'address.ghgr_import_id column should be type integer');
-select col_hasnt_default('swrs_transform', 'address', 'ghgr_import_id', 'address.ghgr_import_id column should not have a default value');
+select col_type_is(      'swrs_transform', 'address', 'eccc_xml_file_id', 'integer', 'address.eccc_xml_file_id column should be type integer');
+select col_hasnt_default('swrs_transform', 'address', 'eccc_xml_file_id', 'address.eccc_xml_file_id column should not have a default value');
 
 --  select has_column(       'swrs_transform', 'address', 'swrs_facility_id', 'address.swrs_facility_id column should exist');
 select col_type_is(      'swrs_transform', 'address', 'swrs_facility_id', 'integer', 'address.swrs_facility_id column should be type numeric');
@@ -222,8 +222,8 @@ select col_type_is(      'swrs_transform', 'address', 'geographic_address_longit
 select col_is_null(      'swrs_transform', 'address', 'geographic_address_longitude', 'address.geographic_address_longitude column should allow null');
 select col_hasnt_default('swrs_transform', 'address', 'geographic_address_longitude', 'address.geographic_address_longitude column should not have a default');
 
--- insert necessary data into table ghgr_import
-insert into swrs_extract.ghgr_import (xml_file) values ($$
+-- insert necessary data into table eccc_xml_file
+insert into swrs_extract.eccc_xml_file (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <RegistrationData>
     <Organisation>
@@ -415,71 +415,71 @@ refresh materialized view swrs_transform.address with data;
 -- Test the fk relation from address to: facility
 select results_eq(
     $$
-    select facility.ghgr_import_id from swrs_transform.address
+    select facility.eccc_xml_file_id from swrs_transform.address
     join swrs_transform.facility
     on
-    address.ghgr_import_id =  facility.ghgr_import_id and address.type ='Facility'
+    address.eccc_xml_file_id =  facility.eccc_xml_file_id and address.type ='Facility'
     $$,
 
-    'select ghgr_import_id from swrs_transform.facility',
+    'select eccc_xml_file_id from swrs_transform.facility',
 
-    'Foreign key ghgr_import_id in ggircs_swrs_address references swrs_transform.facility'
+    'Foreign key eccc_xml_file_id in ggircs_swrs_address references swrs_transform.facility'
 );
 
 -- Test the fk relation from address to organisation
 select results_eq(
     $$
-    select organisation.ghgr_import_id from swrs_transform.address
+    select organisation.eccc_xml_file_id from swrs_transform.address
     join swrs_transform.organisation
     on
-    address.ghgr_import_id =  organisation.ghgr_import_id and address.type='Organisation'
+    address.eccc_xml_file_id =  organisation.eccc_xml_file_id and address.type='Organisation'
     $$,
 
-    'select ghgr_import_id from swrs_transform.organisation',
+    'select eccc_xml_file_id from swrs_transform.organisation',
 
-    'Foreign key ghgr_import_id in ggircs_swrs_address references swrs_transform.organisation'
+    'Foreign key eccc_xml_file_id in ggircs_swrs_address references swrs_transform.organisation'
 );
 
 -- Test the fk relation from address to contact
 select results_eq(
     $$
-    select contact.ghgr_import_id from swrs_transform.address
+    select contact.eccc_xml_file_id from swrs_transform.address
     join swrs_transform.contact
     on (
-    address.ghgr_import_id = contact.ghgr_import_id
+    address.eccc_xml_file_id = contact.eccc_xml_file_id
     and address.contact_idx = contact.contact_idx)
     and address.type='Contact'
     and address.contact_idx = 0
     $$,
 
-    'select ghgr_import_id from swrs_transform.contact where contact.contact_idx= 0',
+    'select eccc_xml_file_id from swrs_transform.contact where contact.contact_idx= 0',
 
-    'Foreign keys ghgr_import_id, contact_idx, in ggircs_swrs_address reference swrs_transform.contact'
+    'Foreign keys eccc_xml_file_id, contact_idx, in ggircs_swrs_address reference swrs_transform.contact'
 );
 
 -- Test the fk relation from address to parent_organisation
 select results_eq(
     $$
-    select parent_organisation.ghgr_import_id from swrs_transform.address
+    select parent_organisation.eccc_xml_file_id from swrs_transform.address
     join swrs_transform.parent_organisation
     on (
-    address.ghgr_import_id = parent_organisation.ghgr_import_id
+    address.eccc_xml_file_id = parent_organisation.eccc_xml_file_id
     and address.parent_organisation_idx = parent_organisation.parent_organisation_idx)
     and address.type='ParentOrganisation'
     and address.parent_organisation_idx = 0
     $$,
 
-    'select ghgr_import_id from swrs_transform.parent_organisation where parent_organisation.parent_organisation_idx= 0',
+    'select eccc_xml_file_id from swrs_transform.parent_organisation where parent_organisation.parent_organisation_idx= 0',
 
-    'Foreign keys ghgr_import_id, parent_organisation_idx, in ggircs_swrs_address reference swrs_transform.parent_organisation'
+    'Foreign keys eccc_xml_file_id, parent_organisation_idx, in ggircs_swrs_address reference swrs_transform.parent_organisation'
 );
 
 
 -- test the columnns for swrs_transform.address have been properly parsed from xml when context is 'Facility'
 select results_eq(
-  $$ select ghgr_import_id from swrs_transform.address where address.type='Facility' $$,
-  'select id from swrs_extract.ghgr_import',
-  'swrs_transform.address parsed column ghgr_import_id'
+  $$ select eccc_xml_file_id from swrs_transform.address where address.type='Facility' $$,
+  'select id from swrs_extract.eccc_xml_file',
+  'swrs_transform.address parsed column eccc_xml_file_id'
 );
 
 select results_eq(
@@ -654,9 +654,9 @@ select results_eq(
 
 -- test the columnns for swrs_transform.address have been properly parsed from xml when context is 'Organisation'
 select results_eq(
-  $$ select ghgr_import_id from swrs_transform.address where address.type='Organisation' $$,
-  'select id from swrs_extract.ghgr_import',
-  'swrs_transform.address parsed column ghgr_import_id'
+  $$ select eccc_xml_file_id from swrs_transform.address where address.type='Organisation' $$,
+  'select id from swrs_extract.eccc_xml_file',
+  'swrs_transform.address parsed column eccc_xml_file_id'
 );
 select results_eq(
   $$ select type from swrs_transform.address where address.type='Organisation' $$,
@@ -831,9 +831,9 @@ select results_eq(
 
 -- test the columnns for swrs_transform.address have been properly parsed from xml when context is 'Contact'
 select results_eq(
-  $$ select ghgr_import_id from swrs_transform.address where address.type='Contact' and address.contact_idx=0 $$,
-  'select id from swrs_extract.ghgr_import',
-  'swrs_transform.address parsed column ghgr_import_id'
+  $$ select eccc_xml_file_id from swrs_transform.address where address.type='Contact' and address.contact_idx=0 $$,
+  'select id from swrs_extract.eccc_xml_file',
+  'swrs_transform.address parsed column eccc_xml_file_id'
 );
 select results_eq(
   $$ select type from swrs_transform.address where address.type='Contact' and address.contact_idx=0 $$,
@@ -997,9 +997,9 @@ select results_eq(
 
 -- test the columnns for swrs_transform.address have been properly parsed from xml when context is 'ParentOrganisation'
 select results_eq(
-  $$ select ghgr_import_id from swrs_transform.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0 $$,
-  'select id from swrs_extract.ghgr_import',
-  'swrs_transform.address parsed column ghgr_import_id'
+  $$ select eccc_xml_file_id from swrs_transform.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0 $$,
+  'select id from swrs_extract.eccc_xml_file',
+  'swrs_transform.address parsed column eccc_xml_file_id'
 );
 select results_eq(
   $$ select type from swrs_transform.address where address.type='ParentOrganisation' and address.parent_organisation_idx=0 $$,
