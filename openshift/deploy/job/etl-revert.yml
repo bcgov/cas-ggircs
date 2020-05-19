@@ -84,7 +84,7 @@ objects:
                 - bash
                 - -c
                 - |
-                  sqitch revert swrs/extract/table/ghgr_import -y;
+                  sqitch revert swrs/extract/table/eccc_xml_file -y;
           volumes:
             - name: ${PREFIX}ggircs-data
               persistentVolumeClaim:
