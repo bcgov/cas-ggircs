@@ -68,6 +68,7 @@ jobs:
             git submodule update --init
             make configure
             make build
+            make test_e2e_setup
             make install_dev MASTER_CPU_REQUEST="300m" MASTER_CPU_LIMIT="300m" WORKER_CPU_REQUEST="300m" WORKER_CPU_LIMIT="300m" MASTER_MEMORY_REQUEST="512Mi" MASTER_MEMORY_LIMIT="512Mi" WORKER_MEMORY_REQUEST="512Mi" WORKER_MEMORY_LIMIT="512Mi" POSTGRESQL_WORKERS=2
             popd
           name: Install cas-postgres dependency
