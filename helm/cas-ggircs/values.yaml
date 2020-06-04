@@ -1,0 +1,10 @@
+image:
+  etl:
+    repository: docker-registry.default.svc:5000/wksv3k-tools/cas-ggircs-etl
+    tag: 20fed55b2ea1282e943dc418086a8a8df9904560
+    pullPolicy: Always
+
+persistence:
+  db: ggircs
+  user: ggircs
+  readonlyUser: ggircs_readonly
