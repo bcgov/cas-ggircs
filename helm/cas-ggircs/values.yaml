@@ -12,3 +12,8 @@ persistence:
   db: ggircs
   user: ggircs
   readonlyUser: ggircs_readonly
+
+cas-postgres:
+  patroni:
+    env:
+      ALLOW_NOSSL: true
