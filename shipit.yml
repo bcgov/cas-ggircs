@@ -2,5 +2,5 @@ deploy:
   override:
     - git submodule update --init --quiet
     - helm dep up ./helm/cas-ggircs
-    - helm upgrade --install --atomic --timeout 900s --namespace "$ENVIRONMENT" cas-ggircs ./helm/cas-ggircs:
+    - helm upgrade --install --atomic --timeout 900s --namespace "$ENVIRONMENT" --set image.etl.tag "$REVISION" cas-ggircs ./helm/cas-ggircs:
         timeout: 900
