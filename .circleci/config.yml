@@ -76,7 +76,7 @@ jobs:
       - run:
           command: |
             helm dep up ./helm/cas-ggircs
-            helm install --atomic --timeout 900s --namespace "wksv3k-dev" --set image.etl.tag "$CIRCLE_SHA1" cas-ggircs ./helm/cas-ggircs
+            helm install --atomic --timeout 900s --namespace "wksv3k-dev" --set image.etl.tag="$CIRCLE_SHA1" cas-ggircs ./helm/cas-ggircs
             helm test cas-ggircs
           name: Deploy to dev
 
