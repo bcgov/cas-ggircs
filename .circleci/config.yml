@@ -61,25 +61,16 @@ jobs:
           command: make provision
           name: Provision the cluster project set
       - run:
-          command: |
-            rm -rf cas-postgres
-            git clone --single-branch --branch shipit-deploy/wksv3k-dev https://github.com/bcgov/cas-postgres.git
-            pushd cas-postgres || exit 1
-            git submodule update --init
-            make configure
-            make build
-            make test_e2e_setup
-            make install_dev MASTER_CPU_REQUEST="300m" MASTER_CPU_LIMIT="300m" WORKER_CPU_REQUEST="300m" WORKER_CPU_LIMIT="300m" MASTER_MEMORY_REQUEST="512Mi" MASTER_MEMORY_LIMIT="512Mi" WORKER_MEMORY_REQUEST="512Mi" WORKER_MEMORY_LIMIT="512Mi" POSTGRESQL_WORKERS=2
-            popd
-          name: Install cas-postgres dependency
-      - run:
           command: make configure
           name: Configure the cluster
       - run:
           command: make build
           name: Build image on the cluster
       - run:
-          command: make install_dev
+          command: |
+            helm dep up ./helm/cas-ggircs
+            helm install --atomic --timeout 900s --namespace "wksv3k-dev" --set image.etl.tag "$CIRCLE_SHA1" cas-ggircs ./helm/cas-ggircs
+            helm test cas-ggircs
           name: Deploy to dev
 
   lint:
@@ -133,11 +124,6 @@ workflows:
             - lint
       - test-local-cluster:
           context: cas-pipeline
-          filters:
-            branches:
-              only:
-                - master
-                - develop
 
 notify:
   webhooks:
