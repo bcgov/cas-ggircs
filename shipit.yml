@@ -1,7 +1,5 @@
 deploy:
   override:
     - git submodule update --init --quiet
-    - helm dep up ./helm/cas-ggircs
-    - helm upgrade --install --atomic --timeout 900s --namespace "$ENVIRONMENT" --set image.etl.tag "$REVISION" cas-ggircs ./helm/cas-ggircs:
+    - make install:
         timeout: 900
-    - curl -u ${AIRFLOW_USERNAME}:${AIRFLOW_PASSWORD} -X POST https://cas-airflow-${ENVIRONMENT}.pathfinder.gov.bc.ca/api/experimental/dags/ggircs_deploy_db/dag_runs
