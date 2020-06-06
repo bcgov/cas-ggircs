@@ -84,6 +84,7 @@ jobs:
           name: Print namespace contents
       - run:
           command: |
+            sleep 10
             helm test cas-ggircs
           name: Test helm chart
 
