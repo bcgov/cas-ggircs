@@ -84,8 +84,7 @@ jobs:
           name: Print namespace contents
       - run:
           command: |
-            sleep 10
-            helm test cas-ggircs
+            helm test cas-ggircs --namespace "wksv3k-dev"
           name: Test helm chart
 
 
