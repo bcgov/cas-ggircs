@@ -140,6 +140,7 @@ workflows:
       - lint
       - build:
           context: cas-pipeline
+          image_tag: ${CIRCLE_SHA1}
           requires:
             - lint
       - test-local-cluster:
