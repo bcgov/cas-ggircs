@@ -81,7 +81,8 @@ jobs:
 
 
   lint:
-    executor: circleci/helm@0.2.3
+    machine:
+      image: ubuntu-1604:201903-01
     steps:
       - checkout
       - helm/install-helm-client:
