@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+set -e
+
+# Fix OpenShift fail
+# see https://docs.openshift.com/container-platform/3.11/creating_images/guidelines.html
+if ! whoami &> /dev/null; then
+  if [ -w /etc/passwd ]; then
+    echo "${USER_NAME:-sqitch}:x:$(id -u):0:${USER_NAME:-sqitch} user:${HOME}:/sbin/nologin" >> /etc/passwd
+  fi
+fi
+
+# CPAN can install scripts. They should be available from mod_perl too.
+export PATH=${PATH}:${HOME}/extlib/bin
+# And we have to set Perl include path too because mod_perl's PerlSwitches
+# does not apply to them.
+export PERL5LIB=${HOME}/extlib/lib/perl5
+
+sqitch status
+
+exec "$@"

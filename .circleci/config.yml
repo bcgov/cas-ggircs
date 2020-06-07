@@ -2,7 +2,8 @@ version: 2.1
 
 orbs:
   redhat-openshift: circleci/redhat-openshift@0.2.0
-
+  gcp-gcr: circleci/gcp-gcr@0.7.1
+  helm: circleci/helm@0.2.3
 jobs:
   test:
     docker:
@@ -61,18 +62,8 @@ jobs:
       - run:
           command: make provision
           name: Provision the cluster project set
-      - run:
-          command: make configure
-          name: Configure the cluster
-      - run:
-          command: make build
-          name: Build image on the cluster
-      - run:
-          name: install helm
-          command: |
-            curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
-            chmod 700 get_helm.sh
-            ./get_helm.sh
+      - helm/install-helm-client:
+          version: v3.2.1
       - run:
           command: |
             helm dep up ./helm/cas-ggircs
@@ -90,56 +81,70 @@ jobs:
 
 
   lint:
-    executor: redhat-openshift/default
+    executor: circleci/helm@0.2.3
     steps:
       - checkout
+      - helm/install-helm-client:
+          version: v3.2.1
       - run:
-          name: "Pull Submodules"
-          command: |
-            git submodule update --init
-      - redhat-openshift/login-and-update-kubeconfig:
-          insecure-skip-tls-verify: true
-          openshift-platform-version: 3.x
-          server-address: $OC_SERVER_ADDRESS
-          token: $OC_TOKEN
-      - run:
-          command: make lint CI_NO_POSTGRES=true
-          name: Lint the openshift yaml
+          command: helm lint ./helm/cas-ggircs
+          name: Lint the helm charts
 
   build:
-    executor: redhat-openshift/default
+    executor: gcp-gcr/default
+    parameters:
+      image_tag:
+        type: string
+      cache_version:
+        type: integer
+        default: 2
     steps:
       - checkout
+      - gcp-gcr/gcr-auth
+      - restore_cache:
+          keys:
+            - v<< parameters.cache_version>>-cas-ggircs-elt-{{ .Branch }}
+          paths:
+            - /tmp/cas-ggircs-etl.tar
       - run:
-          name: "Pull Submodules"
+          name: Load cache
           command: |
-            git submodule update --init
-      - redhat-openshift/login-and-update-kubeconfig:
-          insecure-skip-tls-verify: true
-          openshift-platform-version: 3.x
-          server-address: $OC_SERVER_ADDRESS
-          token: $OC_TOKEN
+            set +o pipefail
+            docker load -i /tmp/cas-ggircs-etl.tar | true
       - run:
-          command: make configure CI_NO_POSTGRES=true
-          name: Configure imagestream to point at the current SHA1
+          name: Build application Docker image
+          command: |
+            docker build --cache-from=cas-ggircs-etl -t cas-ggircs-etl:latest -t gcr.io/${GOOGLE_PROJECT_ID}/cas-ggircs-etl:<< parameters.image_tag >> .
       - run:
-          command: make build CI_NO_POSTGRES=true
-          name: Build image on the remote cluster
-
+          name: Save Docker image layer cache
+          command: |
+            docker save -o /tmp/cas-ggircs-etl.tar cas-ggircs-etl:latest
+      - save_cache:
+          key: v<< parameters.cache_version>>-cas-ggircs-etl-{{ .Branch }}-{{ epoch }}
+          paths:
+            - /tmp/cas-ggircs-etl.tar
+      - gcp-gcr/push-image:
+          image: cas-ggircs-etl
+          tag: << parameters.image_tag >>
+          digest-path: /tmp/digest.txt
+      - run:
+          command: |
+            echo "Digest is: $(</tmp/digest.txt)"
 
 workflows:
   version: 2
   test:
     jobs:
       - test
-      - lint:
-          context: cas-pipeline
+      - lint
       - build:
           context: cas-pipeline
           requires:
             - lint
       - test-local-cluster:
           context: cas-pipeline
+          requires:
+            - build
 
 notify:
   webhooks:
