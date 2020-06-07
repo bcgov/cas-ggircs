@@ -42,14 +42,14 @@ spec:
             requests:
               cpu: 100m
               memory: 64Mi
-          command:
+          args:
             - /usr/bin/env
             - bash
             - -c
             - |
               set -euo pipefail;
-              dropdb --if-exists ggircs_test
-              createdb ggircs_test
-              sqitch deploy
-              pg_prove test/unit/*_test.sql
-              dropdb ggircs_test
+              dropdb --if-exists ggircs_test;
+              createdb ggircs_test;
+              sqitch deploy;
+              pg_prove test/unit/*_test.sql;
+              dropdb ggircs_test;
