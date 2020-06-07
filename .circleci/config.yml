@@ -84,8 +84,9 @@ jobs:
           name: Print namespace contents
       - run:
           command: |
-            helm test cas-ggircs --namespace "wksv3k-dev"
+            helm test cas-ggircs --timeout 1200s --namespace "wksv3k-dev"
           name: Test helm chart
+          no_output_timeout: 21m
 
 
   lint:
