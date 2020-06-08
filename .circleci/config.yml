@@ -137,7 +137,10 @@ workflows:
   test:
     jobs:
       - test
-      - lint
+      - lint:
+          filters:
+            tags:
+              only: /^v.*/
       - build:
           context: cas-pipeline
           image_tag: ${CIRCLE_SHA1}
@@ -147,6 +150,17 @@ workflows:
           context: cas-pipeline
           requires:
             - build
+      - build:
+          name: build_tag
+          context: cas-pipeline
+          image_tag: ${CIRCLE_TAG/v/}
+          requires:
+            - lint
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
 
 notify:
   webhooks:
