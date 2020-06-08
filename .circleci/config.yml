@@ -104,7 +104,7 @@ jobs:
       - gcp-gcr/gcr-auth
       - restore_cache:
           keys:
-            - v<< parameters.cache_version>>-cas-ggircs-elt-{{ .Branch }}
+            - v<< parameters.cache_version>>-cas-ggircs-etl-{{ .Branch }}
           paths:
             - /tmp/cas-ggircs-etl.tar
       - run:
