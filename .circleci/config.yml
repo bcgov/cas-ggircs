@@ -2,7 +2,8 @@ version: 2.1
 
 orbs:
   redhat-openshift: circleci/redhat-openshift@0.2.0
-
+  gcp-gcr: circleci/gcp-gcr@0.7.1
+  helm: circleci/helm@0.2.3
 jobs:
   test:
     docker:
@@ -42,6 +43,7 @@ jobs:
           command: echo "172.30.1.1 docker-registry.default.svc" | sudo tee -a /etc/hosts
       - redhat-openshift/create-local-cluster-with-oc:
           skip-registry-check: true
+
       - run:
           command: docker login -u "$RED_HAT_DOCKER_USERNAME" -p "$RED_HAT_DOCKER_PASSWORD" "$RED_HAT_DOCKER_SERVER"
           name: Log in to Red Hat docker registry
@@ -60,65 +62,75 @@ jobs:
       - run:
           command: make provision
           name: Provision the cluster project set
+      - helm/install-helm-client:
+          version: v3.2.1
       - run:
           command: |
-            rm -rf cas-postgres
-            git clone --single-branch --branch shipit-deploy/wksv3k-dev https://github.com/bcgov/cas-postgres.git
-            pushd cas-postgres || exit 1
-            git submodule update --init
-            make configure
-            make build
-            make test_e2e_setup
-            make install_dev MASTER_CPU_REQUEST="300m" MASTER_CPU_LIMIT="300m" WORKER_CPU_REQUEST="300m" WORKER_CPU_LIMIT="300m" MASTER_MEMORY_REQUEST="512Mi" MASTER_MEMORY_LIMIT="512Mi" WORKER_MEMORY_REQUEST="512Mi" WORKER_MEMORY_LIMIT="512Mi" POSTGRESQL_WORKERS=2
-            popd
-          name: Install cas-postgres dependency
-      - run:
-          command: make configure
-          name: Configure the cluster
-      - run:
-          command: make build
-          name: Build image on the cluster
-      - run:
-          command: make install_dev
+            helm dep up ./helm/cas-ggircs
+            helm install --atomic --timeout 900s --namespace "wksv3k-dev" --set image.etl.tag="$CIRCLE_SHA1" cas-ggircs ./helm/cas-ggircs
           name: Deploy to dev
+      - run:
+          command: |
+            oc -n wksv3k-dev get all
+          name: Print namespace contents
+      - run:
+          command: |
+            helm test cas-ggircs --timeout 1200s --namespace "wksv3k-dev"
+          name: Test helm chart
+          no_output_timeout: 21m
+
 
   lint:
-    executor: redhat-openshift/default
+    machine:
+      image: ubuntu-1604:201903-01
     steps:
       - checkout
+      - helm/install-helm-client:
+          version: v3.2.1
       - run:
-          name: "Pull Submodules"
-          command: |
-            git submodule update --init
-      - redhat-openshift/login-and-update-kubeconfig:
-          insecure-skip-tls-verify: true
-          openshift-platform-version: 3.x
-          server-address: $OC_SERVER_ADDRESS
-          token: $OC_TOKEN
-      - run:
-          command: make lint CI_NO_POSTGRES=true
-          name: Lint the openshift yaml
+          command: helm lint ./helm/cas-ggircs
+          name: Lint the helm charts
 
   build:
-    executor: redhat-openshift/default
+    executor: gcp-gcr/default
+    parameters:
+      image_tag:
+        type: string
+      cache_version:
+        type: integer
+        default: 2
     steps:
       - checkout
+      - gcp-gcr/gcr-auth
+      - restore_cache:
+          keys:
+            - v<< parameters.cache_version>>-cas-ggircs-etl-{{ .Branch }}
+          paths:
+            - /tmp/cas-ggircs-etl.tar
       - run:
-          name: "Pull Submodules"
+          name: Load cache
           command: |
-            git submodule update --init
-      - redhat-openshift/login-and-update-kubeconfig:
-          insecure-skip-tls-verify: true
-          openshift-platform-version: 3.x
-          server-address: $OC_SERVER_ADDRESS
-          token: $OC_TOKEN
+            set +o pipefail
+            docker load -i /tmp/cas-ggircs-etl.tar | true
       - run:
-          command: make configure CI_NO_POSTGRES=true
-          name: Configure imagestream to point at the current SHA1
+          name: Build application Docker image
+          command: |
+            docker build --cache-from=cas-ggircs-etl -t cas-ggircs-etl:latest -t gcr.io/${GOOGLE_PROJECT_ID}/cas-ggircs-etl:<< parameters.image_tag >> .
       - run:
-          command: make build CI_NO_POSTGRES=true
-          name: Build image on the remote cluster
-
+          name: Save Docker image layer cache
+          command: |
+            docker save -o /tmp/cas-ggircs-etl.tar cas-ggircs-etl:latest
+      - save_cache:
+          key: v<< parameters.cache_version>>-cas-ggircs-etl-{{ .Branch }}-{{ epoch }}
+          paths:
+            - /tmp/cas-ggircs-etl.tar
+      - gcp-gcr/push-image:
+          image: cas-ggircs-etl
+          tag: << parameters.image_tag >>
+          digest-path: /tmp/digest.txt
+      - run:
+          command: |
+            echo "Digest is: $(</tmp/digest.txt)"
 
 workflows:
   version: 2
@@ -126,18 +138,29 @@ workflows:
     jobs:
       - test
       - lint:
-          context: cas-pipeline
+          filters:
+            tags:
+              only: /^v.*/
       - build:
           context: cas-pipeline
+          image_tag: ${CIRCLE_SHA1}
           requires:
             - lint
       - test-local-cluster:
           context: cas-pipeline
+          requires:
+            - build
+      - build:
+          name: build_tag
+          context: cas-pipeline
+          image_tag: ${CIRCLE_TAG/v/}
+          requires:
+            - lint
           filters:
+            tags:
+              only: /^v.*/
             branches:
-              only:
-                - master
-                - develop
+              ignore: /.*/
 
 notify:
   webhooks:
