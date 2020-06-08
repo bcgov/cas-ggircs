@@ -4,10 +4,8 @@ ENV HOME=/usr/src/cas-ggircs-etl
 COPY . ${HOME}
 WORKDIR ${HOME}
 
-RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ xenial-pgdg main" >> /etc/apt/sources.list.d/pgdg.list && \
-  wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - && \
-  apt-get update && \
-  apt-get install -y postgresql-client-12 && \
+RUN apt-get update && \
+  apt-get install -y postgresql-client && \
   apt-get clean
 
 RUN cpanm --notest -l extlib --installdeps .
