@@ -1,7 +1,7 @@
 image:
   etl:
     repository: gcr.io/ggl-cas-storage/cas-ggircs-etl
-    tag: 20fed55b2ea1282e943dc418086a8a8df9904560
+    tag: "1.0.0"
     pullPolicy: Always
   psql:
     repository:  gcr.io/ggl-cas-storage/cas-postgres
