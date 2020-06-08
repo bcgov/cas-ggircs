@@ -10,6 +10,4 @@ if ! whoami &> /dev/null; then
   fi
 fi
 
-sqitch status
-
 exec "$@"
