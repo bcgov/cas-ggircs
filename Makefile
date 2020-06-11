@@ -218,7 +218,10 @@ GGIRCS_READONLY_USER_NAME = $(GGIRCS_USER_NAME)_readonly
 .PHONY: install
 install: whoami
 	@helm dep up ./helm/cas-ggircs
-	@helm upgrade --install --atomic --timeout 900s --namespace $(OC_PROJECT) --set image.etl.tag=$(GIT_SHA1) cas-ggircs ./helm/cas-ggircs
+	@helm upgrade --install --atomic --timeout 900s \
+		--namespace $(OC_PROJECT) --set image.etl.tag=$(GIT_SHA1) \
+		--values ./helm/cas-ggircs/values-$(OC_PROJECT).yaml \
+		cas-ggircs ./helm/cas-ggircs
 	@curl -u $(AIRFLOW_USERNAME):$(AIRFLOW_PASSWORD) -X POST \
 		https://cas-airflow-$(OC_PROJECT).pathfinder.gov.bc.ca/api/experimental/dags/ggircs_deploy_db/dag_runs \
 		-H 'Cache-Control: no-cache' \
