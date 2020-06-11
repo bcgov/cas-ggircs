@@ -69,7 +69,7 @@ jobs:
             helm dep up ./helm/cas-ggircs
             helm install --atomic --timeout 900s --namespace "wksv3k-dev" \
             --set image.etl.tag="$CIRCLE_SHA1" \
-            --set cas-postgres.patromi.walE.enable=false \
+            --set cas-postgres.patroni.walE.enable=false \
             cas-ggircs ./helm/cas-ggircs
           name: Deploy to dev
       - run:
