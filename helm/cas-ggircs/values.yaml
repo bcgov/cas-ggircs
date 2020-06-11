@@ -15,5 +15,17 @@ persistence:
 
 cas-postgres:
   patroni:
+    replicaCount: 3
     env:
       ALLOW_NOSSL: true
+      USE_WALG_BACKUP: "true"
+      USE_WALG_RESTORE: "true"
+    walE:
+      enable: true
+      gcsBucket:
+      # kubernetesSecret should be gcp-{{ namespace }}-{{ gcs.bucketSuffix }}-service-account-key
+      kubernetesSecret:
+    # options below are required if walE.enable is true
+  namespace:
+  gcs:
+    bucketSuffix:
