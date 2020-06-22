@@ -17,11 +17,11 @@ spec:
             - name: SQITCH_TARGET
               value: "db:pg:"
             - name: PGUSER
-              value: admin
+              value: postgres
             - name: PGPASSWORD
               valueFrom:
                 secretKeyRef:
-                  key: password-admin
+                  key: password-superuser
                   name: {{ template "cas-ggircs.fullname" . }}-patroni
             - name: PGDATABASE
               value: ggircs_test
