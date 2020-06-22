@@ -20,11 +20,11 @@ spec:
                 - name: PGDATABASE
                   value: postgres
                 - name: PGUSER
-                  value: admin
+                  value: postgres
                 - name: PGPASSWORD
                   valueFrom:
                     secretKeyRef:
-                      key: password-admin
+                      key: password-superuser
                       name: {{ template "cas-ggircs.fullname" . }}-patroni
                 - name: PGPORT
                   value: "5432"
