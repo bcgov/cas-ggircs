@@ -4,6 +4,7 @@
 
 begin;
 
+drop materialized view if exists swrs_transform.report cascade;
 create materialized view swrs_transform.report as (
   select
     row_number() over () as id,
