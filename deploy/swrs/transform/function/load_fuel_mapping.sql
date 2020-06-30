@@ -156,7 +156,11 @@ $function$
         INSERT INTO swrs_load.fuel_mapping (fuel_type, fuel_carbon_tax_details_id) VALUES ('Flared Natural Gas CH4', 86);
         INSERT INTO swrs_load.fuel_mapping (fuel_type, fuel_carbon_tax_details_id) VALUES ('Flared Natural Gas N2O', 87);
         INSERT INTO swrs_load.fuel_mapping (fuel_type, fuel_carbon_tax_details_id) VALUES ('Vented Natural Gas', 88);
-
+        INSERT INTO swrs_load.fuel_mapping (fuel_type, fuel_carbon_tax_details_id) VALUES ('ANFO', 43);
+        INSERT INTO swrs_load.fuel_mapping (fuel_type, fuel_carbon_tax_details_id) VALUES ('Concentrated Non-Condensable Gases', 16);
+        INSERT INTO swrs_load.fuel_mapping (fuel_type, fuel_carbon_tax_details_id) VALUES ('Field gas', 36);
+        INSERT INTO swrs_load.fuel_mapping (fuel_type, fuel_carbon_tax_details_id) VALUES ('Gasoline', 47);
+        INSERT INTO swrs_load.fuel_mapping (fuel_type, fuel_carbon_tax_details_id) VALUES ('Process vent gas', 53);
 
     end
 $function$ language plpgsql volatile;
