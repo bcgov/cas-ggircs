@@ -129,6 +129,30 @@ insert into swrs_extract.eccc_xml_file (xml_file) values ($$
           </Units>
         </SubProcess>
       </Process>
+      <Process ProcessName="OGExtractionProcessing">
+          <SubProcess SubprocessName="Flaring" InformationRequirement="Required">
+              <Units>
+                  <Unit>
+                      <Fuels>
+                          <Fuel>
+                              <Emissions EmissionsType="Onshore Petroleum and NG Production: Well Testing Flaring">
+                                  <Emission>
+                                      <Groups>
+                                          <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                          <EmissionGroupTypes>BC_ScheduleB_FlaringEmissions</EmissionGroupTypes>
+                                          <EmissionGroupTypes>EC_FlaringEmissions</EmissionGroupTypes>
+                                      </Groups>
+                                      <NotApplicable>true</NotApplicable>
+                                      <CalculatedQuantity>10</CalculatedQuantity>
+                                      <GasType>CH4</GasType>
+                                  </Emission>
+                              </Emissions>
+                          </Fuel>
+                      </Fuels>
+                  </Unit>
+              </Units>
+          </SubProcess>
+      </Process>
     </ActivityPages>
   </ActivityData>
 </ReportData>
@@ -143,6 +167,7 @@ select swrs_transform.load(true, false);
 select results_eq(
     $$ select organisation.swrs_organisation_id from swrs.carbon_tax_calculation as ct
        join swrs.organisation on ct.organisation_id = organisation.id
+       and ct.fuel_type='Residual Fuel Oil (#5 & 6)'
     $$,
     'select swrs_organisation_id from swrs.organisation',
     'fk organisation_id references organisation'
@@ -152,6 +177,7 @@ select results_eq(
 select set_eq(
     $$ select facility.swrs_facility_id from swrs.carbon_tax_calculation as ct
        join swrs.facility on ct.facility_id = facility.id
+       and ct.fuel_type='Residual Fuel Oil (#5 & 6)'
     $$,
     'select swrs_facility_id from swrs.facility',
     'fk facility_id references facility'
@@ -161,6 +187,7 @@ select set_eq(
 select set_eq(
     $$ select naics.naics_code from swrs.carbon_tax_calculation as ct
        join swrs.naics on ct.naics_id = naics.id
+       and ct.fuel_type='Residual Fuel Oil (#5 & 6)'
     $$,
     'select naics_code from swrs.naics',
     'fk naics_id references naics'
@@ -168,7 +195,11 @@ select set_eq(
 
 -- Test validity of calculation
 select results_eq(
-    'select calculated_carbon_tax from swrs.carbon_tax_calculation order by calculated_carbon_tax',
+    $$
+      select calculated_carbon_tax from swrs.carbon_tax_calculation
+      where fuel_type='Residual Fuel Oil (#5 & 6)'
+      order by calculated_carbon_tax
+    $$,
 
     $$
       with x as (
@@ -177,7 +208,24 @@ select results_eq(
       select x.flat_rate * (select annual_fuel_amount from swrs.fuel where fuel_type = 'Residual Fuel Oil (#5 & 6)') from x
     $$,
 
-    'swrs.carbon_tax_calculation properly calculates carbon tax based on fuel_amount * pro-rated carbon tax rate * pro-rated implied emission factor'
+    'swrs.carbon_tax_calculation properly calculates carbon tax based on fuel_amount'
+);
+
+select results_eq(
+    $$
+      select calculated_carbon_tax from swrs.carbon_tax_calculation
+      where fuel_type='Flared Natural Gas CH4'
+      order by calculated_carbon_tax
+    $$,
+
+    $$
+      with x as (
+        select flat_rate from swrs.pro_rated_fuel_charge where fuel_type = 'Flared Natural Gas CH4'
+      )
+      select x.flat_rate * (select quantity from swrs.emission where gas_type = 'CH4') from x
+    $$,
+
+    'swrs.carbon_tax_calculation properly calculates carbon tax based on emission quantity (Flaring)'
 );
 
 select * from finish();
