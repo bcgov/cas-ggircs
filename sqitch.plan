@@ -90,3 +90,4 @@ swrs/transform/function/load [swrs/transform/function/clone_schema swrs/extract/
 swrs/transform/function/load_fuel_mapping [swrs/transform/function/load_fuel_mapping@v1.0.0] 2020-06-29T17:06:27Z Dylan Leard <dylan@button.is> # Migration: add new fuel mappings to load_fuel_mapping function
 @v1.0.1 2020-06-30T22:52:10Z Dylan Leard <dylan@button.is> # Version 1.0.1
 swrs/transform/function/load_emission [swrs/transform/function/load_emission@v1.0.1] 2020-09-25T18:54:54Z Dylan Leard <dylan@button.is> # Migration: add missing fuel_mapping foreign key
+@v1.0.2 2020-10-15T18:35:55Z Matthieu Foucault <matthieu@button.is> # Version 1.0.2
