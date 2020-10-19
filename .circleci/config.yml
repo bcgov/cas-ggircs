@@ -57,7 +57,7 @@ jobs:
           insecure-skip-tls-verify: true
           openshift-platform-version: 3.x
           password: password
-          server-address: 'https://127.0.0.1:8443'
+          server-address: "https://127.0.0.1:8443"
           username: dev1
       - run:
           command: make provision
@@ -81,7 +81,6 @@ jobs:
             helm test cas-ggircs --timeout 1200s --namespace "wksv3k-dev"
           name: Test helm chart
           no_output_timeout: 21m
-
 
   lint:
     machine:
@@ -115,6 +114,9 @@ jobs:
           command: |
             set +o pipefail
             docker load -i /tmp/cas-ggircs-etl.tar | true
+      - run:
+          name: Log in to DockerHub
+          command: echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USER --password-stdin registry.hub.docker.com
       - run:
           name: Build application Docker image
           command: |
