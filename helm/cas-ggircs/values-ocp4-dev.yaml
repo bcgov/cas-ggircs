@@ -1,10 +1,11 @@
 cas-postgres:
   patroni:
     walE:
-      enable: false
-      gcsBucket: wksv3k-dev-ggircs-backups
+      enable:
+        false
+      gcsBucket: 0fad32-dev-ggircs-backups
       # kubernetesSecret should be gcp-{{ namespace }}-{{ gcs.bucketSuffix }}-service-account-key
-      kubernetesSecret: gcp-wksv3k-dev-ggircs-backups-service-account-key
+      kubernetesSecret: gcp-0fad32-dev-ggircs-backups-service-account-key
     # options below are required if walE.enable is true
   namespace: 0fad32-dev
   gcs:

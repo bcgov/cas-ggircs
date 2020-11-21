@@ -23,18 +23,19 @@ cas-postgres:
         cpu: 15m
         memory: 600Mi
     persistentVolume:
-      size: 20Gi
+      storageClass: netapp-block-standard
+      size: 8Gi
     replicaCount: 3
     env:
       ALLOW_NOSSL: true
-      USE_WALG_BACKUP: "true"
-      USE_WALG_RESTORE: "true"
+      USE_WALG_BACKUP: "false"
+      USE_WALG_RESTORE: "false"
     walE:
       enable: true
       gcsBucket:
       # kubernetesSecret should be gcp-{{ namespace }}-{{ gcs.bucketSuffix }}-service-account-key
       kubernetesSecret:
     # options below are required if walE.enable is true
-  namespace:
+  namespace: 0fad32-dev
   gcs:
     bucketSuffix:
