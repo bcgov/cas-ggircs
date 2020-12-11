@@ -2,6 +2,6 @@
 
 begin;
 
-delete from swrs_transform.ignore_organisation where swrs_organisation_id in (113130), (112552);
+delete from swrs_transform.ignore_organisation where swrs_organisation_id in (113130, 112552);
 
 commit;
