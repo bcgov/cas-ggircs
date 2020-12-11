@@ -111,6 +111,10 @@ A role/user with the following options must be created (see [this tutorial](http
 
 ## Data
 
+### Excluding Test Data
+
+The data-set that is parsed by the ETL process includes some test data that needs to be excluded from the actual data housed in the swrs schema. This is achieved in `swrs/transform/table/ignore_organisation` by adding the `swrs_organisation_id` of organisations that were created for test purposes to this table. A join on this table in the `swrs/transform/view/final_report` view then ignores these organisations when loading data into the final schema.
+
 ### Data Architecture
 
 
