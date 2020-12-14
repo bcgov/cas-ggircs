@@ -91,3 +91,4 @@ swrs/transform/function/load_fuel_mapping [swrs/transform/function/load_fuel_map
 @v1.0.1 2020-06-30T22:52:10Z Dylan Leard <dylan@button.is> # Version 1.0.1
 swrs/transform/function/load_emission [swrs/transform/function/load_emission@v1.0.1] 2020-09-25T18:54:54Z Dylan Leard <dylan@button.is> # Migration: add missing fuel_mapping foreign key
 @v1.0.2 2020-10-15T18:35:55Z Matthieu Foucault <matthieu@button.is> # Version 1.0.2
+swrs/transform/table/ignore_organisation_001 [swrs/transform/table/ignore_organisation] 2020-12-11T20:05:09Z Dylan Leard <dylan@button.is> # Migration: adds new values to the ignore_organisation table
