@@ -1,12 +1,12 @@
 image:
   etl:
     repository: gcr.io/ggl-cas-storage/cas-ggircs-etl
-    tag: "1.0.0"
+    tag: "1.0.3"
     pullPolicy: Always
   psql:
-    repository:  gcr.io/ggl-cas-storage/cas-postgres
+    repository: gcr.io/ggl-cas-storage/cas-postgres
     pullPolicy: Always
-    tag: "0.1.0"
+    tag: "0.2.0"
 
 persistence:
   db: ggircs
