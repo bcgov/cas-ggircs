@@ -2,9 +2,9 @@ apiVersion: v2
 name: cas-ggircs
 description: Helm chart for the GGIRCS database and ETL
 type: application
-version: 0.1.5
-appVersion: 1.0.2
+version: 0.1.6
+appVersion: 1.0.3
 dependencies:
   - name: cas-postgres
-    version: "0.5.3"
+    version: "0.6.0"
     repository: https://bcgov.github.io/cas-postgres/
