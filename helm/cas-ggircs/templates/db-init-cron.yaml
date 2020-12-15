@@ -2,6 +2,8 @@ apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
   name: {{ template "cas-ggircs.fullname" . }}-db-init
+  labels:
+{{ include "cas-ggircs.labels" . | indent 4 }}
 spec:
   suspend: true # This cron job is intended to be triggered manually
   schedule: "* * * * *"
@@ -13,6 +15,7 @@ spec:
         metadata:
           labels:
             name: {{ template "cas-ggircs.fullname" . }}-db-init
+            release: {{ .Release.Name }}
         spec:
           restartPolicy: Never
           containers:
