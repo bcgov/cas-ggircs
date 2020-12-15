@@ -1,0 +1,15 @@
+kind: NetworkSecurityPolicy
+apiVersion: security.devops.gov.bc.ca/v1alpha1
+metadata:
+  name: custom-cas-ggircs-intra-release
+  labels:
+    created-by: {{ .Release.Name }}
+spec:
+  description: allow intra-release cas-ggircs communication
+  source:
+    - - $namespace={{ .Values.namespaces.ggircs }}
+      - release={{ .Release.Name }}
+
+  destination:
+    - - $namespace={{ .Values.namespaces.ggircs }}
+      - release={{ .Release.Name }}
