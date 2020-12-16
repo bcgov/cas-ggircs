@@ -7,9 +7,9 @@ metadata:
 spec:
   description: allow intra-release cas-ggircs communication
   source:
-    - - $namespace={{ .Values.namespaces.ggircs }}
+    - - $namespace={{ .Release.Namespace }}
       - release={{ .Release.Name }}
 
   destination:
-    - - $namespace={{ .Values.namespaces.ggircs }}
+    - - $namespace={{ .Release.Namespace }}
       - release={{ .Release.Name }}

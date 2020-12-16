@@ -3,6 +3,7 @@ kind: CronJob
 metadata:
   name: {{ template "cas-ggircs.fullname" . }}-etl-revert
   labels:
+    release: {{ .Release.Name }}
 {{ include "cas-ggircs.labels" . | indent 4 }}
 spec:
   suspend: true # This cron job is intended to be triggered manually
