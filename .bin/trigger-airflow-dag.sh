@@ -6,11 +6,11 @@ set -e
 
 dag_id=$1
 
-dag_run_url="https://cas-airflow-$RELEASE_SUFFIX.apps.silver.devops.gov.bc.ca/api/experimental/dags/${dag_id}/dag_runs"
+dag_run_url="https://cas-airflow-$RELEASE_SUFFIX.apps.silver.devops.gov.bc.ca/api/v1/dags/${dag_id}/dagRuns"
 
 echo "Triggering airflow API at: $dag_run_url"
 
-run_id=$(curl -sf -u "$AIRFLOW_USERNAME":"$AIRFLOW_PASSWORD" -X POST \
+run_id=$(curl -f -u "$AIRFLOW_USERNAME":"$AIRFLOW_PASSWORD" -X POST \
   $dag_run_url \
   -H 'Cache-Control: no-cache' \
   -H 'Content-Type: application/json' \
@@ -21,8 +21,8 @@ echo "Started dag run ID: $run_id"
 
 function get_run_state() {
   run_timestamp=${run_id/manual__/}
-  dag_state_url="https://cas-airflow-$RELEASE_SUFFIX.apps.silver.devops.gov.bc.ca/api/experimental/dags/${dag_id}/dag_runs/${run_timestamp}"
-  curl -s -u "$AIRFLOW_USERNAME":"$AIRFLOW_PASSWORD" -X GET \
+  dag_state_url="https://cas-airflow-$RELEASE_SUFFIX.apps.silver.devops.gov.bc.ca/api/v1/dags/${dag_id}/dagRuns/${run_timestamp}"
+  curl -f -u "$AIRFLOW_USERNAME":"$AIRFLOW_PASSWORD" -X GET \
     $dag_state_url \
     -H 'Cache-Control: no-cache' \
     -H 'Content-Type: application/json' \
