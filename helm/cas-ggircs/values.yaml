@@ -1,3 +1,6 @@
+etl-dag:
+  name: ggircs_deploy_db
+
 image:
   etl:
     repository: gcr.io/ggl-cas-storage/cas-ggircs-etl
