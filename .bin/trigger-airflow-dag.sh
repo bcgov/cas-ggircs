@@ -7,13 +7,16 @@ set -e
 dag_id=$1
 
 dag_run_url="https://cas-airflow-$RELEASE_SUFFIX.apps.silver.devops.gov.bc.ca/api/experimental/dags/${dag_id}/dag_runs"
+
+echo "Triggering airflow API at: $dag_run_url"
+
 run_id=$(curl -sf -u "$AIRFLOW_USERNAME":"$AIRFLOW_PASSWORD" -X POST \
   $dag_run_url \
   -H 'Cache-Control: no-cache' \
   -H 'Content-Type: application/json' \
   -d '{}' | jq -r .run_id )
 
-echo "Started dag run $run_id"
+echo "Started dag run ID: $run_id"
 
 
 function get_run_state() {
