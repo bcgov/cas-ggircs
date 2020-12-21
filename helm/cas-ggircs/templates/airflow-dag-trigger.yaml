@@ -55,4 +55,5 @@ spec:
           - /usr/bin/env
           - bash
           - -c
-          - ./.bin/trigger-airflow-dag.sh {{ .Values.etl-dag.name }}
+          - ./.bin/triggerairflowdag.sh {{ .Values.airflowDagTrigger.name }}
+          

@@ -1,5 +1,5 @@
-etl-dag:
-  name: ggircs_deploy_db
+airflowDagTrigger:
+  name: "ggircs_deploy_db"
 
 image:
   etl:
