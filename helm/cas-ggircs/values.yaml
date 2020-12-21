@@ -4,7 +4,7 @@ airflowDagTrigger:
 image:
   etl:
     repository: gcr.io/ggl-cas-storage/cas-ggircs-etl
-    tag: "1.1.0-alpha3"
+    tag: "1.1.0-alpha4"
     pullPolicy: Always
   psql:
     repository: gcr.io/ggl-cas-storage/cas-postgres
