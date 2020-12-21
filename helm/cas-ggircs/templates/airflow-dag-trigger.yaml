@@ -40,20 +40,17 @@ spec:
         imagePullPolicy: {{ .Values.image.etl.pullPolicy }}
         env:
           - name: AIRFLOW_USERNAME
-            valueFrom:
-              secretKeyRef:
-                key: username
-                name: cas-airflow-admin
+            value: cas-airflow-admin
           - name: AIRFLOW_PASSWORD
             valueFrom:
               secretKeyRef:
-                key: password
-                name: cas-airflow-admin
+                key: default-user-pass
+                name: airflow-default-user-password
           - name: RELEASE_SUFFIX
             value: {{ include "cas-ggircs.namespaceSuffix" . }}
         command:
           - /usr/bin/env
           - bash
           - -c
-          - ./.bin/triggerairflowdag.sh {{ .Values.airflowDagTrigger.name }}
+          - ./.bin/trigger-airflow-dag.sh {{ .Values.airflowDagTrigger.name }}
           
