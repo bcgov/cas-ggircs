@@ -63,17 +63,19 @@ jobs:
           command: make provision
           name: Provision the cluster project set
       - helm/install-helm-client:
-          version: v3.4.2
+          version: v3.2.1
       - run:
+          name: Helm dep up
           command: |
-            helm init --wait
             helm dep up ./helm/cas-ggircs
+      - run:
+          name: Deploy to dev
+          command: |
             helm install --atomic --timeout 900s --namespace "9212c9-dev" \
             --set image.etl.tag="$CIRCLE_SHA1" \
             --set cas-postgres.patroni.walE.enable=false \
             --set networkSecurityPolicies.enable=false \
             cas-ggircs ./helm/cas-ggircs
-          name: Deploy to dev
       - run:
           command: |
             oc -n 9212c9-dev get all
