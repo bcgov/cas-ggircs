@@ -1,5 +1,6 @@
 airflowDagTrigger:
   name: "ggircs_deploy_db"
+  enable: true
 
 networkSecurityPolicies:
   enable: true
