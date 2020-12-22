@@ -66,6 +66,7 @@ jobs:
           version: v3.4.2
       - run:
           command: |
+            helm init --wait
             helm dep up ./helm/cas-ggircs
             helm install --atomic --timeout 900s --namespace "9212c9-dev" \
             --set image.etl.tag="$CIRCLE_SHA1" \
