@@ -4,7 +4,7 @@ airflowDagTrigger:
 image:
   etl:
     repository: gcr.io/ggl-cas-storage/cas-ggircs-etl
-    tag: "wip"
+    tag: "1.1.0-alpha5"
     pullPolicy: Always
   psql:
     repository: gcr.io/ggl-cas-storage/cas-postgres
@@ -31,10 +31,10 @@ cas-postgres:
     replicaCount: 3
     env:
       ALLOW_NOSSL: true
-      USE_WALG_BACKUP: "false"
-      USE_WALG_RESTORE: "false"
+      USE_WALG_BACKUP: "true"
+      USE_WALG_RESTORE: "true"
     walE:
-      enable: false
+      enable: true
       gcsBucket: ~
       # kubernetesSecret should be gcp-{{ namespace }}-{{ gcs.bucketSuffix }}-service-account-key
       kubernetesSecret: ~
