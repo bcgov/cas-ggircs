@@ -1,3 +1,4 @@
+{{- if .Values.networkSecurityPolicies.enable }}
 kind: NetworkSecurityPolicy
 apiVersion: security.devops.gov.bc.ca/v1alpha1
 metadata:
@@ -13,3 +14,4 @@ spec:
   destination:
     - - $namespace={{ .Release.Namespace }}
       - release={{ .Release.Name }}
+{{- end }}

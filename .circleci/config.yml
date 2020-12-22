@@ -70,6 +70,7 @@ jobs:
             helm install --atomic --timeout 900s --namespace "9212c9-dev" \
             --set image.etl.tag="$CIRCLE_SHA1" \
             --set cas-postgres.patroni.walE.enable=false \
+            --set networkSecurityPolicies.enable=false \
             cas-ggircs ./helm/cas-ggircs
           name: Deploy to dev
       - run:

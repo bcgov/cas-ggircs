@@ -1,6 +1,9 @@
 airflowDagTrigger:
   name: "ggircs_deploy_db"
 
+networkSecurityPolicies:
+  enable: true
+
 image:
   etl:
     repository: gcr.io/ggl-cas-storage/cas-ggircs-etl
