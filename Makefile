@@ -173,7 +173,7 @@ THIS_FILE := $(lastword $(MAKEFILE_LIST))
 THIS_FOLDER := $(abspath $(realpath $(lastword $(MAKEFILE_LIST)))/../)
 include $(THIS_FOLDER)/.pipeline/oc.mk
 
-PATHFINDER_PREFIX := wksv3k
+PATHFINDER_PREFIX := 9212c9
 PROJECT_PREFIX := cas-
 
 .PHONY: help
@@ -220,6 +220,7 @@ install: whoami
 	@helm dep up ./helm/cas-ggircs
 	@helm upgrade --install --atomic --timeout 900s \
 		--namespace $(OC_PROJECT) --set image.etl.tag=$(GIT_SHA1) \
+		--values ./helm/cas-ggircs/values.yaml \
 		--values ./helm/cas-ggircs/values-$(OC_PROJECT).yaml \
 		cas-ggircs ./helm/cas-ggircs
 
