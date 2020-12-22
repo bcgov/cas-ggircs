@@ -3,6 +3,7 @@ kind: CronJob
 metadata:
   name: {{ template "cas-ggircs.fullname" . }}-db-create-readonly-user
   labels:
+    release: {{ .Release.Name }}
 {{ include "cas-ggircs.labels" . | indent 4 }}
 spec:
   suspend: true # This cron job is intended to be triggered manually
@@ -15,6 +16,7 @@ spec:
         metadata:
           labels:
             name: {{ template "cas-ggircs.fullname" . }}-db-create-readonly-user
+            release: {{ .Release.Name }}
 {{ include "cas-ggircs.labels" . | indent 12 }}
         spec:
           restartPolicy: Never

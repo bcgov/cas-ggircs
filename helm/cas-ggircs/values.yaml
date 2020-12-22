@@ -31,8 +31,8 @@ cas-postgres:
     replicaCount: 3
     env:
       ALLOW_NOSSL: true
-      USE_WALG_BACKUP: "true"
-      USE_WALG_RESTORE: "true"
+      USE_WALG_BACKUP: "false"
+      USE_WALG_RESTORE: "false"
     walE:
       enable: false
       gcsBucket: ~

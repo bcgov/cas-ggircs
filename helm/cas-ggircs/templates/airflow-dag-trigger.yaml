@@ -3,6 +3,7 @@ kind: Job
 metadata:
   name: {{ template "cas-ggircs.fullname" . }}-dag-trigger
   labels:
+    release: {{ .Release.Name }}
 {{ include "cas-ggircs.labels" . | indent 4 }}
 {{- if .Release.IsUpgrade }}
 # This job requires the cas-postgres dependency to be running,
@@ -23,6 +24,7 @@ spec:
     metadata:
       name: {{ template "cas-ggircs.fullname" . }}-dag-trigger
       labels:
+        release: {{ .Release.Name }}
 {{ include "cas-ggircs.labels" . | indent 8 }}
     spec:
       activeDeadlineSeconds: 1200
