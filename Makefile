@@ -216,7 +216,7 @@ GGIRCS_USER_NAME = "ggircs"
 GGIRCS_READONLY_USER_NAME = $(GGIRCS_USER_NAME)_readonly
 
 define oc_s
-	
+	$(shell $(OC) get secret cas-namespaces --namespace=$(OC_PROJECT) --template='{{- index .data "ciip-namespace" | base64decode -}}')
 endef
 
 
@@ -224,13 +224,14 @@ endef
 install: whoami
 	@helm dep up ./helm/cas-ggircs
 	@helm upgrade --install --atomic --timeout 900s \
-		--namespace $(OC_PROJECT) --set image.etl.tag=$(GIT_SHA1) \
+		--namespace $(GGIRCS_NAMESPACE_PREFIX)-$(ENVIRONMENT) --set image.etl.tag=$(GIT_SHA1) \
 		--values ./helm/cas-ggircs/values.yaml \
-		--values ./helm/cas-ggircs/values-$(OC_PROJECT).yaml \
+		--values ./helm/cas-ggircs/values-$(GGIRCS_NAMESPACE_PREFIX)-$(ENVIRONMENT).yaml \
+		--set ciip.release=cas-ciip-portal \
+		--set ciip.namespace="$(CIIP_NAMESPACE_PREFIX)-$(ENVIRONMENT)" \
 		cas-ggircs ./helm/cas-ggircs
-	# Copying database secret to ciip namespace, to allow ciip to connect
-	@@CIIP_NAMESPACE="$$($(OC) get secret cas-namespaces --namespace=$(OC_PROJECT) --template='{{index .data "ciip-namespace" | base64decode}}')"
-	$(OC) get secret cas-ggircs --namespace=$(OC_PROJECT) --export -o yaml | oc apply --namespace=${CIIP_NAMESPACE} -f -
+	# Copying generated ggircs database secret to ciip namespace
+	$(OC) get secret cas-ggircs --namespace=$(GGIRCS_NAMESPACE_PREFIX)-$(ENVIRONMENT) --export -o yaml | oc apply --namespace="$(CIIP_NAMESPACE_PREFIX)-$(ENVIRONMENT)" -f -
 
 .PHONY: install_dev
 install_dev: OC_PROJECT=$(OC_DEV_PROJECT)
