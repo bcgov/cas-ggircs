@@ -215,6 +215,11 @@ GGIRCS_DB_NAME = "ggircs"
 GGIRCS_USER_NAME = "ggircs"
 GGIRCS_READONLY_USER_NAME = $(GGIRCS_USER_NAME)_readonly
 
+define oc_s
+	
+endef
+
+
 .PHONY: install
 install: whoami
 	@helm dep up ./helm/cas-ggircs
@@ -223,6 +228,9 @@ install: whoami
 		--values ./helm/cas-ggircs/values.yaml \
 		--values ./helm/cas-ggircs/values-$(OC_PROJECT).yaml \
 		cas-ggircs ./helm/cas-ggircs
+	# Copying database secret to ciip namespace, to allow ciip to connect
+	@@CIIP_NAMESPACE="$$($(OC) get secret cas-namespaces --namespace=$(OC_PROJECT) --template='{{index .data "ciip-namespace" | base64decode}}')"
+	$(OC) get secret cas-ggircs --namespace=$(OC_PROJECT) --export -o yaml | oc apply --namespace=${CIIP_NAMESPACE} -f -
 
 .PHONY: install_dev
 install_dev: OC_PROJECT=$(OC_DEV_PROJECT)
