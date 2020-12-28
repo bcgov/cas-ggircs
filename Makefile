@@ -173,7 +173,7 @@ THIS_FILE := $(lastword $(MAKEFILE_LIST))
 THIS_FOLDER := $(abspath $(realpath $(lastword $(MAKEFILE_LIST)))/../)
 include $(THIS_FOLDER)/.pipeline/oc.mk
 
-PATHFINDER_PREFIX := wksv3k
+PATHFINDER_PREFIX := 9212c9
 PROJECT_PREFIX := cas-
 
 .PHONY: help
@@ -215,18 +215,23 @@ GGIRCS_DB_NAME = "ggircs"
 GGIRCS_USER_NAME = "ggircs"
 GGIRCS_READONLY_USER_NAME = $(GGIRCS_USER_NAME)_readonly
 
+define oc_s
+	$(shell $(OC) get secret cas-namespaces --namespace=$(OC_PROJECT) --template='{{- index .data "ciip-namespace" | base64decode -}}')
+endef
+
+
 .PHONY: install
 install: whoami
 	@helm dep up ./helm/cas-ggircs
 	@helm upgrade --install --atomic --timeout 900s \
-		--namespace $(OC_PROJECT) --set image.etl.tag=$(GIT_SHA1) \
-		--values ./helm/cas-ggircs/values-$(OC_PROJECT).yaml \
+		--namespace $(GGIRCS_NAMESPACE_PREFIX)-$(ENVIRONMENT) --set image.etl.tag=$(GIT_SHA1) \
+		--values ./helm/cas-ggircs/values.yaml \
+		--values ./helm/cas-ggircs/values-$(GGIRCS_NAMESPACE_PREFIX)-$(ENVIRONMENT).yaml \
+		--set ciip.release=cas-ciip-portal \
+		--set ciip.namespace="$(CIIP_NAMESPACE_PREFIX)-$(ENVIRONMENT)" \
 		cas-ggircs ./helm/cas-ggircs
-	@curl -u $(AIRFLOW_USERNAME):$(AIRFLOW_PASSWORD) -X POST \
-		https://cas-airflow-$(OC_PROJECT).pathfinder.gov.bc.ca/api/experimental/dags/ggircs_deploy_db/dag_runs \
-		-H 'Cache-Control: no-cache' \
-		-H 'Content-Type: application/json' \
-		-d '{}'
+	# Copying generated ggircs database secret to ciip namespace
+	$(OC) get secret cas-ggircs --namespace=$(GGIRCS_NAMESPACE_PREFIX)-$(ENVIRONMENT) --export -o yaml | oc apply --namespace="$(CIIP_NAMESPACE_PREFIX)-$(ENVIRONMENT)" -f -
 
 .PHONY: install_dev
 install_dev: OC_PROJECT=$(OC_DEV_PROJECT)
@@ -243,7 +248,7 @@ endif
 
 .PHONY: mock_storageclass
 mock_storageclass:
-	$(call oc_mock_storageclass,gluster-block gluster-file)
+	$(call oc_mock_storageclass, netapp-block-standard)
 
 .PHONY: provision
 provision:

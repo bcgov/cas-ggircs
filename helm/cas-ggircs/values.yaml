@@ -1,7 +1,21 @@
+# Ciip portal configuration
+# These values need to be set for the chart to configure access from the ciip application/namepsace
+ciip:
+  namespace: ~
+  release: ~
+
+
+airflowDagTrigger:
+  name: "ggircs_deploy_db"
+  enable: true
+
+networkSecurityPolicies:
+  enable: true
+
 image:
   etl:
     repository: gcr.io/ggl-cas-storage/cas-ggircs-etl
-    tag: "1.0.3"
+    tag: "1.1.0-alpha5"
     pullPolicy: Always
   psql:
     repository: gcr.io/ggl-cas-storage/cas-postgres
@@ -23,7 +37,8 @@ cas-postgres:
         cpu: 15m
         memory: 600Mi
     persistentVolume:
-      size: 20Gi
+      size: 10Gi
+      storageClass: netapp-block-standard
     replicaCount: 3
     env:
       ALLOW_NOSSL: true
@@ -31,10 +46,10 @@ cas-postgres:
       USE_WALG_RESTORE: "true"
     walE:
       enable: true
-      gcsBucket:
+      gcsBucket: ~
       # kubernetesSecret should be gcp-{{ namespace }}-{{ gcs.bucketSuffix }}-service-account-key
-      kubernetesSecret:
+      kubernetesSecret: ~
     # options below are required if walE.enable is true
-  namespace:
+  namespace: ~
   gcs:
-    bucketSuffix:
+    bucketSuffix: ~

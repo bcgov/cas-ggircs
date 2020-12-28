@@ -55,7 +55,7 @@ jobs:
           name: Mock the storage classes
       - redhat-openshift/login-and-update-kubeconfig:
           insecure-skip-tls-verify: true
-          openshift-platform-version: 3.x
+          openshift-platform-version: 4.x
           password: password
           server-address: "https://127.0.0.1:8443"
           username: dev1
@@ -63,22 +63,27 @@ jobs:
           command: make provision
           name: Provision the cluster project set
       - helm/install-helm-client:
-          version: v3.2.1
+          version: v3.4.2
       - run:
+          name: Helm dep up
           command: |
             helm dep up ./helm/cas-ggircs
-            helm install --atomic --timeout 900s --namespace "wksv3k-dev" \
+      - run:
+          name: Deploy to dev
+          command: |
+            helm install --atomic --timeout 900s --namespace "9212c9-dev" \
             --set image.etl.tag="$CIRCLE_SHA1" \
             --set cas-postgres.patroni.walE.enable=false \
+            --set networkSecurityPolicies.enable=false \
+            --set airflowDagTrigger.enable=false \
             cas-ggircs ./helm/cas-ggircs
-          name: Deploy to dev
       - run:
           command: |
-            oc -n wksv3k-dev get all
+            oc -n 9212c9-dev get all
           name: Print namespace contents
       - run:
           command: |
-            helm test cas-ggircs --timeout 1200s --namespace "wksv3k-dev"
+            helm test cas-ggircs --timeout 1200s --namespace "9212c9-dev"
           name: Test helm chart
           no_output_timeout: 21m
 
