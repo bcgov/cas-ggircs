@@ -18,7 +18,7 @@ const FILE_URLS = Array.isArray(argv.url)
   : (argv.url && [argv.url]) || [];
 const USER = process.env.USER;
 const PASSWORD = process.env.PASSWORD;
-const XCOM_FILE = "/airflow/xcom/return.json";
+const OUTPUT_FILE = "./out/uploadOutput.json";
 
 if (FILE_URLS.length === 0) {
   console.error("at least one url required");
@@ -27,9 +27,9 @@ if (FILE_URLS.length === 0) {
 
 const httpOption = (USER && PASSWORD && { auth: `${USER}:${PASSWORD}` }) || {};
 
-const writeXCom = (data) => {
+const writeOutput = (data) => {
   return new Promise((resolve, reject) => {
-    fs.writeFile(XCOM_FILE, JSON.stringify(data), (err) => {
+    fs.writeFile(OUTPUT_FILE, JSON.stringify(data), (err) => {
       if (err) return reject(err);
       resolve();
     });
@@ -74,7 +74,7 @@ const streamFileToBucket = (url) => {
     const uploadedObjects = await asyncMap(urlsToUpload, (url) =>
       streamFileToBucket(url)
     );
-    await writeXCom({ uploadedObjects, skippedUrls });
+    await writeOutput({ uploadedObjects, skippedUrls });
   } catch (err) {
     console.error(err);
   }

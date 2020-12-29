@@ -9,15 +9,14 @@ quarantined_files_md5_hash = ['d9fa31d1c971fe7573e808252713254c']
 logging.basicConfig(format='%(asctime)s | %(name)s | %(levelname)s: %(message)s')
 log = logging.getLogger('extract_zips')
 log.setLevel(os.getenv("LOGLEVEL", "INFO"))
-gcs_key = os.getenv('GCS_KEY')
-gcs_key_file = open('gcs_key.json', 'w')
-gcs_key_file.write(gcs_key)
-gcs_key_file.close()
-storage_client = storage.Client.from_service_account_json('gcs_key.json')
 
-gcs_bucket_name = os.getenv('GCS_BUCKET')
-eccc_files_xcom = json.loads(os.getenv('DOWNLOAD_ECCC_FILES_XCOM', '{}'))
-uploaded_objects = eccc_files_xcom.get('uploadedObjects')
+storage_client = storage.Client()
+
+incremental_extract = True if os.getenv('INCREMENTAL_EXTRACT', 'false') == 'true' else False
+gcs_bucket_name = os.getenv('BUCKET_NAME')
+with open("./out/uploadOutput.json") as f:
+  eccc_upload_out = json.load(f)
+uploaded_objects = eccc_upload_out.get('uploadedObjects')
 
 # zipfile.read expects the password to be in bytes
 def passwd_to_byte(pwd):
@@ -116,11 +115,12 @@ def process_zip_file(bucket_name, file, pg_pool):
 
 try:
   pg_pool = pool.SimpleConnectionPool(1, 10, dsn='') # with an empty dsn, the postgres env vars are used
-  if uploaded_objects is not None:
-    for uploaded_obj in uploaded_objects:
-      bucket = storage_client.get_bucket(uploaded_obj.get('bucketName'))
-      file = bucket.get_blob(uploaded_obj.get('objectName'))
-      process_zip_file(bucket.name, file, pg_pool)
+  if incremental_extract:
+    if uploaded_objects is not None:
+      for uploaded_obj in uploaded_objects:
+        bucket = storage_client.get_bucket(uploaded_obj.get('bucketName'))
+        file = bucket.get_blob(uploaded_obj.get('objectName'))
+        process_zip_file(bucket.name, file, pg_pool)
   else:
     for file in storage_client.list_blobs(gcs_bucket_name):
       process_zip_file(gcs_bucket_name, file, pg_pool)

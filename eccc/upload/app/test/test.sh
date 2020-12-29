@@ -21,17 +21,18 @@ cat .list
 
 num_files=$(wc -l < .list)
 "$__dirname"/../init.sh "$1" .list
-echo '/airflow/xcom/return.json'
-cat /airflow/xcom/return.json
-num_files_uploaded=$(./jq '.uploadedObjects | length' /airflow/xcom/return.json)
+outputFile="$__dirname"/../out/uploadOutput.json
+echo "$outputFile"
+cat "$outputFile"
+num_files_uploaded=$(./jq '.uploadedObjects | length' "$outputFile")
 echo "$num_files_uploaded"
 "$__dirname"/../init.sh "$1" .list
-echo '/airflow/xcom/return.json'
-cat /airflow/xcom/return.json
-num_files_skipped=$(./jq '.skippedUrls | length' /airflow/xcom/return.json)
+echo "$outputFile"
+cat "$outputFile"
+num_files_skipped=$(./jq '.skippedUrls | length' "$outputFile")
 echo "$num_files_skipped"
 rm .list
-rm /airflow/xcom/return.json
+rm "$outputFile"
 node "$__dirname"/delete-bucket --bucket="$1"
 
 

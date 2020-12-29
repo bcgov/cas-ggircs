@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "cas-ggircs.fullname" . }}-eccc-uploaded-files
+  labels: {{ include "cas-ggircs.labels" . | nindent 4 }}
+data:
+  uploadOutput.json: "{}"

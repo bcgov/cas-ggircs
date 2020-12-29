@@ -1,0 +1,81 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ template "cas-ggircs.fullname" . }}-eccc-upload
+  labels:
+    release: {{ .Release.Name }}
+{{ include "cas-ggircs.labels" . | indent 4 }}
+spec:
+  suspend: true # This cron job is intended to be triggered manually
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      backoffLimit: 0
+      activeDeadlineSeconds: 3600
+      template:
+        metadata:
+          labels:
+            name: {{ template "cas-ggircs.fullname" . }}-eccc-upload
+            release: {{ .Release.Name }}
+{{ include "cas-ggircs.labels" . | indent 12 }}
+        spec:
+          restartPolicy: Never
+          containers:
+            - env:
+                - name: BUCKET_NAME
+                  valueFrom:
+                    secretKeyRef:
+                      key: bucket_name
+                      name: {{ .Release.Namespace }}-{{ .Values.swrsImportBucket.bucketSuffix | quote }}-service-account-key
+                - name: WEBSITE
+                  valueFrom:
+                    secretKeyRef:
+                      key: host
+                      name: eccc-swrs-import
+                - name: USER
+                  valueFrom:
+                    secretKeyRef:
+                      key: username
+                      name: eccc-swrs-import
+                - name: PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      key: password
+                      name: eccc-swrs-import
+                - name: GOOGLE_APPLICATION_CREDENTIALS
+                  value: /app/gcs/credentials.json
+                - name: ECCC_ZIP_PASSWORDS
+                  valueFrom:
+                    secretKeyRef:
+                      key: zip_passwords
+                      name: eccc-swrs-import
+              name: {{ template "cas-ggircs.fullname" . }}-eccc-upload
+              image: {{ .Values.image.ecccUpload.repository }}:{{ .Values.image.ecccUpload.tag }}
+              imagePullPolicy: {{ .Values.image.ecccUpload.pullPolicy }}
+              volumeMounts:
+                - name: gcs-credentials
+                  mountPath: /app/gcs
+                  readOnly: true
+                - name: uploaded-files
+                  mountPath: /app/out
+                  readOnly: false
+              resources:
+                limits:
+                  cpu: 1000m
+                  memory: 128Mi
+                requests:
+                  cpu: 100m
+                  memory: 64Mi
+              command:
+                - ./init.sh
+                - $(BUCKET_NAME)
+          volumes:
+            - name: gcs-credentials
+              secret:
+                secretName: {{ .Release.Namespace }}-{{ .Values.swrsImportBucket.bucketSuffix | quote }}-service-account-key
+            - name: uploaded-files
+              configMap:
+                name: {{ template "cas-ggircs.fullname" . }}-eccc-uploaded-files
+                items:
+                  - key: "uploadOutput.json"
+                    path: "uploadOutput.json"
