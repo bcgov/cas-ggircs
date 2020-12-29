@@ -62,14 +62,11 @@ spec:
                   readOnly: false
               resources:
                 limits:
-                  cpu: 1000m
-                  memory: 128Mi
+                  cpu: 2000m
+                  memory: 2Gi
                 requests:
-                  cpu: 100m
-                  memory: 64Mi
-              command:
-                - ./init.sh
-                - $(BUCKET_NAME)
+                  cpu: 500m
+                  memory: 1Gi
           volumes:
             - name: gcs-credentials
               secret:
