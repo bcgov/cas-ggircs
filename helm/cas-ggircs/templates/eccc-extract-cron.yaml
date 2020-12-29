@@ -45,7 +45,7 @@ spec:
                   valueFrom:
                     secretKeyRef:
                       key: bucket_name
-                      name: {{ .Release.Namespace }}-{{ .Values.swrsImportBucket.bucketSuffix | quote }}-service-account-key
+                      name: {{ .Release.Namespace }}-{{ .Values.swrsImportBucket.bucketSuffix }}-service-account-key
                 - name: GOOGLE_APPLICATION_CREDENTIALS
                   value: /app/gcs/credentials.json
               name: {{ template "cas-ggircs.fullname" . }}-eccc-extract
@@ -71,7 +71,7 @@ spec:
           volumes:
             - name: gcs-credentials
               secret:
-                secretName: {{ .Release.Namespace }}-{{ .Values.swrsImportBucket.bucketSuffix | quote }}-service-account-key
+                secretName: {{ .Release.Namespace }}-{{ .Values.swrsImportBucket.bucketSuffix }}-service-account-key
             - name: uploaded-files
               configMap:
                 name: {{ template "cas-ggircs.fullname" . }}-eccc-uploaded-files
