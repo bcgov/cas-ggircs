@@ -1,7 +1,7 @@
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: {{ template "cas-ggircs.fullname" . }}-eccc-extract
+  name: {{ template "cas-ggircs.fullname" . }}-eccc-extract-incremental
   labels:
     release: {{ .Release.Name }}
 {{ include "cas-ggircs.labels" . | indent 4 }}
@@ -15,7 +15,7 @@ spec:
       template:
         metadata:
           labels:
-            name: {{ template "cas-ggircs.fullname" . }}-eccc-extract
+            name: {{ template "cas-ggircs.fullname" . }}-eccc-extract-incremental
             release: {{ .Release.Name }}
 {{ include "cas-ggircs.labels" . | indent 12 }}
         spec:
@@ -48,6 +48,8 @@ spec:
                       name: gcp-{{ .Release.Namespace }}-{{ .Values.swrsImportBucket.bucketSuffix }}-service-account-key
                 - name: GOOGLE_APPLICATION_CREDENTIALS
                   value: /app/gcs/credentials.json
+                - name: INCREMENTAL_EXTRACT
+                  value: "true"
               name: {{ template "cas-ggircs.fullname" . }}-eccc-extract
               image: {{ .Values.image.ecccExtract.repository }}:{{ .Values.image.ecccExtract.tag }}
               imagePullPolicy: {{ .Values.image.ecccExtract.pullPolicy }}

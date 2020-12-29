@@ -26,7 +26,7 @@ spec:
                   valueFrom:
                     secretKeyRef:
                       key: bucket_name
-                      name: {{ .Release.Namespace }}-{{ .Values.swrsImportBucket.bucketSuffix }}-service-account-key
+                      name: gcp-{{ .Release.Namespace }}-{{ .Values.swrsImportBucket.bucketSuffix }}-service-account-key
                 - name: WEBSITE
                   valueFrom:
                     secretKeyRef:
@@ -72,7 +72,7 @@ spec:
           volumes:
             - name: gcs-credentials
               secret:
-                secretName: {{ .Release.Namespace }}-{{ .Values.swrsImportBucket.bucketSuffix }}-service-account-key
+                secretName: gcp-{{ .Release.Namespace }}-{{ .Values.swrsImportBucket.bucketSuffix }}-service-account-key
             - name: uploaded-files
               configMap:
                 name: {{ template "cas-ggircs.fullname" . }}-eccc-uploaded-files
