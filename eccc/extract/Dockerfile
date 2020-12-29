@@ -8,10 +8,10 @@ RUN apt-get update && \
     apt-get install -y build-essential libpq-dev && \
     apt-get clean
 
-COPY lib /lib
-WORKDIR /lib
+COPY app /app
+WORKDIR /app
 RUN pip install -r requirements.txt
-RUN chmod g=u -R /lib
+RUN chmod g=u -R /app
 USER 1001
-ENV HOME=/lib
+ENV HOME=/app
 ENTRYPOINT ["python", "extract_zips.py"]
