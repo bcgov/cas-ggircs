@@ -67,4 +67,4 @@ cas-postgres:
 
 swrsImportBucket:
   enable: true
-  bucketSuffix: eccc-swrs-import
+  bucketSuffix: swrs-import

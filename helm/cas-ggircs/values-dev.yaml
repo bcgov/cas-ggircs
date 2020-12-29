@@ -9,3 +9,7 @@ cas-postgres:
   namespace: 9212c9-dev
   gcs:
     bucketSuffix: ggircs-backups
+
+swrsImportBucket:
+  enable: true
+  bucketSuffix: eccc-swrs-import
