@@ -76,6 +76,7 @@ jobs:
             --set cas-postgres.patroni.walE.enable=false \
             --set networkSecurityPolicies.enable=false \
             --set airflowDagTrigger.enable=false \
+            --set swrsImportBucket.enable=false \
             cas-ggircs ./helm/cas-ggircs
       - run:
           command: |
