@@ -44,11 +44,6 @@ spec:
                       name: eccc-swrs-import
                 - name: GOOGLE_APPLICATION_CREDENTIALS
                   value: /app/gcs/credentials.json
-                - name: ECCC_ZIP_PASSWORDS
-                  valueFrom:
-                    secretKeyRef:
-                      key: zip_passwords
-                      name: eccc-swrs-import
               name: {{ template "cas-ggircs.fullname" . }}-eccc-upload
               image: {{ .Values.image.ecccUpload.repository }}:{{ .Values.image.ecccUpload.tag }}
               imagePullPolicy: {{ .Values.image.ecccUpload.pullPolicy }}

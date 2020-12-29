@@ -50,6 +50,11 @@ spec:
                   value: /app/gcs/credentials.json
                 - name: INCREMENTAL_EXTRACT
                   value: "true"
+                - name: ECCC_ZIP_PASSWORDS
+                  valueFrom:
+                    secretKeyRef:
+                      key: zip_passwords
+                      name: eccc-swrs-import
               name: {{ template "cas-ggircs.fullname" . }}-eccc-extract
               image: {{ .Values.image.ecccExtract.repository }}:{{ .Values.image.ecccExtract.tag }}
               imagePullPolicy: {{ .Values.image.ecccExtract.pullPolicy }}
