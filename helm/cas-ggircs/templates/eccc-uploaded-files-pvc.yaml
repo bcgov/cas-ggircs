@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ template "cas-ggircs.fullname" . }}-eccc-uploaded-files
+  annotations:
+    description: A PVC containing an uploadOutput.json file, listing the files uploaded from the last eccc-upload job
+  labels: {{ include "cas-ggircs.labels" . | nindent 4 }}
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 25Mi
+  storageClassName: {{ .Values.storageClassName }}

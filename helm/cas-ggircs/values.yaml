@@ -68,3 +68,5 @@ cas-postgres:
 swrsImportBucket:
   enable: true
   bucketSuffix: swrs-import
+
+storageClassName: netapp-file-standard

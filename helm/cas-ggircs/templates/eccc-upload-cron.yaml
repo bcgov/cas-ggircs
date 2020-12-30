@@ -73,8 +73,5 @@ spec:
               secret:
                 secretName: gcp-{{ .Release.Namespace }}-{{ .Values.swrsImportBucket.bucketSuffix }}-service-account-key
             - name: uploaded-files
-              configMap:
-                name: {{ template "cas-ggircs.fullname" . }}-eccc-uploaded-files
-                items:
-                  - key: "uploadOutput.json"
-                    path: "uploadOutput.json"
+              persistentVolumeClaim:
+                claimName: {{ template "cas-ggircs.fullname" . }}-eccc-uploaded-files
