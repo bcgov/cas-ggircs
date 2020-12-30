@@ -42,6 +42,10 @@ spec:
                     secretKeyRef:
                       key: password
                       name: eccc-swrs-import
+                - name: DEPTH
+                  value: "5"
+                - name: FILTER
+                  value: '\.png|\.svg'
                 - name: GOOGLE_APPLICATION_CREDENTIALS
                   value: /app/gcs/credentials.json
               name: {{ template "cas-ggircs.fullname" . }}-eccc-upload
