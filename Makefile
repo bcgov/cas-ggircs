@@ -252,6 +252,7 @@ endif
 .PHONY: mock_storageclass
 mock_storageclass:
 	$(call oc_mock_storageclass, netapp-block-standard)
+	$(call oc_mock_storageclass, netapp-file-standard)
 
 .PHONY: provision
 provision:
