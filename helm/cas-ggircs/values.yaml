@@ -4,7 +4,6 @@ ciip:
   namespace: ~
   release: ~
 
-
 airflowDagTrigger:
   name: "ggircs_deploy_db"
   enable: true
@@ -21,6 +20,18 @@ image:
     repository: gcr.io/ggl-cas-storage/cas-postgres
     pullPolicy: Always
     tag: "0.2.0"
+  casShelf:
+    repository: gcr.io/ggl-cas-storage/cas-shelf-tfe-add-app
+    pullPolicy: Always
+    tag: "0.1"
+  ecccUpload:
+    repository: gcr.io/ggl-cas-storage/cas-ggircs-eccc-upload
+    pullPolicy: Always
+    tag: "1.1.0-alpha5"
+  ecccExtract:
+    repository: gcr.io/ggl-cas-storage/cas-ggircs-eccc-extract
+    pullPolicy: Always
+    tag: "1.1.0-alpha5"
 
 persistence:
   db: ggircs
@@ -53,3 +64,9 @@ cas-postgres:
   namespace: ~
   gcs:
     bucketSuffix: ~
+
+swrsImportBucket:
+  enable: true
+  bucketSuffix: swrs-import
+
+storageClassName: netapp-file-standard

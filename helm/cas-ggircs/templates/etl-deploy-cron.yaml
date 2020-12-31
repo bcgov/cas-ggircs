@@ -87,6 +87,7 @@ spec:
                       (9,'$(sed -e "s/'/''/g" < test/data/Report_11266X.xml)'),
                       (10,'$(sed -e "s/'/''/g" < test/data/Report_11324X.xml)')
                     on conflict(id) do update set xml_file=excluded.xml_file;
+                    alter sequence swrs_extract.eccc_xml_file_id_seq restart with 11;
                   EOF
                   fi
                   psql -c "select swrs_transform.load()";

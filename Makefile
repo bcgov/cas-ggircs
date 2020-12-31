@@ -225,13 +225,16 @@ install: whoami
 	@helm dep up ./helm/cas-ggircs
 	@helm upgrade --install --atomic --timeout 900s \
 		--namespace $(GGIRCS_NAMESPACE_PREFIX)-$(ENVIRONMENT) --set image.etl.tag=$(GIT_SHA1) \
+		--set image.ecccUpload.tag=$(GIT_SHA1) --set image.ecccExtract.tag=$(GIT_SHA1) \
 		--values ./helm/cas-ggircs/values.yaml \
-		--values ./helm/cas-ggircs/values-$(GGIRCS_NAMESPACE_PREFIX)-$(ENVIRONMENT).yaml \
+		--values ./helm/cas-ggircs/values-$(ENVIRONMENT).yaml \
 		--set ciip.release=cas-ciip-portal \
 		--set ciip.namespace="$(CIIP_NAMESPACE_PREFIX)-$(ENVIRONMENT)" \
 		cas-ggircs ./helm/cas-ggircs
-	# Copying generated ggircs database secret to ciip namespace
-	$(OC) get secret cas-ggircs --namespace=$(GGIRCS_NAMESPACE_PREFIX)-$(ENVIRONMENT) --export -o yaml | oc apply --namespace="$(CIIP_NAMESPACE_PREFIX)-$(ENVIRONMENT)" -f -
+	# Copying generated ggircs database secret to ciip namespace, removing namespace-specific metadata
+	$(OC) get secret cas-ggircs --namespace=$(GGIRCS_NAMESPACE_PREFIX)-$(ENVIRONMENT) -o json \
+		| jq 'del(.metadata.namespace,.metadata.resourceVersion,.metadata.uid,.metadata.annotations,.metadata.managedFields,.metadata.selfLink) | .metadata.creationTimestamp=null' \
+		| oc apply --namespace="$(CIIP_NAMESPACE_PREFIX)-$(ENVIRONMENT)" -f -
 
 .PHONY: install_dev
 install_dev: OC_PROJECT=$(OC_DEV_PROJECT)
@@ -249,6 +252,7 @@ endif
 .PHONY: mock_storageclass
 mock_storageclass:
 	$(call oc_mock_storageclass, netapp-block-standard)
+	$(call oc_mock_storageclass, netapp-file-standard)
 
 .PHONY: provision
 provision:

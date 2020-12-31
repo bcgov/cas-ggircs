@@ -2,12 +2,12 @@
 kind: NetworkSecurityPolicy
 apiVersion: security.devops.gov.bc.ca/v1alpha1
 metadata:
-  name: {{ .Release.Name }}-intra-release 
+  name: {{ .Release.Name }}-ciip-access
   labels:
     release: {{ .Release.Name }}
 {{ include "cas-ggircs.labels" . | nindent 4 }}
 spec:
-  description: allow everything within this release to communicate
+  description: allow ciip to access this application
   source:
     - - $namespace={{ .Values.ciip.namespace }}
       - release={{ .Values.ciip.release }}

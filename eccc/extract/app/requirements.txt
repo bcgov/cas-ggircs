@@ -1,0 +1,3 @@
+smart_open[gcp]==2.0.0
+psycopg2==2.8.5
+chardet==3.0.4

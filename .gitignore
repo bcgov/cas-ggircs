@@ -4,3 +4,4 @@ pgtap
 data/*
 __pycache__
 helm/**/charts
+node_modules
