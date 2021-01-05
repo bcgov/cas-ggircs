@@ -1,0 +1,2 @@
+# Prettier can't handle yaml templates
+helm/*/templates/*.yaml
