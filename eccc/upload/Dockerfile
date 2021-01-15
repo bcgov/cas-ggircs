@@ -1,4 +1,4 @@
-FROM node:12
+FROM node:14.15.4
 
 COPY root /
 COPY app /app
