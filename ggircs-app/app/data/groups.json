@@ -1,0 +1,17 @@
+{
+  "Guest": {
+    "pgRole": "ggircs_guest",
+    "priority": 100,
+    "path": "/"
+  },
+  "GGIRCS User": {
+    "pgRole": "ggircs_user",
+    "priority": 2,
+    "path": "/dashboard"
+  },
+  "Pending GGIRCS User": {
+    "pgRole": "ggircs_guest",
+    "priority": 3,
+    "path": "/analyst/pending"
+  }
+}

@@ -1,0 +1,16 @@
+%syntax-version=1.0.0
+%project=ggircs-app
+
+schema_ggircs_app 2021-01-15T23:20:32Z Matthieu Foucault <matthieu@button.is> # add ggircs_app schema
+schema_ggircs_app_private 2021-01-15T23:42:10Z Matthieu Foucault <matthieu@button.is> # private schema for the GGIRCS app
+tables/connect_session 2021-01-15T23:42:53Z Matthieu Foucault <matthieu@button.is> # table hosting the express connect sid
+roles/ggircs_user 2021-01-18T17:49:58Z Matthieu Foucault <matthieu@button.is> # add ggircs_analyst role
+roles/ggircs_guest 2021-01-18T17:50:08Z Matthieu Foucault <matthieu@button.is> # add ggircs_guest role
+roles/ggircs_app [roles/ggircs_guest roles/ggircs_user] 2021-01-18T17:49:13Z Matthieu Foucault <matthieu@button.is> # add ggircs_app user
+roles/grant_schemas_usage 2021-01-18T18:25:52Z Matthieu Foucault <matthieu@button.is> # grant schema usage to roles
+triggers/update_timestamps 2021-01-18T19:05:15Z Matthieu Foucault <matthieu@button.is> # add update_timestamps trigger
+utils/upsert_policy 2021-01-18T22:11:35Z Matthieu Foucault <matthieu@button.is> # add upsert_policy
+utils/grant_permissions 2021-01-18T23:45:31Z Matthieu Foucault <matthieu@button.is> # add grant_permissions util function
+types/jwt_token 2021-01-18T18:46:49Z Matthieu Foucault <matthieu@button.is> # add jwt token type
+functions/session [types/jwt_token] 2021-01-18T18:47:24Z Matthieu Foucault <matthieu@button.is> # add session function
+tables/ggircs_user 2021-01-18T18:53:34Z Matthieu Foucault <matthieu@button.is> # add ggircs_user table
