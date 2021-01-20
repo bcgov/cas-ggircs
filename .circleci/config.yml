@@ -289,6 +289,18 @@ workflows:
               only: /^v.*/
             branches:
               ignore: /.*/
+      - build_cache_and_push:
+          name: cas-ggircs-app__sha1_build_and_push
+          image_name: cas-ggircs-app
+          image_tag: ${CIRCLE_SHA1}
+          dockerfile_directory: cas-ggircs/ggircs-app/app
+          context: cas-pipeline
+      - build_cache_and_push:
+          name: cas-ggircs-app-schema__sha1_build_and_push
+          image_name: cas-ggircs-app-schema
+          image_tag: ${CIRCLE_SHA1}
+          dockerfile_directory: cas-ggircs/ggircs-app/schema
+          context: cas-pipeline
 
 notify:
   webhooks:
