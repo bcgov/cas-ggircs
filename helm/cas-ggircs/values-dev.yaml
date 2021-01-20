@@ -13,3 +13,6 @@ cas-postgres:
 swrsImportBucket:
   enable: true
   bucketSuffix: eccc-swrs-import
+
+route:
+  host: cas-ggircs-dev.apps.silver.devops.gov.bc.ca

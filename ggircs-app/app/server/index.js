@@ -209,33 +209,13 @@ app.prepare().then(async () => {
     return handle(req, res);
   });
 
-  if (secure) {
-    const domain = /^https:\/\/(.+?)\/?$/.exec(process.env.HOST)[1];
-    const key = fs.readFileSync(
-      `/root/.acme.sh/${domain}/${domain}.key`,
-      "utf8"
-    );
-    const cert = fs.readFileSync(
-      `/root/.acme.sh/${domain}/fullchain.cer`,
-      "utf8"
-    );
-    const options = { key, cert };
-    https.createServer(options, server).listen(port, (err) => {
-      if (err) {
-        throw err;
-      }
+  http.createServer(server).listen(port, (err) => {
+    if (err) {
+      throw err;
+    }
 
-      console.log(`> Ready on https://localhost:${port}`);
-    });
-  } else {
-    http.createServer(server).listen(port, (err) => {
-      if (err) {
-        throw err;
-      }
-
-      console.log(`> Ready on http://localhost:${port}`);
-    });
-  }
+    console.log(`> Ready on http://localhost:${port}`);
+  });
 
   process.on("SIGTERM", () => {
     console.info("SIGTERM signal received.");

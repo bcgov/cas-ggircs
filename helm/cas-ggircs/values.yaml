@@ -12,6 +12,14 @@ networkSecurityPolicies:
   enable: true
 
 image:
+  app:
+    repository: gcr.io/ggl-cas-storage/cas-ggircs-app
+    tag: "latest"
+    pullPolicy: Always
+  schema:
+    repository: gcr.io/ggl-cas-storage/cas-ggircs-app-schema
+    tag: "latest"
+    pullPolicy: Always
   etl:
     repository: gcr.io/ggl-cas-storage/cas-ggircs-etl
     tag: "1.1.0-alpha5"
@@ -37,6 +45,7 @@ persistence:
   db: ggircs
   user: ggircs
   readonlyUser: ggircs_readonly
+  appUser: ggircs_app
 
 cas-postgres:
   patroni:
@@ -70,3 +79,10 @@ swrsImportBucket:
   bucketSuffix: swrs-import
 
 storageClassName: netapp-file-standard
+
+app:
+  route:
+    host: ~
+  sitewide_notice:
+    content: ""
+  port: 3000
