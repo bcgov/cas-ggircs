@@ -1,6 +1,5 @@
-#!env/bin/python
 from dotenv import load_dotenv
-from gcs_bucket_service import GcsBucketService
+from .gcs_bucket_service import GcsBucketService
 import os
 from flask import Flask, jsonify, make_response
 
@@ -32,19 +31,25 @@ def index():
   </html>
   '''
 
+def make_200_json_response(data):
+  headers = {"Content-Type": "application/json"}
+  return make_response(
+    jsonify(data),
+    200,
+    headers
+  )
 
 @app.route('/files')
 def list_files_in_bucket():
   bucket_name = os.environ.get('BUCKET_NAME')
   bucket_service = GcsBucketService(bucket_name)
   file_data = bucket_service.list_files()
+  
+  return make_200_json_response(file_data)
 
-  headers = {"Content-Type": "application/json"}
-  return make_response(
-    jsonify(file_data),
-    200,
-    headers
-  )
+@app.route('/files/<string:blob_name>')
+def list_file_contents(blob_name):
+  pass
 
 
 if __name__ == '__main__':
