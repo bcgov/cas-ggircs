@@ -1,0 +1,5 @@
+pip==20.3.3
+flask==1.1.2
+google-cloud-storage==1.35.0
+python-dotenv==0.15.0
+
