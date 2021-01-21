@@ -1,6 +1,6 @@
 from dotenv import load_dotenv
 import os
-from flask import Flask, jsonify, make_response
+from flask import Flask, jsonify, make_response, Response, stream_with_context
 from smart_open import smart_open as open
 import google
 
@@ -87,6 +87,34 @@ def list_file_contents(blob_name):
     return make_error_response('File not found on GCS', 404)
   except:
     make_error_response('Error processing the requested file', 500)
+
+CHUNK_SIZE=8192
+def read_file_in_chunks(path):
+  with open(path, 'rb') as file_descriptor:
+    while 1:
+      buf = file_descriptor.read(CHUNK_SIZE)
+      if buf:
+        yield buf
+      else:
+        break
+  
+
+@app.route('/files/<string:blob_name>/download')
+def download_entire_file(blob_name):
+  bucket_name = os.environ.get('BUCKET_NAME')
+  bucket_service = GcsBucketService(bucket_name)
+
+  file_path = bucket_service.get_file_url(blob_name)
+
+  headers = {
+    'Content-Disposition': f'attachment; filename={blob_name}'
+  }
+  return Response(stream_with_context(read_file_in_chunks(file_path)), mimetype='application/zip', headers=headers)
+
+
+@app.route('/files/<string:blob_name>/download?<string:url_encoded_path>')
+def download_individual_part(blob_name, path):
+  pass
 
 if __name__ == '__main__':
   app.run(debug=True)
