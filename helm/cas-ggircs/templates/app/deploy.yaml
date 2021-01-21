@@ -56,7 +56,7 @@ spec:
           - name: SITEWIDE_NOTICE
             value: {{ .Values.app.sitewide_notice.content | quote }}
           - name: HOST
-            value: https://{{ .Values.route.host }}
+            value: https://{{ .Values.app.route.host }}
           - name: NAMESPACE
             valueFrom:
               fieldRef:
