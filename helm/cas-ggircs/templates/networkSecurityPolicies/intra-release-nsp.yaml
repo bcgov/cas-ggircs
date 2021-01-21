@@ -11,7 +11,11 @@ spec:
   source:
     - - $namespace={{ .Release.Namespace }}
       - release={{ .Release.Name }}
+    - - $namespace={{ .Release.Namespace }}
+      - app.kubernetes.io/instance={{ include "cas-ggircs.name" . }}
   destination:
     - - $namespace={{ .Release.Namespace }}
       - release={{ .Release.Name }}
+    - - $namespace={{ .Release.Namespace }}
+      - app.kubernetes.io/instance={{ include "cas-ggircs.name" . }}
 {{- end }}

@@ -42,22 +42,12 @@ spec:
                   valueFrom:
                     secretKeyRef:
                       key: database-app-user
-                      name: {{ template "cas-ggircs.fullname" . }}
+                      name: {{ template "cas-ggircs.fullname" . }}-app
                 - name: GGIRCS_APP_PASSWORD
                   valueFrom:
                     secretKeyRef:
                       key: database-app-password
-                      name: {{ template "cas-ggircs.fullname" . }}
-                - name: GGIRCS_READONLY_USER
-                  valueFrom:
-                    secretKeyRef:
-                      key: database-readonly-user
-                      name: {{ template "cas-ggircs.fullname" . }}
-                - name: GGIRCS_READONLY_PASSWORD
-                  valueFrom:
-                    secretKeyRef:
-                      key: database-readonly-password
-                      name: {{ template "cas-ggircs.fullname" . }}
+                      name: {{ template "cas-ggircs.fullname" . }}-app
                 - name: NAMESPACE
                   valueFrom:
                     fieldRef:

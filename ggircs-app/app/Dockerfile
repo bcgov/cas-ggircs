@@ -51,4 +51,4 @@ EXPOSE 3000
 USER ${USER_ID}
 WORKDIR ${HOME}
 
-CMD ["yarn", "start"]
+CMD ["bash", "-c", "yarn start"]

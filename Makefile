@@ -193,39 +193,13 @@ project: whoami
 project: $(call make_help,project,Switches to the desired $$OC_PROJECT namespace)
 	$(call oc_project)
 
-.PHONY: lint
-lint: $(call make_help,lint,Checks the configured yml template definitions against the remote schema using the tools namespace)
-lint: OC_PROJECT=$(OC_TOOLS_PROJECT)
-lint: whoami
-	$(call oc_lint)
-
-.PHONY: configure
-configure: $(call make_help,configure,Configures the tools project namespace for a build)
-configure: OC_PROJECT=$(OC_TOOLS_PROJECT)
-configure: whoami
-	$(call oc_configure)
-
-.PHONY: build
-build: $(call make_help,build,Builds the source into an image in the tools project namespace)
-build: OC_PROJECT=$(OC_TOOLS_PROJECT)
-build: whoami
-	$(call oc_build,$(PROJECT_PREFIX)ggircs-etl)
-
-GGIRCS_DB_NAME = "ggircs"
-GGIRCS_USER_NAME = "ggircs"
-GGIRCS_READONLY_USER_NAME = $(GGIRCS_USER_NAME)_readonly
-
-define oc_s
-	$(shell $(OC) get secret cas-namespaces --namespace=$(OC_PROJECT) --template='{{- index .data "ciip-namespace" | base64decode -}}')
-endef
-
-
 .PHONY: install
 install: whoami
 	@helm dep up ./helm/cas-ggircs
 	@helm upgrade --install --atomic --timeout 900s \
 		--namespace $(GGIRCS_NAMESPACE_PREFIX)-$(ENVIRONMENT) --set image.etl.tag=$(GIT_SHA1) \
 		--set image.ecccUpload.tag=$(GIT_SHA1) --set image.ecccExtract.tag=$(GIT_SHA1) \
+		--set image.app.tag=$(GIT_SHA1) --set image.schema.tag=$(GIT_SHA1) \
 		--values ./helm/cas-ggircs/values.yaml \
 		--values ./helm/cas-ggircs/values-$(ENVIRONMENT).yaml \
 		--set ciip.release=cas-ciip-portal \

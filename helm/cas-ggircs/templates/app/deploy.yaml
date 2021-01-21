@@ -31,17 +31,17 @@ spec:
             valueFrom:
               secretKeyRef:
                 key: session-secret
-                name: {{ template "cas-ggircs.fullname" . }}
+                name: {{ template "cas-ggircs.fullname" . }}-app
           - name: PGUSER
             valueFrom:
               secretKeyRef:
                 key: database-app-user
-                name: {{ template "cas-ggircs.fullname" . }}
+                name: {{ template "cas-ggircs.fullname" . }}-app
           - name: PGPASSWORD
             valueFrom:
               secretKeyRef:
                 key: database-app-password
-                name: {{ template "cas-ggircs.fullname" . }}
+                name: {{ template "cas-ggircs.fullname" . }}-app
           - name: PGDATABASE
             valueFrom:
               secretKeyRef:
@@ -80,17 +80,5 @@ spec:
           capabilities: {}
           privileged: false
         terminationMessagePath: /dev/termination-log
-        volumeMounts:
-          - mountPath: /root/.acme.sh
-            name: acme-home
-          - mountPath: /root/.well-known/acme-challenge
-            name: acme-challenge
-      volumes:
-        - name: acme-home
-          persistentVolumeClaim:
-            claimName: {{ template "cas-ggircs.fullname" . }}-acme-home
-        - name: acme-challenge
-          persistentVolumeClaim:
-            claimName: {{ template "cas-ggircs.fullname" . }}-acme-challenge
       dnsPolicy: ClusterFirst
       restartPolicy: Always
