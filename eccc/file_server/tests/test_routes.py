@@ -21,7 +21,7 @@ def test_root_url(client):
 
 
 def test_files_list_url(client):
-  with mock.patch('__main__.GcsBucketService') as MockedService:
+  with mock.patch('app.gcs_bucket_service.GcsBucketService') as MockedService:
     instance = MockedService.return_value
     instance.list_zip_files.return_value = []
 
