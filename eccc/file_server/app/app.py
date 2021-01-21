@@ -1,13 +1,20 @@
 from dotenv import load_dotenv
 import os
-from flask import Flask, jsonify, make_response, Response, stream_with_context
+from flask import Flask, Response, jsonify, make_response, stream_with_context, request
 from smart_open import smart_open as open
 import google
+import logging
 
+from .download_service import DownloadService
 from .gcs_bucket_service import GcsBucketService
 from .zip_reader import ZipReader
+from urllib.parse import unquote
+
 
 load_dotenv()
+logging.basicConfig(format='%(asctime)s | %(name)s | %(levelname)s: %(message)s')
+log = logging.getLogger("App")
+
 
 app = Flask(__name__)
 
@@ -28,14 +35,14 @@ def index():
           - the server responds with a JSON object with objects such as { name: "", size: "", created_at: "", files: ["file1", "file2", ... ]}, listing all of the files in the zip file <br>
       When sending a GET request to /files/{filename}/download <br>
           - the server responds with the file filename contained in the bucket <br>
-      When sending a GET request to /files/{filename}/download?file_path?{urlencoded_path} <br>
+      When sending a GET request to /files/{filename}/download?file_path={urlencoded_path} <br>
           - the server responds with the file contained in the zip file 
       </p>
     </body>
   </html>
   '''
 
-def make_200_json_response(data):
+def make_200_response(data):
   headers = {"Content-Type": "application/json"}
   return make_response(
     jsonify(data),
@@ -65,12 +72,16 @@ def list_files_in_bucket():
     }
   file_data = [build_response_object(blob) for blob in zip_blobs]
   
-  return make_200_json_response(file_data)
+  return make_200_response(file_data)
+
+
 
 @app.route('/files/<string:blob_name>')
 def list_file_contents(blob_name):
   bucket_name = os.environ.get('BUCKET_NAME')
   bucket_service = GcsBucketService(bucket_name)
+
+  blob = bucket_service.get_zip_blob(blob_name)
 
   file_path = bucket_service.get_file_url(blob_name)
 
@@ -78,44 +89,49 @@ def list_file_contents(blob_name):
     with open(file_path, 'rb') as file_to_unzip:
       content_list = ZipReader.list_file_contents(file_to_unzip)
       data = {
-        "zip_file_name":blob_name,
-        "zip_count":len(content_list),
-        "zip_list":content_list
+        "zip_file_name": blob_name,
+        "zip_file_content_count": len(content_list),
+        "zip_file_size": blob.size / (1024*1024),
+        "zip_content_list": content_list        
       }
-      return make_200_json_response(data)
+      return make_200_response(data)
   except(google.api_core.exceptions.NotFound):
     return make_error_response('File not found on GCS', 404)
-  except:
-    make_error_response('Error processing the requested file', 500)
-
-CHUNK_SIZE=8192
-def read_file_in_chunks(path):
-  with open(path, 'rb') as file_descriptor:
-    while 1:
-      buf = file_descriptor.read(CHUNK_SIZE)
-      if buf:
-        yield buf
-      else:
-        break
-  
 
 @app.route('/files/<string:blob_name>/download')
-def download_entire_file(blob_name):
+def download(blob_name):
+  internal_file_path = request.args.get('filename')
+  
   bucket_name = os.environ.get('BUCKET_NAME')
   bucket_service = GcsBucketService(bucket_name)
 
   file_path = bucket_service.get_file_url(blob_name)
 
-  headers = {
-    'Content-Disposition': f'attachment; filename={blob_name}'
-  }
-  return Response(stream_with_context(read_file_in_chunks(file_path)), mimetype='application/zip', headers=headers)
+  if not internal_file_path:
+    # We return the whole zip file, in chunks
+    blob = bucket_service.get_zip_blob(blob_name)
+    headers = {
+      'Content-Length': blob.size,
+      'Content-Disposition': f'attachment; filename={blob_name}'
+    }
+    return Response(stream_with_context(DownloadService.generator(file_path)), mimetype='application/zip', headers=headers)
+  
+  else:    
+    decoded_path = unquote(internal_file_path)
+        
+    with open(file_path, 'rb') as file_descriptor:
+      internal_file_bytes = ZipReader.extract_file_content(file_descriptor, decoded_path)
 
+    download_name = decoded_path.replace('/','-')
 
-@app.route('/files/<string:blob_name>/download?<string:url_encoded_path>')
-def download_individual_part(blob_name, path):
-  pass
+    headers = {
+      'Content-Length': len(internal_file_bytes),
+      'Content-Disposition': f'attachment; filename={download_name}'
+    }
+    return Response(internal_file_bytes, mimetype='application/object', headers=headers)
+  
+
 
 if __name__ == '__main__':
-  app.run(debug=True)
+  app.run(debug=True, threaded=True)
   
