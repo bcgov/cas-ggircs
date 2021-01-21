@@ -40,3 +40,7 @@ Running the app in development mode
 5. run the server
   `python -m app.app`
 
+
+Running the unit tests
+----------------------
+`python -m pytest`
