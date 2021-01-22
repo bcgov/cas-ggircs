@@ -1,6 +1,6 @@
 from queue import Queue
 from threading import Thread
-from smart_open import smart_open as open
+from smart_open import open
 
 class DownloadService:
   def generator(file_path, chunk_size=2048):

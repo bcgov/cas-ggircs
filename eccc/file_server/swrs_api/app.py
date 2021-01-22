@@ -1,7 +1,7 @@
 from dotenv import load_dotenv
 import os
 from flask import Flask, Response, jsonify, make_response, stream_with_context, request
-from smart_open import smart_open as open
+from smart_open import open
 import google
 import logging
 
