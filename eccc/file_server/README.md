@@ -19,7 +19,7 @@ Running the container
 0. Navigate to the `./eccc/file_server` path where the dockerfile is located
   `cd eccc/file_server`
 1. Create the docker image
-  `docker build -t gcs-zip-file-server`
+  `docker build -t gcs-zip-file-server` .
 2. Run the docker image
   `docker run -p 5000:5000 gcs-zip-file-server`
 NOTE: you'll need to set the container's environment variables based on the .env.example file
@@ -38,7 +38,7 @@ Running the app in development mode
   `pip install -r requirements.txt`
 4. create the .env file with the needed values, based on the provided .env.example file
 5. run the server
-  `python -m app.app`
+  `python -m swrs_api.app`
 
 
 Running the unit tests
