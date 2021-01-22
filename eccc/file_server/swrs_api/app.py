@@ -5,8 +5,8 @@ from smart_open import smart_open as open
 import google
 import logging
 
-from .download_service import DownloadService
-from .gcs_bucket_service import GcsBucketService
+from . import download_service
+from . import gcs_bucket_service
 from .zip_reader import ZipReader
 from urllib.parse import unquote
 
@@ -61,7 +61,7 @@ def make_error_response(msg, html_response_code):
 @app.route('/files')
 def list_files_in_bucket():
   bucket_name = os.environ.get('BUCKET_NAME')
-  bucket_service = GcsBucketService(bucket_name)
+  bucket_service = gcs_bucket_service.GcsBucketService(bucket_name)
   zip_blobs = bucket_service.list_zip_blobs()
 
   def build_response_object(blob):
@@ -79,7 +79,7 @@ def list_files_in_bucket():
 @app.route('/files/<string:blob_name>')
 def list_file_contents(blob_name):
   bucket_name = os.environ.get('BUCKET_NAME')
-  bucket_service = GcsBucketService(bucket_name)
+  bucket_service = gcs_bucket_service.GcsBucketService(bucket_name)
 
   blob = bucket_service.get_zip_blob(blob_name)
 
@@ -103,7 +103,7 @@ def download(blob_name):
   internal_file_path = request.args.get('filename')
   
   bucket_name = os.environ.get('BUCKET_NAME')
-  bucket_service = GcsBucketService(bucket_name)
+  bucket_service = gcs_bucket_service.GcsBucketService(bucket_name)
 
   file_path = bucket_service.get_file_url(blob_name)
 
@@ -114,7 +114,7 @@ def download(blob_name):
       'Content-Length': blob.size,
       'Content-Disposition': f'attachment; filename={blob_name}'
     }
-    return Response(stream_with_context(DownloadService.generator(file_path)), mimetype='application/zip', headers=headers)
+    return Response(stream_with_context(download_service.DownloadService.generator(file_path)), mimetype='application/zip', headers=headers)
   
   else:    
     decoded_path = unquote(internal_file_path)
