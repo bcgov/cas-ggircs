@@ -9,7 +9,7 @@ from swrs_api.tests.helpers import MockBlob
 @pytest.fixture
 def client():
   app.app.config['TESTING'] = True
-  
+
   with app.app.test_client() as client:
       yield client
 
@@ -24,7 +24,7 @@ def test_files_list_url(class_mock, client):
 
   response = client.get('/files')
   response_string = response.data.decode('utf-8').strip()
-  
+
   assert response_string == '[{"created_at":"Thu, 21 Jan 1999 00:00:00 GMT","name":"a","size":1.0}]'
 
 @patch('swrs_api.gcs_bucket_service.GcsBucketService')
@@ -34,7 +34,7 @@ def test_file_list_content(class_mock, client):
   service_instance.get_file_url.return_value = os.path.dirname(__file__) + '/fixtures/Archive.zip'
 
   response = client.get('/files/Archive.zip')
-  
+
   service_instance.get_zip_blob.assert_called_with('Archive.zip')
   service_instance.get_file_url.assert_called_with('Archive.zip')
 
@@ -49,11 +49,39 @@ def test_file_list_content(class_mock, client):
 
   pass
 
-def test_file_full_download(client):
+@patch('swrs_api.gcs_bucket_service.GcsBucketService')
+def test_file_full_download(class_mock, client):
+
+  service_instance = class_mock.return_value
+  service_instance.get_zip_blob.return_value = MockBlob(size=2*1024*1024)
+  service_instance.get_file_url.return_value = os.path.dirname(__file__) + '/fixtures/Archive.zip'
+
+  response = client.get('/files/test.xml/download')
+  assert 'test.xml' in str(response.headers)
+  print(response.status)
+  assert '200 OK' in str(response)
   pass
 
-def test_file_content_download_zip(client):
+@patch('swrs_api.gcs_bucket_service.GcsBucketService')
+def test_file_content_download_zip(class_mock,client):
+
+  service_instance = class_mock.return_value
+  service_instance.get_zip_blob.return_value = MockBlob(size=2*1024*1024)
+  service_instance.get_file_url.return_value = os.path.dirname(__file__) + '/fixtures/Archive.zip'
+
+  response = client.get('/files/Archive.zip/download')
+  assert 'Archive.zip' in str(response.headers)
+  print(response.status)
+  assert '200 OK' in str(response)
   pass
 
-def test_file_content_download_pdf(client):
+@patch('swrs_api.gcs_bucket_service.GcsBucketService')
+def test_file_content_download_pdf(class_mock, client):
+  service_instance = class_mock.return_value
+  service_instance.get_zip_blob.return_value = MockBlob(size=2*1024*1024)
+  service_instance.get_file_url.return_value = os.path.dirname(__file__) + '/fixtures/Archive.zip'
+
+  response = client.get('/files/dummy.pdf/download')
+  assert 'dummy.pdf' in str(response.headers)
+  assert '200 OK' in str(response.status)
   pass
