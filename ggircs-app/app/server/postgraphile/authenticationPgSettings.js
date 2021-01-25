@@ -1,7 +1,7 @@
 const { getAllGroups, getPriorityGroup } = require("../../lib/user-groups");
 const { getUserGroups } = require("../helpers/userGroupAuthentication");
 const groupData = require("../../data/groups");
-const databaseConnectionService = require("../db/databaseConnectionService");
+const databaseConnectionService = require("../storage/db");
 
 const AUTH_BYPASS_COOKIE = "mocks.auth";
 const NO_AUTH = process.argv.includes("NO_AUTH");
@@ -9,9 +9,8 @@ const AS_PENDING = process.argv.includes("AS_PENDING");
 const AS_CYPRESS = process.argv.includes("AS_CYPRESS");
 const AS_USER = process.argv.includes("AS_USER");
 
-const allowCypressForRole = (roleName, req) => {
-  return AS_CYPRESS && req.cookies[AUTH_BYPASS_COOKIE] === roleName;
-};
+const allowCypressForRole = (roleName, req) =>
+  AS_CYPRESS && req.cookies[AUTH_BYPASS_COOKIE] === roleName;
 
 const authenticationPgSettings = (req) => {
   if (NO_AUTH) {
