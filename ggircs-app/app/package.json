@@ -9,7 +9,9 @@
     "build:relay": "relay-compiler --verbose",
     "build:next": "next build",
     "build": "yarn build:schema && yarn build:relay && yarn build:next",
-    "start": "NODE_ENV=production node --unhandled-rejections=strict server"
+    "start": "NODE_ENV=production node --unhandled-rejections=strict server",
+    "format": "prettier --write .",
+    "lint": "eslint --ext .js,.jsx,.ts,.tsx ."
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.34",
@@ -62,6 +64,7 @@
     "eslint-plugin-react": "^7.22.0",
     "eslint-plugin-react-hooks": "^4.2.0",
     "eslint-plugin-relay": "^1.8.1",
+    "prettier": "^2.2.1",
     "relay-compiler": "^10.1.2",
     "relay-compiler-language-typescript": "^13.0.2",
     "relay-config": "^10.1.2",

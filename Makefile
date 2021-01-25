@@ -1,3 +1,5 @@
+SHELL := /usr/bin/env bash
+
 ifndef CI_NO_POSTGRES
 PERL=perl
 RSYNC=rsync

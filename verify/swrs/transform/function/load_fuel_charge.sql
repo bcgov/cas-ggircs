@@ -5,4 +5,3 @@ begin;
 select pg_get_functiondef('swrs_transform.load_fuel_charge()'::regprocedure);
 
 rollback;
-

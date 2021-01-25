@@ -88,16 +88,16 @@ jobs:
           name: Test helm chart
           no_output_timeout: 21m
 
-  lint:
-    machine:
-      image: ubuntu-1604:201903-01
-    steps:
-      - checkout
-      - helm/install-helm-client:
-          version: v3.2.1
-      - run:
-          command: helm lint ./helm/cas-ggircs
-          name: Lint the helm charts
+  # lint:
+  #   machine:
+  #     image: ubuntu-1604:201903-01
+  #   steps:
+  #     - checkout
+  #     - helm/install-helm-client:
+  #         version: v3.2.1
+  #     - run:
+  #         command: helm lint ./helm/cas-ggircs
+  #         name: Lint the helm charts
 
   eccc-upload__test:
     parameters:
@@ -200,7 +200,7 @@ jobs:
             - run:
                 command: |
                   echo "Digest is: $(</tmp/digest.txt)"
-  ggircs_app_tools:
+  tools:
     machine:
       image: ubuntu-1604:201903-01
     working_directory: ~/cas-ggircs
@@ -278,46 +278,25 @@ jobs:
             - .cache/Cypress # contains the cypress binary. Needed for the e2e job
             - cas-ggircs
             - perl5
+  lint:
+    machine:
+      image: ubuntu-1604:201903-01
+    working_directory: ~/cas-ggircs
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Verify style with pre-commit
+          command: |
+            source ~/.asdf/asdf.sh
+            asdf reshim
+            pre-commit run --all-files
+      - run:
+          name: Check if there is some unformatted code
+          command: git diff --exit-code || (echo 'These files are not formatted correctly. Did you forget to \"yarn format\"?' && false)
 
 workflows:
   version: 2
-  ggircs_app:
-    jobs:
-      - ggircs_app_tools
-      # - lint:
-      #     requires:
-      #       - tools
-      # - unit:
-      #     requires:
-      #       - tools
-      # - audit:
-      #     requires:
-      #       - tools
-      # - schema:
-      #     requires:
-      #       - tools
-      # - test_database:
-      #     requires:
-      #       - tools
-      # - compile:
-      #     requires:
-      #       - tools
-      # - e2e-snapshots:
-      #     requires:
-      #       - compile
-      - build_cache_and_push:
-          name: cas-ggircs-app__sha1_build_and_push
-          image_name: cas-ggircs-app
-          image_tag: ${CIRCLE_SHA1}
-          dockerfile_directory: cas-ggircs/ggircs-app/app
-          context: cas-pipeline
-      - build_cache_and_push:
-          name: cas-ggircs-app-schema__sha1_build_and_push
-          image_name: cas-ggircs-app-schema
-          image_tag: ${CIRCLE_SHA1}
-          dockerfile_directory: cas-ggircs/ggircs-app/schema
-          context: cas-pipeline
-
   test:
     jobs:
       - test
@@ -404,6 +383,40 @@ workflows:
               only: /^v.*/
             branches:
               ignore: /.*/
+      - tools
+      - lint:
+          requires:
+            - tools
+      # - unit:
+      #     requires:
+      #       - tools
+      # - audit:
+      #     requires:
+      #       - tools
+      # - schema:
+      #     requires:
+      #       - tools
+      # - test_database:
+      #     requires:
+      #       - tools
+      # - compile:
+      #     requires:
+      #       - tools
+      # - e2e-snapshots:
+      #     requires:
+      #       - compile
+      - build_cache_and_push:
+          name: cas-ggircs-app__sha1_build_and_push
+          image_name: cas-ggircs-app
+          image_tag: ${CIRCLE_SHA1}
+          dockerfile_directory: cas-ggircs/ggircs-app/app
+          context: cas-pipeline
+      - build_cache_and_push:
+          name: cas-ggircs-app-schema__sha1_build_and_push
+          image_name: cas-ggircs-app-schema
+          image_tag: ${CIRCLE_SHA1}
+          dockerfile_directory: cas-ggircs/ggircs-app/schema
+          context: cas-pipeline
 
 notify:
   webhooks:

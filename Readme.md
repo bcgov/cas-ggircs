@@ -1,32 +1,18 @@
-
 # Welcome to GGIRCS
-
-
 
 GGIRCS stands for **Greenhouse Gas Industrial Reporting and Control System** for the Climate Action Secretariat (CAS).
 
-
-
-
 ## Description
-
-
 
 GGIRCS is a tool designed to modernize the annual reporting and verification of greenhouse gas industrial emissions. This project is a fulfillment to meet the requirements of the BC government initiatives including Climate Strategy, Clean Growth and CleanBC, part of the Greenhouse Gas Industrial Reporting and Control Act [GGIRCA].
 
-
-
 ## Status
 
-* Master Pipeline: [![CircleCI](https://circleci.com/gh/bcgov/cas-ggircs/tree/master.svg?style=shield)](https://circleci.com/gh/bcgov/cas-ggircs/tree/master)
+- Master Pipeline: [![CircleCI](https://circleci.com/gh/bcgov/cas-ggircs/tree/master.svg?style=shield)](https://circleci.com/gh/bcgov/cas-ggircs/tree/master)
 
+- Develop Pipeline:
 
-
-* Develop Pipeline:
-
-* Functional Test:
-
-
+- Functional Test:
 
 ## Usage
 
@@ -44,43 +30,29 @@ GGIRCS is a tool designed to modernize the annual reporting and verification of 
 
 - Run `sqitch deploy` to deploy to a `ggircs_dev` database
 
-
-
 ### Using Sqitch
 
-------------
+---
 
 If you're new to Sqitch, the best place to start is with [the tutorial](https://github.com/sqitchers/sqitch/blob/master/lib/sqitchtutorial.pod) and other [docs](https://sqitch.org/docs/).
 
-
-
 > **Add Schema**
 
-> - sqitch add schema_[schema_name]
-
-
+> - sqitch add schema\_[schema_name]
 
 > **Add Table**
 
-> - sqitch add table_[table_name] --require schema_[schema_name] --set schema=[schema_name]
-
-
+> - sqitch add table*[table_name] --require schema*[schema_name] --set schema=[schema_name]
 
 ### Dependencies
 
-------------
+---
 
 ### [PostgreSQL](http://www.postgresql.org/)
 
-
-
 #### Installation
 
-
-
 Version 10 or higher recommended. Usually available via your distribution's package system. Binaries and source are also available [for download](http://www.postgresql.org/download/). The PostgreSQL wiki has a [list of detailed installation guides](https://wiki.postgresql.org/wiki/Detailed_installation_guides) where you can find some OS-specific instructions.
-
-
 
 A role/user with the following options must be created (see [this tutorial](https://tableplus.io/blog/2018/10/how-to-create-superuser-in-postgresql.html) if you need information on how to create roles):
 
@@ -88,26 +60,13 @@ A role/user with the following options must be created (see [this tutorial](http
 
 - The role has the SUPERUSER option
 
-
-
 ### [Git](http://git-scm.com)
-
-
 
 1.7.0 or higher recommended. Usually available via your distribution's package system. Binaries and source are also available [for download](http://git-scm.com/downloads).
 
-
-
 ### [Perl](http://perl.org/)
 
-
-
 5.10.0 or higher. Included in most Unix distributions and on OS X. Windows users can install [ActivePerl](http://www.activestate.com/activeperl/downloads). The Perl website has [OS-specific installation instructions](https://learn.perl.org/installing/).
-
-
-
-
-
 
 ## Data
 
@@ -117,47 +76,36 @@ The data-set that is parsed by the ETL process includes some test data that need
 
 ### Data Architecture
 
-
-
 (TBC)
-
-
 
 ### Project Material Publication
 
 The materials published include:
 
 - [Code Repositories](https://github.com/bcgov?utf8=%E2%9C%93&q=cas&type=&language=)
- - /bcgov/cas-airflow-dags
- - /bcgov/cas-ciip-portal
- - /bcgov/cas-docker-metabase
- - /bcgov/cas-docker-sqitch
- - /bcgov/cas-ggircs
- - /bcgov/cas-ggircs-ciip-2018-extract
- - /bcgov/cas-ggircs-ciip-2018-schema
- - /bcgov/cas-ggircs-metabase
- - /bcgov/cas-ggircs-metabase-build
- - /bcgov/cas-ggircs-metabase-builder
- - /bcgov/cas-helm
- - /bcgov/cas-metascript
- - /bcgov/cas-pipeline
- - /bcgov/cas-postgres
- - /bcgov/cas-shelf
- - /bcgov/cas-shipit
- - /bcgov/cas-shipit-engine
-
-
-
-
+- /bcgov/cas-airflow-dags
+- /bcgov/cas-ciip-portal
+- /bcgov/cas-docker-metabase
+- /bcgov/cas-docker-sqitch
+- /bcgov/cas-ggircs
+- /bcgov/cas-ggircs-ciip-2018-extract
+- /bcgov/cas-ggircs-ciip-2018-schema
+- /bcgov/cas-ggircs-metabase
+- /bcgov/cas-ggircs-metabase-build
+- /bcgov/cas-ggircs-metabase-builder
+- /bcgov/cas-helm
+- /bcgov/cas-metascript
+- /bcgov/cas-pipeline
+- /bcgov/cas-postgres
+- /bcgov/cas-shelf
+- /bcgov/cas-shipit
+- /bcgov/cas-shipit-engine
 
 ### Files in this repository
 
 ```
 
 ```
-
-
-
 
 ## Documentation
 
@@ -168,8 +116,6 @@ The materials published include:
 - [GGIRCS Developer Documentation - TBD](https://github.com/bcgov/cas-ggircs-docs/)
 
 - [GGIRCS Style Guide](https://developer.gov.bc.ca/components)
-
-
 
 ## Contributors
 

@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Row, Col, Card } from "react-bootstrap";
 import { graphql } from "react-relay";
 import { pagesQueryResponse } from "pagesQuery.graphql";
 import { CiipPageComponentProps } from "next-env";

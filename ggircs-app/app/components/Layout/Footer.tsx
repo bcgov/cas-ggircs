@@ -1,6 +1,6 @@
-import React from 'react';
-import Link from 'next/link';
-import getConfig from 'next/config';
+import React from "react";
+import Link from "next/link";
+import getConfig from "next/config";
 
 const Footer = () => {
   const feedbackUrl = getConfig()?.publicRuntimeConfig.FEEDBACK_SITE_URL;

@@ -1,8 +1,5 @@
 import React from "react";
 import Document, { Html, Head, Main, NextScript } from "next/document";
-import getConfig from "next/config";
-
-const CONFIG = getConfig()?.publicRuntimeConfig;
 
 class MyDocument extends Document {
   render() {
