@@ -171,8 +171,9 @@ ifndef CI_NO_PIPELINE
 SHELL := /usr/bin/env bash
 THIS_FILE := $(lastword $(MAKEFILE_LIST))
 THIS_FOLDER := $(abspath $(realpath $(lastword $(MAKEFILE_LIST)))/../)
+ifeq ($(MAKECMDGOALS),$(filter $(MAKECMDGOALS),help whoami project configure provision mock_storageclass install))
 include $(THIS_FOLDER)/.pipeline/oc.mk
-
+endif
 PATHFINDER_PREFIX := 9212c9
 PROJECT_PREFIX := cas-
 
@@ -209,18 +210,6 @@ install: whoami
 	$(OC) get secret cas-ggircs --namespace=$(GGIRCS_NAMESPACE_PREFIX)-$(ENVIRONMENT) -o json \
 		| jq 'del(.metadata.namespace,.metadata.resourceVersion,.metadata.uid,.metadata.annotations,.metadata.managedFields,.metadata.selfLink) | .metadata.creationTimestamp=null' \
 		| oc apply --namespace="$(CIIP_NAMESPACE_PREFIX)-$(ENVIRONMENT)" -f -
-
-.PHONY: install_dev
-install_dev: OC_PROJECT=$(OC_DEV_PROJECT)
-install_dev: install
-
-.PHONY: install_test
-install_test: OC_PROJECT=$(OC_TEST_PROJECT)
-install_test: install
-
-.PHONY: install_prod
-install_prod: OC_PROJECT=$(OC_PROD_PROJECT)
-install_prod: install
 endif
 
 .PHONY: mock_storageclass
@@ -234,3 +223,12 @@ provision:
 	$(call oc_new_project,$(OC_TEST_PROJECT))
 	$(call oc_new_project,$(OC_DEV_PROJECT))
 	$(call oc_new_project,$(OC_PROD_PROJECT))
+
+.PHONY: install_asdf_tools
+install_asdf_tools:
+	@cat .tool-versions | cut -f 1 -d ' ' | xargs -n 1 asdf plugin-add || true
+	@asdf plugin-update --all
+	@bash ~/.asdf/plugins/nodejs/bin/import-release-team-keyring
+	@#MAKELEVEL=0 is required because of https://www.postgresql.org/message-id/1118.1538056039%40sss.pgh.pa.us
+	@MAKELEVEL=0 POSTGRES_EXTRA_CONFIGURE_OPTIONS='--with-libxml' asdf install
+	@asdf reshim
