@@ -88,16 +88,16 @@ jobs:
           name: Test helm chart
           no_output_timeout: 21m
 
-  # lint:
-  #   machine:
-  #     image: ubuntu-1604:201903-01
-  #   steps:
-  #     - checkout
-  #     - helm/install-helm-client:
-  #         version: v3.2.1
-  #     - run:
-  #         command: helm lint ./helm/cas-ggircs
-  #         name: Lint the helm charts
+  helm_lint:
+    machine:
+      image: ubuntu-1604:201903-01
+    steps:
+      - checkout
+      - helm/install-helm-client:
+          version: v3.2.1
+      - run:
+          command: helm lint ./helm/cas-ggircs
+          name: Lint the helm charts
 
   eccc-upload__test:
     parameters:
@@ -294,13 +294,25 @@ jobs:
       - run:
           name: Check if there is some unformatted code
           command: git diff --exit-code || (echo 'These files are not formatted correctly. Did you forget to \"yarn format\"?' && false)
+  ggircs_app_audit:
+    machine:
+      image: ubuntu-1604:201903-01
+    working_directory: ~/cas-ggircs/ggircs-app/app
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Audit Dependencies
+          command: |
+            source ~/.asdf/asdf.sh
+            yarn audit --level info # https://yarnpkg.com/lang/en/docs/cli/audit/
 
 workflows:
   version: 2
   test:
     jobs:
       - test
-      - lint:
+      - helm_lint:
           filters:
             tags:
               only: /^v.*/
@@ -311,7 +323,7 @@ workflows:
           context: cas-pipeline
           image_tag: ${CIRCLE_SHA1}
           requires:
-            - lint
+            - helm_lint
       - test-local-cluster:
           context: cas-pipeline
           requires:
@@ -323,7 +335,7 @@ workflows:
           image_name: cas-ggircs-etl
           dockerfile_directory: cas-ggircs
           requires:
-            - lint
+            - helm_lint
           filters:
             tags:
               only: /^v.*/
@@ -390,9 +402,9 @@ workflows:
       # - unit:
       #     requires:
       #       - tools
-      # - audit:
-      #     requires:
-      #       - tools
+      - ggircs_app_audit:
+          requires:
+            - tools
       # - schema:
       #     requires:
       #       - tools
