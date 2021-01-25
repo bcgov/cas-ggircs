@@ -306,6 +306,73 @@ jobs:
           command: |
             source ~/.asdf/asdf.sh
             yarn audit --level info # https://yarnpkg.com/lang/en/docs/cli/audit/
+  ggircs_app_schema:
+    machine:
+      image: ubuntu-1604:201903-01
+    working_directory: ~/cas-ggircs/ggircs-app
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: start postgres
+          command: |
+            source ~/.bashrc
+            pg_ctl start
+            createdb `whoami`
+            createdb ciip_portal_dev
+      - run:
+          name: deploy schema
+          command: |
+            source ~/.bashrc
+            pushd schema
+            sqitch deploy
+            sqitch verify
+            popd
+      - run:
+          name: regenerate schema via introspection
+          command: |
+            source ~/.bashrc
+            pushd app
+            yarn build:schema
+            popd
+      - run:
+          name: check for inconsistency between schema ddl & graphql
+          command: git diff --exit-code || (echo 'The contents of the `schema` folder are out of sync with `ggircs-app/app/server/schema.graphql`. Did you forget to \"yarn build:relay\"?' && false)
+      - run:
+          name: redeploy schema
+          command: |
+            source ~/.bashrc
+            pushd schema
+            sqitch rebase
+            sqitch verify
+            popd
+      - run:
+          name: regenerate schema via introspection
+          command: |
+            source ~/.bashrc
+            pushd app
+            yarn build:schema
+            popd
+      - run:
+          name: check for inconsistency between schema ddl & graphql
+          command: git diff --exit-code || (echo 'The contents of the `schema` folder are out of sync with `app/server/schema.graphql`. Did you forget to \"yarn build:relay\"?' && false)
+  ggircs_app_compile:
+    machine:
+      image: ubuntu-1604:201903-01
+    working_directory: ~/cas-ggircs/ggircs-app/app
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Compile for production
+          command: |
+            source ~/.asdf/asdf.sh
+            yarn build:relay # ensure relay modules are compiled from committed schema
+            yarn build:next # ensure next.js can compile a production build
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - cas-ggircs/ggircs-app # persist the build for e2e tests
 
 workflows:
   version: 2
@@ -405,15 +472,15 @@ workflows:
       - ggircs_app_audit:
           requires:
             - tools
-      # - schema:
-      #     requires:
-      #       - tools
+      - ggircs_app_schema:
+          requires:
+            - tools
       # - test_database:
       #     requires:
       #       - tools
-      # - compile:
-      #     requires:
-      #       - tools
+      - ggircs_app_compile:
+          requires:
+            - tools
       # - e2e-snapshots:
       #     requires:
       #       - compile
