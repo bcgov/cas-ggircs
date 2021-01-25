@@ -14,5 +14,6 @@ swrsImportBucket:
   enable: true
   bucketSuffix: eccc-swrs-import
 
-route:
-  host: cas-ggircs-dev.apps.silver.devops.gov.bc.ca
+app:
+  route:
+    host: cas-ggircs-dev.apps.silver.devops.gov.bc.ca
