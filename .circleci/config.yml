@@ -208,6 +208,10 @@ jobs:
       - checkout:
           path: ~/cas-ggircs
       - run:
+          name: "Checkout Submodules"
+          command: |
+            git submodule update --init
+      - run:
           name: Ensure python has OpenSSL
           command: |
             # @see https://github.com/pyenv/pyenv/wiki/Common-build-problems

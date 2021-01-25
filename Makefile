@@ -1,4 +1,6 @@
 SHELL := /usr/bin/env bash
+include $(THIS_FOLDER)/.pipeline/oc.mk
+include $(THIS_FOLDER)/.pipeline/git.mk
 
 ifndef CI_NO_POSTGRES
 PERL=perl
@@ -141,7 +143,7 @@ install_pgtap: pgtap
 	@@$(MAKE) -C pgtap -s $(MAKEFLAGS)
 	@@$(MAKE) -C pgtap -s $(MAKEFLAGS) installcheck
 
-ifeq (error,$(shell /bin/test -w $(PG_SHAREDIR)/extension || echo error))
+ifeq (error,$(shell test -w $(PG_SHAREDIR)/extension || echo error))
 	@@echo "FATAL: The current user does not have permission to write to $(PG_SHAREDIR)/extension and install pgTAP.\
  It needs to be installed by a user having write access to that directory, e.g. with 'sudo make -C pgtap install'" && exit 1
 else
@@ -173,9 +175,7 @@ ifndef CI_NO_PIPELINE
 SHELL := /usr/bin/env bash
 THIS_FILE := $(lastword $(MAKEFILE_LIST))
 THIS_FOLDER := $(abspath $(realpath $(lastword $(MAKEFILE_LIST)))/../)
-ifeq ($(MAKECMDGOALS),$(filter $(MAKECMDGOALS),help whoami project configure provision mock_storageclass install))
-include $(THIS_FOLDER)/.pipeline/oc.mk
-endif
+
 PATHFINDER_PREFIX := 9212c9
 PROJECT_PREFIX := cas-
 
