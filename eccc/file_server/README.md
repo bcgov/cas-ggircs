@@ -47,6 +47,7 @@ Running the unit tests
 
 ###### Locally
 - Create the python venv
+- `pip install -r requirements.txt`
 - `python -m pytest`
 
 ###### As part of the docker image
