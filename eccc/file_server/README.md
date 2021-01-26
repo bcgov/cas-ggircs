@@ -29,19 +29,26 @@ NOTE: you'll need to set the container's environment variables based on the .env
 Running the app in development mode
 -----------------------------------
 
-0. Navigate to the `./eccc/file_server` path
-  `cd eccc/file_server`
-1. Create a python virtual environment
-  `python -m venv env`
-2. activate the environment
-  `source env/bin/activate`
-3. install the pip dependencies
-  `pip install -r requirements.txt`
-4. create the .env file with the needed values, based on the provided .env.example file
-5. run the server
-  `python -m swrs_api.app`
+0. Navigate to the `./eccc/file_server` path<br>
+  `cd eccc/file_server`<br>
+1. Create a python virtual environment<br>
+  `python -m venv env`<br>
+2. activate the environment<br>
+  `source env/bin/activate`<br>
+3. install the pip dependencies<br>
+  `pip install -r requirements.txt`<br>
+4. create the .env file with the needed values, based on the provided .env.example file<br>
+5. run the server<br>
+  `python -m swrs_api.app`<br>
 
 
 Running the unit tests
 ----------------------
-`python -m pytest`
+
+###### Locally
+- Create the python venv
+- `python -m pytest`
+
+###### As part of the docker image
+- Build the docker image
+- `docker run -e ECCC_ZIP_PASSWORDS=[] -it <<IMAGE NAME>> python -m pytest`
