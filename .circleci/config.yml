@@ -20,7 +20,9 @@ jobs:
             createdb ggircs_test
       - run:
           name: Test database using Make
-          command: make test PSQL="psql -h localhost"
+          command: |
+            source ~/.bashrc
+            make test PSQL="psql -h localhost"
 
   test-local-cluster:
     executor: redhat-openshift/machine-for-local-cluster
