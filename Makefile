@@ -1,6 +1,8 @@
 SHELL := /usr/bin/env bash
-include $(THIS_FOLDER)/.pipeline/oc.mk
-include $(THIS_FOLDER)/.pipeline/git.mk
+THIS_FILE := $(lastword $(MAKEFILE_LIST))
+GGIRCS_FOLDER := $(abspath $(realpath $(lastword $(MAKEFILE_LIST)))/../)
+include $(GGIRCS_FOLDER)/.pipeline/oc.mk
+include $(GGIRCS_FOLDER)/.pipeline/git.mk
 
 ifndef CI_NO_POSTGRES
 PERL=perl
@@ -172,10 +174,6 @@ dev_install: install_cpanm install_cpandeps postinstall_check install_pgtap
 endif
 
 ifndef CI_NO_PIPELINE
-SHELL := /usr/bin/env bash
-THIS_FILE := $(lastword $(MAKEFILE_LIST))
-THIS_FOLDER := $(abspath $(realpath $(lastword $(MAKEFILE_LIST)))/../)
-
 PATHFINDER_PREFIX := 9212c9
 PROJECT_PREFIX := cas-
 
