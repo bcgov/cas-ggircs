@@ -233,8 +233,94 @@ workflows:
   version: 2
   test:
     jobs:
+      - test
+      - lint:
+          filters:
+            tags:
+              only: /^v.*/
+      - build_cache_and_push:
+          name: cas-ggircs-etl__sha1_build_and_push
+          image_name: cas-ggircs-etl
+          dockerfile_directory: cas-ggircs
+          context: cas-pipeline
+          image_tag: ${CIRCLE_SHA1}
+          requires:
+            - lint
+      - test-local-cluster:
+          context: cas-pipeline
+          requires:
+            - cas-ggircs-etl__sha1_build_and_push
+      - build_cache_and_push:
+          name: cas-ggircs-etl__tag_build_and_push
+          context: cas-pipeline
+          image_tag: ${CIRCLE_TAG/v/}
+          image_name: cas-ggircs-etl
+          dockerfile_directory: cas-ggircs
+          requires:
+            - lint
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+      - build_cache_and_push:
+          name: eccc-extract__sha1_build_and_push
+          image_name: cas-ggircs-eccc-extract
+          image_tag: ${CIRCLE_SHA1}
+          dockerfile_directory: cas-ggircs/eccc/extract
+          context: cas-pipeline
+      - build_cache_and_push:
+          name: extract-zips-to-ggircs__tag_build_and_push
+          image_name: cas-ggircs-eccc-extract
+          image_tag: ${CIRCLE_TAG/v/}
+          context: cas-pipeline
+          dockerfile_directory: cas-ggircs/docker/extract-zips-to-ggircs
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+      - build_cache_and_push:
+          name: eccc-upload__test_build
+          image_name: cas-ggircs-eccc-upload
+          image_tag: "test"
+          dockerfile_directory: cas-ggircs/eccc/upload
+          should_push: false
+          context: cas-pipeline
+          filters:
+            tags:
+              only: /^v.*/
+      - eccc-upload__test:
+          requires:
+            - eccc-upload__test_build
+          filters:
+            tags:
+              only: /^v.*/
+      - build_cache_and_push:
+          name: eccc-upload__sha1_build_and_push
+          requires:
+            - eccc-upload__test
+          image_name: cas-ggircs-eccc-upload
+          image_tag: ${CIRCLE_SHA1}
+          dockerfile_directory: cas-ggircs/eccc/upload
+          context: cas-pipeline
+      - build_cache_and_push:
+          name: eccc-upload__tag_build_and_push
+          requires:
+            - eccc-upload__test
+          image_name: cas-ggircs-eccc-upload
+          image_tag: ${CIRCLE_TAG/v/}
+          dockerfile_directory: cas-ggircs/eccc/upload
+          context: cas-pipeline
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
       - build_cache_and_push:
           name: swrs-gcp-api__test_build
+          requires:
+            - lint
           image_name: cas-ggircs-swrs-gcp-api
           image_tag: "test"
           dockerfile_directory: cas-ggircs/eccc/file_server
@@ -249,91 +335,28 @@ workflows:
           filters:
             tags:
               only: /^v.*/
-      # - test
-      # - lint:
-      #     filters:
-      #       tags:
-      #         only: /^v.*/
-      # - build_cache_and_push:
-      #     name: cas-ggircs-etl__sha1_build_and_push
-      #     image_name: cas-ggircs-etl
-      #     dockerfile_directory: cas-ggircs
-      #     context: cas-pipeline
-      #     image_tag: ${CIRCLE_SHA1}
-      #     requires:
-      #       - lint
-      # - test-local-cluster:
-      #     context: cas-pipeline
-      #     requires:
-      #       - cas-ggircs-etl__sha1_build_and_push
-      # - build_cache_and_push:
-      #     name: cas-ggircs-etl__tag_build_and_push
-      #     context: cas-pipeline
-      #     image_tag: ${CIRCLE_TAG/v/}
-      #     image_name: cas-ggircs-etl
-      #     dockerfile_directory: cas-ggircs
-      #     requires:
-      #       - lint
-      #     filters:
-      #       tags:
-      #         only: /^v.*/
-      #       branches:
-      #         ignore: /.*/
-      # - build_cache_and_push:
-      #     name: eccc-extract__sha1_build_and_push
-      #     image_name: cas-ggircs-eccc-extract
-      #     image_tag: ${CIRCLE_SHA1}
-      #     dockerfile_directory: cas-ggircs/eccc/extract
-      #     context: cas-pipeline
-      # - build_cache_and_push:
-      #     name: extract-zips-to-ggircs__tag_build_and_push
-      #     image_name: cas-ggircs-eccc-extract
-      #     image_tag: ${CIRCLE_TAG/v/}
-      #     context: cas-pipeline
-      #     dockerfile_directory: cas-ggircs/docker/extract-zips-to-ggircs
-      #     filters:
-      #       tags:
-      #         only: /^v.*/
-      #       branches:
-      #         ignore: /.*/
-      # - build_cache_and_push:
-      #     name: eccc-upload__test_build
-      #     image_name: cas-ggircs-eccc-upload
-      #     image_tag: "test"
-      #     dockerfile_directory: cas-ggircs/eccc/upload
-      #     should_push: false
-      #     context: cas-pipeline
-      #     filters:
-      #       tags:
-      #         only: /^v.*/
-      # - eccc-upload__test:
-      #     requires:
-      #       - eccc-upload__test_build
-      #     filters:
-      #       tags:
-      #         only: /^v.*/
-      # - build_cache_and_push:
-      #     name: eccc-upload__sha1_build_and_push
-      #     requires:
-      #       - eccc-upload__test
-      #     image_name: cas-ggircs-eccc-upload
-      #     image_tag: ${CIRCLE_SHA1}
-      #     dockerfile_directory: cas-ggircs/eccc/upload
-      #     context: cas-pipeline
-      # - build_cache_and_push:
-      #     name: eccc-upload__tag_build_and_push
-      #     requires:
-      #       - eccc-upload__test
-      #     image_name: cas-ggircs-eccc-upload
-      #     image_tag: ${CIRCLE_TAG/v/}
-      #     dockerfile_directory: cas-ggircs/eccc/upload
-      #     context: cas-pipeline
-      #     filters:
-      #       tags:
-      #         only: /^v.*/
-      #       branches:
-      #         ignore: /.*/
+      - build_cache_and_push:
+          name: swrs-gcp-api__sha1_build_and_push
+          requires:
+            - swrs-api__test
+          image_name: cas-ggircs-swrs-gcp-api
+          image_tag: ${CIRCLE_SHA1}
+          dockerfile_directory: cas-ggircs/eccc/file_server
+          context: cas-pipeline
+      - build_cache_and_push:
+          name: swrs-gcp-api__tag_build_and_push
+          requires:
+            - swrs-api__test
+          image_name: cas-ggircs-swrs-gcp-api
+          image_tag: ${CIRCLE_TAG/v/}
+          dockerfile_directory: cas-ggircs/eccc/file_server
+          context: cas-pipeline
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
 
-# notify:
-#   webhooks:
-#     - url: https://outlook.office.com/webhook/a00d3135-7e96-47a0-817e-0086ec993205@55bc71c2-5150-4ff8-bbcd-d94bc32bf20c/CircleCI/4dd288af085245bf96cc07dce642e3ed/c436c63a-5475-4837-ae24-c21c300bd4e1
+notify:
+  webhooks:
+    - url: https://outlook.office.com/webhook/a00d3135-7e96-47a0-817e-0086ec993205@55bc71c2-5150-4ff8-bbcd-d94bc32bf20c/CircleCI/4dd288af085245bf96cc07dce642e3ed/c436c63a-5475-4837-ae24-c21c300bd4e1
