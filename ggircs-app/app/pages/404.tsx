@@ -3,7 +3,7 @@ import { Row, Col } from "react-bootstrap";
 import DefaultLayout from "components/Layout/DefaultLayout";
 import Link from "next/link";
 
-export default () => (
+const NotFoundPage = () => (
   <>
     <DefaultLayout session={null}>
       <Row className="justify-content-center" style={{ paddingTop: "3em" }}>
@@ -25,3 +25,5 @@ export default () => (
     `}</style>
   </>
 );
+
+export default NotFoundPage;

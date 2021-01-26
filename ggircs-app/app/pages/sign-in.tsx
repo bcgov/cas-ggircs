@@ -1,20 +1,21 @@
 import React, { Component } from "react";
 import { graphql } from "react-relay";
-import { pagesQueryResponse } from "pagesQuery.graphql";
+import { signInQueryResponse } from "signInQuery.graphql";
 import { CiipPageComponentProps } from "next-env";
 import DefaultLayout from "components/Layout/DefaultLayout";
-import { USER_GROUP } from "data/group-constants";
+import { GUEST } from "data/group-constants";
 
-const ALLOWED_GROUPS = [...USER_GROUP];
+const ALLOWED_GROUPS = [GUEST];
 
 interface Props extends CiipPageComponentProps {
-  query: pagesQueryResponse["query"];
+  query: signInQueryResponse["query"];
 }
 export default class Index extends Component<Props> {
   static allowedGroups = ALLOWED_GROUPS;
-  static isAccessProtected = true;
+  static isAccessProtected = false;
+
   static query = graphql`
-    query pagesQuery {
+    query signInQuery {
       query {
         session {
           ...DefaultLayout_session
@@ -29,7 +30,10 @@ export default class Index extends Component<Props> {
 
     return (
       <DefaultLayout showSubheader={false} session={session}>
-        <h1>GGIRCS Dashboard</h1>
+        <p>
+          Welcome to the Greenhouse Gas Industrial Reporting and Control System
+        </p>
+        <p>Please sign in</p>
       </DefaultLayout>
     );
   }
