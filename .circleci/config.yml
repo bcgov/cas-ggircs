@@ -319,8 +319,6 @@ workflows:
               ignore: /.*/
       - build_cache_and_push:
           name: swrs-gcp-api__test_build
-          requires:
-            - lint
           image_name: cas-ggircs-swrs-gcp-api
           image_tag: "test"
           dockerfile_directory: cas-ggircs/eccc/file_server
