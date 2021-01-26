@@ -3,6 +3,7 @@ pgtap
 .vscode
 data/*
 __pycache__
+.pytest_cache
 helm/**/charts
 node_modules
 
