@@ -67,6 +67,7 @@ jobs:
           command: |
             helm install --atomic --timeout 900s --namespace "9212c9-dev" \
             --set image.etl.tag="$CIRCLE_SHA1" \
+            --set image.app.tag="$CIRCLE_SHA1" --set image.schema.tag="$CIRCLE_SHA1" \
             --set cas-postgres.patroni.walE.enable=false \
             --set networkSecurityPolicies.enable=false \
             --set airflowDagTrigger.enable=false \
@@ -396,6 +397,8 @@ workflows:
           context: cas-pipeline
           requires:
             - cas-ggircs-etl__sha1_build_and_push
+            - cas-ggircs-app__sha1_build_and_push
+            - cas-ggircs-app-schema__sha1_build_and_push
       - build_cache_and_push:
           name: cas-ggircs-etl__tag_build_and_push
           context: cas-pipeline
