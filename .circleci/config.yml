@@ -241,7 +241,7 @@ jobs:
       - restore_cache:
           name: Restore Yarn Package Cache
           keys:
-            - yarn-packages-{{ checksum "app/yarn.lock" }}-1
+            - yarn-packages-{{ checksum "ggircs-app/app/yarn.lock" }}-v1
       - run:
           name: Install Yarn Dependencies
           command: |
@@ -251,7 +251,7 @@ jobs:
             popd
       - save_cache:
           name: Save Yarn Package Cache
-          key: yarn-packages-{{ checksum "app/yarn.lock" }}-1
+          key: yarn-packages-{{ checksum "ggircs-app/app/yarn.lock" }}-v1
           paths:
             - ~/.cache/yarn
             - ~/.cache/Cypress
@@ -262,16 +262,17 @@ jobs:
       - restore_cache:
           name: Restore Cpan Package Cache
           keys:
-            - cpanm-packages-b-{{ checksum "schema/cpanfile" }}
+            - cpanm-packages-{{ checksum "cpanfile" }}-v1
       - run:
           name: Install Cpan Dependencies
           command: |
             source ~/.bashrc # load perl config (just written by cpan) & asdf
             cat .tool-versions | xargs -n2 asdf global # make this project's versions global
-            make install_perl_tools
+            make install_cpanm
+            make install_cpandeps
       - save_cache:
           name: Save Cpan Package Cache
-          key: cpanm-packages-b-{{ checksum "schema/cpanfile" }}
+          key: cpanm-packages-{{ checksum "cpanfile" }}-v1
           paths:
             - ~/perl5
       - persist_to_workspace:

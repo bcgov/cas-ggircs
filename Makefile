@@ -162,15 +162,15 @@ endif
 .PHONY: install_cpandeps
 install_cpandeps:
 	# install Perl dependencies from cpanfile
-	$(CPANM) --installdeps .
+	$(CPANM) --notest --installdeps .
 
 .PHONY: postinstall_check
 postinstall_check:
 	@@printf '%s\n%s\n' "$(SQITCH_MIN_VERSION)" "$(SQITCH_VERSION)" | sort -CV ||\
  	(echo "FATAL: $(SQITCH) version should be at least $(SQITCH_MIN_VERSION). Make sure the $(SQITCH) executable installed by cpanminus is available has the highest priority in the PATH" && exit 1);
 
-.PHONY: dev_install
-dev_install: install_cpanm install_cpandeps postinstall_check install_pgtap
+.PHONY: install_perl_tools
+install_perl_tools: install_cpanm install_cpandeps postinstall_check install_pgtap
 endif
 
 ifndef CI_NO_PIPELINE
