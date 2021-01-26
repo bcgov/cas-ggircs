@@ -10,10 +10,10 @@ log = logging.getLogger("ZipReader")
 class ZipReader:
 
   # zipfile.read expects the password to be in bytes
-  def passwd_to_byte(pwd):
+  def passwd_to_bytes(pwd):
     return pwd.encode('utf-8')
 
-  zip_passwords = [None] + list(map(passwd_to_byte, json.loads(os.getenv('ECCC_ZIP_PASSWORDS'))))
+  zip_passwords = [None] + list(map(passwd_to_bytes, json.loads(os.getenv('ECCC_ZIP_PASSWORDS'))))
 
   def list_file_contents(zip_file_descriptor):
     with zipfile.ZipFile(zip_file_descriptor) as unzipped:

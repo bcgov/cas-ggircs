@@ -17,7 +17,7 @@ def test_list_zip_blobs(mock_gcs_client, service_under_test):
                           MockBlob('file2.nope'), 
                           MockBlob('file3.zip'), 
                           MockBlob('garbage'), 
-                          MockBlob('13-*45]045*@@')
+                          MockBlob('13-*.zip45]045*@@')
                         ]
 
   mock_gcs_instance = mock_gcs_client.return_value
