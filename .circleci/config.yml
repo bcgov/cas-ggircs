@@ -5,30 +5,24 @@ orbs:
   gcp-gcr: circleci/gcp-gcr@0.7.1
   helm: circleci/helm@0.2.3
 jobs:
-  test:
-    docker:
-      - image: wenzowski/sqitch:0.9999
-      - image: wenzowski/postgres:11.2
+  etl_db_test:
+    machine:
+      image: ubuntu-1604:201903-01
+    working_directory: ~/cas-ggircs
     steps:
-      - checkout
-      - run:
-          name: "Pull Submodules"
-          command: |
-            git submodule update --init
+      - attach_workspace:
+          at: ~/
       - run:
           name: Create testing db
           command: |
-            RETRIES=5
-            until psql -h localhost -U postgres -d postgres -c "select 1" > /dev/null 2>&1 || [ $RETRIES -eq 0 ]; do
-              echo "Waiting for postgres server, $((RETRIES--)) remaining attempts..."
-              sleep 1
-            done
+            source ~/.bashrc
+            pg_ctl start
             createuser sqitch  -U postgres -h localhost
             createdb -O sqitch sqitch -U postgres -h localhost
             createdb -O sqitch ggircs_test -U postgres -h localhost
       - run:
           name: Test database using Make
-          command: make test PSQL="psql -h localhost" CI_NO_PIPELINE=true
+          command: make test PSQL="psql -h localhost"
 
   test-local-cluster:
     executor: redhat-openshift/machine-for-local-cluster
@@ -324,7 +318,7 @@ jobs:
             source ~/.bashrc
             pg_ctl start
             createdb `whoami`
-            createdb ciip_portal_dev
+            createdb ggircs
       - run:
           name: deploy schema
           command: |
@@ -383,7 +377,9 @@ workflows:
   version: 2
   test:
     jobs:
-      - test
+      - etl_db_test:
+          requires:
+            - tools
       - helm_lint:
           filters:
             tags:
