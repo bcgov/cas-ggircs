@@ -17,3 +17,15 @@ swrsImportBucket:
 app:
   route:
     host: cas-ggircs-dev.apps.silver.devops.gov.bc.ca
+
+persistence:
+  preInitDb: |
+    psql<<EOF
+      select pg_terminate_backend(pid) from pg_stat_activity where
+      -- don't kill my own connection!
+      pid <> pg_backend_pid()
+      -- don't kill the connections to other databases
+      and datname = '$(GGIRCS_DATABASE)';
+      drop database if exists $(GGIRCS_DATABASE);
+      drop user if exists $(GGIRCS_USER);
+    EOF

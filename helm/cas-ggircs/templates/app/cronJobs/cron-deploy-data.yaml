@@ -27,12 +27,15 @@ spec:
                 - name: SQITCH_TARGET
                   value: "db:pg:"
                 - name: PGUSER
-                  value: postgres
+                  valueFrom:
+                    secretKeyRef:
+                      key: database-user
+                      name: {{ template "cas-ggircs.fullname" . }}
                 - name: PGPASSWORD
                   valueFrom:
                     secretKeyRef:
-                      key: password-superuser
-                      name: {{ template "cas-ggircs.fullname" . }}-patroni
+                      key: database-password
+                      name: {{ template "cas-ggircs.fullname" . }}
                 - name: PGDATABASE
                   valueFrom:
                     secretKeyRef:

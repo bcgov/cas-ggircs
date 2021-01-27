@@ -46,6 +46,7 @@ persistence:
   user: ggircs
   readonlyUser: ggircs_readonly
   appUser: ggircs_app
+  preInitDb: ""
 
 cas-postgres:
   patroni:
