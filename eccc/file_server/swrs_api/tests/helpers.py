@@ -1,5 +1,4 @@
 
-
 class MockBlob:
   def __init__(self, 
                name='a', 

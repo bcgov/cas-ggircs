@@ -6,7 +6,7 @@ from swrs_api.zip_reader import ZipReader
 
 def test_list_zip_content():
   
-  expected = ["dummy.pdf","test.xml"]
+  expected = ["test.xml", "test_pdf.pdf"]
 
   with open(os.path.dirname(__file__) + '/fixtures/Archive.zip', 'rb') as file:
     assert expected == ZipReader.list_file_contents(file)

@@ -133,5 +133,4 @@ def download(blob_name):
 
 
 if __name__ == '__main__':
-  app.run(debug=True, threaded=True)
-  
+  app.run(debug=('DEBUG' in os.environ), threaded=True)
