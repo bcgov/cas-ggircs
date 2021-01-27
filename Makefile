@@ -224,8 +224,11 @@ endef
 install: whoami
 	@helm dep up ./helm/cas-ggircs
 	@helm upgrade --install --atomic --timeout 900s \
-		--namespace $(GGIRCS_NAMESPACE_PREFIX)-$(ENVIRONMENT) --set image.etl.tag=$(GIT_SHA1) \
-		--set image.ecccUpload.tag=$(GIT_SHA1) --set image.ecccExtract.tag=$(GIT_SHA1) \
+		--namespace $(GGIRCS_NAMESPACE_PREFIX)-$(ENVIRONMENT) \
+		--set image.etl.tag=$(GIT_SHA1) \
+		--set image.ecccUpload.tag=$(GIT_SHA1) \
+		--set image.ecccExtract.tag=$(GIT_SHA1) \
+		--set swrsGcpApi.image.tag=$(GIT_SHA1) \
 		--values ./helm/cas-ggircs/values.yaml \
 		--values ./helm/cas-ggircs/values-$(ENVIRONMENT).yaml \
 		--set ciip.release=cas-ciip-portal \
