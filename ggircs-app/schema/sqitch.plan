@@ -14,3 +14,4 @@ utils/grant_permissions 2021-01-18T23:45:31Z Matthieu Foucault <matthieu@button.
 types/jwt_token 2021-01-18T18:46:49Z Matthieu Foucault <matthieu@button.is> # add jwt token type
 functions/session [types/jwt_token] 2021-01-18T18:47:24Z Matthieu Foucault <matthieu@button.is> # add session function
 tables/ggircs_user 2021-01-18T18:53:34Z Matthieu Foucault <matthieu@button.is> # add ggircs_user table
+mutations/create_ggircs_user_from_session 2021-01-27T01:42:06Z Matthieu Foucault <matthieu@button.is> # add mutation to insert the ggircs_user for the current session

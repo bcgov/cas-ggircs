@@ -6,6 +6,7 @@ import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironme
 import { CiipPageComponent } from "next-env";
 import { getUserGroupLandingRoute } from "lib/user-groups";
 import { PageRedirectHandlerQuery } from "PageRedirectHandlerQuery.graphql";
+import createGgircsUserFromSessionMutation from "mutations/ggircsUser/createGgircsUserFromSessionMutation";
 
 interface Props {
   environment: RelayModernEnvironment;
@@ -69,16 +70,9 @@ const PageRedirectHandler: React.FunctionComponent<Props> = ({
       if (
         isAccessProtected &&
         !response?.session?.ggircsUserBySub &&
-        router.route !== "/registration" &&
-        router.route !== "/analyst/pending"
+        router.route !== "/request-access-notice"
       ) {
-        router.push({
-          pathname: "/registration",
-          query: {
-            redirectTo: router.asPath,
-          },
-        });
-        return;
+        await createGgircsUserFromSessionMutation(environment, { input: {} });
       }
 
       setShouldRender(true);
@@ -92,7 +86,7 @@ const PageRedirectHandler: React.FunctionComponent<Props> = ({
 
     const checkSessionIdle = async () => {
       const { isAccessProtected } = pageComponent;
-      if (isAccessProtected) {
+      if (isAccessProtected && shouldRender) {
         const response = await fetch("/session-idle-remaining-time");
         if (response.ok) {
           const timeout = Number(await response.json());

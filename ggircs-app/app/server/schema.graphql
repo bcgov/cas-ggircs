@@ -1,3 +1,42 @@
+"""All input for the `createGgircsUserFromSession` mutation."""
+input CreateGgircsUserFromSessionInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+}
+
+"""The output of our `createGgircsUserFromSession` mutation."""
+type CreateGgircsUserFromSessionPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+  ggircsUser: GgircsUser
+
+  """Reads a single `GgircsUser` that is related to this `GgircsUser`."""
+  ggircsUserByCreatedBy: GgircsUser
+
+  """Reads a single `GgircsUser` that is related to this `GgircsUser`."""
+  ggircsUserByDeletedBy: GgircsUser
+
+  """Reads a single `GgircsUser` that is related to this `GgircsUser`."""
+  ggircsUserByUpdatedBy: GgircsUser
+
+  """An edge for our `GgircsUser`. May be used by Relay 1."""
+  ggircsUserEdge(
+    """The method to use when ordering `GgircsUser`."""
+    orderBy: [GgircsUsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): GgircsUsersEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
 """All input for the create `GgircsUser` mutation."""
 input CreateGgircsUserInput {
   """
@@ -453,6 +492,12 @@ type Mutation {
     """
     input: CreateGgircsUserInput!
   ): CreateGgircsUserPayload
+  createGgircsUserFromSession(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateGgircsUserFromSessionInput!
+  ): CreateGgircsUserFromSessionPayload
 
   """Deletes a single `GgircsUser` using its globally unique id."""
   deleteGgircsUser(

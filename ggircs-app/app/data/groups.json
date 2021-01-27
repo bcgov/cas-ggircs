@@ -17,6 +17,6 @@
   "Pending GGIRCS User": {
     "pgRole": "ggircs_guest",
     "priority": 3,
-    "path": "/analyst/pending"
+    "path": "/request-access-notice"
   }
 }
