@@ -29,7 +29,7 @@ spec:
           - name: GOOGLE_APPLICATION_CREDENTIALS
             value: "/credentials/credentials.json"
           - name: BUCKET_NAME
-            value: {{ .Values.swrsImportBucket.bucketSuffix }}
+            value: {{ .Release.Namespace }}-{{ .Values.swrsImportBucket.bucketSuffix }}
           - name: ECCC_ZIP_PASSWORDS
             valueFrom:
               secretKeyRef:
