@@ -73,7 +73,7 @@ storageClassName: netapp-file-standard
 
 swrsGcpApi:
   image:
-    repository: gcr.io/ggl-cas-storage/swrs-gcp-api
+    repository: gcr.io/ggl-cas-storage/cas-ggircs-swrs-gcp-api
     tag: ${GIT_SHA}
     pullPolicy: Always
 

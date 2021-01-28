@@ -1,15 +1,14 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ template "cas-ggircs.fullname" . }}
+  name: {{ template "cas-ggircs.fullname" . }}-swrs-gcp-api
   labels:
     component: swrs-gcp-api
 {{ include "cas-ggircs.labels" . | indent 4 }}
-
 spec:
   replicas: {{ .Values.swrsGcpApi.replicas }}
   selector:
-    name: {{ template "cas-ggircs.fullname" . }}
+    name: {{ template "cas-ggircs.fullname" . }}-swrs-gcp-api
   strategy:
     type: RollingUpdate
   selector:
