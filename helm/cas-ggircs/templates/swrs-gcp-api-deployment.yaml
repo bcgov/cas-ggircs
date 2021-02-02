@@ -25,6 +25,7 @@ spec:
       - name: cas-ggircs-swrs-gcp-api
         imagePullPolicy: {{ .Values.swrsGcpApi.image.pullPolicy }}
         image: {{ .Values.swrsGcpApi.image.repository }}:{{ .Values.swrsGcpApi.image.tag }}
+{{- if .Values.swrsImportBucket.enable }}
         env:
           - name: GOOGLE_APPLICATION_CREDENTIALS
             value: "/credentials/credentials.json"
@@ -35,6 +36,7 @@ spec:
               secretKeyRef:
                 key: zip_passwords
                 name: eccc-swrs-import
+{{- end }}
         ports:
         - containerPort: {{ .Values.swrsGcpApi.port }}
           protocol: TCP
