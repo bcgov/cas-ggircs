@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "cas-ggircs.fullname" . }}-swrs-gcp-api
+  labels:
+    component: swrs-gcp-api
+{{ include "cas-ggircs.labels" . | indent 4 }}
+spec:
+  replicas: {{ .Values.swrsGcpApi.replicas }}
+  selector:
+    name: {{ template "cas-ggircs.fullname" . }}-swrs-gcp-api
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      component: swrs-gcp-api
+{{ include "cas-ggircs.selectorLabels" . | indent 6 }}
+  template:
+    metadata:
+      labels:
+        component: swrs-gcp-api
+{{ include "cas-ggircs.labels" . | indent 8 }}
+    spec:
+      containers:
+      - name: cas-ggircs-swrs-gcp-api
+        imagePullPolicy: {{ .Values.swrsGcpApi.image.pullPolicy }}
+        image: {{ .Values.swrsGcpApi.image.repository }}:{{ .Values.swrsGcpApi.image.tag }}
+{{- if .Values.swrsImportBucket.enable }}
+        env:
+          - name: GOOGLE_APPLICATION_CREDENTIALS
+            value: "/credentials/credentials.json"
+          - name: BUCKET_NAME
+            value: {{ .Release.Namespace }}-{{ .Values.swrsImportBucket.bucketSuffix }}
+          - name: ECCC_ZIP_PASSWORDS
+            valueFrom:
+              secretKeyRef:
+                key: zip_passwords
+                name: eccc-swrs-import
+{{- end }}
+        ports:
+        - containerPort: {{ .Values.swrsGcpApi.port }}
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /
+            port: {{ .Values.swrsGcpApi.port }}
+            scheme: HTTP
+          periodSeconds: 30
+          successThreshold: 1
+          timeoutSeconds: 1
+        resources:
+{{ toYaml .Values.swrsGcpApi.resources | indent 10 }}
+        securityContext:
+          capabilities: {}
+          privileged: false
+        terminationMessagePath: /dev/termination-log
+{{- if .Values.swrsImportBucket.enable }}
+        volumeMounts:
+          - mountPath: /credentials
+            name: gcs-viewer-credentials
+            readOnly: true
+{{- end }}
+{{- if .Values.swrsImportBucket.enable }}
+      volumes:
+        - name: gcs-viewer-credentials
+          secret: 
+            secretName: gcp-{{ .Release.Namespace }}-{{ .Values.swrsImportBucket.bucketSuffix }}-service-account-key
+            items:
+            - key: viewer_credentials.json
+              path: credentials.json
+{{- end }}
+      restartPolicy: Always
