@@ -33,7 +33,7 @@ export default class LoginRedirect extends Component<Props> {
           <Col md={6}>
             <h3 className="blue">{headerText}</h3>
             <p>
-              Please log in or register in order to access this page.
+              Please log in to access this page.
               <br />
               You will be redirected to the requested page after doing so.
             </p>
