@@ -33,10 +33,7 @@ const DefaultLayout: React.FunctionComponent<Props> = ({
   help,
 }) => (
   <div className="page-wrap">
-    <Header
-      isLoggedIn={Boolean(session)}
-      isRegistered={Boolean(session?.ggircsUserBySub)}
-    >
+    <Header isLoggedIn={Boolean(session)}>
       {runtimeConfig.SITEWIDE_NOTICE && (
         <SiteNoticeBanner content={runtimeConfig.SITEWIDE_NOTICE} />
       )}

@@ -7,11 +7,7 @@ import { faBars } from "@fortawesome/free-solid-svg-icons";
 
 const DESKTOP_BREAKPOINT_QUERY = "(min-width: 992px)";
 
-const HeaderLayout = ({
-  isLoggedIn = false,
-  isRegistered = false,
-  children,
-}) => {
+const Header = ({ isLoggedIn = false, children }) => {
   let mediaMatch;
   /**
    * Window isn't available at first for statically optimized pages like the 404 page:
@@ -69,23 +65,16 @@ const HeaderLayout = ({
             className="header-right"
             style={navMenuHidden ? { display: "none" } : { display: "flex" }}
           >
-            {isRegistered ? (
-              <li>
-                <Link href="/">
-                  <a className="nav-button">Dashboard</a>
-                </Link>
-              </li>
-            ) : null}
             {isLoggedIn ? (
               <>
-                {isRegistered && (
-                  <li>
-                    <Link href="/user/profile">
-                      <a className="nav-button">Profile</a>
-                    </Link>
-                  </li>
-                )}
                 <li>
+                  <Link href="/">
+                    <a className="nav-button">Dashboard</a>
+                  </Link>
+                  <Link href="/user/profile">
+                    <a className="nav-button">Profile</a>
+                  </Link>
+
                   <Form action="/logout" method="post">
                     <button type="submit" className="nav-button">
                       Logout
@@ -231,4 +220,4 @@ const HeaderLayout = ({
   );
 };
 
-export default HeaderLayout;
+export default Header;
