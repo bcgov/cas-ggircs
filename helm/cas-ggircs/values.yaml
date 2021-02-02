@@ -70,3 +70,22 @@ swrsImportBucket:
   bucketSuffix: swrs-import
 
 storageClassName: netapp-file-standard
+
+swrsGcpApi:
+  image:
+    repository: gcr.io/ggl-cas-storage/cas-ggircs-swrs-gcp-api
+    tag: ${GIT_SHA}
+    pullPolicy: Always
+
+  replicas: 2
+  port: 5000
+
+  resources: {}
+  # If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi

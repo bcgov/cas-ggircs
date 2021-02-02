@@ -77,6 +77,7 @@ jobs:
             --set networkSecurityPolicies.enable=false \
             --set airflowDagTrigger.enable=false \
             --set swrsImportBucket.enable=false \
+            --set swrsGcpApi.image.tag="$CIRCLE_SHA1" \
             cas-ggircs ./helm/cas-ggircs
       - run:
           command: |
@@ -131,6 +132,31 @@ jobs:
             FILTER: \.png|\.svg
           command: |
             docker run -it cas-ggircs-eccc-upload -v /tmp/gcs_credentials.json:/app/gcs-key.json --env GOOGLE_APPLICATION_CREDENTIALS=/app/gcs-key.json ./test.sh eccc-upload-test$CIRCLE_WORKFLOW_ID
+
+  swrs-api__test:
+    parameters:
+      cache_version:
+        type: integer
+        default: 1
+    docker:
+      - image: docker:17.05.0-ce-git
+    steps:
+      - restore_cache:
+          keys:
+            - v<< parameters.cache_version>>-cas-ggircs-swrs-gcp-api-{{ .Branch }}
+          paths:
+            - /tmp/cas-ggircs-swrs-gcp-api.tar
+      - setup_remote_docker
+      - run:
+          name: Load cache
+          command: |
+            set +o pipefail
+            docker load -i /tmp/cas-ggircs-swrs-gcp-api.tar | true
+      - run:
+          name: Run tests on docker image
+          environment:
+            ECCC_ZIP_PASSWORDS: "[]"
+          command: docker run -it cas-ggircs-swrs-gcp-api python -m pytest
 
   build_cache_and_push:
     executor: gcp-gcr/default
@@ -283,6 +309,43 @@ workflows:
           image_name: cas-ggircs-eccc-upload
           image_tag: ${CIRCLE_TAG/v/}
           dockerfile_directory: cas-ggircs/eccc/upload
+          context: cas-pipeline
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+      - build_cache_and_push:
+          name: swrs-gcp-api__test_build
+          image_name: cas-ggircs-swrs-gcp-api
+          image_tag: "test"
+          dockerfile_directory: cas-ggircs/eccc/file_server
+          should_push: false
+          context: cas-pipeline
+          filters:
+            tags:
+              only: /^v.*/
+      - swrs-api__test:
+          requires:
+            - swrs-gcp-api__test_build
+          filters:
+            tags:
+              only: /^v.*/
+      - build_cache_and_push:
+          name: swrs-gcp-api__sha1_build_and_push
+          requires:
+            - swrs-api__test
+          image_name: cas-ggircs-swrs-gcp-api
+          image_tag: ${CIRCLE_SHA1}
+          dockerfile_directory: cas-ggircs/eccc/file_server
+          context: cas-pipeline
+      - build_cache_and_push:
+          name: swrs-gcp-api__tag_build_and_push
+          requires:
+            - swrs-api__test
+          image_name: cas-ggircs-swrs-gcp-api
+          image_tag: ${CIRCLE_TAG/v/}
+          dockerfile_directory: cas-ggircs/eccc/file_server
           context: cas-pipeline
           filters:
             tags:
