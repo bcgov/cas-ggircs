@@ -32,12 +32,9 @@ app.prepare().then(async () => {
   server.use(bodyParser.json({ limit: "50mb" }));
   server.use(cors());
 
-  // Tell search + crawlers not to index non-production environments:
+  // Tell search + crawlers not to index this application (internal tool)
   server.use(({ res, next }) => {
-    if (!process.env.NAMESPACE || !process.env.NAMESPACE.endsWith("-prod")) {
-      res.append("X-Robots-Tag", "noindex, noimageindex, nofollow, noarchive");
-    }
-
+    res.append("X-Robots-Tag", "noindex, noimageindex, nofollow, noarchive");
     next();
   });
 
