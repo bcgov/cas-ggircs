@@ -5,7 +5,6 @@ import { DefaultLayout_session } from "DefaultLayout_session.graphql";
 import getConfig from "next/config";
 import Header from "components/Layout/Header";
 import Footer from "components/Layout/Footer";
-import Subheader from "components/Layout/Subheader";
 import Help from "components/Layout/Help";
 import SiteNoticeBanner from "components/Layout/SiteNoticeBanner";
 
@@ -14,7 +13,6 @@ const runtimeConfig = getConfig()?.publicRuntimeConfig ?? {};
 interface Props {
   title?: string | JSX.Element;
   titleControls?: JSX.Element;
-  showSubheader?: boolean;
   session: DefaultLayout_session;
   width?: "narrow" | "wide";
   help?: {
@@ -27,7 +25,6 @@ const DefaultLayout: React.FunctionComponent<Props> = ({
   children,
   title,
   titleControls,
-  showSubheader,
   session,
   width = "narrow",
   help,
@@ -37,7 +34,6 @@ const DefaultLayout: React.FunctionComponent<Props> = ({
       {runtimeConfig.SITEWIDE_NOTICE && (
         <SiteNoticeBanner content={runtimeConfig.SITEWIDE_NOTICE} />
       )}
-      {showSubheader && <Subheader />}
     </Header>
     <main>
       {title ? (

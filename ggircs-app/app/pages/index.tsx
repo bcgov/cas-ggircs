@@ -28,7 +28,7 @@ export default class Index extends Component<Props> {
     const { session } = query || {};
 
     return (
-      <DefaultLayout showSubheader={false} session={session}>
+      <DefaultLayout session={session}>
         <h1>GGIRCS Dashboard</h1>
       </DefaultLayout>
     );

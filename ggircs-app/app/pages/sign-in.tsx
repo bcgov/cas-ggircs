@@ -29,7 +29,7 @@ export default class Index extends Component<Props> {
     const { session } = query || {};
 
     return (
-      <DefaultLayout showSubheader={false} session={session}>
+      <DefaultLayout session={session}>
         <p>
           Welcome to the Greenhouse Gas Industrial Reporting and Control System
         </p>

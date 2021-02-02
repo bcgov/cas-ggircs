@@ -28,7 +28,7 @@ export default class LoginRedirect extends Component<Props> {
       ? "You were logged out due to inactivity."
       : "You need to be logged in to access this page.";
     return (
-      <DefaultLayout showSubheader={false} session={session}>
+      <DefaultLayout session={session}>
         <Row>
           <Col md={6}>
             <h3 className="blue">{headerText}</h3>
