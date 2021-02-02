@@ -53,10 +53,13 @@ spec:
           capabilities: {}
           privileged: false
         terminationMessagePath: /dev/termination-log
+{{- if .Values.swrsImportBucket.enable }}
         volumeMounts:
           - mountPath: /credentials
             name: gcs-viewer-credentials
             readOnly: true
+{{- end }}
+{{- if .Values.swrsImportBucket.enable }}
       volumes:
         - name: gcs-viewer-credentials
           secret: 
@@ -64,4 +67,5 @@ spec:
             items:
             - key: viewer_credentials.json
               path: credentials.json
+{{- end }}
       restartPolicy: Always
