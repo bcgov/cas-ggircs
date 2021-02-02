@@ -77,6 +77,7 @@ jobs:
             --set networkSecurityPolicies.enable=false \
             --set airflowDagTrigger.enable=false \
             --set swrsImportBucket.enable=false \
+            --set swrsGcpApi.image.tag="$CIRCLE_SHA1" \
             cas-ggircs ./helm/cas-ggircs
       - run:
           command: |
@@ -131,7 +132,6 @@ jobs:
             FILTER: \.png|\.svg
           command: |
             docker run -it cas-ggircs-eccc-upload -v /tmp/gcs_credentials.json:/app/gcs-key.json --env GOOGLE_APPLICATION_CREDENTIALS=/app/gcs-key.json ./test.sh eccc-upload-test$CIRCLE_WORKFLOW_ID
-            
 
   swrs-api__test:
     parameters:
@@ -152,13 +152,11 @@ jobs:
           command: |
             set +o pipefail
             docker load -i /tmp/cas-ggircs-swrs-gcp-api.tar | true
-      - run: 
+      - run:
           name: Run tests on docker image
           environment:
             ECCC_ZIP_PASSWORDS: "[]"
-          command:
-            docker run -it cas-ggircs-swrs-gcp-api python -m pytest
-
+          command: docker run -it cas-ggircs-swrs-gcp-api python -m pytest
 
   build_cache_and_push:
     executor: gcp-gcr/default
