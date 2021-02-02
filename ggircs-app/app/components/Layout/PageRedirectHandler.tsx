@@ -40,7 +40,7 @@ const PageRedirectHandler: React.FunctionComponent<Props> = ({
         sessionQuery,
         {}
       );
-      console.log(response);
+
       if (isAccessProtected && !response?.session) {
         router.push({
           pathname: "/login-redirect",

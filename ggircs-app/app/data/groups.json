@@ -2,7 +2,7 @@
   "Guest": {
     "pgRole": "ggircs_guest",
     "priority": 100,
-    "path": "/sign-in"
+    "path": "/login-redirect?redirectTo=%2F"
   },
   "GGIRCS User": {
     "pgRole": "ggircs_user",
