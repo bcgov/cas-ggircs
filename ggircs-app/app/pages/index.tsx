@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import { graphql } from "react-relay";
 import { pagesQueryResponse } from "pagesQuery.graphql";
-import { CiipPageComponentProps } from "next-env";
+import { PageComponentProps } from "next-env";
 import DefaultLayout from "components/Layout/DefaultLayout";
 import { USER_GROUP } from "data/group-constants";
 
 const ALLOWED_GROUPS = [...USER_GROUP];
 
-interface Props extends CiipPageComponentProps {
+interface Props extends PageComponentProps {
   query: pagesQueryResponse["query"];
 }
 export default class Index extends Component<Props> {

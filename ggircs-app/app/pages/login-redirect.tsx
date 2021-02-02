@@ -2,13 +2,11 @@ import React, { Component } from "react";
 import { Row, Col } from "react-bootstrap";
 import { graphql } from "react-relay";
 import { loginRedirectQueryResponse } from "loginRedirectQuery.graphql";
-import { CiipPageComponentProps } from "next-env";
+import { PageComponentProps } from "next-env";
 import DefaultLayout from "components/Layout/DefaultLayout";
-import { NextRouter } from "next/router";
 
-interface Props extends CiipPageComponentProps {
+interface Props extends PageComponentProps {
   query: loginRedirectQueryResponse["query"];
-  router: NextRouter;
 }
 
 export default class LoginRedirect extends Component<Props> {

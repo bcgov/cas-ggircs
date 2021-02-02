@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import { graphql } from "react-relay";
 import { signInQueryResponse } from "signInQuery.graphql";
-import { CiipPageComponentProps } from "next-env";
+import { PageComponentProps } from "next-env";
 import DefaultLayout from "components/Layout/DefaultLayout";
 import { GUEST } from "data/group-constants";
 
 const ALLOWED_GROUPS = [GUEST];
 
-interface Props extends CiipPageComponentProps {
+interface Props extends PageComponentProps {
   query: signInQueryResponse["query"];
 }
 export default class Index extends Component<Props> {

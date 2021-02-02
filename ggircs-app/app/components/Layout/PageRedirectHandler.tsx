@@ -3,14 +3,14 @@ import { useRouter } from "next/router";
 import { fetchQuery, graphql } from "relay-runtime";
 import LoadingSpinner from "components/LoadingSpinner";
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment";
-import { CiipPageComponent } from "next-env";
+import { PageComponent } from "next-env";
 import { getUserGroupLandingRoute } from "lib/user-groups";
 import { PageRedirectHandlerQuery } from "PageRedirectHandlerQuery.graphql";
 import createGgircsUserFromSessionMutation from "mutations/ggircsUser/createGgircsUserFromSessionMutation";
 
 interface Props {
   environment: RelayModernEnvironment;
-  pageComponent: CiipPageComponent;
+  pageComponent: PageComponent;
 }
 
 const sessionQuery = graphql`

@@ -11,17 +11,17 @@ interface CiipPageInitialProps {
   };
 }
 
-interface CiipPageComponentProps {
+interface PageComponentProps {
   query?: any;
   router?: NextRouter;
 }
 
-export type CiipPageComponent = NextComponentType<
+export type PageComponent = NextComponentType<
   NextPageContext,
   CiipPageInitialProps,
-  CiipPageComponentProps
+  PageComponentProps
 > &
-  ComponentClass<CiipPageComponentProps> & {
+  ComponentClass<PageComponentProps> & {
     static query: GraphQLTaggedNode;
     static isAccessProtected: boolean;
     static allowedGroups: string[];
