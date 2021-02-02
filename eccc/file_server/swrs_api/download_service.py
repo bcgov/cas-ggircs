@@ -18,7 +18,7 @@ class DownloadService:
   def threaded_generator(file_path, chunk_size=2048):
     #small queue, we don't want to fill the memory
     chunkQueue = Queue(maxsize=20)
-    
+
     def download_task(file_path, chunkQueue):
       with open(file_path, 'rb') as file_descriptor:
         while 1:
@@ -28,11 +28,11 @@ class DownloadService:
           else:
             chunkQueue.put((True, []))
             break
-    
+
     downloader = Thread(target=download_task, args=(file_path, chunkQueue))
     downloader.setDaemon(True)
     downloader.start()
-      
+
     while 1:
       # Passing finished flag in tuple allows atomic queue/dequeue operation
       (finished, buf) = chunkQueue.get()

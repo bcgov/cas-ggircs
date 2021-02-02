@@ -64,7 +64,7 @@ spec:
 {{- if .Values.swrsImportBucket.enable }}
       volumes:
         - name: gcs-viewer-credentials
-          secret: 
+          secret:
             secretName: gcp-{{ .Release.Namespace }}-{{ .Values.swrsImportBucket.bucketSuffix }}-service-account-key
             items:
             - key: viewer_credentials.json
