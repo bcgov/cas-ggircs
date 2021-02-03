@@ -45,4 +45,3 @@ spec:
           - -c
           - ./.bin/trigger-airflow-dag.sh {{ .Values.airflowDagTrigger.name }}
 {{- end }}
-          

@@ -1,0 +1,22 @@
+{
+  "Guest": {
+    "pgRole": "ggircs_guest",
+    "priority": 100,
+    "path": "/login-redirect?redirectTo=%2F"
+  },
+  "GGIRCS User": {
+    "pgRole": "ggircs_user",
+    "priority": 2,
+    "path": "/"
+  },
+  "Realm Administrator": {
+    "pgRole": "ggircs_user",
+    "priority": 0,
+    "path": "/"
+  },
+  "Pending GGIRCS User": {
+    "pgRole": "ggircs_guest",
+    "priority": 3,
+    "path": "/request-access-notice"
+  }
+}

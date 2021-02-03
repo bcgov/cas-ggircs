@@ -1,0 +1,37 @@
+exclude: >
+  (?x)^(
+      test\.js\.snap$|
+      stories\.storyshot$
+  )$
+repos:
+  - repo: local
+    hooks:
+      - id: yarn-format
+        name: Fix formatting and lint with prettier and eslint
+        language: script
+        files: ggircs-app\/app\/.*\.(j|t)sx?$
+        entry: ./.bin/format.sh
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v2.3.0
+    hooks:
+      - id: check-added-large-files
+      - id: check-case-conflict
+      - id: check-executables-have-shebangs
+      - id: check-json
+      - id: check-vcs-permalinks
+      - id: check-yaml
+        exclude: ^helm/.*/templates/
+      - id: end-of-file-fixer
+        exclude: current_version\.txt
+      - id: trailing-whitespace
+        exclude: .*/tests/.*
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v0.12.7
+    hooks:
+      - id: detect-secrets
+        args: ["--baseline", ".secrets.baseline"]
+        exclude: (.*/tests/.*|openshift/deploy/secret|Makefile|keycloak-.*-realm-export.json)
+  - repo: https://github.com/jorisroovers/gitlint
+    rev: v0.12.0
+    hooks:
+      - id: gitlint

@@ -1,0 +1,98 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "cas-ggircs.fullname" . }}
+  labels:
+    component: app
+{{ include "cas-ggircs.labels" . | indent 4 }}
+
+spec:
+  replicas: {{ .Values.replicas }}
+  selector:
+    name: {{ template "cas-ggircs.fullname" . }}
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      component: app
+{{ include "cas-ggircs.selectorLabels" . | indent 6 }}
+  template:
+    metadata:
+      labels:
+        component: app
+{{ include "cas-ggircs.labels" . | indent 8 }}
+    spec:
+      containers:
+      - name: {{ template "cas-ggircs.fullname" . }}
+        imagePullPolicy: {{ .Values.image.app.pullPolicy }}
+        image: {{ .Values.image.app.repository }}:{{ .Values.image.app.tag }}
+        env:
+          - name: SESSION_SECRET
+            valueFrom:
+              secretKeyRef:
+                key: session-secret
+                name: {{ template "cas-ggircs.fullname" . }}-app
+          - name: PGUSER
+            valueFrom:
+              secretKeyRef:
+                key: database-app-user
+                name: {{ template "cas-ggircs.fullname" . }}-app
+          - name: PGPASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: database-app-password
+                name: {{ template "cas-ggircs.fullname" . }}-app
+          - name: PGDATABASE
+            valueFrom:
+              secretKeyRef:
+                key: database-name
+                name: {{ template "cas-ggircs.fullname" . }}
+          - name: PGPORT
+            value: "5432"
+          - name: PGHOST
+            value: {{ template "cas-ggircs.fullname" . }}-patroni
+          - name: PORT
+            value: {{ .Values.app.port | quote }}
+          - name: SITEWIDE_NOTICE
+            value: {{ .Values.app.sitewide_notice.content | quote }}
+          - name: SUPPORT_EMAIL
+            value: {{ .Values.app.env.supportEmail }}
+          - name: HOST
+            value: http{{ if .Values.app.route.ssl.enable }}s{{ end }}://{{ .Values.app.route.host }}
+          - name: NAMESPACE
+            valueFrom:
+              fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+        ports:
+        - containerPort: {{ .Values.app.port }}
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /
+            port: {{ .Values.app.port }}
+            scheme: HTTP{{ if .Values.app.route.ssl.enable }}S{{ end }}
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        resources:
+{{ toYaml .Values.resources | indent 10 }}
+        securityContext:
+          capabilities: {}
+          privileged: false
+        terminationMessagePath: /dev/termination-log
+        volumeMounts:
+          - mountPath: /root/.acme.sh
+            name: acme-home
+          - mountPath: /root/.well-known/acme-challenge
+            name: acme-challenge
+      volumes:
+        - name: acme-home
+          persistentVolumeClaim:
+            claimName: {{ template "cas-ggircs.fullname" . }}-acme-home
+        - name: acme-challenge
+          persistentVolumeClaim:
+            claimName: {{ template "cas-ggircs.fullname" . }}-acme-challenge
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always

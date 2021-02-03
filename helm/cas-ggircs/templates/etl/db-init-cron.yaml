@@ -59,10 +59,12 @@ spec:
                 requests:
                   cpu: 100m
                   memory: 64Mi
-              command: [ "create-user-db" ]
-              args: [
-                "-d", "$(GGIRCS_DATABASE)",
-                "-u", "$(GGIRCS_USER)",
-                "-p", "$(GGIRCS_PASSWORD)",
-                "--owner"
-              ]
+              command:
+                - /usr/bin/env
+                - bash
+                - -c
+                - |
+                  set -euo pipefail;
+{{ .Values.persistence.preInitDb | indent 18 }}
+                  create-user-db -d $(GGIRCS_DATABASE) -u $(GGIRCS_USER) -p $(GGIRCS_PASSWORD) --owner;
+                  alter-role $(GGIRCS_USER) createrole;

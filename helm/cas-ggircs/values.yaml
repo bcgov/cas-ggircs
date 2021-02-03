@@ -12,6 +12,14 @@ networkSecurityPolicies:
   enable: true
 
 image:
+  app:
+    repository: gcr.io/ggl-cas-storage/cas-ggircs-app
+    tag: "latest"
+    pullPolicy: Always
+  schema:
+    repository: gcr.io/ggl-cas-storage/cas-ggircs-app-schema
+    tag: "latest"
+    pullPolicy: Always
   etl:
     repository: gcr.io/ggl-cas-storage/cas-ggircs-etl
     tag: "1.1.0-alpha5"
@@ -37,6 +45,8 @@ persistence:
   db: ggircs
   user: ggircs
   readonlyUser: ggircs_readonly
+  appUser: ggircs_app
+  preInitDb: ""
 
 cas-postgres:
   patroni:
@@ -89,3 +99,19 @@ swrsGcpApi:
   # requests:
   #   cpu: 100m
   #   memory: 128Mi
+
+app:
+  route:
+    ssl:
+      enable: true
+      issueCertIfDisabled: true
+      caServerSecret: ~
+      caServerKey: ~
+      caAccountEmail: ggircs@gov.bc.ca
+      storageClassName: netapp-file-standard
+    host: ~
+  sitewide_notice:
+    content: ""
+  port: 3000
+  env:
+    supportEmail: ggircs@gov.bc.ca

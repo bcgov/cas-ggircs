@@ -29,4 +29,3 @@ create or replace view swrs.naics_category_mapping as
             on naics.facility_id = _facility.id
         group by d.naics_code, d.naics_category, d.naics_category_type, d.category_id, d.category_type_id, _report.id, _facility.id;
 commit;
-

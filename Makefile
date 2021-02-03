@@ -1,3 +1,9 @@
+SHELL := /usr/bin/env bash
+THIS_FILE := $(lastword $(MAKEFILE_LIST))
+GGIRCS_FOLDER := $(abspath $(realpath $(lastword $(MAKEFILE_LIST)))/../)
+include $(GGIRCS_FOLDER)/.pipeline/oc.mk
+include $(GGIRCS_FOLDER)/.pipeline/git.mk
+
 ifndef CI_NO_POSTGRES
 PERL=perl
 RSYNC=rsync
@@ -139,7 +145,7 @@ install_pgtap: pgtap
 	@@$(MAKE) -C pgtap -s $(MAKEFLAGS)
 	@@$(MAKE) -C pgtap -s $(MAKEFLAGS) installcheck
 
-ifeq (error,$(shell /bin/test -w $(PG_SHAREDIR)/extension || echo error))
+ifeq (error,$(shell test -w $(PG_SHAREDIR)/extension || echo error))
 	@@echo "FATAL: The current user does not have permission to write to $(PG_SHAREDIR)/extension and install pgTAP.\
  It needs to be installed by a user having write access to that directory, e.g. with 'sudo make -C pgtap install'" && exit 1
 else
@@ -156,23 +162,18 @@ endif
 .PHONY: install_cpandeps
 install_cpandeps:
 	# install Perl dependencies from cpanfile
-	$(CPANM) --installdeps .
+	$(CPANM) --notest --installdeps .
 
 .PHONY: postinstall_check
 postinstall_check:
 	@@printf '%s\n%s\n' "$(SQITCH_MIN_VERSION)" "$(SQITCH_VERSION)" | sort -CV ||\
  	(echo "FATAL: $(SQITCH) version should be at least $(SQITCH_MIN_VERSION). Make sure the $(SQITCH) executable installed by cpanminus is available has the highest priority in the PATH" && exit 1);
 
-.PHONY: dev_install
-dev_install: install_cpanm install_cpandeps postinstall_check install_pgtap
+.PHONY: install_perl_tools
+install_perl_tools: install_cpanm install_cpandeps postinstall_check install_pgtap
 endif
 
 ifndef CI_NO_PIPELINE
-SHELL := /usr/bin/env bash
-THIS_FILE := $(lastword $(MAKEFILE_LIST))
-THIS_FOLDER := $(abspath $(realpath $(lastword $(MAKEFILE_LIST)))/../)
-include $(THIS_FOLDER)/.pipeline/oc.mk
-
 PATHFINDER_PREFIX := 9212c9
 PROJECT_PREFIX := cas-
 
@@ -193,42 +194,33 @@ project: whoami
 project: $(call make_help,project,Switches to the desired $$OC_PROJECT namespace)
 	$(call oc_project)
 
-.PHONY: lint
-lint: $(call make_help,lint,Checks the configured yml template definitions against the remote schema using the tools namespace)
-lint: OC_PROJECT=$(OC_TOOLS_PROJECT)
-lint: whoami
-	$(call oc_lint)
-
-.PHONY: configure
-configure: $(call make_help,configure,Configures the tools project namespace for a build)
-configure: OC_PROJECT=$(OC_TOOLS_PROJECT)
-configure: whoami
-	$(call oc_configure)
-
-.PHONY: build
-build: $(call make_help,build,Builds the source into an image in the tools project namespace)
-build: OC_PROJECT=$(OC_TOOLS_PROJECT)
-build: whoami
-	$(call oc_build,$(PROJECT_PREFIX)ggircs-etl)
-
-GGIRCS_DB_NAME = "ggircs"
-GGIRCS_USER_NAME = "ggircs"
-GGIRCS_READONLY_USER_NAME = $(GGIRCS_USER_NAME)_readonly
-
-define oc_s
-	$(shell $(OC) get secret cas-namespaces --namespace=$(OC_PROJECT) --template='{{- index .data "ciip-namespace" | base64decode -}}')
-endef
-
-
+# If the cas-ggircs route does not exist, deploy without SSL first to generate the certificate
 .PHONY: install
 install: whoami
-	@helm dep up ./helm/cas-ggircs
-	@helm upgrade --install --atomic --timeout 900s \
+	@set -euo pipefail; \
+	helm dep up ./helm/cas-ggircs; \
+	if ! oc get route cas-ggircs -o name; then \
+		helm upgrade --install --atomic --timeout 900s \
+			--namespace $(GGIRCS_NAMESPACE_PREFIX)-$(ENVIRONMENT) \
+			--set image.etl.tag=$(GIT_SHA1) \
+			--set image.ecccUpload.tag=$(GIT_SHA1) \
+			--set image.ecccExtract.tag=$(GIT_SHA1) \
+			--set swrsGcpApi.image.tag=$(GIT_SHA1) \
+			--set image.app.tag=$(GIT_SHA1) --set image.schema.tag=$(GIT_SHA1) \
+			--values ./helm/cas-ggircs/values.yaml \
+			--values ./helm/cas-ggircs/values-$(ENVIRONMENT).yaml \
+			--set ciip.release=cas-ciip-portal \
+			--set ciip.namespace="$(CIIP_NAMESPACE_PREFIX)-$(ENVIRONMENT)" \
+			--set app.route.ssl.enable=false \
+			cas-ggircs ./helm/cas-ggircs; \
+	fi; \
+	helm upgrade --install --atomic --timeout 900s \
 		--namespace $(GGIRCS_NAMESPACE_PREFIX)-$(ENVIRONMENT) \
 		--set image.etl.tag=$(GIT_SHA1) \
 		--set image.ecccUpload.tag=$(GIT_SHA1) \
 		--set image.ecccExtract.tag=$(GIT_SHA1) \
 		--set swrsGcpApi.image.tag=$(GIT_SHA1) \
+		--set image.app.tag=$(GIT_SHA1) --set image.schema.tag=$(GIT_SHA1) \
 		--values ./helm/cas-ggircs/values.yaml \
 		--values ./helm/cas-ggircs/values-$(ENVIRONMENT).yaml \
 		--set ciip.release=cas-ciip-portal \
@@ -238,18 +230,6 @@ install: whoami
 	$(OC) get secret cas-ggircs --namespace=$(GGIRCS_NAMESPACE_PREFIX)-$(ENVIRONMENT) -o json \
 		| jq 'del(.metadata.namespace,.metadata.resourceVersion,.metadata.uid,.metadata.annotations,.metadata.managedFields,.metadata.selfLink) | .metadata.creationTimestamp=null' \
 		| oc apply --namespace="$(CIIP_NAMESPACE_PREFIX)-$(ENVIRONMENT)" -f -
-
-.PHONY: install_dev
-install_dev: OC_PROJECT=$(OC_DEV_PROJECT)
-install_dev: install
-
-.PHONY: install_test
-install_test: OC_PROJECT=$(OC_TEST_PROJECT)
-install_test: install
-
-.PHONY: install_prod
-install_prod: OC_PROJECT=$(OC_PROD_PROJECT)
-install_prod: install
 endif
 
 .PHONY: mock_storageclass
@@ -263,3 +243,14 @@ provision:
 	$(call oc_new_project,$(OC_TEST_PROJECT))
 	$(call oc_new_project,$(OC_DEV_PROJECT))
 	$(call oc_new_project,$(OC_PROD_PROJECT))
+
+.PHONY: install_asdf_tools
+install_asdf_tools:
+	@cat .tool-versions | cut -f 1 -d ' ' | xargs -n 1 asdf plugin-add || true
+	@asdf plugin-update --all
+	@bash ~/.asdf/plugins/nodejs/bin/import-release-team-keyring
+	@#MAKELEVEL=0 is required because of https://www.postgresql.org/message-id/1118.1538056039%40sss.pgh.pa.us
+	@MAKELEVEL=0 POSTGRES_EXTRA_CONFIGURE_OPTIONS='--with-libxml' asdf install
+	@asdf reshim
+	@pip install -r requirements.txt
+	@asdf reshim

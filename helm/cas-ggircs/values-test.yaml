@@ -9,3 +9,7 @@ cas-postgres:
   namespace: 9212c9-test
   gcs:
     bucketSuffix: ggircs-backups
+
+app:
+  route:
+    host: cas-ggircs-test.apps.silver.devops.gov.bc.ca

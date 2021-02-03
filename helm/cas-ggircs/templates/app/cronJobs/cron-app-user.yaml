@@ -1,0 +1,71 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ template "cas-ggircs.fullname" . }}-app-user
+  labels: {{ include "cas-ggircs.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": "pre-upgrade,pre-install"
+    "helm.sh/hook-delete-policy": "before-hook-creation"
+    "helm.sh/hook-weight": "-5"
+spec:
+  suspend: true # This cron job is intended to be triggered manually
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      backoffLimit: 0
+      activeDeadlineSeconds: 600
+      template:
+        metadata:
+          labels: {{ include "cas-ggircs.labels" . | nindent 14 }}
+        spec:
+          activeDeadlineSeconds: 600
+          restartPolicy: Never
+          containers:
+            - env:
+                - name: PGUSER
+                  value: postgres
+                - name: PGPASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      key: password-superuser
+                      name: {{ template "cas-ggircs.fullname" . }}-patroni
+                - name: PGDATABASE
+                  valueFrom:
+                    secretKeyRef:
+                      key: database-name
+                      name: {{ template "cas-ggircs.fullname" . }}
+                - name: PGPORT
+                  value: "5432"
+                - name: PGHOST
+                  value: {{ template "cas-ggircs.fullname" . }}-patroni
+                - name: GGIRCS_APP_USER
+                  valueFrom:
+                    secretKeyRef:
+                      key: database-app-user
+                      name: {{ template "cas-ggircs.fullname" . }}-app
+                - name: GGIRCS_APP_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      key: database-app-password
+                      name: {{ template "cas-ggircs.fullname" . }}-app
+                - name: NAMESPACE
+                  valueFrom:
+                    fieldRef:
+                      apiVersion: v1
+                      fieldPath: metadata.namespace
+              name: {{ template "cas-ggircs.fullname" . }}-app-user
+              image: {{ .Values.image.psql.repository }}:{{ .Values.image.psql.tag }}
+              resources:
+                limits:
+                  cpu: 500m
+                  memory: 128Mi
+                requests:
+                  cpu: 100m
+                  memory: 64Mi
+              command:
+                - /usr/bin/env
+                - bash
+                - -c
+                - |
+                  set -euo pipefail;
+                  create-user-db -d $(PGDATABASE) -u $(GGIRCS_APP_USER) -p $(GGIRCS_APP_PASSWORD)

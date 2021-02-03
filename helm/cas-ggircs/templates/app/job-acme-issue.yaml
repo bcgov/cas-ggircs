@@ -1,0 +1,69 @@
+{{- if and (not .Values.app.route.ssl.enable) .Values.app.route.ssl.issueCertIfDisabled }}
+
+{{- $caServer := "https://acme-v02.api.letsencrypt.org/directory" }}
+
+{{- if .Values.app.route.ssl.caServerSecret }}
+{{- $secret := (lookup "v1" "Secret" .Release.Namespace .Values.app.route.ssl.caServerSecret ) }}
+{{- $caServer = (index $secret.data .Values.app.route.ssl.caServerKey) | b64dec }}
+{{- end -}}
+
+
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ template "cas-ggircs.fullname" . }}-acme-issue
+  labels:
+{{ include "cas-ggircs.labels" . | indent 4 }}
+  annotations:
+    "helm.sh/hook": "post-install,post-upgrade"
+    "helm.sh/hook-delete-policy": "before-hook-creation"
+    "helm.sh/hook-weight": "-5"
+spec:
+  backoffLimit: 0
+  activeDeadlineSeconds: 600
+  template:
+    metadata:
+      labels: {{ include "cas-ggircs.labels" . | nindent 8 }}
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: {{ template "cas-ggircs.fullname" . }}-acme-issue
+          image: bitnami/git
+          resources:
+            limits:
+              cpu: 1000m
+              memory: 128Mi
+            requests:
+              cpu: 100m
+              memory: 64Mi
+          env:
+            - name: HOME
+              value: /tmp
+          command:
+            - /usr/bin/env
+            - bash
+            - -c
+            - |
+              set -euxo pipefail;
+              if [ ! -f /tmp/.acme.sh/{{ .Values.app.route.host }}/{{ .Values.app.route.host }}.cer ]; then
+                echo "Getting a new cert from Let's Encrypt for {{ .Values.app.route.host }}";
+                git clone --branch 2.8.8 https://github.com/acmesh-official/acme.sh.git /tmp/acme.sh;
+                cd /tmp/acme.sh;
+                ./acme.sh --install --force --server {{ $caServer }} -m {{ .Values.app.route.ssl.caAccountEmail }};
+                ./acme.sh --issue -d {{ .Values.app.route.host }} -w /tmp --server {{ $caServer }} -m {{ .Values.app.route.ssl.caAccountEmail }};
+              fi;
+          volumeMounts:
+            - mountPath: /tmp/.acme.sh
+              name: acme-home
+            - mountPath: /tmp/.well-known/acme-challenge
+              name: acme-challenge
+      volumes:
+        - name: acme-home
+          persistentVolumeClaim:
+            claimName: {{ template "cas-ggircs.fullname" . }}-acme-home
+        - name: acme-challenge
+          persistentVolumeClaim:
+            claimName: {{ template "cas-ggircs.fullname" . }}-acme-challenge
+      imagePullSecrets:
+        - name: dockerhub-registry
+{{- end }}
