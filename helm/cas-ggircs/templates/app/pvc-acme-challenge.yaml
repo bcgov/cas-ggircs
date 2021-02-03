@@ -11,4 +11,4 @@ spec:
   resources:
     requests:
       storage: 25Mi
-  storageClassName: {{ .Values.route.ssl.storageClassName }}
+  storageClassName: {{ .Values.app.route.ssl.storageClassName }}
