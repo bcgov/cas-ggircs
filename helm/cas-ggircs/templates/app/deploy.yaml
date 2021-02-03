@@ -55,6 +55,8 @@ spec:
             value: {{ .Values.app.port | quote }}
           - name: SITEWIDE_NOTICE
             value: {{ .Values.app.sitewide_notice.content | quote }}
+          - name: SUPPORT_EMAIL
+            value: {{ .Values.app.env.supportEmail }}
           - name: HOST
             value: http{{ if .Values.app.route.ssl.enable }}s{{ end }}://{{ .Values.app.route.host }}
           - name: NAMESPACE

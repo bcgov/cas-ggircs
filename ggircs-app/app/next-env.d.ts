@@ -4,7 +4,7 @@ import { NextRouter } from "next/router";
 import { ComponentClass } from "react";
 import { CacheConfig } from "react-relay-network-modern/node8";
 
-interface CiipPageInitialProps {
+interface PageInitialProps {
   pageProps: {
     router: NextRouter;
     variables: Record<string, any>;
@@ -18,7 +18,7 @@ interface PageComponentProps {
 
 export type PageComponent = NextComponentType<
   NextPageContext,
-  CiipPageInitialProps,
+  PageInitialProps,
   PageComponentProps
 > &
   ComponentClass<PageComponentProps> & {

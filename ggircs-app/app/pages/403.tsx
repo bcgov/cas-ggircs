@@ -5,8 +5,8 @@ import Link from "next/link";
 import getConfig from "next/config";
 
 export default () => {
-  const feedbackUrl = getConfig()?.publicRuntimeConfig.FEEDBACK_SITE_URL;
-
+  const supportEmail = getConfig()?.publicRuntimeConfig.SUPPORT_EMAIL;
+  const mailtoLink = `mailto:${supportEmail}?subject=Support Request`;
   return (
     <>
       <DefaultLayout session={null}>
@@ -14,18 +14,8 @@ export default () => {
           <Col md={{ span: 6 }} style={{ textAlign: "center" }}>
             <h1>Something went wrong</h1>
             <p>
-              If you got here from the registration page, this is an issue that
-              we are actively working to fix. We apologize for the
-              inconvenience.
-              <br />
-              If you click on the &quot;Login&quot; button above, you can now
-              log in with the credentials you entered in the registration form.
-            </p>
-            <p>
-              For all other issues, please consider reporting this error at{" "}
-              <a href={feedbackUrl}>{feedbackUrl}</a>, by either creating a new
-              post or commenting on an existing post if this error was already
-              reported.
+              Please consider reporting this error to our development team at{" "}
+              <a href={mailtoLink}>{supportEmail}</a>.
             </p>
             <p>
               <Link href="/">

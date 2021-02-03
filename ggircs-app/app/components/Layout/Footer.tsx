@@ -3,7 +3,9 @@ import Link from "next/link";
 import getConfig from "next/config";
 
 const Footer = () => {
-  const feedbackUrl = getConfig()?.publicRuntimeConfig.FEEDBACK_SITE_URL;
+  const supportEmail = getConfig()?.publicRuntimeConfig.SUPPORT_EMAIL;
+  const mailtoLink = `mailto:${supportEmail}?subject=Feedback: CIIP Website`;
+
   return (
     <footer className="footer">
       <div className="container">
@@ -11,28 +13,7 @@ const Footer = () => {
           <li>
             <Link href="/">Home</Link>
           </li>
-          <li>
-            <Link href="/resources/disclaimer">Disclaimer</Link>
-          </li>
-          <li>
-            <Link href="/resources/privacy">Privacy</Link>
-          </li>
-          <li>
-            <a
-              href="https://www2.gov.bc.ca/gov/content/home/accessible-government"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Accessibility
-            </a>
-          </li>
-          <li>
-            <Link href="/resources/copyright">Copyright</Link>
-          </li>
-          <li>
-            <Link href="/resources/contact">Contact Us</Link>
-          </li>
-          <li>{feedbackUrl && <a href={feedbackUrl}>Feedback</a>}</li>
+          <li>{supportEmail && <a href={mailtoLink}>Contact Us</a>}</li>
         </ul>
       </div>
       <style jsx>
