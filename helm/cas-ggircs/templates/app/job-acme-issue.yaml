@@ -23,8 +23,7 @@ spec:
   activeDeadlineSeconds: 600
   template:
     metadata:
-      labels:
-{{ include "cas-ggircs.labels" . | indent 14 }}
+      labels: {{ include "cas-ggircs.labels" . | nindent 8 }}
     spec:
       restartPolicy: Never
       containers:
@@ -46,12 +45,12 @@ spec:
             - -c
             - |
               set -euxo pipefail;
-              if [ ! -f /tmp/.acme.sh/{{ .Values.route.host }}/{{ .Values.route.host }}.cer ]; then
-                echo "Getting a new cert from Let's Encrypt for {{ .Values.route.host }}";
+              if [ ! -f /tmp/.acme.sh/{{ .Values.app.route.host }}/{{ .Values.app.route.host }}.cer ]; then
+                echo "Getting a new cert from Let's Encrypt for {{ .Values.app.route.host }}";
                 git clone --branch 2.8.8 https://github.com/acmesh-official/acme.sh.git /tmp/acme.sh;
                 cd /tmp/acme.sh;
                 ./acme.sh --install --force --server {{ $caServer }} -m {{ .Values.app.route.ssl.caAccountEmail }};
-                ./acme.sh --issue -d {{ .Values.route.host }} -w /tmp --server {{ $caServer }} -m {{ .Values.app.route.ssl.caAccountEmail }};
+                ./acme.sh --issue -d {{ .Values.app.route.host }} -w /tmp --server {{ $caServer }} -m {{ .Values.app.route.ssl.caAccountEmail }};
               fi;
           volumeMounts:
             - mountPath: /tmp/.acme.sh
