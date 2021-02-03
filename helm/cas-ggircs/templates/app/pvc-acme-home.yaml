@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ template "cas-ggircs.fullname" . }}-acme-home
+  labels:
+{{ include "cas-ggircs.labels" . | indent 4 }}
+
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 50Mi
+  storageClassName: {{ .Values.route.ssl.storageClassName }}

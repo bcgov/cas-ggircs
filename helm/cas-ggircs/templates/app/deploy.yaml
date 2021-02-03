@@ -56,7 +56,7 @@ spec:
           - name: SITEWIDE_NOTICE
             value: {{ .Values.app.sitewide_notice.content | quote }}
           - name: HOST
-            value: https://{{ .Values.app.route.host }}
+            value: http{{ if .Values.app.route.ssl.enable }}s{{ end }}://{{ .Values.app.route.host }}
           - name: NAMESPACE
             valueFrom:
               fieldRef:
@@ -70,7 +70,7 @@ spec:
           httpGet:
             path: /
             port: {{ .Values.app.port }}
-            scheme: HTTP
+            scheme: HTTP{{ if .Values.app.route.ssl.enable }}S{{ end }}
           periodSeconds: 10
           successThreshold: 1
           timeoutSeconds: 1

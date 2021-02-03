@@ -1,27 +1,20 @@
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
-  name: {{ template "cas-ggircs.fullname" . }}
-  labels:
-{{ include "cas-ggircs.labels" . | indent 4 }}
+  name: {{ template "cas-ggircs.fullname" . }}{{ if not .Values.app.route.ssl.enable }}-insecure{{ end }}
+  labels: {{ include "cas-ggircs.labels" . | nindent 4 }}
 
 spec:
   host: {{ .Values.app.route.host }}
   port:
     targetPort: {{ template "cas-ggircs.fullname" . }}
+{{- if .Values.app.route.ssl.enable }}
   tls:
-    termination: edge
+    termination: passthrough
     insecureEdgeTerminationPolicy: Redirect
+{{- end }}
   to:
     kind: Service
     name:  {{ template "cas-ggircs.fullname" . }}
     weight: 100
   wildcardPolicy: None
-status:
-  ingress:
-  - conditions:
-    - status: 'True'
-      type: Admitted
-    host: {{ .Values.app.route.host }}
-    routerName: router
-    wildcardPolicy: None
