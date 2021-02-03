@@ -78,18 +78,6 @@ ssoRouter.use(
 // Returns the time, in seconds, before the refresh_token expires.
 // This corresponds to the SSO idle timeout configured in keycloak.
 ssoRouter.get("/session-idle-remaining-time", async (req, res) => {
-  // if (
-  //   NO_AUTH ||
-  //   AS_ADMIN ||
-  //   AS_ANALYST ||
-  //   AS_PENDING ||
-  //   AS_REPORTER ||
-  //   AS_CERTIFIER ||
-  //   AS_CYPRESS
-  // ) {
-  //   return res.json(3600);
-  // }
-
   if (!req.kauth || !req.kauth.grant) {
     return res.json(null);
   }
