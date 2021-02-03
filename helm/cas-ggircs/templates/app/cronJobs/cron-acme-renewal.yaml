@@ -1,4 +1,4 @@
-{{- if not .Values.app.route.ssl.enable }}
+{{- if .Values.app.route.ssl.enable }}
 
 {{- $caServer := "https://acme-v02.api.letsencrypt.org/directory" }}
 
@@ -11,12 +11,7 @@ apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
   name: {{ template "cas-ggircs.fullname" . }}-acme-renewal
-  labels:
-{{ include "cas-ggircs.labels" . | indent 4 }}
-  annotations:
-    "helm.sh/hook": "post-upgrade,post-install"
-    "helm.sh/hook-delete-policy": "before-hook-creation"
-    "helm.sh/hook-weight": "-5"
+  labels: {{ include "cas-ggircs.labels" . | nindent 4 }}
 
 spec:
   suspend: true # This cron job is intended to be triggered manually
