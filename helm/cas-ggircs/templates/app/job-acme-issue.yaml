@@ -1,4 +1,4 @@
-{{- if not .Values.app.route.ssl.enable }}
+{{- if and (not .Values.app.route.ssl.enable) .Values.app.route.ssl.issueCertIfDisabled }}
 
 {{- $caServer := "https://acme-v02.api.letsencrypt.org/directory" }}
 

@@ -73,6 +73,7 @@ jobs:
             --set airflowDagTrigger.enable=false \
             --set swrsImportBucket.enable=false \
             --set swrsGcpApi.image.tag="$CIRCLE_SHA1" \
+            --set app.route.ssl.enable=false --set app.route.ssl.issueCertIfDisabled=false \
             cas-ggircs ./helm/cas-ggircs
       - run:
           command: |
