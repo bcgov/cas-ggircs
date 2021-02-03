@@ -1,5 +1,8 @@
 const express = require("express");
 const http = require("http");
+const https = require("https");
+const path = require("path");
+const fs = require("fs");
 const Bowser = require("bowser");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
@@ -18,6 +21,8 @@ const handle = app.getRequestHandler();
 const UNSUPPORTED_BROWSERS = require("../data/unsupported-browsers");
 const { dbPool } = require("./storage/db");
 
+const secure = /^https/.test(process.env.HOST);
+
 app.prepare().then(async () => {
   const server = express();
 
@@ -26,6 +31,16 @@ app.prepare().then(async () => {
       skip: (_, res) => res.statusCode < 400,
     })
   );
+
+  // Enable serving ACME HTTP-01 challenge response written to disk by acme.sh
+  // https://letsencrypt.org/docs/challenge-types/#http-01-challenge
+  // https://github.com/acmesh-official/acme.sh
+  if (!secure) {
+    server.use(
+      "/.well-known",
+      express.static(path.resolve(__dirname, "../.well-known"))
+    );
+  }
 
   server.use(ssoRouter);
 
@@ -69,13 +84,33 @@ app.prepare().then(async () => {
 
   server.get("*", async (req, res) => handle(req, res));
 
-  http.createServer(server).listen(port, (err) => {
-    if (err) {
-      throw err;
-    }
+  if (secure) {
+    const domain = /^https:\/\/(.+?)\/?$/.exec(process.env.HOST)[1];
+    const key = fs.readFileSync(
+      `/root/.acme.sh/${domain}/${domain}.key`,
+      "utf8"
+    );
+    const cert = fs.readFileSync(
+      `/root/.acme.sh/${domain}/fullchain.cer`,
+      "utf8"
+    );
+    const options = { key, cert };
+    https.createServer(options, server).listen(port, (err) => {
+      if (err) {
+        throw err;
+      }
 
-    console.log(`> Ready on http://localhost:${port}`);
-  });
+      console.log(`> Ready on https://localhost:${port}`);
+    });
+  } else {
+    http.createServer(server).listen(port, (err) => {
+      if (err) {
+        throw err;
+      }
+
+      console.log(`> Ready on http://localhost:${port}`);
+    });
+  }
 
   process.on("SIGTERM", () => {
     console.info("SIGTERM signal received.");
