@@ -194,10 +194,27 @@ project: whoami
 project: $(call make_help,project,Switches to the desired $$OC_PROJECT namespace)
 	$(call oc_project)
 
+# If the cas-ggircs route does not exist, deploy without SSL first to generate the certificate
 .PHONY: install
 install: whoami
-	@helm dep up ./helm/cas-ggircs
-	@helm upgrade --install --atomic --timeout 900s \
+	@set -euo pipefail; \
+	helm dep up ./helm/cas-ggircs; \
+	if ! oc get route cas-ggircs -o name; then \
+		helm upgrade --install --atomic --timeout 900s \
+			--namespace $(GGIRCS_NAMESPACE_PREFIX)-$(ENVIRONMENT) \
+			--set image.etl.tag=$(GIT_SHA1) \
+			--set image.ecccUpload.tag=$(GIT_SHA1) \
+			--set image.ecccExtract.tag=$(GIT_SHA1) \
+			--set swrsGcpApi.image.tag=$(GIT_SHA1) \
+			--set image.app.tag=$(GIT_SHA1) --set image.schema.tag=$(GIT_SHA1) \
+			--values ./helm/cas-ggircs/values.yaml \
+			--values ./helm/cas-ggircs/values-$(ENVIRONMENT).yaml \
+			--set ciip.release=cas-ciip-portal \
+			--set ciip.namespace="$(CIIP_NAMESPACE_PREFIX)-$(ENVIRONMENT)" \
+			--set app.route.ssl.enable=false \
+			cas-ggircs ./helm/cas-ggircs; \
+	fi; \
+	helm upgrade --install --atomic --timeout 900s \
 		--namespace $(GGIRCS_NAMESPACE_PREFIX)-$(ENVIRONMENT) \
 		--set image.etl.tag=$(GIT_SHA1) \
 		--set image.ecccUpload.tag=$(GIT_SHA1) \
