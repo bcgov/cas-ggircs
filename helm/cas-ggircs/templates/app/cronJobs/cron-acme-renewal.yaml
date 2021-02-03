@@ -2,7 +2,7 @@
 
 {{- $caServer := "https://acme-v02.api.letsencrypt.org/directory" }}
 
-{{- if .Values.metabase.nginxSidecar.caServerSecret }}
+{{- if .Values.app.route.ssl.caServerSecret }}
 {{- $secret := (lookup "v1" "Secret" .Release.Namespace .Values.app.route.ssl.caServerSecret ) }}
 {{- $caServer = (index $secret.data .Values.app.route.ssl.caServerKey) | b64dec }}
 {{- end -}}
