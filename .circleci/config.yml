@@ -413,29 +413,29 @@ jobs:
             source ~/.asdf/asdf.sh
             yarn test
   ggircs_app_test_database:
-  machine:
-    image: ubuntu-1604:201903-01
-  working_directory: ~/ggircs-app
-  steps:
-    - attach_workspace:
-        at: ~/
-    - run:
-        name: "Checkout Submodules"
-        command: |
-          git submodule update --init
-    - run:
-        name: start postgres
-        command: |
-          source ~/.bashrc
-          pg_ctl start
-          createdb `whoami`
-    - run:
-        name: Test database using Make
-        command: |
-          source ~/.bashrc
-          pushd schema
-          make test PSQL="psql -h localhost" CI_NO_PIPELINE=true
-          popd
+    machine:
+      image: ubuntu-1604:201903-01
+    working_directory: ~/ggircs-app
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: "Checkout Submodules"
+          command: |
+            git submodule update --init
+      - run:
+          name: start postgres
+          command: |
+            source ~/.bashrc
+            pg_ctl start
+            createdb `whoami`
+      - run:
+          name: Test database using Make
+          command: |
+            source ~/.bashrc
+            pushd schema
+            make test PSQL="psql -h localhost" CI_NO_PIPELINE=true
+            popd
   ggircs_app_e2e-snapshots:
     machine:
       image: ubuntu-1604:201903-01
@@ -621,7 +621,7 @@ workflows:
             - tools
       - ggircs_app_e2e-snapshots:
           requires:
-            - compile
+            - ggircs_app_compile
       - build_cache_and_push:
           name: cas-ggircs-app__sha1_build_and_push
           image_name: cas-ggircs-app
