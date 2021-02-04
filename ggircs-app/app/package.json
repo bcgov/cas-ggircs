@@ -13,7 +13,10 @@
     "format": "prettier --write .",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx .",
     "pretest": "npm run build:relay",
-    "test": "jest"
+    "test": "jest",
+    "test:e2e-snapshots": "yarn happo-cypress -- -- cypress run",
+    "test:e2e": "cypress run",
+    "cypress": "cypress open"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.34",
@@ -58,6 +61,7 @@
     "@typescript-eslint/parser": "^4.13.0",
     "babel-plugin-module-resolver": "^4.1.0",
     "babel-plugin-relay": "^10.1.2",
+    "cypress": "^6.4.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.6",
     "enzyme-to-json": "^3.6.1",
@@ -73,6 +77,8 @@
     "eslint-plugin-react-hooks": "^4.2.0",
     "eslint-plugin-relay": "^1.8.1",
     "graphql-query-test-mock": "^0.12.1",
+    "happo-cypress": "^1.16.1",
+    "happo.io": "^6.4.0",
     "jest": "^26.6.3",
     "jest-canvas-mock": "^2.3.0",
     "jest-extended": "^0.11.5",
