@@ -13,6 +13,7 @@ const { postgraphile } = require("postgraphile");
 const postgraphileOptions = require("./postgraphile/postgraphileOptions");
 const authenticationPgSettings = require("./postgraphile/authenticationPgSettings");
 const ssoRouter = require("./routers/sso");
+const ecccFilesRouter = require("./routers/ecccFiles");
 
 const port = Number.parseInt(process.env.PORT, 10) || 3004;
 const dev = process.env.NODE_ENV !== "production";
@@ -43,6 +44,7 @@ app.prepare().then(async () => {
   }
 
   server.use(ssoRouter);
+  server.use("/ecccFiles", ecccFilesRouter);
 
   server.use(bodyParser.json({ limit: "50mb" }));
   server.use(cors());

@@ -3,9 +3,12 @@ const Keycloak = require("keycloak-connect");
 const crypto = require("crypto");
 const session = require("express-session");
 const PgSession = require("connect-pg-simple")(session);
+const dotenv = require("dotenv");
 const { getUserGroupLandingRoute } = require("../../lib/user-groups");
 const { getUserGroups } = require("../helpers/userGroupAuthentication");
 const { dbPool } = require("../storage/db");
+
+dotenv.config();
 
 const ssoRouter = express.Router();
 /**
