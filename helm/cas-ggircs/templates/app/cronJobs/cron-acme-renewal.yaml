@@ -55,5 +55,6 @@ spec:
             - name: acme-challenge
               persistentVolumeClaim:
                 claimName: {{ template "cas-ggircs.fullname" . }}-acme-challenge
-
+          imagePullSecrets:
+            - name: dockerhub-registry
 {{- end }}
