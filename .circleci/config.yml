@@ -420,10 +420,6 @@ jobs:
       - attach_workspace:
           at: ~/
       - run:
-          name: "Checkout Submodules"
-          command: |
-            git submodule update --init
-      - run:
           name: start postgres
           command: |
             source ~/.bashrc
@@ -443,10 +439,6 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/
-      - run:
-          name: "Checkout Submodules"
-          command: |
-            git submodule update --init
       - run:
           name: start postgres
           command: |
