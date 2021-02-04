@@ -42,7 +42,7 @@ spec:
                 - |
                   set -euxo pipefail;
                   # renews the certificate if needed
-                  /tmp/.acme.sh/acme.sh --cron --home /tmp/.acme.sh --server {{ $caServer }} -m {{ .Values.app.route.ssl.caAccountEmail }};
+                  /tmp/.acme.sh/acme.sh --cron --home /tmp/.acme.sh --server {{ $caServer }};
               volumeMounts:
                 - mountPath: /tmp/.acme.sh
                   name: acme-home
