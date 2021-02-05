@@ -10,9 +10,9 @@ describe("re-direct", () => {
           session: null,
         }}
         router={{
-          query:{
-            sessionIdled: false
-          }
+          query: {
+            sessionIdled: false,
+          },
         }}
       />
     );
@@ -28,9 +28,9 @@ describe("re-direct session idled", () => {
           session: null,
         }}
         router={{
-          query:{
-            sessionIdled: true
-          }
+          query: {
+            sessionIdled: true,
+          },
         }}
       />
     );

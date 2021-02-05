@@ -4,7 +4,7 @@ import { graphql } from "react-relay";
 import { loginRedirectQueryResponse } from "loginRedirectQuery.graphql";
 import { PageComponentProps } from "next-env";
 import DefaultLayout from "components/Layout/DefaultLayout";
-import {NextRouter} from 'next/router';
+import { NextRouter } from "next/router";
 
 interface Props extends PageComponentProps {
   query: loginRedirectQueryResponse["query"];
