@@ -4,5 +4,5 @@ begin;
 
 create schema ggircs_app_private;
 
-comment on schema ggircs_app is 'Contains private data for the GGIRCS web application';
+comment on schema ggircs_app_private is 'Contains private data for the GGIRCS web application';
 commit;
