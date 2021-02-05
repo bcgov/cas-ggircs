@@ -1,4 +1,6 @@
-"""All input for the `createGgircsUserFromSession` mutation."""
+"""
+All input for the `createGgircsUserFromSession` mutation.
+"""
 input CreateGgircsUserFromSessionInput {
   """
   An arbitrary string value with no semantic meaning. Will be included in the
@@ -7,7 +9,9 @@ input CreateGgircsUserFromSessionInput {
   clientMutationId: String
 }
 
-"""The output of our `createGgircsUserFromSession` mutation."""
+"""
+The output of our `createGgircsUserFromSession` mutation.
+"""
 type CreateGgircsUserFromSessionPayload {
   """
   The exact same `clientMutationId` that was provided in the mutation input,
@@ -16,18 +20,28 @@ type CreateGgircsUserFromSessionPayload {
   clientMutationId: String
   ggircsUser: GgircsUser
 
-  """Reads a single `GgircsUser` that is related to this `GgircsUser`."""
+  """
+  Reads a single `GgircsUser` that is related to this `GgircsUser`.
+  """
   ggircsUserByCreatedBy: GgircsUser
 
-  """Reads a single `GgircsUser` that is related to this `GgircsUser`."""
+  """
+  Reads a single `GgircsUser` that is related to this `GgircsUser`.
+  """
   ggircsUserByDeletedBy: GgircsUser
 
-  """Reads a single `GgircsUser` that is related to this `GgircsUser`."""
+  """
+  Reads a single `GgircsUser` that is related to this `GgircsUser`.
+  """
   ggircsUserByUpdatedBy: GgircsUser
 
-  """An edge for our `GgircsUser`. May be used by Relay 1."""
+  """
+  An edge for our `GgircsUser`. May be used by Relay 1.
+  """
   ggircsUserEdge(
-    """The method to use when ordering `GgircsUser`."""
+    """
+    The method to use when ordering `GgircsUser`.
+    """
     orderBy: [GgircsUsersOrderBy!] = [PRIMARY_KEY_ASC]
   ): GgircsUsersEdge
 
@@ -37,7 +51,9 @@ type CreateGgircsUserFromSessionPayload {
   query: Query
 }
 
-"""All input for the create `GgircsUser` mutation."""
+"""
+All input for the create `GgircsUser` mutation.
+"""
 input CreateGgircsUserInput {
   """
   An arbitrary string value with no semantic meaning. Will be included in the
@@ -45,11 +61,15 @@ input CreateGgircsUserInput {
   """
   clientMutationId: String
 
-  """The `GgircsUser` to be created by this mutation."""
+  """
+  The `GgircsUser` to be created by this mutation.
+  """
   ggircsUser: GgircsUserInput!
 }
 
-"""The output of our create `GgircsUser` mutation."""
+"""
+The output of our create `GgircsUser` mutation.
+"""
 type CreateGgircsUserPayload {
   """
   The exact same `clientMutationId` that was provided in the mutation input,
@@ -57,21 +77,33 @@ type CreateGgircsUserPayload {
   """
   clientMutationId: String
 
-  """The `GgircsUser` that was created by this mutation."""
+  """
+  The `GgircsUser` that was created by this mutation.
+  """
   ggircsUser: GgircsUser
 
-  """Reads a single `GgircsUser` that is related to this `GgircsUser`."""
+  """
+  Reads a single `GgircsUser` that is related to this `GgircsUser`.
+  """
   ggircsUserByCreatedBy: GgircsUser
 
-  """Reads a single `GgircsUser` that is related to this `GgircsUser`."""
+  """
+  Reads a single `GgircsUser` that is related to this `GgircsUser`.
+  """
   ggircsUserByDeletedBy: GgircsUser
 
-  """Reads a single `GgircsUser` that is related to this `GgircsUser`."""
+  """
+  Reads a single `GgircsUser` that is related to this `GgircsUser`.
+  """
   ggircsUserByUpdatedBy: GgircsUser
 
-  """An edge for our `GgircsUser`. May be used by Relay 1."""
+  """
+  An edge for our `GgircsUser`. May be used by Relay 1.
+  """
   ggircsUserEdge(
-    """The method to use when ordering `GgircsUser`."""
+    """
+    The method to use when ordering `GgircsUser`.
+    """
     orderBy: [GgircsUsersOrderBy!] = [PRIMARY_KEY_ASC]
   ): GgircsUsersEdge
 
@@ -81,7 +113,9 @@ type CreateGgircsUserPayload {
   query: Query
 }
 
-"""A location in a connection that can be used for resuming pagination."""
+"""
+A location in a connection that can be used for resuming pagination.
+"""
 scalar Cursor
 
 """
@@ -90,7 +124,9 @@ A point in time as described by the [ISO
 """
 scalar Datetime
 
-"""All input for the `deleteGgircsUserByRowId` mutation."""
+"""
+All input for the `deleteGgircsUserByRowId` mutation.
+"""
 input DeleteGgircsUserByRowIdInput {
   """
   An arbitrary string value with no semantic meaning. Will be included in the
@@ -98,11 +134,15 @@ input DeleteGgircsUserByRowIdInput {
   """
   clientMutationId: String
 
-  """Unique ID for the user"""
+  """
+  Unique ID for the user
+  """
   rowId: Int!
 }
 
-"""All input for the `deleteGgircsUser` mutation."""
+"""
+All input for the `deleteGgircsUser` mutation.
+"""
 input DeleteGgircsUserInput {
   """
   An arbitrary string value with no semantic meaning. Will be included in the
@@ -116,7 +156,9 @@ input DeleteGgircsUserInput {
   id: ID!
 }
 
-"""The output of our delete `GgircsUser` mutation."""
+"""
+The output of our delete `GgircsUser` mutation.
+"""
 type DeleteGgircsUserPayload {
   """
   The exact same `clientMutationId` that was provided in the mutation input,
@@ -125,21 +167,33 @@ type DeleteGgircsUserPayload {
   clientMutationId: String
   deletedGgircsUserId: ID
 
-  """The `GgircsUser` that was deleted by this mutation."""
+  """
+  The `GgircsUser` that was deleted by this mutation.
+  """
   ggircsUser: GgircsUser
 
-  """Reads a single `GgircsUser` that is related to this `GgircsUser`."""
+  """
+  Reads a single `GgircsUser` that is related to this `GgircsUser`.
+  """
   ggircsUserByCreatedBy: GgircsUser
 
-  """Reads a single `GgircsUser` that is related to this `GgircsUser`."""
+  """
+  Reads a single `GgircsUser` that is related to this `GgircsUser`.
+  """
   ggircsUserByDeletedBy: GgircsUser
 
-  """Reads a single `GgircsUser` that is related to this `GgircsUser`."""
+  """
+  Reads a single `GgircsUser` that is related to this `GgircsUser`.
+  """
   ggircsUserByUpdatedBy: GgircsUser
 
-  """An edge for our `GgircsUser`. May be used by Relay 1."""
+  """
+  An edge for our `GgircsUser`. May be used by Relay 1.
+  """
   ggircsUserEdge(
-    """The method to use when ordering `GgircsUser`."""
+    """
+    The method to use when ordering `GgircsUser`.
+    """
     orderBy: [GgircsUsersOrderBy!] = [PRIMARY_KEY_ASC]
   ): GgircsUsersEdge
 
@@ -149,41 +203,67 @@ type DeleteGgircsUserPayload {
   query: Query
 }
 
-"""Table containing the benchmark and eligibility threshold for a product"""
+"""
+Table containing the benchmark and eligibility threshold for a product
+"""
 type GgircsUser implements Node {
-  """The date this record was inserted"""
+  """
+  The date this record was inserted
+  """
   createdAt: Datetime!
 
-  """The foreign key to the user id that created this record"""
+  """
+  The foreign key to the user id that created this record
+  """
   createdBy: Int
 
-  """The date this record was deleted"""
+  """
+  The date this record was deleted
+  """
   deletedAt: Datetime
 
-  """The foreign key to the user id that deleted this record"""
+  """
+  The foreign key to the user id that deleted this record
+  """
   deletedBy: Int
 
-  """User's email address"""
+  """
+  User's email address
+  """
   emailAddress: String
 
-  """User's first name"""
+  """
+  User's first name
+  """
   firstName: String
 
-  """Reads a single `GgircsUser` that is related to this `GgircsUser`."""
+  """
+  Reads a single `GgircsUser` that is related to this `GgircsUser`.
+  """
   ggircsUserByCreatedBy: GgircsUser
 
-  """Reads a single `GgircsUser` that is related to this `GgircsUser`."""
+  """
+  Reads a single `GgircsUser` that is related to this `GgircsUser`.
+  """
   ggircsUserByDeletedBy: GgircsUser
 
-  """Reads a single `GgircsUser` that is related to this `GgircsUser`."""
+  """
+  Reads a single `GgircsUser` that is related to this `GgircsUser`.
+  """
   ggircsUserByUpdatedBy: GgircsUser
 
-  """Reads and enables pagination through a set of `GgircsUser`."""
+  """
+  Reads and enables pagination through a set of `GgircsUser`.
+  """
   ggircsUsersByCreatedBy(
-    """Read all values in the set after (below) this cursor."""
+    """
+    Read all values in the set after (below) this cursor.
+    """
     after: Cursor
 
-    """Read all values in the set before (above) this cursor."""
+    """
+    Read all values in the set before (above) this cursor.
+    """
     before: Cursor
 
     """
@@ -191,10 +271,14 @@ type GgircsUser implements Node {
     """
     condition: GgircsUserCondition
 
-    """Only read the first `n` values of the set."""
+    """
+    Only read the first `n` values of the set.
+    """
     first: Int
 
-    """Only read the last `n` values of the set."""
+    """
+    Only read the last `n` values of the set.
+    """
     last: Int
 
     """
@@ -203,16 +287,24 @@ type GgircsUser implements Node {
     """
     offset: Int
 
-    """The method to use when ordering `GgircsUser`."""
+    """
+    The method to use when ordering `GgircsUser`.
+    """
     orderBy: [GgircsUsersOrderBy!] = [PRIMARY_KEY_ASC]
   ): GgircsUsersConnection!
 
-  """Reads and enables pagination through a set of `GgircsUser`."""
+  """
+  Reads and enables pagination through a set of `GgircsUser`.
+  """
   ggircsUsersByDeletedBy(
-    """Read all values in the set after (below) this cursor."""
+    """
+    Read all values in the set after (below) this cursor.
+    """
     after: Cursor
 
-    """Read all values in the set before (above) this cursor."""
+    """
+    Read all values in the set before (above) this cursor.
+    """
     before: Cursor
 
     """
@@ -220,10 +312,14 @@ type GgircsUser implements Node {
     """
     condition: GgircsUserCondition
 
-    """Only read the first `n` values of the set."""
+    """
+    Only read the first `n` values of the set.
+    """
     first: Int
 
-    """Only read the last `n` values of the set."""
+    """
+    Only read the last `n` values of the set.
+    """
     last: Int
 
     """
@@ -232,16 +328,24 @@ type GgircsUser implements Node {
     """
     offset: Int
 
-    """The method to use when ordering `GgircsUser`."""
+    """
+    The method to use when ordering `GgircsUser`.
+    """
     orderBy: [GgircsUsersOrderBy!] = [PRIMARY_KEY_ASC]
   ): GgircsUsersConnection!
 
-  """Reads and enables pagination through a set of `GgircsUser`."""
+  """
+  Reads and enables pagination through a set of `GgircsUser`.
+  """
   ggircsUsersByUpdatedBy(
-    """Read all values in the set after (below) this cursor."""
+    """
+    Read all values in the set after (below) this cursor.
+    """
     after: Cursor
 
-    """Read all values in the set before (above) this cursor."""
+    """
+    Read all values in the set before (above) this cursor.
+    """
     before: Cursor
 
     """
@@ -249,10 +353,14 @@ type GgircsUser implements Node {
     """
     condition: GgircsUserCondition
 
-    """Only read the first `n` values of the set."""
+    """
+    Only read the first `n` values of the set.
+    """
     first: Int
 
-    """Only read the last `n` values of the set."""
+    """
+    Only read the last `n` values of the set.
+    """
     last: Int
 
     """
@@ -261,7 +369,9 @@ type GgircsUser implements Node {
     """
     offset: Int
 
-    """The method to use when ordering `GgircsUser`."""
+    """
+    The method to use when ordering `GgircsUser`.
+    """
     orderBy: [GgircsUsersOrderBy!] = [PRIMARY_KEY_ASC]
   ): GgircsUsersConnection!
 
@@ -270,16 +380,24 @@ type GgircsUser implements Node {
   """
   id: ID!
 
-  """User's last name"""
+  """
+  User's last name
+  """
   lastName: String
 
-  """Unique ID for the user"""
+  """
+  Unique ID for the user
+  """
   rowId: Int!
 
-  """The date this record was last updated"""
+  """
+  The date this record was last updated
+  """
   updatedAt: Datetime!
 
-  """The foreign key to the user id that last updated this record"""
+  """
+  The foreign key to the user id that last updated this record
+  """
   updatedBy: Int
 
   """
@@ -293,67 +411,109 @@ A condition to be used against `GgircsUser` object types. All fields are tested
 for equality and combined with a logical ‘and.’
 """
 input GgircsUserCondition {
-  """Checks for equality with the object’s `createdAt` field."""
+  """
+  Checks for equality with the object’s `createdAt` field.
+  """
   createdAt: Datetime
 
-  """Checks for equality with the object’s `createdBy` field."""
+  """
+  Checks for equality with the object’s `createdBy` field.
+  """
   createdBy: Int
 
-  """Checks for equality with the object’s `deletedAt` field."""
+  """
+  Checks for equality with the object’s `deletedAt` field.
+  """
   deletedAt: Datetime
 
-  """Checks for equality with the object’s `deletedBy` field."""
+  """
+  Checks for equality with the object’s `deletedBy` field.
+  """
   deletedBy: Int
 
-  """Checks for equality with the object’s `emailAddress` field."""
+  """
+  Checks for equality with the object’s `emailAddress` field.
+  """
   emailAddress: String
 
-  """Checks for equality with the object’s `firstName` field."""
+  """
+  Checks for equality with the object’s `firstName` field.
+  """
   firstName: String
 
-  """Checks for equality with the object’s `lastName` field."""
+  """
+  Checks for equality with the object’s `lastName` field.
+  """
   lastName: String
 
-  """Checks for equality with the object’s `rowId` field."""
+  """
+  Checks for equality with the object’s `rowId` field.
+  """
   rowId: Int
 
-  """Checks for equality with the object’s `updatedAt` field."""
+  """
+  Checks for equality with the object’s `updatedAt` field.
+  """
   updatedAt: Datetime
 
-  """Checks for equality with the object’s `updatedBy` field."""
+  """
+  Checks for equality with the object’s `updatedBy` field.
+  """
   updatedBy: Int
 
-  """Checks for equality with the object’s `uuid` field."""
+  """
+  Checks for equality with the object’s `uuid` field.
+  """
   uuid: UUID
 }
 
-"""An input for mutations affecting `GgircsUser`"""
+"""
+An input for mutations affecting `GgircsUser`
+"""
 input GgircsUserInput {
-  """The date this record was inserted"""
+  """
+  The date this record was inserted
+  """
   createdAt: Datetime
 
-  """The foreign key to the user id that created this record"""
+  """
+  The foreign key to the user id that created this record
+  """
   createdBy: Int
 
-  """The date this record was deleted"""
+  """
+  The date this record was deleted
+  """
   deletedAt: Datetime
 
-  """The foreign key to the user id that deleted this record"""
+  """
+  The foreign key to the user id that deleted this record
+  """
   deletedBy: Int
 
-  """User's email address"""
+  """
+  User's email address
+  """
   emailAddress: String
 
-  """User's first name"""
+  """
+  User's first name
+  """
   firstName: String
 
-  """User's last name"""
+  """
+  User's last name
+  """
   lastName: String
 
-  """The date this record was last updated"""
+  """
+  The date this record was last updated
+  """
   updatedAt: Datetime
 
-  """The foreign key to the user id that last updated this record"""
+  """
+  The foreign key to the user id that last updated this record
+  """
   updatedBy: Int
 
   """
@@ -366,31 +526,49 @@ input GgircsUserInput {
 Represents an update to a `GgircsUser`. Fields that are set will be updated.
 """
 input GgircsUserPatch {
-  """The date this record was inserted"""
+  """
+  The date this record was inserted
+  """
   createdAt: Datetime
 
-  """The foreign key to the user id that created this record"""
+  """
+  The foreign key to the user id that created this record
+  """
   createdBy: Int
 
-  """The date this record was deleted"""
+  """
+  The date this record was deleted
+  """
   deletedAt: Datetime
 
-  """The foreign key to the user id that deleted this record"""
+  """
+  The foreign key to the user id that deleted this record
+  """
   deletedBy: Int
 
-  """User's email address"""
+  """
+  User's email address
+  """
   emailAddress: String
 
-  """User's first name"""
+  """
+  User's first name
+  """
   firstName: String
 
-  """User's last name"""
+  """
+  User's last name
+  """
   lastName: String
 
-  """The date this record was last updated"""
+  """
+  The date this record was last updated
+  """
   updatedAt: Datetime
 
-  """The foreign key to the user id that last updated this record"""
+  """
+  The foreign key to the user id that last updated this record
+  """
   updatedBy: Int
 
   """
@@ -399,33 +577,49 @@ input GgircsUserPatch {
   uuid: UUID
 }
 
-"""A connection to a list of `GgircsUser` values."""
+"""
+A connection to a list of `GgircsUser` values.
+"""
 type GgircsUsersConnection {
   """
   A list of edges which contains the `GgircsUser` and cursor to aid in pagination.
   """
   edges: [GgircsUsersEdge!]!
 
-  """A list of `GgircsUser` objects."""
+  """
+  A list of `GgircsUser` objects.
+  """
   nodes: [GgircsUser]!
 
-  """Information to aid in pagination."""
+  """
+  Information to aid in pagination.
+  """
   pageInfo: PageInfo!
 
-  """The count of *all* `GgircsUser` you could get from the connection."""
+  """
+  The count of *all* `GgircsUser` you could get from the connection.
+  """
   totalCount: Int!
 }
 
-"""A `GgircsUser` edge in the connection."""
+"""
+A `GgircsUser` edge in the connection.
+"""
 type GgircsUsersEdge {
-  """A cursor for use in pagination."""
+  """
+  A cursor for use in pagination.
+  """
   cursor: Cursor
 
-  """The `GgircsUser` at the end of the edge."""
+  """
+  The `GgircsUser` at the end of the edge.
+  """
   node: GgircsUser
 }
 
-"""Methods to use when ordering `GgircsUser`."""
+"""
+Methods to use when ordering `GgircsUser`.
+"""
 enum GgircsUsersOrderBy {
   CREATED_AT_ASC
   CREATED_AT_DESC
@@ -465,7 +659,9 @@ type JwtToken {
   exp: Int
   familyName: String
 
-  """Reads a single `GgircsUser` that is related to this `JwtToken`."""
+  """
+  Reads a single `GgircsUser` that is related to this `JwtToken`.
+  """
   ggircsUserBySub: GgircsUser
   givenName: String
   iat: Int
@@ -485,7 +681,9 @@ type JwtToken {
 The root mutation type which contains root level fields which mutate data.
 """
 type Mutation {
-  """Creates a single `GgircsUser`."""
+  """
+  Creates a single `GgircsUser`.
+  """
   createGgircsUser(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
@@ -499,7 +697,9 @@ type Mutation {
     input: CreateGgircsUserFromSessionInput!
   ): CreateGgircsUserFromSessionPayload
 
-  """Deletes a single `GgircsUser` using its globally unique id."""
+  """
+  Deletes a single `GgircsUser` using its globally unique id.
+  """
   deleteGgircsUser(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
@@ -507,7 +707,9 @@ type Mutation {
     input: DeleteGgircsUserInput!
   ): DeleteGgircsUserPayload
 
-  """Deletes a single `GgircsUser` using a unique key."""
+  """
+  Deletes a single `GgircsUser` using a unique key.
+  """
   deleteGgircsUserByRowId(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
@@ -525,7 +727,9 @@ type Mutation {
     input: UpdateGgircsUserInput!
   ): UpdateGgircsUserPayload
 
-  """Updates a single `GgircsUser` using a unique key and a patch."""
+  """
+  Updates a single `GgircsUser` using a unique key and a patch.
+  """
   updateGgircsUserByRowId(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
@@ -534,7 +738,9 @@ type Mutation {
   ): UpdateGgircsUserPayload
 }
 
-"""An object with a globally unique `ID`."""
+"""
+An object with a globally unique `ID`.
+"""
 interface Node {
   """
   A globally unique identifier. Can be used in various places throughout the system to identify this single value.
@@ -542,29 +748,47 @@ interface Node {
   id: ID!
 }
 
-"""Information about pagination in a connection."""
+"""
+Information about pagination in a connection.
+"""
 type PageInfo {
-  """When paginating forwards, the cursor to continue."""
+  """
+  When paginating forwards, the cursor to continue.
+  """
   endCursor: Cursor
 
-  """When paginating forwards, are there more items?"""
+  """
+  When paginating forwards, are there more items?
+  """
   hasNextPage: Boolean!
 
-  """When paginating backwards, are there more items?"""
+  """
+  When paginating backwards, are there more items?
+  """
   hasPreviousPage: Boolean!
 
-  """When paginating backwards, the cursor to continue."""
+  """
+  When paginating backwards, the cursor to continue.
+  """
   startCursor: Cursor
 }
 
-"""The root query type which gives access points into the data universe."""
+"""
+The root query type which gives access points into the data universe.
+"""
 type Query implements Node {
-  """Reads and enables pagination through a set of `GgircsUser`."""
+  """
+  Reads and enables pagination through a set of `GgircsUser`.
+  """
   allGgircsUsers(
-    """Read all values in the set after (below) this cursor."""
+    """
+    Read all values in the set after (below) this cursor.
+    """
     after: Cursor
 
-    """Read all values in the set before (above) this cursor."""
+    """
+    Read all values in the set before (above) this cursor.
+    """
     before: Cursor
 
     """
@@ -572,10 +796,14 @@ type Query implements Node {
     """
     condition: GgircsUserCondition
 
-    """Only read the first `n` values of the set."""
+    """
+    Only read the first `n` values of the set.
+    """
     first: Int
 
-    """Only read the last `n` values of the set."""
+    """
+    Only read the last `n` values of the set.
+    """
     last: Int
 
     """
@@ -584,11 +812,15 @@ type Query implements Node {
     """
     offset: Int
 
-    """The method to use when ordering `GgircsUser`."""
+    """
+    The method to use when ordering `GgircsUser`.
+    """
     orderBy: [GgircsUsersOrderBy!] = [PRIMARY_KEY_ASC]
   ): GgircsUsersConnection
 
-  """Reads a single `GgircsUser` using its globally unique `ID`."""
+  """
+  Reads a single `GgircsUser` using its globally unique `ID`.
+  """
   ggircsUser(
     """
     The globally unique `ID` to be used in selecting a single `GgircsUser`.
@@ -602,9 +834,13 @@ type Query implements Node {
   """
   id: ID!
 
-  """Fetches an object given its globally unique `ID`."""
+  """
+  Fetches an object given its globally unique `ID`.
+  """
   node(
-    """The globally unique `ID`."""
+    """
+    The globally unique `ID`.
+    """
     id: ID!
   ): Node
 
@@ -616,7 +852,9 @@ type Query implements Node {
   session: JwtToken
 }
 
-"""All input for the `updateGgircsUserByRowId` mutation."""
+"""
+All input for the `updateGgircsUserByRowId` mutation.
+"""
 input UpdateGgircsUserByRowIdInput {
   """
   An arbitrary string value with no semantic meaning. Will be included in the
@@ -629,11 +867,15 @@ input UpdateGgircsUserByRowIdInput {
   """
   ggircsUserPatch: GgircsUserPatch!
 
-  """Unique ID for the user"""
+  """
+  Unique ID for the user
+  """
   rowId: Int!
 }
 
-"""All input for the `updateGgircsUser` mutation."""
+"""
+All input for the `updateGgircsUser` mutation.
+"""
 input UpdateGgircsUserInput {
   """
   An arbitrary string value with no semantic meaning. Will be included in the
@@ -652,7 +894,9 @@ input UpdateGgircsUserInput {
   id: ID!
 }
 
-"""The output of our update `GgircsUser` mutation."""
+"""
+The output of our update `GgircsUser` mutation.
+"""
 type UpdateGgircsUserPayload {
   """
   The exact same `clientMutationId` that was provided in the mutation input,
@@ -660,21 +904,33 @@ type UpdateGgircsUserPayload {
   """
   clientMutationId: String
 
-  """The `GgircsUser` that was updated by this mutation."""
+  """
+  The `GgircsUser` that was updated by this mutation.
+  """
   ggircsUser: GgircsUser
 
-  """Reads a single `GgircsUser` that is related to this `GgircsUser`."""
+  """
+  Reads a single `GgircsUser` that is related to this `GgircsUser`.
+  """
   ggircsUserByCreatedBy: GgircsUser
 
-  """Reads a single `GgircsUser` that is related to this `GgircsUser`."""
+  """
+  Reads a single `GgircsUser` that is related to this `GgircsUser`.
+  """
   ggircsUserByDeletedBy: GgircsUser
 
-  """Reads a single `GgircsUser` that is related to this `GgircsUser`."""
+  """
+  Reads a single `GgircsUser` that is related to this `GgircsUser`.
+  """
   ggircsUserByUpdatedBy: GgircsUser
 
-  """An edge for our `GgircsUser`. May be used by Relay 1."""
+  """
+  An edge for our `GgircsUser`. May be used by Relay 1.
+  """
   ggircsUserEdge(
-    """The method to use when ordering `GgircsUser`."""
+    """
+    The method to use when ordering `GgircsUser`.
+    """
     orderBy: [GgircsUsersOrderBy!] = [PRIMARY_KEY_ASC]
   ): GgircsUsersEdge
 
