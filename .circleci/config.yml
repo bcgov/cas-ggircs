@@ -445,12 +445,13 @@ jobs:
             source ~/.bashrc
             pg_ctl start
             createdb `whoami`
+            createdb ggircs
       - run:
           name: deploy schemas and data
           command: |
             source ~/.bashrc
             pushd schema
-            SQITCH_TARGET="ggircs_dev" sqitch deploy
+            SQITCH_TARGET="ggircs" sqitch deploy
             popd
       - run:
           name: run end-to-end tests with happo and cypress
