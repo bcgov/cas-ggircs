@@ -403,7 +403,7 @@ jobs:
   ggircs_app_unit:
     machine:
       image: ubuntu-1604:201903-01
-    working_directory: ~/ggircs-app/app
+    working_directory: ~/cas-ggircs/ggircs-app/app
     steps:
       - attach_workspace:
           at: ~/
@@ -415,7 +415,7 @@ jobs:
   ggircs_app_test_database:
     machine:
       image: ubuntu-1604:201903-01
-    working_directory: ~/ggircs-app
+    working_directory: ~/cas-ggircs/ggircs-app
     steps:
       - attach_workspace:
           at: ~/
@@ -435,7 +435,7 @@ jobs:
   ggircs_app_e2e-snapshots:
     machine:
       image: ubuntu-1604:201903-01
-    working_directory: ~/ggircs-app
+    working_directory: ~/cas-ggircs/ggircs-app
     steps:
       - attach_workspace:
           at: ~/
@@ -450,7 +450,7 @@ jobs:
           command: |
             source ~/.bashrc
             pushd schema
-            SQITCH_TARGET="ciip_portal_dev" sqitch deploy
+            SQITCH_TARGET="ggircs_dev" sqitch deploy
             popd
       - run:
           name: run end-to-end tests with happo and cypress
