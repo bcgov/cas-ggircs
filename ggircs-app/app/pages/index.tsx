@@ -3,7 +3,9 @@ import { graphql } from "react-relay";
 import { pagesQueryResponse } from "pagesQuery.graphql";
 import { PageComponentProps } from "next-env";
 import DefaultLayout from "components/Layout/DefaultLayout";
+import FileList from "components/FileList";
 import { USER_GROUP } from "data/group-constants";
+import { Container } from "react-bootstrap";
 
 const ALLOWED_GROUPS = [...USER_GROUP];
 
@@ -29,7 +31,10 @@ export default class Index extends Component<Props> {
 
     return (
       <DefaultLayout session={session}>
-        <h1>GGIRCS Dashboard</h1>
+        <Container>
+          <h1>GGIRCS File Explorer</h1>
+          <FileList />
+        </Container>
       </DefaultLayout>
     );
   }
