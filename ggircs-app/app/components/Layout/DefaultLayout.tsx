@@ -63,7 +63,10 @@ const DefaultLayout: React.FunctionComponent<Props> = ({
           min-height: 100%;
           display: flex;
           flex-direction: column;
-          justify-content: space-between;
+        }
+
+        main {
+          flex-grow: 1;
         }
       `}
     </style>
