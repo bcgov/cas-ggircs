@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`landing matches the last accepted Snapshot 1`] = `
+<Relay(DefaultLayout)
+  session={null}
+>
+  <h1>
+    GGIRCS Dashboard
+  </h1>
+</Relay(DefaultLayout)>
+`;

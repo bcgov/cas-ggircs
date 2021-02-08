@@ -400,6 +400,69 @@ jobs:
           root: ~/
           paths:
             - cas-ggircs/ggircs-app # persist the build for e2e tests
+  ggircs_app_unit:
+    machine:
+      image: ubuntu-1604:201903-01
+    working_directory: ~/cas-ggircs/ggircs-app/app
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Run unit tests
+          command: |
+            source ~/.asdf/asdf.sh
+            yarn test
+  ggircs_app_test_database:
+    machine:
+      image: ubuntu-1604:201903-01
+    working_directory: ~/cas-ggircs/ggircs-app
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: start postgres
+          command: |
+            source ~/.bashrc
+            pg_ctl start
+            createdb `whoami`
+      - run:
+          name: Test database using Make
+          command: |
+            source ~/.bashrc
+            pushd schema
+            make test PSQL="psql -h localhost" CI_NO_PIPELINE=true
+            popd
+  ggircs_app_e2e-snapshots:
+    machine:
+      image: ubuntu-1604:201903-01
+    working_directory: ~/cas-ggircs/ggircs-app
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: start postgres
+          command: |
+            source ~/.bashrc
+            pg_ctl start
+            createdb `whoami`
+            createdb ggircs
+      - run:
+          name: deploy schemas and data
+          command: |
+            source ~/.bashrc
+            pushd schema
+            sqitch deploy
+            popd
+      - run:
+          name: run end-to-end tests with happo and cypress
+          environment:
+            SAMPLE_ENV_VAR: variable
+          command: |
+            source ~/.asdf/asdf.sh
+            pushd app
+            yarn start & yarn wait-on http://localhost:3004
+            yarn test:e2e-snapshots
+            popd
 
 workflows:
   version: 2
@@ -534,24 +597,24 @@ workflows:
       - lint:
           requires:
             - tools
-      # - unit:
-      #     requires:
-      #       - tools
+      - ggircs_app_unit:
+          requires:
+            - tools
       - ggircs_app_audit:
           requires:
             - tools
       - ggircs_app_schema:
           requires:
             - tools
-      # - test_database:
-      #     requires:
-      #       - tools
+      - ggircs_app_test_database:
+          requires:
+            - tools
       - ggircs_app_compile:
           requires:
             - tools
-      # - e2e-snapshots:
-      #     requires:
-      #       - compile
+      - ggircs_app_e2e-snapshots:
+          requires:
+            - ggircs_app_compile
       - build_cache_and_push:
           name: cas-ggircs-app__sha1_build_and_push
           image_name: cas-ggircs-app
