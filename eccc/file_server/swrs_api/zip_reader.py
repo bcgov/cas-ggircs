@@ -34,4 +34,4 @@ class ZipReader:
       except Exception as inst:
         log.info("trying next password")
 
-      return None
+    return None
