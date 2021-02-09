@@ -1,0 +1,53 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`The FileList component should load the list of files 1`] = `
+<div
+  className="row"
+>
+  <div
+    className="col-md-4"
+  >
+    <h2
+      className="jsx-3437169214"
+    >
+      Uploaded Files
+    </h2>
+    <div
+      className="jsx-3437169214 scrollable"
+    >
+      <div
+        className="list-group"
+        onKeyDown={[Function]}
+      >
+        <button
+          className="list-group-item list-group-item-action"
+          data-rb-event-key={null}
+          disabled={false}
+          onClick={[Function]}
+        >
+          a.zip
+        </button>
+        <button
+          className="list-group-item list-group-item-action"
+          data-rb-event-key={null}
+          disabled={false}
+          onClick={[Function]}
+        >
+          b.zip
+        </button>
+        <button
+          className="list-group-item list-group-item-action"
+          data-rb-event-key={null}
+          disabled={false}
+          onClick={[Function]}
+        >
+          c.zip
+        </button>
+      </div>
+    </div>
+  </div>
+  <div
+    className="col-md-8"
+  />
+</div>
+`;
