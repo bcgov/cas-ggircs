@@ -3,9 +3,8 @@ import { graphql } from "react-relay";
 import { swrsBrowserQueryResponse } from "swrsBrowserQuery.graphql";
 import { PageComponentProps } from "next-env";
 import DefaultLayout from "components/Layout/DefaultLayout";
-import FileList from "components/FileList";
+import FileList from "components/SwrsBrowser/FileList";
 import { USER_GROUP } from "data/group-constants";
-import { Container } from "react-bootstrap";
 
 const ALLOWED_GROUPS = [...USER_GROUP];
 
@@ -30,11 +29,8 @@ export default class Index extends Component<Props> {
     const { session } = query || {};
 
     return (
-      <DefaultLayout session={session}>
-        <Container>
-          <h1>GGIRCS File Explorer</h1>
-          <FileList />
-        </Container>
+      <DefaultLayout session={session} title="ECCC SWRS File Explorer">
+        <FileList />
       </DefaultLayout>
     );
   }
