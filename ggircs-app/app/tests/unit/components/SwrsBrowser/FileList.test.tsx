@@ -28,6 +28,12 @@ const mockFetch = async (url: string) => {
       json: async () => ecccFiles,
     };
   }
+
+  return {
+    json: async () => ({
+      zip_content_list: ["a.txt", "b.txt"],
+    }),
+  };
 };
 
 describe("The FileList component", () => {
@@ -49,5 +55,20 @@ describe("The FileList component", () => {
     });
     expect(component).toMatchSnapshot();
     expect(component.find("button.list-group-item")).toHaveLength(3);
+  });
+
+  it("should load a file's content when clicking on it", async () => {
+    const component = await mount(<FileList />);
+    await act(async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+      component.update();
+      component.find("button.list-group-item").first().simulate("click");
+      await new Promise((resolve) => setImmediate(resolve));
+      component.update();
+    });
+
+    expect(component).toMatchSnapshot();
+    expect(component.find("button.list-group-item.active")).toHaveLength(1);
+    expect(component.find(".col-md-8 .list-group-item a")).toHaveLength(2);
   });
 });
