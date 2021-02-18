@@ -3,9 +3,12 @@ const Keycloak = require("keycloak-connect");
 const crypto = require("crypto");
 const session = require("express-session");
 const PgSession = require("connect-pg-simple")(session);
+const dotenv = require("dotenv");
 const { getUserGroupLandingRoute } = require("../../lib/user-groups");
 const { getUserGroups } = require("../helpers/userGroupAuthentication");
 const { dbPool } = require("../storage/db");
+
+dotenv.config();
 
 const ssoRouter = express.Router();
 /**
@@ -121,4 +124,4 @@ ssoRouter.post("/login", keycloak.protect(), (req, res) =>
 // Keycloak callbak; do not keycloak.protect() to avoid users being authenticated against their will via XSS attack
 ssoRouter.get("/login", (req, res) => res.redirect(302, getRedirectURL(req)));
 
-module.exports = ssoRouter;
+module.exports = { ssoRouter, keycloak };

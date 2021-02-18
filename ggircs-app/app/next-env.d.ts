@@ -34,3 +34,9 @@ export interface CacheConfigWithDebounce extends CacheConfig {
 export interface MutationConfigWithDebounce<T> extends MutationConfig<T> {
   cacheConfig?: CacheConfigWithDebounce;
 }
+
+export interface EcccFile {
+  name: string;
+  size: number;
+  created_at: string;
+}

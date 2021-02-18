@@ -63,7 +63,10 @@ const DefaultLayout: React.FunctionComponent<Props> = ({
           min-height: 100%;
           display: flex;
           flex-direction: column;
-          justify-content: space-between;
+        }
+
+        main {
+          flex-grow: 1;
         }
       `}
     </style>
@@ -110,12 +113,6 @@ const DefaultLayout: React.FunctionComponent<Props> = ({
         p {
           line-height: 25px;
         }
-        .ciip-card {
-          border: 1px solid #036;
-          padding: 15px;
-          border-radius: 0;
-          box-shadow: 1px 8px 13px -5px #00336694;
-        }
         button.full-width {
           width: 100%;
         }
@@ -131,12 +128,6 @@ const DefaultLayout: React.FunctionComponent<Props> = ({
         }
         .container.wide {
           max-width: 1600px;
-        }
-
-        @media screen and (min-width: 992px) {
-          #page-content {
-            padding-top: 110px;
-          }
         }
 
         /* BS overrides for purposes of accessibility: */

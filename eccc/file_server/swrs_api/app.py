@@ -35,7 +35,7 @@ def index():
           - the server responds with a JSON object with objects such as { name: "", size: "", created_at: "", files: ["file1", "file2", ... ]}, listing all of the files in the zip file <br>
       When sending a GET request to /files/{filename}/download <br>
           - the server responds with the file filename contained in the bucket <br>
-      When sending a GET request to /files/{filename}/download?file_path={urlencoded_path} <br>
+      When sending a GET request to /files/{filename}/download?filename={urlencoded_path} <br>
           - the server responds with the file contained in the zip file
       </p>
     </body>

@@ -12,7 +12,8 @@ const nextjs = require("next");
 const { postgraphile } = require("postgraphile");
 const postgraphileOptions = require("./postgraphile/postgraphileOptions");
 const authenticationPgSettings = require("./postgraphile/authenticationPgSettings");
-const ssoRouter = require("./routers/sso");
+const { ssoRouter } = require("./routers/sso");
+const { ecccApiRouter } = require("./routers/api/eccc");
 
 const port = Number.parseInt(process.env.PORT, 10) || 3004;
 const dev = process.env.NODE_ENV !== "production";
@@ -43,6 +44,7 @@ app.prepare().then(async () => {
   }
 
   server.use(ssoRouter);
+  server.use("/api/eccc", ecccApiRouter);
 
   server.use(bodyParser.json({ limit: "50mb" }));
   server.use(cors());
