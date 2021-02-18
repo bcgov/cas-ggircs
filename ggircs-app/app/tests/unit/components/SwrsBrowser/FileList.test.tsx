@@ -38,6 +38,7 @@ const mockFetch = async (url: string) => {
 
 describe("The FileList component", () => {
   beforeAll(() => {
+    jest.spyOn(global.Math, "random").mockImplementation(() => 0);
     global.fetch = jest.fn().mockImplementation(mockFetch);
   });
 

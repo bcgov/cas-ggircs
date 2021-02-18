@@ -67,8 +67,9 @@ exports[`The FileList component should load a file's content when clicking on it
         <span
           className="jsx-2178902605"
         >
-          Imported from ECCC on 
-          Wed May 13 2020
+          Imported from ECCC on
+           
+          May 13, 2020
         </span>
       </div>,
       <div
@@ -99,7 +100,7 @@ exports[`The FileList component should load a file's content when clicking on it
                 target="_blank"
               >
                 <svg
-                  aria-labelledby="svg-inline--fa-title-dxQ0PfwLD3s8"
+                  aria-labelledby="svg-inline--fa-title-000000000000"
                   className="svg-inline--fa fa-file-download fa-w-12 "
                   data-icon="file-download"
                   data-prefix="fas"
@@ -109,7 +110,7 @@ exports[`The FileList component should load a file's content when clicking on it
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <title
-                    id="svg-inline--fa-title-dxQ0PfwLD3s8"
+                    id="svg-inline--fa-title-000000000000"
                     style={Object {}}
                   >
                     Download
@@ -144,7 +145,7 @@ exports[`The FileList component should load a file's content when clicking on it
                 target="_blank"
               >
                 <svg
-                  aria-labelledby="svg-inline--fa-title-jPjPbS4mYoQT"
+                  aria-labelledby="svg-inline--fa-title-000000000000"
                   className="svg-inline--fa fa-file-download fa-w-12 "
                   data-icon="file-download"
                   data-prefix="fas"
@@ -154,7 +155,7 @@ exports[`The FileList component should load a file's content when clicking on it
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <title
-                    id="svg-inline--fa-title-jPjPbS4mYoQT"
+                    id="svg-inline--fa-title-000000000000"
                     style={Object {}}
                   >
                     Download
