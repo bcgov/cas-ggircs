@@ -62,7 +62,7 @@ spec:
           - name: ECCC_FILE_BROWSER_HOST
             value: http://{{ template "cas-ggircs.fullname" . }}-swrs-gcp-api
           - name: ECCC_FILE_BROWSER_PORT
-            value: {{ .Values.swrsGcpApi.port }}
+            value: {{ .Values.swrsGcpApi.port | quote }}
           - name: NAMESPACE
             valueFrom:
               fieldRef:
