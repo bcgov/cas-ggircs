@@ -35,7 +35,13 @@ const FileDetails: React.FunctionComponent<Props> = ({ ecccFile }) => {
         <h3>{ecccFile.name}</h3>
         <span>{Math.round(ecccFile.size)}MB</span>
         <span>
-          Imported from ECCC on {new Date(ecccFile.created_at).toDateString()}
+          Imported from ECCC on{" "}
+          {new Date(ecccFile.created_at).toLocaleDateString("en-ca", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            timeZone: "America/Vancouver",
+          })}
         </span>
       </div>
       <div className="scrollable">
