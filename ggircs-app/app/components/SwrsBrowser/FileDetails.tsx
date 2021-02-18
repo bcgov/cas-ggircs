@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { EcccFile } from "next-env";
 import { ListGroup } from "react-bootstrap";
 import LoadingSpinner from "components/LoadingSpinner";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFileDownload } from "@fortawesome/free-solid-svg-icons";
 
 interface Props {
   ecccFile: EcccFile;
@@ -15,9 +17,15 @@ const FileDetails: React.FunctionComponent<Props> = ({ ecccFile }) => {
     (async () => {
       const resp = await fetch(`/api/eccc/files/${ecccFile.name}`);
       const respBody = await resp.json();
-      setFileContents(
-        respBody.zip_content_list.filter((fileName) => !fileName.endsWith("/"))
-      );
+      if (respBody.zip_content_list) {
+        setFileContents(
+          respBody.zip_content_list.filter(
+            (fileName) => !fileName.endsWith("/")
+          )
+        );
+      } else {
+        setFileContents([]);
+      }
     })();
   }, [ecccFile]);
 
@@ -36,15 +44,18 @@ const FileDetails: React.FunctionComponent<Props> = ({ ecccFile }) => {
           <ListGroup>
             {fileContents.map((fileName) => (
               <ListGroup.Item key={fileName}>
-                <a
-                  href={`/api/eccc/files/${
-                    ecccFile.name
-                  }/download?filename=${encodeURIComponent(fileName)}`}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  {fileName}
-                </a>
+                <div className="file-row">
+                  <span>{fileName}</span>
+                  <a
+                    href={`/api/eccc/files/${
+                      ecccFile.name
+                    }/download?filename=${encodeURIComponent(fileName)}`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <FontAwesomeIcon icon={faFileDownload} title="Download" />
+                  </a>
+                </div>
               </ListGroup.Item>
             ))}
           </ListGroup>
@@ -59,7 +70,8 @@ const FileDetails: React.FunctionComponent<Props> = ({ ecccFile }) => {
             max-height: max(calc(100vh - 400px), 400px);
             overflow-y: auto;
           }
-          .details {
+          .details,
+          .file-row {
             display: flex;
             justify-content: space-between;
           }
