@@ -29,7 +29,11 @@ export default class Index extends Component<Props> {
     const { session } = query || {};
 
     return (
-      <DefaultLayout session={session} title="ECCC SWRS File Explorer">
+      <DefaultLayout
+        session={session}
+        title="ECCC SWRS File Explorer"
+        width="wide"
+      >
         <FileList />
       </DefaultLayout>
     );
