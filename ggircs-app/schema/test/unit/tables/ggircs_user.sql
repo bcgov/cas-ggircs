@@ -11,7 +11,7 @@ select has_table(
   'ggircs_app.ggircs_user should exist, and be a table'
 );
 
-SELECT has_index(
+select has_index(
   'ggircs_app',
   'ggircs_user',
   'ggircs_user_uuid',
