@@ -3,12 +3,11 @@
 ciip:
   namespace: ~
   release: ~
+  prefix: ~
+  environment: ~
 
 airflowDagTrigger:
   name: "ggircs_deploy_db"
-  enable: true
-
-networkSecurityPolicies:
   enable: true
 
 image:
