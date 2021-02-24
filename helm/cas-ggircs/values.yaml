@@ -6,6 +6,9 @@ ciip:
   prefix: ~
   environment: ~
 
+metabase:
+  instanceName: cas-metabase
+
 airflowDagTrigger:
   name: "ggircs_deploy_db"
   enable: true
