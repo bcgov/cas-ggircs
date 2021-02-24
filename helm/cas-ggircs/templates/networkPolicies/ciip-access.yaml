@@ -10,11 +10,11 @@ spec:
     matchLabels:
       release: {{ .Release.Name }}
   ingress:
-  - from:
-    - namespaceSelector:
-        matchLabels:
-          name: {{ .Values.ciip.prefix }}
-          environment: {{ .Values.ciip.environment }}
-      podSelector:
-        matchLabels:
-          release: {{ .Values.ciip.release }}
+    - from:
+      - namespaceSelector:
+          matchLabels:
+            name: {{ .Values.ciip.prefix }}
+            environment: {{ .Values.ciip.environment }}
+        podSelector:
+          matchLabels:
+            release: {{ .Values.ciip.release }}
