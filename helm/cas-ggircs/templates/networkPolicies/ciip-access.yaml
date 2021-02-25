@@ -1,0 +1,20 @@
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: {{ .Release.Name }}-ciip-access
+  labels:
+    release: {{ .Release.Name }}
+{{ include "cas-ggircs.labels" . | nindent 4 }}
+spec:
+  podSelector:
+    matchLabels:
+      release: {{ .Release.Name }}
+  ingress:
+    - from:
+      - namespaceSelector:
+          matchLabels:
+            name: {{ .Values.ciip.prefix }}
+            environment: {{ .Values.ciip.environment }}
+        podSelector:
+          matchLabels:
+            release: {{ .Values.ciip.release }}

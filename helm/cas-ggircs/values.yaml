@@ -3,12 +3,14 @@
 ciip:
   namespace: ~
   release: ~
+  prefix: ~
+  environment: ~
+
+metabase:
+  instanceName: cas-metabase
 
 airflowDagTrigger:
   name: "ggircs_deploy_db"
-  enable: true
-
-networkSecurityPolicies:
   enable: true
 
 image:

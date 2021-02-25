@@ -1,0 +1,19 @@
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: {{ .Release.Name }}-intra-release-by-name
+  labels:
+    release: {{ .Release.Name }}
+{{ include "cas-ggircs.labels" . | nindent 4 }}
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: {{ .Release.Name }}
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          release: {{ .Release.Name }}
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/name: {{ .Release.Name }}

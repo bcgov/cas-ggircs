@@ -211,6 +211,8 @@ install: whoami
 			--values ./helm/cas-ggircs/values-$(ENVIRONMENT).yaml \
 			--set ciip.release=cas-ciip-portal \
 			--set ciip.namespace="$(CIIP_NAMESPACE_PREFIX)-$(ENVIRONMENT)" \
+			--set ciip.prefix="$(CIIP_NAMESPACE_PREFIX)" \
+			--set ciip.environment="$(ENVIRONMENT)" \
 			--set app.route.ssl.enable=false \
 			cas-ggircs ./helm/cas-ggircs; \
 	fi; \
@@ -225,6 +227,8 @@ install: whoami
 		--values ./helm/cas-ggircs/values-$(ENVIRONMENT).yaml \
 		--set ciip.release=cas-ciip-portal \
 		--set ciip.namespace="$(CIIP_NAMESPACE_PREFIX)-$(ENVIRONMENT)" \
+		--set ciip.prefix="$(CIIP_NAMESPACE_PREFIX)" \
+		--set ciip.environment="$(ENVIRONMENT)" \
 		cas-ggircs ./helm/cas-ggircs
 	# Copying generated ggircs database secret to ciip namespace, removing namespace-specific metadata
 	$(OC) get secret cas-ggircs --namespace=$(GGIRCS_NAMESPACE_PREFIX)-$(ENVIRONMENT) -o json \
