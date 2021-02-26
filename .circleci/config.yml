@@ -512,11 +512,11 @@ workflows:
           dockerfile_directory: cas-ggircs/eccc/extract
           context: cas-pipeline
       - build_cache_and_push:
-          name: extract-zips-to-ggircs__tag_build_and_push
+          name: eccc-extract__tag_build_and_push
           image_name: cas-ggircs-eccc-extract
           image_tag: ${CIRCLE_TAG/v/}
           context: cas-pipeline
-          dockerfile_directory: cas-ggircs/docker/extract-zips-to-ggircs
+          dockerfile_directory: cas-ggircs/eccc/extract
           filters:
             tags:
               only: /^v.*/
