@@ -1,3 +1,43 @@
+"""All input for the create `EcccFileDownloadLog` mutation."""
+input CreateEcccFileDownloadLogInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `EcccFileDownloadLog` to be created by this mutation."""
+  ecccFileDownloadLog: EcccFileDownloadLogInput!
+}
+
+"""The output of our create `EcccFileDownloadLog` mutation."""
+type CreateEcccFileDownloadLogPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `EcccFileDownloadLog` that was created by this mutation."""
+  ecccFileDownloadLog: EcccFileDownloadLog
+
+  """An edge for our `EcccFileDownloadLog`. May be used by Relay 1."""
+  ecccFileDownloadLogEdge(
+    """The method to use when ordering `EcccFileDownloadLog`."""
+    orderBy: [EcccFileDownloadLogsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): EcccFileDownloadLogsEdge
+
+  """
+  Reads a single `GgircsUser` that is related to this `EcccFileDownloadLog`.
+  """
+  ggircsUserByDownloadedBy: GgircsUser
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
 """All input for the `createGgircsUserFromSession` mutation."""
 input CreateGgircsUserFromSessionInput {
   """
@@ -90,6 +130,61 @@ A point in time as described by the [ISO
 """
 scalar Datetime
 
+"""All input for the `deleteEcccFileDownloadLogByRowId` mutation."""
+input DeleteEcccFileDownloadLogByRowIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """An internal, generated unique id for the record"""
+  rowId: Int!
+}
+
+"""All input for the `deleteEcccFileDownloadLog` mutation."""
+input DeleteEcccFileDownloadLogInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `EcccFileDownloadLog` to be deleted.
+  """
+  id: ID!
+}
+
+"""The output of our delete `EcccFileDownloadLog` mutation."""
+type DeleteEcccFileDownloadLogPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+  deletedEcccFileDownloadLogId: ID
+
+  """The `EcccFileDownloadLog` that was deleted by this mutation."""
+  ecccFileDownloadLog: EcccFileDownloadLog
+
+  """An edge for our `EcccFileDownloadLog`. May be used by Relay 1."""
+  ecccFileDownloadLogEdge(
+    """The method to use when ordering `EcccFileDownloadLog`."""
+    orderBy: [EcccFileDownloadLogsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): EcccFileDownloadLogsEdge
+
+  """
+  Reads a single `GgircsUser` that is related to this `EcccFileDownloadLog`.
+  """
+  ggircsUserByDownloadedBy: GgircsUser
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
 """All input for the `deleteGgircsUserByRowId` mutation."""
 input DeleteGgircsUserByRowIdInput {
   """
@@ -149,6 +244,134 @@ type DeleteGgircsUserPayload {
   query: Query
 }
 
+"""
+An immutable log of which user downloaded which ECCC files using the GGIRCS app
+"""
+type EcccFileDownloadLog implements Node {
+  """The time at which the download was initiated"""
+  downloadedAt: Datetime!
+
+  """The id of the user that downloaded the file"""
+  downloadedBy: Int
+
+  """The path of the file that was downloaded, within the Zip file"""
+  ecccIndividualFilePath: String
+
+  """The name of the Zip file containing the file that was downloaded"""
+  ecccZipFileName: String
+
+  """
+  Reads a single `GgircsUser` that is related to this `EcccFileDownloadLog`.
+  """
+  ggircsUserByDownloadedBy: GgircsUser
+
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  id: ID!
+
+  """An internal, generated unique id for the record"""
+  rowId: Int!
+}
+
+"""
+A condition to be used against `EcccFileDownloadLog` object types. All fields
+are tested for equality and combined with a logical ‘and.’
+"""
+input EcccFileDownloadLogCondition {
+  """Checks for equality with the object’s `downloadedAt` field."""
+  downloadedAt: Datetime
+
+  """Checks for equality with the object’s `downloadedBy` field."""
+  downloadedBy: Int
+
+  """Checks for equality with the object’s `ecccIndividualFilePath` field."""
+  ecccIndividualFilePath: String
+
+  """Checks for equality with the object’s `ecccZipFileName` field."""
+  ecccZipFileName: String
+
+  """Checks for equality with the object’s `rowId` field."""
+  rowId: Int
+}
+
+"""An input for mutations affecting `EcccFileDownloadLog`"""
+input EcccFileDownloadLogInput {
+  """The time at which the download was initiated"""
+  downloadedAt: Datetime
+
+  """The id of the user that downloaded the file"""
+  downloadedBy: Int
+
+  """The path of the file that was downloaded, within the Zip file"""
+  ecccIndividualFilePath: String
+
+  """The name of the Zip file containing the file that was downloaded"""
+  ecccZipFileName: String
+}
+
+"""
+Represents an update to a `EcccFileDownloadLog`. Fields that are set will be updated.
+"""
+input EcccFileDownloadLogPatch {
+  """The time at which the download was initiated"""
+  downloadedAt: Datetime
+
+  """The id of the user that downloaded the file"""
+  downloadedBy: Int
+
+  """The path of the file that was downloaded, within the Zip file"""
+  ecccIndividualFilePath: String
+
+  """The name of the Zip file containing the file that was downloaded"""
+  ecccZipFileName: String
+}
+
+"""A connection to a list of `EcccFileDownloadLog` values."""
+type EcccFileDownloadLogsConnection {
+  """
+  A list of edges which contains the `EcccFileDownloadLog` and cursor to aid in pagination.
+  """
+  edges: [EcccFileDownloadLogsEdge!]!
+
+  """A list of `EcccFileDownloadLog` objects."""
+  nodes: [EcccFileDownloadLog]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """
+  The count of *all* `EcccFileDownloadLog` you could get from the connection.
+  """
+  totalCount: Int!
+}
+
+"""A `EcccFileDownloadLog` edge in the connection."""
+type EcccFileDownloadLogsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `EcccFileDownloadLog` at the end of the edge."""
+  node: EcccFileDownloadLog
+}
+
+"""Methods to use when ordering `EcccFileDownloadLog`."""
+enum EcccFileDownloadLogsOrderBy {
+  DOWNLOADED_AT_ASC
+  DOWNLOADED_AT_DESC
+  DOWNLOADED_BY_ASC
+  DOWNLOADED_BY_DESC
+  ECCC_INDIVIDUAL_FILE_PATH_ASC
+  ECCC_INDIVIDUAL_FILE_PATH_DESC
+  ECCC_ZIP_FILE_NAME_ASC
+  ECCC_ZIP_FILE_NAME_DESC
+  ID_ASC
+  ID_DESC
+  NATURAL
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
 """Table containing the benchmark and eligibility threshold for a product"""
 type GgircsUser implements Node {
   """The date this record was inserted"""
@@ -162,6 +385,35 @@ type GgircsUser implements Node {
 
   """The foreign key to the user id that deleted this record"""
   deletedBy: Int
+
+  """Reads and enables pagination through a set of `EcccFileDownloadLog`."""
+  ecccFileDownloadLogsByDownloadedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: EcccFileDownloadLogCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `EcccFileDownloadLog`."""
+    orderBy: [EcccFileDownloadLogsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): EcccFileDownloadLogsConnection!
 
   """User's email address"""
   emailAddress: String
@@ -485,6 +737,14 @@ type JwtToken {
 The root mutation type which contains root level fields which mutate data.
 """
 type Mutation {
+  """Creates a single `EcccFileDownloadLog`."""
+  createEcccFileDownloadLog(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateEcccFileDownloadLogInput!
+  ): CreateEcccFileDownloadLogPayload
+
   """Creates a single `GgircsUser`."""
   createGgircsUser(
     """
@@ -498,6 +758,22 @@ type Mutation {
     """
     input: CreateGgircsUserFromSessionInput!
   ): CreateGgircsUserFromSessionPayload
+
+  """Deletes a single `EcccFileDownloadLog` using its globally unique id."""
+  deleteEcccFileDownloadLog(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteEcccFileDownloadLogInput!
+  ): DeleteEcccFileDownloadLogPayload
+
+  """Deletes a single `EcccFileDownloadLog` using a unique key."""
+  deleteEcccFileDownloadLogByRowId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteEcccFileDownloadLogByRowIdInput!
+  ): DeleteEcccFileDownloadLogPayload
 
   """Deletes a single `GgircsUser` using its globally unique id."""
   deleteGgircsUser(
@@ -514,6 +790,24 @@ type Mutation {
     """
     input: DeleteGgircsUserByRowIdInput!
   ): DeleteGgircsUserPayload
+
+  """
+  Updates a single `EcccFileDownloadLog` using its globally unique id and a patch.
+  """
+  updateEcccFileDownloadLog(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateEcccFileDownloadLogInput!
+  ): UpdateEcccFileDownloadLogPayload
+
+  """Updates a single `EcccFileDownloadLog` using a unique key and a patch."""
+  updateEcccFileDownloadLogByRowId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateEcccFileDownloadLogByRowIdInput!
+  ): UpdateEcccFileDownloadLogPayload
 
   """
   Updates a single `GgircsUser` using its globally unique id and a patch.
@@ -559,6 +853,35 @@ type PageInfo {
 
 """The root query type which gives access points into the data universe."""
 type Query implements Node {
+  """Reads and enables pagination through a set of `EcccFileDownloadLog`."""
+  allEcccFileDownloadLogs(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: EcccFileDownloadLogCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `EcccFileDownloadLog`."""
+    orderBy: [EcccFileDownloadLogsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): EcccFileDownloadLogsConnection
+
   """Reads and enables pagination through a set of `GgircsUser`."""
   allGgircsUsers(
     """Read all values in the set after (below) this cursor."""
@@ -588,6 +911,15 @@ type Query implements Node {
     orderBy: [GgircsUsersOrderBy!] = [PRIMARY_KEY_ASC]
   ): GgircsUsersConnection
 
+  """Reads a single `EcccFileDownloadLog` using its globally unique `ID`."""
+  ecccFileDownloadLog(
+    """
+    The globally unique `ID` to be used in selecting a single `EcccFileDownloadLog`.
+    """
+    id: ID!
+  ): EcccFileDownloadLog
+  ecccFileDownloadLogByRowId(rowId: Int!): EcccFileDownloadLog
+
   """Reads a single `GgircsUser` using its globally unique `ID`."""
   ggircsUser(
     """
@@ -614,6 +946,70 @@ type Query implements Node {
   """
   query: Query!
   session: JwtToken
+}
+
+"""All input for the `updateEcccFileDownloadLogByRowId` mutation."""
+input UpdateEcccFileDownloadLogByRowIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  An object where the defined keys will be set on the `EcccFileDownloadLog` being updated.
+  """
+  ecccFileDownloadLogPatch: EcccFileDownloadLogPatch!
+
+  """An internal, generated unique id for the record"""
+  rowId: Int!
+}
+
+"""All input for the `updateEcccFileDownloadLog` mutation."""
+input UpdateEcccFileDownloadLogInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  An object where the defined keys will be set on the `EcccFileDownloadLog` being updated.
+  """
+  ecccFileDownloadLogPatch: EcccFileDownloadLogPatch!
+
+  """
+  The globally unique `ID` which will identify a single `EcccFileDownloadLog` to be updated.
+  """
+  id: ID!
+}
+
+"""The output of our update `EcccFileDownloadLog` mutation."""
+type UpdateEcccFileDownloadLogPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `EcccFileDownloadLog` that was updated by this mutation."""
+  ecccFileDownloadLog: EcccFileDownloadLog
+
+  """An edge for our `EcccFileDownloadLog`. May be used by Relay 1."""
+  ecccFileDownloadLogEdge(
+    """The method to use when ordering `EcccFileDownloadLog`."""
+    orderBy: [EcccFileDownloadLogsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): EcccFileDownloadLogsEdge
+
+  """
+  Reads a single `GgircsUser` that is related to this `EcccFileDownloadLog`.
+  """
+  ggircsUserByDownloadedBy: GgircsUser
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
 }
 
 """All input for the `updateGgircsUserByRowId` mutation."""
