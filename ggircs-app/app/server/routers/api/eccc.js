@@ -10,6 +10,8 @@ const {
   PORT,
 } = process.env;
 
+const secure = /^https/.test(HOST);
+
 /**
  * This router forwards all requests to the ECCC file browser service
  * after ensuring that the client is authenticated
@@ -51,7 +53,7 @@ ecccApiRouter.get(
       };
       // log the download in the database.
       try {
-        await fetch(`${HOST}:${PORT}/graphql`, {
+        await fetch(`http${secure ? "s" : ""}://localhost:${PORT}/graphql`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
