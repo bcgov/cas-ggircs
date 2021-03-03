@@ -11,6 +11,12 @@ const {
 } = process.env;
 
 const secure = /^https/.test(HOST);
+// When using SSL termination, the graphql enpoint should use the public host,
+// otherwise the host will not match the cert.
+// When not using SSL termination (e.g. in local development), we can use localhost, with the server's port.
+const graphqlEndpoint = secure
+  ? `${HOST}/graphql`
+  : `http://localhost:${PORT}/graphql`;
 
 /**
  * This router forwards all requests to the ECCC file browser service
@@ -53,7 +59,7 @@ ecccApiRouter.get(
       };
       // log the download in the database.
       try {
-        await fetch(`http${secure ? "s" : ""}://localhost:${PORT}/graphql`, {
+        await fetch(graphqlEndpoint, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
