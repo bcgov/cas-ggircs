@@ -82,7 +82,7 @@
     "happo-cypress": "^1.16.1",
     "happo.io": "^6.4.0",
     "jest": "^26.6.3",
-    "jest-canvas-mock": "^2.3.0",
+    "jest-canvas-mock": "^2.3.1",
     "jest-extended": "^0.11.5",
     "jest-raw-loader": "^1.0.1",
     "nock": "^13.0.7",
