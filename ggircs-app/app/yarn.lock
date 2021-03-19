@@ -914,6 +914,13 @@
   resolved "https://registry.yarnpkg.com/@graphile-contrib/pg-many-to-many/-/pg-many-to-many-1.0.0.tgz#93f12f9d68724523bef1c833ea24e9f646c257af"
   integrity sha512-y8DiptnJBDW8mrI9btQi/q/nYVYxG92P5QGBsKW6WdYiSKLvrhnnnqm0Qi2VrWIiRVxj22v0NKRmvZ8c6EIiZg==
 
+"@graphile/lru@4.11.0":
+  version "4.11.0"
+  resolved "https://registry.yarnpkg.com/@graphile/lru/-/lru-4.11.0.tgz#dd805ee083063488796ec0eac5a8b50b21c076f9"
+  integrity sha512-Fakuk190EAKxWSa9YQyr/87g8mvAv8HBvk6yPCPuIoA3bYXF7n6kl0XSqKjSd5VfjEqhtnzQ6zJGzDf1Gv/tJg==
+  dependencies:
+    tslib "^2.0.1"
+
 "@graphile/lru@4.9.0":
   version "4.9.0"
   resolved "https://registry.yarnpkg.com/@graphile/lru/-/lru-4.9.0.tgz#f101cbaaaf8a0ae6cb661e8cdc579a11c253cc10"
@@ -5341,7 +5348,7 @@ graphile-build-pg@4.10.0, graphile-build-pg@^4.10.0:
     lru-cache ">=4 <5"
     pg-sql2 "4.9.0"
 
-graphile-build@4.10.0, graphile-build@^4.10.0:
+graphile-build@4.10.0:
   version "4.10.0"
   resolved "https://registry.yarnpkg.com/graphile-build/-/graphile-build-4.10.0.tgz#f54346f23bb625af362b6b9a2487569ec43dd064"
   integrity sha512-Ev0OJu5dHVFAjPB5gpaZXoK6Fmu6tilHabo/zc6FZOwVpMz5WAWXW8X04IIGLYAgZz7O4oBDYxvgBPc5C1QZZQ==
@@ -5350,6 +5357,21 @@ graphile-build@4.10.0, graphile-build@^4.10.0:
     chalk "^2.4.2"
     debug "^4.1.1"
     graphql-parse-resolve-info "4.10.0"
+    iterall "^1.2.2"
+    lodash ">=4 <5"
+    lru-cache "^5.0.0"
+    pluralize "^7.0.0"
+    semver "^6.0.0"
+
+graphile-build@^4.11.0:
+  version "4.11.0"
+  resolved "https://registry.yarnpkg.com/graphile-build/-/graphile-build-4.11.0.tgz#e8e131f4beca16a4fc491abeb97ce968288e2359"
+  integrity sha512-cp+IU1Kt9YRFG3n6LUU7/0djYsG0zzyAEh6C1EU21/UbCYtUKDsl8HKy5fV3eqHKrxPzvUB40q8wdt96lPff3g==
+  dependencies:
+    "@graphile/lru" "4.11.0"
+    chalk "^2.4.2"
+    debug "^4.1.1"
+    graphql-parse-resolve-info "4.11.0"
     iterall "^1.2.2"
     lodash ">=4 <5"
     lru-cache "^5.0.0"
@@ -5374,6 +5396,14 @@ graphql-parse-resolve-info@4.10.0:
   version "4.10.0"
   resolved "https://registry.yarnpkg.com/graphql-parse-resolve-info/-/graphql-parse-resolve-info-4.10.0.tgz#3f61fa4bcbcad65d017f503fac4075f07624a69f"
   integrity sha512-4KWA4oiVnC1bduPZzmuUsTT9SZf/sbdrOAtOsHz747H6Azs4xPgj7/DPXCgdYvKrd4Ci9fNDcem4mOVV2Lct1w==
+  dependencies:
+    debug "^4.1.1"
+    tslib "^2.0.1"
+
+graphql-parse-resolve-info@4.11.0:
+  version "4.11.0"
+  resolved "https://registry.yarnpkg.com/graphql-parse-resolve-info/-/graphql-parse-resolve-info-4.11.0.tgz#e2c67080ab01876faec8a1067c6df3db6526e67b"
+  integrity sha512-vIylHwlhtUz7y4UkXlwGRNIf1O2GhONRsZPYcz8SP+zI5Klp0aiulM4sQ7aEVJNbrqvzGj6cxthJLm+sys0dog==
   dependencies:
     debug "^4.1.1"
     tslib "^2.0.1"
