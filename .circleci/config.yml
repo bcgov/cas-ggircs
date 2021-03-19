@@ -241,7 +241,7 @@ jobs:
           command: |
             # @see https://github.com/pyenv/pyenv/wiki/Common-build-problems
             sudo apt-get update
-            sudo apt-get install -y build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev wget
+            sudo apt-get install -y build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev wget libdbd-pg-perl
       - restore_cache:
           name: Restore asdf Tools Cache
           keys:
@@ -341,6 +341,11 @@ jobs:
       image: ubuntu-1604:201903-01
     working_directory: ~/cas-ggircs/ggircs-app
     steps:
+      - run:
+          name: install libdbd-pg-perl
+          command: |
+            sudo apt-get update
+            sudo apt-get install libdbd-pg-perl
       - attach_workspace:
           at: ~/
       - run:
@@ -420,6 +425,11 @@ jobs:
       image: ubuntu-1604:201903-01
     working_directory: ~/cas-ggircs/ggircs-app
     steps:
+      - run:
+          name: install libdbd-pg-perl
+          command: |
+            sudo apt-get update
+            sudo apt-get install libdbd-pg-perl
       - attach_workspace:
           at: ~/
       - run:
@@ -440,6 +450,11 @@ jobs:
       image: ubuntu-1604:201903-01
     working_directory: ~/cas-ggircs/ggircs-app
     steps:
+      - run:
+          name: install libdbd-pg-perl
+          command: |
+            sudo apt-get update
+            sudo apt-get install libdbd-pg-perl
       - attach_workspace:
           at: ~/
       - run:
