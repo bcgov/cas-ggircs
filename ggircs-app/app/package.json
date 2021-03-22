@@ -43,7 +43,7 @@
     "postgraphile": "^4.10.0",
     "postgraphile-log-consola": "^1.0.1",
     "react": "^16.14.0",
-    "react-bootstrap": "^1.4.3",
+    "react-bootstrap": "^1.5.2",
     "react-dom": "^16.14.0",
     "react-relay": "^10.1.2",
     "react-relay-network-modern": "^6.0.0",
