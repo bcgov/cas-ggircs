@@ -1498,10 +1498,10 @@
     "@types/prop-types" "*"
     csstype "^3.0.2"
 
-"@types/relay-runtime@*", "@types/relay-runtime@^10.1.7":
-  version "10.1.7"
-  resolved "https://registry.yarnpkg.com/@types/relay-runtime/-/relay-runtime-10.1.7.tgz#f9181e8bccf15080fce6e24af326e7ce0c7fe561"
-  integrity sha512-Ib9kky44xN5ioYvAtX3lLoTvE0RUWQz5NPEvdogllviy6Mtkzsiz6M6Yi8Qw3WN0HObBvJdLCZeWasSzKjomxQ==
+"@types/relay-runtime@*", "@types/relay-runtime@^10.1.10":
+  version "10.1.10"
+  resolved "https://registry.yarnpkg.com/@types/relay-runtime/-/relay-runtime-10.1.10.tgz#6d4da929129d7ad39c4932ca36bb5281bf301729"
+  integrity sha512-IyEqvYzMdNcsvhjIVsCvbwQsYT2KMpZrZcw4hQu+2k2MsQNmFSwN0ycWi1Q861qNKMv2rmcMn39O7xtoNhZ8Eg==
 
 "@types/sinonjs__fake-timers@^6.0.1":
   version "6.0.2"
