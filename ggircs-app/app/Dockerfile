@@ -13,8 +13,8 @@ WORKDIR ${HOME}
 
 COPY ./ ${HOME}/
 
-RUN git clone https://github.com/asdf-vm/asdf.git ${HOME}/asdf --branch v0.7.4
-RUN cd ${HOME}/asdf && git checkout v0.7.4
+RUN git clone https://github.com/asdf-vm/asdf.git ${HOME}/asdf --branch v0.8.0
+RUN cd ${HOME}/asdf && git checkout v0.8.0
 ENV BASH_ENV="${HOME}/asdf/asdf.sh"
 # Because asdf is loaded via BASH_ENV, all commands using adsf need to be executed using /usr/bin/env bash -c
 SHELL ["/usr/bin/env", "bash", "-c"]
