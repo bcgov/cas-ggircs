@@ -25,12 +25,9 @@ select columns_are('swrs'::name, 'carbon_tax_calculation'::name, array[
     'fuel_type'::name,
     'fuel_amount'::name,
     'fuel_charge'::name,
-    'pro_rated_fuel_charge'::name,
     'unit_conversion_factor'::name,
     'flat_calculation'::name,
-    'pro_rated_calculation'::name,
-    'calculated_carbon_tax'::name,
-    'pro_rated_calculated_carbon_tax'::name
+    'calculated_carbon_tax'::name
 ]);
 
 -- Column attributes are correct
@@ -55,23 +52,14 @@ select col_hasnt_default('swrs', 'carbon_tax_calculation', 'fuel_amount', 'carbo
 select col_type_is('swrs', 'carbon_tax_calculation', 'fuel_charge', 'numeric', 'carbon_tax_calculation.fuel_charge column should be type numeric');
 select col_hasnt_default('swrs', 'carbon_tax_calculation', 'fuel_charge', 'carbon_tax_calculation.fuel_charge column should not have a default value');
 
-select col_type_is('swrs', 'carbon_tax_calculation', 'pro_rated_fuel_charge', 'numeric', 'carbon_tax_calculation.pro_rated_fuel_charge column should be type numeric');
-select col_hasnt_default('swrs', 'carbon_tax_calculation', 'pro_rated_fuel_charge', 'carbon_tax_calculation.pro_rated_fuel_charge column should not have a default value');
-
 select col_type_is('swrs', 'carbon_tax_calculation', 'unit_conversion_factor', 'integer', 'carbon_tax_calculation.unit_conversion_factor column should be type integer');
 select col_hasnt_default('swrs', 'carbon_tax_calculation', 'unit_conversion_factor', 'carbon_tax_calculation.unit_conversion_factor column should not have a default value');
 
 select col_type_is('swrs', 'carbon_tax_calculation', 'flat_calculation', 'character varying(1000)', 'carbon_tax_calculation.flat_calculation column should be type varchar');
 select col_hasnt_default('swrs', 'carbon_tax_calculation', 'flat_calculation', 'carbon_tax_calculation.flat_calculation column should not have a default value');
 
-select col_type_is('swrs', 'carbon_tax_calculation', 'pro_rated_calculation', 'character varying(1000)', 'carbon_tax_calculation.pro_rated_calculation column should be type varchar');
-select col_hasnt_default('swrs', 'carbon_tax_calculation', 'pro_rated_calculation', 'carbon_tax_calculation.pro_rated_calculation column should not have a default value');
-
 select col_type_is('swrs', 'carbon_tax_calculation', 'calculated_carbon_tax', 'numeric', 'carbon_tax_calculation.calculated_carbon_tax column should be type numeric');
 select col_hasnt_default('swrs', 'carbon_tax_calculation', 'calculated_carbon_tax', 'carbon_tax_calculation.calculated_carbon_tax column should not have a default value');
-
-select col_type_is('swrs', 'carbon_tax_calculation', 'pro_rated_calculated_carbon_tax', 'numeric', 'carbon_tax_calculation.pro_rated_calculated_carbon_tax column should be type numeric');
-select col_hasnt_default('swrs', 'carbon_tax_calculation', 'pro_rated_calculated_carbon_tax', 'carbon_tax_calculation.pro_rated_calculated_carbon_tax column should not have a default value');
 
 -- XML fixture for testing
 insert into swrs_extract.eccc_xml_file (xml_file) values ($$
@@ -143,6 +131,7 @@ insert into swrs_extract.eccc_xml_file (xml_file) values ($$
                                           <EmissionGroupTypes>EC_FlaringEmissions</EmissionGroupTypes>
                                       </Groups>
                                       <NotApplicable>true</NotApplicable>
+                                      <Quantity>10</Quantity>
                                       <CalculatedQuantity>10</CalculatedQuantity>
                                       <GasType>CH4</GasType>
                                   </Emission>
@@ -203,7 +192,17 @@ select results_eq(
 
     $$
       with x as (
-        select flat_rate from swrs.pro_rated_fuel_charge where fuel_type = 'Residual Fuel Oil (#5 & 6)'
+          select distinct on(ctd.id) (fuel_charge * unit_conversion_factor) as flat_rate
+          from swrs.fuel f
+          join swrs.report r on f.report_id = r.id
+          join swrs.fuel_mapping fm
+          on f.fuel_mapping_id = fm.id
+          join swrs.fuel_carbon_tax_details ctd
+          on fm.fuel_carbon_tax_details_id = ctd.id
+          join swrs.fuel_charge fc
+          on fc.fuel_carbon_tax_details_id = ctd.id
+          and f.fuel_type = 'Residual Fuel Oil (#5 & 6)'
+          and concat(r.reporting_period_duration::text, '-12-31')::date between fc.start_date and fc.end_date
       )
       select x.flat_rate * (select annual_fuel_amount from swrs.fuel where fuel_type = 'Residual Fuel Oil (#5 & 6)') from x
     $$,
@@ -220,7 +219,17 @@ select results_eq(
 
     $$
       with x as (
-        select flat_rate from swrs.pro_rated_fuel_charge where fuel_type = 'Flared Natural Gas CH4'
+          select distinct on(ctd.id) (fuel_charge * unit_conversion_factor) as flat_rate
+          from swrs.emission e
+          join swrs.report r on e.report_id = r.id
+          join swrs.fuel_mapping fm
+          on e.fuel_mapping_id = fm.id
+          join swrs.fuel_carbon_tax_details ctd
+          on fm.fuel_carbon_tax_details_id = ctd.id
+          join swrs.fuel_charge fc
+          on fc.fuel_carbon_tax_details_id = ctd.id
+          and e.gas_type = 'CH4'
+          and concat(r.reporting_period_duration::text, '-12-31')::date between fc.start_date and fc.end_date
       )
       select x.flat_rate * (select quantity from swrs.emission where gas_type = 'CH4') from x
     $$,
