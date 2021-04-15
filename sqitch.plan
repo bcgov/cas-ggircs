@@ -94,3 +94,4 @@ swrs/transform/function/load_emission [swrs/transform/function/load_emission@v1.
 swrs/transform/table/ignore_organisation_001 [swrs/transform/table/ignore_organisation] 2020-12-11T20:05:09Z Dylan Leard <dylan@button.is> # Migration: adds new values to the ignore_organisation table
 swrs/transform/function/load_fuel_charge [swrs/transform/function/load_fuel_charge@v1.0.2] 2021-03-31T22:55:47Z Matthieu Foucault <matthieu@button.is> # update fuel charge following carbon tax remission (COVID 19 emergency) regulation - B.C. Reg. 217/2020
 swrs/public/table/fuel_charge_001 [swrs/public/table/fuel_charge swrs/public/table/fuel_carbon_tax_details] 2021-04-13T20:38:28Z Dylan Leard <dylan@button.is> # Migration: add fkey column fuel_carbon_tax_details_id to fuel_charge table
+@v1.1.1 2021-04-15T20:13:18Z Dylan Leard <dylan@button.is> # Release v1.1.1
