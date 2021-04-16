@@ -97,10 +97,10 @@ swrs/public/table/fuel_charge_001 [swrs/public/table/fuel_charge swrs/public/tab
 @v1.1.1 2021-04-15T20:13:18Z Dylan Leard <dylan@button.is> # Release v1.1.1
 swrs/public/view/carbon_tax_calculation [swrs/public/view/carbon_tax_calculation@v1.1.1] 2021-04-15T21:10:37Z Dylan Leard <dylan@button.is> # Migration: use fkey fuel_carbon_tax_details_id to join fuel_charge table
 swrs/public/view/pro_rated_fuel_charge [swrs/public/view/pro_rated_fuel_charge@v1.1.1] 2021-04-15T21:13:26Z Dylan Leard <dylan@button.is> # Migration: use fuel_carbon_tax_details fkey to join fuel_charge table
-swrs/transform/function/load_fuel_charge [swrs/transform/function/load_fuel_charge@v1.1.1] 2021-04-15T23:59:48Z Dylan Leard <dylan@button.is> # Migration: remove fuel_mapping_id fkey from fuel_charge
 swrs/public/table/carbon_tax_act_fuel_type [swrs/public/schema] 2021-04-16T21:16:07Z Dylan Leard <dylan@button.is> # Table contains only the fuel_types listed in the carbon tax act https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/08040_01
 swrs/transform/function/load_carbon_tax_act_fuel_type [swrs/public/table/carbon_tax_act_fuel_type] 2021-04-16T21:21:16Z Dylan Leard <dylan@button.is> # Function loads the carbon_tax_act_fuel_type data
 swrs/transform/function/load [swrs/transform/function/load@v1.1.1] 2021-04-16T21:31:37Z Dylan Leard <dylan@button.is> # Migration: add load_carbon_tax_act_fuel_type to calling array
 swrs/public/table/fuel_carbon_tax_details_001 [swrs/public/table/fuel_carbon_tax_details swrs/public/table/carbon_tax_act_fuel_type] 2021-04-16T21:51:38Z Dylan Leard <dylan@button.is> # Migration: add fkey column to carbon_tax_act_fuel_type and drop cta_mapping column
 swrs/transform/function/load_fuel_carbon_tax_details [swrs/transform/function/load_fuel_carbon_tax_details@v1.1.1] 2021-04-16T22:14:36Z Dylan Leard <dylan@button.is> # Migration: remove cta_mapping data & add fkey
 swrs/public/table/fuel_charge_002 [swrs/public/table/carbon_tax_act_fuel_type swrs/public/table/fuel_charge_001] 2021-04-16T22:34:57Z Dylan Leard <dylan@button.is> # Migration: add new fkey
+swrs/transform/function/load_fuel_charge [swrs/transform/function/load_fuel_charge@v1.1.1] 2021-04-15T23:59:48Z Dylan Leard <dylan@button.is> # Migration: remove fuel_mapping_id fkey from fuel_charge
