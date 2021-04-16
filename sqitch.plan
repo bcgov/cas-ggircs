@@ -97,4 +97,4 @@ swrs/public/table/fuel_charge_001 [swrs/public/table/fuel_charge swrs/public/tab
 @v1.1.1 2021-04-15T20:13:18Z Dylan Leard <dylan@button.is> # Release v1.1.1
 swrs/public/view/carbon_tax_calculation [swrs/public/view/carbon_tax_calculation@v1.1.1] 2021-04-15T21:10:37Z Dylan Leard <dylan@button.is> # Migration: use fkey fuel_carbon_tax_details_id to join fuel_charge table
 swrs/public/view/pro_rated_fuel_charge [swrs/public/view/pro_rated_fuel_charge@v1.1.1] 2021-04-15T21:13:26Z Dylan Leard <dylan@button.is> # Migration: use fuel_carbon_tax_details fkey to join fuel_charge table
-
+swrs/transform/function/load_fuel_charge [swrs/transform/function/load_fuel_charge@v1.1.1] 2021-04-15T23:59:48Z Dylan Leard <dylan@button.is> # Migration: remove fuel_mapping_id fkey from fuel_charge
