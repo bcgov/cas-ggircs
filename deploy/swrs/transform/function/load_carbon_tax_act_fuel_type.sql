@@ -11,6 +11,7 @@ $function$
         insert into swrs_load.carbon_tax_act_fuel_type(carbon_tax_fuel_type) values ('Gasoline');
         insert into swrs_load.carbon_tax_act_fuel_type(carbon_tax_fuel_type) values ('Heavy Fuel Oil');
         insert into swrs_load.carbon_tax_act_fuel_type(carbon_tax_fuel_type) values ('Jet Fuel');
+        insert into swrs_load.carbon_tax_act_fuel_type(carbon_tax_fuel_type) values ('Kerosene');
         insert into swrs_load.carbon_tax_act_fuel_type(carbon_tax_fuel_type) values ('Light Fuel Oil');
         insert into swrs_load.carbon_tax_act_fuel_type(carbon_tax_fuel_type) values ('Methanol');
         insert into swrs_load.carbon_tax_act_fuel_type(carbon_tax_fuel_type) values ('Naphtha');
