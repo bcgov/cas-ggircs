@@ -6,6 +6,8 @@
 
 begin;
 
+drop view if exists swrs.carbon_tax_calculation;
+
 create or replace view swrs.carbon_tax_calculation as
     with fuel as (
         select _report.id                                                    as report_id,
