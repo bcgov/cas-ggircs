@@ -2,6 +2,6 @@
 
 begin;
 
-drop table swrs.carbon_tax_rate_mapping;
+drop table swrs.carbon_tax_act_fuel_type;
 
 commit;

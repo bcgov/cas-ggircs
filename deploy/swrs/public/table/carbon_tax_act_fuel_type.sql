@@ -5,7 +5,7 @@ begin;
 
 create table swrs.carbon_tax_act_fuel_type (
   id integer generated always as identity primary key,
-  carbon_tax_fuel_type varchar(1000)
+  carbon_tax_fuel_type varchar(1000) not null
 );
 
 comment on table  swrs.carbon_tax_act_fuel_type is 'Table contains the list of fuels as defined by the carbon tax act https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/08040_01';

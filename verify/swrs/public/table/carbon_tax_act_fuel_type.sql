@@ -2,6 +2,6 @@
 
 begin;
 
-select pg_catalog.has_table_privilege('swrs.carbon_tax_rate_mapping', 'select');
+select pg_catalog.has_table_privilege('swrs.carbon_tax_act_fuel_type', 'select');
 
 rollback;
