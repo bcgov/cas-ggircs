@@ -67,8 +67,10 @@ create or replace view swrs.carbon_tax_calculation as
                       on _unit.activity_id = _activity.id
                  join swrs.fuel_carbon_tax_details as _fuel_carbon_tax_details
                       on _fuel_mapping.fuel_carbon_tax_details_id = _fuel_carbon_tax_details.id
+                 join swrs.carbon_tax_act_fuel_type as _cta
+                      on _fuel_carbon_tax_details.carbon_tax_act_fuel_type_id = _cta.id
                  join swrs.fuel_charge as _fuel_charge
-                      on _fuel_charge.fuel_carbon_tax_details_id = _fuel_carbon_tax_details.id
+                      on _fuel_charge.carbon_tax_act_fuel_type_id = _cta.id
                       and (concat(_report.reporting_period_duration::text, '-12-31')::date
                       between _fuel_charge.start_date and _fuel_charge.end_date)
     )
