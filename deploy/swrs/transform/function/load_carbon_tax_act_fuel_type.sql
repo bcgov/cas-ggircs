@@ -30,7 +30,6 @@ $function$
         insert into swrs_load.carbon_tax_act_fuel_type(carbon_tax_fuel_type) values ('Peat');
         insert into swrs_load.carbon_tax_act_fuel_type(carbon_tax_fuel_type) values ('Tires - Shredded');
         insert into swrs_load.carbon_tax_act_fuel_type(carbon_tax_fuel_type) values ('Tires - Whole');
-        insert into swrs_load.carbon_tax_act_fuel_type(carbon_tax_fuel_type) values ('Combustible Waste');
     end
 $function$ language plpgsql volatile;
 
