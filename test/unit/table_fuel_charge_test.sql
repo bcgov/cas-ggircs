@@ -26,7 +26,8 @@ select columns_are('swrs'::name, 'fuel_charge'::name, array[
   'end_date'::name,
   'fuel_mapping_id'::name,
   'fuel_carbon_tax_details_id'::name,
-  'carbon_tax_act_fuel_type_id'::name
+  'carbon_tax_act_fuel_type_id'::name,
+  'comment'::name
 ]);
 
 SELECT has_index(
