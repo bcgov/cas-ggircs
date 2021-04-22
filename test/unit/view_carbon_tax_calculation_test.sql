@@ -192,15 +192,17 @@ select results_eq(
 
     $$
       with x as (
-          select distinct on(ctd.id) (fuel_charge * unit_conversion_factor) as flat_rate
+          select (fuel_charge * unit_conversion_factor) as flat_rate
           from swrs.fuel f
           join swrs.report r on f.report_id = r.id
           join swrs.fuel_mapping fm
           on f.fuel_mapping_id = fm.id
           join swrs.fuel_carbon_tax_details ctd
           on fm.fuel_carbon_tax_details_id = ctd.id
+          join swrs.carbon_tax_act_fuel_type cta
+          on ctd.carbon_tax_act_fuel_type_id = cta.id
           join swrs.fuel_charge fc
-          on fc.fuel_carbon_tax_details_id = ctd.id
+          on fc.carbon_tax_act_fuel_type_id = cta.id
           and f.fuel_type = 'Residual Fuel Oil (#5 & 6)'
           and concat(r.reporting_period_duration::text, '-12-31')::date between fc.start_date and fc.end_date
       )
@@ -208,33 +210,6 @@ select results_eq(
     $$,
 
     'swrs.carbon_tax_calculation properly calculates carbon tax based on fuel_amount'
-);
-
-select results_eq(
-    $$
-      select calculated_carbon_tax from swrs.carbon_tax_calculation
-      where fuel_type='Flared Natural Gas CH4'
-      order by calculated_carbon_tax
-    $$,
-
-    $$
-      with x as (
-          select distinct on(ctd.id) (fuel_charge * unit_conversion_factor) as flat_rate
-          from swrs.emission e
-          join swrs.report r on e.report_id = r.id
-          join swrs.fuel_mapping fm
-          on e.fuel_mapping_id = fm.id
-          join swrs.fuel_carbon_tax_details ctd
-          on fm.fuel_carbon_tax_details_id = ctd.id
-          join swrs.fuel_charge fc
-          on fc.fuel_carbon_tax_details_id = ctd.id
-          and e.gas_type = 'CH4'
-          and concat(r.reporting_period_duration::text, '-12-31')::date between fc.start_date and fc.end_date
-      )
-      select x.flat_rate * (select quantity from swrs.emission where gas_type = 'CH4') from x
-    $$,
-
-    'swrs.carbon_tax_calculation properly calculates carbon tax based on emission quantity (Flaring)'
 );
 
 select * from finish();
