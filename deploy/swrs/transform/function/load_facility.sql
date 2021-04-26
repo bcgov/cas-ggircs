@@ -2,7 +2,7 @@
 -- requires: schema_ggircs_swrs
 -- requires: materialized_view_facility
 
-BEGIN;
+begin;
 
 create or replace function swrs_transform.load_facility()
   returns void as
@@ -32,14 +32,14 @@ $function$
                                  parent_facility_id,
                                  facility_name, facility_type,
                                  relationship_type, portability_indicator, status,
-                                 latitude, longitude)
+                                 latitude, longitude, facility_bc_ghg_id)
 
     select _facility.id as fac_id, _facility.eccc_xml_file_id, _organisation.id as org_id, _report.id as rep_id,
            _facility.swrs_facility_id,
            _final_lfo_facility.id as lfo_id,
            _facility.facility_name, _facility.facility_type,
            _facility.relationship_type, _facility.portability_indicator,
-           _facility.status, _facility.latitude, _facility.longitude
+           _facility.status, _facility.latitude, _facility.longitude, _facility.facility_bc_ghg_id
 
     from swrs_transform.facility as _facility
     inner join swrs_transform.final_report as _final_report on _facility.eccc_xml_file_id = _final_report.eccc_xml_file_id
@@ -60,4 +60,4 @@ $function$
 
 $function$ language plpgsql volatile;
 
-COMMIT;
+commit;

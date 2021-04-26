@@ -104,3 +104,6 @@ swrs/public/table/fuel_charge_002 [swrs/public/table/carbon_tax_act_fuel_type sw
 swrs/transform/function/load_fuel_charge [swrs/transform/function/load_fuel_charge@v1.1.1] 2021-04-15T23:59:48Z Dylan Leard <dylan@button.is> # Migration: remove fuel_mapping_id fkey from fuel_charge
 swrs/public/view/carbon_tax_calculation [swrs/public/view/carbon_tax_calculation@v1.1.1] 2021-04-15T21:10:37Z Dylan Leard <dylan@button.is> # Migration: use fkey fuel_carbon_tax_details_id to join fuel_charge table
 swrs/public/view/pro_rated_fuel_charge [swrs/public/view/pro_rated_fuel_charge@v1.1.1] 2021-04-15T21:13:26Z Dylan Leard <dylan@button.is> # Migration: use fuel_carbon_tax_details fkey to join fuel_charge table
+swrs/transform/materialized_view/facility [swrs/transform/materialized_view/facility@v1.1.1] 2021-04-26T16:44:56Z Matthieu Foucault <matthieu@button.is> # add facility_bc_ghg_id to facility materialized view
+swrs/public/table/facility_001 2021-04-26T17:06:22Z Matthieu Foucault <matthieu@button.is> # add bg_ghg_id column to facility table
+swrs/transform/function/load_facility [swrs/transform/function/load_facility@v1.1.1] 2021-04-26T17:08:47Z Matthieu Foucault <matthieu@button.is> # add facility_bc_ghg_id to facility load function

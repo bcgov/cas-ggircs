@@ -3,7 +3,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(21);
+select plan(22);
 
 -- Test matview report exists in schema swrs_transform
 select has_materialized_view('swrs_transform', 'facility', 'Materialized view facility exists');
@@ -19,7 +19,8 @@ select columns_are('swrs_transform'::name, 'facility'::name, ARRAY[
   'portability_indicator'::name,
   'status'::name,
   'latitude'::name,
-  'longitude'::name
+  'longitude'::name,
+  'facility_bc_ghg_id'::name
 ]);
 
 -- Test index names in matview report exist and are correct
@@ -60,6 +61,9 @@ insert into swrs_extract.eccc_xml_file (xml_file) values ($$
   <ReportDetails>
     <FacilityId>123</FacilityId>
   </ReportDetails>
+  <OperationalWorkerReport>
+    <ProgramID>123456</ProgramID>
+  </OperationalWorkerReport>
 </ReportData>
 $$), ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -159,6 +163,13 @@ select results_eq(
   'select longitude from swrs_transform.facility',
   ARRAY[54::numeric, '-90.59062'::numeric],
   'swrs_transform.facility parsed column longitude'
+);
+
+select facility_bc_ghg_id from swrs_transform.facility;
+select results_eq(
+  'select facility_bc_ghg_id from swrs_transform.facility order by facility_bc_ghg_id',
+  $$values ('123456'::varchar), (null)$$,
+  'swrs_transform.facility parsed column facility_bc_ghg_id'
 );
 
 select finish();

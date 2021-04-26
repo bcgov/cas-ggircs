@@ -3,7 +3,6 @@
 
 begin;
 
-drop materialized view if exists swrs_transform.facility;
 create materialized view swrs_transform.facility as (
   -- Select the XML reports from eccc_xml_files table and get the Facility ID and Report ID from reports table
   -- Walk the XML to extract facility details
@@ -19,8 +18,7 @@ create materialized view swrs_transform.facility as (
                   rd_facility_details.portability_indicator)                            as portability_indicator,
          coalesce(vt_facility_details.status, rd_facility_details.status)               as status,
          substring(coalesce(vt_facility_details.latitude, rd_facility_details.latitude) from '-*[0-9]+\.*[0-9]+')::numeric   as latitude,
-         substring(coalesce(vt_facility_details.longitude, rd_facility_details.longitude) from '-*[0-9]+\.*[0-9]+')::numeric as longitude,
-         owr_facility_details.facility_bc_ghg_id
+         substring(coalesce(vt_facility_details.longitude, rd_facility_details.longitude) from '-*[0-9]+\.*[0-9]+')::numeric as longitude
 
   from swrs_extract.eccc_xml_file,
        xmltable(
@@ -47,14 +45,7 @@ create materialized view swrs_transform.facility as (
              status varchar(1000) path './VerifyTombstone/Facility/Details/Status',
              latitude varchar(1000) path './VerifyTombstone/Facility/Address/GeographicalAddress/Latitude',
              longitude varchar(1000) path './VerifyTombstone/Facility/Address/GeographicalAddress/Longitude'
-         ) as vt_facility_details,
-
-      xmltable(
-        '/ReportData'
-        passing xml_file
-        columns
-          facility_bc_ghg_id varchar(1000) path './OperationalWorkerReport/ProgramID'
-      ) as owr_facility_details
+         ) as vt_facility_details
   order by eccc_xml_file_id desc
 ) with no data;
 
@@ -71,6 +62,5 @@ comment on column swrs_transform.facility.portability_indicator is 'The portabil
 comment on column swrs_transform.facility.status is 'The status of the facility';
 comment on column swrs_transform.facility.latitude is 'The latitude of the reporting facility';
 comment on column swrs_transform.facility.longitude is 'The longitude of the reporting facility';
-comment on column swrs_transform.facility.facility_bc_ghg_id is 'The BG GHG ID of the reporting facility';
 
 commit;
