@@ -2,6 +2,6 @@
 
 begin;
 
-alter table swrs.facility drop column facility_bc_ghg_id;
+alter table swrs.facility drop column facility_bc_ghg_id cascade;
 
 commit;
