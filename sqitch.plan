@@ -108,3 +108,4 @@ swrs/transform/materialized_view/facility [swrs/transform/materialized_view/faci
 swrs/public/table/facility_001 2021-04-26T17:06:22Z Matthieu Foucault <matthieu@button.is> # add bg_ghg_id column to facility table
 swrs/transform/function/load_facility [swrs/transform/function/load_facility@v1.1.1] 2021-04-26T17:08:47Z Matthieu Foucault <matthieu@button.is> # add facility_bc_ghg_id to facility load function
 swrs/public/view/facility_details [swrs/public/view/facility_details@v1.1.1] 2021-04-26T19:29:00Z Matthieu Foucault <matthieu@button.is> # recreate facility_details view after adding a column to facility table
+private/schema 2021-04-26T21:44:59Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # A schema for private functions used by the SWRS ETL
