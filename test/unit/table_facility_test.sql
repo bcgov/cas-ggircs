@@ -4,7 +4,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select * from no_plan();
+select plan(8);
 
 insert into swrs_extract.eccc_xml_file (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -150,7 +150,9 @@ insert into swrs_extract.eccc_xml_file (xml_file) values ($$
       </ActivityList>
     </ActivityOrSource>
   </ReportDetails>
-  <OperationalWorkerReport/>
+  <OperationalWorkerReport>
+    <ProgramID>123456</ProgramID>
+  </OperationalWorkerReport>
   <VerifyTombstone>
     <Organisation>
       <Details>
@@ -540,7 +542,9 @@ $$), ($$
       <LastModifiedBy>Buddy</LastModifiedBy>
     </ReportStatus>
   </ReportDetails>
-  <OperationalWorkerReport/>
+  <OperationalWorkerReport>
+    <ProgramID>654321</ProgramID>
+  </OperationalWorkerReport>
   <VerifyTombstone>
     <Organisation>
       <Details>
@@ -692,6 +696,12 @@ select set_eq(
 
     'Foreign key parent_facility_id in swrs.facility references swrs.lfo_facility.id for IF_a, IF_b or L_c facilities'
 
+);
+
+select results_eq(
+  'select facility_bc_ghg_id from swrs.facility order by swrs_facility_id',
+  $$values ('123456'::varchar), (null), ('654321'::varchar)$$,
+  'facility_bc_ghg_id is loaded in the swrs.facility table'
 );
 
 select * from finish();

@@ -8,7 +8,6 @@
 
 begin;
 
-drop view if exists swrs.facility_details;
 create or replace view swrs.facility_details as
     with distinct_naics_code_list as (
         select distinct(naics_code) as naics_code,
