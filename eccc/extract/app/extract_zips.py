@@ -39,6 +39,9 @@ def process_zip_file(bucket_name, file, pg_pool):
   if not file.name.endswith('.zip'):
     log.debug(f"{file.name} was uploaded in the bucket {bucket_name}, but that doesn't look like a zip file. Skipping.")
     return
+  if not file.name.startswith('GHGBC_PROD_'):
+    log.debug(f"{file.name} was uploaded in the bucket {bucket_name}, but that doesn't look like a production report. Skipping.")
+    return
   file_path = f"gs://{bucket_name}/{file.name}"
   zipfile_md5 = base64.b64decode(file.md5_hash).hex() if file.md5_hash is not None else None
   try:
