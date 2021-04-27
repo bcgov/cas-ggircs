@@ -109,3 +109,4 @@ swrs/public/table/facility_001 2021-04-26T17:06:22Z Matthieu Foucault <matthieu@
 swrs/transform/function/load_facility [swrs/transform/function/load_facility@v1.1.1] 2021-04-26T17:08:47Z Matthieu Foucault <matthieu@button.is> # add facility_bc_ghg_id to facility load function
 swrs/public/view/facility_details [swrs/public/view/facility_details@v1.1.1] 2021-04-26T19:29:00Z Matthieu Foucault <matthieu@button.is> # recreate facility_details view after adding a column to facility table
 private/schema 2021-04-26T21:44:59Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # A schema for private functions used by the SWRS ETL
+private/prune_test_organisations_and_facilities 2021-04-26T21:43:05Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Private function that prunes all organisations and facilities imported from non-prod report files
