@@ -111,3 +111,7 @@ swrs/public/view/facility_details [swrs/public/view/facility_details@v1.1.1] 202
 private/schema 2021-04-26T21:44:59Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # A schema for private functions used by the SWRS ETL
 private/prune_test_organisations_and_facilities 2021-04-26T21:43:05Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Private function that prunes all organisations and facilities imported from non-prod report files
 @v1.2.0 2021-04-27T22:27:04Z Dylan Leard <dylan@button.is> # Version 1.2.0
+swrs/transform/function/load_fuel_charge [swrs/transform/function/load_fuel_charge@v1.2.0] 2021-05-03T22:55:46Z Dylan Leard <dylan@button.is> # Migration: remove unnecessary insert of fuel_carbon_tax_details_id
+swrs/transform/function/load_fuel_carbon_tax_details [swrs/transform/function/load_fuel_carbon_tax_details@v1.2.0] 2021-05-04T16:09:25Z Dylan Leard <dylan@button.is> # Migration: remove carbon_taxed from load function
+swrs/public/table/fuel_charge_003 [swrs/public/table/fuel_charge_002] 2021-05-04T16:13:19Z Dylan Leard <dylan@button.is> # Migration: remove deprecated foreign key columns
+swrs/public/table/fuel_carbon_tax_details_002 [swrs/public/table/fuel_carbon_tax_details_001] 2021-05-04T16:22:07Z Dylan Leard <dylan@button.is> # Migration: drop unused carbon_taxed column
