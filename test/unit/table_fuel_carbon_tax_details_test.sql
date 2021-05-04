@@ -22,7 +22,6 @@ select columns_are('swrs'::name, 'fuel_carbon_tax_details'::name, array[
   'id'::name,
   'normalized_fuel_type'::name,
   'state'::name,
-  'carbon_taxed'::name,
   'cta_rate_units'::name,
   'unit_conversion_factor'::name,
   'carbon_tax_act_fuel_type_id'::name
