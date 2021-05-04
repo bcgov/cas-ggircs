@@ -54,7 +54,7 @@ $function$
         INSERT INTO swrs_load.fuel_charge (fuel_charge, start_date, end_date, carbon_tax_act_fuel_type_id, metadata) VALUES (0.1023, '2019-04-01', '2020-03-31', 6, null);
         INSERT INTO swrs_load.fuel_charge (fuel_charge, start_date, end_date, carbon_tax_act_fuel_type_id, metadata) VALUES (0.1023, '2020-04-01', '2021-03-31', 6, null);
         INSERT INTO swrs_load.fuel_charge (fuel_charge, start_date, end_date, carbon_tax_act_fuel_type_id, metadata) VALUES (0.1171, '2021-04-01', '2022-03-31', 6, null);
-        INSERT INTO swrs_load.fuel_charge (fuel_charge, start_date, end_date, carbon_tax_act_fuel_type_id, metadata) VALUES (0.1301, '2022-04-01', '9999-12-31', 6, null)
+        INSERT INTO swrs_load.fuel_charge (fuel_charge, start_date, end_date, carbon_tax_act_fuel_type_id, metadata) VALUES (0.1301, '2022-04-01', '9999-12-31', 6, null);
         INSERT INTO swrs_load.fuel_charge (fuel_charge, start_date, end_date, carbon_tax_act_fuel_type_id, metadata) VALUES (0.0327, '1899-12-30', '2017-03-31', 7, null);
         INSERT INTO swrs_load.fuel_charge (fuel_charge, start_date, end_date, carbon_tax_act_fuel_type_id, metadata) VALUES (0.0327, '2017-04-01', '2018-03-31', 7, null);
         INSERT INTO swrs_load.fuel_charge (fuel_charge, start_date, end_date, carbon_tax_act_fuel_type_id, metadata) VALUES (0.0382, '2018-04-01', '2019-03-31', 7, null);
