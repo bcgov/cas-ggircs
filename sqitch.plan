@@ -115,3 +115,4 @@ swrs/transform/function/load_fuel_charge [swrs/transform/function/load_fuel_char
 swrs/transform/function/load_fuel_carbon_tax_details [swrs/transform/function/load_fuel_carbon_tax_details@v1.2.0] 2021-05-04T16:09:25Z Dylan Leard <dylan@button.is> # Migration: remove carbon_taxed from load function
 swrs/public/table/fuel_charge_003 [swrs/public/table/fuel_charge_002] 2021-05-04T16:13:19Z Dylan Leard <dylan@button.is> # Migration: remove deprecated foreign key columns
 swrs/public/table/fuel_carbon_tax_details_002 [swrs/public/table/fuel_carbon_tax_details_001] 2021-05-04T16:22:07Z Dylan Leard <dylan@button.is> # Migration: drop unused carbon_taxed column
+swrs/add_missing_indices 2021-05-05T17:10:13Z Dylan Leard <dylan@button.is> # Add an index to all foreign keys that are currently missing one
