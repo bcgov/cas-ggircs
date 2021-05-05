@@ -26,165 +26,320 @@ values
 (7, 'Submitted operator', 777777777, 777777777);
 
 /***********************************************
-  Create reports, organisations & facilities
+  Create dev data
 ***********************************************/
 
 do $report$
   declare
     loop_modifier int := 0;
+    loop_offset int;
   begin
 
     -- Create 1600 reports per year (1000 for load testing & 100 for each other organisation type)
     for year in 2018..2025 loop
+      loop_offset := loop_modifier*1600;
       -- Load Testing
       for i in 1..1000 loop
-        raise notice 'SUM: %', i+loop_modifier*1600;
         insert into swrs.report(id, imported_at, swrs_report_id, swrs_facility_id, swrs_organisation_id, reporting_period_duration, version, submission_date)
-        values(i+loop_modifier*1600, now(), i+loop_modifier*1600, i+loop_modifier*1600, 1, year, 1, now());
+        values(i+loop_offset, now(), i+loop_offset, i+loop_offset, 1, year, 1, now());
 
         insert into swrs.organisation (id, report_id, swrs_organisation_id, business_legal_name, english_trade_name, cra_business_number, duns)
-        values (i+loop_modifier*1600, i+loop_modifier*1600, 1, (select org_name from org_helper where swrs_org_id=1), (select org_name from org_helper where swrs_org_id=1), (select cra_num from org_helper where swrs_org_id=1), (select duns from org_helper where swrs_org_id=1));
+        values (i+loop_offset, i+loop_offset, 1, (select org_name from org_helper where swrs_org_id=1), (select org_name from org_helper where swrs_org_id=1), (select cra_num from org_helper where swrs_org_id=1), (select duns from org_helper where swrs_org_id=1));
 
         insert into swrs.facility (id, report_id, organisation_id, swrs_facility_id, facility_name, facility_type)
-        values (i+loop_modifier*1600, i+loop_modifier*1600, i+loop_modifier*1600, i+loop_modifier*1600, concat('facility ', i+loop_modifier*1600), 'SFO');
+        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, concat('facility ', i+loop_offset), 'SFO');
+
+        insert into swrs.naics (id, report_id, facility_id, registration_data_facility_id, swrs_facility_id, naics_code)
+        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 111419);
+
+        insert into swrs.activity (id, report_id, facility_id)
+        values (i+loop_offset, i+loop_offset, i+loop_offset);
+
+        insert into swrs.unit (id, activity_id)
+        values (i+loop_offset, i+loop_offset);
+
+        insert into swrs.fuel (id, report_id, unit_id, fuel_mapping_id, fuel_type, fuel_description, fuel_units, annual_fuel_amount)
+        values (i+loop_offset, i+loop_offset, i+loop_offset, 6, 'Aviation Gasoline (kilolitres)', 'Aviation Gasoline (kilolitres)', 'kl', 1234);
+
+        insert into swrs.emission (id, activity_id, facility_id, fuel_id, naics_id, organisation_id, report_id, unit_id, quantity, calculated_quantity, emission_category)
+        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 1000, 1000, 'BC_ScheduleB_GeneralStationaryCombustionEmissions');
+
       end loop;
 
       -- SFO
       for i in 1001..1100 loop
         insert into swrs.report(id, imported_at, swrs_report_id, swrs_facility_id, swrs_organisation_id, reporting_period_duration, version, submission_date)
-        values(i+loop_modifier*1600, now(), i+loop_modifier*1600, i+loop_modifier*1600, 2, year, 1, now());
+        values(i+loop_offset, now(), i+loop_offset, i+loop_offset, 2, year, 1, now());
 
         insert into swrs.organisation (id, report_id, swrs_organisation_id, business_legal_name, english_trade_name, cra_business_number, duns)
-        values (i+loop_modifier*1600, i+loop_modifier*1600, 2, (select org_name from org_helper where swrs_org_id=2), (select org_name from org_helper where swrs_org_id=2), (select cra_num from org_helper where swrs_org_id=2), (select duns from org_helper where swrs_org_id=2));
+        values (i+loop_offset, i+loop_offset, 2, (select org_name from org_helper where swrs_org_id=2), (select org_name from org_helper where swrs_org_id=2), (select cra_num from org_helper where swrs_org_id=2), (select duns from org_helper where swrs_org_id=2));
 
         insert into swrs.facility (id, report_id, organisation_id, swrs_facility_id, facility_name, facility_type)
-        values (i+loop_modifier*1600, i+loop_modifier*1600, i+loop_modifier*1600, i+loop_modifier*1600, concat('facility ', i+loop_modifier*1600), 'SFO');
+        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, concat('facility ', i+loop_offset), 'SFO');
+
+        insert into swrs.naics (id, report_id, facility_id, registration_data_facility_id, swrs_facility_id, naics_code)
+        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 111419);
+
+        insert into swrs.activity (id, report_id, facility_id)
+        values (i+loop_offset, i+loop_offset, i+loop_offset);
+
+        insert into swrs.unit (id, activity_id)
+        values (i+loop_offset, i+loop_offset);
+
+        insert into swrs.fuel (id, report_id, unit_id, fuel_mapping_id, fuel_type, fuel_description, fuel_units, annual_fuel_amount)
+        values (i+loop_offset, i+loop_offset, i+loop_offset, 6, 'Aviation Gasoline (kilolitres)', 'Aviation Gasoline (kilolitres)', 'kl', 1234);
+
+        insert into swrs.emission (id, activity_id, facility_id, fuel_id, naics_id, organisation_id, report_id, unit_id, quantity, calculated_quantity, emission_category)
+        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 1000, 1000, 'BC_ScheduleB_GeneralStationaryCombustionEmissions');
       end loop;
 
       -- LFO
       for i in 1101..1133 loop
         insert into swrs.report(id, imported_at, swrs_report_id, swrs_facility_id, swrs_organisation_id, reporting_period_duration, version, submission_date)
-        values(i+loop_modifier*1600, now(), i+loop_modifier*1600, i+loop_modifier*1600, 3, year, 1, now());
+        values(i+loop_offset, now(), i+loop_offset, i+loop_offset, 3, year, 1, now());
 
         insert into swrs.organisation (id, report_id, swrs_organisation_id, business_legal_name, english_trade_name, cra_business_number, duns)
-        values (i+loop_modifier*1600, i+loop_modifier*1600, 3, (select org_name from org_helper where swrs_org_id=3), (select org_name from org_helper where swrs_org_id=3), (select cra_num from org_helper where swrs_org_id=3), (select duns from org_helper where swrs_org_id=3));
+        values (i+loop_offset, i+loop_offset, 3, (select org_name from org_helper where swrs_org_id=3), (select org_name from org_helper where swrs_org_id=3), (select cra_num from org_helper where swrs_org_id=3), (select duns from org_helper where swrs_org_id=3));
 
         insert into swrs.facility (id, report_id, organisation_id, swrs_facility_id, facility_name, facility_type)
-        values (i+loop_modifier*1600, i+loop_modifier*1600, i+loop_modifier*1600, i+loop_modifier*1600, concat('facility ', i+loop_modifier*1600), 'IF_a');
+        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, concat('facility ', i+loop_offset), 'IF_a');
+
+        insert into swrs.naics (id, report_id, facility_id, registration_data_facility_id, swrs_facility_id, naics_code)
+        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 111419);
+
+        insert into swrs.activity (id, report_id, facility_id)
+        values (i+loop_offset, i+loop_offset, i+loop_offset);
+
+        insert into swrs.unit (id, activity_id)
+        values (i+loop_offset, i+loop_offset);
+
+        insert into swrs.fuel (id, report_id, unit_id, fuel_mapping_id, fuel_type, fuel_description, fuel_units, annual_fuel_amount)
+        values (i+loop_offset, i+loop_offset, i+loop_offset, 6, 'Aviation Gasoline (kilolitres)', 'Aviation Gasoline (kilolitres)', 'kl', 1234);
+
+        insert into swrs.emission (id, activity_id, facility_id, fuel_id, naics_id, organisation_id, report_id, unit_id, quantity, calculated_quantity, emission_category)
+        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 1000, 1000, 'BC_ScheduleB_GeneralStationaryCombustionEmissions');
       end loop;
 
       for i in 1134..1167 loop
         insert into swrs.report(id, imported_at, swrs_report_id, swrs_facility_id, swrs_organisation_id, reporting_period_duration, version, submission_date)
-        values(i+loop_modifier*1600, now(), i+loop_modifier*1600, i+loop_modifier*1600, 3, year, 1, now());
+        values(i+loop_offset, now(), i+loop_offset, i+loop_offset, 3, year, 1, now());
 
         insert into swrs.organisation (id, report_id, swrs_organisation_id, business_legal_name, english_trade_name, cra_business_number, duns)
-        values (i+loop_modifier*1600, i+loop_modifier*1600, 3, (select org_name from org_helper where swrs_org_id=3), (select org_name from org_helper where swrs_org_id=3), (select cra_num from org_helper where swrs_org_id=3), (select duns from org_helper where swrs_org_id=3));
+        values (i+loop_offset, i+loop_offset, 3, (select org_name from org_helper where swrs_org_id=3), (select org_name from org_helper where swrs_org_id=3), (select cra_num from org_helper where swrs_org_id=3), (select duns from org_helper where swrs_org_id=3));
 
         insert into swrs.facility (id, report_id, organisation_id, swrs_facility_id, facility_name, facility_type)
-        values (i+loop_modifier*1600, i+loop_modifier*1600, i+loop_modifier*1600, i+loop_modifier*1600, concat('facility ', i+loop_modifier*1600), 'IF_b');
+        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, concat('facility ', i+loop_offset), 'IF_b');
+
+        insert into swrs.naics (id, report_id, facility_id, registration_data_facility_id, swrs_facility_id, naics_code)
+        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 111419);
+
+        insert into swrs.activity (id, report_id, facility_id)
+        values (i+loop_offset, i+loop_offset, i+loop_offset);
+
+        insert into swrs.unit (id, activity_id)
+        values (i+loop_offset, i+loop_offset);
+
+        insert into swrs.fuel (id, report_id, unit_id, fuel_mapping_id, fuel_type, fuel_description, fuel_units, annual_fuel_amount)
+        values (i+loop_offset, i+loop_offset, i+loop_offset, 6, 'Aviation Gasoline (kilolitres)', 'Aviation Gasoline (kilolitres)', 'kl', 1234);
+
+        insert into swrs.emission (id, activity_id, facility_id, fuel_id, naics_id, organisation_id, report_id, unit_id, quantity, calculated_quantity, emission_category)
+        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 1000, 1000, 'BC_ScheduleB_GeneralStationaryCombustionEmissions');
       end loop;
 
       for i in 1168..1200 loop
         insert into swrs.report(id, imported_at, swrs_report_id, swrs_facility_id, swrs_organisation_id, reporting_period_duration, version, submission_date)
-        values(i+loop_modifier*1600, now(), i+loop_modifier*1600, i+loop_modifier*1600, 3, year, 1, now());
+        values(i+loop_offset, now(), i+loop_offset, i+loop_offset, 3, year, 1, now());
 
         insert into swrs.organisation (id, report_id, swrs_organisation_id, business_legal_name, english_trade_name, cra_business_number, duns)
-        values (i+loop_modifier*1600, i+loop_modifier*1600, 3, (select org_name from org_helper where swrs_org_id=3), (select org_name from org_helper where swrs_org_id=3), (select cra_num from org_helper where swrs_org_id=3), (select duns from org_helper where swrs_org_id=3));
+        values (i+loop_offset, i+loop_offset, 3, (select org_name from org_helper where swrs_org_id=3), (select org_name from org_helper where swrs_org_id=3), (select cra_num from org_helper where swrs_org_id=3), (select duns from org_helper where swrs_org_id=3));
 
         insert into swrs.facility (id, report_id, organisation_id, swrs_facility_id, facility_name, facility_type)
-        values (i+loop_modifier*1600, i+loop_modifier*1600, i+loop_modifier*1600, i+loop_modifier*1600, concat('facility ', i+loop_modifier*1600), 'L_c');
+        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, concat('facility ', i+loop_offset), 'L_c');
+
+        insert into swrs.naics (id, report_id, facility_id, registration_data_facility_id, swrs_facility_id, naics_code)
+        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 111419);
+
+        insert into swrs.activity (id, report_id, facility_id)
+        values (i+loop_offset, i+loop_offset, i+loop_offset);
+
+        insert into swrs.unit (id, activity_id)
+        values (i+loop_offset, i+loop_offset);
+
+        insert into swrs.fuel (id, report_id, unit_id, fuel_mapping_id, fuel_type, fuel_description, fuel_units, annual_fuel_amount)
+        values (i+loop_offset, i+loop_offset, i+loop_offset, 6, 'Aviation Gasoline (kilolitres)', 'Aviation Gasoline (kilolitres)', 'kl', 1234);
+
+        insert into swrs.emission (id, activity_id, facility_id, fuel_id, naics_id, organisation_id, report_id, unit_id, quantity, calculated_quantity, emission_category)
+        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 1000, 1000, 'BC_ScheduleB_GeneralStationaryCombustionEmissions');
       end loop;
 
       -- Changes Requested
       for i in 1201..1300 loop
         insert into swrs.report(id, imported_at, swrs_report_id, swrs_facility_id, swrs_organisation_id, reporting_period_duration, version, submission_date)
-        values(i+loop_modifier*1600, now(), i+loop_modifier*1600, i+loop_modifier*1600, 4, year, 1, now());
+        values(i+loop_offset, now(), i+loop_offset, i+loop_offset, 4, year, 1, now());
 
         insert into swrs.organisation (id, report_id, swrs_organisation_id, business_legal_name, english_trade_name, cra_business_number, duns)
-        values (i+loop_modifier*1600, i+loop_modifier*1600, 4, (select org_name from org_helper where swrs_org_id=4), (select org_name from org_helper where swrs_org_id=4), (select cra_num from org_helper where swrs_org_id=4), (select duns from org_helper where swrs_org_id=4));
+        values (i+loop_offset, i+loop_offset, 4, (select org_name from org_helper where swrs_org_id=4), (select org_name from org_helper where swrs_org_id=4), (select cra_num from org_helper where swrs_org_id=4), (select duns from org_helper where swrs_org_id=4));
 
         insert into swrs.facility (id, report_id, organisation_id, swrs_facility_id, facility_name, facility_type)
-        values (i+loop_modifier*1600, i+loop_modifier*1600, i+loop_modifier*1600, i+loop_modifier*1600, concat('facility ', i+loop_modifier*1600), 'SFO');
+        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, concat('facility ', i+loop_offset), 'SFO');
+
+        insert into swrs.naics (id, report_id, facility_id, registration_data_facility_id, swrs_facility_id, naics_code)
+        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 111419);
+
+        insert into swrs.activity (id, report_id, facility_id)
+        values (i+loop_offset, i+loop_offset, i+loop_offset);
+
+        insert into swrs.unit (id, activity_id)
+        values (i+loop_offset, i+loop_offset);
+
+        insert into swrs.fuel (id, report_id, unit_id, fuel_mapping_id, fuel_type, fuel_description, fuel_units, annual_fuel_amount)
+        values (i+loop_offset, i+loop_offset, i+loop_offset, 6, 'Aviation Gasoline (kilolitres)', 'Aviation Gasoline (kilolitres)', 'kl', 1234);
+
+        insert into swrs.emission (id, activity_id, facility_id, fuel_id, naics_id, organisation_id, report_id, unit_id, quantity, calculated_quantity, emission_category)
+        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 1000, 1000, 'BC_ScheduleB_GeneralStationaryCombustionEmissions');
       end loop;
 
       -- Draft
       for i in 1301..1400 loop
         insert into swrs.report(id, imported_at, swrs_report_id, swrs_facility_id, swrs_organisation_id, reporting_period_duration, version, submission_date)
-        values(i+loop_modifier*1600, now(), i+loop_modifier*1600, i+loop_modifier*1600, 5, year, 1, now());
+        values(i+loop_offset, now(), i+loop_offset, i+loop_offset, 5, year, 1, now());
 
         insert into swrs.organisation (id, report_id, swrs_organisation_id, business_legal_name, english_trade_name, cra_business_number, duns)
-        values (i+loop_modifier*1600, i+loop_modifier*1600, 5, (select org_name from org_helper where swrs_org_id=5), (select org_name from org_helper where swrs_org_id=5), (select cra_num from org_helper where swrs_org_id=5), (select duns from org_helper where swrs_org_id=5));
+        values (i+loop_offset, i+loop_offset, 5, (select org_name from org_helper where swrs_org_id=5), (select org_name from org_helper where swrs_org_id=5), (select cra_num from org_helper where swrs_org_id=5), (select duns from org_helper where swrs_org_id=5));
 
         insert into swrs.facility (id, report_id, organisation_id, swrs_facility_id, facility_name, facility_type)
-        values (i+loop_modifier*1600, i+loop_modifier*1600, i+loop_modifier*1600, i+loop_modifier*1600, concat('facility ', i+loop_modifier*1600), 'SFO');
+        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, concat('facility ', i+loop_offset), 'SFO');
+
+        insert into swrs.naics (id, report_id, facility_id, registration_data_facility_id, swrs_facility_id, naics_code)
+        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 111419);
+
+        insert into swrs.activity (id, report_id, facility_id)
+        values (i+loop_offset, i+loop_offset, i+loop_offset);
+
+        insert into swrs.unit (id, activity_id)
+        values (i+loop_offset, i+loop_offset);
+
+        insert into swrs.fuel (id, report_id, unit_id, fuel_mapping_id, fuel_type, fuel_description, fuel_units, annual_fuel_amount)
+        values (i+loop_offset, i+loop_offset, i+loop_offset, 6, 'Aviation Gasoline (kilolitres)', 'Aviation Gasoline (kilolitres)', 'kl', 1234);
+
+        insert into swrs.emission (id, activity_id, facility_id, fuel_id, naics_id, organisation_id, report_id, unit_id, quantity, calculated_quantity, emission_category)
+        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 1000, 1000, 'BC_ScheduleB_GeneralStationaryCombustionEmissions');
       end loop;
 
       -- Not Started
       for i in 1401..1500 loop
         insert into swrs.report(id, imported_at, swrs_report_id, swrs_facility_id, swrs_organisation_id, reporting_period_duration, version, submission_date)
-        values(i+loop_modifier*1600, now(), i+loop_modifier*1600, i+loop_modifier*1600, 6, year, 1, now());
+        values(i+loop_offset, now(), i+loop_offset, i+loop_offset, 6, year, 1, now());
 
         insert into swrs.organisation (id, report_id, swrs_organisation_id, business_legal_name, english_trade_name, cra_business_number, duns)
-        values (i+loop_modifier*1600, i+loop_modifier*1600, 6, (select org_name from org_helper where swrs_org_id=6), (select org_name from org_helper where swrs_org_id=6), (select cra_num from org_helper where swrs_org_id=6), (select duns from org_helper where swrs_org_id=6));
+        values (i+loop_offset, i+loop_offset, 6, (select org_name from org_helper where swrs_org_id=6), (select org_name from org_helper where swrs_org_id=6), (select cra_num from org_helper where swrs_org_id=6), (select duns from org_helper where swrs_org_id=6));
 
         insert into swrs.facility (id, report_id, organisation_id, swrs_facility_id, facility_name, facility_type)
-        values (i+loop_modifier*1600, i+loop_modifier*1600, i+loop_modifier*1600, i+loop_modifier*1600, concat('facility ', i+loop_modifier*1600), 'SFO');
+        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, concat('facility ', i+loop_offset), 'SFO');
+
+        insert into swrs.naics (id, report_id, facility_id, registration_data_facility_id, swrs_facility_id, naics_code)
+        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 111419);
+
+        insert into swrs.activity (id, report_id, facility_id)
+        values (i+loop_offset, i+loop_offset, i+loop_offset);
+
+        insert into swrs.unit (id, activity_id)
+        values (i+loop_offset, i+loop_offset);
+
+        insert into swrs.fuel (id, report_id, unit_id, fuel_mapping_id, fuel_type, fuel_description, fuel_units, annual_fuel_amount)
+        values (i+loop_offset, i+loop_offset, i+loop_offset, 6, 'Aviation Gasoline (kilolitres)', 'Aviation Gasoline (kilolitres)', 'kl', 1234);
+
+        insert into swrs.emission (id, activity_id, facility_id, fuel_id, naics_id, organisation_id, report_id, unit_id, quantity, calculated_quantity, emission_category)
+        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 1000, 1000, 'BC_ScheduleB_GeneralStationaryCombustionEmissions');
       end loop;
 
       -- Submitted
       for i in 1501..1533 loop
         insert into swrs.report(id, imported_at, swrs_report_id, swrs_facility_id, swrs_organisation_id, reporting_period_duration, version, submission_date)
-        values(i+loop_modifier*1600, now(), i+loop_modifier*1600, i+loop_modifier*1600, 7, (select date_part('year', now() - interval '3 years')), 1, now());
+        values(i+loop_offset, now(), i+loop_offset, i+loop_offset, 7, year, 1, now());
 
         insert into swrs.organisation (id, report_id, swrs_organisation_id, business_legal_name, english_trade_name, cra_business_number, duns)
-        values (i+loop_modifier*1600, i+loop_modifier*1600, 7, (select org_name from org_helper where swrs_org_id=7), (select org_name from org_helper where swrs_org_id=7), (select cra_num from org_helper where swrs_org_id=7), (select duns from org_helper where swrs_org_id=7));
+        values (i+loop_offset, i+loop_offset, 7, (select org_name from org_helper where swrs_org_id=7), (select org_name from org_helper where swrs_org_id=7), (select cra_num from org_helper where swrs_org_id=7), (select duns from org_helper where swrs_org_id=7));
 
         insert into swrs.facility (id, report_id, organisation_id, swrs_facility_id, facility_name, facility_type)
-        values (i+loop_modifier*1600, i+loop_modifier*1600, i+loop_modifier*1600, i+loop_modifier*1600, concat('facility ', i+loop_modifier*1600), 'SFO');
+        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, concat('facility ', i+loop_offset), 'SFO');
+
+        insert into swrs.naics (id, report_id, facility_id, registration_data_facility_id, swrs_facility_id, naics_code)
+        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 111419);
+
+        insert into swrs.activity (id, report_id, facility_id)
+        values (i+loop_offset, i+loop_offset, i+loop_offset);
+
+        insert into swrs.unit (id, activity_id)
+        values (i+loop_offset, i+loop_offset);
+
+        insert into swrs.fuel (id, report_id, unit_id, fuel_mapping_id, fuel_type, fuel_description, fuel_units, annual_fuel_amount)
+        values (i+loop_offset, i+loop_offset, i+loop_offset, 6, 'Aviation Gasoline (kilolitres)', 'Aviation Gasoline (kilolitres)', 'kl', 1234);
+
+        insert into swrs.emission (id, activity_id, facility_id, fuel_id, naics_id, organisation_id, report_id, unit_id, quantity, calculated_quantity, emission_category)
+        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 1000, 1000, 'BC_ScheduleB_GeneralStationaryCombustionEmissions');
       end loop;
 
       for i in 1534..1567 loop
         insert into swrs.report(id, imported_at, swrs_report_id, swrs_facility_id, swrs_organisation_id, reporting_period_duration, version, submission_date)
-        values(i+loop_modifier*1600, now(), i+loop_modifier*1600, i+loop_modifier*1600, 7, (select date_part('year', now() - interval '2 years')), 1, now());
+        values(i+loop_offset, now(), i+loop_offset, i+loop_offset, 7, year, 1, now());
 
         insert into swrs.organisation (id, report_id, swrs_organisation_id, business_legal_name, english_trade_name, cra_business_number, duns)
-        values (i+loop_modifier*1600, i+loop_modifier*1600, 7, (select org_name from org_helper where swrs_org_id=7), (select org_name from org_helper where swrs_org_id=7), (select cra_num from org_helper where swrs_org_id=7), (select duns from org_helper where swrs_org_id=7));
+        values (i+loop_offset, i+loop_offset, 7, (select org_name from org_helper where swrs_org_id=7), (select org_name from org_helper where swrs_org_id=7), (select cra_num from org_helper where swrs_org_id=7), (select duns from org_helper where swrs_org_id=7));
 
         insert into swrs.facility (id, report_id, organisation_id, swrs_facility_id, facility_name, facility_type)
-        values (i+loop_modifier*1600, i+loop_modifier*1600, i+loop_modifier*1600, i+loop_modifier*1600, concat('facility ', i+loop_modifier*1600), 'SFO');
+        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, concat('facility ', i+loop_offset), 'SFO');
+
+        insert into swrs.naics (id, report_id, facility_id, registration_data_facility_id, swrs_facility_id, naics_code)
+        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 111419);
+
+        insert into swrs.activity (id, report_id, facility_id)
+        values (i+loop_offset, i+loop_offset, i+loop_offset);
+
+        insert into swrs.unit (id, activity_id)
+        values (i+loop_offset, i+loop_offset);
+
+        insert into swrs.fuel (id, report_id, unit_id, fuel_mapping_id, fuel_type, fuel_description, fuel_units, annual_fuel_amount)
+        values (i+loop_offset, i+loop_offset, i+loop_offset, 6, 'Aviation Gasoline (kilolitres)', 'Aviation Gasoline (kilolitres)', 'kl', 1234);
+
+        insert into swrs.emission (id, activity_id, facility_id, fuel_id, naics_id, organisation_id, report_id, unit_id, quantity, calculated_quantity, emission_category)
+        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 1000, 1000, 'BC_ScheduleB_GeneralStationaryCombustionEmissions');
       end loop;
 
       for i in 1568..1600 loop
         insert into swrs.report(id, imported_at, swrs_report_id, swrs_facility_id, swrs_organisation_id, reporting_period_duration, version, submission_date)
-        values(i+loop_modifier*1600, now(), i+loop_modifier*1600, i+loop_modifier*1600, 7, year, 1, now());
+        values(i+loop_offset, now(), i+loop_offset, i+loop_offset, 7, year, 1, now());
 
         insert into swrs.organisation (id, report_id, swrs_organisation_id, business_legal_name, english_trade_name, cra_business_number, duns)
-        values (i+loop_modifier*1600, i+loop_modifier*1600, 7, (select org_name from org_helper where swrs_org_id=7), (select org_name from org_helper where swrs_org_id=7), (select cra_num from org_helper where swrs_org_id=7), (select duns from org_helper where swrs_org_id=7));
+        values (i+loop_offset, i+loop_offset, 7, (select org_name from org_helper where swrs_org_id=7), (select org_name from org_helper where swrs_org_id=7), (select cra_num from org_helper where swrs_org_id=7), (select duns from org_helper where swrs_org_id=7));
 
         insert into swrs.facility (id, report_id, organisation_id, swrs_facility_id, facility_name, facility_type)
-        values (i+loop_modifier*1600, i+loop_modifier*1600, i+loop_modifier*1600, i+loop_modifier*1600, concat('facility ', i+loop_modifier*1600), 'SFO');
+        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, concat('facility ', i+loop_offset), 'SFO');
+
+        insert into swrs.naics (id, report_id, facility_id, registration_data_facility_id, swrs_facility_id, naics_code)
+        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 111419);
+
+        insert into swrs.activity (id, report_id, facility_id)
+        values (i+loop_offset, i+loop_offset, i+loop_offset);
+
+        insert into swrs.unit (id, activity_id)
+        values (i+loop_offset, i+loop_offset);
+
+        insert into swrs.fuel (id, report_id, unit_id, fuel_mapping_id, fuel_type, fuel_description, fuel_units, annual_fuel_amount)
+        values (i+loop_offset, i+loop_offset, i+loop_offset, 6, 'Aviation Gasoline (kilolitres)', 'Aviation Gasoline (kilolitres)', 'kl', 1234);
+
+        insert into swrs.emission (id, activity_id, facility_id, fuel_id, naics_id, organisation_id, report_id, unit_id, quantity, calculated_quantity, emission_category)
+        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 1000, 1000, 'BC_ScheduleB_GeneralStationaryCombustionEmissions');
       end loop;
       loop_modifier = loop_modifier+1;
     end loop;
 
+    raise notice '** Created % reports. **', (select count(*) from swrs.report);
+    raise notice '** % reports for each year from 2018-2025. **', (select count(*)/8 from swrs.report);
+    raise notice '** 1000 per year for load-testing & 100 per year for each other operator type. **';
+    raise notice '** Operator types: {%} **', (select string_agg(quote_literal(org_name), ', ') as Orgs from org_helper);
+
   end
 $report$;
-
-select * from org_helper;
-
-select count(*) from swrs.report where swrs_organisation_id = 1;
-select count(*) from swrs.report where swrs_organisation_id = 2;
-select count(*) from swrs.report where swrs_organisation_id = 3;
-select count(*) from swrs.report where swrs_organisation_id = 4;
-select count(*) from swrs.report where swrs_organisation_id = 5;
-select count(*) from swrs.report where swrs_organisation_id = 6;
-select count(*) from swrs.report where swrs_organisation_id = 7;
-
-select count(*) from swrs.report where reporting_period_duration = 2018;
-select count(*) from swrs.report where reporting_period_duration = 2019;
-select count(*) from swrs.report where reporting_period_duration = 2020;
-select count(*) from swrs.report where reporting_period_duration = 2021;
-select count(*) from swrs.report where reporting_period_duration = 2022;
-select count(*) from swrs.report where reporting_period_duration = 2023;
 
 commit;

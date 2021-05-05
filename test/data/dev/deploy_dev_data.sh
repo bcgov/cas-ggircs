@@ -18,4 +18,8 @@ deployDevData() {
   return 0;
 }
 
-deployDevData
+if [[ $1 =~ -dev$ ]]; then
+  echo 'deploying dev data...';
+  deployDevData
+fi
+
