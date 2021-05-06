@@ -28,7 +28,7 @@ values
 /***********************************************
   Create dev data
 ***********************************************/
-drop sequence address_sequence;
+drop sequence if exists address_sequence;
 create sequence address_sequence start 1;
 
 do $report$
