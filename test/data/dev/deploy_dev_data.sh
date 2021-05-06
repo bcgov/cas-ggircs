@@ -45,4 +45,3 @@ if [[ $1 =~ -dev$ ]]; then
   echo 'Truncating all tables in the swrs schema & deploying dev data...';
   deployDevData
 fi
-
