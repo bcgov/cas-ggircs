@@ -93,6 +93,9 @@
     "typescript": "^4.1.3",
     "wait-on": "^5.2.1"
   },
+  "resolutions": {
+    "**/hosted-git-info": "4.0.1"
+  },
   "jest": {
     "testMatch": [
       "**/__tests__/**/*.[jt]s?(x)",
