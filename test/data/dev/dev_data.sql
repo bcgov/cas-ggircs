@@ -48,8 +48,8 @@ do $report$
         insert into swrs.organisation (id, report_id, swrs_organisation_id, business_legal_name, english_trade_name, cra_business_number, duns)
         values (i+loop_offset, i+loop_offset, 1, (select org_name from org_helper where swrs_org_id=1), (select org_name from org_helper where swrs_org_id=1), (select cra_num from org_helper where swrs_org_id=1), (select duns from org_helper where swrs_org_id=1));
 
-        insert into swrs.facility (id, report_id, organisation_id, swrs_facility_id, facility_name, facility_type)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, concat('facility ', i+loop_offset), 'SFO');
+        insert into swrs.facility (id, report_id, organisation_id, swrs_facility_id, facility_name, facility_type, facility_bc_ghg_id)
+        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, concat('facility ', i+loop_offset), 'SFO', (i+loop_offset)::varchar(1000));
 
         insert into swrs.naics (id, report_id, facility_id, registration_data_facility_id, swrs_facility_id, naics_code)
         values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 111419);
@@ -65,9 +65,6 @@ do $report$
 
         insert into swrs.emission (id, activity_id, facility_id, fuel_id, naics_id, organisation_id, report_id, unit_id, quantity, calculated_quantity, emission_category)
         values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 1000, 1000, 'BC_ScheduleB_GeneralStationaryCombustionEmissions');
-
-        insert into swrs.identifier(id, report_id, facility_id,facility_bcghgid_id, swrs_facility_id, identifier_type, identifier_value)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 'BCGHGID', i+loop_offset);
 
         insert into swrs.address (id, report_id, facility_id, organisation_id, swrs_facility_id, swrs_organisation_id, path_context, type, mailing_address_street_number, mailing_address_street_name, mailing_address_street_type, mailing_address_municipality, mailing_address_prov_terr_state, mailing_address_postal_code_zip_code, mailing_address_country)
         values
@@ -88,8 +85,8 @@ do $report$
         insert into swrs.organisation (id, report_id, swrs_organisation_id, business_legal_name, english_trade_name, cra_business_number, duns)
         values (i+loop_offset, i+loop_offset, 2, (select org_name from org_helper where swrs_org_id=2), (select org_name from org_helper where swrs_org_id=2), (select cra_num from org_helper where swrs_org_id=2), (select duns from org_helper where swrs_org_id=2));
 
-        insert into swrs.facility (id, report_id, organisation_id, swrs_facility_id, facility_name, facility_type)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, concat('facility ', i+loop_offset), 'SFO');
+        insert into swrs.facility (id, report_id, organisation_id, swrs_facility_id, facility_name, facility_type, facility_bc_ghg_id)
+        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, concat('facility ', i+loop_offset), 'SFO', (i+loop_offset)::varchar(1000));
 
         insert into swrs.naics (id, report_id, facility_id, registration_data_facility_id, swrs_facility_id, naics_code)
         values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 111419);
@@ -105,9 +102,6 @@ do $report$
 
         insert into swrs.emission (id, activity_id, facility_id, fuel_id, naics_id, organisation_id, report_id, unit_id, quantity, calculated_quantity, emission_category)
         values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 1000, 1000, 'BC_ScheduleB_GeneralStationaryCombustionEmissions');
-
-        insert into swrs.identifier(id, report_id, facility_id,facility_bcghgid_id, swrs_facility_id, identifier_type, identifier_value)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 'BCGHGID', i+loop_offset);
 
         insert into swrs.address (id, report_id, facility_id, organisation_id, swrs_facility_id, swrs_organisation_id, path_context, type, mailing_address_street_number, mailing_address_street_name, mailing_address_street_type, mailing_address_municipality, mailing_address_prov_terr_state, mailing_address_postal_code_zip_code, mailing_address_country)
         values
@@ -127,8 +121,8 @@ do $report$
         insert into swrs.organisation (id, report_id, swrs_organisation_id, business_legal_name, english_trade_name, cra_business_number, duns)
         values (i+loop_offset, i+loop_offset, 3, (select org_name from org_helper where swrs_org_id=3), (select org_name from org_helper where swrs_org_id=3), (select cra_num from org_helper where swrs_org_id=3), (select duns from org_helper where swrs_org_id=3));
 
-        insert into swrs.facility (id, report_id, organisation_id, swrs_facility_id, facility_name, facility_type)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, concat('facility ', i+loop_offset), 'IF_a');
+        insert into swrs.facility (id, report_id, organisation_id, swrs_facility_id, facility_name, facility_type, facility_bc_ghg_id)
+        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, concat('facility ', i+loop_offset), 'IF_a', (i+loop_offset)::varchar(1000));
 
         insert into swrs.naics (id, report_id, facility_id, registration_data_facility_id, swrs_facility_id, naics_code)
         values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 111419);
@@ -144,9 +138,6 @@ do $report$
 
         insert into swrs.emission (id, activity_id, facility_id, fuel_id, naics_id, organisation_id, report_id, unit_id, quantity, calculated_quantity, emission_category)
         values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 1000, 1000, 'BC_ScheduleB_GeneralStationaryCombustionEmissions');
-
-        insert into swrs.identifier(id, report_id, facility_id,facility_bcghgid_id, swrs_facility_id, identifier_type, identifier_value)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 'BCGHGID', i+loop_offset);
 
         insert into swrs.address (id, report_id, facility_id, organisation_id, swrs_facility_id, swrs_organisation_id, path_context, type, mailing_address_street_number, mailing_address_street_name, mailing_address_street_type, mailing_address_municipality, mailing_address_prov_terr_state, mailing_address_postal_code_zip_code, mailing_address_country)
         values
@@ -165,8 +156,8 @@ do $report$
         insert into swrs.organisation (id, report_id, swrs_organisation_id, business_legal_name, english_trade_name, cra_business_number, duns)
         values (i+loop_offset, i+loop_offset, 3, (select org_name from org_helper where swrs_org_id=3), (select org_name from org_helper where swrs_org_id=3), (select cra_num from org_helper where swrs_org_id=3), (select duns from org_helper where swrs_org_id=3));
 
-        insert into swrs.facility (id, report_id, organisation_id, swrs_facility_id, facility_name, facility_type)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, concat('facility ', i+loop_offset), 'IF_b');
+        insert into swrs.facility (id, report_id, organisation_id, swrs_facility_id, facility_name, facility_type, facility_bc_ghg_id)
+        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, concat('facility ', i+loop_offset), 'IF_b', (i+loop_offset)::varchar(1000));
 
         insert into swrs.naics (id, report_id, facility_id, registration_data_facility_id, swrs_facility_id, naics_code)
         values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 111419);
@@ -182,9 +173,6 @@ do $report$
 
         insert into swrs.emission (id, activity_id, facility_id, fuel_id, naics_id, organisation_id, report_id, unit_id, quantity, calculated_quantity, emission_category)
         values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 1000, 1000, 'BC_ScheduleB_GeneralStationaryCombustionEmissions');
-
-        insert into swrs.identifier(id, report_id, facility_id,facility_bcghgid_id, swrs_facility_id, identifier_type, identifier_value)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 'BCGHGID', i+loop_offset);
 
         insert into swrs.address (id, report_id, facility_id, organisation_id, swrs_facility_id, swrs_organisation_id, path_context, type, mailing_address_street_number, mailing_address_street_name, mailing_address_street_type, mailing_address_municipality, mailing_address_prov_terr_state, mailing_address_postal_code_zip_code, mailing_address_country)
         values
@@ -203,8 +191,8 @@ do $report$
         insert into swrs.organisation (id, report_id, swrs_organisation_id, business_legal_name, english_trade_name, cra_business_number, duns)
         values (i+loop_offset, i+loop_offset, 3, (select org_name from org_helper where swrs_org_id=3), (select org_name from org_helper where swrs_org_id=3), (select cra_num from org_helper where swrs_org_id=3), (select duns from org_helper where swrs_org_id=3));
 
-        insert into swrs.facility (id, report_id, organisation_id, swrs_facility_id, facility_name, facility_type)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, concat('facility ', i+loop_offset), 'L_c');
+        insert into swrs.facility (id, report_id, organisation_id, swrs_facility_id, facility_name, facility_type, facility_bc_ghg_id)
+        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, concat('facility ', i+loop_offset), 'L_c', (i+loop_offset)::varchar(1000));
 
         insert into swrs.naics (id, report_id, facility_id, registration_data_facility_id, swrs_facility_id, naics_code)
         values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 111419);
@@ -220,9 +208,6 @@ do $report$
 
         insert into swrs.emission (id, activity_id, facility_id, fuel_id, naics_id, organisation_id, report_id, unit_id, quantity, calculated_quantity, emission_category)
         values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 1000, 1000, 'BC_ScheduleB_GeneralStationaryCombustionEmissions');
-
-        insert into swrs.identifier(id, report_id, facility_id,facility_bcghgid_id, swrs_facility_id, identifier_type, identifier_value)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 'BCGHGID', i+loop_offset);
 
         insert into swrs.address (id, report_id, facility_id, organisation_id, swrs_facility_id, swrs_organisation_id, path_context, type, mailing_address_street_number, mailing_address_street_name, mailing_address_street_type, mailing_address_municipality, mailing_address_prov_terr_state, mailing_address_postal_code_zip_code, mailing_address_country)
         values
@@ -242,8 +227,8 @@ do $report$
         insert into swrs.organisation (id, report_id, swrs_organisation_id, business_legal_name, english_trade_name, cra_business_number, duns)
         values (i+loop_offset, i+loop_offset, 4, (select org_name from org_helper where swrs_org_id=4), (select org_name from org_helper where swrs_org_id=4), (select cra_num from org_helper where swrs_org_id=4), (select duns from org_helper where swrs_org_id=4));
 
-        insert into swrs.facility (id, report_id, organisation_id, swrs_facility_id, facility_name, facility_type)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, concat('facility ', i+loop_offset), 'SFO');
+        insert into swrs.facility (id, report_id, organisation_id, swrs_facility_id, facility_name, facility_type, facility_bc_ghg_id)
+        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, concat('facility ', i+loop_offset), 'SFO', (i+loop_offset)::varchar(1000));
 
         insert into swrs.naics (id, report_id, facility_id, registration_data_facility_id, swrs_facility_id, naics_code)
         values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 111419);
@@ -259,9 +244,6 @@ do $report$
 
         insert into swrs.emission (id, activity_id, facility_id, fuel_id, naics_id, organisation_id, report_id, unit_id, quantity, calculated_quantity, emission_category)
         values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 1000, 1000, 'BC_ScheduleB_GeneralStationaryCombustionEmissions');
-
-        insert into swrs.identifier(id, report_id, facility_id,facility_bcghgid_id, swrs_facility_id, identifier_type, identifier_value)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 'BCGHGID', i+loop_offset);
 
         insert into swrs.address (id, report_id, facility_id, organisation_id, swrs_facility_id, swrs_organisation_id, path_context, type, mailing_address_street_number, mailing_address_street_name, mailing_address_street_type, mailing_address_municipality, mailing_address_prov_terr_state, mailing_address_postal_code_zip_code, mailing_address_country)
         values
@@ -281,8 +263,8 @@ do $report$
         insert into swrs.organisation (id, report_id, swrs_organisation_id, business_legal_name, english_trade_name, cra_business_number, duns)
         values (i+loop_offset, i+loop_offset, 5, (select org_name from org_helper where swrs_org_id=5), (select org_name from org_helper where swrs_org_id=5), (select cra_num from org_helper where swrs_org_id=5), (select duns from org_helper where swrs_org_id=5));
 
-        insert into swrs.facility (id, report_id, organisation_id, swrs_facility_id, facility_name, facility_type)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, concat('facility ', i+loop_offset), 'SFO');
+        insert into swrs.facility (id, report_id, organisation_id, swrs_facility_id, facility_name, facility_type, facility_bc_ghg_id)
+        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, concat('facility ', i+loop_offset), 'SFO', (i+loop_offset)::varchar(1000));
 
         insert into swrs.naics (id, report_id, facility_id, registration_data_facility_id, swrs_facility_id, naics_code)
         values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 111419);
@@ -298,9 +280,6 @@ do $report$
 
         insert into swrs.emission (id, activity_id, facility_id, fuel_id, naics_id, organisation_id, report_id, unit_id, quantity, calculated_quantity, emission_category)
         values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 1000, 1000, 'BC_ScheduleB_GeneralStationaryCombustionEmissions');
-
-        insert into swrs.identifier(id, report_id, facility_id,facility_bcghgid_id, swrs_facility_id, identifier_type, identifier_value)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 'BCGHGID', i+loop_offset);
 
         insert into swrs.address (id, report_id, facility_id, organisation_id, swrs_facility_id, swrs_organisation_id, path_context, type, mailing_address_street_number, mailing_address_street_name, mailing_address_street_type, mailing_address_municipality, mailing_address_prov_terr_state, mailing_address_postal_code_zip_code, mailing_address_country)
         values
@@ -320,8 +299,8 @@ do $report$
         insert into swrs.organisation (id, report_id, swrs_organisation_id, business_legal_name, english_trade_name, cra_business_number, duns)
         values (i+loop_offset, i+loop_offset, 6, (select org_name from org_helper where swrs_org_id=6), (select org_name from org_helper where swrs_org_id=6), (select cra_num from org_helper where swrs_org_id=6), (select duns from org_helper where swrs_org_id=6));
 
-        insert into swrs.facility (id, report_id, organisation_id, swrs_facility_id, facility_name, facility_type)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, concat('facility ', i+loop_offset), 'SFO');
+        insert into swrs.facility (id, report_id, organisation_id, swrs_facility_id, facility_name, facility_type, facility_bc_ghg_id)
+        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, concat('facility ', i+loop_offset), 'SFO', (i+loop_offset)::varchar(1000));
 
         insert into swrs.naics (id, report_id, facility_id, registration_data_facility_id, swrs_facility_id, naics_code)
         values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 111419);
@@ -337,9 +316,6 @@ do $report$
 
         insert into swrs.emission (id, activity_id, facility_id, fuel_id, naics_id, organisation_id, report_id, unit_id, quantity, calculated_quantity, emission_category)
         values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 1000, 1000, 'BC_ScheduleB_GeneralStationaryCombustionEmissions');
-
-        insert into swrs.identifier(id, report_id, facility_id,facility_bcghgid_id, swrs_facility_id, identifier_type, identifier_value)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 'BCGHGID', i+loop_offset);
 
         insert into swrs.address (id, report_id, facility_id, organisation_id, swrs_facility_id, swrs_organisation_id, path_context, type, mailing_address_street_number, mailing_address_street_name, mailing_address_street_type, mailing_address_municipality, mailing_address_prov_terr_state, mailing_address_postal_code_zip_code, mailing_address_country)
         values
@@ -359,8 +335,8 @@ do $report$
         insert into swrs.organisation (id, report_id, swrs_organisation_id, business_legal_name, english_trade_name, cra_business_number, duns)
         values (i+loop_offset, i+loop_offset, 7, (select org_name from org_helper where swrs_org_id=7), (select org_name from org_helper where swrs_org_id=7), (select cra_num from org_helper where swrs_org_id=7), (select duns from org_helper where swrs_org_id=7));
 
-        insert into swrs.facility (id, report_id, organisation_id, swrs_facility_id, facility_name, facility_type)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, concat('facility ', i+loop_offset), 'SFO');
+        insert into swrs.facility (id, report_id, organisation_id, swrs_facility_id, facility_name, facility_type, facility_bc_ghg_id)
+        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, concat('facility ', i+loop_offset), 'SFO', (i+loop_offset)::varchar(1000));
 
         insert into swrs.naics (id, report_id, facility_id, registration_data_facility_id, swrs_facility_id, naics_code)
         values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 111419);
@@ -376,9 +352,6 @@ do $report$
 
         insert into swrs.emission (id, activity_id, facility_id, fuel_id, naics_id, organisation_id, report_id, unit_id, quantity, calculated_quantity, emission_category)
         values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 1000, 1000, 'BC_ScheduleB_GeneralStationaryCombustionEmissions');
-
-        insert into swrs.identifier(id, report_id, facility_id,facility_bcghgid_id, swrs_facility_id, identifier_type, identifier_value)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 'BCGHGID', i+loop_offset);
 
         insert into swrs.address (id, report_id, facility_id, organisation_id, swrs_facility_id, swrs_organisation_id, path_context, type, mailing_address_street_number, mailing_address_street_name, mailing_address_street_type, mailing_address_municipality, mailing_address_prov_terr_state, mailing_address_postal_code_zip_code, mailing_address_country)
         values
@@ -397,8 +370,8 @@ do $report$
         insert into swrs.organisation (id, report_id, swrs_organisation_id, business_legal_name, english_trade_name, cra_business_number, duns)
         values (i+loop_offset, i+loop_offset, 7, (select org_name from org_helper where swrs_org_id=7), (select org_name from org_helper where swrs_org_id=7), (select cra_num from org_helper where swrs_org_id=7), (select duns from org_helper where swrs_org_id=7));
 
-        insert into swrs.facility (id, report_id, organisation_id, swrs_facility_id, facility_name, facility_type)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, concat('facility ', i+loop_offset), 'SFO');
+        insert into swrs.facility (id, report_id, organisation_id, swrs_facility_id, facility_name, facility_type, facility_bc_ghg_id)
+        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, concat('facility ', i+loop_offset), 'SFO', (i+loop_offset)::varchar(1000));
 
         insert into swrs.naics (id, report_id, facility_id, registration_data_facility_id, swrs_facility_id, naics_code)
         values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 111419);
@@ -414,9 +387,6 @@ do $report$
 
         insert into swrs.emission (id, activity_id, facility_id, fuel_id, naics_id, organisation_id, report_id, unit_id, quantity, calculated_quantity, emission_category)
         values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 1000, 1000, 'BC_ScheduleB_GeneralStationaryCombustionEmissions');
-
-        insert into swrs.identifier(id, report_id, facility_id,facility_bcghgid_id, swrs_facility_id, identifier_type, identifier_value)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 'BCGHGID', i+loop_offset);
 
         insert into swrs.address (id, report_id, facility_id, organisation_id, swrs_facility_id, swrs_organisation_id, path_context, type, mailing_address_street_number, mailing_address_street_name, mailing_address_street_type, mailing_address_municipality, mailing_address_prov_terr_state, mailing_address_postal_code_zip_code, mailing_address_country)
         values
@@ -435,8 +405,8 @@ do $report$
         insert into swrs.organisation (id, report_id, swrs_organisation_id, business_legal_name, english_trade_name, cra_business_number, duns)
         values (i+loop_offset, i+loop_offset, 7, (select org_name from org_helper where swrs_org_id=7), (select org_name from org_helper where swrs_org_id=7), (select cra_num from org_helper where swrs_org_id=7), (select duns from org_helper where swrs_org_id=7));
 
-        insert into swrs.facility (id, report_id, organisation_id, swrs_facility_id, facility_name, facility_type)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, concat('facility ', i+loop_offset), 'SFO');
+        insert into swrs.facility (id, report_id, organisation_id, swrs_facility_id, facility_name, facility_type, facility_bc_ghg_id)
+        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, concat('facility ', i+loop_offset), 'SFO', (i+loop_offset)::varchar(1000));
 
         insert into swrs.naics (id, report_id, facility_id, registration_data_facility_id, swrs_facility_id, naics_code)
         values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 111419);
@@ -452,9 +422,6 @@ do $report$
 
         insert into swrs.emission (id, activity_id, facility_id, fuel_id, naics_id, organisation_id, report_id, unit_id, quantity, calculated_quantity, emission_category)
         values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 1000, 1000, 'BC_ScheduleB_GeneralStationaryCombustionEmissions');
-
-        insert into swrs.identifier(id, report_id, facility_id,facility_bcghgid_id, swrs_facility_id, identifier_type, identifier_value)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 'BCGHGID', i+loop_offset);
 
         insert into swrs.address (id, report_id, facility_id, organisation_id, swrs_facility_id, swrs_organisation_id, path_context, type, mailing_address_street_number, mailing_address_street_name, mailing_address_street_type, mailing_address_municipality, mailing_address_prov_terr_state, mailing_address_postal_code_zip_code, mailing_address_country)
         values
