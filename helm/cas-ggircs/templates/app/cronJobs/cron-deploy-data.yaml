@@ -70,4 +70,3 @@ spec:
                 - |
                   set -euo pipefail;
                   cd schema && sqitch deploy;
-                  ./test/dev/deploy_dev_data.sh --oc-project=$(NAMESPACE);

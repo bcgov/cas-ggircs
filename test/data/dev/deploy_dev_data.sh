@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -euo pipefail
 
 database=${PGDATABASE:-ggircs_dev}
 user=${PGUSER:-$(whoami)}
@@ -11,14 +11,9 @@ port=${PGPORT:-5432}
 # -----------------------------------------------------------------------------
 usage() {
     cat << EOF
-$0 [-d] [-p] [-s] [-h]
+$0
 
 Truncates all existing data in the swrs schema & deploys dev data for every year 2018-2025.
-Requires one parameter "--oc-project".
-
-Example:
-
-deploy_dev_data.sh --oc-project=<NAMESPACE>
 
 EOF
 }
@@ -35,13 +30,4 @@ deployDevData() {
   return 0;
 }
 
-if [ "$#" != 1 ]; then
-    echo "Passed $# parameters. Expected 1."
-    usage
-    exit 1
-fi
-
-if [[ $1 =~ -dev$ ]]; then
-  echo 'Truncating all tables in the swrs schema & deploying dev data...';
-  deployDevData
-fi
+deployDevData
