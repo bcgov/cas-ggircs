@@ -1,0 +1,73 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ template "cas-ggircs.fullname" . }}-deploy-load-testing-data
+  labels:
+    release: {{ .Release.Name }}
+{{ include "cas-ggircs.labels" . | indent 4 }}
+spec:
+  suspend: true # This cron job is intended to be triggered manually
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      backoffLimit: 0
+      activeDeadlineSeconds: 3600
+      template:
+        metadata:
+          labels:
+            name: {{ template "cas-ggircs.fullname" . }}-deploy-load-testing-data
+            release: {{ .Release.Name }}
+{{ include "cas-ggircs.labels" . | indent 12 }}
+        spec:
+          restartPolicy: Never
+          containers:
+            - env:
+                - name: SQITCH_TARGET
+                  value: "db:pg:"
+                - name: PGUSER
+                  valueFrom:
+                    secretKeyRef:
+                      key: database-user
+                      name: {{ template "cas-ggircs.fullname" . }}
+                - name: PGPASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      key: database-password
+                      name: {{ template "cas-ggircs.fullname" . }}
+                - name: PGDATABASE
+                  valueFrom:
+                    secretKeyRef:
+                      key: database-name
+                      name: {{ template "cas-ggircs.fullname" . }}
+                - name: PGPORT
+                  value: "5432"
+                - name: PGHOST
+                  value: {{ template "cas-ggircs.fullname" . }}-patroni
+                - name: SQITCH_FULLNAME
+                  value: OpenShift Deployer
+                - name: SQITCH_EMAIL
+                  value: deployer@pathfinder.gov.bc.ca
+                - name: NAMESPACE
+                  valueFrom:
+                    fieldRef:
+                      apiVersion: v1
+                      fieldPath: metadata.namespace
+              name: {{ template "cas-ggircs.fullname" . }}-deploy-load-testing-data
+              image: {{ .Values.image.etl.repository }}:{{ .Values.image.etl.tag }}
+              resources:
+                limits:
+                  cpu: 1000m
+                  memory: 128Mi
+                requests:
+                  cpu: 100m
+                  memory: 64Mi
+              command:
+                - /usr/bin/env
+                - bash
+                - -c
+                - |
+                  set -euo pipefail;
+                  if [[ "$(NAMESPACE)" == *-dev  ]]; then
+                  echo "Deploying load-testing data for reporting years 2018-2025"
+                  ./test/dev/deploy_data.sh --load-test
+                  fi
