@@ -63,6 +63,3 @@ fi
 if [ "$1" == '--help' ]; then
   usage
 fi
-
-
-
