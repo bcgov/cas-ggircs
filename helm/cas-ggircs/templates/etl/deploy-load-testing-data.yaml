@@ -1,7 +1,7 @@
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: {{ template "cas-ggircs.fullname" . }}-etl-deploy
+  name: {{ template "cas-ggircs.fullname" . }}-deploy-load-testing-data
   labels:
     release: {{ .Release.Name }}
 {{ include "cas-ggircs.labels" . | indent 4 }}
@@ -11,14 +11,14 @@ spec:
   jobTemplate:
     spec:
       backoffLimit: 0
-      activeDeadlineSeconds: 3600
       template:
         metadata:
           labels:
-            name: {{ template "cas-ggircs.fullname" . }}-etl-deploy
+            name: {{ template "cas-ggircs.fullname" . }}-deploy-load-testing-data
             release: {{ .Release.Name }}
 {{ include "cas-ggircs.labels" . | indent 12 }}
         spec:
+          activeDeadlineSeconds: 600
           restartPolicy: Never
           containers:
             - env:
@@ -52,7 +52,7 @@ spec:
                     fieldRef:
                       apiVersion: v1
                       fieldPath: metadata.namespace
-              name: {{ template "cas-ggircs.fullname" . }}-etl-deploy
+              name: {{ template "cas-ggircs.fullname" . }}-deploy-load-testing-data
               image: {{ .Values.image.etl.repository }}:{{ .Values.image.etl.tag }}
               resources:
                 limits:
@@ -67,10 +67,7 @@ spec:
                 - -c
                 - |
                   set -euo pipefail;
-                  sqitch deploy;
-                  echo "Exporting data to 'swrs' schema";
-                  psql -c "select swrs_transform.load()";
                   if [[ "$(NAMESPACE)" == *-dev  ]]; then
-                  echo "Deploying dev data for reporting years 2018-2025"
-                  ./test/dev/deploy_data.sh --dev
+                  echo "Deploying load-testing data for reporting years 2018-2025"
+                  ./test/dev/deploy_data.sh --load-test
                   fi
