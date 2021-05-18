@@ -69,5 +69,5 @@ spec:
                   set -euo pipefail;
                   if [[ "$NAMESPACE" == *-dev  ]]; then
                   echo "Deploying load-testing data for reporting years 2018-2025"
-                  ./test/dev/deploy_data.sh --load-test
+                  ./test/data/dev/deploy_data.sh --load-test
                   fi
