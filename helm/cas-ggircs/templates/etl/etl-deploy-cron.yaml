@@ -72,5 +72,5 @@ spec:
                   psql -c "select swrs_transform.load()";
                   if [[ "$NAMESPACE" == *-dev  ]]; then
                   echo "Deploying dev data for reporting years 2018-2025"
-                  ./test/dev/deploy_data.sh --dev
+                  ./test/data/dev/deploy_data.sh --dev
                   fi
