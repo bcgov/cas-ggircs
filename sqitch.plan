@@ -116,3 +116,5 @@ swrs/transform/function/load_fuel_carbon_tax_details [swrs/transform/function/lo
 swrs/public/table/fuel_charge_003 [swrs/public/table/fuel_charge_002] 2021-05-04T16:13:19Z Dylan Leard <dylan@button.is> # Migration: remove deprecated foreign key columns
 swrs/public/table/fuel_carbon_tax_details_002 [swrs/public/table/fuel_carbon_tax_details_001] 2021-05-04T16:22:07Z Dylan Leard <dylan@button.is> # Migration: drop unused carbon_taxed column
 swrs/add_missing_indices 2021-05-05T17:10:13Z Dylan Leard <dylan@button.is> # Add an index to all foreign keys that are currently missing one
+swrs/public/table/report_001 [swrs/public/table/report] 2021-05-31T20:23:04Z Dylan Leard <dylan@button.is> # Migration: increase varchar size of update_comment column
+swrs/transform/materialized_view/report_001 [swrs/transform/materialized_view/report] 2021-05-31T20:26:56Z Dylan Leard <dylan@button.is> # Migration: increase varchar size limit on update_comment column

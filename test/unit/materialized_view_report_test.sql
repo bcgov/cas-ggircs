@@ -43,7 +43,7 @@ select col_type_is('swrs_transform', 'report', 'status', 'character varying(1000
 select col_type_is('swrs_transform', 'report', 'version', 'character varying(1000)', 'Matview report column version has type character varying(1000)');
 select col_type_is('swrs_transform', 'report', 'submission_date', 'timestamp with time zone', 'Matview report column submission_date has type character varying(1000)');
 select col_type_is('swrs_transform', 'report', 'last_modified_by', 'character varying(1000)', 'Matview report column last_modified_by has type character varying(1000)');
-select col_type_is('swrs_transform', 'report', 'update_comment', 'character varying(1000)', 'Matview report column update_comment has type character varying(1000)');
+select col_type_is('swrs_transform', 'report', 'update_comment', 'character varying(100000)', 'Matview report column update_comment has type character varying(100000)');
 
 -- Setup fixture
 insert into swrs_extract.eccc_xml_file (imported_at, xml_file) VALUES ('2018-09-29T11:55:39.423', $$
