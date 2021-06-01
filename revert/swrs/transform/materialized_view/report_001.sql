@@ -1,9 +1,8 @@
--- Revert ggircs:swrs/transform/materialized_view/report_001 from pg
+-- Deploy ggircs:swrs/transform/materialized_view/report_001 to pg
+-- requires: swrs/transform/materialized_view/report
 
 begin;
 
-update pg_attribute set atttypmod = 1000+4
-where attrelid = 'swrs_transform.report'::regclass
-and attname = 'update_comment';
+-- No revert required
 
 commit;
