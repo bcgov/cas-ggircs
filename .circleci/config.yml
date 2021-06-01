@@ -340,7 +340,7 @@ jobs:
           name: Audit Dependencies
           command: |
             source ~/.asdf/asdf.sh
-            yarn audit --level info # https://yarnpkg.com/lang/en/docs/cli/audit/
+            yarn run improved-yarn-audit
   ggircs_app_schema:
     machine:
       image: ubuntu-1604:201903-01
