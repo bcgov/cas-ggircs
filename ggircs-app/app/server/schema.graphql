@@ -948,6 +948,11 @@ type Query implements Node {
   session: JwtToken
 }
 
+"""
+A universally unique identifier as defined by [RFC 4122](https://tools.ietf.org/html/rfc4122).
+"""
+scalar UUID
+
 """All input for the `updateEcccFileDownloadLogByRowId` mutation."""
 input UpdateEcccFileDownloadLogByRowIdInput {
   """
@@ -1079,8 +1084,3 @@ type UpdateGgircsUserPayload {
   """
   query: Query
 }
-
-"""
-A universally unique identifier as defined by [RFC 4122](https://tools.ietf.org/html/rfc4122).
-"""
-scalar UUID

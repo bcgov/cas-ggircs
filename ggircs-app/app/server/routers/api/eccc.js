@@ -3,12 +3,8 @@ const express = require("express");
 const { keycloak } = require("../sso");
 
 const ecccApiRouter = express.Router();
-const {
-  ECCC_FILE_BROWSER_HOST,
-  ECCC_FILE_BROWSER_PORT,
-  HOST,
-  PORT,
-} = process.env;
+const { ECCC_FILE_BROWSER_HOST, ECCC_FILE_BROWSER_PORT, HOST, PORT } =
+  process.env;
 
 const secure = /^https/.test(HOST);
 // When using SSL termination, the graphql enpoint should use the public host,

@@ -5,7 +5,10 @@ import LoadingSpinner from "components/LoadingSpinner";
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment";
 import { PageComponent } from "next-env";
 import { getUserGroupLandingRoute } from "lib/user-groups";
-import { PageRedirectHandlerQuery } from "PageRedirectHandlerQuery.graphql";
+import {
+  PageRedirectHandlerQuery,
+  PageRedirectHandlerQueryResponse,
+} from "PageRedirectHandlerQuery.graphql";
 import createGgircsUserFromSessionMutation from "mutations/ggircsUser/createGgircsUserFromSessionMutation";
 
 interface Props {
@@ -35,11 +38,11 @@ const PageRedirectHandler: React.FunctionComponent<Props> = ({
   useEffect(() => {
     const checkSessionAndGroups = async () => {
       const { isAccessProtected, allowedGroups = [] } = pageComponent;
-      const response = await fetchQuery<PageRedirectHandlerQuery>(
+      const response = (await fetchQuery<PageRedirectHandlerQuery>(
         environment,
         sessionQuery,
         {}
-      );
+      )) as unknown as PageRedirectHandlerQueryResponse;
 
       if (isAccessProtected && !response?.session) {
         router.push({
