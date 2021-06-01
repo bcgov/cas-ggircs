@@ -1,6 +1,6 @@
 const { getAllGroups, getPriorityGroup } = require("../../lib/user-groups");
 const { getUserGroups } = require("../helpers/userGroupAuthentication");
-const groupData = require("../../data/groups");
+const groupData = require("../../data/groups.json");
 const databaseConnectionService = require("../storage/db");
 
 const AUTH_BYPASS_COOKIE = "mocks.auth";
