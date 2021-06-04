@@ -161,6 +161,8 @@ $function$
         INSERT INTO swrs_load.fuel_mapping (fuel_type, fuel_carbon_tax_details_id) VALUES ('Field gas', 36);
         INSERT INTO swrs_load.fuel_mapping (fuel_type, fuel_carbon_tax_details_id) VALUES ('Gasoline', 47);
         INSERT INTO swrs_load.fuel_mapping (fuel_type, fuel_carbon_tax_details_id) VALUES ('Process vent gas', 53);
+        INSERT INTO swrs_load.fuel_mapping (fuel_type, fuel_carbon_tax_details_id) VALUES ('Concentrated Non-Condensible Gases (CNCG) (Sm^3)', 16);
+        INSERT INTO swrs_load.fuel_mapping (fuel_type, fuel_carbon_tax_details_id) VALUES ('Carpet fibre (tonnes)', 89);
 
     end
 $function$ language plpgsql volatile;
