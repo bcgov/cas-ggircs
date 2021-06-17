@@ -51,7 +51,7 @@ do $report$
         values (i+loop_offset, i+loop_offset, i+loop_offset, i, concat('facility ', i), 'SFO', (i)::varchar(1000));
 
         insert into swrs.naics (id, report_id, facility_id, registration_data_facility_id, swrs_facility_id, naics_code)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i, 111419);
+        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i, 211111);
 
         insert into swrs.activity (id, report_id, facility_id)
         values (i+loop_offset, i+loop_offset, i+loop_offset);
@@ -60,10 +60,12 @@ do $report$
         values (i+loop_offset, i+loop_offset);
 
         insert into swrs.fuel (id, report_id, unit_id, fuel_mapping_id, fuel_type, fuel_description, fuel_units, annual_fuel_amount)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, 6, 'Aviation Gasoline (kilolitres)', 'Aviation Gasoline (kilolitres)', 'kl', 1234);
+        values (i+loop_offset, i+loop_offset, i+loop_offset, 96, 'Natural Gas (Sm^3)', 'Natural Gas (Sm^3)', 'Sm^3', 1234);
 
         insert into swrs.emission (id, activity_id, facility_id, fuel_id, naics_id, organisation_id, report_id, unit_id, quantity, calculated_quantity, emission_category, gas_type)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 1000, 1000, 'BC_ScheduleB_GeneralStationaryCombustionEmissions', 'CO2nonbio');
+        values
+          (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 10000, 10000, 'BC_ScheduleB_GeneralStationaryCombustionEmissions', 'CO2nonbio'),
+          (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 444, 444, 'BC_ScheduleB_FlaringEmissions', 'CH4');
 
         insert into swrs.address (id, report_id, facility_id, organisation_id, swrs_facility_id, swrs_organisation_id, path_context, type, mailing_address_street_number, mailing_address_street_name, mailing_address_street_type, mailing_address_municipality, mailing_address_prov_terr_state, mailing_address_postal_code_zip_code, mailing_address_country)
         values
@@ -87,7 +89,7 @@ do $report$
         values (i+loop_offset, i+loop_offset, i+loop_offset, i, concat('facility ', i), 'IF_a', (i)::varchar(1000));
 
         insert into swrs.naics (id, report_id, facility_id, registration_data_facility_id, swrs_facility_id, naics_code)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i, 111419);
+        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i, 211111);
 
         insert into swrs.activity (id, report_id, facility_id)
         values (i+loop_offset, i+loop_offset, i+loop_offset);
@@ -96,10 +98,12 @@ do $report$
         values (i+loop_offset, i+loop_offset);
 
         insert into swrs.fuel (id, report_id, unit_id, fuel_mapping_id, fuel_type, fuel_description, fuel_units, annual_fuel_amount)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, 6, 'Aviation Gasoline (kilolitres)', 'Aviation Gasoline (kilolitres)', 'kl', 1234);
+        values (i+loop_offset, i+loop_offset, i+loop_offset, 96, 'Natural Gas (Sm^3)', 'Natural Gas (Sm^3)', 'Sm^3', 1234);
 
         insert into swrs.emission (id, activity_id, facility_id, fuel_id, naics_id, organisation_id, report_id, unit_id, quantity, calculated_quantity, emission_category, gas_type)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 1000, 1000, 'BC_ScheduleB_GeneralStationaryCombustionEmissions', 'CO2nonbio');
+        values
+          (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 10000, 10000, 'BC_ScheduleB_GeneralStationaryCombustionEmissions', 'CO2nonbio'),
+          (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 444, 444, 'BC_ScheduleB_FlaringEmissions', 'CH4');
 
         insert into swrs.address (id, report_id, facility_id, organisation_id, swrs_facility_id, swrs_organisation_id, path_context, type, mailing_address_street_number, mailing_address_street_name, mailing_address_street_type, mailing_address_municipality, mailing_address_prov_terr_state, mailing_address_postal_code_zip_code, mailing_address_country)
         values
@@ -122,7 +126,7 @@ do $report$
         values (i+loop_offset, i+loop_offset, i+loop_offset, i, concat('facility ', i), 'IF_b', (i)::varchar(1000));
 
         insert into swrs.naics (id, report_id, facility_id, registration_data_facility_id, swrs_facility_id, naics_code)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i, 111419);
+        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i, 211111);
 
         insert into swrs.activity (id, report_id, facility_id)
         values (i+loop_offset, i+loop_offset, i+loop_offset);
@@ -131,10 +135,12 @@ do $report$
         values (i+loop_offset, i+loop_offset);
 
         insert into swrs.fuel (id, report_id, unit_id, fuel_mapping_id, fuel_type, fuel_description, fuel_units, annual_fuel_amount)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, 6, 'Aviation Gasoline (kilolitres)', 'Aviation Gasoline (kilolitres)', 'kl', 1234);
+        values (i+loop_offset, i+loop_offset, i+loop_offset, 96, 'Natural Gas (Sm^3)', 'Natural Gas (Sm^3)', 'Sm^3', 1234);
 
         insert into swrs.emission (id, activity_id, facility_id, fuel_id, naics_id, organisation_id, report_id, unit_id, quantity, calculated_quantity, emission_category, gas_type)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 1000, 1000, 'BC_ScheduleB_GeneralStationaryCombustionEmissions', 'CO2nonbio');
+        values
+          (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 10000, 10000, 'BC_ScheduleB_GeneralStationaryCombustionEmissions', 'CO2nonbio'),
+          (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 444, 444, 'BC_ScheduleB_FlaringEmissions', 'CH4');
 
         insert into swrs.address (id, report_id, facility_id, organisation_id, swrs_facility_id, swrs_organisation_id, path_context, type, mailing_address_street_number, mailing_address_street_name, mailing_address_street_type, mailing_address_municipality, mailing_address_prov_terr_state, mailing_address_postal_code_zip_code, mailing_address_country)
         values
@@ -157,7 +163,7 @@ do $report$
         values (i+loop_offset, i+loop_offset, i+loop_offset, i, concat('facility ', i), 'L_c', (i)::varchar(1000));
 
         insert into swrs.naics (id, report_id, facility_id, registration_data_facility_id, swrs_facility_id, naics_code)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i, 111419);
+        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i, 211111);
 
         insert into swrs.activity (id, report_id, facility_id)
         values (i+loop_offset, i+loop_offset, i+loop_offset);
@@ -166,10 +172,12 @@ do $report$
         values (i+loop_offset, i+loop_offset);
 
         insert into swrs.fuel (id, report_id, unit_id, fuel_mapping_id, fuel_type, fuel_description, fuel_units, annual_fuel_amount)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, 6, 'Aviation Gasoline (kilolitres)', 'Aviation Gasoline (kilolitres)', 'kl', 1234);
+        values (i+loop_offset, i+loop_offset, i+loop_offset, 96, 'Natural Gas (Sm^3)', 'Natural Gas (Sm^3)', 'Sm^3', 1234);
 
         insert into swrs.emission (id, activity_id, facility_id, fuel_id, naics_id, organisation_id, report_id, unit_id, quantity, calculated_quantity, emission_category, gas_type)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 1000, 1000, 'BC_ScheduleB_GeneralStationaryCombustionEmissions', 'CO2nonbio');
+        values
+          (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 10000, 10000, 'BC_ScheduleB_GeneralStationaryCombustionEmissions', 'CO2nonbio'),
+          (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 444, 444, 'BC_ScheduleB_FlaringEmissions', 'CH4');
 
         insert into swrs.address (id, report_id, facility_id, organisation_id, swrs_facility_id, swrs_organisation_id, path_context, type, mailing_address_street_number, mailing_address_street_name, mailing_address_street_type, mailing_address_municipality, mailing_address_prov_terr_state, mailing_address_postal_code_zip_code, mailing_address_country)
         values
@@ -193,7 +201,7 @@ do $report$
         values (i+loop_offset, i+loop_offset, i+loop_offset, i, concat('facility ', i), 'SFO', (i)::varchar(1000));
 
         insert into swrs.naics (id, report_id, facility_id, registration_data_facility_id, swrs_facility_id, naics_code)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i, 111419);
+        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i, 211111);
 
         insert into swrs.activity (id, report_id, facility_id)
         values (i+loop_offset, i+loop_offset, i+loop_offset);
@@ -202,10 +210,12 @@ do $report$
         values (i+loop_offset, i+loop_offset);
 
         insert into swrs.fuel (id, report_id, unit_id, fuel_mapping_id, fuel_type, fuel_description, fuel_units, annual_fuel_amount)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, 6, 'Aviation Gasoline (kilolitres)', 'Aviation Gasoline (kilolitres)', 'kl', 1234);
+        values (i+loop_offset, i+loop_offset, i+loop_offset, 96, 'Natural Gas (Sm^3)', 'Natural Gas (Sm^3)', 'Sm^3', 1234);
 
         insert into swrs.emission (id, activity_id, facility_id, fuel_id, naics_id, organisation_id, report_id, unit_id, quantity, calculated_quantity, emission_category, gas_type)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 1000, 1000, 'BC_ScheduleB_GeneralStationaryCombustionEmissions', 'CO2nonbio');
+        values
+          (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 10000, 10000, 'BC_ScheduleB_GeneralStationaryCombustionEmissions', 'CO2nonbio'),
+          (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 444, 444, 'BC_ScheduleB_FlaringEmissions', 'CH4');
 
         insert into swrs.address (id, report_id, facility_id, organisation_id, swrs_facility_id, swrs_organisation_id, path_context, type, mailing_address_street_number, mailing_address_street_name, mailing_address_street_type, mailing_address_municipality, mailing_address_prov_terr_state, mailing_address_postal_code_zip_code, mailing_address_country)
         values
@@ -229,7 +239,7 @@ do $report$
         values (i+loop_offset, i+loop_offset, i+loop_offset, i, concat('facility ', i), 'SFO', (i)::varchar(1000));
 
         insert into swrs.naics (id, report_id, facility_id, registration_data_facility_id, swrs_facility_id, naics_code)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i, 111419);
+        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i, 211111);
 
         insert into swrs.activity (id, report_id, facility_id)
         values (i+loop_offset, i+loop_offset, i+loop_offset);
@@ -238,10 +248,12 @@ do $report$
         values (i+loop_offset, i+loop_offset);
 
         insert into swrs.fuel (id, report_id, unit_id, fuel_mapping_id, fuel_type, fuel_description, fuel_units, annual_fuel_amount)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, 6, 'Aviation Gasoline (kilolitres)', 'Aviation Gasoline (kilolitres)', 'kl', 1234);
+        values (i+loop_offset, i+loop_offset, i+loop_offset, 96, 'Natural Gas (Sm^3)', 'Natural Gas (Sm^3)', 'Sm^3', 1234);
 
         insert into swrs.emission (id, activity_id, facility_id, fuel_id, naics_id, organisation_id, report_id, unit_id, quantity, calculated_quantity, emission_category, gas_type)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 1000, 1000, 'BC_ScheduleB_GeneralStationaryCombustionEmissions', 'CO2nonbio');
+        values
+          (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 10000, 10000, 'BC_ScheduleB_GeneralStationaryCombustionEmissions', 'CO2nonbio'),
+          (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 444, 444, 'BC_ScheduleB_FlaringEmissions', 'CH4');
 
         insert into swrs.address (id, report_id, facility_id, organisation_id, swrs_facility_id, swrs_organisation_id, path_context, type, mailing_address_street_number, mailing_address_street_name, mailing_address_street_type, mailing_address_municipality, mailing_address_prov_terr_state, mailing_address_postal_code_zip_code, mailing_address_country)
         values
@@ -265,7 +277,7 @@ do $report$
         values (i+loop_offset, i+loop_offset, i+loop_offset, i, concat('facility ', i), 'SFO', (i)::varchar(1000));
 
         insert into swrs.naics (id, report_id, facility_id, registration_data_facility_id, swrs_facility_id, naics_code)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i, 111419);
+        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i, 211111);
 
         insert into swrs.activity (id, report_id, facility_id)
         values (i+loop_offset, i+loop_offset, i+loop_offset);
@@ -274,10 +286,12 @@ do $report$
         values (i+loop_offset, i+loop_offset);
 
         insert into swrs.fuel (id, report_id, unit_id, fuel_mapping_id, fuel_type, fuel_description, fuel_units, annual_fuel_amount)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, 6, 'Aviation Gasoline (kilolitres)', 'Aviation Gasoline (kilolitres)', 'kl', 1234);
+        values (i+loop_offset, i+loop_offset, i+loop_offset, 96, 'Natural Gas (Sm^3)', 'Natural Gas (Sm^3)', 'Sm^3', 1234);
 
         insert into swrs.emission (id, activity_id, facility_id, fuel_id, naics_id, organisation_id, report_id, unit_id, quantity, calculated_quantity, emission_category, gas_type)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 1000, 1000, 'BC_ScheduleB_GeneralStationaryCombustionEmissions', 'CO2nonbio');
+        values
+          (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 10000, 10000, 'BC_ScheduleB_GeneralStationaryCombustionEmissions', 'CO2nonbio'),
+          (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 444, 444, 'BC_ScheduleB_FlaringEmissions', 'CH4');
 
         insert into swrs.address (id, report_id, facility_id, organisation_id, swrs_facility_id, swrs_organisation_id, path_context, type, mailing_address_street_number, mailing_address_street_name, mailing_address_street_type, mailing_address_municipality, mailing_address_prov_terr_state, mailing_address_postal_code_zip_code, mailing_address_country)
         values
@@ -301,7 +315,7 @@ do $report$
         values (i+loop_offset, i+loop_offset, i+loop_offset, i, concat('facility ', i), 'SFO', (i)::varchar(1000));
 
         insert into swrs.naics (id, report_id, facility_id, registration_data_facility_id, swrs_facility_id, naics_code)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i, 111419);
+        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i, 211111);
 
         insert into swrs.activity (id, report_id, facility_id)
         values (i+loop_offset, i+loop_offset, i+loop_offset);
@@ -310,10 +324,12 @@ do $report$
         values (i+loop_offset, i+loop_offset);
 
         insert into swrs.fuel (id, report_id, unit_id, fuel_mapping_id, fuel_type, fuel_description, fuel_units, annual_fuel_amount)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, 6, 'Aviation Gasoline (kilolitres)', 'Aviation Gasoline (kilolitres)', 'kl', 1234);
+        values (i+loop_offset, i+loop_offset, i+loop_offset, 96, 'Natural Gas (Sm^3)', 'Natural Gas (Sm^3)', 'Sm^3', 1234);
 
         insert into swrs.emission (id, activity_id, facility_id, fuel_id, naics_id, organisation_id, report_id, unit_id, quantity, calculated_quantity, emission_category, gas_type)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 1000, 1000, 'BC_ScheduleB_GeneralStationaryCombustionEmissions', 'CO2nonbio');
+        values
+          (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 10000, 10000, 'BC_ScheduleB_GeneralStationaryCombustionEmissions', 'CO2nonbio'),
+          (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 444, 444, 'BC_ScheduleB_FlaringEmissions', 'CH4');
 
         insert into swrs.address (id, report_id, facility_id, organisation_id, swrs_facility_id, swrs_organisation_id, path_context, type, mailing_address_street_number, mailing_address_street_name, mailing_address_street_type, mailing_address_municipality, mailing_address_prov_terr_state, mailing_address_postal_code_zip_code, mailing_address_country)
         values
