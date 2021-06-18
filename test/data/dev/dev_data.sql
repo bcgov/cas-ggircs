@@ -20,7 +20,7 @@ values
 (1, 'SFO operator', 111111111, 111111111),
 (2, 'LFO operator', 222222222, 222222222),
 (3, 'Changes requested operator', 333333333, 333333333),
-(4, 'Draft operator', 444444444, 444444444),
+(4, 'Draft operator', 444444444, 11100444444),
 (5, 'Not started operator', 555555555, 555555555),
 (6, 'Submitted operator', 666666666, 666666666);
 
@@ -68,7 +68,7 @@ do $report$
         insert into swrs.emission (id, activity_id, facility_id, fuel_id, naics_id, organisation_id, report_id, unit_id, quantity, calculated_quantity, emission_category, gas_type)
         values
           ((select nextval('emission_sequence')), i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 10000, 10000, 'BC_ScheduleB_GeneralStationaryCombustionEmissions', 'CO2nonbio'),
-          ((select nextval('emission_sequence')), i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 444, 444, 'BC_ScheduleB_FlaringEmissions', 'CH4');
+          ((select nextval('emission_sequence')), i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 444, 11100, 'BC_ScheduleB_FlaringEmissions', 'CH4');
 
         insert into swrs.address (id, report_id, facility_id, organisation_id, swrs_facility_id, swrs_organisation_id, path_context, type, mailing_address_street_number, mailing_address_street_name, mailing_address_street_type, mailing_address_municipality, mailing_address_prov_terr_state, mailing_address_postal_code_zip_code, mailing_address_country)
         values
@@ -106,7 +106,7 @@ do $report$
         insert into swrs.emission (id, activity_id, facility_id, fuel_id, naics_id, organisation_id, report_id, unit_id, quantity, calculated_quantity, emission_category, gas_type)
         values
           ((select nextval('emission_sequence')), i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 10000, 10000, 'BC_ScheduleB_GeneralStationaryCombustionEmissions', 'CO2nonbio'),
-          ((select nextval('emission_sequence')), i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 444, 444, 'BC_ScheduleB_FlaringEmissions', 'CH4');
+          ((select nextval('emission_sequence')), i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 444, 11100, 'BC_ScheduleB_FlaringEmissions', 'CH4');
 
         insert into swrs.address (id, report_id, facility_id, organisation_id, swrs_facility_id, swrs_organisation_id, path_context, type, mailing_address_street_number, mailing_address_street_name, mailing_address_street_type, mailing_address_municipality, mailing_address_prov_terr_state, mailing_address_postal_code_zip_code, mailing_address_country)
         values
@@ -143,7 +143,7 @@ do $report$
         insert into swrs.emission (id, activity_id, facility_id, fuel_id, naics_id, organisation_id, report_id, unit_id, quantity, calculated_quantity, emission_category, gas_type)
         values
           ((select nextval('emission_sequence')), i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 10000, 10000, 'BC_ScheduleB_GeneralStationaryCombustionEmissions', 'CO2nonbio'),
-          ((select nextval('emission_sequence')), i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 444, 444, 'BC_ScheduleB_FlaringEmissions', 'CH4');
+          ((select nextval('emission_sequence')), i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 444, 11100, 'BC_ScheduleB_FlaringEmissions', 'CH4');
 
         insert into swrs.address (id, report_id, facility_id, organisation_id, swrs_facility_id, swrs_organisation_id, path_context, type, mailing_address_street_number, mailing_address_street_name, mailing_address_street_type, mailing_address_municipality, mailing_address_prov_terr_state, mailing_address_postal_code_zip_code, mailing_address_country)
         values
@@ -180,7 +180,7 @@ do $report$
         insert into swrs.emission (id, activity_id, facility_id, fuel_id, naics_id, organisation_id, report_id, unit_id, quantity, calculated_quantity, emission_category, gas_type)
         values
           ((select nextval('emission_sequence')), i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 10000, 10000, 'BC_ScheduleB_GeneralStationaryCombustionEmissions', 'CO2nonbio'),
-          ((select nextval('emission_sequence')), i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 444, 444, 'BC_ScheduleB_FlaringEmissions', 'CH4');
+          ((select nextval('emission_sequence')), i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 444, 11100, 'BC_ScheduleB_FlaringEmissions', 'CH4');
 
         insert into swrs.address (id, report_id, facility_id, organisation_id, swrs_facility_id, swrs_organisation_id, path_context, type, mailing_address_street_number, mailing_address_street_name, mailing_address_street_type, mailing_address_municipality, mailing_address_prov_terr_state, mailing_address_postal_code_zip_code, mailing_address_country)
         values
@@ -218,7 +218,7 @@ do $report$
         insert into swrs.emission (id, activity_id, facility_id, fuel_id, naics_id, organisation_id, report_id, unit_id, quantity, calculated_quantity, emission_category, gas_type)
         values
           ((select nextval('emission_sequence')), i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 10000, 10000, 'BC_ScheduleB_GeneralStationaryCombustionEmissions', 'CO2nonbio'),
-          ((select nextval('emission_sequence')), i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 444, 444, 'BC_ScheduleB_FlaringEmissions', 'CH4');
+          ((select nextval('emission_sequence')), i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 444, 11100, 'BC_ScheduleB_FlaringEmissions', 'CH4');
 
         insert into swrs.address (id, report_id, facility_id, organisation_id, swrs_facility_id, swrs_organisation_id, path_context, type, mailing_address_street_number, mailing_address_street_name, mailing_address_street_type, mailing_address_municipality, mailing_address_prov_terr_state, mailing_address_postal_code_zip_code, mailing_address_country)
         values
@@ -256,7 +256,7 @@ do $report$
         insert into swrs.emission (id, activity_id, facility_id, fuel_id, naics_id, organisation_id, report_id, unit_id, quantity, calculated_quantity, emission_category, gas_type)
         values
           ((select nextval('emission_sequence')), i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 10000, 10000, 'BC_ScheduleB_GeneralStationaryCombustionEmissions', 'CO2nonbio'),
-          ((select nextval('emission_sequence')), i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 444, 444, 'BC_ScheduleB_FlaringEmissions', 'CH4');
+          ((select nextval('emission_sequence')), i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 444, 11100, 'BC_ScheduleB_FlaringEmissions', 'CH4');
 
         insert into swrs.address (id, report_id, facility_id, organisation_id, swrs_facility_id, swrs_organisation_id, path_context, type, mailing_address_street_number, mailing_address_street_name, mailing_address_street_type, mailing_address_municipality, mailing_address_prov_terr_state, mailing_address_postal_code_zip_code, mailing_address_country)
         values
@@ -294,7 +294,7 @@ do $report$
         insert into swrs.emission (id, activity_id, facility_id, fuel_id, naics_id, organisation_id, report_id, unit_id, quantity, calculated_quantity, emission_category, gas_type)
         values
           ((select nextval('emission_sequence')), i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 10000, 10000, 'BC_ScheduleB_GeneralStationaryCombustionEmissions', 'CO2nonbio'),
-          ((select nextval('emission_sequence')), i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 444, 444, 'BC_ScheduleB_FlaringEmissions', 'CH4');
+          ((select nextval('emission_sequence')), i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 444, 11100, 'BC_ScheduleB_FlaringEmissions', 'CH4');
 
         insert into swrs.address (id, report_id, facility_id, organisation_id, swrs_facility_id, swrs_organisation_id, path_context, type, mailing_address_street_number, mailing_address_street_name, mailing_address_street_type, mailing_address_municipality, mailing_address_prov_terr_state, mailing_address_postal_code_zip_code, mailing_address_country)
         values
@@ -332,7 +332,7 @@ do $report$
         insert into swrs.emission (id, activity_id, facility_id, fuel_id, naics_id, organisation_id, report_id, unit_id, quantity, calculated_quantity, emission_category, gas_type)
         values
           ((select nextval('emission_sequence')), i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 10000, 10000, 'BC_ScheduleB_GeneralStationaryCombustionEmissions', 'CO2nonbio'),
-          ((select nextval('emission_sequence')), i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 444, 444, 'BC_ScheduleB_FlaringEmissions', 'CH4');
+          ((select nextval('emission_sequence')), i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 444, 11100, 'BC_ScheduleB_FlaringEmissions', 'CH4');
 
         insert into swrs.address (id, report_id, facility_id, organisation_id, swrs_facility_id, swrs_organisation_id, path_context, type, mailing_address_street_number, mailing_address_street_name, mailing_address_street_type, mailing_address_municipality, mailing_address_prov_terr_state, mailing_address_postal_code_zip_code, mailing_address_country)
         values
