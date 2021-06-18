@@ -11,8 +11,8 @@ truncate swrs.report restart identity cascade;
 create temporary table org_helper (
   swrs_org_id int,
   org_name varchar(1000),
-  cra_num int,
-  duns int
+  cra_num varchar(1000),
+  duns varchar(1000)
 ) on commit drop;
 
 insert into org_helper (swrs_org_id, org_name, cra_num, duns)
@@ -20,7 +20,7 @@ values
 (1, 'SFO operator', 111111111, 111111111),
 (2, 'LFO operator', 222222222, 222222222),
 (3, 'Changes requested operator', 333333333, 333333333),
-(4, 'Draft operator', 444444444, 444444444),
+(4, 'Draft operator', 444444444, 11100444444),
 (5, 'Not started operator', 555555555, 555555555),
 (6, 'Submitted operator', 666666666, 666666666);
 
@@ -33,6 +33,63 @@ create sequence address_sequence start 1;
 drop sequence if exists emission_sequence;
 create sequence emission_sequence start 1;
 
+create function insert_swrs_report(
+  _id integer,
+  _swrs_facility_id integer,
+  _swrs_org_id integer,
+  _facility_type varchar(1000),
+  _reporting_year integer)
+  returns void as
+$function$
+begin
+  insert into swrs.report(id, imported_at, swrs_report_id, swrs_facility_id, swrs_organisation_id, reporting_period_duration, version, submission_date)
+  values(_id, now(), _id, _swrs_facility_id, _swrs_org_id, _reporting_year, 1, now());
+
+  insert into swrs.organisation (id, report_id, swrs_organisation_id, business_legal_name, english_trade_name, cra_business_number, duns)
+  values (
+    _id, _id, _swrs_org_id,
+    (select org_name from org_helper where swrs_org_id=_swrs_org_id),
+    (select org_name from org_helper where swrs_org_id=_swrs_org_id),
+    (select cra_num from org_helper where swrs_org_id=_swrs_org_id),
+    (select duns from org_helper where swrs_org_id=_swrs_org_id)
+  );
+
+  insert into swrs.facility (id, report_id, organisation_id, swrs_facility_id, facility_name, facility_type, facility_bc_ghg_id)
+  values (_id, _id, _id, _swrs_facility_id, concat('facility ', _swrs_facility_id), _facility_type, (_swrs_facility_id)::varchar(1000));
+
+  insert into swrs.naics (id, report_id, facility_id, registration_data_facility_id, swrs_facility_id, naics_code)
+  values (_id, _id, _id, _id, _id, 211110);
+
+  insert into swrs.activity (id, report_id, facility_id)
+  values
+    (_id*2, _id, _id),
+    (_id*2+1, _id, _id);
+
+  insert into swrs.unit (id, activity_id)
+  values
+    (_id*2, _id*2),
+    (_id*2+1, _id*2+1);
+
+  insert into swrs.fuel (id, report_id, unit_id, fuel_mapping_id, fuel_type, fuel_description, fuel_units, annual_fuel_amount)
+  values (_id, _id, (_id)*2, 96, 'Natural Gas (Sm^3)', 'Natural Gas (Sm^3)', 'Sm^3', 1234);
+
+  insert into swrs.emission (id, activity_id, facility_id, fuel_id, naics_id, organisation_id, report_id, unit_id, quantity, calculated_quantity, emission_category, gas_type)
+  values
+    ((select nextval('emission_sequence')), _id*2, _id, _id, _id, _id, _id, _id*2, 10000, 10000, 'BC_ScheduleB_GeneralStationaryCombustionEmissions', 'CO2nonbio'),
+    ((select nextval('emission_sequence')), _id*2+1, _id, _id, _id, _id, _id, _id*2+1, 444, 11100, 'BC_ScheduleB_FlaringEmissions', 'CH4');
+
+  insert into swrs.address (id, report_id, facility_id, organisation_id, swrs_facility_id, swrs_organisation_id, path_context, type, mailing_address_street_number, mailing_address_street_name, mailing_address_street_type, mailing_address_municipality, mailing_address_prov_terr_state, mailing_address_postal_code_zip_code, mailing_address_country)
+  values
+    ((select nextval('address_sequence')), _id, _id, _id, _swrs_facility_id, _swrs_org_id, 'RegistrationData', 'Facility', '1234', 'Rainbow', 'road', 'Victoria',  'British Columbia', 'H0H0H0', 'Canada'),
+    ((select nextval('address_sequence')), _id, _id, _id, _swrs_facility_id, _swrs_org_id, 'RegistrationData', 'Organisation', '1234', 'Rainbow', 'road', 'Victoria',  'British Columbia', 'H0H0H0', 'Canada'),
+    ((select nextval('address_sequence')), _id, _id, _id, _swrs_facility_id, _swrs_org_id, 'RegistrationData', 'Contact', '1234', 'Rainbow', 'road', 'Victoria',  'British Columbia', 'H0H0H0', 'Canada');
+
+  insert into swrs.contact (id, report_id, address_id, facility_id, organisation_id, path_context, contact_type, given_name, family_name, telephone_number, email_address, position)
+  values (_id, _id, (select id from swrs.address where report_id = _id and type='Contact'), _id, _id, 'RegistrationData', 'Operator Representative', 'Mario', 'Super', '8889876543', 'supermario@bowser.ca', 'CEO');
+end
+$function$ language plpgsql volatile;
+
+
 do $report$
   declare
     loop_modifier int := 0;
@@ -44,304 +101,40 @@ do $report$
       loop_offset := loop_modifier*600;
       -- SFO
       for i in 1001..1100 loop
-        insert into swrs.report(id, imported_at, swrs_report_id, swrs_facility_id, swrs_organisation_id, reporting_period_duration, version, submission_date)
-        values(i+loop_offset, now(), i+loop_offset, i, 1, year, 1, now());
-
-        insert into swrs.organisation (id, report_id, swrs_organisation_id, business_legal_name, english_trade_name, cra_business_number, duns)
-        values (i+loop_offset, i+loop_offset, 1, (select org_name from org_helper where swrs_org_id=1), (select org_name from org_helper where swrs_org_id=1), (select cra_num from org_helper where swrs_org_id=1), (select duns from org_helper where swrs_org_id=1));
-
-        insert into swrs.facility (id, report_id, organisation_id, swrs_facility_id, facility_name, facility_type, facility_bc_ghg_id)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, i, concat('facility ', i), 'SFO', (i)::varchar(1000));
-
-        insert into swrs.naics (id, report_id, facility_id, registration_data_facility_id, swrs_facility_id, naics_code)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i, 211110);
-
-        insert into swrs.activity (id, report_id, facility_id)
-        values (i+loop_offset, i+loop_offset, i+loop_offset);
-
-        insert into swrs.unit (id, activity_id)
-        values (i+loop_offset, i+loop_offset);
-
-        insert into swrs.fuel (id, report_id, unit_id, fuel_mapping_id, fuel_type, fuel_description, fuel_units, annual_fuel_amount)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, 96, 'Natural Gas (Sm^3)', 'Natural Gas (Sm^3)', 'Sm^3', 1234);
-
-        insert into swrs.emission (id, activity_id, facility_id, fuel_id, naics_id, organisation_id, report_id, unit_id, quantity, calculated_quantity, emission_category, gas_type)
-        values
-          ((select nextval('emission_sequence')), i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 10000, 10000, 'BC_ScheduleB_GeneralStationaryCombustionEmissions', 'CO2nonbio'),
-          ((select nextval('emission_sequence')), i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 444, 444, 'BC_ScheduleB_FlaringEmissions', 'CH4');
-
-        insert into swrs.address (id, report_id, facility_id, organisation_id, swrs_facility_id, swrs_organisation_id, path_context, type, mailing_address_street_number, mailing_address_street_name, mailing_address_street_type, mailing_address_municipality, mailing_address_prov_terr_state, mailing_address_postal_code_zip_code, mailing_address_country)
-        values
-          ((select nextval('address_sequence')), i+loop_offset, i+loop_offset, i+loop_offset, i, 1, 'RegistrationData', 'Facility', '1234', 'Rainbow', 'road', 'Victoria',  'British Columbia', 'H0H0H0', 'Canada'),
-          ((select nextval('address_sequence')), i+loop_offset, i+loop_offset, i+loop_offset, i, 1, 'RegistrationData', 'Organisation', '1234', 'Rainbow', 'road', 'Victoria',  'British Columbia', 'H0H0H0', 'Canada'),
-          ((select nextval('address_sequence')), i+loop_offset, i+loop_offset, i+loop_offset, i, 1, 'RegistrationData', 'Contact', '1234', 'Rainbow', 'road', 'Victoria',  'British Columbia', 'H0H0H0', 'Canada');
-
-        insert into swrs.contact (id, report_id, address_id, facility_id, organisation_id, path_context, contact_type, given_name, family_name, telephone_number, email_address, position)
-        values (i+loop_offset, i+loop_offset, (select id from swrs.address where report_id = i+loop_offset and type='Contact'), i+loop_offset, i+loop_offset, 'RegistrationData', 'Operator Representative', 'Mario', 'Super', '8889876543', 'supermario@bowser.ca', 'CEO');
+        perform insert_swrs_report(i+loop_offset, i, 1, 'SFO', year);
       end loop;
 
       -- LFO
       for i in 1101..1133 loop
-        insert into swrs.report(id, imported_at, swrs_report_id, swrs_facility_id, swrs_organisation_id, reporting_period_duration, version, submission_date)
-        values(i+loop_offset, now(), i+loop_offset, i, 2, year, 1, now());
-
-        insert into swrs.organisation (id, report_id, swrs_organisation_id, business_legal_name, english_trade_name, cra_business_number, duns)
-        values (i+loop_offset, i+loop_offset, 2, (select org_name from org_helper where swrs_org_id=2), (select org_name from org_helper where swrs_org_id=2), (select cra_num from org_helper where swrs_org_id=2), (select duns from org_helper where swrs_org_id=2));
-
-        insert into swrs.facility (id, report_id, organisation_id, swrs_facility_id, facility_name, facility_type, facility_bc_ghg_id)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, i, concat('facility ', i), 'IF_a', (i)::varchar(1000));
-
-        insert into swrs.naics (id, report_id, facility_id, registration_data_facility_id, swrs_facility_id, naics_code)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i, 211110);
-
-        insert into swrs.activity (id, report_id, facility_id)
-        values (i+loop_offset, i+loop_offset, i+loop_offset);
-
-        insert into swrs.unit (id, activity_id)
-        values (i+loop_offset, i+loop_offset);
-
-        insert into swrs.fuel (id, report_id, unit_id, fuel_mapping_id, fuel_type, fuel_description, fuel_units, annual_fuel_amount)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, 96, 'Natural Gas (Sm^3)', 'Natural Gas (Sm^3)', 'Sm^3', 1234);
-
-        insert into swrs.emission (id, activity_id, facility_id, fuel_id, naics_id, organisation_id, report_id, unit_id, quantity, calculated_quantity, emission_category, gas_type)
-        values
-          ((select nextval('emission_sequence')), i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 10000, 10000, 'BC_ScheduleB_GeneralStationaryCombustionEmissions', 'CO2nonbio'),
-          ((select nextval('emission_sequence')), i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 444, 444, 'BC_ScheduleB_FlaringEmissions', 'CH4');
-
-        insert into swrs.address (id, report_id, facility_id, organisation_id, swrs_facility_id, swrs_organisation_id, path_context, type, mailing_address_street_number, mailing_address_street_name, mailing_address_street_type, mailing_address_municipality, mailing_address_prov_terr_state, mailing_address_postal_code_zip_code, mailing_address_country)
-        values
-          ((select nextval('address_sequence')), i+loop_offset, i+loop_offset, i+loop_offset, i, 2, 'RegistrationData', 'Facility', '1234', 'Rainbow', 'road', 'Victoria',  'British Columbia', 'H0H0H0', 'Canada'),
-          ((select nextval('address_sequence')), i+loop_offset, i+loop_offset, i+loop_offset, i, 2, 'RegistrationData', 'Organisation', '1234', 'Rainbow', 'road', 'Victoria',  'British Columbia', 'H0H0H0', 'Canada'),
-          ((select nextval('address_sequence')), i+loop_offset, i+loop_offset, i+loop_offset, i, 2, 'RegistrationData', 'Contact', '1234', 'Rainbow', 'road', 'Victoria',  'British Columbia', 'H0H0H0', 'Canada');
-
-        insert into swrs.contact (id, report_id, address_id, facility_id, organisation_id, path_context, contact_type, given_name, family_name, telephone_number, email_address, position)
-        values (i+loop_offset, i+loop_offset, (select id from swrs.address where report_id = i+loop_offset and type='Contact'), i+loop_offset, i+loop_offset, 'RegistrationData', 'Operator Representative', 'Mario', 'Super', '8889876543', 'supermario@bowser.ca', 'CEO');
+        perform insert_swrs_report(i+loop_offset, i, 2, 'IF_a', year);
       end loop;
 
       for i in 1134..1167 loop
-        insert into swrs.report(id, imported_at, swrs_report_id, swrs_facility_id, swrs_organisation_id, reporting_period_duration, version, submission_date)
-        values(i+loop_offset, now(), i+loop_offset, i, 2, year, 1, now());
-
-        insert into swrs.organisation (id, report_id, swrs_organisation_id, business_legal_name, english_trade_name, cra_business_number, duns)
-        values (i+loop_offset, i+loop_offset, 2, (select org_name from org_helper where swrs_org_id=2), (select org_name from org_helper where swrs_org_id=2), (select cra_num from org_helper where swrs_org_id=2), (select duns from org_helper where swrs_org_id=2));
-
-        insert into swrs.facility (id, report_id, organisation_id, swrs_facility_id, facility_name, facility_type, facility_bc_ghg_id)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, i, concat('facility ', i), 'IF_b', (i)::varchar(1000));
-
-        insert into swrs.naics (id, report_id, facility_id, registration_data_facility_id, swrs_facility_id, naics_code)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i, 211110);
-
-        insert into swrs.activity (id, report_id, facility_id)
-        values (i+loop_offset, i+loop_offset, i+loop_offset);
-
-        insert into swrs.unit (id, activity_id)
-        values (i+loop_offset, i+loop_offset);
-
-        insert into swrs.fuel (id, report_id, unit_id, fuel_mapping_id, fuel_type, fuel_description, fuel_units, annual_fuel_amount)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, 96, 'Natural Gas (Sm^3)', 'Natural Gas (Sm^3)', 'Sm^3', 1234);
-
-        insert into swrs.emission (id, activity_id, facility_id, fuel_id, naics_id, organisation_id, report_id, unit_id, quantity, calculated_quantity, emission_category, gas_type)
-        values
-          ((select nextval('emission_sequence')), i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 10000, 10000, 'BC_ScheduleB_GeneralStationaryCombustionEmissions', 'CO2nonbio'),
-          ((select nextval('emission_sequence')), i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 444, 444, 'BC_ScheduleB_FlaringEmissions', 'CH4');
-
-        insert into swrs.address (id, report_id, facility_id, organisation_id, swrs_facility_id, swrs_organisation_id, path_context, type, mailing_address_street_number, mailing_address_street_name, mailing_address_street_type, mailing_address_municipality, mailing_address_prov_terr_state, mailing_address_postal_code_zip_code, mailing_address_country)
-        values
-          ((select nextval('address_sequence')), i+loop_offset, i+loop_offset, i+loop_offset, i, 2, 'RegistrationData', 'Facility', '1234', 'Rainbow', 'road', 'Victoria',  'British Columbia', 'H0H0H0', 'Canada'),
-          ((select nextval('address_sequence')), i+loop_offset, i+loop_offset, i+loop_offset, i, 2, 'RegistrationData', 'Organisation', '1234', 'Rainbow', 'road', 'Victoria',  'British Columbia', 'H0H0H0', 'Canada'),
-          ((select nextval('address_sequence')), i+loop_offset, i+loop_offset, i+loop_offset, i, 2, 'RegistrationData', 'Contact', '1234', 'Rainbow', 'road', 'Victoria',  'British Columbia', 'H0H0H0', 'Canada');
-
-        insert into swrs.contact (id, report_id, address_id, facility_id, organisation_id, path_context, contact_type, given_name, family_name, telephone_number, email_address, position)
-        values (i+loop_offset, i+loop_offset, (select id from swrs.address where report_id = i+loop_offset and type='Contact'), i+loop_offset, i+loop_offset, 'RegistrationData', 'Operator Representative', 'Mario', 'Super', '8889876543', 'supermario@bowser.ca', 'CEO');
+        perform insert_swrs_report(i+loop_offset, i, 2, 'IF_b', year);
       end loop;
 
       for i in 1168..1200 loop
-        insert into swrs.report(id, imported_at, swrs_report_id, swrs_facility_id, swrs_organisation_id, reporting_period_duration, version, submission_date)
-        values(i+loop_offset, now(), i+loop_offset, i, 2, year, 1, now());
-
-        insert into swrs.organisation (id, report_id, swrs_organisation_id, business_legal_name, english_trade_name, cra_business_number, duns)
-        values (i+loop_offset, i+loop_offset, 2, (select org_name from org_helper where swrs_org_id=2), (select org_name from org_helper where swrs_org_id=2), (select cra_num from org_helper where swrs_org_id=2), (select duns from org_helper where swrs_org_id=2));
-
-        insert into swrs.facility (id, report_id, organisation_id, swrs_facility_id, facility_name, facility_type, facility_bc_ghg_id)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, i, concat('facility ', i), 'L_c', (i)::varchar(1000));
-
-        insert into swrs.naics (id, report_id, facility_id, registration_data_facility_id, swrs_facility_id, naics_code)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i, 211110);
-
-        insert into swrs.activity (id, report_id, facility_id)
-        values (i+loop_offset, i+loop_offset, i+loop_offset);
-
-        insert into swrs.unit (id, activity_id)
-        values (i+loop_offset, i+loop_offset);
-
-        insert into swrs.fuel (id, report_id, unit_id, fuel_mapping_id, fuel_type, fuel_description, fuel_units, annual_fuel_amount)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, 96, 'Natural Gas (Sm^3)', 'Natural Gas (Sm^3)', 'Sm^3', 1234);
-
-        insert into swrs.emission (id, activity_id, facility_id, fuel_id, naics_id, organisation_id, report_id, unit_id, quantity, calculated_quantity, emission_category, gas_type)
-        values
-          ((select nextval('emission_sequence')), i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 10000, 10000, 'BC_ScheduleB_GeneralStationaryCombustionEmissions', 'CO2nonbio'),
-          ((select nextval('emission_sequence')), i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 444, 444, 'BC_ScheduleB_FlaringEmissions', 'CH4');
-
-        insert into swrs.address (id, report_id, facility_id, organisation_id, swrs_facility_id, swrs_organisation_id, path_context, type, mailing_address_street_number, mailing_address_street_name, mailing_address_street_type, mailing_address_municipality, mailing_address_prov_terr_state, mailing_address_postal_code_zip_code, mailing_address_country)
-        values
-          ((select nextval('address_sequence')), i+loop_offset, i+loop_offset, i+loop_offset, i, 2, 'RegistrationData', 'Facility', '1234', 'Rainbow', 'road', 'Victoria',  'British Columbia', 'H0H0H0', 'Canada'),
-          ((select nextval('address_sequence')), i+loop_offset, i+loop_offset, i+loop_offset, i, 2, 'RegistrationData', 'Organisation', '1234', 'Rainbow', 'road', 'Victoria',  'British Columbia', 'H0H0H0', 'Canada'),
-          ((select nextval('address_sequence')), i+loop_offset, i+loop_offset, i+loop_offset, i, 2, 'RegistrationData', 'Contact', '1234', 'Rainbow', 'road', 'Victoria',  'British Columbia', 'H0H0H0', 'Canada');
-
-        insert into swrs.contact (id, report_id, address_id, facility_id, organisation_id, path_context, contact_type, given_name, family_name, telephone_number, email_address, position)
-        values (i+loop_offset, i+loop_offset, (select id from swrs.address where report_id = i+loop_offset and type='Contact'), i+loop_offset, i+loop_offset, 'RegistrationData', 'Operator Representative', 'Mario', 'Super', '8889876543', 'supermario@bowser.ca', 'CEO');
+        perform insert_swrs_report(i+loop_offset, i, 2, 'L_c', year);
       end loop;
 
       -- Changes Requested
       for i in 1201..1300 loop
-        insert into swrs.report(id, imported_at, swrs_report_id, swrs_facility_id, swrs_organisation_id, reporting_period_duration, version, submission_date)
-        values(i+loop_offset, now(), i+loop_offset, i, 3, year, 1, now());
-
-        insert into swrs.organisation (id, report_id, swrs_organisation_id, business_legal_name, english_trade_name, cra_business_number, duns)
-        values (i+loop_offset, i+loop_offset, 3, (select org_name from org_helper where swrs_org_id=3), (select org_name from org_helper where swrs_org_id=3), (select cra_num from org_helper where swrs_org_id=3), (select duns from org_helper where swrs_org_id=3));
-
-        insert into swrs.facility (id, report_id, organisation_id, swrs_facility_id, facility_name, facility_type, facility_bc_ghg_id)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, i, concat('facility ', i), 'SFO', (i)::varchar(1000));
-
-        insert into swrs.naics (id, report_id, facility_id, registration_data_facility_id, swrs_facility_id, naics_code)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i, 211110);
-
-        insert into swrs.activity (id, report_id, facility_id)
-        values (i+loop_offset, i+loop_offset, i+loop_offset);
-
-        insert into swrs.unit (id, activity_id)
-        values (i+loop_offset, i+loop_offset);
-
-        insert into swrs.fuel (id, report_id, unit_id, fuel_mapping_id, fuel_type, fuel_description, fuel_units, annual_fuel_amount)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, 96, 'Natural Gas (Sm^3)', 'Natural Gas (Sm^3)', 'Sm^3', 1234);
-
-        insert into swrs.emission (id, activity_id, facility_id, fuel_id, naics_id, organisation_id, report_id, unit_id, quantity, calculated_quantity, emission_category, gas_type)
-        values
-          ((select nextval('emission_sequence')), i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 10000, 10000, 'BC_ScheduleB_GeneralStationaryCombustionEmissions', 'CO2nonbio'),
-          ((select nextval('emission_sequence')), i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 444, 444, 'BC_ScheduleB_FlaringEmissions', 'CH4');
-
-        insert into swrs.address (id, report_id, facility_id, organisation_id, swrs_facility_id, swrs_organisation_id, path_context, type, mailing_address_street_number, mailing_address_street_name, mailing_address_street_type, mailing_address_municipality, mailing_address_prov_terr_state, mailing_address_postal_code_zip_code, mailing_address_country)
-        values
-          ((select nextval('address_sequence')), i+loop_offset, i+loop_offset, i+loop_offset, i, 3, 'RegistrationData', 'Facility', '1234', 'Rainbow', 'road', 'Victoria',  'British Columbia', 'H0H0H0', 'Canada'),
-          ((select nextval('address_sequence')), i+loop_offset, i+loop_offset, i+loop_offset, i, 3, 'RegistrationData', 'Organisation', '1234', 'Rainbow', 'road', 'Victoria',  'British Columbia', 'H0H0H0', 'Canada'),
-          ((select nextval('address_sequence')), i+loop_offset, i+loop_offset, i+loop_offset, i, 3, 'RegistrationData', 'Contact', '1234', 'Rainbow', 'road', 'Victoria',  'British Columbia', 'H0H0H0', 'Canada');
-
-        insert into swrs.contact (id, report_id, address_id, facility_id, organisation_id, path_context, contact_type, given_name, family_name, telephone_number, email_address, position)
-        values (i+loop_offset, i+loop_offset, (select id from swrs.address where report_id = i+loop_offset and type='Contact'), i+loop_offset, i+loop_offset, 'RegistrationData', 'Operator Representative', 'Mario', 'Super', '8889876543', 'supermario@bowser.ca', 'CEO');
+        perform insert_swrs_report(i+loop_offset, i, 3, 'SFO', year);
       end loop;
 
       -- Draft
       for i in 1301..1400 loop
-        insert into swrs.report(id, imported_at, swrs_report_id, swrs_facility_id, swrs_organisation_id, reporting_period_duration, version, submission_date)
-        values(i+loop_offset, now(), i+loop_offset, i, 4, year, 1, now());
-
-        insert into swrs.organisation (id, report_id, swrs_organisation_id, business_legal_name, english_trade_name, cra_business_number, duns)
-        values (i+loop_offset, i+loop_offset, 4, (select org_name from org_helper where swrs_org_id=4), (select org_name from org_helper where swrs_org_id=4), (select cra_num from org_helper where swrs_org_id=4), (select duns from org_helper where swrs_org_id=4));
-
-        insert into swrs.facility (id, report_id, organisation_id, swrs_facility_id, facility_name, facility_type, facility_bc_ghg_id)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, i, concat('facility ', i), 'SFO', (i)::varchar(1000));
-
-        insert into swrs.naics (id, report_id, facility_id, registration_data_facility_id, swrs_facility_id, naics_code)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i, 211110);
-
-        insert into swrs.activity (id, report_id, facility_id)
-        values (i+loop_offset, i+loop_offset, i+loop_offset);
-
-        insert into swrs.unit (id, activity_id)
-        values (i+loop_offset, i+loop_offset);
-
-        insert into swrs.fuel (id, report_id, unit_id, fuel_mapping_id, fuel_type, fuel_description, fuel_units, annual_fuel_amount)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, 96, 'Natural Gas (Sm^3)', 'Natural Gas (Sm^3)', 'Sm^3', 1234);
-
-        insert into swrs.emission (id, activity_id, facility_id, fuel_id, naics_id, organisation_id, report_id, unit_id, quantity, calculated_quantity, emission_category, gas_type)
-        values
-          ((select nextval('emission_sequence')), i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 10000, 10000, 'BC_ScheduleB_GeneralStationaryCombustionEmissions', 'CO2nonbio'),
-          ((select nextval('emission_sequence')), i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 444, 444, 'BC_ScheduleB_FlaringEmissions', 'CH4');
-
-        insert into swrs.address (id, report_id, facility_id, organisation_id, swrs_facility_id, swrs_organisation_id, path_context, type, mailing_address_street_number, mailing_address_street_name, mailing_address_street_type, mailing_address_municipality, mailing_address_prov_terr_state, mailing_address_postal_code_zip_code, mailing_address_country)
-        values
-          ((select nextval('address_sequence')), i+loop_offset, i+loop_offset, i+loop_offset, i, 4, 'RegistrationData', 'Facility', '1234', 'Rainbow', 'road', 'Victoria',  'British Columbia', 'H0H0H0', 'Canada'),
-          ((select nextval('address_sequence')), i+loop_offset, i+loop_offset, i+loop_offset, i, 4, 'RegistrationData', 'Organisation', '1234', 'Rainbow', 'road', 'Victoria',  'British Columbia', 'H0H0H0', 'Canada'),
-          ((select nextval('address_sequence')), i+loop_offset, i+loop_offset, i+loop_offset, i, 4, 'RegistrationData', 'Contact', '1234', 'Rainbow', 'road', 'Victoria',  'British Columbia', 'H0H0H0', 'Canada');
-
-        insert into swrs.contact (id, report_id, address_id, facility_id, organisation_id, path_context, contact_type, given_name, family_name, telephone_number, email_address, position)
-        values (i+loop_offset, i+loop_offset, (select id from swrs.address where report_id = i+loop_offset and type='Contact'), i+loop_offset, i+loop_offset, 'RegistrationData', 'Operator Representative', 'Mario', 'Super', '8889876543', 'supermario@bowser.ca', 'CEO');
+        perform insert_swrs_report(i+loop_offset, i, 4, 'SFO', year);
       end loop;
 
       -- Not Started
       for i in 1401..1500 loop
-        insert into swrs.report(id, imported_at, swrs_report_id, swrs_facility_id, swrs_organisation_id, reporting_period_duration, version, submission_date)
-        values(i+loop_offset, now(), i+loop_offset, i, 5, year, 1, now());
-
-        insert into swrs.organisation (id, report_id, swrs_organisation_id, business_legal_name, english_trade_name, cra_business_number, duns)
-        values (i+loop_offset, i+loop_offset, 5, (select org_name from org_helper where swrs_org_id=5), (select org_name from org_helper where swrs_org_id=5), (select cra_num from org_helper where swrs_org_id=5), (select duns from org_helper where swrs_org_id=5));
-
-        insert into swrs.facility (id, report_id, organisation_id, swrs_facility_id, facility_name, facility_type, facility_bc_ghg_id)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, i, concat('facility ', i), 'SFO', (i)::varchar(1000));
-
-        insert into swrs.naics (id, report_id, facility_id, registration_data_facility_id, swrs_facility_id, naics_code)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i, 211110);
-
-        insert into swrs.activity (id, report_id, facility_id)
-        values (i+loop_offset, i+loop_offset, i+loop_offset);
-
-        insert into swrs.unit (id, activity_id)
-        values (i+loop_offset, i+loop_offset);
-
-        insert into swrs.fuel (id, report_id, unit_id, fuel_mapping_id, fuel_type, fuel_description, fuel_units, annual_fuel_amount)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, 96, 'Natural Gas (Sm^3)', 'Natural Gas (Sm^3)', 'Sm^3', 1234);
-
-        insert into swrs.emission (id, activity_id, facility_id, fuel_id, naics_id, organisation_id, report_id, unit_id, quantity, calculated_quantity, emission_category, gas_type)
-        values
-          ((select nextval('emission_sequence')), i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 10000, 10000, 'BC_ScheduleB_GeneralStationaryCombustionEmissions', 'CO2nonbio'),
-          ((select nextval('emission_sequence')), i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 444, 444, 'BC_ScheduleB_FlaringEmissions', 'CH4');
-
-        insert into swrs.address (id, report_id, facility_id, organisation_id, swrs_facility_id, swrs_organisation_id, path_context, type, mailing_address_street_number, mailing_address_street_name, mailing_address_street_type, mailing_address_municipality, mailing_address_prov_terr_state, mailing_address_postal_code_zip_code, mailing_address_country)
-        values
-          ((select nextval('address_sequence')), i+loop_offset, i+loop_offset, i+loop_offset, i, 5, 'RegistrationData', 'Facility', '1234', 'Rainbow', 'road', 'Victoria',  'British Columbia', 'H0H0H0', 'Canada'),
-          ((select nextval('address_sequence')), i+loop_offset, i+loop_offset, i+loop_offset, i, 5, 'RegistrationData', 'Organisation', '1234', 'Rainbow', 'road', 'Victoria',  'British Columbia', 'H0H0H0', 'Canada'),
-          ((select nextval('address_sequence')), i+loop_offset, i+loop_offset, i+loop_offset, i, 5, 'RegistrationData', 'Contact', '1234', 'Rainbow', 'road', 'Victoria',  'British Columbia', 'H0H0H0', 'Canada');
-
-        insert into swrs.contact (id, report_id, address_id, facility_id, organisation_id, path_context, contact_type, given_name, family_name, telephone_number, email_address, position)
-        values (i+loop_offset, i+loop_offset, (select id from swrs.address where report_id = i+loop_offset and type='Contact'), i+loop_offset, i+loop_offset, 'RegistrationData', 'Operator Representative', 'Mario', 'Super', '8889876543', 'supermario@bowser.ca', 'CEO');
+        perform insert_swrs_report(i+loop_offset, i, 5, 'SFO', year);
       end loop;
 
       -- Submitted
       for i in 1501..1600 loop
-        insert into swrs.report(id, imported_at, swrs_report_id, swrs_facility_id, swrs_organisation_id, reporting_period_duration, version, submission_date)
-        values(i+loop_offset, now(), i+loop_offset, i, 6, year, 1, now());
-
-        insert into swrs.organisation (id, report_id, swrs_organisation_id, business_legal_name, english_trade_name, cra_business_number, duns)
-        values (i+loop_offset, i+loop_offset, 6, (select org_name from org_helper where swrs_org_id=6), (select org_name from org_helper where swrs_org_id=6), (select cra_num from org_helper where swrs_org_id=6), (select duns from org_helper where swrs_org_id=6));
-
-        insert into swrs.facility (id, report_id, organisation_id, swrs_facility_id, facility_name, facility_type, facility_bc_ghg_id)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, i, concat('facility ', i), 'SFO', (i)::varchar(1000));
-
-        insert into swrs.naics (id, report_id, facility_id, registration_data_facility_id, swrs_facility_id, naics_code)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i, 211110);
-
-        insert into swrs.activity (id, report_id, facility_id)
-        values (i+loop_offset, i+loop_offset, i+loop_offset);
-
-        insert into swrs.unit (id, activity_id)
-        values (i+loop_offset, i+loop_offset);
-
-        insert into swrs.fuel (id, report_id, unit_id, fuel_mapping_id, fuel_type, fuel_description, fuel_units, annual_fuel_amount)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, 96, 'Natural Gas (Sm^3)', 'Natural Gas (Sm^3)', 'Sm^3', 1234);
-
-        insert into swrs.emission (id, activity_id, facility_id, fuel_id, naics_id, organisation_id, report_id, unit_id, quantity, calculated_quantity, emission_category, gas_type)
-        values
-          ((select nextval('emission_sequence')), i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 10000, 10000, 'BC_ScheduleB_GeneralStationaryCombustionEmissions', 'CO2nonbio'),
-          ((select nextval('emission_sequence')), i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, 444, 444, 'BC_ScheduleB_FlaringEmissions', 'CH4');
-
-        insert into swrs.address (id, report_id, facility_id, organisation_id, swrs_facility_id, swrs_organisation_id, path_context, type, mailing_address_street_number, mailing_address_street_name, mailing_address_street_type, mailing_address_municipality, mailing_address_prov_terr_state, mailing_address_postal_code_zip_code, mailing_address_country)
-        values
-          ((select nextval('address_sequence')), i+loop_offset, i+loop_offset, i+loop_offset, i, 6, 'RegistrationData', 'Facility', '1234', 'Rainbow', 'road', 'Victoria',  'British Columbia', 'H0H0H0', 'Canada'),
-          ((select nextval('address_sequence')), i+loop_offset, i+loop_offset, i+loop_offset, i, 6, 'RegistrationData', 'Organisation', '1234', 'Rainbow', 'road', 'Victoria',  'British Columbia', 'H0H0H0', 'Canada'),
-          ((select nextval('address_sequence')), i+loop_offset, i+loop_offset, i+loop_offset, i, 6, 'RegistrationData', 'Contact', '1234', 'Rainbow', 'road', 'Victoria',  'British Columbia', 'H0H0H0', 'Canada');
-
-        insert into swrs.contact (id, report_id, address_id, facility_id, organisation_id, path_context, contact_type, given_name, family_name, telephone_number, email_address, position)
-        values (i+loop_offset, i+loop_offset, (select id from swrs.address where report_id = i+loop_offset and type='Contact'), i+loop_offset, i+loop_offset, 'RegistrationData', 'Operator Representative', 'Mario', 'Super', '8889876543', 'supermario@bowser.ca', 'CEO');
+        perform insert_swrs_report(i+loop_offset, i, 6, 'SFO', year);
       end loop;
       loop_modifier = loop_modifier+1;
     end loop;
