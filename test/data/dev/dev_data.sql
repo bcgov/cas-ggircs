@@ -54,7 +54,7 @@ do $report$
         values (i+loop_offset, i+loop_offset, i+loop_offset, i, concat('facility ', i), 'SFO', (i)::varchar(1000));
 
         insert into swrs.naics (id, report_id, facility_id, registration_data_facility_id, swrs_facility_id, naics_code)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i, 211111);
+        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i, 211110);
 
         insert into swrs.activity (id, report_id, facility_id)
         values (i+loop_offset, i+loop_offset, i+loop_offset);
@@ -92,7 +92,7 @@ do $report$
         values (i+loop_offset, i+loop_offset, i+loop_offset, i, concat('facility ', i), 'IF_a', (i)::varchar(1000));
 
         insert into swrs.naics (id, report_id, facility_id, registration_data_facility_id, swrs_facility_id, naics_code)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i, 211111);
+        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i, 211110);
 
         insert into swrs.activity (id, report_id, facility_id)
         values (i+loop_offset, i+loop_offset, i+loop_offset);
@@ -129,7 +129,7 @@ do $report$
         values (i+loop_offset, i+loop_offset, i+loop_offset, i, concat('facility ', i), 'IF_b', (i)::varchar(1000));
 
         insert into swrs.naics (id, report_id, facility_id, registration_data_facility_id, swrs_facility_id, naics_code)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i, 211111);
+        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i, 211110);
 
         insert into swrs.activity (id, report_id, facility_id)
         values (i+loop_offset, i+loop_offset, i+loop_offset);
@@ -166,7 +166,7 @@ do $report$
         values (i+loop_offset, i+loop_offset, i+loop_offset, i, concat('facility ', i), 'L_c', (i)::varchar(1000));
 
         insert into swrs.naics (id, report_id, facility_id, registration_data_facility_id, swrs_facility_id, naics_code)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i, 211111);
+        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i, 211110);
 
         insert into swrs.activity (id, report_id, facility_id)
         values (i+loop_offset, i+loop_offset, i+loop_offset);
@@ -204,7 +204,7 @@ do $report$
         values (i+loop_offset, i+loop_offset, i+loop_offset, i, concat('facility ', i), 'SFO', (i)::varchar(1000));
 
         insert into swrs.naics (id, report_id, facility_id, registration_data_facility_id, swrs_facility_id, naics_code)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i, 211111);
+        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i, 211110);
 
         insert into swrs.activity (id, report_id, facility_id)
         values (i+loop_offset, i+loop_offset, i+loop_offset);
@@ -242,7 +242,7 @@ do $report$
         values (i+loop_offset, i+loop_offset, i+loop_offset, i, concat('facility ', i), 'SFO', (i)::varchar(1000));
 
         insert into swrs.naics (id, report_id, facility_id, registration_data_facility_id, swrs_facility_id, naics_code)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i, 211111);
+        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i, 211110);
 
         insert into swrs.activity (id, report_id, facility_id)
         values (i+loop_offset, i+loop_offset, i+loop_offset);
@@ -280,7 +280,7 @@ do $report$
         values (i+loop_offset, i+loop_offset, i+loop_offset, i, concat('facility ', i), 'SFO', (i)::varchar(1000));
 
         insert into swrs.naics (id, report_id, facility_id, registration_data_facility_id, swrs_facility_id, naics_code)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i, 211111);
+        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i, 211110);
 
         insert into swrs.activity (id, report_id, facility_id)
         values (i+loop_offset, i+loop_offset, i+loop_offset);
@@ -318,7 +318,7 @@ do $report$
         values (i+loop_offset, i+loop_offset, i+loop_offset, i, concat('facility ', i), 'SFO', (i)::varchar(1000));
 
         insert into swrs.naics (id, report_id, facility_id, registration_data_facility_id, swrs_facility_id, naics_code)
-        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i, 211111);
+        values (i+loop_offset, i+loop_offset, i+loop_offset, i+loop_offset, i, 211110);
 
         insert into swrs.activity (id, report_id, facility_id)
         values (i+loop_offset, i+loop_offset, i+loop_offset);
