@@ -120,3 +120,4 @@ swrs/public/table/report_001 [swrs/public/table/report] 2021-05-31T20:23:04Z Dyl
 swrs/transform/materialized_view/report_001 [swrs/transform/materialized_view/report] 2021-05-31T20:26:56Z Dylan Leard <dylan@button.is> # Migration: increase varchar size limit on update_comment column
 @v1.3.0 2021-05-31T22:07:23Z Dylan Leard <dylan@button.is> # release v1.3.0
 @v1.3.1 2021-06-02T17:45:08Z Matthieu Foucault <matthieu@button.is> # release v1.3.1
+@v1.3.2 2021-07-07T22:40:11Z Dylan Leard <dylan@button.is> # release v1.3.2
