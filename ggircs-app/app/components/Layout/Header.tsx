@@ -38,14 +38,12 @@ const Header = ({ isLoggedIn = false, children }) => {
         onBannerClick={toggleNavMenu}
         title="Greenhouse Gas Industrial Reporting and Control System"
       >
-        {isLoggedIn ? (
-          <>
-            <ul
-              className="header-right"
-              style={
-                navMenuHidden ? { display: "none" } : { marginLeft: "auto" }
-              }
-            >
+        <ul
+          className="header-right"
+          style={navMenuHidden ? { display: "none" } : { marginLeft: "auto" }}
+        >
+          {isLoggedIn ? (
+            <>
               <li>
                 <Link href="/">
                   <a>Dashboard</a>
@@ -61,19 +59,13 @@ const Header = ({ isLoggedIn = false, children }) => {
                   <a>Logout</a>
                 </Link>
               </li>
-            </ul>
-          </>
-        ) : (
-          <ul style={navMenuHidden ? { display: "none" } : { display: "flex" }}>
+            </>
+          ) : (
             <li>
-              <LoginButton>
-                <button className="nav-button" type="submit">
-                  Login
-                </button>
-              </LoginButton>
+              <LoginButton />
             </li>
-          </ul>
-        )}
+          )}
+        </ul>
         {children}
       </Navigation>
 
