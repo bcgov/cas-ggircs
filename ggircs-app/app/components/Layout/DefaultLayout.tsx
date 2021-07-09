@@ -51,7 +51,7 @@ const DefaultLayout: React.FunctionComponent<Props> = ({
         </div>
       ) : null}
 
-      <div id="page-congtent">
+      <div id="page-content">
         <Grid cols={12}>
           <Grid.Row justify="center" gutter={[0, 50]}>
             <Grid.Col span={7}>{children}</Grid.Col>
