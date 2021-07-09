@@ -12,9 +12,9 @@ const LoginButton: React.FunctionComponent = () => {
 
   return (
     <form action={loginURI} method="post">
-      <input type="submit" value="Log in" />
+      <button type="submit">Log in</button>
       <style jsx>{`
-        input[type="submit"] {
+        button[type="submit"] {
           background: none !important;
           border: none;
           display: flex;
@@ -25,7 +25,7 @@ const LoginButton: React.FunctionComponent = () => {
           text-decoration: none;
           border-right: 1px solid #9b9b9b;
         }
-        input[type="submit"]:hover {
+        button[type="submit"]:hover {
           text-decoration: underline;
         }
       `}</style>
