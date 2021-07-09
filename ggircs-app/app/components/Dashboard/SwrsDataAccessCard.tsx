@@ -5,12 +5,19 @@ import Link from "next/link";
 
 const SwrsDataAccessCard: React.FunctionComponent = () => (
   <Card title="SWRS">
-    Access reports and attachments from the Single Window Reporting System
-    <br />
-    <br />
+    <p>
+      Access reports and attachments from the Single Window Reporting System
+    </p>
     <Link href="/swrs-browser" passHref>
-      <Button>Browse SWRS files</Button>
+      <Button marginTop="2em">Browse SWRS files</Button>
     </Link>
+    <style jsx>
+      {`
+        p {
+          margin-bottom: 1.5em;
+        }
+      `}
+    </style>
   </Card>
 );
 
