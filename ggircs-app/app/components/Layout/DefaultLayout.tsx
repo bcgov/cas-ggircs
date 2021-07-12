@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import Grid from "@button-inc/bcgov-theme/Grid";
 import { graphql, createFragmentContainer } from "react-relay";
 import { DefaultLayout_session } from "DefaultLayout_session.graphql";
 import getConfig from "next/config";
@@ -26,7 +26,6 @@ const DefaultLayout: React.FunctionComponent<Props> = ({
   title,
   titleControls,
   session,
-  width = "narrow",
   help,
 }) => (
   <div className="page-wrap">
@@ -38,23 +37,27 @@ const DefaultLayout: React.FunctionComponent<Props> = ({
     <main>
       {title ? (
         <div className="page-title">
-          <Container className={width}>
-            <Row>
-              <Col>
+          <Grid cols={12}>
+            <Grid.Row justify="center">
+              <Grid.Col span={6}>
                 <h1>{title}</h1>
                 {help && (
                   <Help title={help.title} helpMessage={help.helpMessage} />
                 )}
-              </Col>
-              <Col xs="auto">{titleControls}</Col>
-            </Row>
-          </Container>
+              </Grid.Col>
+              <Grid.Col>{titleControls}</Grid.Col>
+            </Grid.Row>
+          </Grid>
         </div>
       ) : null}
 
-      <Container id="page-content" className={`content ${width}`}>
-        {children}
-      </Container>
+      <div id="page-content">
+        <Grid cols={12}>
+          <Grid.Row justify="center" gutter={[0, 50]}>
+            <Grid.Col span={7}>{children}</Grid.Col>
+          </Grid.Row>
+        </Grid>
+      </div>
     </main>
     <Footer />
     <style jsx>

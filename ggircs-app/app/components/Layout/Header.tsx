@@ -1,9 +1,7 @@
 import React, { useState, useRef } from "react";
-import { Form } from "react-bootstrap";
 import Link from "next/link";
 import LoginButton from "components/LoginButton";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars } from "@fortawesome/free-solid-svg-icons";
+import Navigation from "@button-inc/bcgov-theme/Navigation";
 
 const DESKTOP_BREAKPOINT_QUERY = "(min-width: 992px)";
 
@@ -33,70 +31,44 @@ const Header = ({ isLoggedIn = false, children }) => {
   };
 
   return (
-    <header>
-      <div className="nav-header">
-        <nav aria-label="Main">
-          <div className="header-left">
-            <Link href="/">
-              <a>
-                <picture>
-                  <source
-                    media="(max-width: 767.98px)"
-                    srcSet="/bcid-reverse.svg"
-                  />
-                  <img
-                    src="/BCID_CleanBC_rev_tagline_colour.svg"
-                    alt="logo for Province of British Columbia CleanBC"
-                  />
-                </picture>
-              </a>
-            </Link>
-            <h2>Greenhouse Gas Industrial Reporting and Control System</h2>
-            <button
-              id="menu-toggle"
-              type="button"
-              aria-label="Menu toggle"
-              onClick={toggleNavMenu}
-            >
-              <FontAwesomeIcon color="white" icon={faBars} size="2x" />
-            </button>
-          </div>
-          <ul
-            className="header-right"
-            style={navMenuHidden ? { display: "none" } : { display: "flex" }}
-          >
-            {isLoggedIn ? (
-              <>
-                <li>
-                  <Link href="/">
-                    <a className="nav-button">Dashboard</a>
-                  </Link>
-                  <Link href="/user/profile">
-                    <a className="nav-button">Profile</a>
-                  </Link>
+    <>
+      <Navigation
+        header="main"
+        mobileBreakPoint={800}
+        onBannerClick={toggleNavMenu}
+        title="Greenhouse Gas Industrial Reporting and Control System"
+      >
+        <ul
+          className="header-right"
+          style={navMenuHidden ? { display: "none" } : { marginLeft: "auto" }}
+        >
+          {isLoggedIn ? (
+            <>
+              <li>
+                <Link href="/">
+                  <a>Dashboard</a>
+                </Link>
+              </li>
+              <li>
+                <Link href="/user/profile">
+                  <a>Profile</a>
+                </Link>
+              </li>
+              <li>
+                <Link href="/logout">
+                  <a>Logout</a>
+                </Link>
+              </li>
+            </>
+          ) : (
+            <li>
+              <LoginButton />
+            </li>
+          )}
+        </ul>
+        {children}
+      </Navigation>
 
-                  <Form action="/logout" method="post">
-                    <button type="submit" className="nav-button">
-                      Logout
-                    </button>
-                  </Form>
-                </li>
-              </>
-            ) : (
-              <>
-                <li>
-                  <LoginButton>
-                    <button className="nav-button" type="submit">
-                      Login
-                    </button>
-                  </LoginButton>
-                </li>
-              </>
-            )}
-          </ul>
-        </nav>
-      </div>
-      {children}
       <style jsx>
         {`
           /* Mobile-first styles:
@@ -216,7 +188,7 @@ const Header = ({ isLoggedIn = false, children }) => {
           }
         `}
       </style>
-    </header>
+    </>
   );
 };
 
