@@ -21,6 +21,7 @@ $function$
 
         create temporary table all_emissions(
           id serial,
+          eccc_xml_file_id int,
           activity_name varchar(1000),
           sub_activity_name varchar(1000),
           unit_name varchar(1000),
@@ -46,6 +47,7 @@ $function$
         ) on commit drop;
 
         insert into all_emissions(
+            eccc_xml_file_id,
             activity_name,
             sub_activity_name,
             unit_name,
@@ -67,12 +69,13 @@ $function$
             quantity,
             calculated_quantity,
             emission_category)
-          select activity_name, sub_activity_name, unit_name, sub_unit_name, process_idx, sub_process_idx,
+          select eccc_xml_file_id, activity_name, sub_activity_name, unit_name, sub_unit_name, process_idx, sub_process_idx,
                  units_idx, unit_idx, substances_idx, substance_idx, fuel_idx, fuel_name, emissions_idx, emission_idx,
                  emission_type, gas_type, methodology, not_applicable, quantity, calculated_quantity, emission_category
           from swrs_transform.emission;
 
         insert into all_emissions(
+          eccc_xml_file_id,
           activity_name,
           emissions_idx,
           emission_idx,
@@ -81,6 +84,7 @@ $function$
           calculated_quantity,
           cas_number
         ) select
+          eccc_xml_file_id,
           activity_name,
           emissions_idx,
           emission_idx,
