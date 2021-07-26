@@ -18,11 +18,11 @@ $function$
     begin
 
         delete from swrs_load.emission;
-        insert into swrs_load.emission (id, eccc_xml_file_id, activity_id, facility_id,  fuel_id, naics_id, fuel_mapping_id, organisation_id, report_id, unit_id, activity_name, sub_activity_name,
+        insert into swrs_load.emission (id, eccc_xml_file_id, activity_id, facility_id,  fuel_id, naics_id, organisation_id, report_id, unit_id, activity_name, sub_activity_name,
                                      unit_name, sub_unit_name, fuel_name, emission_type,
                                      gas_type, methodology, not_applicable, quantity, calculated_quantity, emission_category)
 
-        select _emission.id, _emission.eccc_xml_file_id, _activity.id, _facility.id,  _fuel.id, _naics.id, _fuel_mapping.id, _organisation.id, _report.id, _unit.id,
+        select _emission.id, _emission.eccc_xml_file_id, _activity.id, _facility.id,  _fuel.id, _naics.id, _organisation.id, _report.id, _unit.id,
                _emission.activity_name, _emission.sub_activity_name, _emission.unit_name, _emission.sub_unit_name, _emission.fuel_name, _emission.emission_type,
                _emission.gas_type, _emission.methodology, _emission.not_applicable, _emission.quantity, _emission.calculated_quantity, _emission.emission_category
 
