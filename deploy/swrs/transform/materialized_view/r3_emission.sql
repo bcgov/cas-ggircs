@@ -38,4 +38,3 @@ comment on column swrs_transform.r3_emission.calculated_quantity is 'The CO2 Equ
 comment on column swrs_transform.r3_emission.cas_number is 'Refers to the Chemical Abstracts Service Registry Number. It is a unique number code used in chemistry';
 
 commit;
-
