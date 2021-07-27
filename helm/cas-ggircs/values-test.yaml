@@ -17,8 +17,5 @@ app:
 download-ggircs-dags:
   airflowEndpoint: https://cas-airflow-test.apps.silver.devops.gov.bc.ca
 
-download-swrs-dags:
-  airflowEndpoint: https://cas-airflow-test.apps.silver.devops.gov.bc.ca
-
 trigger-ggircs-deploy-db:
   airflowEndpoint: https://cas-airflow-test.apps.silver.devops.gov.bc.ca
