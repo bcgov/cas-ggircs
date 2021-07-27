@@ -12,7 +12,7 @@ sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 YESTERDAY = datetime.now() - timedelta(days=1)
 TWO_DAYS_AGO = datetime.now() - timedelta(days=2)
 
-DEPLOY_DB_DAG_NAME = 'cas_ggircs_ciip_deploy_db'
+DEPLOY_DB_DAG_NAME = 'cas_ggircs_deploy_db'
 LOAD_TESTING_SETUP_DAG_NAME = 'cas_ggircs_ciip_load_testing_data'
 CERT_RENEWAL_DAG_NAME = 'cas_ggircs_cert_renewal'
 
