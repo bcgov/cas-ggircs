@@ -29,7 +29,7 @@ default_args = {
     'start_date': START_DATE
 }
 
-DAG_ID = "swrs_eccc"
+DAG_ID = "cas_ggircs_swrs_eccc"
 SCHEDULE_INTERVAL = '0 8 * * *'
 
 dag_incremental = DAG(DAG_ID + '_incremental', schedule_interval=SCHEDULE_INTERVAL,
