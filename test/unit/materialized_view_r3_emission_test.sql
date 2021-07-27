@@ -43,7 +43,7 @@ insert into swrs_extract.eccc_xml_file (xml_file) values ($$
             <TotalRow>
               <Quantity>7437.645</Quantity>
               <CalculatedQuantity>7437.645</CalculatedQuantity>
-              <CasNumber> 124-38-9</CasNumber>
+              <CasNumber> 124-38-9</CasNumber> -- The preceding space is intentional to test that normalize-space() is working as intended
               <GasName>CO2 nonbio</GasName>
             </TotalRow>
             <TotalRow>

@@ -30,11 +30,11 @@ comment on materialized view swrs_transform.r3_emission is 'The materialized vie
 comment on column swrs_transform.r3_emission.id is 'A generated index used for keying in the ggircs schema';
 comment on column swrs_transform.r3_emission.eccc_xml_file_id is 'A foreign key reference to swrs_extract.eccc_xml_file';
 comment on column swrs_transform.r3_emission.activity_name is 'The name of the activity (partial fk reference)';
-comment on column swrs_transform.r3_emission.emissions_idx is 'The number of preceding Emissions siblings before this emission';
-comment on column swrs_transform.r3_emission.emission_idx is 'The number of preceding Emission siblings before this emission';
+comment on column swrs_transform.r3_emission.emissions_idx is 'The number of preceding Emissions siblings before this emission. This index signifies where in the report this block of emissions was reported';
+comment on column swrs_transform.r3_emission.emission_idx is 'The number of preceding Emission siblings before this emission. This index signifies where this emission was reported within an emissions_idx';
 comment on column swrs_transform.r3_emission.gas_type is 'The type of the gas';
 comment on column swrs_transform.r3_emission.quantity is 'The quantity of the emission';
 comment on column swrs_transform.r3_emission.calculated_quantity is 'The CO2 Equivalent quantity of the emission';
-comment on column swrs_transform.r3_emission.cas_number is 'Refers to the Chemical Abstracts Service Registry Number. It is a unique number code used in chemistry';
+comment on column swrs_transform.r3_emission.cas_number is 'The materialized view containing the information on emissions for R3 Reports (R3 reports are for facilities that emit < 10000 tCO2e, but are still required to submit an emission report under the Greenhouse Gas Emission Reporting Regulation, section 14, paragraph 6)';
 
 commit;
