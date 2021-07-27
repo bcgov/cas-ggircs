@@ -125,3 +125,11 @@ download-ggircs-dags:
   dagId: fetch_and_save_dag_from_github
   helm:
     hook: "pre-install,pre-upgrade"
+
+trigger-ggircs-deploy-db:
+  image:
+    tag: 69f346b134d99e9e5e6d50e16198fd4977fc3264 # pragma: allowlist secret
+  airflowEndpoint: https://cas-airflow-dev.apps.silver.devops.gov.bc.ca
+  dagId: cas_ggircs_deploy_db
+  helm:
+    hook: false
