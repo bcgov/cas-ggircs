@@ -13,3 +13,6 @@ cas-postgres:
 app:
   route:
     host: cas-ggircs-test.apps.silver.devops.gov.bc.ca
+
+download-ggircs-dags:
+  airflowEndpoint: https://cas-airflow-test.apps.silver.devops.gov.bc.ca
