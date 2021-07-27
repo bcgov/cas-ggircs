@@ -8,3 +8,7 @@ dependencies:
   - name: cas-postgres
     version: "0.8.0"
     repository: https://bcgov.github.io/cas-postgres/
+  - name: cas-airflow-dag-trigger
+    version: 1.0.6
+    repository: https://bcgov.github.io/cas-airflow
+    alias: download-ggircs-dags
