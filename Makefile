@@ -198,7 +198,8 @@ project: $(call make_help,project,Switches to the desired $$OC_PROJECT namespace
 .PHONY: install
 install: whoami
 	@set -euo pipefail; \
-	dagConfig=$$(echo '{"org": "bcgov", "repo": "cas-ggircs", "ref": "$(GIT_SHA1)", "path": "dags/cas_ggircs_dags.py"}' | base64 -w0); \
+	ggircsDagConfig=$$(echo '{"org": "bcgov", "repo": "cas-ggircs", "ref": "$(GIT_SHA1)", "path": "dags/cas_ggircs_dags.py"}' | base64 -w0); \
+	swrsDagConfig=$$(echo '{"org": "bcgov", "repo": "cas-ggircs", "ref": "$(GIT_SHA1)", "path": "dags/swrs_dags.py"}' | base64 -w0); \
 	helm dep up ./helm/cas-ggircs; \
 	if ! oc get route cas-ggircs -o name; then \
 		helm upgrade --install --atomic --timeout 900s \
@@ -208,7 +209,8 @@ install: whoami
 			--set image.ecccExtract.tag=$(GIT_SHA1) \
 			--set swrsGcpApi.image.tag=$(GIT_SHA1) \
 			--set image.app.tag=$(GIT_SHA1) --set image.schema.tag=$(GIT_SHA1) \
-			--set download-ggircs-dags.dagConfiguration="$$dagConfig" \
+			--set download-ggircs-dags.dagConfiguration="$$ggircsDagConfig" \
+			--set download-swrs-dags.dagConfiguration="$$swrsDagConfig" \
 			--values ./helm/cas-ggircs/values.yaml \
 			--values ./helm/cas-ggircs/values-$(ENVIRONMENT).yaml \
 			--set ciip.release=cas-ciip-portal \
@@ -225,7 +227,8 @@ install: whoami
 		--set image.ecccExtract.tag=$(GIT_SHA1) \
 		--set swrsGcpApi.image.tag=$(GIT_SHA1) \
 		--set image.app.tag=$(GIT_SHA1) --set image.schema.tag=$(GIT_SHA1) \
-		--set download-ggircs-dags.dagConfiguration="$$dagConfig" \
+		--set download-ggircs-dags.dagConfiguration="$$ggircsDagConfig" \
+		--set download-swrs-dags.dagConfiguration="$$swrsDagConfig" \
 		--values ./helm/cas-ggircs/values.yaml \
 		--values ./helm/cas-ggircs/values-$(ENVIRONMENT).yaml \
 		--set ciip.release=cas-ciip-portal \

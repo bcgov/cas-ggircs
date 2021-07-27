@@ -15,4 +15,8 @@ dependencies:
   - name: cas-airflow-dag-trigger
     version: 1.0.6
     repository: https://bcgov.github.io/cas-airflow
+    alias: download-swrs-dags
+  - name: cas-airflow-dag-trigger
+    version: 1.0.6
+    repository: https://bcgov.github.io/cas-airflow
     alias: trigger-ggircs-deploy-db
