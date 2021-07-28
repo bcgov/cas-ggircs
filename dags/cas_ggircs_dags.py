@@ -10,22 +10,20 @@ import sys
 
 sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 
-YESTERDAY = datetime.now() - timedelta(days=1)
 TWO_DAYS_AGO = datetime.now() - timedelta(days=2)
 
 DEPLOY_DB_DAG_NAME = 'cas_ggircs_deploy_db'
 LOAD_TESTING_SETUP_DAG_NAME = 'cas_ggircs_ciip_load_testing_data'
 CERT_RENEWAL_DAG_NAME = 'cas_ggircs_cert_renewal'
+BACKUP_DAG_NAME = 'walg_backup_ggircs_full'
 
 ggircs_namespace = os.getenv('GGIRCS_NAMESPACE')
 ciip_namespace = os.getenv('CIIP_NAMESPACE')
-in_cluster = os.getenv('LOCAL_AIRFLOW', False) == False
 
 default_args = {
     **default_dag_args,
-    'start_date': YESTERDAY
+    'start_date': TWO_DAYS_AGO
 }
-
 
 """
 ###############################################################################
@@ -133,15 +131,10 @@ ggircs_load_testing_data >> ciip_init_db >> ciip_swrs_import >> ciip_load_testin
 ###############################################################################
 """
 
-cert_renewal_default_args = {
-    **default_dag_args,
-    'start_date': TWO_DAYS_AGO
-}
-
 SCHEDULE_INTERVAL = '0 8 * * *'
 
 cert_renewal_dag = DAG(CERT_RENEWAL_DAG_NAME, schedule_interval=SCHEDULE_INTERVAL,
-                       default_args=cert_renewal_default_args)
+                       default_args=default_args)
 
 cert_renewal_task = PythonOperator(
     python_callable=trigger_k8s_cronjob,
@@ -158,7 +151,7 @@ cert_renewal_task = PythonOperator(
 ###############################################################################
 """
 
-ggircs_full_backup_dag = DAG('walg_backup_ggircs_full', default_args=default_args,
+ggircs_full_backup_dag = DAG(BACKUP_DAG_NAME, default_args=default_args,
                              schedule_interval='0 8 * * *', start_date=TWO_DAYS_AGO)
 
 create_backup_task(ggircs_full_backup_dag,
