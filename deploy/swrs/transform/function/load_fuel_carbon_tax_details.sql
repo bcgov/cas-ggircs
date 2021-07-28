@@ -96,6 +96,7 @@ $function$
         insert into swrs_load.fuel_carbon_tax_details (normalized_fuel_type, state, carbon_tax_act_fuel_type_id, cta_rate_units, unit_conversion_factor) values ('Flared Natural Gas CH4','Gas',null,'$/m3',1000000/6.5);
         insert into swrs_load.fuel_carbon_tax_details (normalized_fuel_type, state, carbon_tax_act_fuel_type_id, cta_rate_units, unit_conversion_factor) values ('Flared Natural Gas N20','Gas',null,'$/m3',1000000/0.06);
         insert into swrs_load.fuel_carbon_tax_details (normalized_fuel_type, state, carbon_tax_act_fuel_type_id, cta_rate_units, unit_conversion_factor) values ('Vented Natural Gas','Gas',null,'$/m3',1);
+        insert into swrs_load.fuel_carbon_tax_details (normalized_fuel_type, state, carbon_tax_act_fuel_type_id, cta_rate_units, unit_conversion_factor) values ('Carpet fibre (tonnes)','(Solid)',null,'n/a',1);
     end
 $function$ language plpgsql volatile;
 COMMIT;
