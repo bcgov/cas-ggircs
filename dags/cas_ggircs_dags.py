@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from dag_configuration import default_dag_args
 from trigger_k8s_cronjob import trigger_k8s_cronjob
+from walg_backups import create_backup_task
 from airflow.operators.python_operator import PythonOperator
 from datetime import datetime, timedelta
 from airflow import DAG
@@ -147,3 +148,18 @@ cert_renewal_task = PythonOperator(
     task_id='cert_renewal',
     op_args=['cas-ggircs-acme-renewal', ggircs_namespace],
     dag=cert_renewal_dag)
+
+
+"""
+###############################################################################
+#                                                                             #
+# DAG triggering the wal-g backup job                                         #
+#                                                                             #
+###############################################################################
+"""
+
+ggircs_full_backup_dag = DAG('walg_backup_ggircs_full', default_args=default_args,
+                             schedule_interval='0 8 * * *', start_date=TWO_DAYS_AGO)
+
+create_backup_task(ggircs_full_backup_dag,
+                   ggircs_namespace, 'cas-ggircs-patroni')
