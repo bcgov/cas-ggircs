@@ -42,7 +42,7 @@
     "morgan": "^1.10.0",
     "next": "10.2.3",
     "pg": "^8.5.1",
-    "postgraphile": "^4.10.0",
+    "postgraphile": "^4.12.3",
     "postgraphile-log-consola": "^1.0.1",
     "react": "^16.14.0",
     "react-bootstrap": "^1.5.2",
