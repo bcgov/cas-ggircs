@@ -6,6 +6,7 @@ __pycache__
 .pytest_cache
 helm/**/charts
 node_modules
+.scratch/
 
 
 # Environments

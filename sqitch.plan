@@ -121,3 +121,6 @@ swrs/transform/materialized_view/report_001 [swrs/transform/materialized_view/re
 @v1.3.0 2021-05-31T22:07:23Z Dylan Leard <dylan@button.is> # release v1.3.0
 @v1.3.1 2021-06-02T17:45:08Z Matthieu Foucault <matthieu@button.is> # release v1.3.1
 @v1.3.2 2021-07-07T22:40:11Z Dylan Leard <dylan@button.is> # release v1.3.2
+swrs/transform/materialized_view/r3_emission [swrs/transform/schema swrs/extract/table/eccc_xml_file] 2021-07-26T17:20:03Z Dylan Leard <dylan@button.is> # Materialized view parses emission data from R3-type reports (R3 reports are for facilities with <10000 tCO2e)
+swrs/public/table/emission_001 [swrs/public/table/emission] 2021-07-26T18:39:57Z Dylan Leard <dylan@button.is> # Migration: add cas_number column to emission table (discovered in R3 reports)
+swrs/transform/function/load_emission [swrs/transform/function/load_emission@v1.3.0] 2021-07-26T20:25:54Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Including the R3 report data in the load emission function
