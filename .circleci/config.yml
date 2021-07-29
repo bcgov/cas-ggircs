@@ -70,7 +70,7 @@ jobs:
       - run:
           name: Deploy to dev
           command: |
-            helm install --atomic --timeout 900s --namespace "9212c9-dev" \
+            helm install --atomic --wait-for-jobs --timeout 900s --namespace "9212c9-dev" \
             --set image.etl.tag="$CIRCLE_SHA1" \
             --set image.app.tag="$CIRCLE_SHA1" --set image.schema.tag="$CIRCLE_SHA1" \
             --set cas-postgres.patroni.walE.enable=false \
