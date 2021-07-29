@@ -9,10 +9,6 @@ ciip:
 metabase:
   instanceName: cas-metabase
 
-airflowDagTrigger:
-  name: "ggircs_deploy_db"
-  enable: true
-
 image:
   app:
     repository: gcr.io/ggl-cas-storage/cas-ggircs-app
