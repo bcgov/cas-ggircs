@@ -77,7 +77,7 @@ def ggircs_read_only_user(dag):
 def trigger_ciip_deploy_db_dag(dag):
     return TriggerDagRunOperator(
         task_id='trigger_ciip_deploy_db_dag',
-        trigger_dag_id="ciip_deploy_db",
+        trigger_dag_id="cas_ciip_portal_deploy_db",
         dag=dag)
 
 
