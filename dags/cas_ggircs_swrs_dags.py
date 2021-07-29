@@ -22,18 +22,18 @@ sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 START_DATE = datetime.now() - timedelta(days=2)
 
 namespace = os.getenv('GGIRCS_NAMESPACE')
-in_cluster = os.getenv('LOCAL_AIRFLOW', False) == False
 
 default_args = {
     **default_dag_args,
-    'start_date': START_DATE
+    'start_date': START_DATE,
+    'is_paused_upon_creation': True
 }
 
 DAG_ID = "cas_ggircs_swrs_eccc"
 SCHEDULE_INTERVAL = '0 8 * * *'
 
 dag_incremental = DAG(DAG_ID + '_incremental', schedule_interval=SCHEDULE_INTERVAL,
-                      default_args=default_args, user_defined_macros={'json': json}, start_date=START_DATE)
+                      default_args=default_args, user_defined_macros={'json': json})
 dag_full = DAG(DAG_ID+'_full', schedule_interval=None,
                default_args=default_args)
 

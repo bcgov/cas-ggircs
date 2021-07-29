@@ -22,7 +22,8 @@ ciip_namespace = os.getenv('CIIP_NAMESPACE')
 
 default_args = {
     **default_dag_args,
-    'start_date': TWO_DAYS_AGO
+    'start_date': TWO_DAYS_AGO,
+    'is_paused_upon_creation': False
 }
 
 """
@@ -152,7 +153,7 @@ cert_renewal_task = PythonOperator(
 """
 
 ggircs_full_backup_dag = DAG(BACKUP_DAG_NAME, default_args=default_args,
-                             schedule_interval='0 8 * * *', start_date=TWO_DAYS_AGO)
+                             schedule_interval='0 8 * * *')
 
 create_backup_task(ggircs_full_backup_dag,
                    ggircs_namespace, 'cas-ggircs-patroni')
