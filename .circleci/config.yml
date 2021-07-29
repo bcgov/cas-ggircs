@@ -68,11 +68,6 @@ jobs:
           command: |
             helm dep up ./helm/cas-ggircs
       - run:
-          name: Setup dagConfiguration environment variables
-          command: |
-            echo "export GGIRCS_DAG_CONFIG={'org': 'bcgov', 'repo': 'cas-ggircs', 'ref': '$CIRCLE_SHA1', 'path': 'dags/cas_ggircs_dags.py'} | base64 -w0" >> $BASH_ENV
-            echo "export SWRS_DAG_CONFIG={'org': 'bcgov', 'repo': 'cas-ggircs', 'ref': '$CIRCLE_SHA1', 'path': 'dags/swrs_dags.py'} | base64 -w0" >> $BASH_ENV
-      - run:
           name: Deploy to dev
           command: |
             helm install --atomic --wait-for-jobs --timeout 900s --namespace "9212c9-dev" \
@@ -80,15 +75,15 @@ jobs:
             --set image.app.tag="$CIRCLE_SHA1" --set image.schema.tag="$CIRCLE_SHA1" \
             --set cas-postgres.patroni.walE.enable=false \
             --set networkSecurityPolicies.enable=false \
-            --set airflowDagTrigger.enable=false \
             --set swrsImportBucket.enable=false \
             --set swrsGcpApi.image.tag="$CIRCLE_SHA1" \
             --set app.route.ssl.enable=false --set app.route.ssl.issueCertIfDisabled=false \
             --set ciip.release="cas-ciip-portal" \
             --set ciip.prefix="09269b" \
             --set ciip.environment="dev" \
-            --set download-ggircs-dags.dagConfiguration="$GGIRCS_DAG_CONFIG" \
-            --set download-swrs-dags.dagConfiguration="$SWRS_DAG_CONFIG" \
+            --set download-ggircs-dags.enable=false \
+            --set download-swrs-dags.enable=false \
+            --set trigger-ggircs-deploy-db.enable=false \
             cas-ggircs ./helm/cas-ggircs
       - run:
           command: |
