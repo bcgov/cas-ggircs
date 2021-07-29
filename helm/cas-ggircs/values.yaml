@@ -115,6 +115,7 @@ app:
     supportEmail: ggircs@gov.bc.ca
 
 download-ggircs-dags:
+  enabled: true
   image:
     tag: 69f346b134d99e9e5e6d50e16198fd4977fc3264 # pragma: allowlist secret
   airflowEndpoint: https://cas-airflow-dev.apps.silver.devops.gov.bc.ca
@@ -132,6 +133,7 @@ download-swrs-dags:
     hook: "pre-install,pre-upgrade"
 
 trigger-ggircs-deploy-db:
+  enabled: true
   image:
     tag: 69f346b134d99e9e5e6d50e16198fd4977fc3264 # pragma: allowlist secret
   airflowEndpoint: https://cas-airflow-dev.apps.silver.devops.gov.bc.ca

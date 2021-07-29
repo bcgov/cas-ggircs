@@ -81,9 +81,9 @@ jobs:
             --set ciip.release="cas-ciip-portal" \
             --set ciip.prefix="09269b" \
             --set ciip.environment="dev" \
-            --set download-ggircs-dags.enable=false \
-            --set download-swrs-dags.enable=false \
-            --set trigger-ggircs-deploy-db.enable=false \
+            --set download-ggircs-dags.enabled=false \
+            --set download-swrs-dags.enabled=false \
+            --set trigger-ggircs-deploy-db.enabled=false \
             cas-ggircs ./helm/cas-ggircs
       - run:
           command: |
