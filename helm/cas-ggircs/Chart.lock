@@ -2,5 +2,14 @@ dependencies:
 - name: cas-postgres
   repository: https://bcgov.github.io/cas-postgres/
   version: 0.8.0
-digest: sha256:690ff941cb742461f9a00c6af7ff8f45e0b2eaf2abefab2f9c259a75e02cd989
-generated: "2021-03-05T15:06:04.017235-08:00"
+- name: cas-airflow-dag-trigger
+  repository: https://bcgov.github.io/cas-airflow
+  version: 1.0.6
+- name: cas-airflow-dag-trigger
+  repository: https://bcgov.github.io/cas-airflow
+  version: 1.0.6
+- name: cas-airflow-dag-trigger
+  repository: https://bcgov.github.io/cas-airflow
+  version: 1.0.6
+digest: sha256:5f5bd303fa6b855375cad0eb9fd275f04d63cb1f17f32b9426c20409fd7d16c3
+generated: "2021-07-28T16:41:01.173739-07:00"

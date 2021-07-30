@@ -6,9 +6,8 @@ ENV HOME=/root
 COPY . ${HOME}/schema/
 WORKDIR ${HOME}/schema
 
-# jq is used by trigger-airflow-dag.sh
 RUN apt-get update && \
-  apt-get install -y postgresql-client jq && \
+  apt-get install -y postgresql-client && \
   apt-get clean
 
 # CPAN needs to install dependencies for all schemas, one directory up
@@ -24,7 +23,7 @@ ENV PERL5LIB=${HOME}/extlib/lib/perl5
 # Needs to be done as root to chown
 RUN useradd -ms /bin/bash -d ${HOME} --uid ${USER_ID} ggircs
 RUN chown -R ggircs:0 ${HOME} && \
-    chmod -R g+rwX ${HOME}
+  chmod -R g+rwX ${HOME}
 
 USER ${USER_ID}
 WORKDIR ${HOME}

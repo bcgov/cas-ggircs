@@ -3,7 +3,7 @@ version: 2.1
 orbs:
   redhat-openshift: circleci/redhat-openshift@0.2.0
   gcp-gcr: circleci/gcp-gcr@0.7.1
-  helm: circleci/helm@0.2.3
+  helm: circleci/helm@1.2.0
 jobs:
   etl_db_test:
     machine:
@@ -62,7 +62,7 @@ jobs:
           command: make provision
           name: Provision the cluster project set
       - helm/install-helm-client:
-          version: v3.4.2
+          version: v3.6.2
       - run:
           name: Helm dep up
           command: |
@@ -70,18 +70,20 @@ jobs:
       - run:
           name: Deploy to dev
           command: |
-            helm install --atomic --timeout 900s --namespace "9212c9-dev" \
+            helm install --atomic --wait-for-jobs --timeout 900s --namespace "9212c9-dev" \
             --set image.etl.tag="$CIRCLE_SHA1" \
             --set image.app.tag="$CIRCLE_SHA1" --set image.schema.tag="$CIRCLE_SHA1" \
             --set cas-postgres.patroni.walE.enable=false \
             --set networkSecurityPolicies.enable=false \
-            --set airflowDagTrigger.enable=false \
             --set swrsImportBucket.enable=false \
             --set swrsGcpApi.image.tag="$CIRCLE_SHA1" \
             --set app.route.ssl.enable=false --set app.route.ssl.issueCertIfDisabled=false \
             --set ciip.release="cas-ciip-portal" \
             --set ciip.prefix="09269b" \
             --set ciip.environment="dev" \
+            --set download-ggircs-dags.enabled=false \
+            --set download-swrs-dags.enabled=false \
+            --set trigger-ggircs-deploy-db.enabled=false \
             cas-ggircs ./helm/cas-ggircs
       - run:
           command: |
