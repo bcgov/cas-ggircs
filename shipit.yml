@@ -2,4 +2,4 @@ deploy:
   override:
     - git submodule update --init --quiet
     - make install:
-        timeout: 900
+        timeout: 7200
