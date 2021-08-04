@@ -202,7 +202,7 @@ install: whoami
 	swrsDagConfig=$$(echo '{"org": "bcgov", "repo": "cas-ggircs", "ref": "$(GIT_SHA1)", "path": "dags/swrs_dags.py"}' | base64 -w0); \
 	helm dep up ./helm/cas-ggircs; \
 	if ! oc get route cas-ggircs -o name; then \
-		helm upgrade --install --atomic --wait-for-jobs --timeout 900s \
+		helm upgrade --install --atomic --wait-for-jobs --timeout 3600s \
 			--namespace $(GGIRCS_NAMESPACE_PREFIX)-$(ENVIRONMENT) \
 			--set image.etl.tag=$(GIT_SHA1) \
 			--set image.ecccUpload.tag=$(GIT_SHA1) \
@@ -220,7 +220,7 @@ install: whoami
 			--set app.route.ssl.enable=false \
 			cas-ggircs ./helm/cas-ggircs; \
 	fi; \
-	helm upgrade --install --atomic --wait-for-jobs --timeout 900s \
+	helm upgrade --install --atomic --wait-for-jobs --timeout 3600s \
 		--namespace $(GGIRCS_NAMESPACE_PREFIX)-$(ENVIRONMENT) \
 		--set image.etl.tag=$(GIT_SHA1) \
 		--set image.ecccUpload.tag=$(GIT_SHA1) \
