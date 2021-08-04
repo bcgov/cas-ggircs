@@ -201,7 +201,7 @@ install: whoami
 	ggircsDagConfig=$$(echo '{"org": "bcgov", "repo": "cas-ggircs", "ref": "$(GIT_SHA1)", "path": "dags/cas_ggircs_dags.py"}' | base64 -w0); \
 	swrsDagConfig=$$(echo '{"org": "bcgov", "repo": "cas-ggircs", "ref": "$(GIT_SHA1)", "path": "dags/swrs_dags.py"}' | base64 -w0); \
 	helm dep up ./helm/cas-ggircs; \
-	if ! oc get route cas-ggircs -o name; then \
+	if ! oc get route cas-ggircs -o name -n $(GGIRCS_NAMESPACE_PREFIX)-$(ENVIRONMENT); then \
 		helm upgrade --install --atomic --wait-for-jobs --timeout 3600s \
 			--namespace $(GGIRCS_NAMESPACE_PREFIX)-$(ENVIRONMENT) \
 			--set image.etl.tag=$(GIT_SHA1) \
