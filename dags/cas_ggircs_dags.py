@@ -22,8 +22,7 @@ ciip_namespace = os.getenv('CIIP_NAMESPACE')
 
 default_args = {
     **default_dag_args,
-    'start_date': TWO_DAYS_AGO,
-    'is_paused_upon_creation': False
+    'start_date': TWO_DAYS_AGO
 }
 
 """
@@ -36,7 +35,7 @@ default_args = {
 
 
 deploy_db_dag = DAG(DEPLOY_DB_DAG_NAME, schedule_interval=None,
-                    default_args=default_args)
+                    default_args=default_args, is_paused_upon_creation=False)
 
 ggircs_db_init = PythonOperator(
     python_callable=trigger_k8s_cronjob,
@@ -80,8 +79,8 @@ ggircs_db_init >> ggircs_app_schema >> ggircs_app_user
 ###############################################################################
 """
 
-load_testing_setup_dag = DAG(LOAD_TESTING_SETUP_DAG_NAME,
-                             schedule_interval=None, default_args=default_args)
+load_testing_setup_dag = DAG(LOAD_TESTING_SETUP_DAG_NAME, schedule_interval=None,
+                            default_args=default_args, is_paused_upon_creation=False)
 
 ggircs_load_testing_data = PythonOperator(
     python_callable=trigger_k8s_cronjob,
@@ -135,7 +134,7 @@ ggircs_load_testing_data >> ciip_init_db >> ciip_swrs_import >> ciip_load_testin
 SCHEDULE_INTERVAL = '0 8 * * *'
 
 cert_renewal_dag = DAG(CERT_RENEWAL_DAG_NAME, schedule_interval=SCHEDULE_INTERVAL,
-                       default_args=default_args)
+                       default_args=default_args, is_paused_upon_creation=False)
 
 cert_renewal_task = PythonOperator(
     python_callable=trigger_k8s_cronjob,
@@ -153,7 +152,7 @@ cert_renewal_task = PythonOperator(
 """
 
 ggircs_full_backup_dag = DAG(BACKUP_DAG_NAME, default_args=default_args,
-                             schedule_interval='0 8 * * *')
+                             schedule_interval=SCHEDULE_INTERVAL, is_paused_upon_creation=False)
 
 create_backup_task(ggircs_full_backup_dag,
                    ggircs_namespace, 'cas-ggircs-patroni')

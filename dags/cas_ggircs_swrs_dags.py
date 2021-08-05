@@ -25,17 +25,16 @@ namespace = os.getenv('GGIRCS_NAMESPACE')
 
 default_args = {
     **default_dag_args,
-    'start_date': START_DATE,
-    'is_paused_upon_creation': True
+    'start_date': START_DATE
 }
 
 DAG_ID = "cas_ggircs_swrs_eccc"
 SCHEDULE_INTERVAL = '0 8 * * *'
 
 dag_incremental = DAG(DAG_ID + '_incremental', schedule_interval=SCHEDULE_INTERVAL,
-                      default_args=default_args, user_defined_macros={'json': json})
+                      default_args=default_args, user_defined_macros={'json': json}, is_paused_upon_creation=True)
 dag_full = DAG(DAG_ID+'_full', schedule_interval=None,
-               default_args=default_args)
+               default_args=default_args, is_paused_upon_creation=True)
 
 eccc_upload = PythonOperator(
     python_callable=trigger_k8s_cronjob,
