@@ -129,3 +129,4 @@ swrs/transform/function/load_fuel_mapping [swrs/transform/function/load_fuel_map
 @v1.4.0 2021-08-05T22:59:55Z Matthieu Foucault <matthieu@button.is> # release v1.4.0
 @v1.4.1 2021-08-09T18:13:15Z Naomi Aro <naomi.aro@gov.bc.ca> # release v1.4.1
 swrs/history/schema 2021-08-10T22:04:52Z Naomi Aro <naomi.aro@gov.bc.ca> # Add schema for SWRS history
+swrs/history/table/report 2021-08-10T22:26:13Z Naomi Aro <naomi.aro@gov.bc.ca> # Add report table for swrs history
