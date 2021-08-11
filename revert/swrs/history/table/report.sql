@@ -1,7 +1,7 @@
 -- Revert ggircs:swrs/history/table/report from pg
 
-BEGIN;
+begin;
 
 drop table swrs_history.report;
 
-COMMIT;
+commit;
