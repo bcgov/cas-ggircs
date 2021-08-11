@@ -131,3 +131,5 @@ swrs/transform/function/load_fuel_mapping [swrs/transform/function/load_fuel_map
 swrs/history/schema 2021-08-10T22:04:52Z Naomi Aro <naomi.aro@gov.bc.ca> # Add schema for SWRS history
 swrs/history/table/report 2021-08-10T22:26:13Z Naomi Aro <naomi.aro@gov.bc.ca> # Add report table for swrs history
 swrs/history/table/attachments 2021-08-10T22:44:35Z Naomi Aro <naomi.aro@gov.bc.ca> # Stores the attachments for a given SWRS report
+swrs/transform/materialized_view/historical_report_emission_data [swrs/extract/table/eccc_xml_file] 2021-08-11T22:51:06Z Dylan Leard <dylan@button.is> # Materialized view for additional total emission data used for compliance and enforcement
+swrs/transform/function/load_report_history [swrs/transform/materialized_view/report swrs/transform/materialized_view/historical_report_emission_data swrs/public/table/report] 2021-08-11T23:02:03Z Dylan Leard <dylan@button.is> # Load function to populate the swrs_history.report table

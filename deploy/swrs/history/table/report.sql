@@ -20,7 +20,10 @@ create table swrs_history.report
     submission_date           timestamptz,
     last_modified_by          varchar(1000),
     last_modified_date        timestamptz,
-    update_comment            varchar(1000)
+    update_comment            varchar(1000),
+    grand_total_less_co2bioc  numeric,
+    reporting_only_grand_total numeric,
+    co2bioc                   numeric
 );
 
 comment on table swrs_history.report is 'The table housing all report data, derived from eccc_xml_file table';
