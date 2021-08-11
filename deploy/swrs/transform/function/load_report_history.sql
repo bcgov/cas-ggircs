@@ -18,9 +18,7 @@ $function$
 
         from swrs_transform.report as _report
           join swrs_transform.historical_report_emission_data as _hred
-          on _report.eccc_xml_file_id = _hred.eccc_xml_file_id
-
-
+          on _report.eccc_xml_file_id = _hred.eccc_xml_file_id;
     end
 $function$ language plpgsql volatile;
 commit;

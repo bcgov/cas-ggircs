@@ -93,7 +93,7 @@ $function$
     drop schema if exists swrs cascade;
     alter schema swrs_load rename to swrs;
     drop schema if exists swrs_history cascade;
-    alter schema swrs_load_history rename to swrs_history;
+    alter schema swrs_history_load rename to swrs_history;
 
     for view_to_recreate in select * from views_to_recreate
     loop

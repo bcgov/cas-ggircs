@@ -10,17 +10,17 @@ create materialized view swrs_transform.historical_report_emission_data as (
     emission_data.*
   from swrs_extract.eccc_xml_file,
       xmltable(
-        '/TotalEmissions'
+        '//TotalEmissions'
         passing xml_file
         columns
-          grand_total_emission path 'normalize-space(/TotalGroups[@TotalGroupType="TotalGHGEmissionGas"]/Totals/Emissions[@EmissionsGasType="GHGEmissionGas"]/GrandTotal/Total)',
-          reporting_only_grand_total path 'normalize-space(/TotalGroups[@TotalGroupType="ReportingOnlyEmissions"]/Totals/Emissions[@EmissionsGasType="ReportingOnlyByGas"]/GrandTotal/Total)',
-          co2bioc path 'normalize-space(/TotalGroups[@TotalGroupType="ReportingOnlyEmissions"]/Totals/Emissions[@EmissionsGasType="ReportingOnlyByGas"]/TotalRow/GasType[text()="CO2bioC"]/preceding-sibling::Quantity)',
+          grand_total_emission numeric path 'normalize-space(./TotalGroups[@TotalGroupType="TotalGHGEmissionGas"]/Totals/Emissions[@EmissionsGasType="GHGEmissionGas"]/GrandTotal/Total)',
+          reporting_only_grand_total numeric path 'normalize-space(./TotalGroups[@TotalGroupType="ReportingOnlyEmissions"]/Totals/Emissions[@EmissionsGasType="ReportingOnlyByGas"]/GrandTotal/Total)',
+          co2bioc numeric path 'normalize-space(./TotalGroups[@TotalGroupType="TotalGHGEmissionGas"]/Totals/Emissions[@EmissionsGasType="GHGEmissionGas"]/TotalRow/GasType[text()="CO2bioC"]/preceding-sibling::Quantity)'
       ) as emission_data
 ) with no data;
 
 
-create unique index ggircs_report_primary_key on swrs_transform.report (eccc_xml_file_id);
+create unique index historical_report_primary_key on swrs_transform.historical_report_emission_data (eccc_xml_file_id);
 
 comment on materialized view swrs_transform.historical_report_emission_data is 'The materialized view housing additional report emission data required for compliance and enforcement, derived from eccc_xml_file table';
 comment on column swrs_transform.historical_report_emission_data.id is 'A generated index used for keying in the ggircs schema';
