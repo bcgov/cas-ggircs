@@ -1,7 +1,7 @@
 -- Revert ggircs:swrs/transform/function/load_report_history from pg
 
-BEGIN;
+begin;
 
--- XXX Add DDLs here.
+drop function swrs_transform.load_report_history;
 
-COMMIT;
+commit;

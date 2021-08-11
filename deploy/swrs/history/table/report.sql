@@ -43,5 +43,8 @@ comment on column swrs_history.report.submission_date is 'The date the report wa
 comment on column swrs_history.report.last_modified_by is 'The person who last modified the report';
 comment on column swrs_history.report.last_modified_date is 'The timestamp recorded in SWRS when the report was last modified';
 comment on column swrs_history.report.update_comment is 'The description of the update';
+comment on column swrs_history.report.update_comment is 'The total GHGR emissions reported in this report. Used by compliance and enforcement.';
+comment on column swrs_history.report.update_comment is 'The total emissions under the ReportingOnly tag. Used by compliance and enforcement';
+comment on column swrs_history.report.update_comment is 'The total quantity of CO2bioC reported in this report. Used by compliance and enforcement';
 
 commit;
