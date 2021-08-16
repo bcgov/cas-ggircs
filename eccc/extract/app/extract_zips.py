@@ -70,6 +70,7 @@ def process_zip_file(bucket_name, file, pg_pool):
       for report_path in finz.namelist():
         if not report_path.endswith('.xml'):
           log.debug(f"skipping {report_path}")
+          # TODO save attachment info
           continue
 
         try:
