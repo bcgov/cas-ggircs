@@ -34,42 +34,12 @@ def read_file(fin, path, log):
         except Exception as inst:
             log.info("trying next password")
 
+# Params:
+#   file_path: path inside the zip file
+#   file: zip file blob
 
-def process_zip_file(bucket_name, file, pg_pool, log):
-    if not file.name.endswith('.zip'):
-        log.debug(
-            f"{file.name} was uploaded in the bucket {bucket_name}, but that doesn't look like a zip file. Skipping.")
-        return
-    if not file.name.startswith('GHGBC_PROD_'):
-        log.debug(
-            f"{file.name} was uploaded in the bucket {bucket_name}, but that doesn't look like a production report. Skipping.")
-        return
-    file_path = f"gs://{bucket_name}/{file.name}"
-    zipfile_md5 = base64.b64decode(file.md5_hash).hex(
-    ) if file.md5_hash is not None else None
-    try:
-        pg_connection = pg_pool.getconn()
-        pg_cursor = pg_connection.cursor()
-        pg_cursor.execute(
-            """insert into swrs_extract.eccc_zip_file(zip_file_name, zip_file_md5_hash)
-      values (%s, %s)
-      on conflict(zip_file_md5_hash) do update set zip_file_name=excluded.zip_file_name
-      returning id""",
-            (file.name, zipfile_md5)
-        )
-        zipfile_id = pg_cursor.fetchone()[0]
-        log.info(f"zip id {zipfile_id}")
-        log.info(f"Processing {file_path}")
-        pg_connection.commit()
-    except (Exception, psycopg2.DatabaseError) as error:
-        log.error(f"Error while processing {file_path}: {error}")
-        pg_connection.rollback()
-    finally:
-        pg_cursor.close()
-        pg_pool.putconn(pg_connection)
 
-    storage_client = storage.Client()
-
+def process_zip_file_contents(file_path, file, zipfile_id, storage_client, pg_pool, log):
     with open(file_path, 'rb', transport_params=dict(client=storage_client)) as fin:
         with zipfile.ZipFile(fin) as finz:
             for file_path in finz.namelist():
@@ -131,3 +101,43 @@ def process_zip_file(bucket_name, file, pg_pool, log):
                     pg_pool.putconn(pg_connection)
 
         log.info(f"Finished processing {file_path}")
+
+
+def process_zip_file(bucket_name, file, pg_pool, log):
+    zipfile_id = None
+
+    if not file.name.endswith('.zip'):
+        log.debug(
+            f"{file.name} was uploaded in the bucket {bucket_name}, but that doesn't look like a zip file. Skipping.")
+        return
+    if not file.name.startswith('GHGBC_PROD_'):
+        log.debug(
+            f"{file.name} was uploaded in the bucket {bucket_name}, but that doesn't look like a production report. Skipping.")
+        return
+    file_path = f"gs://{bucket_name}/{file.name}"
+    zipfile_md5 = base64.b64decode(file.md5_hash).hex(
+    ) if file.md5_hash is not None else None
+    try:
+        pg_connection = pg_pool.getconn()
+        pg_cursor = pg_connection.cursor()
+        pg_cursor.execute(
+            """insert into swrs_extract.eccc_zip_file(zip_file_name, zip_file_md5_hash)
+      values (%s, %s)
+      on conflict(zip_file_md5_hash) do update set zip_file_name=excluded.zip_file_name
+      returning id""",
+            (file.name, zipfile_md5)
+        )
+        zipfile_id = pg_cursor.fetchone()[0]
+        log.info(f"zip id {zipfile_id}")
+        log.info(f"Processing {file_path}")
+        pg_connection.commit()
+    except (Exception, psycopg2.DatabaseError) as error:
+        log.error(f"Error while processing {file_path}: {error}")
+        pg_connection.rollback()
+    finally:
+        pg_cursor.close()
+        pg_pool.putconn(pg_connection)
+
+    storage_client = storage.Client()
+    process_zip_file_contents(
+        file_path, file, zipfile_id, storage_client, pg_pool, log)
