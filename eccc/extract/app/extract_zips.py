@@ -24,7 +24,7 @@ def passwd_to_byte(pwd):
 zip_passwords = [None] + list(map(passwd_to_byte, json.loads(os.getenv('ECCC_ZIP_PASSWORDS'))))
 
 # tries to open the file without password and then iterates through the list of passwords
-def read_xml_file(fin, path):
+def read_file(fin, path):
   for passwd in zip_passwords:
     try:
       file = fin.read(path,pwd=passwd)
@@ -72,7 +72,7 @@ def process_zip_file(bucket_name, file, pg_pool):
           pg_connection = pg_pool.getconn()
           pg_cursor = pg_connection.cursor()
           log.info(f"Processing {file_path}")
-          file_bytes = read_xml_file(finz, file_path)
+          file_bytes = read_file(finz, file_path)
           if file_bytes is None:
             log.error(f"error: failed to read {file_path} in zip file {file.name}")
             continue
