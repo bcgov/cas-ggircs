@@ -66,12 +66,12 @@ def test_process_zip_file_writes_xml_file_in_xml_table():
 
     mock_log = Mock()
 
-    file_path = os.path.dirname(__file__) + '/fixtures/Archive.zip'
+    file_path = os.path.dirname(__file__) + '/fixtures/Archive_xml.zip'
 
-    zip_file_processor.process_zip_file_contents(file_path, 'Archive.zip', '77000', mock_storage_client, mock_pg_pool, mock_log)
+    zip_file_processor.process_zip_file_contents(file_path, 'Archive_xml.zip', '77000', mock_storage_client, mock_pg_pool, mock_log)
 
-    assert mock_pg_cursor.execute.call_count == 2
-    mock_pg_cursor.execute.assert_any_call(
+    assert mock_pg_cursor.execute.call_count == 1
+    mock_pg_cursor.execute.assert_called_once_with(
         '''insert into swrs_extract.eccc_xml_file(xml_file, xml_file_name, xml_file_md5_hash, zip_file_id)
               values (%s, %s, %s, %s)
               on conflict(xml_file_md5_hash) do update set
