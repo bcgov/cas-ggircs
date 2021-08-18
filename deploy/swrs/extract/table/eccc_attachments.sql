@@ -18,6 +18,6 @@ comment on column swrs_extract.eccc_attachments.attachment_file_name is 'The nam
 comment on column swrs_extract.eccc_attachments.attachment_file_md5_hash is 'The md5 hash of the attachment file';
 comment on column swrs_extract.eccc_attachments.zip_file_id is 'The id of the zip file the attachment file is in, if applicable';
 
-create unique index attachment_file_md5_hash_uindex on swrs_extract.eccc_attachments(attachment_file_md5_hash, zip_file_id, attachment_file_name);
+create unique index attachment_md5_zip_filename_uindex on swrs_extract.eccc_attachments(attachment_file_md5_hash, zip_file_id, attachment_file_name);
 
 commit;

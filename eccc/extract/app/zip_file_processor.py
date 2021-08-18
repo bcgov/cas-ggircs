@@ -36,58 +36,46 @@ def read_file(fin, path, log):
 # Params:
 #   file_path: path inside the zip file
 #   file_name: zip file name
-
-
-def process_zip_file_contents(file_path, file_name, zipfile_id, storage_client, pg_pool, log):
+def process_report_xml(file_path, file_name, zipfile_id, storage_client, pg_pool, log):
     with open(file_path, 'rb', transport_params=dict(client=storage_client)) as fin:
         with zipfile.ZipFile(fin) as finz:
             for file_path in finz.namelist():
                 try:
-                    pg_connection = pg_pool.getconn()
-                    pg_cursor = pg_connection.cursor()
-                    log.info(f"Processing {file_path}")
-                    file_bytes = read_file(finz, file_path, log)
-                    if file_bytes is None:
-                        log.error(
-                            f"error: failed to read {file_path} in zip file {file_name}")
-                        continue
-
-                    file_md5_hash = hashlib.md5(file_bytes).hexdigest()
-                    if file_md5_hash in quarantined_files_md5_hash:
-                        log.warn(f"skipping {file_path} as it is quarantined")
-                        continue
-
                     if file_path.endswith('.xml'):
+                        log.info(f"Processing {file_path}")
+
+                        pg_connection = pg_pool.getconn()
+                        pg_cursor = pg_connection.cursor()
+                        file_bytes = read_file(finz, file_path, log)
+                        if file_bytes is None:
+                            log.error(
+                                f"error: failed to read {file_path} in zip file {file_name}")
+                            continue
+
+                        file_md5_hash = hashlib.md5(file_bytes).hexdigest()
+                        if file_md5_hash in quarantined_files_md5_hash:
+                            log.warn(f"skipping {file_path} as it is quarantined")
+                            continue
+
+                        
                         encoding = chardet.detect(file_bytes)['encoding']
                         xml_string = file_bytes.decode(encoding)
 
                         log.debug(xml_string)
                         pg_cursor.execute("""insert into swrs_extract.eccc_xml_file(xml_file, xml_file_name, xml_file_md5_hash, zip_file_id)
-              values (%s, %s, %s, %s)
-              on conflict(xml_file_md5_hash) do update set
-              xml_file=excluded.xml_file,
-              xml_file_name=excluded.xml_file_name,
-              zip_file_id=excluded.zip_file_id""",
-                                          (
-                                              xml_string.replace('\0', ''),
-                                              file_path,
-                                              file_md5_hash,
-                                              zipfile_id
-                                          )
-                                          )
-                    else:
-                        pg_cursor.execute("""insert into swrs_extract.eccc_attachments(attachment_file_name, attachment_file_md5_hash, zip_file_id)
-              values (%s, %s, %s)
-              on conflict(attachment_file_md5_hash) do update set
-              attachment_file_name=excluded.attachment_file_name,
-              zip_file_id=excluded.zip_file_id""",
-                                          (
-                                              file_path,
-                                              file_md5_hash,
-                                              zipfile_id
-                                          )
-                                          )
-                    pg_connection.commit()
+                values (%s, %s, %s, %s)
+                on conflict(xml_file_md5_hash) do update set
+                xml_file=excluded.xml_file,
+                xml_file_name=excluded.xml_file_name,
+                zip_file_id=excluded.zip_file_id""",
+                                            (
+                                                xml_string.replace('\0', ''),
+                                                file_path,
+                                                file_md5_hash,
+                                                zipfile_id
+                                            )
+                                            )
+                        pg_connection.commit()
                 except (Exception, psycopg2.DatabaseError) as error:
                     print(error)
                     log.error(f"Error while processing {file_path}: {error}")
@@ -96,10 +84,54 @@ def process_zip_file_contents(file_path, file_name, zipfile_id, storage_client, 
                     pg_cursor.close()
                     pg_pool.putconn(pg_connection)
 
-        log.info(f"Finished processing {file_path}")
+        log.info(f"Finished processing xml reports in {file_path}")
+
+# Params:
+#   file_path: path inside the zip file
+#   file_name: zip file name
+def process_report_attachments(file_path, file_name, zipfile_id, storage_client, pg_pool, log):
+    with open(file_path, 'rb', transport_params=dict(client=storage_client)) as fin:
+        with zipfile.ZipFile(fin) as finz:
+            for file_path in finz.namelist():
+                try:
+                    if not file_path.endswith('.xml') and not file_path.endswith('.zip'):
+                        log.info(f"Processing {file_path}")
+
+                        pg_connection = pg_pool.getconn()
+                        pg_cursor = pg_connection.cursor()
+                    
+                        file_bytes = read_file(finz, file_path, log)
+                        if file_bytes is None:
+                            log.error(
+                                f"error: failed to read {file_path} in zip file {file_name}")
+                            continue
+
+                        file_md5_hash = hashlib.md5(file_bytes).hexdigest()
+                        if file_md5_hash in quarantined_files_md5_hash:
+                            log.warn(f"skipping {file_path} as it is quarantined")
+                            continue
+
+                        pg_cursor.execute("""insert into swrs_extract.eccc_attachments(attachment_file_name, attachment_file_md5_hash, zip_file_id)
+                values (%s, %s, %s) on conflict on constraint attachment_md5_zip_filename_uindex do nothing""",
+                                            (
+                                                file_path,
+                                                file_md5_hash,
+                                                zipfile_id
+                                            )
+                                            )
+                        pg_connection.commit()
+                except (Exception, psycopg2.DatabaseError) as error:
+                    print(error)
+                    log.error(f"Error while processing {file_path}: {error}")
+                    pg_connection.rollback()
+                finally:
+                    pg_cursor.close()
+                    pg_pool.putconn(pg_connection)
+
+        log.info(f"Finished processing report attachments in {file_path}")
 
 
-def process_zip_file(bucket_name, file, storage_client, pg_pool, log):
+def process_zip_file(bucket_name, file, pg_pool, log):
     zipfile_id = None
 
     if not file.name.endswith('.zip'):
@@ -133,6 +165,3 @@ def process_zip_file(bucket_name, file, storage_client, pg_pool, log):
     finally:
         pg_cursor.close()
         pg_pool.putconn(pg_connection)
-
-    process_zip_file_contents(
-        file_path, file.name, zipfile_id, storage_client, pg_pool, log)

@@ -11,8 +11,7 @@ import zip_file_processor
 #    - otherwise => new record in swrs_extract.eccc_attachments
 
 
-@patch('zip_file_processor.process_zip_file_contents')
-def test_process_zip_file_opens_zip_and_creates_zip_record(mock_contents_function):
+def test_process_zip_file_opens_zip_and_creates_zip_record():
     test_file = Mock()
     test_file.name = 'GHGBC_PROD_test_file_name.zip'
     test_file.md5_hash = '0000'
@@ -26,12 +25,10 @@ def test_process_zip_file_opens_zip_and_creates_zip_record(mock_contents_functio
     mock_pool_attrs = {'getconn.return_value': mock_pg_connection}
     mock_pg_pool = Mock(**mock_pool_attrs)
 
-    mock_storage = Mock()
-
     mock_log = Mock()
 
     zip_file_processor.process_zip_file(
-        "bucket-name", test_file, mock_storage, mock_pg_pool, mock_log)
+        "bucket-name", test_file, mock_pg_pool, mock_log)
 
     assert mock_pg_cursor.execute.call_count == 1
     mock_pg_cursor.execute.assert_called_once_with(
@@ -40,14 +37,6 @@ def test_process_zip_file_opens_zip_and_creates_zip_record(mock_contents_functio
       on conflict(zip_file_md5_hash) do update set zip_file_name=excluded.zip_file_name
       returning id''',
         ('GHGBC_PROD_test_file_name.zip', 'd34d34')
-    )
-    mock_contents_function.assert_called_once_with(
-        'gs://bucket-name/GHGBC_PROD_test_file_name.zip',
-        test_file.name,
-        'first_test_id',
-        mock_storage,
-        mock_pg_pool,
-        mock_log
     )
 
 
@@ -67,16 +56,16 @@ def test_process_zip_file_writes_xml_file_in_xml_table():
 
     file_path = os.path.dirname(__file__) + '/fixtures/Archive_xml.zip'
 
-    zip_file_processor.process_zip_file_contents(file_path, 'Archive_xml.zip', '77000', mock_storage_client, mock_pg_pool, mock_log)
+    zip_file_processor.process_report_xml(file_path, 'Archive_xml.zip', '77000', mock_storage_client, mock_pg_pool, mock_log)
 
     assert mock_pg_cursor.execute.call_count == 1
     mock_pg_cursor.execute.assert_called_once_with(
         '''insert into swrs_extract.eccc_xml_file(xml_file, xml_file_name, xml_file_md5_hash, zip_file_id)
-              values (%s, %s, %s, %s)
-              on conflict(xml_file_md5_hash) do update set
-              xml_file=excluded.xml_file,
-              xml_file_name=excluded.xml_file_name,
-              zip_file_id=excluded.zip_file_id''',
+                values (%s, %s, %s, %s)
+                on conflict(xml_file_md5_hash) do update set
+                xml_file=excluded.xml_file,
+                xml_file_name=excluded.xml_file_name,
+                zip_file_id=excluded.zip_file_id''',
         ('<Data>TEST</Data>\n', 'test.xml', '2a75b028ccddefb4398933ff376bdcb3', '77000')
     )
 
@@ -97,14 +86,11 @@ def test_process_zip_file_writes_non_xml_file_in_attachments_table():
 
     file_path = os.path.dirname(__file__) + '/fixtures/Archive_attachment.zip'
 
-    zip_file_processor.process_zip_file_contents(file_path, 'Archive_attachment.zip', '77000', mock_storage_client, mock_pg_pool, mock_log)
+    zip_file_processor.process_report_attachments(file_path, 'Archive_attachment.zip', '77000', mock_storage_client, mock_pg_pool, mock_log)
 
     assert mock_pg_cursor.execute.call_count == 1
     mock_pg_cursor.execute.assert_called_once_with(
         '''insert into swrs_extract.eccc_attachments(attachment_file_name, attachment_file_md5_hash, zip_file_id)
-              values (%s, %s, %s)
-              on conflict(attachment_file_md5_hash) do update set
-              attachment_file_name=excluded.attachment_file_name,
-              zip_file_id=excluded.zip_file_id''',
+                values (%s, %s, %s) on conflict on constraint attachment_md5_zip_filename_uindex do nothing''',
         ('test_pdf.pdf', 'c9cc1d69eab81593c9f2214ce54d31e9', '77000')
     )
