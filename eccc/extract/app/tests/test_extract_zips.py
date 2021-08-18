@@ -52,7 +52,6 @@ def test_process_zip_file_opens_zip_and_creates_zip_record(mock_contents_functio
 
 
 def test_process_zip_file_writes_xml_file_in_xml_table():
-
     mock_storage_client = Mock()
 
     mock_cursor_attrs = {'fetchone.return_value': ['first_test_id']}
@@ -83,4 +82,29 @@ def test_process_zip_file_writes_xml_file_in_xml_table():
 
 
 def test_process_zip_file_writes_non_xml_file_in_attachments_table():
-    pass
+    mock_storage_client = Mock()
+
+    mock_cursor_attrs = {'fetchone.return_value': ['first_test_id']}
+    mock_pg_cursor = Mock(**mock_cursor_attrs)
+
+    mock_conection_attrs = {'cursor.return_value': mock_pg_cursor}
+    mock_pg_connection = Mock(**mock_conection_attrs)
+
+    mock_pool_attrs = {'getconn.return_value': mock_pg_connection}
+    mock_pg_pool = Mock(**mock_pool_attrs)
+
+    mock_log = Mock()
+
+    file_path = os.path.dirname(__file__) + '/fixtures/Archive_attachment.zip'
+
+    zip_file_processor.process_zip_file_contents(file_path, 'Archive_attachment.zip', '77000', mock_storage_client, mock_pg_pool, mock_log)
+
+    assert mock_pg_cursor.execute.call_count == 1
+    mock_pg_cursor.execute.assert_called_once_with(
+        '''insert into swrs_extract.eccc_attachments(attachment_file_name, attachment_file_md5_hash, zip_file_id)
+              values (%s, %s, %s)
+              on conflict(attachment_file_md5_hash) do update set
+              attachment_file_name=excluded.attachment_file_name,
+              zip_file_id=excluded.zip_file_id''',
+        ('test_pdf.pdf', 'c9cc1d69eab81593c9f2214ce54d31e9', '77000')
+    )
