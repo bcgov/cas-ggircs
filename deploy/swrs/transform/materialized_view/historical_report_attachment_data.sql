@@ -19,7 +19,7 @@ create materialized view swrs_transform.historical_report_attachment_data as (
           file_number int path 'normalize-space(./File)',
           uploaded_file_name varchar(1000) path 'normalize-space(./UploadedFileName)',
           uploaded_by varchar(1000) path 'normalize-space(./UploadedBy)',
-          uploaded_at timestamptz path 'normalize-space(./UploadedAt)'
+          uploaded_at timestamptz path 'normalize-space(./UploadedDate)'
       ) as attachment_data
 ) with no data;
 

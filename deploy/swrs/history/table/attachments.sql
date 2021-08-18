@@ -16,17 +16,17 @@ create table swrs_history.report_attachment
     uploaded_at               timestamptz
 );
 
-create index attachment_eccc_xml_file_fkey on swrs_history.report_attachment(eccc_xml_file_id)
+create index attachment_eccc_xml_file_fkey on swrs_history.report_attachment(eccc_xml_file_id);
 
 comment on table swrs_history.report_attachment is 'The table housing all attachments for reports';
-comment on column swrs_transform.report_attachment.id is 'A generated index used for keying in the ggircs schema';
-comment on column swrs_transform.report_attachment.eccc_xml_file_id is 'The internal primary key for the file';
-comment on column swrs_transform.report_attachment.process_name is 'The process_name in this context describes the type of attachment (ie: Process Flow Diagram)';
-comment on column swrs_transform.report_attachment.sub_process_name is 'The sub_process_name in this context is a more in-depth description of this attachment';
-comment on column swrs_transform.report_attachment.information_requirement is 'Denotes whether or not this attachment is required. Can be one of [Optional, Required]';
-comment on column swrs_transform.report_attachment.file_number is 'The file_number corresponds to the type of attachment';
-comment on column swrs_transform.report_attachment.uploaded_file_name is 'The name of the attachment file that was uploaded';
-comment on column swrs_transform.report_attachment.uploaded_by is 'The name of the user who uploaded the attachment file';
-comment on column swrs_transform.report_attachment.uploaded_at is 'The date of upload';
+comment on column swrs_history.report_attachment.id is 'A generated index used for keying in the ggircs schema';
+comment on column swrs_history.report_attachment.eccc_xml_file_id is 'The internal primary key for the file';
+comment on column swrs_history.report_attachment.process_name is 'The process_name in this context describes the type of attachment (ie: Process Flow Diagram)';
+comment on column swrs_history.report_attachment.sub_process_name is 'The sub_process_name in this context is a more in-depth description of this attachment';
+comment on column swrs_history.report_attachment.information_requirement is 'Denotes whether or not this attachment is required. Can be one of [Optional, Required]';
+comment on column swrs_history.report_attachment.file_number is 'The file_number corresponds to the type of attachment';
+comment on column swrs_history.report_attachment.uploaded_file_name is 'The name of the attachment file that was uploaded';
+comment on column swrs_history.report_attachment.uploaded_by is 'The name of the user who uploaded the attachment file';
+comment on column swrs_history.report_attachment.uploaded_at is 'The date of upload';
 
 commit;
