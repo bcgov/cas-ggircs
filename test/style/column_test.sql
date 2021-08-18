@@ -28,7 +28,7 @@ select is_empty(
            );
 
 -- Get all materialized view columns in schema ggrics_swrs that do not have a comment
-prepare null_mv_comment as select d.description
+prepare null_mv_comment as select c.relname, a.attname, d.description
     from pg_class as c
     inner join pg_attribute as a on c.oid = a.attrelid
     left join pg_namespace n on n.oid = c.relnamespace
