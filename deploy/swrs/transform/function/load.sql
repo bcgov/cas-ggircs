@@ -30,7 +30,7 @@ $function$
       $$;
 
     history_array text[] := $$
-      {report_history}
+      {report_history, report_attachment}
       $$;
 
     view_to_recreate record;
