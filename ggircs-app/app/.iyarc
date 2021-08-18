@@ -2,3 +2,5 @@
 # It only affects the subscriptions-transport-ws package.
 # We are not using subscriptions or websockets, so this CVE can be safely ignored for now (it currently has no fix as of June 1 2021)
 1748
+# Temporarily ignoring this advisory until we schedule the work to update nextjs (and react)
+1778
