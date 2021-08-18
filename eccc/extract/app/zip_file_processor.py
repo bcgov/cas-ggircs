@@ -1,6 +1,5 @@
 import base64
 import psycopg2
-from google.cloud import storage
 import zipfile
 import hashlib
 import chardet
@@ -36,10 +35,10 @@ def read_file(fin, path, log):
 
 # Params:
 #   file_path: path inside the zip file
-#   file: zip file blob
+#   file_name: zip file name
 
 
-def process_zip_file_contents(file_path, file, zipfile_id, storage_client, pg_pool, log):
+def process_zip_file_contents(file_path, file_name, zipfile_id, storage_client, pg_pool, log):
     with open(file_path, 'rb', transport_params=dict(client=storage_client)) as fin:
         with zipfile.ZipFile(fin) as finz:
             for file_path in finz.namelist():
@@ -47,10 +46,10 @@ def process_zip_file_contents(file_path, file, zipfile_id, storage_client, pg_po
                     pg_connection = pg_pool.getconn()
                     pg_cursor = pg_connection.cursor()
                     log.info(f"Processing {file_path}")
-                    file_bytes = read_file(finz, file_path)
+                    file_bytes = read_file(finz, file_path, log)
                     if file_bytes is None:
                         log.error(
-                            f"error: failed to read {file_path} in zip file {file.name}")
+                            f"error: failed to read {file_path} in zip file {file_name}")
                         continue
 
                     file_md5_hash = hashlib.md5(file_bytes).hexdigest()
@@ -63,14 +62,12 @@ def process_zip_file_contents(file_path, file, zipfile_id, storage_client, pg_po
                         xml_string = file_bytes.decode(encoding)
 
                         log.debug(xml_string)
-                        pg_cursor.execute("""
-              insert into swrs_extract.eccc_xml_file(xml_file, xml_file_name, xml_file_md5_hash, zip_file_id)
+                        pg_cursor.execute("""insert into swrs_extract.eccc_xml_file(xml_file, xml_file_name, xml_file_md5_hash, zip_file_id)
               values (%s, %s, %s, %s)
               on conflict(xml_file_md5_hash) do update set
               xml_file=excluded.xml_file,
               xml_file_name=excluded.xml_file_name,
-              zip_file_id=excluded.zip_file_id
-              """,
+              zip_file_id=excluded.zip_file_id""",
                                           (
                                               xml_string.replace('\0', ''),
                                               file_path,
@@ -79,13 +76,11 @@ def process_zip_file_contents(file_path, file, zipfile_id, storage_client, pg_po
                                           )
                                           )
                     else:
-                        pg_cursor.execute("""
-              insert into swrs_extract.eccc_attachments(attachment_file_name, attachment_file_md5_hash, zip_file_id)
+                        pg_cursor.execute("""insert into swrs_extract.eccc_attachments(attachment_file_name, attachment_file_md5_hash, zip_file_id)
               values (%s, %s, %s)
               on conflict(attachment_file_md5_hash) do update set
               attachment_file_name=excluded.attachment_file_name,
-              zip_file_id=excluded.zip_file_id
-              """,
+              zip_file_id=excluded.zip_file_id""",
                                           (
                                               file_path,
                                               file_md5_hash,
@@ -94,6 +89,7 @@ def process_zip_file_contents(file_path, file, zipfile_id, storage_client, pg_po
                                           )
                     pg_connection.commit()
                 except (Exception, psycopg2.DatabaseError) as error:
+                    print(error)
                     log.error(f"Error while processing {file_path}: {error}")
                     pg_connection.rollback()
                 finally:
@@ -103,7 +99,7 @@ def process_zip_file_contents(file_path, file, zipfile_id, storage_client, pg_po
         log.info(f"Finished processing {file_path}")
 
 
-def process_zip_file(bucket_name, file, pg_pool, log):
+def process_zip_file(bucket_name, file, storage_client, pg_pool, log):
     zipfile_id = None
 
     if not file.name.endswith('.zip'):
@@ -138,6 +134,5 @@ def process_zip_file(bucket_name, file, pg_pool, log):
         pg_cursor.close()
         pg_pool.putconn(pg_connection)
 
-    storage_client = storage.Client()
     process_zip_file_contents(
-        file_path, file, zipfile_id, storage_client, pg_pool, log)
+        file_path, file.name, zipfile_id, storage_client, pg_pool, log)
