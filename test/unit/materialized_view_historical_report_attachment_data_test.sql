@@ -3,7 +3,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select * from no_plan();
+select plan(3);
 
 -- Test matview report exists in schema swrs_transform
 select has_materialized_view('swrs_transform', 'historical_report_attachment_data', 'Materialized view historical_report_attachment_data exists');
@@ -50,9 +50,37 @@ $$);
 -- Ensure fixture is processed correctly
 refresh materialized view swrs_transform.historical_report_attachment_data with data;
 
--- select * from swrs_extract.eccc_xml_file;
-select * from swrs_transform.historical_report_attachment_data;
+select is_empty(
+  $$
+    select * from swrs_transform.historical_report_attachment_data where file_number in (38, 39)
+  $$,
+  'Does not parse data where the UploadedFileName tag does not exist or is empty'
+);
 
+select results_eq(
+  $$
+    select
+      process_name,
+      sub_process_name,
+      uploaded_file_name,
+      information_requirement,
+      file_number,
+      uploaded_by,
+      uploaded_at
+    from swrs_transform.historical_report_attachment_data
+  $$,
+  $$
+    values (
+      'ProcessFlowDiagram'::varchar,
+      'A Process Flow Diagram is required for SFO and LFO (Parent) reports'::varchar,
+      'Plant PFD for Reports.pdf'::varchar,
+      'Required'::varchar,
+      44::int,
+      'Bob Lobblaw'::varchar,
+      '2021-04-28 18:25:45-07'::timestamptz)
+  $$,
+  'Parses attachment data correctly where the UploadedFileName tag is not empty'
+);
 
 select finish();
 rollback;

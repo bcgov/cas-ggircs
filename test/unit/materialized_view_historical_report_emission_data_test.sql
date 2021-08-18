@@ -80,8 +80,15 @@ $$);
 refresh materialized view swrs_transform.historical_report_emission_data with data;
 
 -- select * from swrs_extract.eccc_xml_file;
-select * from swrs_transform.historical_report_emission_data;
-
+select results_eq(
+  $$
+    select grand_total_emission, reporting_only_grand_total, co2bioc from swrs_transform.historical_report_emission_data
+  $$,
+  $$
+    values (300::numeric, 200::numeric, 100::numeric)
+  $$,
+  'historical_report_emission_data parses the xml properly and returns the correct values'
+);
 
 select finish();
 rollback;

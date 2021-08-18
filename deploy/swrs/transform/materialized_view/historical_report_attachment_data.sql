@@ -14,7 +14,7 @@ create materialized view swrs_transform.historical_report_attachment_data as (
         passing xml_file
         columns
           process_name varchar(1000) path 'normalize-space(./ancestor::Process/@ProcessName)',
-          sub_process_name varchar(1000) path 'normalize-space(./ancestor::SubProcess/@SubProcessName)',
+          sub_process_name varchar(1000) path 'normalize-space(./ancestor::SubProcess/@SubprocessName)',
           information_requirement varchar(1000) path 'normalize-space(./ancestor::SubProcess/@InformationRequirement)',
           file_number int path 'normalize-space(./File)',
           uploaded_file_name varchar(1000) path 'normalize-space(./UploadedFileName)',
