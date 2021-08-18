@@ -1,4 +1,4 @@
-from unittest.mock import Mock, patch
+from unittest.mock import MagicMock, Mock, patch
 
 import os
 os.environ['ECCC_ZIP_PASSWORDS'] = '["ABCD"]'
@@ -54,18 +54,13 @@ def test_process_zip_file_writes_xml_file_in_xml_table():
 
     mock_log = Mock()
 
-    file_path = os.path.dirname(__file__) + '/fixtures/Archive_xml.zip'
+    file_path = os.path.dirname(__file__) + '/fixtures/Archive.zip'
 
-    zip_file_processor.process_report_xml(file_path, 'Archive_xml.zip', '77000', mock_storage_client, mock_pg_pool, mock_log)
+    zip_file_processor.process_report_xml(file_path, 'Archive.zip', '77000', mock_storage_client, mock_pg_pool, mock_log)
 
     assert mock_pg_cursor.execute.call_count == 1
     mock_pg_cursor.execute.assert_called_once_with(
-        '''insert into swrs_extract.eccc_xml_file(xml_file, xml_file_name, xml_file_md5_hash, zip_file_id)
-                values (%s, %s, %s, %s)
-                on conflict(xml_file_md5_hash) do update set
-                xml_file=excluded.xml_file,
-                xml_file_name=excluded.xml_file_name,
-                zip_file_id=excluded.zip_file_id''',
+        '''insert into swrs_extract.eccc_xml_file(xml_file, xml_file_name, xml_file_md5_hash, zip_file_id) values (%s, %s, %s, %s) on conflict(xml_file_md5_hash) do update set xml_file=excluded.xml_file, xml_file_name=excluded.xml_file_name, zip_file_id=excluded.zip_file_id''',
         ('<Data>TEST</Data>\n', 'test.xml', '2a75b028ccddefb4398933ff376bdcb3', '77000')
     )
 
@@ -84,13 +79,12 @@ def test_process_zip_file_writes_non_xml_file_in_attachments_table():
 
     mock_log = Mock()
 
-    file_path = os.path.dirname(__file__) + '/fixtures/Archive_attachment.zip'
+    file_path = os.path.dirname(__file__) + '/fixtures/Archive.zip'
 
-    zip_file_processor.process_report_attachments(file_path, 'Archive_attachment.zip', '77000', mock_storage_client, mock_pg_pool, mock_log)
+    zip_file_processor.process_report_attachments(file_path, 'Archive.zip', '77000', mock_storage_client, mock_pg_pool, mock_log)
 
     assert mock_pg_cursor.execute.call_count == 1
     mock_pg_cursor.execute.assert_called_once_with(
-        '''insert into swrs_extract.eccc_attachments(attachment_file_name, attachment_file_md5_hash, zip_file_id)
-                values (%s, %s, %s) on conflict on constraint attachment_md5_zip_filename_uindex do nothing''',
+        '''insert into swrs_extract.eccc_attachments(attachment_file_name, attachment_file_md5_hash, zip_file_id) values (%s, %s, %s) on conflict on constraint attachment_md5_zip_filename_uindex do nothing''',
         ('test_pdf.pdf', 'c9cc1d69eab81593c9f2214ce54d31e9', '77000')
     )
