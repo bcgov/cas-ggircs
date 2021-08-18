@@ -15,9 +15,9 @@ comment on table  swrs_extract.eccc_attachments is 'The raw xml files imported f
 comment on column swrs_extract.eccc_attachments.id is 'The internal primary key for the file';
 comment on column swrs_extract.eccc_attachments.imported_at is 'The timestamp noting when the file was imported to the GGIRCS database';
 comment on column swrs_extract.eccc_attachments.attachment_file_name is 'The name of the attachment file';
-comment on column swrs_extract.eccc_attachments.attachment_file_md5_hash is 'The unique md5 hash of the attachment file';
+comment on column swrs_extract.eccc_attachments.attachment_file_md5_hash is 'The md5 hash of the attachment file';
 comment on column swrs_extract.eccc_attachments.zip_file_id is 'The id of the zip file the attachment file is in, if applicable';
 
-create unique index attachment_file_md5_hash_uindex on swrs_extract.eccc_attachments(attachment_file_md5_hash);
+create unique index attachment_file_md5_hash_uindex on swrs_extract.eccc_attachments(attachment_file_md5_hash, zip_file_id, attachment_file_name);
 
 commit;
