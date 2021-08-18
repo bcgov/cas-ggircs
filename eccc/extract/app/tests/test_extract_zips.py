@@ -19,8 +19,8 @@ def test_process_zip_file_opens_zip_and_creates_zip_record():
     mock_cursor_attrs = {'fetchone.return_value': ['first_test_id']}
     mock_pg_cursor = Mock(**mock_cursor_attrs)
 
-    mock_conection_attrs = {'cursor.return_value': mock_pg_cursor}
-    mock_pg_connection = Mock(**mock_conection_attrs)
+    mock_connection_attrs = {'cursor.return_value': mock_pg_cursor}
+    mock_pg_connection = Mock(**mock_connection_attrs)
 
     mock_pool_attrs = {'getconn.return_value': mock_pg_connection}
     mock_pg_pool = Mock(**mock_pool_attrs)
@@ -46,11 +46,11 @@ def test_process_zip_file_writes_xml_file_in_xml_table():
     mock_cursor_attrs = {'fetchone.return_value': ['first_test_id']}
     mock_pg_cursor = Mock(**mock_cursor_attrs)
 
-    mock_conection_attrs = {'cursor.return_value': mock_pg_cursor}
-    mock_pg_connection = Mock(**mock_conection_attrs)
+    mock_pg_connection = MagicMock()
+    mock_pg_connection.cursor.return_value.__enter__ = Mock(return_value=mock_pg_cursor)
 
-    mock_pool_attrs = {'getconn.return_value': mock_pg_connection}
-    mock_pg_pool = Mock(**mock_pool_attrs)
+    mock_pg_pool = MagicMock()
+    mock_pg_pool.getconn.return_value.__enter__ = Mock(return_value=mock_pg_connection)
 
     mock_log = Mock()
 
@@ -71,11 +71,11 @@ def test_process_zip_file_writes_non_xml_file_in_attachments_table():
     mock_cursor_attrs = {'fetchone.return_value': ['first_test_id']}
     mock_pg_cursor = Mock(**mock_cursor_attrs)
 
-    mock_conection_attrs = {'cursor.return_value': mock_pg_cursor}
-    mock_pg_connection = Mock(**mock_conection_attrs)
+    mock_pg_connection = MagicMock()
+    mock_pg_connection.cursor.return_value.__enter__ = Mock(return_value=mock_pg_cursor)
 
-    mock_pool_attrs = {'getconn.return_value': mock_pg_connection}
-    mock_pg_pool = Mock(**mock_pool_attrs)
+    mock_pg_pool = MagicMock()
+    mock_pg_pool.getconn.return_value.__enter__ = Mock(return_value=mock_pg_connection)
 
     mock_log = Mock()
 
