@@ -32,10 +32,10 @@ try:
                 bucket = storage_client.get_bucket(
                     uploaded_obj.get('bucketName'))
                 file = bucket.get_blob(uploaded_obj.get('objectName'))
-                process_zip_file(bucket.name, file, storage_client, pg_pool)
+                process_zip_file(bucket.name, file, pg_pool, log)
     else:
         for file in storage_client.list_blobs(gcs_bucket_name):
-            process_zip_file(gcs_bucket_name, file, storage_client, pg_pool)
+            process_zip_file(gcs_bucket_name, file, pg_pool, log)
 
 
 except (Exception, psycopg2.DatabaseError) as error:
