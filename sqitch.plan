@@ -128,3 +128,11 @@ swrs/transform/function/load_fuel_carbon_tax_details [swrs/transform/function/lo
 swrs/transform/function/load_fuel_mapping [swrs/transform/function/load_fuel_mapping@v1.3.0] 2021-06-04T17:45:29Z Dylan Leard <dylan@button.is> # Migration: add new swrs fuels to table
 @v1.4.0 2021-08-05T22:59:55Z Matthieu Foucault <matthieu@button.is> # release v1.4.0
 @v1.4.1 2021-08-09T18:13:15Z Naomi Aro <naomi.aro@gov.bc.ca> # release v1.4.1
+swrs/history/schema 2021-08-10T22:04:52Z Naomi Aro <naomi.aro@gov.bc.ca> # Add schema for SWRS history
+swrs/history/table/report 2021-08-10T22:26:13Z Naomi Aro <naomi.aro@gov.bc.ca> # Add report table for swrs history
+swrs/history/table/attachments 2021-08-10T22:44:35Z Naomi Aro <naomi.aro@gov.bc.ca> # Stores the attachments for a given SWRS report
+swrs/transform/materialized_view/historical_report_emission_data [swrs/extract/table/eccc_xml_file] 2021-08-11T22:51:06Z Dylan Leard <dylan@button.is> # Materialized view for additional total emission data used for compliance and enforcement
+swrs/transform/function/load_report_history [swrs/transform/materialized_view/report swrs/transform/materialized_view/historical_report_emission_data swrs/public/table/report] 2021-08-11T23:02:03Z Dylan Leard <dylan@button.is> # Load function to populate the swrs_history.report table
+swrs/transform/function/load [swrs/transform/function/load@v1.4.0] 2021-08-11T23:10:54Z Dylan Leard <dylan@button.is> # Migration: update load function to load the new swrs_history schema
+swrs/transform/materialized_view/historical_report_attachment_data [swrs/extract/table/eccc_xml_file] 2021-08-18T21:04:14Z Dylan Leard <dylan@button.is> # Materialized view parses the report attachment data from the xml file
+swrs/transform/function/load_report_attachment [swrs/transform/materialized_view/historical_report_attachment_data swrs/history/table/attachments] 2021-08-18T22:06:59Z Dylan Leard <dylan@button.is> # Function to load the attachment data for a report from the materialized view into the table

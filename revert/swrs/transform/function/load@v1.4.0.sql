@@ -20,17 +20,13 @@ $function$
   declare
 
     mv_array text[] := $$
-      {carbon_tax_act_fuel_type, naics_mapping, fuel_mapping, fuel_carbon_tax_details,
+      {naics_mapping, fuel_mapping, fuel_carbon_tax_details,
        naics_category, naics_naics_category, naics_category_type,
        carbon_tax_rate_mapping, fuel_charge, implied_emission_factor,
       report, organisation, facility,
       activity, unit, identifier, naics, fuel,
       emission, permit, parent_organisation, address,
       contact, additional_data, measured_emission_factor}
-      $$;
-
-    history_array text[] := $$
-      {report_history, report_attachment}
       $$;
 
     view_to_recreate record;
@@ -43,23 +39,14 @@ $function$
 
     -- Create the load schema, without records
     drop schema if exists swrs_load cascade;
-    drop schema if exists swrs_history_load cascade;
-    raise notice '[%] Creating temporary schema swrs_load, swrs_history_load...', timeofday()::timestamp;
+    raise notice '[%] Creating temporary schema swrs_load...', timeofday()::timestamp;
     perform swrs_transform.clone_schema('swrs', 'swrs_load', false);
-    perform swrs_transform.clone_schema('swrs_history', 'swrs_history_load', false);
 
     -- Loop to populate swrs tables with data from swrs_transform
         for i in 1 .. array_upper(mv_array, 1)
       loop
         execute format('select swrs_transform.load_%s()', mv_array[i]);
         raise notice '[%] Loaded %...', timeofday()::timestamp, mv_array[i];
-      end loop;
-
-    -- Loop to populate swrs tables with data from swrs_transform
-        for i in 1 .. array_upper(history_array, 1)
-      loop
-        execute format('select swrs_transform.load_%s()', history_array[i]);
-        raise notice '[%] Loaded %...', timeofday()::timestamp, history_array[i];
       end loop;
 
     -- Refresh materialized views with no data
@@ -92,8 +79,6 @@ $function$
     raise notice 'Overriding to the live data schema';
     drop schema if exists swrs cascade;
     alter schema swrs_load rename to swrs;
-    drop schema if exists swrs_history cascade;
-    alter schema swrs_history_load rename to swrs_history;
 
     for view_to_recreate in select * from views_to_recreate
     loop
