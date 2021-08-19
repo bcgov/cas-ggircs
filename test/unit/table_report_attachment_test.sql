@@ -9,20 +9,6 @@ select plan(5);
 -- Setup fixture
 insert into swrs_extract.eccc_xml_file (imported_at, xml_file) VALUES ('2018-09-29T11:55:39.423', $$
   <ReportData>
-    <ReportDetails>
-      <ReportID>800855555</ReportID>
-      <PrepopReportID></PrepopReportID>
-      <ReportType>R7</ReportType>
-      <FacilityId>666</FacilityId>
-      <OrganisationId>1337</OrganisationId>
-      <ReportingPeriodDuration>1999</ReportingPeriodDuration>
-      <ReportStatus>
-        <Status>In Progress</Status>
-        <Version>3</Version>
-        <LastModifiedBy>Donny Donaldson McDonaldface</LastModifiedBy>
-        <LastModifiedDate>2018-09-28T11:55:39.423</LastModifiedDate>
-      </ReportStatus>
-    </ReportDetails>
     <report_attachmentComments>
       <Process ProcessName="Comments and Supporting Information">
         <SubProcess SubprocessName="Comments Regarding GHG report_attachmenting" InformationRequirement="Optional">

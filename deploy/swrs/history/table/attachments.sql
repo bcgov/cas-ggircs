@@ -6,7 +6,7 @@ begin;
 create table swrs_history.report_attachment
 (
     id                        integer primary key,
-    report_id                 integer,
+    report_id                 integer references swrs.report(id),
     process_name              varchar(1000),
     sub_process_name          varchar(1000),
     information_requirement   varchar(1000),
