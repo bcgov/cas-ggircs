@@ -75,15 +75,19 @@ app.prepare().then(async () => {
   const swrsExtractSchema = process.env.SWRS_EXTRACT_SCHEMA || "swrs_extract";
 
   server.use(
-    postgraphile(dbPool, [ggircsAppSchema, swrsHistorySchema, swrsExtractSchema], {
-      ...postgraphileOptions(),
-      pgSettings: (req) => {
-        const opts = {
-          ...authenticationPgSettings(req),
-        };
-        return opts;
-      },
-    })
+    postgraphile(
+      dbPool,
+      [ggircsAppSchema, swrsHistorySchema, swrsExtractSchema],
+      {
+        ...postgraphileOptions(),
+        pgSettings: (req) => {
+          const opts = {
+            ...authenticationPgSettings(req),
+          };
+          return opts;
+        },
+      }
+    )
   );
 
   server.get("*", async (req, res) => handle(req, res));
