@@ -1,3 +1,8 @@
+"""
+A floating point number that requires more precision than IEEE 754 binary 64
+"""
+scalar BigFloat
+
 """All input for the create `EcccFileDownloadLog` mutation."""
 input CreateEcccFileDownloadLogInput {
   """
@@ -31,79 +36,6 @@ type CreateEcccFileDownloadLogPayload {
   Reads a single `GgircsUser` that is related to this `EcccFileDownloadLog`.
   """
   ggircsUserByDownloadedBy: GgircsUser
-
-  """
-  Our root query field type. Allows us to run any query from our mutation payload.
-  """
-  query: Query
-}
-
-"""All input for the create `EcccXmlFile` mutation."""
-input CreateEcccXmlFileInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-
-  """The `EcccXmlFile` to be created by this mutation."""
-  ecccXmlFile: EcccXmlFileInput!
-}
-
-"""The output of our create `EcccXmlFile` mutation."""
-type CreateEcccXmlFilePayload {
-  """
-  The exact same `clientMutationId` that was provided in the mutation input,
-  unchanged and unused. May be used by a client to track mutations.
-  """
-  clientMutationId: String
-
-  """The `EcccXmlFile` that was created by this mutation."""
-  ecccXmlFile: EcccXmlFile
-
-  """An edge for our `EcccXmlFile`. May be used by Relay 1."""
-  ecccXmlFileEdge(
-    """The method to use when ordering `EcccXmlFile`."""
-    orderBy: [EcccXmlFilesOrderBy!] = [PRIMARY_KEY_ASC]
-  ): EcccXmlFilesEdge
-
-  """Reads a single `EcccZipFile` that is related to this `EcccXmlFile`."""
-  ecccZipFileByZipFileId: EcccZipFile
-
-  """
-  Our root query field type. Allows us to run any query from our mutation payload.
-  """
-  query: Query
-}
-
-"""All input for the create `EcccZipFile` mutation."""
-input CreateEcccZipFileInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-
-  """The `EcccZipFile` to be created by this mutation."""
-  ecccZipFile: EcccZipFileInput!
-}
-
-"""The output of our create `EcccZipFile` mutation."""
-type CreateEcccZipFilePayload {
-  """
-  The exact same `clientMutationId` that was provided in the mutation input,
-  unchanged and unused. May be used by a client to track mutations.
-  """
-  clientMutationId: String
-
-  """The `EcccZipFile` that was created by this mutation."""
-  ecccZipFile: EcccZipFile
-
-  """An edge for our `EcccZipFile`. May be used by Relay 1."""
-  ecccZipFileEdge(
-    """The method to use when ordering `EcccZipFile`."""
-    orderBy: [EcccZipFilesOrderBy!] = [PRIMARY_KEY_ASC]
-  ): EcccZipFilesEdge
 
   """
   Our root query field type. Allows us to run any query from our mutation payload.
@@ -194,111 +126,6 @@ type CreateGgircsUserPayload {
   query: Query
 }
 
-"""All input for the create `GhgrImport` mutation."""
-input CreateGhgrImportInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-
-  """The `GhgrImport` to be created by this mutation."""
-  ghgrImport: GhgrImportInput!
-}
-
-"""The output of our create `GhgrImport` mutation."""
-type CreateGhgrImportPayload {
-  """
-  The exact same `clientMutationId` that was provided in the mutation input,
-  unchanged and unused. May be used by a client to track mutations.
-  """
-  clientMutationId: String
-
-  """The `GhgrImport` that was created by this mutation."""
-  ghgrImport: GhgrImport
-
-  """An edge for our `GhgrImport`. May be used by Relay 1."""
-  ghgrImportEdge(
-    """The method to use when ordering `GhgrImport`."""
-    orderBy: [GhgrImportsOrderBy!] = [PRIMARY_KEY_ASC]
-  ): GhgrImportsEdge
-
-  """
-  Our root query field type. Allows us to run any query from our mutation payload.
-  """
-  query: Query
-}
-
-"""All input for the create `ReportAttachment` mutation."""
-input CreateReportAttachmentInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-
-  """The `ReportAttachment` to be created by this mutation."""
-  reportAttachment: ReportAttachmentInput!
-}
-
-"""The output of our create `ReportAttachment` mutation."""
-type CreateReportAttachmentPayload {
-  """
-  The exact same `clientMutationId` that was provided in the mutation input,
-  unchanged and unused. May be used by a client to track mutations.
-  """
-  clientMutationId: String
-
-  """
-  Our root query field type. Allows us to run any query from our mutation payload.
-  """
-  query: Query
-
-  """The `ReportAttachment` that was created by this mutation."""
-  reportAttachment: ReportAttachment
-
-  """An edge for our `ReportAttachment`. May be used by Relay 1."""
-  reportAttachmentEdge(
-    """The method to use when ordering `ReportAttachment`."""
-    orderBy: [ReportAttachmentsOrderBy!] = [PRIMARY_KEY_ASC]
-  ): ReportAttachmentsEdge
-}
-
-"""All input for the create `Report` mutation."""
-input CreateReportInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-
-  """The `Report` to be created by this mutation."""
-  report: ReportInput!
-}
-
-"""The output of our create `Report` mutation."""
-type CreateReportPayload {
-  """
-  The exact same `clientMutationId` that was provided in the mutation input,
-  unchanged and unused. May be used by a client to track mutations.
-  """
-  clientMutationId: String
-
-  """
-  Our root query field type. Allows us to run any query from our mutation payload.
-  """
-  query: Query
-
-  """The `Report` that was created by this mutation."""
-  report: Report
-
-  """An edge for our `Report`. May be used by Relay 1."""
-  reportEdge(
-    """The method to use when ordering `Report`."""
-    orderBy: [ReportsOrderBy!] = [PRIMARY_KEY_ASC]
-  ): ReportsEdge
-}
-
 """A location in a connection that can be used for resuming pagination."""
 scalar Cursor
 
@@ -363,109 +190,6 @@ type DeleteEcccFileDownloadLogPayload {
   query: Query
 }
 
-"""All input for the `deleteEcccXmlFileByRowId` mutation."""
-input DeleteEcccXmlFileByRowIdInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-
-  """The internal primary key for the file"""
-  rowId: Int!
-}
-
-"""All input for the `deleteEcccXmlFile` mutation."""
-input DeleteEcccXmlFileInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-
-  """
-  The globally unique `ID` which will identify a single `EcccXmlFile` to be deleted.
-  """
-  id: ID!
-}
-
-"""The output of our delete `EcccXmlFile` mutation."""
-type DeleteEcccXmlFilePayload {
-  """
-  The exact same `clientMutationId` that was provided in the mutation input,
-  unchanged and unused. May be used by a client to track mutations.
-  """
-  clientMutationId: String
-  deletedEcccXmlFileId: ID
-
-  """The `EcccXmlFile` that was deleted by this mutation."""
-  ecccXmlFile: EcccXmlFile
-
-  """An edge for our `EcccXmlFile`. May be used by Relay 1."""
-  ecccXmlFileEdge(
-    """The method to use when ordering `EcccXmlFile`."""
-    orderBy: [EcccXmlFilesOrderBy!] = [PRIMARY_KEY_ASC]
-  ): EcccXmlFilesEdge
-
-  """Reads a single `EcccZipFile` that is related to this `EcccXmlFile`."""
-  ecccZipFileByZipFileId: EcccZipFile
-
-  """
-  Our root query field type. Allows us to run any query from our mutation payload.
-  """
-  query: Query
-}
-
-"""All input for the `deleteEcccZipFileByRowId` mutation."""
-input DeleteEcccZipFileByRowIdInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-
-  """The internal primary key for the file"""
-  rowId: Int!
-}
-
-"""All input for the `deleteEcccZipFile` mutation."""
-input DeleteEcccZipFileInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-
-  """
-  The globally unique `ID` which will identify a single `EcccZipFile` to be deleted.
-  """
-  id: ID!
-}
-
-"""The output of our delete `EcccZipFile` mutation."""
-type DeleteEcccZipFilePayload {
-  """
-  The exact same `clientMutationId` that was provided in the mutation input,
-  unchanged and unused. May be used by a client to track mutations.
-  """
-  clientMutationId: String
-  deletedEcccZipFileId: ID
-
-  """The `EcccZipFile` that was deleted by this mutation."""
-  ecccZipFile: EcccZipFile
-
-  """An edge for our `EcccZipFile`. May be used by Relay 1."""
-  ecccZipFileEdge(
-    """The method to use when ordering `EcccZipFile`."""
-    orderBy: [EcccZipFilesOrderBy!] = [PRIMARY_KEY_ASC]
-  ): EcccZipFilesEdge
-
-  """
-  Our root query field type. Allows us to run any query from our mutation payload.
-  """
-  query: Query
-}
-
 """All input for the `deleteGgircsUserByRowId` mutation."""
 input DeleteGgircsUserByRowIdInput {
   """
@@ -523,154 +247,6 @@ type DeleteGgircsUserPayload {
   Our root query field type. Allows us to run any query from our mutation payload.
   """
   query: Query
-}
-
-"""All input for the `deleteGhgrImportByRowId` mutation."""
-input DeleteGhgrImportByRowIdInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-
-  """The internal primary key for the file"""
-  rowId: Int!
-}
-
-"""All input for the `deleteGhgrImport` mutation."""
-input DeleteGhgrImportInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-
-  """
-  The globally unique `ID` which will identify a single `GhgrImport` to be deleted.
-  """
-  id: ID!
-}
-
-"""The output of our delete `GhgrImport` mutation."""
-type DeleteGhgrImportPayload {
-  """
-  The exact same `clientMutationId` that was provided in the mutation input,
-  unchanged and unused. May be used by a client to track mutations.
-  """
-  clientMutationId: String
-  deletedGhgrImportId: ID
-
-  """The `GhgrImport` that was deleted by this mutation."""
-  ghgrImport: GhgrImport
-
-  """An edge for our `GhgrImport`. May be used by Relay 1."""
-  ghgrImportEdge(
-    """The method to use when ordering `GhgrImport`."""
-    orderBy: [GhgrImportsOrderBy!] = [PRIMARY_KEY_ASC]
-  ): GhgrImportsEdge
-
-  """
-  Our root query field type. Allows us to run any query from our mutation payload.
-  """
-  query: Query
-}
-
-"""All input for the `deleteReportAttachmentByRowId` mutation."""
-input DeleteReportAttachmentByRowIdInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-  rowId: Int!
-}
-
-"""All input for the `deleteReportAttachment` mutation."""
-input DeleteReportAttachmentInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-
-  """
-  The globally unique `ID` which will identify a single `ReportAttachment` to be deleted.
-  """
-  id: ID!
-}
-
-"""The output of our delete `ReportAttachment` mutation."""
-type DeleteReportAttachmentPayload {
-  """
-  The exact same `clientMutationId` that was provided in the mutation input,
-  unchanged and unused. May be used by a client to track mutations.
-  """
-  clientMutationId: String
-  deletedReportAttachmentId: ID
-
-  """
-  Our root query field type. Allows us to run any query from our mutation payload.
-  """
-  query: Query
-
-  """The `ReportAttachment` that was deleted by this mutation."""
-  reportAttachment: ReportAttachment
-
-  """An edge for our `ReportAttachment`. May be used by Relay 1."""
-  reportAttachmentEdge(
-    """The method to use when ordering `ReportAttachment`."""
-    orderBy: [ReportAttachmentsOrderBy!] = [PRIMARY_KEY_ASC]
-  ): ReportAttachmentsEdge
-}
-
-"""All input for the `deleteReportByRowId` mutation."""
-input DeleteReportByRowIdInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-
-  """The primary key"""
-  rowId: Int!
-}
-
-"""All input for the `deleteReport` mutation."""
-input DeleteReportInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-
-  """
-  The globally unique `ID` which will identify a single `Report` to be deleted.
-  """
-  id: ID!
-}
-
-"""The output of our delete `Report` mutation."""
-type DeleteReportPayload {
-  """
-  The exact same `clientMutationId` that was provided in the mutation input,
-  unchanged and unused. May be used by a client to track mutations.
-  """
-  clientMutationId: String
-  deletedReportId: ID
-
-  """
-  Our root query field type. Allows us to run any query from our mutation payload.
-  """
-  query: Query
-
-  """The `Report` that was deleted by this mutation."""
-  report: Report
-
-  """An edge for our `Report`. May be used by Relay 1."""
-  reportEdge(
-    """The method to use when ordering `Report`."""
-    orderBy: [ReportsOrderBy!] = [PRIMARY_KEY_ASC]
-  ): ReportsEdge
 }
 
 """
@@ -814,6 +390,35 @@ type EcccXmlFile implements Node {
   """The timestamp noting when the file was imported to the GGIRCS database"""
   importedAt: Datetime!
 
+  """Reads and enables pagination through a set of `Report`."""
+  reportsByEcccXmlFileId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ReportCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Report`."""
+    orderBy: [ReportsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ReportsConnection!
+
   """The internal primary key for the file"""
   rowId: Int!
 
@@ -851,44 +456,6 @@ input EcccXmlFileCondition {
   xmlFileName: String
 
   """Checks for equality with the object’s `zipFileId` field."""
-  zipFileId: Int
-}
-
-"""An input for mutations affecting `EcccXmlFile`"""
-input EcccXmlFileInput {
-  """The timestamp noting when the file was imported to the GGIRCS database"""
-  importedAt: Datetime
-
-  """The raw xml file"""
-  xmlFile: String!
-
-  """The unique md5 hash of the xml file"""
-  xmlFileMd5Hash: String
-
-  """The name of the xml file"""
-  xmlFileName: String
-
-  """The id of the zip file the xml file is in, if applicable"""
-  zipFileId: Int
-}
-
-"""
-Represents an update to a `EcccXmlFile`. Fields that are set will be updated.
-"""
-input EcccXmlFilePatch {
-  """The timestamp noting when the file was imported to the GGIRCS database"""
-  importedAt: Datetime
-
-  """The raw xml file"""
-  xmlFile: String
-
-  """The unique md5 hash of the xml file"""
-  xmlFileMd5Hash: String
-
-  """The name of the xml file"""
-  xmlFileName: String
-
-  """The id of the zip file the xml file is in, if applicable"""
   zipFileId: Int
 }
 
@@ -1001,32 +568,6 @@ input EcccZipFileCondition {
   zipFileMd5Hash: String
 
   """Checks for equality with the object’s `zipFileName` field."""
-  zipFileName: String
-}
-
-"""An input for mutations affecting `EcccZipFile`"""
-input EcccZipFileInput {
-  """The timestamp noting when the file was imported"""
-  importedAt: Datetime
-
-  """The unique md5 hash of the file"""
-  zipFileMd5Hash: String
-
-  """The name of the zip file"""
-  zipFileName: String
-}
-
-"""
-Represents an update to a `EcccZipFile`. Fields that are set will be updated.
-"""
-input EcccZipFilePatch {
-  """The timestamp noting when the file was imported"""
-  importedAt: Datetime
-
-  """The unique md5 hash of the file"""
-  zipFileMd5Hash: String
-
-  """The name of the zip file"""
   zipFileName: String
 }
 
@@ -1439,26 +980,6 @@ input GhgrImportCondition {
   xmlFile: String
 }
 
-"""An input for mutations affecting `GhgrImport`"""
-input GhgrImportInput {
-  """The timestamp noting when the file was imported"""
-  importedAt: Datetime
-
-  """The raw xml file imported from GHGR"""
-  xmlFile: String!
-}
-
-"""
-Represents an update to a `GhgrImport`. Fields that are set will be updated.
-"""
-input GhgrImportPatch {
-  """The timestamp noting when the file was imported"""
-  importedAt: Datetime
-
-  """The raw xml file imported from GHGR"""
-  xmlFile: String
-}
-
 """A connection to a list of `GhgrImport` values."""
 type GhgrImportsConnection {
   """
@@ -1537,22 +1058,6 @@ type Mutation {
     input: CreateEcccFileDownloadLogInput!
   ): CreateEcccFileDownloadLogPayload
 
-  """Creates a single `EcccXmlFile`."""
-  createEcccXmlFile(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: CreateEcccXmlFileInput!
-  ): CreateEcccXmlFilePayload
-
-  """Creates a single `EcccZipFile`."""
-  createEcccZipFile(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: CreateEcccZipFileInput!
-  ): CreateEcccZipFilePayload
-
   """Creates a single `GgircsUser`."""
   createGgircsUser(
     """
@@ -1566,30 +1071,6 @@ type Mutation {
     """
     input: CreateGgircsUserFromSessionInput!
   ): CreateGgircsUserFromSessionPayload
-
-  """Creates a single `GhgrImport`."""
-  createGhgrImport(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: CreateGhgrImportInput!
-  ): CreateGhgrImportPayload
-
-  """Creates a single `Report`."""
-  createReport(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: CreateReportInput!
-  ): CreateReportPayload
-
-  """Creates a single `ReportAttachment`."""
-  createReportAttachment(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: CreateReportAttachmentInput!
-  ): CreateReportAttachmentPayload
 
   """Deletes a single `EcccFileDownloadLog` using its globally unique id."""
   deleteEcccFileDownloadLog(
@@ -1607,38 +1088,6 @@ type Mutation {
     input: DeleteEcccFileDownloadLogByRowIdInput!
   ): DeleteEcccFileDownloadLogPayload
 
-  """Deletes a single `EcccXmlFile` using its globally unique id."""
-  deleteEcccXmlFile(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: DeleteEcccXmlFileInput!
-  ): DeleteEcccXmlFilePayload
-
-  """Deletes a single `EcccXmlFile` using a unique key."""
-  deleteEcccXmlFileByRowId(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: DeleteEcccXmlFileByRowIdInput!
-  ): DeleteEcccXmlFilePayload
-
-  """Deletes a single `EcccZipFile` using its globally unique id."""
-  deleteEcccZipFile(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: DeleteEcccZipFileInput!
-  ): DeleteEcccZipFilePayload
-
-  """Deletes a single `EcccZipFile` using a unique key."""
-  deleteEcccZipFileByRowId(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: DeleteEcccZipFileByRowIdInput!
-  ): DeleteEcccZipFilePayload
-
   """Deletes a single `GgircsUser` using its globally unique id."""
   deleteGgircsUser(
     """
@@ -1654,54 +1103,6 @@ type Mutation {
     """
     input: DeleteGgircsUserByRowIdInput!
   ): DeleteGgircsUserPayload
-
-  """Deletes a single `GhgrImport` using its globally unique id."""
-  deleteGhgrImport(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: DeleteGhgrImportInput!
-  ): DeleteGhgrImportPayload
-
-  """Deletes a single `GhgrImport` using a unique key."""
-  deleteGhgrImportByRowId(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: DeleteGhgrImportByRowIdInput!
-  ): DeleteGhgrImportPayload
-
-  """Deletes a single `Report` using its globally unique id."""
-  deleteReport(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: DeleteReportInput!
-  ): DeleteReportPayload
-
-  """Deletes a single `ReportAttachment` using its globally unique id."""
-  deleteReportAttachment(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: DeleteReportAttachmentInput!
-  ): DeleteReportAttachmentPayload
-
-  """Deletes a single `ReportAttachment` using a unique key."""
-  deleteReportAttachmentByRowId(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: DeleteReportAttachmentByRowIdInput!
-  ): DeleteReportAttachmentPayload
-
-  """Deletes a single `Report` using a unique key."""
-  deleteReportByRowId(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: DeleteReportByRowIdInput!
-  ): DeleteReportPayload
 
   """
   Updates a single `EcccFileDownloadLog` using its globally unique id and a patch.
@@ -1722,42 +1123,6 @@ type Mutation {
   ): UpdateEcccFileDownloadLogPayload
 
   """
-  Updates a single `EcccXmlFile` using its globally unique id and a patch.
-  """
-  updateEcccXmlFile(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: UpdateEcccXmlFileInput!
-  ): UpdateEcccXmlFilePayload
-
-  """Updates a single `EcccXmlFile` using a unique key and a patch."""
-  updateEcccXmlFileByRowId(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: UpdateEcccXmlFileByRowIdInput!
-  ): UpdateEcccXmlFilePayload
-
-  """
-  Updates a single `EcccZipFile` using its globally unique id and a patch.
-  """
-  updateEcccZipFile(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: UpdateEcccZipFileInput!
-  ): UpdateEcccZipFilePayload
-
-  """Updates a single `EcccZipFile` using a unique key and a patch."""
-  updateEcccZipFileByRowId(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: UpdateEcccZipFileByRowIdInput!
-  ): UpdateEcccZipFilePayload
-
-  """
   Updates a single `GgircsUser` using its globally unique id and a patch.
   """
   updateGgircsUser(
@@ -1774,58 +1139,6 @@ type Mutation {
     """
     input: UpdateGgircsUserByRowIdInput!
   ): UpdateGgircsUserPayload
-
-  """
-  Updates a single `GhgrImport` using its globally unique id and a patch.
-  """
-  updateGhgrImport(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: UpdateGhgrImportInput!
-  ): UpdateGhgrImportPayload
-
-  """Updates a single `GhgrImport` using a unique key and a patch."""
-  updateGhgrImportByRowId(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: UpdateGhgrImportByRowIdInput!
-  ): UpdateGhgrImportPayload
-
-  """Updates a single `Report` using its globally unique id and a patch."""
-  updateReport(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: UpdateReportInput!
-  ): UpdateReportPayload
-
-  """
-  Updates a single `ReportAttachment` using its globally unique id and a patch.
-  """
-  updateReportAttachment(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: UpdateReportAttachmentInput!
-  ): UpdateReportAttachmentPayload
-
-  """Updates a single `ReportAttachment` using a unique key and a patch."""
-  updateReportAttachmentByRowId(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: UpdateReportAttachmentByRowIdInput!
-  ): UpdateReportAttachmentPayload
-
-  """Updates a single `Report` using a unique key and a patch."""
-  updateReportByRowId(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: UpdateReportByRowIdInput!
-  ): UpdateReportPayload
 }
 
 """An object with a globally unique `ID`."""
@@ -2138,8 +1451,14 @@ type Query implements Node {
 
 """The table housing all report data, derived from eccc_xml_file table"""
 type Report implements Node {
+  co2Bioc: BigFloat
+
+  """Reads a single `EcccXmlFile` that is related to this `Report`."""
+  ecccXmlFileByEcccXmlFileId: EcccXmlFile
+
   """The internal primary key for the file"""
   ecccXmlFileId: Int
+  grandTotalLessCo2Bioc: BigFloat
 
   """
   A globally unique identifier. Can be used in various places throughout the system to identify this single value.
@@ -2158,8 +1477,38 @@ type Report implements Node {
   """The prepop report id"""
   prepopReportId: Int
 
+  """Reads and enables pagination through a set of `ReportAttachment`."""
+  reportAttachmentsByReportId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ReportAttachmentCondition
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `ReportAttachment`."""
+    orderBy: [ReportAttachmentsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): ReportAttachmentsConnection!
+
   """The type of report"""
   reportType: String
+  reportingOnlyGrandTotal: BigFloat
 
   """The length of the reporting period contained in report"""
   reportingPeriodDuration: Int
@@ -2185,7 +1534,9 @@ type Report implements Node {
   """The swrs report id"""
   swrsReportId: Int!
 
-  """The description of the update"""
+  """
+  The total quantity of CO2bioC reported in this report. Used by compliance and enforcement
+  """
   updateComment: String
 
   """The report version"""
@@ -2194,14 +1545,46 @@ type Report implements Node {
 
 """The table housing all attachments for reports"""
 type ReportAttachment implements Node {
+  """The file_number corresponds to the type of attachment"""
+  fileNumber: Int
+
   """
   A globally unique identifier. Can be used in various places throughout the system to identify this single value.
   """
   id: ID!
 
-  """Id of the report this attachment belongs to"""
+  """
+  Denotes whether or not this attachment is required. Can be one of [Optional, Required]
+  """
+  informationRequirement: String
+
+  """
+  The process_name in this context describes the type of attachment (ie: Process Flow Diagram)
+  """
+  processName: String
+
+  """Reads a single `Report` that is related to this `ReportAttachment`."""
+  reportByReportId: Report
+
+  """The foreign key to the report this attachment belongs to"""
   reportId: Int
+
+  """A generated index used for keying in the ggircs schema"""
   rowId: Int!
+
+  """
+  The sub_process_name in this context is a more in-depth description of this attachment
+  """
+  subProcessName: String
+
+  """The date of upload"""
+  uploadedAt: Datetime
+
+  """The name of the user who uploaded the attachment file"""
+  uploadedBy: String
+
+  """The name of the attachment file that was uploaded"""
+  uploadedFileName: String
 }
 
 """
@@ -2209,27 +1592,32 @@ A condition to be used against `ReportAttachment` object types. All fields are
 tested for equality and combined with a logical ‘and.’
 """
 input ReportAttachmentCondition {
+  """Checks for equality with the object’s `fileNumber` field."""
+  fileNumber: Int
+
+  """Checks for equality with the object’s `informationRequirement` field."""
+  informationRequirement: String
+
+  """Checks for equality with the object’s `processName` field."""
+  processName: String
+
   """Checks for equality with the object’s `reportId` field."""
   reportId: Int
 
   """Checks for equality with the object’s `rowId` field."""
   rowId: Int
-}
 
-"""An input for mutations affecting `ReportAttachment`"""
-input ReportAttachmentInput {
-  """Id of the report this attachment belongs to"""
-  reportId: Int
-  rowId: Int!
-}
+  """Checks for equality with the object’s `subProcessName` field."""
+  subProcessName: String
 
-"""
-Represents an update to a `ReportAttachment`. Fields that are set will be updated.
-"""
-input ReportAttachmentPatch {
-  """Id of the report this attachment belongs to"""
-  reportId: Int
-  rowId: Int
+  """Checks for equality with the object’s `uploadedAt` field."""
+  uploadedAt: Datetime
+
+  """Checks for equality with the object’s `uploadedBy` field."""
+  uploadedBy: String
+
+  """Checks for equality with the object’s `uploadedFileName` field."""
+  uploadedFileName: String
 }
 
 """A connection to a list of `ReportAttachment` values."""
@@ -2262,21 +1650,41 @@ type ReportAttachmentsEdge {
 
 """Methods to use when ordering `ReportAttachment`."""
 enum ReportAttachmentsOrderBy {
+  FILE_NUMBER_ASC
+  FILE_NUMBER_DESC
   ID_ASC
   ID_DESC
+  INFORMATION_REQUIREMENT_ASC
+  INFORMATION_REQUIREMENT_DESC
   NATURAL
   PRIMARY_KEY_ASC
   PRIMARY_KEY_DESC
+  PROCESS_NAME_ASC
+  PROCESS_NAME_DESC
   REPORT_ID_ASC
   REPORT_ID_DESC
+  SUB_PROCESS_NAME_ASC
+  SUB_PROCESS_NAME_DESC
+  UPLOADED_AT_ASC
+  UPLOADED_AT_DESC
+  UPLOADED_BY_ASC
+  UPLOADED_BY_DESC
+  UPLOADED_FILE_NAME_ASC
+  UPLOADED_FILE_NAME_DESC
 }
 
 """
 A condition to be used against `Report` object types. All fields are tested for equality and combined with a logical ‘and.’
 """
 input ReportCondition {
+  """Checks for equality with the object’s `co2Bioc` field."""
+  co2Bioc: BigFloat
+
   """Checks for equality with the object’s `ecccXmlFileId` field."""
   ecccXmlFileId: Int
+
+  """Checks for equality with the object’s `grandTotalLessCo2Bioc` field."""
+  grandTotalLessCo2Bioc: BigFloat
 
   """Checks for equality with the object’s `importedAt` field."""
   importedAt: Datetime
@@ -2292,6 +1700,9 @@ input ReportCondition {
 
   """Checks for equality with the object’s `reportType` field."""
   reportType: String
+
+  """Checks for equality with the object’s `reportingOnlyGrandTotal` field."""
+  reportingOnlyGrandTotal: BigFloat
 
   """Checks for equality with the object’s `reportingPeriodDuration` field."""
   reportingPeriodDuration: Int
@@ -2324,110 +1735,6 @@ input ReportCondition {
   version: String
 }
 
-"""An input for mutations affecting `Report`"""
-input ReportInput {
-  """The internal primary key for the file"""
-  ecccXmlFileId: Int
-
-  """The timestamp noting when the file was imported"""
-  importedAt: Datetime
-
-  """The person who last modified the report"""
-  lastModifiedBy: String
-
-  """The timestamp recorded in SWRS when the report was last modified"""
-  lastModifiedDate: Datetime
-
-  """The prepop report id"""
-  prepopReportId: Int
-
-  """The type of report"""
-  reportType: String
-
-  """The length of the reporting period contained in report"""
-  reportingPeriodDuration: Int
-
-  """The primary key"""
-  rowId: Int!
-
-  """The raw xml file imported from GHGR"""
-  sourceXml: String
-
-  """The status of the report"""
-  status: String
-
-  """The date the report was submitted"""
-  submissionDate: Datetime
-
-  """The ID for the reporting facility"""
-  swrsFacilityId: Int
-
-  """The ID for the reporting organisation"""
-  swrsOrganisationId: Int
-
-  """The swrs report id"""
-  swrsReportId: Int!
-
-  """The description of the update"""
-  updateComment: String
-
-  """The report version"""
-  version: String
-}
-
-"""
-Represents an update to a `Report`. Fields that are set will be updated.
-"""
-input ReportPatch {
-  """The internal primary key for the file"""
-  ecccXmlFileId: Int
-
-  """The timestamp noting when the file was imported"""
-  importedAt: Datetime
-
-  """The person who last modified the report"""
-  lastModifiedBy: String
-
-  """The timestamp recorded in SWRS when the report was last modified"""
-  lastModifiedDate: Datetime
-
-  """The prepop report id"""
-  prepopReportId: Int
-
-  """The type of report"""
-  reportType: String
-
-  """The length of the reporting period contained in report"""
-  reportingPeriodDuration: Int
-
-  """The primary key"""
-  rowId: Int
-
-  """The raw xml file imported from GHGR"""
-  sourceXml: String
-
-  """The status of the report"""
-  status: String
-
-  """The date the report was submitted"""
-  submissionDate: Datetime
-
-  """The ID for the reporting facility"""
-  swrsFacilityId: Int
-
-  """The ID for the reporting organisation"""
-  swrsOrganisationId: Int
-
-  """The swrs report id"""
-  swrsReportId: Int
-
-  """The description of the update"""
-  updateComment: String
-
-  """The report version"""
-  version: String
-}
-
 """A connection to a list of `Report` values."""
 type ReportsConnection {
   """
@@ -2456,8 +1763,12 @@ type ReportsEdge {
 
 """Methods to use when ordering `Report`."""
 enum ReportsOrderBy {
+  CO2BIOC_ASC
+  CO2BIOC_DESC
   ECCC_XML_FILE_ID_ASC
   ECCC_XML_FILE_ID_DESC
+  GRAND_TOTAL_LESS_CO2BIOC_ASC
+  GRAND_TOTAL_LESS_CO2BIOC_DESC
   ID_ASC
   ID_DESC
   IMPORTED_AT_ASC
@@ -2471,6 +1782,8 @@ enum ReportsOrderBy {
   PREPOP_REPORT_ID_DESC
   PRIMARY_KEY_ASC
   PRIMARY_KEY_DESC
+  REPORTING_ONLY_GRAND_TOTAL_ASC
+  REPORTING_ONLY_GRAND_TOTAL_DESC
   REPORTING_PERIOD_DURATION_ASC
   REPORTING_PERIOD_DURATION_DESC
   REPORT_TYPE_ASC
@@ -2562,127 +1875,6 @@ type UpdateEcccFileDownloadLogPayload {
   query: Query
 }
 
-"""All input for the `updateEcccXmlFileByRowId` mutation."""
-input UpdateEcccXmlFileByRowIdInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-
-  """
-  An object where the defined keys will be set on the `EcccXmlFile` being updated.
-  """
-  ecccXmlFilePatch: EcccXmlFilePatch!
-
-  """The internal primary key for the file"""
-  rowId: Int!
-}
-
-"""All input for the `updateEcccXmlFile` mutation."""
-input UpdateEcccXmlFileInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-
-  """
-  An object where the defined keys will be set on the `EcccXmlFile` being updated.
-  """
-  ecccXmlFilePatch: EcccXmlFilePatch!
-
-  """
-  The globally unique `ID` which will identify a single `EcccXmlFile` to be updated.
-  """
-  id: ID!
-}
-
-"""The output of our update `EcccXmlFile` mutation."""
-type UpdateEcccXmlFilePayload {
-  """
-  The exact same `clientMutationId` that was provided in the mutation input,
-  unchanged and unused. May be used by a client to track mutations.
-  """
-  clientMutationId: String
-
-  """The `EcccXmlFile` that was updated by this mutation."""
-  ecccXmlFile: EcccXmlFile
-
-  """An edge for our `EcccXmlFile`. May be used by Relay 1."""
-  ecccXmlFileEdge(
-    """The method to use when ordering `EcccXmlFile`."""
-    orderBy: [EcccXmlFilesOrderBy!] = [PRIMARY_KEY_ASC]
-  ): EcccXmlFilesEdge
-
-  """Reads a single `EcccZipFile` that is related to this `EcccXmlFile`."""
-  ecccZipFileByZipFileId: EcccZipFile
-
-  """
-  Our root query field type. Allows us to run any query from our mutation payload.
-  """
-  query: Query
-}
-
-"""All input for the `updateEcccZipFileByRowId` mutation."""
-input UpdateEcccZipFileByRowIdInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-
-  """
-  An object where the defined keys will be set on the `EcccZipFile` being updated.
-  """
-  ecccZipFilePatch: EcccZipFilePatch!
-
-  """The internal primary key for the file"""
-  rowId: Int!
-}
-
-"""All input for the `updateEcccZipFile` mutation."""
-input UpdateEcccZipFileInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-
-  """
-  An object where the defined keys will be set on the `EcccZipFile` being updated.
-  """
-  ecccZipFilePatch: EcccZipFilePatch!
-
-  """
-  The globally unique `ID` which will identify a single `EcccZipFile` to be updated.
-  """
-  id: ID!
-}
-
-"""The output of our update `EcccZipFile` mutation."""
-type UpdateEcccZipFilePayload {
-  """
-  The exact same `clientMutationId` that was provided in the mutation input,
-  unchanged and unused. May be used by a client to track mutations.
-  """
-  clientMutationId: String
-
-  """The `EcccZipFile` that was updated by this mutation."""
-  ecccZipFile: EcccZipFile
-
-  """An edge for our `EcccZipFile`. May be used by Relay 1."""
-  ecccZipFileEdge(
-    """The method to use when ordering `EcccZipFile`."""
-    orderBy: [EcccZipFilesOrderBy!] = [PRIMARY_KEY_ASC]
-  ): EcccZipFilesEdge
-
-  """
-  Our root query field type. Allows us to run any query from our mutation payload.
-  """
-  query: Query
-}
-
 """All input for the `updateGgircsUserByRowId` mutation."""
 input UpdateGgircsUserByRowIdInput {
   """
@@ -2749,179 +1941,4 @@ type UpdateGgircsUserPayload {
   Our root query field type. Allows us to run any query from our mutation payload.
   """
   query: Query
-}
-
-"""All input for the `updateGhgrImportByRowId` mutation."""
-input UpdateGhgrImportByRowIdInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-
-  """
-  An object where the defined keys will be set on the `GhgrImport` being updated.
-  """
-  ghgrImportPatch: GhgrImportPatch!
-
-  """The internal primary key for the file"""
-  rowId: Int!
-}
-
-"""All input for the `updateGhgrImport` mutation."""
-input UpdateGhgrImportInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-
-  """
-  An object where the defined keys will be set on the `GhgrImport` being updated.
-  """
-  ghgrImportPatch: GhgrImportPatch!
-
-  """
-  The globally unique `ID` which will identify a single `GhgrImport` to be updated.
-  """
-  id: ID!
-}
-
-"""The output of our update `GhgrImport` mutation."""
-type UpdateGhgrImportPayload {
-  """
-  The exact same `clientMutationId` that was provided in the mutation input,
-  unchanged and unused. May be used by a client to track mutations.
-  """
-  clientMutationId: String
-
-  """The `GhgrImport` that was updated by this mutation."""
-  ghgrImport: GhgrImport
-
-  """An edge for our `GhgrImport`. May be used by Relay 1."""
-  ghgrImportEdge(
-    """The method to use when ordering `GhgrImport`."""
-    orderBy: [GhgrImportsOrderBy!] = [PRIMARY_KEY_ASC]
-  ): GhgrImportsEdge
-
-  """
-  Our root query field type. Allows us to run any query from our mutation payload.
-  """
-  query: Query
-}
-
-"""All input for the `updateReportAttachmentByRowId` mutation."""
-input UpdateReportAttachmentByRowIdInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-
-  """
-  An object where the defined keys will be set on the `ReportAttachment` being updated.
-  """
-  reportAttachmentPatch: ReportAttachmentPatch!
-  rowId: Int!
-}
-
-"""All input for the `updateReportAttachment` mutation."""
-input UpdateReportAttachmentInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-
-  """
-  The globally unique `ID` which will identify a single `ReportAttachment` to be updated.
-  """
-  id: ID!
-
-  """
-  An object where the defined keys will be set on the `ReportAttachment` being updated.
-  """
-  reportAttachmentPatch: ReportAttachmentPatch!
-}
-
-"""The output of our update `ReportAttachment` mutation."""
-type UpdateReportAttachmentPayload {
-  """
-  The exact same `clientMutationId` that was provided in the mutation input,
-  unchanged and unused. May be used by a client to track mutations.
-  """
-  clientMutationId: String
-
-  """
-  Our root query field type. Allows us to run any query from our mutation payload.
-  """
-  query: Query
-
-  """The `ReportAttachment` that was updated by this mutation."""
-  reportAttachment: ReportAttachment
-
-  """An edge for our `ReportAttachment`. May be used by Relay 1."""
-  reportAttachmentEdge(
-    """The method to use when ordering `ReportAttachment`."""
-    orderBy: [ReportAttachmentsOrderBy!] = [PRIMARY_KEY_ASC]
-  ): ReportAttachmentsEdge
-}
-
-"""All input for the `updateReportByRowId` mutation."""
-input UpdateReportByRowIdInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-
-  """
-  An object where the defined keys will be set on the `Report` being updated.
-  """
-  reportPatch: ReportPatch!
-
-  """The primary key"""
-  rowId: Int!
-}
-
-"""All input for the `updateReport` mutation."""
-input UpdateReportInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-
-  """
-  The globally unique `ID` which will identify a single `Report` to be updated.
-  """
-  id: ID!
-
-  """
-  An object where the defined keys will be set on the `Report` being updated.
-  """
-  reportPatch: ReportPatch!
-}
-
-"""The output of our update `Report` mutation."""
-type UpdateReportPayload {
-  """
-  The exact same `clientMutationId` that was provided in the mutation input,
-  unchanged and unused. May be used by a client to track mutations.
-  """
-  clientMutationId: String
-
-  """
-  Our root query field type. Allows us to run any query from our mutation payload.
-  """
-  query: Query
-
-  """The `Report` that was updated by this mutation."""
-  report: Report
-
-  """An edge for our `Report`. May be used by Relay 1."""
-  reportEdge(
-    """The method to use when ordering `Report`."""
-    orderBy: [ReportsOrderBy!] = [PRIMARY_KEY_ASC]
-  ): ReportsEdge
 }
