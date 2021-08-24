@@ -69,3 +69,9 @@ spec:
                 - |
                   set -euo pipefail;
                   create-user-db -d $(PGDATABASE) -u $(GGIRCS_APP_USER) -p $(GGIRCS_APP_PASSWORD)
+                  psql<<EOF
+                    grant usage on schema swrs_history to $(GGIRCS_APP_USER);
+                    grant usage on schema swrs_extract to $(GGIRCS_APP_USER);
+                    grant select on all tables in schema swrs_history to $(GGIRCS_APP_USER);
+                    grant select on all tables in schema swrs_extract to $(GGIRCS_APP_USER);
+                  EOF

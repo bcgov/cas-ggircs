@@ -5,7 +5,7 @@
   "scripts": {
     "predev": "yarn build:schema && yarn build:relay",
     "dev": "node server",
-    "build:schema": "postgraphile -X -c postgres://localhost/ggircs -s ggircs_app --export-schema-graphql server/schema.graphql --export-schema-json server/schema.json --classic-ids --sort-export && echo >> server/schema.json",
+    "build:schema": "postgraphile -X -c postgres://localhost/ggircs_dev -s ggircs_app,swrs_history,swrs_extract --export-schema-graphql server/schema.graphql --export-schema-json server/schema.json --classic-ids --sort-export && echo >> server/schema.json",
     "build:relay": "relay-compiler --verbose",
     "build:next": "next build",
     "build": "yarn build:schema && yarn build:relay && yarn build:next",

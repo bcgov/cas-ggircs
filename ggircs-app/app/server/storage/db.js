@@ -32,7 +32,7 @@ const getDatabaseUrl = () => {
   }
 
   databaseURL += "/";
-  databaseURL += process.env.PGDATABASE || "ggircs";
+  databaseURL += process.env.PGDATABASE || "ggircs_dev";
 
   return databaseURL;
 };
