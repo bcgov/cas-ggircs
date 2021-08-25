@@ -16,9 +16,9 @@ create materialized view swrs_transform.historical_report_emission_data as (
         '//TotalEmissions'
         passing xml_file
         columns
-          grand_total_emission numeric path './TotalGroups[@TotalGroupType="TotalGHGEmissionGas"]/Totals/Emissions[@EmissionsGasType="GHGEmissionGas"]/GrandTotal/Total[string-length(normalize-space(.)) > 0]',
-          reporting_only_grand_total numeric path './TotalGroups[@TotalGroupType="ReportingOnlyEmissions"]/Totals/Emissions[@EmissionsGasType="ReportingOnlyByGas"]/GrandTotal/Total[string-length(normalize-space(.)) > 0]',
-          co2bioc numeric path './TotalGroups[@TotalGroupType="TotalGHGEmissionGas"]/Totals/Emissions[@EmissionsGasType="GHGEmissionGas"]/TotalRow/GasType[text()="CO2bioC"]/preceding-sibling::Quantity[string-length(normalize-space(.)) > 0]'
+          grand_total_emission numeric path './TotalGroups[@TotalGroupType="TotalGHGEmissionGas"]/Totals/Emissions[@EmissionsGasType="GHGEmissionGas"]/GrandTotal/Total[normalize-space(.)]' default 0,
+          reporting_only_grand_total numeric path './TotalGroups[@TotalGroupType="ReportingOnlyEmissions"]/Totals/Emissions[@EmissionsGasType="ReportingOnlyByGas"]/GrandTotal/Total[normalize-space(.)]' default 0,
+          co2bioc numeric path './TotalGroups[@TotalGroupType="TotalGHGEmissionGas"]/Totals/Emissions[@EmissionsGasType="GHGEmissionGas"]/TotalRow/GasType[text()="CO2bioC"]/preceding-sibling::Quantity[normalize-space(.)]' default 0
       ) as emission_data
 ) with no data;
 
