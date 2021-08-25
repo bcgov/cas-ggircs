@@ -2,7 +2,7 @@
 -- requires: swrs/extract/table/eccc_xml_file
 
 begin;
-
+drop materialized view if exists swrs_transform.historical_report_attachment_data;
 create materialized view swrs_transform.historical_report_attachment_data as (
   select
     row_number() over () as id,
