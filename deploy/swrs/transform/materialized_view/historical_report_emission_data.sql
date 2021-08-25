@@ -8,9 +8,7 @@ create materialized view swrs_transform.historical_report_emission_data as (
   select
     row_number() over () as id,
     id as eccc_xml_file_id,
-    coalesce(emission_data.grand_total_emission, 0) as grand_total_emission,
-    coalesce(emission_data.reporting_only_grand_total, 0) as reporting_only_grand_total,
-    coalesce(emission_data.co2bioc, 0) as co2bioc
+    emission_data.*
   from swrs_extract.eccc_xml_file,
       xmltable(
         '//TotalEmissions'

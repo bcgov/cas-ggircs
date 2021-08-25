@@ -3,6 +3,7 @@
 
 begin;
 
+drop materialized view if exists swrs_transform.historical_report_attachment_data;
 create materialized view swrs_transform.historical_report_attachment_data as (
   select
     row_number() over () as id,
@@ -16,7 +17,7 @@ create materialized view swrs_transform.historical_report_attachment_data as (
           process_name varchar(1000) path 'normalize-space(./ancestor::Process/@ProcessName)',
           sub_process_name varchar(1000) path 'normalize-space(./ancestor::SubProcess/@SubprocessName)',
           information_requirement varchar(1000) path 'normalize-space(./ancestor::SubProcess/@InformationRequirement)',
-          file_number int path 'normalize-space(./File)',
+          file_number int path './File[normalize-space(.)]' default null,
           uploaded_file_name varchar(1000) path 'normalize-space(./UploadedFileName)',
           uploaded_by varchar(1000) path 'normalize-space(./UploadedBy)',
           uploaded_at timestamptz path 'normalize-space(./UploadedDate)'
