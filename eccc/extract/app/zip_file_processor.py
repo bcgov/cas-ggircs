@@ -69,7 +69,7 @@ def process_report_xml(zip_file_path, zip_file_name, zipfile_id, storage_client,
 
 
 def process_report_attachments(zip_file_path, zip_file_name, zipfile_id, storage_client, pg_pool, log):
-    insert_sql = """insert into swrs_extract.eccc_attachments(attachment_file_name, attachment_file_md5_hash, zip_file_id) values (%s, %s, %s) on conflict on constraint attachment_md5_zip_filename_uindex do nothing"""
+    insert_sql = """insert into swrs_extract.eccc_attachments(attachment_file_path, attachment_file_md5_hash, zip_file_id) values (%s, %s, %s) on conflict on constraint attachment_md5_zip_filename_uindex do nothing"""
     with open(zip_file_path, 'rb', transport_params=dict(client=storage_client)) as fin:
         with zipfile.ZipFile(fin) as finz:
             for file_path in finz.namelist():
