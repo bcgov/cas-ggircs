@@ -3,7 +3,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(3);
+select plan(4);
 
 -- Test matview report exists in schema swrs_transform
 select has_materialized_view('swrs_transform', 'historical_report_attachment_data', 'Materialized view historical_report_attachment_data exists');
@@ -44,6 +44,18 @@ insert into swrs_extract.eccc_xml_file (imported_at, xml_file) VALUES ('2018-09-
         </SubProcess>
       </Process>
     </ProcessFlowDiagram>
+    <EmptyFile>
+      <Process ProcessName="EmptyFile">
+        <SubProcess SubprocessName="File Number is Empty">
+          <FileDetails>
+            <File></File>
+            <UploadedFileName>emptyfilenumber.pdf</UploadedFileName>
+            <UploadedBy>Nofile McEmpty</UploadedBy>
+            <UploadedDate>2021-04-28T18:25:45-07</UploadedDate>
+          </FileDetails>
+        </SubProcess>
+      </Process>
+    </EmptyFile>
     </Root>
 $$);
 
@@ -67,7 +79,7 @@ select results_eq(
       file_number,
       uploaded_by,
       uploaded_at
-    from swrs_transform.historical_report_attachment_data
+    from swrs_transform.historical_report_attachment_data limit 1
   $$,
   $$
     values (
@@ -80,6 +92,18 @@ select results_eq(
       '2021-04-28 18:25:45-07'::timestamptz)
   $$,
   'Parses attachment data correctly where the UploadedFileName tag is not empty'
+);
+
+select results_eq(
+  $$
+    select
+      process_name
+    from swrs_transform.historical_report_attachment_data where file_number is null
+  $$,
+  $$
+    values ('EmptyFile'::varchar)
+  $$,
+  'Parses empty fileNumber tags as null'
 );
 
 select finish();
