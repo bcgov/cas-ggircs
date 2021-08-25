@@ -3,19 +3,22 @@
 
 begin;
 
+drop materialized view if exists swrs_transform.historical_report_emission_data;
 create materialized view swrs_transform.historical_report_emission_data as (
   select
     row_number() over () as id,
     id as eccc_xml_file_id,
-    emission_data.*
+    coalesce(emission_data.grand_total_emission, 0) as grand_total_emission,
+    coalesce(emission_data.reporting_only_grand_total, 0) as reporting_only_grand_total,
+    coalesce(emission_data.co2bioc, 0) as co2bioc
   from swrs_extract.eccc_xml_file,
       xmltable(
         '//TotalEmissions'
         passing xml_file
         columns
-          grand_total_emission numeric path 'normalize-space(./TotalGroups[@TotalGroupType="TotalGHGEmissionGas"]/Totals/Emissions[@EmissionsGasType="GHGEmissionGas"]/GrandTotal/Total)',
-          reporting_only_grand_total numeric path 'normalize-space(./TotalGroups[@TotalGroupType="ReportingOnlyEmissions"]/Totals/Emissions[@EmissionsGasType="ReportingOnlyByGas"]/GrandTotal/Total)',
-          co2bioc numeric path 'normalize-space(./TotalGroups[@TotalGroupType="TotalGHGEmissionGas"]/Totals/Emissions[@EmissionsGasType="GHGEmissionGas"]/TotalRow/GasType[text()="CO2bioC"]/preceding-sibling::Quantity)'
+          grand_total_emission numeric path './TotalGroups[@TotalGroupType="TotalGHGEmissionGas"]/Totals/Emissions[@EmissionsGasType="GHGEmissionGas"]/GrandTotal/Total[string-length(normalize-space(.)) > 0]',
+          reporting_only_grand_total numeric path './TotalGroups[@TotalGroupType="ReportingOnlyEmissions"]/Totals/Emissions[@EmissionsGasType="ReportingOnlyByGas"]/GrandTotal/Total[string-length(normalize-space(.)) > 0]',
+          co2bioc numeric path './TotalGroups[@TotalGroupType="TotalGHGEmissionGas"]/Totals/Emissions[@EmissionsGasType="GHGEmissionGas"]/TotalRow/GasType[text()="CO2bioC"]/preceding-sibling::Quantity[string-length(normalize-space(.)) > 0]'
       ) as emission_data
 ) with no data;
 

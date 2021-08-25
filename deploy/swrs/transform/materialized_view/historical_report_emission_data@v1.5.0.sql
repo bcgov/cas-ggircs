@@ -3,7 +3,6 @@
 
 begin;
 
-drop materialized view if exists swrs_transform.historical_report_emission_data;
 create materialized view swrs_transform.historical_report_emission_data as (
   select
     row_number() over () as id,
