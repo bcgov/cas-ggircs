@@ -24,11 +24,11 @@ create materialized view swrs_transform.historical_report_attachment_data as (
       ) as attachment_data
 ) with no data;
 
-create unique index historical_attachment_primary_key on swrs_transform.historical_report_attachment_data (eccc_xml_file_id);
+create index historical_attachment_primary_key on swrs_transform.historical_report_attachment_data (eccc_xml_file_id);
 
 comment on materialized view swrs_transform.historical_report_attachment_data is 'This materialized view contains data about the attachments related to a SWRS(single window reporting system) report, derived from eccc_xml_file table';
 comment on column swrs_transform.historical_report_attachment_data.id is 'A generated index used for keying in the ggircs schema';
-comment on column swrs_transform.historical_report_attachment_data.eccc_xml_file_id is 'The internal primary key for the file';
+comment on column swrs_transform.historical_report_attachment_data.eccc_xml_file_id is 'The xml file this report attachment was parsed from';
 comment on column swrs_transform.historical_report_attachment_data.process_name is 'The process_name in this context describes the type of attachment (ie: Process Flow Diagram)';
 comment on column swrs_transform.historical_report_attachment_data.sub_process_name is 'The sub_process_name in this context is a more in-depth description of this attachment';
 comment on column swrs_transform.historical_report_attachment_data.information_requirement is 'Denotes whether or not this attachment is required. Can be one of [Optional, Required]';
