@@ -1,3 +1,9 @@
+"""
+This script list the zip files in the GCS bucket (BUCKET_NAME env variable) and inserts records in the database
+for any new zip files.
+"""
+
+from eccc.extract.app.zip_file_processor import process_zip_file
 import os
 import sys
 import json
@@ -15,28 +21,15 @@ log = logging.getLogger('extract_zips')
 log.setLevel(os.getenv("LOGLEVEL", "INFO"))
 
 storage_client = storage.Client()
-
-incremental_extract = True if os.getenv(
-    'INCREMENTAL_EXTRACT', 'false') == 'true' else False
 gcs_bucket_name = os.getenv('BUCKET_NAME')
-with open("./out/uploadOutput.json") as f:
-    eccc_upload_out = json.load(f)
-uploaded_objects = eccc_upload_out.get('uploadedObjects')
 
 try:
     # with an empty dsn, the postgres env vars are used
     pg_pool = pool.SimpleConnectionPool(1, 10, dsn='')
-    if incremental_extract:
-        if uploaded_objects is not None:
-            for uploaded_obj in uploaded_objects:
-                bucket = storage_client.get_bucket(
-                    uploaded_obj.get('bucketName'))
-                file = bucket.get_blob(uploaded_obj.get('objectName'))
-                process_zip_file(bucket.name, file, pg_pool, log)
-    else:
-        for file in storage_client.list_blobs(gcs_bucket_name):
-            process_zip_file(gcs_bucket_name, file, pg_pool, log)
 
+    # get the list of objects in the bucket
+    for file in storage_client.list_blobs(gcs_bucket_name):
+        process_zip_file(gcs_bucket_name, file, pg_pool, log)
 
 except (Exception, psycopg2.DatabaseError) as error:
     log.error(f"Error: {error}")

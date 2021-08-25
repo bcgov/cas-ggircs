@@ -8,7 +8,7 @@ import zip_file_processor
 # - opens a zip file and creates a record in swrs_extract.eccc_zip_file
 # - for each file in this zip file:
 #    - if the file is xml => new record in swrs_extract.eccc_xml_file
-#    - otherwise => new record in swrs_extract.eccc_attachments
+#    - otherwise => new record in swrs_extract.eccc_attachment
 
 
 def test_process_zip_file_opens_zip_and_creates_zip_record():
@@ -85,6 +85,6 @@ def test_process_zip_file_writes_non_xml_file_in_attachments_table():
 
     assert mock_pg_cursor.execute.call_count == 1
     mock_pg_cursor.execute.assert_called_once_with(
-        '''insert into swrs_extract.eccc_attachments(attachment_file_path, attachment_file_md5_hash, zip_file_id) values (%s, %s, %s) on conflict on constraint attachment_md5_zip_filename_uindex do nothing''',
+        '''insert into swrs_extract.eccc_attachment(attachment_file_path, attachment_file_md5_hash, zip_file_id) values (%s, %s, %s) on conflict on constraint attachment_md5_zip_filename_uindex do nothing''',
         ('test_pdf.pdf', 'c9cc1d69eab81593c9f2214ce54d31e9', '77000')
     )

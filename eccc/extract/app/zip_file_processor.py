@@ -69,7 +69,7 @@ def process_report_xml(zip_file_path, zip_file_name, zipfile_id, storage_client,
 
 
 def process_report_attachments(zip_file_path, zip_file_name, zipfile_id, storage_client, pg_pool, log):
-    insert_sql = """insert into swrs_extract.eccc_attachments(attachment_file_path, attachment_file_md5_hash, zip_file_id) values (%s, %s, %s) on conflict on constraint attachment_md5_zip_filename_uindex do nothing"""
+    insert_sql = """insert into swrs_extract.eccc_attachment(attachment_file_path, attachment_file_md5_hash, zip_file_id) values (%s, %s, %s) on conflict on constraint attachment_md5_zip_filename_uindex do nothing"""
     with open(zip_file_path, 'rb', transport_params=dict(client=storage_client)) as fin:
         with zipfile.ZipFile(fin) as finz:
             for file_path in finz.namelist():
@@ -103,6 +103,7 @@ def process_zip_file(bucket_name, file, pg_pool, log):
             f"{file.name} was uploaded in the bucket {bucket_name}, but that doesn't look like a production report. Skipping.")
         return
     file_path = f"gs://{bucket_name}/{file.name}"
+    log.info(f"Processing {file_path}")
     zipfile_md5 = base64.b64decode(file.md5_hash).hex(
     ) if file.md5_hash is not None else None
     try:
@@ -111,13 +112,15 @@ def process_zip_file(bucket_name, file, pg_pool, log):
         pg_cursor.execute(
             """insert into swrs_extract.eccc_zip_file(zip_file_name, zip_file_md5_hash)
       values (%s, %s)
-      on conflict(zip_file_md5_hash) do update set zip_file_name=excluded.zip_file_name
+      on conflict(zip_file_md5_hash) do nothing
       returning id""",
             (file.name, zipfile_md5)
         )
         zipfile_id = pg_cursor.fetchone()[0]
-        log.info(f"zip id {zipfile_id}")
-        log.info(f"Processing {file_path}")
+        if zipfile_id is not None:
+            log.info(f"New zip file id: {zipfile_id}.")
+        else:
+            log.info(f"zip file with md5 hash {zipfile_md5} already exists, skipping...")
         pg_connection.commit()
     except (Exception, psycopg2.DatabaseError) as error:
         log.error(f"Error while processing {file_path}: {error}")
