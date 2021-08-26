@@ -4,7 +4,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(4);
+select plan(5);
 
 -- Setup fixture
 insert into swrs_extract.eccc_xml_file (imported_at, xml_file) VALUES ('2018-09-29T11:55:39.423', $$
@@ -72,6 +72,27 @@ insert into swrs_extract.eccc_xml_file (imported_at, xml_file) VALUES ('2018-09-
     </ActivityPages>
   </ActivityData>
 </ReportData>
+$$), ('2018-09-29T11:55:39.423', $$
+<ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ReportDetails>
+    <ReportID>800855555</ReportID>
+    <PrepopReportID></PrepopReportID>
+    <ReportType>R7</ReportType>
+    <FacilityId>666</FacilityId>
+    <OrganisationId>1337</OrganisationId>
+    <ReportingPeriodDuration>1999</ReportingPeriodDuration>
+    <ReportStatus>
+      <Status>In Progress</Status>
+      <Version>3</Version>
+      <LastModifiedBy>Donny Donaldson McDonaldface</LastModifiedBy>
+      <LastModifiedDate>2018-09-28T11:55:39.423</LastModifiedDate>
+    </ReportStatus>
+  </ReportDetails>
+  <ActivityData>
+    <ActivityPages>
+    </ActivityPages>
+  </ActivityData>
+</ReportData>
 $$);
 
 -- Run table export function without clearing the materialized views (for data equality tests below)
@@ -90,12 +111,19 @@ select isnt_empty('select * from swrs_history.report', 'there is data in swrs.re
 -- Report has correct emission total data
 select results_eq(
   $$
-    select grand_total_less_co2bioc, reporting_only_grand_total, co2bioc from swrs_history.report;
+    select grand_total_less_co2bioc, reporting_only_grand_total, co2bioc from swrs_history.report where id=1;
   $$,
   $$
     values(200::numeric, 200::numeric, 100::numeric)
   $$,
   'The swrs_history.report received the correct total emission data'
+);
+
+-- The join in load_report_history does not remove report rows (is a left join)
+select is (
+  (select count(*) from swrs_history.report),
+  2::bigint,
+  'A report row is still generated if there is no TotalEmissions tag'
 );
 
 select * from finish();

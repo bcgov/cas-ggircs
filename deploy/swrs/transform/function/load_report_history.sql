@@ -17,7 +17,7 @@ $function$
                reporting_period_duration, status, version, submission_date, last_modified_by, last_modified_date, update_comment, (_hred.grand_total_emission - _hred.co2bioc), _hred.reporting_only_grand_total, _hred.co2bioc
 
         from swrs_transform.report as _report
-          join swrs_transform.historical_report_emission_data as _hred
+          left join swrs_transform.historical_report_emission_data as _hred
           on _report.eccc_xml_file_id = _hred.eccc_xml_file_id;
     end
 $function$ language plpgsql volatile;

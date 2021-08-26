@@ -144,3 +144,5 @@ swrs/transform/materialized_view/historical_report_attachment_data [swrs/transfo
 @v1.5.2 2021-08-26T00:30:35Z Dylan Leard <dylan@button.is> # release v1.5.2
 swrs/transform/materialized_view/historical_report_emission_data [swrs/transform/materialized_view/historical_report_emission_data@v1.5.2] 2021-08-26T17:30:48Z Dylan Leard <dylan@button.is> # Migration: eccc_xml_file_id is not unique to this materialized view
 @v1.5.3 2021-08-26T18:11:25Z Dylan Leard <dylan@button.is> # release v1.5.3
+swrs/transform/function/load_report_history [swrs/transform/function/load_report_history@v1.5.3] 2021-08-26T21:29:56Z Dylan Leard <dylan@button.is> # Migration: join on emission data should be a left join
+@v1.5.4 2021-08-26T21:33:17Z Dylan Leard <dylan@button.is> # release v1.5.4
