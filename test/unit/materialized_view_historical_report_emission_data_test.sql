@@ -135,6 +135,29 @@ $$), ('2018-09-29T11:55:39.423', $$
             </Emissions>
           </Totals>
         </TotalGroups>
+        <TotalEmissions>
+          <TotalGroups TotalGroupType="TotalGHGEmissionGas">
+            <Totals>
+              <Emissions EmissionsGasType="GHGEmissionGas">
+                <TotalRow>
+                  <Quantity>1234</Quantity>
+                  <CalculatedQuantity>1234</CalculatedQuantity>
+                  <GasType>CO2bioC</GasType>
+                  <GasGroupType>None</GasGroupType>
+                </TotalRow>
+                <TotalRow>
+                  <Quantity>123</Quantity>
+                  <CalculatedQuantity>123</CalculatedQuantity>
+                  <GasType>CO2bionC</GasType>
+                  <GasGroupType>None</GasGroupType>
+                </TotalRow>
+                <GrandTotal>
+                  <Total>12345</Total>
+                </GrandTotal>
+              </Emissions>
+            </Totals>
+          </TotalGroups>
+        </TotalEmissions>
       </TotalEmissions>
     </ActivityPages>
   </ActivityData>
@@ -163,6 +186,12 @@ select results_eq(
     values (0::numeric, 0::numeric, 0::numeric)
   $$,
   'historical_report_emission_data parses empty values as zeroes'
+);
+
+select is(
+  (select count(*) from swrs_transform.historical_report_emission_data),
+  2::bigint,
+  'historical_report_emission_data does not parse nested TotalEmisisons tags'
 );
 
 select finish();
