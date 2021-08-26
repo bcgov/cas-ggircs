@@ -141,3 +141,4 @@ swrs/transform/materialized_view/historical_report_emission_data [swrs/transform
 swrs/transform/materialized_view/historical_report_attachment_data [swrs/transform/materialized_view/historical_report_attachment_data@v1.5.0] 2021-08-25T20:51:52Z Dylan Leard <dylan@button.is> # Migration: set fileNumber to be default null
 @v1.5.1 2021-08-25T21:37:55Z Dylan Leard <dylan@button.is> # release v1.5.1
 swrs/transform/materialized_view/historical_report_attachment_data [swrs/transform/materialized_view/historical_report_attachment_data@v1.5.1] 2021-08-26T00:08:34Z Dylan Leard <dylan@button.is> # Migration: don't parse invalid timestamps in UploadedDate tags
+@v1.5.2 2021-08-26T00:30:35Z Dylan Leard <dylan@button.is> # release v1.5.2
