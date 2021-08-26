@@ -142,3 +142,4 @@ swrs/transform/materialized_view/historical_report_attachment_data [swrs/transfo
 @v1.5.1 2021-08-25T21:37:55Z Dylan Leard <dylan@button.is> # release v1.5.1
 swrs/transform/materialized_view/historical_report_attachment_data [swrs/transform/materialized_view/historical_report_attachment_data@v1.5.1] 2021-08-26T00:08:34Z Dylan Leard <dylan@button.is> # Migration: don't parse invalid timestamps in UploadedDate tags
 @v1.5.2 2021-08-26T00:30:35Z Dylan Leard <dylan@button.is> # release v1.5.2
+swrs/transform/materialized_view/historical_report_emission_data [swrs/transform/materialized_view/historical_report_emission_data@v1.5.2] 2021-08-26T17:30:48Z Dylan Leard <dylan@button.is> # Migration: eccc_xml_file_id is not unique to this materialized view
