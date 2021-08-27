@@ -44,14 +44,17 @@
     "pg": "^8.5.1",
     "postgraphile": "^4.12.3",
     "postgraphile-log-consola": "^1.0.1",
+    "prismjs": "^1.24.1",
     "react": "^16.14.0",
     "react-bootstrap": "^1.5.2",
+    "react-diff-viewer": "^3.1.1",
     "react-dom": "^16.14.0",
     "react-relay": "^10.1.2",
     "react-relay-network-modern": "^6.0.0",
     "react-toastify": "^6.2.0",
     "relay-runtime": "^10.1.2",
-    "styled-jsx": "^3.4.1"
+    "styled-jsx": "^3.4.1",
+    "xml-formatter": "^2.4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.13",
