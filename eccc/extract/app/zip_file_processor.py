@@ -34,8 +34,10 @@ def read_file(fin, path, log):
             log.info("trying next password")
 
 
-def process_report_xml(zip_file_path, zip_file_name, zipfile_id, storage_client, pg_pool, log):
-    insert_sql = """insert into swrs_extract.eccc_xml_file(xml_file, xml_file_name, xml_file_md5_hash, zip_file_id) values (%s, %s, %s, %s) on conflict(xml_file_md5_hash) do update set xml_file=excluded.xml_file, xml_file_name=excluded.xml_file_name, zip_file_id=excluded.zip_file_id"""
+def process_report_xmls(zip_file_name, zip_file_id, storage_client, bucket_name, pg_pool, log):
+    insert_sql = """insert into swrs_extract.eccc_xml_file(xml_file, xml_file_name, xml_file_md5_hash, zip_file_id) values (%s, %s, %s, %s) on conflict(xml_file_md5_hash) do nothing"""
+    zip_file_path = f"gs://{bucket_name}/{zip_file_name}"
+    extract_error_count = 0
     with open(zip_file_path, 'rb', transport_params=dict(client=storage_client)) as fin:
         with zipfile.ZipFile(fin) as finz:
             for file_path in finz.namelist():
@@ -60,16 +62,23 @@ def process_report_xml(zip_file_path, zip_file_name, zipfile_id, storage_client,
                             log.debug(xml_string)
 
                             with pg_connection.cursor() as pg_cursor:
-                                pg_cursor.execute(insert_sql,(xml_string.replace('\0', ''),file_path,file_md5_hash,zipfile_id))
+                                pg_cursor.execute(insert_sql,(xml_string.replace('\0', ''),file_path,file_md5_hash,zip_file_id))
 
                     except (Exception, psycopg2.DatabaseError) as error:
                         log.error(f"Error while processing {file_path} in zip file {zip_file_name}: {error}")
+                        extract_error_count += 1
                     finally:
                         pg_pool.putconn(pg_connection)
 
+    pg_cursor.execute(
+        "update swrs_extract.eccc_zip_file set xml_files_extracted = true, xml_files_extract_error_count = %s where id = %s;",
+        (extract_error_count, zip_file_id)
+    )
 
-def process_report_attachments(zip_file_path, zip_file_name, zipfile_id, storage_client, pg_pool, log):
-    insert_sql = """insert into swrs_extract.eccc_attachment(attachment_file_path, attachment_file_md5_hash, zip_file_id) values (%s, %s, %s) on conflict on constraint attachment_md5_zip_filename_uindex do nothing"""
+def process_report_attachments(zip_file_name, zip_file_id, storage_client, bucket_name, pg_pool, log):
+    insert_sql = """insert into swrs_extract.eccc_attachment(attachment_file_path, attachment_file_md5_hash, zip_file_id) values (%s, %s, %s);"""
+    zip_file_path = f"gs://{bucket_name}/{zip_file_name}"
+    extract_error_count = 0
     with open(zip_file_path, 'rb', transport_params=dict(client=storage_client)) as fin:
         with zipfile.ZipFile(fin) as finz:
             for file_path in finz.namelist():
@@ -86,11 +95,17 @@ def process_report_attachments(zip_file_path, zip_file_name, zipfile_id, storage
 
                             file_md5_hash = hashlib.md5(file_bytes).hexdigest()
                             with pg_connection.cursor() as pg_cursor:
-                                pg_cursor.execute(insert_sql,(file_path, file_md5_hash, zipfile_id))
+                                pg_cursor.execute(insert_sql,(file_path, file_md5_hash, zip_file_id))
                     except (Exception, psycopg2.DatabaseError) as error:
                         log.error(f"Error while processing {file_path} in zip file {zip_file_name}: {error}")
                     finally:
                         pg_pool.putconn(pg_connection)
+
+    # when the file was sucessfully processed, update the database
+    pg_cursor.execute(
+        "update swrs_extract.eccc_zip_file set attachments_extracted = true, attachments_extract_error_count = %s where id = %s;",
+        (extract_error_count, zip_file_id)
+    )
 
 
 def process_zip_file(bucket_name, file, pg_pool, log):

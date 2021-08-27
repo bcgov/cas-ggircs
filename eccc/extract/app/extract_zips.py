@@ -6,11 +6,8 @@ for any new zip files.
 from eccc.extract.app.zip_file_processor import process_zip_file
 import os
 import sys
-import json
 import logging
 import psycopg2
-from smart_open import open
-from google.auth.credentials import Credentials
 from google.cloud import storage
 from psycopg2 import pool
 
