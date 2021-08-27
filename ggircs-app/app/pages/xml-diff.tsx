@@ -71,10 +71,19 @@ export default class Index extends Component<Props> {
       >
         <Row>
           <Col md={{ span: 6, order: this.state.isSwapped ? 2 : 1 }}>
-            <ReportSelector validSwrsReportIds={validSwrsReportIds} diffSide={this.state.isSwapped ? 'Second' : 'First'} setSwrsReportId={this.handleLeftSideChange}/>
+            <ReportSelector
+              validSwrsReportIds={validSwrsReportIds}
+              diffSide={this.state.isSwapped ? 'Second' : 'First'}
+              setSwrsReportId={this.handleLeftSideChange}
+              swrsReportId={this.state.leftSideId}/>
           </Col>
           <Col md={{ span: 6, order: this.state.isSwapped ? 1 : 2 }}>
-          <ReportSelector validSwrsReportIds={validSwrsReportIds} diffSide={this.state.isSwapped ? 'First' : 'Second'} setSwrsReportId={this.handleRightSideChange}/>
+            <ReportSelector
+              validSwrsReportIds={validSwrsReportIds}
+              diffSide={this.state.isSwapped ? 'First' : 'Second'}
+              setSwrsReportId={this.handleRightSideChange}
+              swrsReportId={this.state.rightSideId}
+            />
           </Col>
         </Row>
         <Col style={{marginTop: '2em'}}md={{ span: 4, offset: 9 }}>

@@ -1,14 +1,19 @@
 import React, {useState} from 'react';
 import Input from "@button-inc/bcgov-theme/Input";
-import Card from "@button-inc/bcgov-theme/Input";
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {
+  faCheck,
+  faTimes
+} from '@fortawesome/free-solid-svg-icons';
 
 interface Props {
   diffSide: String;
   setSwrsReportId: (id: number) => void;
-  validSwrsReportIds: number[]
+  validSwrsReportIds: number[];
+  swrsReportId: number;
 }
 
-export const ReportSelector: React.FunctionComponent<Props> = ({diffSide, setSwrsReportId, validSwrsReportIds}) => {
+export const ReportSelector: React.FunctionComponent<Props> = ({diffSide, setSwrsReportId, validSwrsReportIds, swrsReportId}) => {
   const [swrsReportIdIsValid, setSwrsReportIdIsvalid] = useState<boolean>(true)
   function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -16,7 +21,8 @@ export const ReportSelector: React.FunctionComponent<Props> = ({diffSide, setSwr
 
   const validateReportId = async(id: number) => {
     if (!id) {
-      setSwrsReportIdIsvalid(true)
+      setSwrsReportIdIsvalid(true);
+      setSwrsReportId(null);
     } else {
       await sleep(500);
       validSwrsReportIds.includes(id) ? setSwrsReportIdIsvalid(true) : setSwrsReportIdIsvalid(false);
@@ -44,12 +50,15 @@ export const ReportSelector: React.FunctionComponent<Props> = ({diffSide, setSwr
       onChange={handleChange}
     />;
 
+  console.log(swrsReportId)
+
   return (
     <div>
       <div><strong>{diffSide} File for Comparison:</strong></div>
       <p><em>Enter the SWRS Report Id. The file contents will show below automatically.</em></p>
       {idSelector}
-      {!swrsReportIdIsValid && <small style={{color:'red'}}>The SWRS report id you have entered does not exist</small>}
+      {!swrsReportIdIsValid && <small style={{color:'red'}}><FontAwesomeIcon icon={faTimes}></FontAwesomeIcon>&nbsp;The ID you have entered does not exist</small>}
+      {swrsReportIdIsValid && swrsReportId !== 0 && <small style={{color:'green'}}><FontAwesomeIcon icon={faCheck}></FontAwesomeIcon>&nbsp;ID is valid</small>}
     </div>
   );
 };
