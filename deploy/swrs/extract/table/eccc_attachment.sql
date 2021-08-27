@@ -11,6 +11,8 @@ create table swrs_extract.eccc_attachment (
   zip_file_id integer references swrs_extract.eccc_zip_file(id) not null
 );
 
+create index eccc_attachment_zip_file_idx on swrs_extract.eccc_attachment(zip_file_id);
+
 comment on table  swrs_extract.eccc_attachment is 'This table containes the list of files containd in the zip files imported from ECCC, excluding XML files (which can be found in the eccc_xml_file table) and other zip files that may be contained in the outer zip file.';
 comment on column swrs_extract.eccc_attachment.id is 'The internal primary key for the file';
 comment on column swrs_extract.eccc_attachment.imported_at is 'The timestamp noting when the file was imported to the GGIRCS database';
