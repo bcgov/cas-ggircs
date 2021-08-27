@@ -2,6 +2,8 @@
 -- requires: swrs/transform/materialized_view/historical_report_attachment_data
 -- requires: swrs/history/table/attachments
 
+begin;
+
 create or replace function swrs_transform.load_report_attachment()
   returns void as
 $function$
