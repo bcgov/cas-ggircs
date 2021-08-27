@@ -1,7 +1,7 @@
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: {{ template "cas-ggircs.fullname" . }}-eccc-extract-incremental
+  name: {{ template "cas-ggircs.fullname" . }}-eccc-extract-xml-files
   labels:
     release: {{ .Release.Name }}
 {{ include "cas-ggircs.labels" . | indent 4 }}
@@ -15,7 +15,7 @@ spec:
       template:
         metadata:
           labels:
-            name: {{ template "cas-ggircs.fullname" . }}-eccc-extract-incremental
+            name: {{ template "cas-ggircs.fullname" . }}-eccc-extract-xml-files
             release: {{ .Release.Name }}
 {{ include "cas-ggircs.labels" . | indent 12 }}
         spec:
@@ -47,24 +47,16 @@ spec:
                       key: bucket_name
                       name: gcp-{{ .Release.Namespace }}-{{ .Values.swrsImportBucket.bucketSuffix }}-service-account-key
                 - name: GOOGLE_APPLICATION_CREDENTIALS
-                  value: /app/gcs/credentials.json
-                - name: INCREMENTAL_EXTRACT
-                  value: "true"
-                - name: ECCC_ZIP_PASSWORDS
-                  valueFrom:
-                    secretKeyRef:
-                      key: zip_passwords
-                      name: eccc-swrs-import
-              name: {{ template "cas-ggircs.fullname" . }}-eccc-extract
+                  value: /app/gcs/viewer_credentials.json
+              name: {{ template "cas-ggircs.fullname" . }}-eccc-extract-xml-files
               image: {{ .Values.image.ecccExtract.repository }}:{{ .Values.image.ecccExtract.tag }}
               imagePullPolicy: {{ .Values.image.ecccExtract.pullPolicy }}
+              command: ["python"]
+              args: ["extract_xml_files.py"]
               volumeMounts:
                 - name: gcs-credentials
                   mountPath: /app/gcs
                   readOnly: true
-                - name: uploaded-files
-                  mountPath: /app/out
-                  readOnly: false
               resources:
                 limits:
                   cpu: 100m
@@ -76,6 +68,3 @@ spec:
             - name: gcs-credentials
               secret:
                 secretName: gcp-{{ .Release.Namespace }}-{{ .Values.swrsImportBucket.bucketSuffix }}-service-account-key
-            - name: uploaded-files
-              persistentVolumeClaim:
-                claimName: {{ template "cas-ggircs.fullname" . }}-eccc-uploaded-files

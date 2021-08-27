@@ -20,8 +20,6 @@ zip_passwords = [
     None] + list(map(passwd_to_byte, json.loads(os.getenv('ECCC_ZIP_PASSWORDS'))))
 
 # tries to open the file without password and then iterates through the list of passwords
-
-
 def read_file(fin, path, log):
     for passwd in zip_passwords:
         try:
@@ -34,8 +32,12 @@ def read_file(fin, path, log):
             log.info("trying next password")
 
 
-def process_report_xmls(zip_file_name, zip_file_id, storage_client, bucket_name, pg_pool, log):
-    insert_sql = """insert into swrs_extract.eccc_xml_file(xml_file, xml_file_name, xml_file_md5_hash, zip_file_id) values (%s, %s, %s, %s) on conflict(xml_file_md5_hash) do nothing"""
+def process_report_xmls(zip_file_id, zip_file_name, storage_client, bucket_name, pg_pool, log):
+    insert_sql = """
+        insert into swrs_extract.eccc_xml_file(xml_file, xml_file_name, xml_file_md5_hash, zip_file_id)
+        values (%s, %s, %s, %s)
+        on conflict(xml_file_md5_hash) do nothing
+    """
     zip_file_path = f"gs://{bucket_name}/{zip_file_name}"
     extract_error_count = 0
     with open(zip_file_path, 'rb', transport_params=dict(client=storage_client)) as fin:
@@ -63,19 +65,25 @@ def process_report_xmls(zip_file_name, zip_file_id, storage_client, bucket_name,
 
                             with pg_connection.cursor() as pg_cursor:
                                 pg_cursor.execute(insert_sql,(xml_string.replace('\0', ''),file_path,file_md5_hash,zip_file_id))
-
+                            pg_connection.commit()
                     except (Exception, psycopg2.DatabaseError) as error:
                         log.error(f"Error while processing {file_path} in zip file {zip_file_name}: {error}")
                         extract_error_count += 1
+                        pg_connection.rollback()
                     finally:
                         pg_pool.putconn(pg_connection)
 
-    pg_cursor.execute(
-        "update swrs_extract.eccc_zip_file set xml_files_extracted = true, xml_files_extract_error_count = %s where id = %s;",
-        (extract_error_count, zip_file_id)
-    )
+    with pg_pool.getconn() as pg_connection:
+        with pg_connection.cursor() as pg_cursor:
+            pg_cursor.execute(
+                "update swrs_extract.eccc_zip_file set xml_files_extracted = true, xml_files_extract_error_count = %s where id = %s;",
+                (extract_error_count, zip_file_id)
+            )
+            pg_connection.commit()
+            pg_pool.putconn(pg_connection)
 
-def process_report_attachments(zip_file_name, zip_file_id, storage_client, bucket_name, pg_pool, log):
+
+def process_report_attachments(zip_file_id, zip_file_name, storage_client, bucket_name, pg_pool, log):
     insert_sql = """insert into swrs_extract.eccc_attachment(attachment_file_path, attachment_file_md5_hash, zip_file_id) values (%s, %s, %s);"""
     zip_file_path = f"gs://{bucket_name}/{zip_file_name}"
     extract_error_count = 0
@@ -84,7 +92,7 @@ def process_report_attachments(zip_file_name, zip_file_id, storage_client, bucke
             for file_path in finz.namelist():
                 with pg_pool.getconn() as pg_connection:
                     try:
-                        if not file_path.endswith('.xml') and not file_path.endswith('.zip'):
+                        if not file_path.endswith('.xml') and not file_path.endswith('.zip') and not file_path.endswith('/'):
                             log.info(f"Processing {file_path} in zip file {zip_file_name}")
 
                             file_bytes = read_file(finz, file_path, log)
@@ -96,16 +104,22 @@ def process_report_attachments(zip_file_name, zip_file_id, storage_client, bucke
                             file_md5_hash = hashlib.md5(file_bytes).hexdigest()
                             with pg_connection.cursor() as pg_cursor:
                                 pg_cursor.execute(insert_sql,(file_path, file_md5_hash, zip_file_id))
+                        pg_connection.commit()
                     except (Exception, psycopg2.DatabaseError) as error:
                         log.error(f"Error while processing {file_path} in zip file {zip_file_name}: {error}")
+                        extract_error_count += 1
+                        pg_connection.rollback()
                     finally:
                         pg_pool.putconn(pg_connection)
 
-    # when the file was sucessfully processed, update the database
-    pg_cursor.execute(
-        "update swrs_extract.eccc_zip_file set attachments_extracted = true, attachments_extract_error_count = %s where id = %s;",
-        (extract_error_count, zip_file_id)
-    )
+    with pg_pool.getconn() as pg_connection:
+        with pg_connection.cursor() as pg_cursor:
+            pg_cursor.execute(
+                "update swrs_extract.eccc_zip_file set attachments_extracted = true, attachments_extract_error_count = %s where id = %s;",
+                (extract_error_count, zip_file_id)
+            )
+            pg_connection.commit()
+            pg_pool.putconn(pg_connection)
 
 
 def process_zip_file(bucket_name, file, pg_pool, log):

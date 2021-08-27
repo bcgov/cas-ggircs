@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-# DAGs to fetch and extract SWRS data from the ECCC website.
-swrs_eccc_import_full will download and extract all zip files in the GCS bucket
-swrs_eccc_import_incremental will only download and extract files that were uploaded in the first task of the DAG
+# DAG to fetch and extract SWRS data from the ECCC website.
 
-Both these DAGs trigger the `transform_load_ggircs` DAG, which runs the transform/load function in the ggircs database,
-thus transforming the XML files into tables
+The dag will
+
 """
 from dag_configuration import default_dag_args
 from trigger_k8s_cronjob import trigger_k8s_cronjob
@@ -44,24 +42,24 @@ eccc_upload = PythonOperator(
     dag=dag
 )
 
-import_zip_files = PythonOperator(
+extract_zip_files = PythonOperator(
     python_callable=trigger_k8s_cronjob,
-    task_id='cas-ggircs-eccc-import-zip-files',
-    op_args=['cas-ggircs-eccc-import-zip-files', namespace],
+    task_id='cas-ggircs-eccc-extract-zips',
+    op_args=['cas-ggircs-eccc-extract-zips', namespace],
     dag=dag
 )
 
-import_xml_files = PythonOperator(
+extract_xml_files = PythonOperator(
     python_callable=trigger_k8s_cronjob,
-    task_id='cas-ggircs-eccc-import-xml-files',
-    op_args=['cas-ggircs-eccc-import-xml-files', namespace],
+    task_id='cas-ggircs-eccc-extract-xml-files',
+    op_args=['cas-ggircs-eccc-extract-xml-files', namespace],
     dag=dag
 )
 
-import_attachments = PythonOperator(
+extract_attachments = PythonOperator(
     python_callable=trigger_k8s_cronjob,
-    task_id='cas-ggircs-eccc-import-attachments',
-    op_args=['cas-ggircs-eccc-import-attachments', namespace],
+    task_id='cas-ggircs-eccc-extract-attachments',
+    op_args=['cas-ggircs-eccc-extract-attachments', namespace],
     dag=dag
 )
 
@@ -89,8 +87,8 @@ trigger_ciip_deploy_db_dag = TriggerDagRunOperator(
 )
 
 
-eccc_upload >> import_zip_files
-import_zip_files >> import_xml_files >> load_ggircs
-import_zip_files >> import_attachments >> load_ggircs
+eccc_upload >> extract_zip_files
+extract_zip_files >> extract_xml_files >> load_ggircs
+extract_zip_files >> extract_attachments >> load_ggircs
 
 load_ggircs >> ggircs_read_only_user >> trigger_ciip_deploy_db_dag

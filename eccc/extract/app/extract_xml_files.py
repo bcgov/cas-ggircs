@@ -4,7 +4,7 @@ for each record where xml_files_extracted is false, lists the xml files containe
 inserts their contents in the swrs_extract.eccc_xml_file table.
 """
 
-from eccc.extract.app.zip_file_processor import process_report_xmls
+from zip_file_processor import process_report_xmls
 import os
 import sys
 import logging
@@ -31,6 +31,7 @@ try:
 
     # get the list of objects in the bucket
     for file in zip_files:
+        print(file)
         process_report_xmls(file[0], file[1], storage_client, gcs_bucket_name, pg_pool, log)
 
 except (Exception, psycopg2.DatabaseError) as error:

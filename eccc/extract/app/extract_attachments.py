@@ -4,7 +4,7 @@ for each record where attachments_extracted is false, lists the attachments cont
 inserts a record into the swrs_extract.eccc_attachment table for each attachment.
 """
 
-from eccc.extract.app.zip_file_processor import process_report_attachments
+from zip_file_processor import process_report_attachments
 import os
 import sys
 import logging

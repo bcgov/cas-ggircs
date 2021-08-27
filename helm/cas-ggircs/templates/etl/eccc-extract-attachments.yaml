@@ -1,0 +1,70 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ template "cas-ggircs.fullname" . }}-eccc-extract-attachments
+  labels:
+    release: {{ .Release.Name }}
+{{ include "cas-ggircs.labels" . | indent 4 }}
+spec:
+  suspend: true # This cron job is intended to be triggered manually
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      backoffLimit: 0
+      activeDeadlineSeconds: 86400
+      template:
+        metadata:
+          labels:
+            name: {{ template "cas-ggircs.fullname" . }}-eccc-extract-attachments
+            release: {{ .Release.Name }}
+{{ include "cas-ggircs.labels" . | indent 12 }}
+        spec:
+          restartPolicy: Never
+          containers:
+            - env:
+                - name: PGUSER
+                  valueFrom:
+                    secretKeyRef:
+                      key: database-user
+                      name: {{ template "cas-ggircs.fullname" . }}
+                - name: PGPASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      key: database-password
+                      name: {{ template "cas-ggircs.fullname" . }}
+                - name: PGDATABASE
+                  valueFrom:
+                    secretKeyRef:
+                      key: database-name
+                      name: {{ template "cas-ggircs.fullname" . }}
+                - name: PGPORT
+                  value: "5432"
+                - name: PGHOST
+                  value: {{ template "cas-ggircs.fullname" . }}-patroni
+                - name: BUCKET_NAME
+                  valueFrom:
+                    secretKeyRef:
+                      key: bucket_name
+                      name: gcp-{{ .Release.Namespace }}-{{ .Values.swrsImportBucket.bucketSuffix }}-service-account-key
+                - name: GOOGLE_APPLICATION_CREDENTIALS
+                  value: /app/gcs/viewer_credentials.json
+              name: {{ template "cas-ggircs.fullname" . }}-eccc-extract-attachments
+              image: {{ .Values.image.ecccExtract.repository }}:{{ .Values.image.ecccExtract.tag }}
+              imagePullPolicy: {{ .Values.image.ecccExtract.pullPolicy }}
+              command: ["python"]
+              args: ["extract_attachments.py"]
+              volumeMounts:
+                - name: gcs-credentials
+                  mountPath: /app/gcs
+                  readOnly: true
+              resources:
+                limits:
+                  cpu: 100m
+                  memory: 124Mi
+                requests:
+                  cpu: 50m
+                  memory: 64Mi
+          volumes:
+            - name: gcs-credentials
+              secret:
+                secretName: gcp-{{ .Release.Namespace }}-{{ .Values.swrsImportBucket.bucketSuffix }}-service-account-key
