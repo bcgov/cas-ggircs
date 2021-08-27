@@ -33,7 +33,7 @@ create sequence address_sequence start 1;
 drop sequence if exists emission_sequence;
 create sequence emission_sequence start 1;
 
-create function insert_swrs_report(
+create or replace function insert_swrs_report(
   _id integer,
   _swrs_facility_id integer,
   _swrs_org_id integer,

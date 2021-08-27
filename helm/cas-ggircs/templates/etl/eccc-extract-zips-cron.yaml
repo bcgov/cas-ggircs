@@ -48,6 +48,11 @@ spec:
                       name: gcp-{{ .Release.Namespace }}-{{ .Values.swrsImportBucket.bucketSuffix }}-service-account-key
                 - name: GOOGLE_APPLICATION_CREDENTIALS
                   value: /app/gcs/viewer_credentials.json
+                - name: ECCC_ZIP_PASSWORDS
+                  valueFrom:
+                    secretKeyRef:
+                      key: zip_passwords
+                      name: eccc-swrs-import
               name: {{ template "cas-ggircs.fullname" . }}-eccc-extract-zips
               image: {{ .Values.image.ecccExtract.repository }}:{{ .Values.image.ecccExtract.tag }}
               imagePullPolicy: {{ .Values.image.ecccExtract.pullPolicy }}
