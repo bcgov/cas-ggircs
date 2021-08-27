@@ -70,16 +70,24 @@ app.prepare().then(async () => {
 
   server.use(cookieParser());
 
+  const ggircsAppSchema = process.env.DATABASE_SCHEMA || "ggircs_app";
+  const swrsHistorySchema = process.env.SWRS_HISTORY_SCHEMA || "swrs_history";
+  const swrsExtractSchema = process.env.SWRS_EXTRACT_SCHEMA || "swrs_extract";
+
   server.use(
-    postgraphile(dbPool, process.env.DATABASE_SCHEMA || "ggircs_app", {
-      ...postgraphileOptions(),
-      pgSettings: (req) => {
-        const opts = {
-          ...authenticationPgSettings(req),
-        };
-        return opts;
-      },
-    })
+    postgraphile(
+      dbPool,
+      [ggircsAppSchema, swrsHistorySchema, swrsExtractSchema],
+      {
+        ...postgraphileOptions(),
+        pgSettings: (req) => {
+          const opts = {
+            ...authenticationPgSettings(req),
+          };
+          return opts;
+        },
+      }
+    )
   );
 
   server.get("*", async (req, res) => handle(req, res));

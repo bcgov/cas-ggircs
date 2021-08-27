@@ -370,6 +370,10 @@ jobs:
             sqitch deploy
             sqitch verify
             popd
+            pushd ../
+            sqitch deploy
+            sqitch verify
+            popd
       - run:
           name: regenerate schema via introspection
           command: |
@@ -385,6 +389,10 @@ jobs:
           command: |
             source ~/.bashrc
             pushd schema
+            sqitch rebase
+            sqitch verify
+            popd
+            pushd ../
             sqitch rebase
             sqitch verify
             popd
