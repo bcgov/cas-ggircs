@@ -131,7 +131,8 @@ def process_zip_file(bucket_name, file, pg_pool, log):
       returning id""",
             (file.name, zipfile_md5)
         )
-        zipfile_id = pg_cursor.fetchone()[0]
+        record = pg_cursor.fetchone()
+        zipfile_id = record[0] if record is not None else None;
         if zipfile_id is not None:
             log.info(f"New zip file id: {zipfile_id}.")
         else:

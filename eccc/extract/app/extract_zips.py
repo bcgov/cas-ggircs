@@ -3,7 +3,7 @@ This script list the zip files in the GCS bucket (BUCKET_NAME env variable) and 
 for any new zip files.
 """
 
-from eccc.extract.app.zip_file_processor import process_zip_file
+from zip_file_processor import process_zip_file
 import os
 import sys
 import logging
