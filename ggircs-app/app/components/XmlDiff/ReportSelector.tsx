@@ -10,32 +10,33 @@ interface Props {
   diffSide: String;
   setSwrsReportId: (id: number) => void;
   validSwrsReportIds: number[];
-  swrsReportId: number;
+  swrsReportId?: number;
 }
 
 export const ReportSelector: React.FunctionComponent<Props> = ({diffSide, setSwrsReportId, validSwrsReportIds, swrsReportId}) => {
-  const [swrsReportIdIsValid, setSwrsReportIdIsvalid] = useState<boolean>(true)
+  const [swrsReportIdIsValid, setSwrsReportIdIsvalid] = useState<boolean>(null)
   function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-  const validateReportId = async(id: number) => {
-    if (!id) {
-      setSwrsReportIdIsvalid(true);
-      setSwrsReportId(null);
-    } else {
-      await sleep(500);
-      validSwrsReportIds.includes(id) ? setSwrsReportIdIsvalid(true) : setSwrsReportIdIsvalid(false);
-    }
+  const validateReportId = (id: number) => {
+    validSwrsReportIds.includes(id) ? setSwrsReportIdIsvalid(true) : setSwrsReportIdIsvalid(false);
   };
 
-  const handleChange = (e: React.SyntheticEvent) => {
+  const handleChange = async(e: React.SyntheticEvent) => {
     e.stopPropagation();
     e.preventDefault();
     e.persist();
     const target = e.target as HTMLInputElement
-    validateReportId(Number(target.value));
-    setSwrsReportId(Number(target.value));
+    await sleep(500);
+    if (target.value) {
+      validateReportId(Number(target.value));
+      setSwrsReportId(Number(target.value));
+    }
+    else {
+      setSwrsReportIdIsvalid(null)
+      setSwrsReportId(null);
+    }
   }
 
   const idSelector =
@@ -57,8 +58,8 @@ export const ReportSelector: React.FunctionComponent<Props> = ({diffSide, setSwr
       <div><strong>{diffSide} File for Comparison:</strong></div>
       <p><em>Enter the SWRS Report Id. The file contents will show below automatically.</em></p>
       {idSelector}
-      {!swrsReportIdIsValid && <small style={{color:'red'}}><FontAwesomeIcon icon={faTimes}></FontAwesomeIcon>&nbsp;The ID you have entered does not exist</small>}
-      {swrsReportIdIsValid && swrsReportId !== 0 && <small style={{color:'green'}}><FontAwesomeIcon icon={faCheck}></FontAwesomeIcon>&nbsp;ID is valid</small>}
+      {!swrsReportIdIsValid && swrsReportId && <small style={{color:'red'}}><FontAwesomeIcon icon={faTimes}></FontAwesomeIcon>&nbsp;The ID you have entered does not exist</small>}
+      {swrsReportIdIsValid && swrsReportId && <small style={{color:'green'}}><FontAwesomeIcon icon={faCheck}></FontAwesomeIcon>&nbsp;ID is valid</small>}
     </div>
   );
 };
