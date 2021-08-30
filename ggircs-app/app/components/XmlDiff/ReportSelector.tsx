@@ -5,22 +5,31 @@ import {
   faCheck,
   faTimes
 } from '@fortawesome/free-solid-svg-icons';
+import node from '__generated__/DefaultLayout_session.graphql';
 
 interface Props {
   diffSide: String;
-  setSwrsReportId: (id: number) => void;
+  setSwrsReportId: (id: number, xml: any) => void;
   validSwrsReportIds: number[];
   swrsReportId?: number;
+  allReports: any;
 }
 
-export const ReportSelector: React.FunctionComponent<Props> = ({diffSide, setSwrsReportId, validSwrsReportIds, swrsReportId}) => {
+export const ReportSelector: React.FunctionComponent<Props> = ({diffSide, setSwrsReportId, validSwrsReportIds, swrsReportId, allReports}) => {
   const [swrsReportIdIsValid, setSwrsReportIdIsvalid] = useState<boolean>(null)
   function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
   const validateReportId = (id: number) => {
-    validSwrsReportIds.includes(id) ? setSwrsReportIdIsvalid(true) : setSwrsReportIdIsvalid(false);
+    const edge = allReports.edges.find(edge => edge.node.swrsReportId === id);
+    if (edge) {
+      setSwrsReportIdIsvalid(true);
+      setSwrsReportId(edge.node.swrsReportId, edge.node)
+     } else {
+       setSwrsReportIdIsvalid(false);
+       setSwrsReportId(id, null);
+     }
   };
 
   const handleChange = async(e: React.SyntheticEvent) => {
@@ -31,11 +40,10 @@ export const ReportSelector: React.FunctionComponent<Props> = ({diffSide, setSwr
     await sleep(500);
     if (target.value) {
       validateReportId(Number(target.value));
-      setSwrsReportId(Number(target.value));
     }
     else {
       setSwrsReportIdIsvalid(null)
-      setSwrsReportId(null);
+      setSwrsReportId(null, null);
     }
   }
 
@@ -50,8 +58,6 @@ export const ReportSelector: React.FunctionComponent<Props> = ({diffSide, setSwr
       size="medium"
       onChange={handleChange}
     />;
-
-  console.log(swrsReportId)
 
   return (
     <div>
