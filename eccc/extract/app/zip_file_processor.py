@@ -5,6 +5,7 @@ import hashlib
 import chardet
 import json
 import os
+import re
 from smart_open import open
 
 quarantined_files_md5_hash = [
@@ -84,7 +85,12 @@ def process_report_xmls(zip_file_id, zip_file_name, storage_client, bucket_name,
 
 
 def process_report_attachments(zip_file_id, zip_file_name, storage_client, bucket_name, pg_pool, log):
-    insert_sql = """insert into swrs_extract.eccc_attachment(attachment_file_path, attachment_file_md5_hash, zip_file_id) values (%s, %s, %s);"""
+    insert_sql = """
+        insert into swrs_extract.eccc_attachment(
+            attachment_file_path, attachment_file_md5_hash, zip_file_id,
+            swrs_report_id, source_type_id, attachment_uploaded_file_name
+        )
+        values (%s, %s, %s, %s, %s, %s);"""
     zip_file_path = f"gs://{bucket_name}/{zip_file_name}"
     extract_error_count = 0
     with open(zip_file_path, 'rb', transport_params=dict(client=storage_client)) as fin:
@@ -102,8 +108,13 @@ def process_report_attachments(zip_file_id, zip_file_name, storage_client, bucke
                                 continue
 
                             file_md5_hash = hashlib.md5(file_bytes).hexdigest()
+                            match = re.search(r'^.*/Report_(\d+).*_SourceTypeId_(\d+)_(.*)$', file_path)
+                            swrs_report_id = match.group(1) if match is not None else None
+                            source_type_id = match.group(2) if match is not None else None
+                            attachment_uploaded_file_name = match.group(3) if match is not None else None
+
                             with pg_connection.cursor() as pg_cursor:
-                                pg_cursor.execute(insert_sql,(file_path, file_md5_hash, zip_file_id))
+                                pg_cursor.execute(insert_sql,(file_path, file_md5_hash, zip_file_id, swrs_report_id, source_type_id, attachment_uploaded_file_name))
                         pg_connection.commit()
                     except (Exception, psycopg2.DatabaseError) as error:
                         log.error(f"Error while processing {file_path} in zip file {zip_file_name}: {error}")

@@ -15,7 +15,7 @@ from psycopg2 import pool
 
 logging.basicConfig(
     format='%(asctime)s | %(name)s | %(levelname)s: %(message)s')
-log = logging.getLogger('extract_zips')
+log = logging.getLogger('extract_xml_files')
 log.setLevel(os.getenv("LOGLEVEL", "INFO"))
 
 storage_client = storage.Client()
