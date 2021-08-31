@@ -6,6 +6,12 @@
       "module-resolver",
       { "root": [".", ".."], "extensions": [".js", ".jsx", ".ts", ".tsx"] }
     ],
+    ["prismjs", {
+      "languages": ["xml-doc"],
+      "plugins": ["line-numbers"],
+      "theme": "default",
+      "css": true
+    }],
     "macros"
   ]
 }

@@ -12,6 +12,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExchangeAlt } from "@fortawesome/free-solid-svg-icons";
 import format from "xml-formatter";
 import ReactDiffViewer, { DiffMethod } from "react-diff-viewer";
+import Prism from "prismjs";
 
 const ALLOWED_GROUPS = [...USER_GROUP];
 
@@ -82,6 +83,14 @@ export default class Index extends Component<Props, State> {
   render() {
     const { query } = this.props;
     const { session } = query || {};
+    const highlightSyntax = (str) => (
+      <pre
+        style={{ display: "inline" }}
+        dangerouslySetInnerHTML={{
+          __html: Prism.highlight(str, Prism.languages.xml),
+        }}
+      />
+    );
 
     return (
       <DefaultLayout session={session} title="ECCC SWRS XML Diff" width="wide">
@@ -166,6 +175,7 @@ export default class Index extends Component<Props, State> {
               }
               showDiffOnly={this.state.isCollapsed}
               compareMethod={DiffMethod.LINES}
+              renderContent={highlightSyntax}
             />
           </div>
         )}
