@@ -153,3 +153,4 @@ swrs/history/table/attachments_001 2021-09-01T23:25:45Z Naomi Aro <naomi.aro@gov
 swrs/transform/materialized_view/historical_report_attachment_data [swrs/transform/materialized_view/historical_report_attachment_data@v1.6.0] 2021-09-02T01:22:09Z Naomi Aro <naomi.aro@gov.bc.ca> # add swrs_report_id to swrs_transform.historical_report_attachment_data
 swrs/transform/function/load_report_attachment [swrs/transform/function/load_report_attachment@v1.6.0] 2021-09-02T00:18:26Z Naomi Aro <naomi.aro@gov.bc.ca> # load md5_hash, file_path, zip_file_name into swrs_history.report_attachment
 @v1.7.0 2021-09-09T16:06:31Z Matthieu Foucault <matthieu@button.is> # release v1.7.0
+swrs/history/computed_column/report_latest_swrs_report [swrs/history/table/report] 2021-08-31T22:05:18Z Dylan Leard <dylan@button.is> # Computed column returns the latest report by swrs_report_id and zip_file_name
