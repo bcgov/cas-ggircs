@@ -26,7 +26,7 @@ interface State {
   isReversed: Boolean;
   isCollapsed: Boolean;
 }
-export default class Index extends Component<Props,State> {
+export default class Index extends Component<Props, State> {
   static allowedGroups = ALLOWED_GROUPS;
   static isAccessProtected = true;
   static query = graphql`
@@ -72,27 +72,22 @@ export default class Index extends Component<Props,State> {
   };
 
   reverse = () => {
-    this.setState(prevState => ({isReversed: !prevState.isReversed}));
+    this.setState((prevState) => ({ isReversed: !prevState.isReversed }));
   };
 
   summarize = () => {
-    this.setState(prevState => ({isCollapsed: !prevState.isCollapsed }));
+    this.setState((prevState) => ({ isCollapsed: !prevState.isCollapsed }));
   };
 
   render() {
     const { query } = this.props;
     const { session } = query || {};
-    const validSwrsReportIds = [];
-    query.allReports.edges.forEach(({ node }) => {
-      validSwrsReportIds.push(node.swrsReportId);
-    });
 
     return (
       <DefaultLayout session={session} title="ECCC SWRS XML Diff" width="wide">
         <Row>
           <Col md={{ span: 6, order: this.state.isReversed ? 2 : 1 }}>
             <ReportSelector
-              validSwrsReportIds={validSwrsReportIds}
               diffSide={this.state.isReversed ? "Second" : "First"}
               setSwrsReportId={this.handleLeftSideChange}
               swrsReportId={this.state.leftSideId}
@@ -101,7 +96,6 @@ export default class Index extends Component<Props,State> {
           </Col>
           <Col md={{ span: 6, order: this.state.isReversed ? 1 : 2 }}>
             <ReportSelector
-              validSwrsReportIds={validSwrsReportIds}
               diffSide={this.state.isReversed ? "First" : "Second"}
               setSwrsReportId={this.handleRightSideChange}
               swrsReportId={this.state.rightSideId}
@@ -138,8 +132,8 @@ export default class Index extends Component<Props,State> {
           </Col>
           <Col md={{ span: 3 }}>
             <Button onClick={this.reverse}>
-              <FontAwesomeIcon icon={faExchangeAlt} />&nbsp;
-              swap left/right
+              <FontAwesomeIcon icon={faExchangeAlt} />
+              &nbsp; swap left/right
             </Button>
           </Col>
         </Row>

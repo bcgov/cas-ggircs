@@ -2,12 +2,10 @@ import React, { useState } from "react";
 import Input from "@button-inc/bcgov-theme/Input";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faTimes } from "@fortawesome/free-solid-svg-icons";
-import node from "__generated__/DefaultLayout_session.graphql";
 
 interface Props {
   diffSide: String;
   setSwrsReportId: (id: number, xml: any) => void;
-  validSwrsReportIds: number[];
   swrsReportId?: number;
   allReports: any;
 }
@@ -15,7 +13,6 @@ interface Props {
 export const ReportSelector: React.FunctionComponent<Props> = ({
   diffSide,
   setSwrsReportId,
-  validSwrsReportIds,
   swrsReportId,
   allReports,
 }) => {
@@ -76,13 +73,14 @@ export const ReportSelector: React.FunctionComponent<Props> = ({
       {idSelector}
       {!swrsReportIdIsValid && swrsReportId && (
         <small style={{ color: "red" }}>
-          <FontAwesomeIcon icon={faTimes}></FontAwesomeIcon>&nbsp;The ID you
-          have entered does not exist
+          <FontAwesomeIcon icon={faTimes} />
+          &nbsp;The ID you have entered does not exist
         </small>
       )}
       {swrsReportIdIsValid && swrsReportId && (
         <small style={{ color: "green" }}>
-          <FontAwesomeIcon icon={faCheck}></FontAwesomeIcon>&nbsp;ID is valid
+          <FontAwesomeIcon icon={faCheck} />
+          &nbsp;ID is valid
         </small>
       )}
     </div>
