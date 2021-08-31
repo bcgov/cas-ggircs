@@ -13,7 +13,7 @@ import {
   faExchangeAlt
 } from '@fortawesome/free-solid-svg-icons';
 import format from 'xml-formatter';
-import ReactDiffDetails from 'react-diff-viewer';
+import ReactDiffViewer, {DiffMethod} from 'react-diff-viewer';
 
 const ALLOWED_GROUPS = [...USER_GROUP];
 
@@ -53,7 +53,8 @@ export default class Index extends Component<Props> {
     leftSideReport: null,
     rightSideId: null,
     rightSideReport: null,
-    isReversed: false
+    isReversed: false,
+    isCollapsed: false
   };
 
   handleLeftSideChange = (id: Number, report: any) => {
@@ -68,6 +69,10 @@ export default class Index extends Component<Props> {
     this.setState({isReversed: !this.state.isReversed});
   }
 
+  summarize = () => {
+    this.setState({isCollapsed: !this.state.isCollapsed})
+  }
+
   render() {
     const { query } = this.props;
     const { session } = query || {};
@@ -75,6 +80,11 @@ export default class Index extends Component<Props> {
     query.allReports.edges.forEach(({node}) => {
       validSwrsReportIds.push(node.swrsReportId)
     })
+    const newStyles={
+      div: {
+        overflow: 'scroll'
+      }
+    };
 
     return (
       <DefaultLayout
@@ -115,20 +125,33 @@ export default class Index extends Component<Props> {
             />}
           </Col>
         </Row>
-        <Col style={{marginTop: '2em', marginBottom: '2em'}}md={{ span: 4, offset: 9 }}>
-          <Button onClick={this.reverse}><FontAwesomeIcon icon={faExchangeAlt}></FontAwesomeIcon>&nbsp; swap left/right</Button>
-        </Col>
+        <Row style={{marginTop: '2em', marginBottom: '2em'}}>
+          <Col md={{ span: 4, offset: 3 }}>
+            <Row>
+              <p><strong>Summarize Changes:&nbsp;</strong></p>
+              <Button variant={this.state.isCollapsed ? 'success' : 'secondary'} onClick={this.summarize}>{this.state.isCollapsed ? 'ON' : 'OFF'}</Button>
+            </Row>
+          </Col>
+          <Col md={{ span: 3 }}>
+            <Button onClick={this.reverse}><FontAwesomeIcon icon={faExchangeAlt}></FontAwesomeIcon>&nbsp; swap left/right</Button>
+          </Col>
+        </Row>
 
         {this.state.leftSideReport && this.state.rightSideReport &&
-          <ReactDiffDetails
-            oldValue={
-              this.state.isReversed ? format(this.state.rightSideReport.ecccXmlFileByEcccXmlFileId.xmlFile) : format(this.state.leftSideReport.ecccXmlFileByEcccXmlFileId.xmlFile)
-            }
-            newValue={
-              this.state.isReversed ? format(this.state.leftSideReport.ecccXmlFileByEcccXmlFileId.xmlFile) : format(this.state.rightSideReport.ecccXmlFileByEcccXmlFileId.xmlFile)
-            }
-            splitView={true}
-          />
+          <div style={{height: "40em", overflow: "scroll"}}>
+            <ReactDiffViewer
+              oldValue={
+                this.state.isReversed ? format(this.state.rightSideReport.ecccXmlFileByEcccXmlFileId.xmlFile) : format(this.state.leftSideReport.ecccXmlFileByEcccXmlFileId.xmlFile)
+              }
+              newValue={
+                this.state.isReversed ? format(this.state.leftSideReport.ecccXmlFileByEcccXmlFileId.xmlFile) : format(this.state.rightSideReport.ecccXmlFileByEcccXmlFileId.xmlFile)
+              }
+              splitView={true}
+              showDiffOnly={this.state.isCollapsed}
+              compareMethod={DiffMethod.LINES}
+
+            />
+          </div>
         }
 
       </DefaultLayout>
