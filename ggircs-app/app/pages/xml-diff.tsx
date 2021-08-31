@@ -18,7 +18,15 @@ const ALLOWED_GROUPS = [...USER_GROUP];
 interface Props extends PageComponentProps {
   query: xmlDiffQueryResponse["query"];
 }
-export default class Index extends Component<Props> {
+interface State {
+  leftSideId: Number;
+  leftSideReport: any;
+  rightSideId: Number;
+  rightSideReport: any;
+  isReversed: Boolean;
+  isCollapsed: Boolean;
+}
+export default class Index extends Component<Props,State> {
   static allowedGroups = ALLOWED_GROUPS;
   static isAccessProtected = true;
   static query = graphql`
@@ -64,11 +72,11 @@ export default class Index extends Component<Props> {
   };
 
   reverse = () => {
-    this.setState({ isReversed: !this.state.isReversed });
+    this.setState(prevState => ({isReversed: !prevState.isReversed}));
   };
 
   summarize = () => {
-    this.setState({ isCollapsed: !this.state.isCollapsed });
+    this.setState(prevState => ({isCollapsed: !prevState.isCollapsed }));
   };
 
   render() {
@@ -78,11 +86,6 @@ export default class Index extends Component<Props> {
     query.allReports.edges.forEach(({ node }) => {
       validSwrsReportIds.push(node.swrsReportId);
     });
-    const newStyles = {
-      div: {
-        overflow: "scroll",
-      },
-    };
 
     return (
       <DefaultLayout session={session} title="ECCC SWRS XML Diff" width="wide">
@@ -135,7 +138,7 @@ export default class Index extends Component<Props> {
           </Col>
           <Col md={{ span: 3 }}>
             <Button onClick={this.reverse}>
-              <FontAwesomeIcon icon={faExchangeAlt}></FontAwesomeIcon>&nbsp;
+              <FontAwesomeIcon icon={faExchangeAlt} />&nbsp;
               swap left/right
             </Button>
           </Col>
@@ -144,6 +147,7 @@ export default class Index extends Component<Props> {
         {this.state.leftSideReport && this.state.rightSideReport && (
           <div style={{ height: "40em", overflow: "scroll" }}>
             <ReactDiffViewer
+              splitView
               oldValue={
                 this.state.isReversed
                   ? format(
@@ -166,7 +170,6 @@ export default class Index extends Component<Props> {
                         .xmlFile
                     )
               }
-              splitView={true}
               showDiffOnly={this.state.isCollapsed}
               compareMethod={DiffMethod.LINES}
             />
