@@ -7222,6 +7222,18 @@
               "deprecationReason": null
             },
             {
+              "name": "latestSwrsReport",
+              "description": "Computed column returns the latest report ordered by zip_file_name",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "Report",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "prepopReportId",
               "description": "The prepop report id",
               "args": [],

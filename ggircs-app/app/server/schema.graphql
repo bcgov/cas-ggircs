@@ -1900,6 +1900,9 @@ type Report implements Node {
   """The timestamp recorded in SWRS when the report was last modified"""
   lastModifiedDate: Datetime
 
+  """Computed column returns the latest report ordered by zip_file_name"""
+  latestSwrsReport: Report
+
   """The prepop report id"""
   prepopReportId: Int
 

@@ -40,12 +40,14 @@ export default class Index extends Component<Props, State> {
           edges {
             node {
               swrsReportId
-              submissionDate
-              ecccXmlFileByEcccXmlFileId {
-                xmlFileName
-                xmlFile
-                ecccZipFileByZipFileId {
-                  zipFileName
+              latestSwrsReport {
+                submissionDate
+                ecccXmlFileByEcccXmlFileId {
+                  xmlFileName
+                  xmlFile
+                  ecccZipFileByZipFileId {
+                    zipFileName
+                  }
                 }
               }
             }
