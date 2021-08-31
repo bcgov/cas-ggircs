@@ -3,6 +3,10 @@
 # DAG to fetch and extract SWRS data from the ECCC website.
 
 The dag will
+ - fetch the zip files from the ECCC website and upload them to GCS.
+ - stream the XML files contained the zip files and insert them into the swrs_extract.eccc_xml_file table.
+ - stream the attachment contained the zip files and insert them into the swrs_extract.eccc_attachment table.
+ - trigger the transform/load jobs
 
 """
 from dag_configuration import default_dag_args
