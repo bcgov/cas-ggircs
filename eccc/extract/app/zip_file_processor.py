@@ -90,7 +90,8 @@ def process_report_attachments(zip_file_id, zip_file_name, storage_client, bucke
             attachment_file_path, attachment_file_md5_hash, zip_file_id,
             swrs_report_id, source_type_id, attachment_uploaded_file_name
         )
-        values (%s, %s, %s, %s, %s, %s);"""
+        values (%s, %s, %s, %s, %s, %s)
+        on conflict(attachment_file_path, zip_file_id) do nothing;"""
     zip_file_path = f"gs://{bucket_name}/{zip_file_name}"
     extract_error_count = 0
     with open(zip_file_path, 'rb', transport_params=dict(client=storage_client)) as fin:
@@ -135,11 +136,11 @@ def process_report_attachments(zip_file_id, zip_file_name, storage_client, bucke
 
 def process_zip_file(bucket_name, file, pg_pool, log):
     if not file.name.endswith('.zip'):
-        log.debug(
+        log.info(
             f"{file.name} was uploaded in the bucket {bucket_name}, but that doesn't look like a zip file. Skipping.")
         return
     if not file.name.startswith('GHGBC_PROD_'):
-        log.debug(
+        log.info(
             f"{file.name} was uploaded in the bucket {bucket_name}, but that doesn't look like a production report. Skipping.")
         return
     file_path = f"gs://{bucket_name}/{file.name}"
