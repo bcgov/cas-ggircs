@@ -11,10 +11,10 @@ const SwrsDataAccessCard: React.FunctionComponent = () => (
     <Link href="/swrs-browser" passHref>
       <Button marginTop="2em">Browse SWRS files</Button>
     </Link>
-    <div id='bottom-button'>
-    <Link href="/xml-diff" passHref>
-      <Button marginTop="2em">Diff XML data</Button>
-    </Link>
+    <div id="bottom-button">
+      <Link href="/xml-diff" passHref>
+        <Button marginTop="2em">Diff XML data</Button>
+      </Link>
     </div>
     <style jsx>
       {`
