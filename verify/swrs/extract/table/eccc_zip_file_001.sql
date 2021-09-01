@@ -1,7 +1,7 @@
 -- Verify ggircs:swrs/extract/table/eccc_zip_file_001.sql on pg
 
-BEGIN;
+begin;
 
--- XXX Add verifications here.
+select pg_catalog.has_table_privilege('swrs_extract.eccc_zip_file', 'select');
 
-ROLLBACK;
+rollback;
