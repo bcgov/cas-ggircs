@@ -25,7 +25,6 @@ export const ReportSelector: React.FunctionComponent<Props> = ({
     const edge = allReports.edges.find((edge) => edge.node.swrsReportId === id);
     if (edge) {
       setSwrsReportIdIsvalid(true);
-      console.log(edge.node.latestSwrsReport);
       setSwrsReportId(edge.node.swrsReportId, edge.node.latestSwrsReport);
     } else {
       setSwrsReportIdIsvalid(false);

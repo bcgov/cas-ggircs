@@ -11,8 +11,7 @@ import DiffDetails from "components/XmlDiff/DiffDetails";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExchangeAlt } from "@fortawesome/free-solid-svg-icons";
 import format from "xml-formatter";
-import ReactDiffViewer, { DiffMethod } from "react-diff-viewer";
-import Prism from "prismjs";
+import RenderDiff from "components/XmlDiff/RenderDiff";
 
 const ALLOWED_GROUPS = [...USER_GROUP];
 
@@ -85,14 +84,6 @@ export default class Index extends Component<Props, State> {
   render() {
     const { query } = this.props;
     const { session } = query || {};
-    const highlightSyntax = (str) => (
-      <pre
-        style={{ display: "inline" }}
-        dangerouslySetInnerHTML={{
-          __html: Prism.highlight(str, Prism.languages.xml),
-        }}
-      />
-    );
 
     return (
       <DefaultLayout session={session} title="ECCC SWRS XML Diff" width="wide">
@@ -151,33 +142,14 @@ export default class Index extends Component<Props, State> {
 
         {this.state.leftSideReport && this.state.rightSideReport && (
           <div style={{ height: "40em", overflow: "scroll" }}>
-            <ReactDiffViewer
-              splitView
-              oldValue={
-                this.state.isReversed
-                  ? format(
-                      this.state.rightSideReport.ecccXmlFileByEcccXmlFileId
-                        .xmlFile
-                    )
-                  : format(
-                      this.state.leftSideReport.ecccXmlFileByEcccXmlFileId
-                        .xmlFile
-                    )
-              }
-              newValue={
-                this.state.isReversed
-                  ? format(
-                      this.state.leftSideReport.ecccXmlFileByEcccXmlFileId
-                        .xmlFile
-                    )
-                  : format(
-                      this.state.rightSideReport.ecccXmlFileByEcccXmlFileId
-                        .xmlFile
-                    )
-              }
-              showDiffOnly={this.state.isCollapsed}
-              compareMethod={DiffMethod.LINES}
-              renderContent={highlightSyntax}
+            <RenderDiff
+              oldText={format(
+                this.state.leftSideReport.ecccXmlFileByEcccXmlFileId.xmlFile
+              )}
+              newText={format(
+                this.state.rightSideReport.ecccXmlFileByEcccXmlFileId.xmlFile
+              )}
+              collapse={this.state.isCollapsed}
             />
           </div>
         )}
