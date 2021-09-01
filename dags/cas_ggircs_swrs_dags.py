@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 """
-# DAGs to fetch and extract SWRS data from the ECCC website.
-swrs_eccc_import_full will download and extract all zip files in the GCS bucket
-swrs_eccc_import_incremental will only download and extract files that were uploaded in the first task of the DAG
+# DAG to fetch and extract SWRS data from the ECCC website.
 
-Both these DAGs trigger the `transform_load_ggircs` DAG, which runs the transform/load function in the ggircs database,
-thus transforming the XML files into tables
+The dag will
+ - fetch the zip files from the ECCC website and upload them to GCS.
+ - stream the XML files contained the zip files and insert them into the swrs_extract.eccc_xml_file table.
+ - stream the attachment contained the zip files and insert them into the swrs_extract.eccc_attachment table.
+ - trigger the transform/load jobs
+
 """
-import json
 from dag_configuration import default_dag_args
 from trigger_k8s_cronjob import trigger_k8s_cronjob
 from airflow.operators.dagrun_operator import TriggerDagRunOperator
@@ -31,56 +32,67 @@ default_args = {
 DAG_ID = "cas_ggircs_swrs_eccc"
 SCHEDULE_INTERVAL = '0 8 * * *'
 
-dag_incremental = DAG(DAG_ID + '_incremental', schedule_interval=SCHEDULE_INTERVAL,
-                      default_args=default_args, user_defined_macros={'json': json}, is_paused_upon_creation=True)
-dag_full = DAG(DAG_ID+'_full', schedule_interval=None,
-               default_args=default_args, is_paused_upon_creation=True)
+dag = DAG(
+    'cas_ggircs_swrs_eccc',
+    schedule_interval=SCHEDULE_INTERVAL,
+    default_args=default_args,
+    is_paused_upon_creation=True
+)
 
 eccc_upload = PythonOperator(
     python_callable=trigger_k8s_cronjob,
     task_id='cas-ggircs-eccc-upload',
     op_args=['cas-ggircs-eccc-upload', namespace],
-    dag=dag_incremental
+    dag=dag
 )
 
-eccc_extract_incremental = PythonOperator(
+extract_zip_files = PythonOperator(
     python_callable=trigger_k8s_cronjob,
-    task_id='cas-ggircs-eccc-extract-incremental',
-    op_args=['cas-ggircs-eccc-extract-incremental', namespace],
-    dag=dag_incremental
+    task_id='cas-ggircs-eccc-extract-zips',
+    op_args=['cas-ggircs-eccc-extract-zips', namespace],
+    dag=dag
 )
-eccc_extract_full = PythonOperator(
+
+extract_xml_files = PythonOperator(
     python_callable=trigger_k8s_cronjob,
-    task_id='cas-ggircs-eccc-extract',
-    op_args=['cas-ggircs-eccc-extract', namespace],
-    dag=dag_full
+    task_id='cas-ggircs-eccc-extract-xml-files',
+    op_args=['cas-ggircs-eccc-extract-xml-files', namespace],
+    dag=dag
+)
+
+extract_attachments = PythonOperator(
+    python_callable=trigger_k8s_cronjob,
+    task_id='cas-ggircs-eccc-extract-attachments',
+    op_args=['cas-ggircs-eccc-extract-attachments', namespace],
+    dag=dag
 )
 
 
-def load_ggircs(dag):
-    return PythonOperator(
-        python_callable=trigger_k8s_cronjob,
-        task_id='load_ggircs',
-        op_args=['cas-ggircs-etl-deploy', namespace],
-        dag=dag)
+load_ggircs = PythonOperator(
+    python_callable=trigger_k8s_cronjob,
+    task_id='load_ggircs',
+    op_args=['cas-ggircs-etl-deploy', namespace],
+    dag=dag
+)
 
 
-def ggircs_read_only_user(dag):
-    return PythonOperator(
-        python_callable=trigger_k8s_cronjob,
-        task_id='ggircs_read_only_user',
-        op_args=['cas-ggircs-db-create-readonly-user', namespace],
-        dag=dag)
+ggircs_read_only_user = PythonOperator(
+    python_callable=trigger_k8s_cronjob,
+    task_id='ggircs_read_only_user',
+    op_args=['cas-ggircs-db-create-readonly-user', namespace],
+    dag=dag
+)
 
 
-def trigger_ciip_deploy_db_dag(dag):
-    return TriggerDagRunOperator(
-        task_id='trigger_ciip_deploy_db_dag',
-        trigger_dag_id="cas_ciip_portal_deploy_db",
-        dag=dag)
+trigger_ciip_deploy_db_dag = TriggerDagRunOperator(
+    task_id='trigger_ciip_deploy_db_dag',
+    trigger_dag_id="cas_ciip_portal_deploy_db",
+    dag=dag
+)
 
 
-eccc_upload >> eccc_extract_incremental >> load_ggircs(dag_incremental) >> ggircs_read_only_user(
-    dag_incremental) >> trigger_ciip_deploy_db_dag(dag_incremental)
-eccc_extract_full >> load_ggircs(dag_full) >> ggircs_read_only_user(
-    dag_full) >> trigger_ciip_deploy_db_dag(dag_full)
+eccc_upload >> extract_zip_files
+extract_zip_files >> extract_xml_files >> load_ggircs
+extract_zip_files >> extract_attachments >> load_ggircs
+
+load_ggircs >> ggircs_read_only_user >> trigger_ciip_deploy_db_dag

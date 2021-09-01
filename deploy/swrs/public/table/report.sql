@@ -6,7 +6,7 @@ begin;
 create table swrs.report
 (
     id                        integer primary key,
-    eccc_xml_file_id            integer,
+    eccc_xml_file_id          integer,
     source_xml                xml,
     imported_at               timestamptz,
     swrs_report_id            integer not null,

@@ -122,7 +122,7 @@ download-ggircs-dags:
     hook: "pre-install,pre-upgrade"
 
 download-swrs-dags:
-  enabled: false
+  enabled: true
   airflowEndpoint: https://cas-airflow-dev.apps.silver.devops.gov.bc.ca
   dagId: fetch_and_save_dag_from_github
   helm:

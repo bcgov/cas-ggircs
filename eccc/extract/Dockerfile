@@ -14,4 +14,4 @@ RUN pip install -r requirements.txt
 RUN chmod g=u -R /app
 USER 1001
 ENV HOME=/app
-ENTRYPOINT ["python", "extract_zips.py"]
+ENTRYPOINT ["python"]
