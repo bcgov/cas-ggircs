@@ -3,44 +3,6 @@ A floating point number that requires more precision than IEEE 754 binary 64
 """
 scalar BigFloat
 
-"""All input for the create `EcccAttachment` mutation."""
-input CreateEcccAttachmentInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-
-  """The `EcccAttachment` to be created by this mutation."""
-  ecccAttachment: EcccAttachmentInput!
-}
-
-"""The output of our create `EcccAttachment` mutation."""
-type CreateEcccAttachmentPayload {
-  """
-  The exact same `clientMutationId` that was provided in the mutation input,
-  unchanged and unused. May be used by a client to track mutations.
-  """
-  clientMutationId: String
-
-  """The `EcccAttachment` that was created by this mutation."""
-  ecccAttachment: EcccAttachment
-
-  """An edge for our `EcccAttachment`. May be used by Relay 1."""
-  ecccAttachmentEdge(
-    """The method to use when ordering `EcccAttachment`."""
-    orderBy: [EcccAttachmentsOrderBy!] = [PRIMARY_KEY_ASC]
-  ): EcccAttachmentsEdge
-
-  """Reads a single `EcccZipFile` that is related to this `EcccAttachment`."""
-  ecccZipFileByZipFileId: EcccZipFile
-
-  """
-  Our root query field type. Allows us to run any query from our mutation payload.
-  """
-  query: Query
-}
-
 """All input for the create `EcccFileDownloadLog` mutation."""
 input CreateEcccFileDownloadLogInput {
   """
@@ -173,59 +135,6 @@ A point in time as described by the [ISO
 """
 scalar Datetime
 
-"""All input for the `deleteEcccAttachmentByRowId` mutation."""
-input DeleteEcccAttachmentByRowIdInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-
-  """The internal primary key for the file"""
-  rowId: Int!
-}
-
-"""All input for the `deleteEcccAttachment` mutation."""
-input DeleteEcccAttachmentInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-
-  """
-  The globally unique `ID` which will identify a single `EcccAttachment` to be deleted.
-  """
-  id: ID!
-}
-
-"""The output of our delete `EcccAttachment` mutation."""
-type DeleteEcccAttachmentPayload {
-  """
-  The exact same `clientMutationId` that was provided in the mutation input,
-  unchanged and unused. May be used by a client to track mutations.
-  """
-  clientMutationId: String
-  deletedEcccAttachmentId: ID
-
-  """The `EcccAttachment` that was deleted by this mutation."""
-  ecccAttachment: EcccAttachment
-
-  """An edge for our `EcccAttachment`. May be used by Relay 1."""
-  ecccAttachmentEdge(
-    """The method to use when ordering `EcccAttachment`."""
-    orderBy: [EcccAttachmentsOrderBy!] = [PRIMARY_KEY_ASC]
-  ): EcccAttachmentsEdge
-
-  """Reads a single `EcccZipFile` that is related to this `EcccAttachment`."""
-  ecccZipFileByZipFileId: EcccZipFile
-
-  """
-  Our root query field type. Allows us to run any query from our mutation payload.
-  """
-  query: Query
-}
-
 """All input for the `deleteEcccFileDownloadLogByRowId` mutation."""
 input DeleteEcccFileDownloadLogByRowIdInput {
   """
@@ -338,192 +247,6 @@ type DeleteGgircsUserPayload {
   Our root query field type. Allows us to run any query from our mutation payload.
   """
   query: Query
-}
-
-"""
-This table containes the list of files containd in the zip files imported from ECCC, excluding XML files (which can be found in the eccc_xml_file table) and other zip files that may be contained in the outer zip file.
-"""
-type EcccAttachment implements Node {
-  """
-  The md5 hash of the attachment file. Multiple attachments may have the same md5 hash as they are resubmitted with revisions of SWRS report
-  """
-  attachmentFileMd5Hash: String
-
-  """The path of the file within the zip file"""
-  attachmentFilePath: String
-
-  """The name of the file that was uploaded, inferred from the file path"""
-  attachmentUploadedFileName: String
-
-  """Reads a single `EcccZipFile` that is related to this `EcccAttachment`."""
-  ecccZipFileByZipFileId: EcccZipFile
-
-  """
-  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
-  """
-  id: ID!
-
-  """The timestamp noting when the file was imported to the GGIRCS database"""
-  importedAt: Datetime!
-
-  """The internal primary key for the file"""
-  rowId: Int!
-
-  """
-  The id of the source type of the attachment, inferred from the file path
-  """
-  sourceTypeId: Int
-
-  """
-  The id of the SWRS report the attachment is associated with, inferred from the file path
-  """
-  swrsReportId: Int
-
-  """The id of the zip file the attachment file is in"""
-  zipFileId: Int!
-}
-
-"""
-A condition to be used against `EcccAttachment` object types. All fields are
-tested for equality and combined with a logical ‘and.’
-"""
-input EcccAttachmentCondition {
-  """Checks for equality with the object’s `attachmentFileMd5Hash` field."""
-  attachmentFileMd5Hash: String
-
-  """Checks for equality with the object’s `attachmentFilePath` field."""
-  attachmentFilePath: String
-
-  """
-  Checks for equality with the object’s `attachmentUploadedFileName` field.
-  """
-  attachmentUploadedFileName: String
-
-  """Checks for equality with the object’s `importedAt` field."""
-  importedAt: Datetime
-
-  """Checks for equality with the object’s `rowId` field."""
-  rowId: Int
-
-  """Checks for equality with the object’s `sourceTypeId` field."""
-  sourceTypeId: Int
-
-  """Checks for equality with the object’s `swrsReportId` field."""
-  swrsReportId: Int
-
-  """Checks for equality with the object’s `zipFileId` field."""
-  zipFileId: Int
-}
-
-"""An input for mutations affecting `EcccAttachment`"""
-input EcccAttachmentInput {
-  """
-  The md5 hash of the attachment file. Multiple attachments may have the same md5 hash as they are resubmitted with revisions of SWRS report
-  """
-  attachmentFileMd5Hash: String
-
-  """The path of the file within the zip file"""
-  attachmentFilePath: String
-
-  """The name of the file that was uploaded, inferred from the file path"""
-  attachmentUploadedFileName: String
-
-  """The timestamp noting when the file was imported to the GGIRCS database"""
-  importedAt: Datetime
-
-  """
-  The id of the source type of the attachment, inferred from the file path
-  """
-  sourceTypeId: Int
-
-  """
-  The id of the SWRS report the attachment is associated with, inferred from the file path
-  """
-  swrsReportId: Int
-
-  """The id of the zip file the attachment file is in"""
-  zipFileId: Int!
-}
-
-"""
-Represents an update to a `EcccAttachment`. Fields that are set will be updated.
-"""
-input EcccAttachmentPatch {
-  """
-  The md5 hash of the attachment file. Multiple attachments may have the same md5 hash as they are resubmitted with revisions of SWRS report
-  """
-  attachmentFileMd5Hash: String
-
-  """The path of the file within the zip file"""
-  attachmentFilePath: String
-
-  """The name of the file that was uploaded, inferred from the file path"""
-  attachmentUploadedFileName: String
-
-  """The timestamp noting when the file was imported to the GGIRCS database"""
-  importedAt: Datetime
-
-  """
-  The id of the source type of the attachment, inferred from the file path
-  """
-  sourceTypeId: Int
-
-  """
-  The id of the SWRS report the attachment is associated with, inferred from the file path
-  """
-  swrsReportId: Int
-
-  """The id of the zip file the attachment file is in"""
-  zipFileId: Int
-}
-
-"""A connection to a list of `EcccAttachment` values."""
-type EcccAttachmentsConnection {
-  """
-  A list of edges which contains the `EcccAttachment` and cursor to aid in pagination.
-  """
-  edges: [EcccAttachmentsEdge!]!
-
-  """A list of `EcccAttachment` objects."""
-  nodes: [EcccAttachment]!
-
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """The count of *all* `EcccAttachment` you could get from the connection."""
-  totalCount: Int!
-}
-
-"""A `EcccAttachment` edge in the connection."""
-type EcccAttachmentsEdge {
-  """A cursor for use in pagination."""
-  cursor: Cursor
-
-  """The `EcccAttachment` at the end of the edge."""
-  node: EcccAttachment
-}
-
-"""Methods to use when ordering `EcccAttachment`."""
-enum EcccAttachmentsOrderBy {
-  ATTACHMENT_FILE_MD5_HASH_ASC
-  ATTACHMENT_FILE_MD5_HASH_DESC
-  ATTACHMENT_FILE_PATH_ASC
-  ATTACHMENT_FILE_PATH_DESC
-  ATTACHMENT_UPLOADED_FILE_NAME_ASC
-  ATTACHMENT_UPLOADED_FILE_NAME_DESC
-  ID_ASC
-  ID_DESC
-  IMPORTED_AT_ASC
-  IMPORTED_AT_DESC
-  NATURAL
-  PRIMARY_KEY_ASC
-  PRIMARY_KEY_DESC
-  SOURCE_TYPE_ID_ASC
-  SOURCE_TYPE_ID_DESC
-  SWRS_REPORT_ID_ASC
-  SWRS_REPORT_ID_DESC
-  ZIP_FILE_ID_ASC
-  ZIP_FILE_ID_DESC
 }
 
 """
@@ -783,43 +506,6 @@ enum EcccXmlFilesOrderBy {
 
 """The table listing the zip files imported from ECCC"""
 type EcccZipFile implements Node {
-  """number of errors recorded while extracting attachments"""
-  attachmentsExtractErrorCount: Int
-
-  """
-  true if all attachments contained in the zip file were inserted in the eccc_attachment table
-  """
-  attachmentsExtracted: Boolean
-
-  """Reads and enables pagination through a set of `EcccAttachment`."""
-  ecccAttachmentsByZipFileId(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: EcccAttachmentCondition
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """The method to use when ordering `EcccAttachment`."""
-    orderBy: [EcccAttachmentsOrderBy!] = [PRIMARY_KEY_ASC]
-  ): EcccAttachmentsConnection!
-
   """Reads and enables pagination through a set of `EcccXmlFile`."""
   ecccXmlFilesByZipFileId(
     """Read all values in the set after (below) this cursor."""
@@ -860,14 +546,6 @@ type EcccZipFile implements Node {
   """The internal primary key for the file"""
   rowId: Int!
 
-  """number of errors recorded while extracting xml files"""
-  xmlFilesExtractErrorCount: Int
-
-  """
-  true if all xml files contained in the zip file were inserted in the eccc_xml_file table
-  """
-  xmlFilesExtracted: Boolean
-
   """The unique md5 hash of the file"""
   zipFileMd5Hash: String
 
@@ -880,27 +558,11 @@ A condition to be used against `EcccZipFile` object types. All fields are tested
 for equality and combined with a logical ‘and.’
 """
 input EcccZipFileCondition {
-  """
-  Checks for equality with the object’s `attachmentsExtractErrorCount` field.
-  """
-  attachmentsExtractErrorCount: Int
-
-  """Checks for equality with the object’s `attachmentsExtracted` field."""
-  attachmentsExtracted: Boolean
-
   """Checks for equality with the object’s `importedAt` field."""
   importedAt: Datetime
 
   """Checks for equality with the object’s `rowId` field."""
   rowId: Int
-
-  """
-  Checks for equality with the object’s `xmlFilesExtractErrorCount` field.
-  """
-  xmlFilesExtractErrorCount: Int
-
-  """Checks for equality with the object’s `xmlFilesExtracted` field."""
-  xmlFilesExtracted: Boolean
 
   """Checks for equality with the object’s `zipFileMd5Hash` field."""
   zipFileMd5Hash: String
@@ -937,10 +599,6 @@ type EcccZipFilesEdge {
 
 """Methods to use when ordering `EcccZipFile`."""
 enum EcccZipFilesOrderBy {
-  ATTACHMENTS_EXTRACTED_ASC
-  ATTACHMENTS_EXTRACTED_DESC
-  ATTACHMENTS_EXTRACT_ERROR_COUNT_ASC
-  ATTACHMENTS_EXTRACT_ERROR_COUNT_DESC
   ID_ASC
   ID_DESC
   IMPORTED_AT_ASC
@@ -948,10 +606,6 @@ enum EcccZipFilesOrderBy {
   NATURAL
   PRIMARY_KEY_ASC
   PRIMARY_KEY_DESC
-  XML_FILES_EXTRACTED_ASC
-  XML_FILES_EXTRACTED_DESC
-  XML_FILES_EXTRACT_ERROR_COUNT_ASC
-  XML_FILES_EXTRACT_ERROR_COUNT_DESC
   ZIP_FILE_MD5_HASH_ASC
   ZIP_FILE_MD5_HASH_DESC
   ZIP_FILE_NAME_ASC
@@ -1396,14 +1050,6 @@ type JwtToken {
 The root mutation type which contains root level fields which mutate data.
 """
 type Mutation {
-  """Creates a single `EcccAttachment`."""
-  createEcccAttachment(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: CreateEcccAttachmentInput!
-  ): CreateEcccAttachmentPayload
-
   """Creates a single `EcccFileDownloadLog`."""
   createEcccFileDownloadLog(
     """
@@ -1425,22 +1071,6 @@ type Mutation {
     """
     input: CreateGgircsUserFromSessionInput!
   ): CreateGgircsUserFromSessionPayload
-
-  """Deletes a single `EcccAttachment` using its globally unique id."""
-  deleteEcccAttachment(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: DeleteEcccAttachmentInput!
-  ): DeleteEcccAttachmentPayload
-
-  """Deletes a single `EcccAttachment` using a unique key."""
-  deleteEcccAttachmentByRowId(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: DeleteEcccAttachmentByRowIdInput!
-  ): DeleteEcccAttachmentPayload
 
   """Deletes a single `EcccFileDownloadLog` using its globally unique id."""
   deleteEcccFileDownloadLog(
@@ -1473,24 +1103,6 @@ type Mutation {
     """
     input: DeleteGgircsUserByRowIdInput!
   ): DeleteGgircsUserPayload
-
-  """
-  Updates a single `EcccAttachment` using its globally unique id and a patch.
-  """
-  updateEcccAttachment(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: UpdateEcccAttachmentInput!
-  ): UpdateEcccAttachmentPayload
-
-  """Updates a single `EcccAttachment` using a unique key and a patch."""
-  updateEcccAttachmentByRowId(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: UpdateEcccAttachmentByRowIdInput!
-  ): UpdateEcccAttachmentPayload
 
   """
   Updates a single `EcccFileDownloadLog` using its globally unique id and a patch.
@@ -1554,35 +1166,6 @@ type PageInfo {
 
 """The root query type which gives access points into the data universe."""
 type Query implements Node {
-  """Reads and enables pagination through a set of `EcccAttachment`."""
-  allEcccAttachments(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: EcccAttachmentCondition
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """The method to use when ordering `EcccAttachment`."""
-    orderBy: [EcccAttachmentsOrderBy!] = [PRIMARY_KEY_ASC]
-  ): EcccAttachmentsConnection
-
   """Reads and enables pagination through a set of `EcccFileDownloadLog`."""
   allEcccFileDownloadLogs(
     """Read all values in the set after (below) this cursor."""
@@ -1785,15 +1368,6 @@ type Query implements Node {
     """The method to use when ordering `Report`."""
     orderBy: [ReportsOrderBy!] = [PRIMARY_KEY_ASC]
   ): ReportsConnection
-
-  """Reads a single `EcccAttachment` using its globally unique `ID`."""
-  ecccAttachment(
-    """
-    The globally unique `ID` to be used in selecting a single `EcccAttachment`.
-    """
-    id: ID!
-  ): EcccAttachment
-  ecccAttachmentByRowId(rowId: Int!): EcccAttachment
 
   """Reads a single `EcccFileDownloadLog` using its globally unique `ID`."""
   ecccFileDownloadLog(
@@ -2263,68 +1837,6 @@ enum ReportsOrderBy {
 A universally unique identifier as defined by [RFC 4122](https://tools.ietf.org/html/rfc4122).
 """
 scalar UUID
-
-"""All input for the `updateEcccAttachmentByRowId` mutation."""
-input UpdateEcccAttachmentByRowIdInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-
-  """
-  An object where the defined keys will be set on the `EcccAttachment` being updated.
-  """
-  ecccAttachmentPatch: EcccAttachmentPatch!
-
-  """The internal primary key for the file"""
-  rowId: Int!
-}
-
-"""All input for the `updateEcccAttachment` mutation."""
-input UpdateEcccAttachmentInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-
-  """
-  An object where the defined keys will be set on the `EcccAttachment` being updated.
-  """
-  ecccAttachmentPatch: EcccAttachmentPatch!
-
-  """
-  The globally unique `ID` which will identify a single `EcccAttachment` to be updated.
-  """
-  id: ID!
-}
-
-"""The output of our update `EcccAttachment` mutation."""
-type UpdateEcccAttachmentPayload {
-  """
-  The exact same `clientMutationId` that was provided in the mutation input,
-  unchanged and unused. May be used by a client to track mutations.
-  """
-  clientMutationId: String
-
-  """The `EcccAttachment` that was updated by this mutation."""
-  ecccAttachment: EcccAttachment
-
-  """An edge for our `EcccAttachment`. May be used by Relay 1."""
-  ecccAttachmentEdge(
-    """The method to use when ordering `EcccAttachment`."""
-    orderBy: [EcccAttachmentsOrderBy!] = [PRIMARY_KEY_ASC]
-  ): EcccAttachmentsEdge
-
-  """Reads a single `EcccZipFile` that is related to this `EcccAttachment`."""
-  ecccZipFileByZipFileId: EcccZipFile
-
-  """
-  Our root query field type. Allows us to run any query from our mutation payload.
-  """
-  query: Query
-}
 
 """All input for the `updateEcccFileDownloadLogByRowId` mutation."""
 input UpdateEcccFileDownloadLogByRowIdInput {
