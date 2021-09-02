@@ -7,8 +7,43 @@ begin;
 select plan(5);
 
 -- Setup fixture
-insert into swrs_extract.eccc_xml_file (imported_at, xml_file) VALUES ('2018-09-29T11:55:39.423', $$
+insert into swrs_extract.eccc_zip_file (zip_file_name) values ('GHGBC_PROD_20180930.zip');
+
+insert into swrs_extract.eccc_attachment (
+  imported_at, zip_file_id,
+  attachment_uploaded_file_name,
+  source_type_id,
+  swrs_report_id,
+  attachment_file_md5_hash,
+  attachment_file_path
+)
+values (
+  '2018-09-29T11:55:39.423',
+  (select id from swrs_extract.eccc_zip_file limit 1),
+  'Plant PFD for report_attachments.pdf',
+  44,
+  800855555,
+  '01401078d49fca13af56f84ddff58f36',
+  'Output_Prod/Report_800855555_2018_SourceTypeId_44_ProcessFlowDiagramPGI.pdf'
+);
+
+insert into swrs_extract.eccc_xml_file (imported_at, zip_file_id, xml_file) values ('2018-09-29T11:55:39.423',
+  (select id from swrs_extract.eccc_zip_file limit 1), $$
   <ReportData>
+    <ReportDetails>
+      <ReportID>800855555</ReportID>
+      <PrepopReportID></PrepopReportID>
+      <ReportType>R7</ReportType>
+      <FacilityId>666</FacilityId>
+      <OrganisationId>1337</OrganisationId>
+      <ReportingPeriodDuration>1999</ReportingPeriodDuration>
+      <ReportStatus>
+        <Status>In Progress</Status>
+        <Version>3</Version>
+        <LastModifiedBy>Donny Donaldson McDonaldface</LastModifiedBy>
+        <LastModifiedDate>2018-09-28T11:55:39.423</LastModifiedDate>
+      </ReportStatus>
+    </ReportDetails>
     <report_attachmentComments>
       <Process ProcessName="Comments and Supporting Information">
         <SubProcess SubprocessName="Comments Regarding GHG report_attachmenting" InformationRequirement="Optional">
