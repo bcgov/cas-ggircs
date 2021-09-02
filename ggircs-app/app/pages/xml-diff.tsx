@@ -12,6 +12,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExchangeAlt } from "@fortawesome/free-solid-svg-icons";
 import format from "xml-formatter";
 import RenderDiff from "components/XmlDiff/RenderDiff";
+import BootstrapSwitchButton from 'bootstrap-switch-button-react'
 
 const ALLOWED_GROUPS = [...USER_GROUP];
 
@@ -119,23 +120,24 @@ export default class Index extends Component<Props, State> {
           </Col>
         </Row>
         <Row style={{ marginTop: "2em", marginBottom: "2em" }}>
-          <Col md={{ span: 4, offset: 3 }}>
+          <Col md={{ span: 3, offset: 6 }}>
             <Row>
-              <p>
+              <p style={{marginTop: "auto", marginBottom: "auto"}}>
                 <strong>Summarize Changes:&nbsp;</strong>
               </p>
-              <Button
-                variant={this.state.isCollapsed ? "success" : "secondary"}
-                onClick={this.summarize}
-              >
-                {this.state.isCollapsed ? "ON" : "OFF"}
-              </Button>
+              <BootstrapSwitchButton
+                checked={this.state.isCollapsed}
+                onlabel='On'
+                offlabel='Off'
+                onChange={this.summarize}
+                size='lg'
+              />
             </Row>
           </Col>
           <Col md={{ span: 3 }}>
             <Button onClick={this.reverse}>
               <FontAwesomeIcon icon={faExchangeAlt} />
-              &nbsp; swap left/right
+              &nbsp;Swap left/right
             </Button>
           </Col>
         </Row>
