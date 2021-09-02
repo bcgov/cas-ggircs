@@ -44,4 +44,9 @@ export const HelpComponent: React.FunctionComponent<Props> = (props) => {
   );
 };
 
+HelpComponent.defaultProps = {
+  title: null,
+  helpMessage: null,
+};
+
 export default HelpComponent;
