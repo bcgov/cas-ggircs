@@ -27,7 +27,7 @@ create materialized view swrs_transform.historical_report_attachment_data as (
           sub_process_name varchar(1000) path 'normalize-space(./ancestor::SubProcess/@SubprocessName)',
           information_requirement varchar(1000) path 'normalize-space(./ancestor::SubProcess/@InformationRequirement)',
           file_number int path './File[normalize-space(.)]' default null,
-          uploaded_file_name varchar(1000) path 'normalize-space(./UploadedFileName)',
+          uploaded_file_name varchar(1000) path './UploadedFileName',
           uploaded_by varchar(1000) path 'normalize-space(./UploadedBy)',
           uploaded_at timestamptz path './UploadedDate[not(contains(normalize-space(.), "/")) and not(contains(normalize-space(.), "AM")) and not(contains(normalize-space(.), "am")) and not(contains(normalize-space(.), "PM")) and not(contains(normalize-space(.), "pm"))]' default null
       ) as attachment_data
