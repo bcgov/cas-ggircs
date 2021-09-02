@@ -8,17 +8,8 @@ create materialized view swrs_transform.historical_report_attachment_data as (
   select
     row_number() over () as id,
     id as eccc_xml_file_id,
-    zip_file_id,
-    report_details.swrs_report_id,
     attachment_data.*
   from swrs_extract.eccc_xml_file,
-      xmltable(
-           '/ReportData/ReportDetails'
-           passing xml_file
-           columns
-             swrs_report_id integer path 'ReportID[normalize-space(.)]' not null
-         ) as report_details,
-
       xmltable(
         '//UploadedFileName[string-length(text()) > 0]/parent::FileDetails'
         passing xml_file
@@ -29,7 +20,7 @@ create materialized view swrs_transform.historical_report_attachment_data as (
           file_number int path './File[normalize-space(.)]' default null,
           uploaded_file_name varchar(1000) path 'normalize-space(./UploadedFileName)',
           uploaded_by varchar(1000) path 'normalize-space(./UploadedBy)',
-          uploaded_at timestamptz path './UploadedDate[not(contains(normalize-space(.), "/")) and not(contains(normalize-space(.), "AM")) and not(contains(normalize-space(.), "am")) and not(contains(normalize-space(.), "PM")) and not(contains(normalize-space(.), "pm"))]' default null
+          uploaded_at timestamptz path 'normalize-space(./UploadedDate)'
       ) as attachment_data
 ) with no data;
 

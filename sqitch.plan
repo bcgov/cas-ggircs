@@ -150,3 +150,5 @@ swrs/extract/table/eccc_attachment 2021-08-16T23:43:48Z Naomi Aro <naomi.aro@gov
 swrs/extract/table/eccc_zip_file_001 2021-08-25T21:50:36Z Matthieu Foucault <matthieu@button.is> # add xml_files_extracted and attachments_extracted columns to swrs_extract.eccc_zip_file
 @v1.6.0 2021-09-01T21:53:26Z Matthieu Foucault <matthieu@button.is> # release v1.6.0
 swrs/history/table/attachments_001 2021-09-01T23:25:45Z Naomi Aro <naomi.aro@gov.bc.ca> # add md5_hash, file_path, and zip_file_name to swrs_history.report_attachment
+swrs/transform/materialized_view/historical_report_attachment_data [swrs/transform/materialized_view/historical_report_attachment_data@v1.6.0] 2021-09-02T01:22:09Z Naomi Aro <naomi.aro@gov.bc.ca> # add swrs_report_id to swrs_transform.historical_report_attachment_data
+swrs/transform/function/load_report_attachment [swrs/transform/function/load_report_attachment@v1.6.0] 2021-09-02T00:18:26Z Naomi Aro <naomi.aro@gov.bc.ca> # load md5_hash, file_path, zip_file_name into swrs_history.report_attachment
