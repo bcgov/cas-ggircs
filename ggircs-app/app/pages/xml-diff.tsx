@@ -143,16 +143,28 @@ export default class Index extends Component<Props, State> {
         {this.state.leftSideReport && this.state.rightSideReport && (
           <div style={{ height: "40em", overflow: "scroll" }}>
             <RenderDiff
-              oldText={this.state.isReversed ? format(
-                this.state.rightSideReport.ecccXmlFileByEcccXmlFileId.xmlFile
-              ) : format(
-                this.state.leftSideReport.ecccXmlFileByEcccXmlFileId.xmlFile
-              )}
-              newText={this.state.isReversed ? format(
-                this.state.leftSideReport.ecccXmlFileByEcccXmlFileId.xmlFile
-              ) : format(
-                this.state.rightSideReport.ecccXmlFileByEcccXmlFileId.xmlFile
-              )}
+              oldText={
+                this.state.isReversed
+                  ? format(
+                      this.state.rightSideReport.ecccXmlFileByEcccXmlFileId
+                        .xmlFile
+                    )
+                  : format(
+                      this.state.leftSideReport.ecccXmlFileByEcccXmlFileId
+                        .xmlFile
+                    )
+              }
+              newText={
+                this.state.isReversed
+                  ? format(
+                      this.state.leftSideReport.ecccXmlFileByEcccXmlFileId
+                        .xmlFile
+                    )
+                  : format(
+                      this.state.rightSideReport.ecccXmlFileByEcccXmlFileId
+                        .xmlFile
+                    )
+              }
               collapse={this.state.isCollapsed}
             />
           </div>

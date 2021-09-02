@@ -22,9 +22,9 @@ export type PageComponent = NextComponentType<
   PageComponentProps
 > &
   ComponentClass<PageComponentProps> & {
-    static query: GraphQLTaggedNode;
-    static isAccessProtected: boolean;
-    static allowedGroups: string[];
+    query: GraphQLTaggedNode;
+    isAccessProtected: boolean;
+    allowedGroups: string[];
   };
 
 export interface CacheConfigWithDebounce extends CacheConfig {

@@ -87,4 +87,8 @@ export const ReportSelector: React.FunctionComponent<Props> = ({
   );
 };
 
+ReportSelector.defaultProps = {
+  swrsReportId: null
+};
+
 export default ReportSelector;
