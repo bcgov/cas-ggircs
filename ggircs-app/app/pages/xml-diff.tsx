@@ -121,7 +121,7 @@ export default class Index extends Component<Props, State> {
         </Row>
         <Row style={{ marginTop: "2em", marginBottom: "2em" }}>
           <Col md={{ span: 3, offset: 6 }}>
-            <Row>
+            <Row style={{float: 'right'}}>
               <p style={{marginTop: "auto", marginBottom: "auto"}}>
                 <strong>Summarize Changes:&nbsp;</strong>
               </p>
@@ -130,12 +130,11 @@ export default class Index extends Component<Props, State> {
                 onlabel='On'
                 offlabel='Off'
                 onChange={this.summarize}
-                size='lg'
               />
             </Row>
           </Col>
           <Col md={{ span: 3 }}>
-            <Button onClick={this.reverse}>
+            <Button size='small' onClick={this.reverse}>
               <FontAwesomeIcon icon={faExchangeAlt} />
               &nbsp;Swap left/right
             </Button>
