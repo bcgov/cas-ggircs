@@ -1,7 +1,8 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import { diffLines, formatLines } from "unidiff";
 import { parseDiff, Diff, Hunk, tokenize } from "react-diff-view";
 import "react-diff-view/style/index.css";
+import LoadingSpinner from "components/LoadingSpinner";
 
 const EMPTY_HUNKS = [];
 
@@ -16,6 +17,15 @@ export const RenderDiff: React.FunctionComponent<Props> = ({
   newText,
   collapse,
 }) => {
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    setLoaded(true);
+   },[]
+  );
+
+  if (!loaded) return <LoadingSpinner />;
+
   // context is the max number of lines to show around a change. When collapsed, we set it to 1. Otherwise 10000 to ensure we get the whole document.
   const diffText = formatLines(diffLines(oldText, newText), {
     context: collapse ? 1 : 10000,
