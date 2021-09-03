@@ -7119,7 +7119,7 @@
         {
           "kind": "OBJECT",
           "name": "Report",
-          "description": "The table housing all report data, derived from eccc_xml_file table",
+          "description": null,
           "fields": [
             {
               "name": "co2Bioc",
@@ -7495,7 +7495,7 @@
         {
           "kind": "OBJECT",
           "name": "ReportAttachment",
-          "description": "The table housing all attachments for reports",
+          "description": null,
           "fields": [
             {
               "name": "fileNumber",
@@ -7504,6 +7504,18 @@
               "type": {
                 "kind": "SCALAR",
                 "name": "Int",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "filePath",
+              "description": "The complete filepath to the attachment within zip_file_name",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -7528,6 +7540,18 @@
             {
               "name": "informationRequirement",
               "description": "Denotes whether or not this attachment is required. Can be one of [Optional, Required]",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "md5Hash",
+              "description": "The md5 hash of the attachment",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -7636,6 +7660,18 @@
               },
               "isDeprecated": false,
               "deprecationReason": null
+            },
+            {
+              "name": "zipFileName",
+              "description": "The name of the zip file containing the attachment",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
             }
           ],
           "inputFields": null,
@@ -7666,8 +7702,28 @@
               "defaultValue": null
             },
             {
+              "name": "filePath",
+              "description": "Checks for equality with the object’s `filePath` field.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
               "name": "informationRequirement",
               "description": "Checks for equality with the object’s `informationRequirement` field.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "md5Hash",
+              "description": "Checks for equality with the object’s `md5Hash` field.",
               "type": {
                 "kind": "SCALAR",
                 "name": "String",
@@ -7738,6 +7794,16 @@
             {
               "name": "uploadedFileName",
               "description": "Checks for equality with the object’s `uploadedFileName` field.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "zipFileName",
+              "description": "Checks for equality with the object’s `zipFileName` field.",
               "type": {
                 "kind": "SCALAR",
                 "name": "String",
@@ -7893,6 +7959,18 @@
               "deprecationReason": null
             },
             {
+              "name": "FILE_PATH_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "FILE_PATH_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "ID_ASC",
               "description": null,
               "isDeprecated": false,
@@ -7912,6 +7990,18 @@
             },
             {
               "name": "INFORMATION_REQUIREMENT_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "MD5_HASH_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "MD5_HASH_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -8002,6 +8092,18 @@
             },
             {
               "name": "UPLOADED_FILE_NAME_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "ZIP_FILE_NAME_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "ZIP_FILE_NAME_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
