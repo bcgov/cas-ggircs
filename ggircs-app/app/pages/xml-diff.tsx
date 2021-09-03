@@ -12,7 +12,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExchangeAlt } from "@fortawesome/free-solid-svg-icons";
 import format from "xml-formatter";
 import RenderDiff from "components/XmlDiff/RenderDiff";
-import BootstrapSwitchButton from 'bootstrap-switch-button-react'
+// Use dynamic import for BootstrapSwitchButton (workaround for SSR bug where window is not defined)
+import dynamic from 'next/dynamic'
+const BootstrapSwitchButton = dynamic(
+    () => import('bootstrap-switch-button-react'),
+    {
+        loading: () => <p>loading</p>,
+        ssr: false // This line is important. It's what prevents server-side render
+    }
+)
 
 const ALLOWED_GROUPS = [...USER_GROUP];
 
