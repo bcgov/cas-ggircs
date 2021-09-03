@@ -45,9 +45,9 @@ $function$
             on _hrad.zip_file_id = _zipfile.id
           left join swrs_extract.eccc_attachment _attachment
             on _hrad.swrs_report_id = _attachment.swrs_report_id
-        where _hrad.file_number = _attachment.source_type_id
-          and _hrad.uploaded_file_name = _attachment.attachment_uploaded_file_name
-          and _hrad.zip_file_id = _attachment.zip_file_id;
+            and _hrad.file_number = _attachment.source_type_id
+            and _hrad.uploaded_file_name = _attachment.attachment_uploaded_file_name
+            and _hrad.zip_file_id = _attachment.zip_file_id;
     end
 $function$ language plpgsql volatile;
 commit;
