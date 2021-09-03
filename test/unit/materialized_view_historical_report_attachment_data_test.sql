@@ -11,33 +11,6 @@ select has_materialized_view('swrs_transform', 'historical_report_attachment_dat
 -- Setup fixture
 insert into swrs_extract.eccc_zip_file (zip_file_name) values ('GHGBC_PROD_20180930.zip');
 
-insert into swrs_extract.eccc_attachment (
-  imported_at, zip_file_id,
-  attachment_uploaded_file_name,
-  source_type_id,
-  swrs_report_id,
-  attachment_file_md5_hash,
-  attachment_file_path
-)
-values (
-  '2018-09-29T11:55:39.423',
-  (select id from swrs_extract.eccc_zip_file limit 1),
-  'Plant PFD for report_attachments.pdf',
-  44,
-  800855555,
-  '01499998d49fca13af56f84ddff58f36',
-  'Output_Prod/Report_800855555_2018_SourceTypeId_44_Plant PFD for Reports.pdf'
-),
-(
-  '2018-09-29T11:55:39.423',
-  (select id from swrs_extract.eccc_zip_file limit 1),
-  'badDate.pdf',
-  100,
-  800855555,
-  '01477778d49fca13af56f84ddff58f36',
-  'Output_Prod/Report_800855555_2018_SourceTypeId_100_badDate.pdf'
-);
-
 insert into swrs_extract.eccc_xml_file (imported_at, zip_file_id, xml_file) VALUES ('2018-09-29T11:55:39.423',
   (select id from swrs_extract.eccc_zip_file limit 1), $$
   <ReportData>
