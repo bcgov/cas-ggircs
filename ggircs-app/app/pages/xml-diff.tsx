@@ -13,14 +13,14 @@ import { faExchangeAlt } from "@fortawesome/free-solid-svg-icons";
 import format from "xml-formatter";
 import RenderDiff from "components/XmlDiff/RenderDiff";
 // Use dynamic import for BootstrapSwitchButton (workaround for SSR bug where window is not defined)
-import dynamic from 'next/dynamic'
+import dynamic from "next/dynamic";
 const BootstrapSwitchButton = dynamic(
-    () => import('bootstrap-switch-button-react'),
-    {
-        loading: () => <p>loading</p>,
-        ssr: false // This line is important. It's what prevents server-side render
-    }
-)
+  () => import("bootstrap-switch-button-react"),
+  {
+    loading: () => <p>loading</p>,
+    ssr: false, // This line is important. It's what prevents server-side render
+  }
+);
 
 const ALLOWED_GROUPS = [...USER_GROUP];
 
@@ -129,20 +129,20 @@ export default class Index extends Component<Props, State> {
         </Row>
         <Row style={{ marginTop: "2em", marginBottom: "2em" }}>
           <Col md={{ span: 3, offset: 6 }}>
-            <Row style={{float: 'right'}}>
-              <p style={{marginTop: "auto", marginBottom: "auto"}}>
+            <Row style={{ float: "right" }}>
+              <p style={{ marginTop: "auto", marginBottom: "auto" }}>
                 <strong>Summarize Changes:&nbsp;</strong>
               </p>
               <BootstrapSwitchButton
                 checked={this.state.isCollapsed}
-                onlabel='On'
-                offlabel='Off'
+                onlabel="On"
+                offlabel="Off"
                 onChange={this.summarize}
               />
             </Row>
           </Col>
           <Col md={{ span: 3 }}>
-            <Button size='small' onClick={this.reverse}>
+            <Button size="small" onClick={this.reverse}>
               <FontAwesomeIcon icon={faExchangeAlt} />
               &nbsp;Swap left/right
             </Button>

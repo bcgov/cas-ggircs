@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { diffLines, formatLines } from "unidiff";
 import { parseDiff, Diff, Hunk, tokenize } from "react-diff-view";
 import "react-diff-view/style/index.css";
@@ -21,8 +21,7 @@ export const RenderDiff: React.FunctionComponent<Props> = ({
 
   useEffect(() => {
     setLoaded(true);
-   },[]
-  );
+  }, []);
 
   if (!loaded) return <LoadingSpinner />;
 
