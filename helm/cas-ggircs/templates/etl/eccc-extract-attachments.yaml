@@ -64,11 +64,11 @@ spec:
                   readOnly: true
               resources:
                 limits:
-                  cpu: 100m
-                  memory: 124Mi
+                  cpu: 700m
+                  memory: 256Mi
                 requests:
-                  cpu: 50m
-                  memory: 64Mi
+                  cpu: 500m
+                  memory: 124Mi
           volumes:
             - name: gcs-credentials
               secret:
