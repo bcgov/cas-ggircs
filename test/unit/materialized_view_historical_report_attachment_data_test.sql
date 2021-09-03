@@ -25,8 +25,17 @@ values (
   'Plant PFD for report_attachments.pdf',
   44,
   800855555,
-  '01401078d49fca13af56f84ddff58f36',
+  '01499998d49fca13af56f84ddff58f36',
   'Output_Prod/Report_800855555_2018_SourceTypeId_44_Plant PFD for Reports.pdf'
+),
+(
+  '2018-09-29T11:55:39.423',
+  (select id from swrs_extract.eccc_zip_file limit 1),
+  'badDate.pdf',
+  100,
+  800855555,
+  '01477778d49fca13af56f84ddff58f36',
+  'Output_Prod/Report_800855555_2018_SourceTypeId_100_badDate.pdf'
 );
 
 insert into swrs_extract.eccc_xml_file (imported_at, zip_file_id, xml_file) VALUES ('2018-09-29T11:55:39.423',
