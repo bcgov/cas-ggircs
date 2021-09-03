@@ -1875,6 +1875,7 @@ type Query implements Node {
   session: JwtToken
 }
 
+"""The table housing all report data, derived from eccc_xml_file table"""
 type Report implements Node {
   co2Bioc: BigFloat
 
@@ -1968,6 +1969,7 @@ type Report implements Node {
   version: String
 }
 
+"""The table housing all attachments for reports"""
 type ReportAttachment implements Node {
   """The file_number corresponds to the type of attachment"""
   fileNumber: Int
