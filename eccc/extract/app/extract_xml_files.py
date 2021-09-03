@@ -9,33 +9,36 @@ import os
 import sys
 import logging
 import psycopg2
+import asyncio
 from google.cloud import storage
 from psycopg2 import pool
 
+async def main():
+    logging.basicConfig(
+        format='%(asctime)s | %(name)s | %(levelname)s: %(message)s')
+    log = logging.getLogger('extract_xml_files')
+    log.setLevel(os.getenv("LOGLEVEL", "INFO"))
 
-logging.basicConfig(
-    format='%(asctime)s | %(name)s | %(levelname)s: %(message)s')
-log = logging.getLogger('extract_xml_files')
-log.setLevel(os.getenv("LOGLEVEL", "INFO"))
+    storage_client = storage.Client()
+    gcs_bucket_name = os.getenv('BUCKET_NAME')
 
-storage_client = storage.Client()
-gcs_bucket_name = os.getenv('BUCKET_NAME')
+    try:
+        # with an empty dsn, the postgres env vars are used
+        pg_pool = pool.SimpleConnectionPool(1, 10, dsn='')
+        pg_conn = pg_pool.getconn()
+        pg_cursor = pg_conn.cursor()
+        pg_cursor.execute("select id, zip_file_name from swrs_extract.eccc_zip_file where xml_files_extracted = false;")
+        zip_files = pg_cursor.fetchall()
 
-try:
-    # with an empty dsn, the postgres env vars are used
-    pg_pool = pool.SimpleConnectionPool(1, 10, dsn='')
-    pg_conn = pg_pool.getconn()
-    pg_cursor = pg_conn.cursor()
-    pg_cursor.execute("select id, zip_file_name from swrs_extract.eccc_zip_file where xml_files_extracted = false;")
-    zip_files = pg_cursor.fetchall()
+        # get the list of objects in the bucket
+        for file in zip_files:
+            print(file)
+            await process_report_xmls(file[0], file[1], storage_client, gcs_bucket_name, pg_pool, log)
 
-    # get the list of objects in the bucket
-    for file in zip_files:
-        print(file)
-        process_report_xmls(file[0], file[1], storage_client, gcs_bucket_name, pg_pool, log)
+    except (Exception, psycopg2.DatabaseError) as error:
+        log.error(f"Error: {error}")
+        sys.exit(1)
+    finally:
+        pg_pool.closeall()
 
-except (Exception, psycopg2.DatabaseError) as error:
-    log.error(f"Error: {error}")
-    sys.exit(1)
-finally:
-    pg_pool.closeall()
+asyncio.run(main())
