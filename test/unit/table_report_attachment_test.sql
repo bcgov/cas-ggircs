@@ -109,7 +109,7 @@ select results_eq(
   $$
     values(
       'Plant PFD for report_attachments.pdf'::varchar,
-      '01401078d49fca13af56f84ddff58f36'::varchar,
+      '01401078d49fca13af56f84ddff58f36'::varchar, -- pragma: allowlist secret
       'Output_Prod/Report_800855555_2018_SourceTypeId_44_ProcessFlowDiagramPGI.pdf'::varchar,
       'GHGBC_PROD_20180930.zip'::varchar
     )
