@@ -27,6 +27,7 @@ const DefaultLayout: React.FunctionComponent<Props> = ({
   titleControls,
   session,
   help,
+  width,
 }) => (
   <div className="page-wrap">
     <Header isLoggedIn={Boolean(session)}>
@@ -52,7 +53,7 @@ const DefaultLayout: React.FunctionComponent<Props> = ({
       ) : null}
 
       <div id="page-content">
-        <Grid cols={12}>
+        <Grid cols={12} className={width}>
           <Grid.Row justify="center" gutter={[0, 50]}>
             <Grid.Col span={7}>{children}</Grid.Col>
           </Grid.Row>
@@ -147,6 +148,13 @@ const DefaultLayout: React.FunctionComponent<Props> = ({
     </style>
   </div>
 );
+
+DefaultLayout.defaultProps = {
+  title: "Greenhouse Gas Industrial Reporting and Control System",
+  titleControls: null,
+  width: "narrow",
+  help: null,
+};
 
 export { DefaultLayout as DefaultLayoutComponent };
 export default createFragmentContainer(DefaultLayout, {
