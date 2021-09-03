@@ -9,9 +9,7 @@ import re
 import asyncio
 import functools
 from smart_open import open
-from concurrent.futures import ThreadPoolExecutor
-
-_executor = ThreadPoolExecutor(4)
+from multiprocessing import Pool, TimeoutError
 
 quarantined_files_md5_hash = [
     'd9fa31d1c971fe7573e808252713254c']  # pragma: allowlist secret
@@ -37,53 +35,59 @@ def read_file(fin, path, log):
         except Exception as inst:
             log.info("trying next password")
 
-async def process_report_xml(zip_file_id, zip_file_name, file_path, finz, pg_connection, log, loop):
+
+def process_xml_file_bytes(zip_file_id, zip_file_name, file_path, file_bytes, log):
     insert_sql = """
         insert into swrs_extract.eccc_xml_file(xml_file, xml_file_name, xml_file_md5_hash, zip_file_id)
         values (%s, %s, %s, %s)
         on conflict(xml_file_md5_hash) do nothing
     """
     log.info(f"Processing {file_path} in zip file {zip_file_name}")
+    return_code = 0
+    with psycopg2.connect(dsn='') as pg_connection:
+        try:
+            if file_bytes is None:
+                log.error(
+                    f"error: failed to read {file_path} in zip file {zip_file_name}")
+                return
 
-    file_bytes = await loop.run_in_executor(_executor, functools.partial(read_file, finz, file_path, log))
-    if file_bytes is None:
-        log.error(
-            f"error: failed to read {file_path} in zip file {zip_file_name}")
-        return
+            file_md5_hash = hashlib.md5(file_bytes).hexdigest()
+            if file_md5_hash in quarantined_files_md5_hash:
+                log.warn(f"skipping {file_path} as it is quarantined")
+                return
 
-    file_md5_hash = hashlib.md5(file_bytes).hexdigest()
-    if file_md5_hash in quarantined_files_md5_hash:
-        log.warn(f"skipping {file_path} as it is quarantined")
-        return
+            encoding = chardet.detect(file_bytes)['encoding']
+            xml_string = file_bytes.decode(encoding)
+            log.debug(xml_string)
 
-    encoding = chardet.detect(file_bytes)['encoding']
-    xml_string = file_bytes.decode(encoding)
-    log.debug(xml_string)
+            with pg_connection.cursor() as pg_cursor:
+                pg_cursor.execute(insert_sql,(xml_string.replace('\0', ''),file_path,file_md5_hash,zip_file_id))
+            pg_connection.commit()
+        except (Exception, psycopg2.DatabaseError) as error:
+            log.error(f"Error while processing {file_path} in zip file {zip_file_name}: {error}")
+            return_code = 1
+            pg_connection.rollback()
 
-    with pg_connection.cursor() as pg_cursor:
-        pg_cursor.execute(insert_sql,(xml_string.replace('\0', ''),file_path,file_md5_hash,zip_file_id))
-    pg_connection.commit()
+    return return_code
 
-
-async def process_report_xmls(zip_file_id, zip_file_name, storage_client, bucket_name, pg_pool, log):
+def process_report_xmls(zip_file_id, zip_file_name, storage_client, bucket_name, pg_pool, log):
     zip_file_path = f"gs://{bucket_name}/{zip_file_name}"
-    loop = asyncio.get_event_loop()
 
     extract_error_count = 0
-    with open(zip_file_path, 'rb', transport_params=dict(client=storage_client)) as fin:
-        with zipfile.ZipFile(fin) as finz:
-            for file_path in finz.namelist():
-                with pg_pool.getconn() as pg_connection:
-                    try:
-                        if file_path.endswith('.xml'):
-                            await process_report_xml(zip_file_id, zip_file_name, file_path, finz, pg_connection, log, loop)
-                    except (Exception, psycopg2.DatabaseError) as error:
-                        log.error(f"Error while processing {file_path} in zip file {zip_file_name}: {error}")
-                        extract_error_count += 1
-                        pg_connection.rollback()
-                    finally:
-                        pg_pool.putconn(pg_connection)
+    def save_result(res):
+        nonlocal extract_error_count
+        extract_error_count += res
 
+    with Pool(processes=8) as pool:
+        with open(zip_file_path, 'rb', transport_params=dict(client=storage_client)) as fin:
+            with zipfile.ZipFile(fin) as finz:
+                for file_path in finz.namelist():
+                    if file_path.endswith('.xml'):
+                        file_bytes = read_file(finz, file_path, log)
+                        pool.apply_async(process_xml_file_bytes, (zip_file_id, zip_file_name, file_path, file_bytes, log), callback=save_result)
+                        # extract_error_count += res.get(timeout=60)
+        pool.close()
+        pool.join()
     with pg_pool.getconn() as pg_connection:
         with pg_connection.cursor() as pg_cursor:
             pg_cursor.execute(
