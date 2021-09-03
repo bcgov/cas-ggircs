@@ -23,7 +23,7 @@ values (
   'Plant PFD for report_attachments.pdf',
   44,
   800855555,
-  '01401078d49fca13af56f84ddff58f36',
+  '01401078d49fca13af56f84ddff58f36', -- pragma: allowlist secret
   'Output_Prod/Report_800855555_2018_SourceTypeId_44_ProcessFlowDiagramPGI.pdf'
 );
 
@@ -104,10 +104,15 @@ select isnt_empty('select * from swrs_history.report_attachment', 'there is data
 -- report_attachment has the correct emission-total data
 select results_eq(
   $$
-    select uploaded_file_name from swrs_history.report_attachment;
+    select uploaded_file_name, md5_hash, file_path, zip_file_name  from swrs_history.report_attachment;
   $$,
   $$
-    values('Plant PFD for report_attachments.pdf'::varchar)
+    values(
+      'Plant PFD for report_attachments.pdf'::varchar,
+      '01401078d49fca13af56f84ddff58f36'::varchar,
+      'Output_Prod/Report_800855555_2018_SourceTypeId_44_ProcessFlowDiagramPGI.pdf'::varchar,
+      'GHGBC_PROD_20180930.zip'::varchar
+    )
   $$,
   'The swrs_history.report_attachment received the correct data'
 );
