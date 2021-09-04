@@ -3,7 +3,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(5);
+select plan(6);
 
 -- Test matview report exists in schema swrs_transform
 select has_materialized_view('swrs_transform', 'historical_report_attachment_data', 'Materialized view historical_report_attachment_data exists');
@@ -85,6 +85,18 @@ insert into swrs_extract.eccc_xml_file (imported_at, zip_file_id, xml_file) VALU
         </SubProcess>
       </Process>
     </BadDate>
+    <FileNameSpace>
+      <Process ProcessName="FileNameSpace">
+        <SubProcess SubprocessName="FileNameSpace">
+          <FileDetails>
+            <File>666</File>
+            <UploadedFileName>Space  Time.pdf</UploadedFileName>
+            <UploadedBy>Bob Lobblaw</UploadedBy>
+            <UploadedDate>2021-04-28T18:25:45-07</UploadedDate>
+          </FileDetails>
+        </SubProcess>
+      </Process>
+    </FileNameSpace>
     </ReportData>
 $$);
 
@@ -145,6 +157,18 @@ select results_eq(
     values (null::timestamptz)
   $$,
   'Parses malformed UploadedDate tags as null'
+);
+
+select results_eq(
+  $$
+    select
+      uploaded_file_name
+    from swrs_transform.historical_report_attachment_data where process_name = 'FileNameSpace'
+  $$,
+  $$
+    values ('Space  Time.pdf'::varchar)
+  $$,
+  'Leaves spacing intact for filenames'
 );
 
 select finish();
