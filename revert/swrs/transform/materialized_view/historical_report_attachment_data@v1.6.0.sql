@@ -8,17 +8,8 @@ create materialized view swrs_transform.historical_report_attachment_data as (
   select
     row_number() over () as id,
     id as eccc_xml_file_id,
-    zip_file_id,
-    report_details.swrs_report_id,
     attachment_data.*
   from swrs_extract.eccc_xml_file,
-      xmltable(
-           '/ReportData/ReportDetails'
-           passing xml_file
-           columns
-             swrs_report_id integer path 'ReportID[normalize-space(.)]' not null
-         ) as report_details,
-
       xmltable(
         '//UploadedFileName[string-length(text()) > 0]/parent::FileDetails'
         passing xml_file
@@ -27,9 +18,9 @@ create materialized view swrs_transform.historical_report_attachment_data as (
           sub_process_name varchar(1000) path 'normalize-space(./ancestor::SubProcess/@SubprocessName)',
           information_requirement varchar(1000) path 'normalize-space(./ancestor::SubProcess/@InformationRequirement)',
           file_number int path './File[normalize-space(.)]' default null,
-          uploaded_file_name varchar(1000) path './UploadedFileName',
+          uploaded_file_name varchar(1000) path 'normalize-space(./UploadedFileName)',
           uploaded_by varchar(1000) path 'normalize-space(./UploadedBy)',
-          uploaded_at timestamptz path './UploadedDate[not(contains(normalize-space(.), "/")) and not(contains(normalize-space(.), "AM")) and not(contains(normalize-space(.), "am")) and not(contains(normalize-space(.), "PM")) and not(contains(normalize-space(.), "pm"))]' default null
+          uploaded_at timestamptz path 'normalize-space(./UploadedDate)'
       ) as attachment_data
 ) with no data;
 
@@ -37,8 +28,6 @@ create index historical_attachment_primary_key on swrs_transform.historical_repo
 
 comment on materialized view swrs_transform.historical_report_attachment_data is 'This materialized view contains data about the attachments related to a SWRS(single window reporting system) report, derived from eccc_xml_file table';
 comment on column swrs_transform.historical_report_attachment_data.id is 'A generated index used for keying in the ggircs schema';
-comment on column swrs_transform.historical_report_attachment_data.zip_file_id is 'The zip file this swrs report was parsed from';
-comment on column swrs_transform.historical_report_attachment_data.swrs_report_id is 'The swrs report id';
 comment on column swrs_transform.historical_report_attachment_data.eccc_xml_file_id is 'The xml file this report attachment was parsed from';
 comment on column swrs_transform.historical_report_attachment_data.process_name is 'The process_name in this context describes the type of attachment (ie: Process Flow Diagram)';
 comment on column swrs_transform.historical_report_attachment_data.sub_process_name is 'The sub_process_name in this context is a more in-depth description of this attachment';

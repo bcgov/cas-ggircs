@@ -26,9 +26,9 @@ GGIRCS is a tool designed to modernize the annual reporting and verification of 
 
 - Run `make test` to execute all pgTAP-based tests against a `ggircs_test` database
 
-- If needed, create a development database using `$ createdb ggircs_dev`
+- If needed, create a development database using `$ createdb ggircs`
 
-- Run `sqitch deploy` to deploy to a `ggircs_dev` database
+- Run `sqitch deploy` to deploy to a `ggircs` database
 
 ### Using Sqitch
 

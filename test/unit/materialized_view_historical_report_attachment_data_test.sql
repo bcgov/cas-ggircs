@@ -3,14 +3,31 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(5);
+select plan(6);
 
 -- Test matview report exists in schema swrs_transform
 select has_materialized_view('swrs_transform', 'historical_report_attachment_data', 'Materialized view historical_report_attachment_data exists');
 
 -- Setup fixture
-insert into swrs_extract.eccc_xml_file (imported_at, xml_file) VALUES ('2018-09-29T11:55:39.423', $$
-  <Root>
+insert into swrs_extract.eccc_zip_file (zip_file_name) values ('GHGBC_PROD_20180930.zip');
+
+insert into swrs_extract.eccc_xml_file (imported_at, zip_file_id, xml_file) VALUES ('2018-09-29T11:55:39.423',
+  (select id from swrs_extract.eccc_zip_file limit 1), $$
+  <ReportData>
+    <ReportDetails>
+      <ReportID>800855555</ReportID>
+      <PrepopReportID></PrepopReportID>
+      <ReportType>R7</ReportType>
+      <FacilityId>666</FacilityId>
+      <OrganisationId>1337</OrganisationId>
+      <ReportingPeriodDuration>1999</ReportingPeriodDuration>
+      <ReportStatus>
+        <Status>In Progress</Status>
+        <Version>3</Version>
+        <LastModifiedBy>Donny Donaldson McDonaldface</LastModifiedBy>
+        <LastModifiedDate>2018-09-28T11:55:39.423</LastModifiedDate>
+      </ReportStatus>
+    </ReportDetails>
   <ReportComments>
       <Process ProcessName="Comments and Supporting Information">
         <SubProcess SubprocessName="Comments Regarding GHG Reporting" InformationRequirement="Optional">
@@ -68,7 +85,19 @@ insert into swrs_extract.eccc_xml_file (imported_at, xml_file) VALUES ('2018-09-
         </SubProcess>
       </Process>
     </BadDate>
-    </Root>
+    <FileNameSpace>
+      <Process ProcessName="FileNameSpace">
+        <SubProcess SubprocessName="FileNameSpace">
+          <FileDetails>
+            <File>666</File>
+            <UploadedFileName>Space  Time.pdf</UploadedFileName>
+            <UploadedBy>Bob Lobblaw</UploadedBy>
+            <UploadedDate>2021-04-28T18:25:45-07</UploadedDate>
+          </FileDetails>
+        </SubProcess>
+      </Process>
+    </FileNameSpace>
+    </ReportData>
 $$);
 
 -- Ensure fixture is processed correctly
@@ -128,6 +157,18 @@ select results_eq(
     values (null::timestamptz)
   $$,
   'Parses malformed UploadedDate tags as null'
+);
+
+select results_eq(
+  $$
+    select
+      uploaded_file_name
+    from swrs_transform.historical_report_attachment_data where process_name = 'FileNameSpace'
+  $$,
+  $$
+    values ('Space  Time.pdf'::varchar)
+  $$,
+  'Leaves spacing intact for filenames'
 );
 
 select finish();
