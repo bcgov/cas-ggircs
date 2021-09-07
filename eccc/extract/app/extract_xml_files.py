@@ -8,10 +8,8 @@ from zip_file_processor import process_report_xmls
 import os
 import sys
 import logging
-import psycopg2
 from google.cloud import storage
-from psycopg2 import pool
-
+from psycopg2 import pool, DatabaseError
 
 logging.basicConfig(
     format='%(asctime)s | %(name)s | %(levelname)s: %(message)s')
@@ -34,7 +32,7 @@ try:
         print(file)
         process_report_xmls(file[0], file[1], storage_client, gcs_bucket_name, pg_pool, log)
 
-except (Exception, psycopg2.DatabaseError) as error:
+except (Exception, DatabaseError) as error:
     log.error(f"Error: {error}")
     sys.exit(1)
 finally:
