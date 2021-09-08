@@ -55,32 +55,21 @@ export const RenderDiff: React.FunctionComponent<Props> = ({
     const str = token.value;
     const leadingWhiteSpace = str.match(pttrn)?.[0].length - 1;
     let tagColor = "black";
+
+    const tagHighlighterArray = [
+      "#0000e0",
+      "#aa0000",
+      "#ff4500",
+      "#360036",
+      "#ff00ff",
+      "#8d6708",
+      "#1978d4",
+    ];
     if (Number.isInteger(leadingWhiteSpace))
-      switch (leadingWhiteSpace) {
-        case 0:
-          tagColor = "#0000e0";
-          break;
-        case 4:
-          tagColor = "#aa0000";
-          break;
-        case 8:
-          tagColor = "#ff4500";
-          break;
-        case 12:
-          tagColor = "#360036";
-          break;
-        case 16:
-          tagColor = "#ff00ff";
-          break;
-        case 20:
-          tagColor = "#8d6708";
-          break;
-        case 24:
-          tagColor = "#1978d4";
-          break;
-        default:
-          tagColor = "#ff0000";
-      }
+      leadingWhiteSpace < 25
+        ? (tagColor = tagHighlighterArray[leadingWhiteSpace / 4])
+        : "#ff0000";
+
     if (token.type === "text") {
       return (
         <span key={i} style={{ color: tagColor }}>

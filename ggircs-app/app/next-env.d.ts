@@ -55,7 +55,7 @@ export interface RelayReportObject {
       };
     };
   };
-};
+}
 
 export interface SwrsReportData {
   submissionDate: string;
