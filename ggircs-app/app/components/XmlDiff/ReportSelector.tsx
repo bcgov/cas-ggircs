@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ArrayOfReports, SwrsReportData } from "next-env";
+import { RelayReportObject, SwrsReportData } from "next-env";
 import Input from "@button-inc/bcgov-theme/Input";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faTimes } from "@fortawesome/free-solid-svg-icons";
@@ -8,7 +8,7 @@ interface Props {
   diffSide: String;
   setSwrsReportId: (id: number, report: SwrsReportData) => void;
   swrsReportId?: number;
-  allReports: ArrayOfReports;
+  allReports: readonly RelayReportObject[];
 }
 
 export const ReportSelector: React.FunctionComponent<Props> = ({
@@ -23,7 +23,7 @@ export const ReportSelector: React.FunctionComponent<Props> = ({
   }
 
   const validateReportId = (id: number) => {
-    const edge = allReports.edges.find((edge) => edge.node.swrsReportId === id);
+    const edge = allReports.find((edge) => edge.node.swrsReportId === id);
     if (edge) {
       setSwrsReportIdIsvalid(true);
       setSwrsReportId(edge.node.swrsReportId, edge.node.latestSwrsReport);

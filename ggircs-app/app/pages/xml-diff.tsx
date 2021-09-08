@@ -102,7 +102,7 @@ export default class Index extends Component<Props, State> {
               diffSide={this.state.isReversed ? "Second" : "First"}
               setSwrsReportId={this.handleLeftSideChange}
               swrsReportId={this.state.leftSideId}
-              allReports={query.allReports}
+              allReports={query.allReports.edges}
             />
           </Col>
           <Col md={{ span: 6, order: this.state.isReversed ? 1 : 2 }}>
@@ -110,7 +110,7 @@ export default class Index extends Component<Props, State> {
               diffSide={this.state.isReversed ? "First" : "Second"}
               setSwrsReportId={this.handleRightSideChange}
               swrsReportId={this.state.rightSideId}
-              allReports={query.allReports}
+              allReports={query.allReports.edges}
             />
           </Col>
         </Row>
