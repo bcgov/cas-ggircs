@@ -2,31 +2,29 @@ import React from "react";
 import { Row, Col } from "react-bootstrap";
 
 interface Props {
-  report: any;
+  zipFileName: string;
+  xmlFileName: string;
+  submissionDate: string;
 }
 
-export const DiffDetails: React.FunctionComponent<Props> = ({ report }) => (
-  <>
-    <Row>
-      <Col md={5}>
-        <strong>From Archive: </strong>
-      </Col>
-      <Col md={7}>
-        {report.ecccXmlFileByEcccXmlFileId.ecccZipFileByZipFileId.zipFileName}
-      </Col>
-    </Row>
-    <Row>
-      <Col md={5}>
-        <strong>Name: </strong>
-      </Col>
-      <Col md={7}>{report.ecccXmlFileByEcccXmlFileId.xmlFileName}</Col>
-    </Row>
-    <Row>
-      <Col md={5}>
-        <strong>Date Submitted: </strong>
-      </Col>
-      <Col md={7}>{report.submissionDate.split("T")[0]}</Col>
-    </Row>
-  </>
+export const DiffDetails: React.FunctionComponent<Props> = ({
+  zipFileName,
+  xmlFileName,
+  submissionDate,
+}) => (
+  <Row>
+    <Col md={5}>
+      <strong>From Archive: </strong>
+    </Col>
+    <Col md={7}>{zipFileName}</Col>
+    <Col md={5}>
+      <strong>Name: </strong>
+    </Col>
+    <Col md={7}>{xmlFileName}</Col>
+    <Col md={5}>
+      <strong>Date Submitted: </strong>
+    </Col>
+    <Col md={7}>{submissionDate.split("T")[0]}</Col>
+  </Row>
 );
 export default DiffDetails;

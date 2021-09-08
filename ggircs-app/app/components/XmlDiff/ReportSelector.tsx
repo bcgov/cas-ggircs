@@ -1,13 +1,14 @@
 import React, { useState } from "react";
+import { ArrayOfReports, SwrsReportData } from "next-env";
 import Input from "@button-inc/bcgov-theme/Input";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faTimes } from "@fortawesome/free-solid-svg-icons";
 
 interface Props {
   diffSide: String;
-  setSwrsReportId: (id: number, xml: any) => void;
+  setSwrsReportId: (id: number, report: SwrsReportData) => void;
   swrsReportId?: number;
-  allReports: any;
+  allReports: ArrayOfReports;
 }
 
 export const ReportSelector: React.FunctionComponent<Props> = ({

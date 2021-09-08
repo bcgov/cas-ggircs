@@ -118,12 +118,32 @@ export default class Index extends Component<Props, State> {
         <Row style={{ marginTop: "2em" }}>
           <Col md={{ span: 6, order: this.state.isReversed ? 2 : 1 }}>
             {this.state.leftSideReport && (
-              <DiffDetails report={this.state.leftSideReport} />
+              <DiffDetails
+                zipFileName={
+                  this.state.leftSideReport.ecccXmlFileByEcccXmlFileId
+                    .ecccZipFileByZipFileId.zipFileName
+                }
+                xmlFileName={
+                  this.state.leftSideReport.ecccXmlFileByEcccXmlFileId
+                    .xmlFileName
+                }
+                submissionDate={this.state.leftSideReport.submissionDate}
+              />
             )}
           </Col>
           <Col md={{ span: 6, order: this.state.isReversed ? 1 : 2 }}>
             {this.state.rightSideReport && (
-              <DiffDetails report={this.state.rightSideReport} />
+              <DiffDetails
+                zipFileName={
+                  this.state.rightSideReport.ecccXmlFileByEcccXmlFileId
+                    .ecccZipFileByZipFileId.zipFileName
+                }
+                xmlFileName={
+                  this.state.rightSideReport.ecccXmlFileByEcccXmlFileId
+                    .xmlFileName
+                }
+                submissionDate={this.state.rightSideReport.submissionDate}
+              />
             )}
           </Col>
         </Row>

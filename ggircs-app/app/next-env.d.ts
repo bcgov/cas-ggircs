@@ -40,3 +40,34 @@ export interface EcccFile {
   size: number;
   created_at: string;
 }
+
+export interface ArrayOfReports {
+  edges: [
+    {
+      node: {
+        swrsReportId: number;
+        latestSwrsReport: {
+          submissionDate: string;
+          ecccXmlFileByEcccXmlFileId: {
+            xmlFileName: string;
+            xmlFile: string;
+            ecccZipFileByZipFileId: {
+              zipFileName: string;
+            };
+          };
+        };
+      };
+    }
+  ];
+}
+
+export interface SwrsReportData {
+  submissionDate: string;
+  ecccXmlFileByEcccXmlFileId: {
+    xmlFileName: string;
+    xmlFile: string;
+    ecccZipFileByZipFileId: {
+      zipFileName: string;
+    };
+  };
+}

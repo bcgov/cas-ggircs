@@ -13,7 +13,7 @@ const SwrsDataAccessCard: React.FunctionComponent = () => (
     </Link>
     <div id="bottom-button">
       <Link href="/xml-diff" passHref>
-        <Button marginTop="2em">Diff XML data</Button>
+        <Button marginTop="2em">Compare SWRS report XML files</Button>
       </Link>
     </div>
     <style jsx>
