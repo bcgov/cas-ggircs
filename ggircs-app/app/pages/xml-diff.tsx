@@ -34,6 +34,7 @@ interface State {
   rightSideReport: any;
   isReversed: Boolean;
   isCollapsed: Boolean;
+  renderDiff: Boolean;
 }
 export default class Index extends Component<Props, State> {
   static allowedGroups = ALLOWED_GROUPS;
@@ -72,6 +73,7 @@ export default class Index extends Component<Props, State> {
     rightSideReport: null,
     isReversed: false,
     isCollapsed: false,
+    renderDiff: true,
   };
 
   handleLeftSideChange = (id: Number, report: any) => {
@@ -82,12 +84,16 @@ export default class Index extends Component<Props, State> {
     this.setState({ rightSideId: id, rightSideReport: report });
   };
 
-  reverse = () => {
-    this.setState((prevState) => ({ isReversed: !prevState.isReversed }));
+  reverse = async () => {
+    this.setState({renderDiff: false});
+    await this.setState((prevState) => ({ isReversed: !prevState.isReversed }));
+    this.setState({renderDiff: true});
   };
 
-  summarize = () => {
-    this.setState((prevState) => ({ isCollapsed: !prevState.isCollapsed }));
+  summarize = async () => {
+    this.setState({renderDiff: false});
+    await this.setState((prevState) => ({ isCollapsed: !prevState.isCollapsed }));
+    this.setState({renderDiff: true});
   };
 
   render() {
@@ -169,7 +175,7 @@ export default class Index extends Component<Props, State> {
           </Col>
         </Row>
 
-        {this.state.leftSideReport && this.state.rightSideReport && (
+        {this.state.leftSideReport && this.state.rightSideReport && this.state.renderDiff && (
           <div style={{ height: "40em", overflow: "scroll" }}>
             <RenderDiff
               oldText={

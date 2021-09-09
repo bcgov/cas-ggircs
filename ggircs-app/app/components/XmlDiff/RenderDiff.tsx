@@ -19,6 +19,7 @@ export const RenderDiff: React.FunctionComponent<Props> = ({
 }) => {
   const [loaded, setLoaded] = useState(false);
 
+  // UseEffect & setState to determine if this slow component is loading. Renders the loading spinner while loading.
   useEffect(() => {
     setLoaded(true);
   }, []);
