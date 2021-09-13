@@ -1,50 +1,72 @@
-import React, { useState } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { RelayReportObject, SwrsReportData } from "next-env";
 import Input from "@button-inc/bcgov-theme/Input";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { NextRouter } from "next/router";
+import debounce from 'lodash.debounce';
 
 interface Props {
   diffSide: String;
-  setSwrsReportId: (id: number, report: SwrsReportData) => void;
-  swrsReportId?: number;
+  setSwrsReport: (report: SwrsReportData) => void;
   allReports: readonly RelayReportObject[];
+  router: NextRouter
 }
 
 export const ReportSelector: React.FunctionComponent<Props> = ({
   diffSide,
-  setSwrsReportId,
-  swrsReportId,
+  setSwrsReport,
   allReports,
+  router
 }) => {
   const [swrsReportIdIsValid, setSwrsReportIdIsvalid] = useState<boolean>(null);
-  function sleep(ms) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
+  const [swrsReportId, setSwrsReportId] = useState<number>(Number(router.query[`${diffSide}SideId`]));
 
   const validateReportId = (id: number) => {
     const edge = allReports.find((edge) => edge.node.swrsReportId === id);
-    if (edge) {
+    if (!id) {
+      setSwrsReportIdIsvalid(null)
+      setSwrsReport(null);
+      handleRouter(id, false)
+    }
+    else if (edge) {
       setSwrsReportIdIsvalid(true);
-      setSwrsReportId(edge.node.swrsReportId, edge.node.latestSwrsReport);
+      setSwrsReport(edge.node.latestSwrsReport);
+      handleRouter(id, true)
     } else {
       setSwrsReportIdIsvalid(false);
-      setSwrsReportId(id, null);
+      setSwrsReport(null);
+      handleRouter(id, false)
     }
   };
 
-  const handleChange = async (e: React.SyntheticEvent) => {
-    e.stopPropagation();
-    e.preventDefault();
-    e.persist();
-    const target = e.target as HTMLInputElement;
-    await sleep(500);
-    if (target.value) {
-      validateReportId(Number(target.value));
-    } else {
-      setSwrsReportIdIsvalid(null);
-      setSwrsReportId(null, null);
+	const debouncedToRouter = useCallback(
+    debounce(nextValue => validateReportId(Number(nextValue)), 1000),
+  []);
+
+	const handleChange = event => {
+		const { value: nextValue } = event.target;
+		setSwrsReportId(nextValue);
+		debouncedToRouter(nextValue);
+	};
+
+  const handleRouter = (id: number, valid: boolean) => {
+    let query;
+    if (valid) {
+      query = {
+        ...router.query,
+        [`${diffSide}SideId`]: id
+      };
     }
+    else {
+      query = router.query
+      delete query[`${diffSide}SideId`];
+    }
+    const url = {
+      pathname: router.pathname,
+      query: query
+    };
+    router.push(url, url, {shallow: true});
   };
 
   const idSelector = (
@@ -57,6 +79,7 @@ export const ReportSelector: React.FunctionComponent<Props> = ({
       rounded
       size="medium"
       onChange={handleChange}
+      value={String(swrsReportId)}
     />
   );
 
@@ -72,7 +95,7 @@ export const ReportSelector: React.FunctionComponent<Props> = ({
         </em>
       </p>
       {idSelector}
-      {!swrsReportIdIsValid && swrsReportId && (
+      {swrsReportIdIsValid === false && swrsReportId && (
         <small style={{ color: "red" }}>
           <FontAwesomeIcon icon={faTimes} />
           &nbsp;The ID you have entered does not exist
@@ -86,10 +109,6 @@ export const ReportSelector: React.FunctionComponent<Props> = ({
       )}
     </div>
   );
-};
-
-ReportSelector.defaultProps = {
-  swrsReportId: null,
 };
 
 export default ReportSelector;

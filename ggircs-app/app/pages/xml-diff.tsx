@@ -28,9 +28,7 @@ interface Props extends PageComponentProps {
   query: xmlDiffQueryResponse["query"];
 }
 interface State {
-  leftSideId: Number;
   leftSideReport: any;
-  rightSideId: Number;
   rightSideReport: any;
   isReversed: Boolean;
   isCollapsed: Boolean;
@@ -67,21 +65,19 @@ export default class Index extends Component<Props, State> {
   `;
 
   state = {
-    leftSideId: null,
     leftSideReport: null,
-    rightSideId: null,
     rightSideReport: null,
     isReversed: false,
     isCollapsed: false,
     renderDiff: true,
   };
 
-  handleLeftSideChange = (id: Number, report: any) => {
-    this.setState({ leftSideId: id, leftSideReport: report });
+  handleLeftSideChange = (report: any) => {
+    this.setState({ leftSideReport: report });
   };
 
-  handleRightSideChange = (id: Number, report: any) => {
-    this.setState({ rightSideId: id, rightSideReport: report });
+  handleRightSideChange = (report: any) => {
+    this.setState({ rightSideReport: report });
   };
 
   reverse = async () => {
@@ -108,17 +104,17 @@ export default class Index extends Component<Props, State> {
           <Col md={{ span: 6, order: this.state.isReversed ? 2 : 1 }}>
             <ReportSelector
               diffSide={this.state.isReversed ? "Second" : "First"}
-              setSwrsReportId={this.handleLeftSideChange}
-              swrsReportId={this.state.leftSideId}
+              setSwrsReport={this.handleLeftSideChange}
               allReports={query.allReports.edges}
+              router={this.props.router}
             />
           </Col>
           <Col md={{ span: 6, order: this.state.isReversed ? 1 : 2 }}>
             <ReportSelector
               diffSide={this.state.isReversed ? "First" : "Second"}
-              setSwrsReportId={this.handleRightSideChange}
-              swrsReportId={this.state.rightSideId}
+              setSwrsReport={this.handleRightSideChange}
               allReports={query.allReports.edges}
+              router={this.props.router}
             />
           </Col>
         </Row>

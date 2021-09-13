@@ -33,6 +33,9 @@ export default class App extends NextApp<AppProps> {
     };
   };
 
+  prevComponentProps = null;
+  prevComponentClass = null;
+
   render() {
     const {
       Component,
@@ -56,12 +59,35 @@ export default class App extends NextApp<AppProps> {
         >
           <QueryRenderer
             environment={environment}
+            fetchPolicy="store-and-network"
             query={Component.query}
-            variables={{ ...variables, ...router.query }}
-            render={({ error, props }: { error: any; props: any }) => {
+            variables={{
+              ...variables,
+              ...router.query
+            }}
+            render={({error, props}: {error: any; props: any}) => {
               if (error !== null) throw error; // Let the ErrorBoundary above render the error nicely
-              if (props)
-                return <Component {...props} router={this.props.router} />;
+              if (props) {
+                this.prevComponentProps = props;
+                this.prevComponentClass = Component;
+
+                return (
+                  <Component
+                    {...props}
+                    router={this.props.router}
+                    relayEnvironment={environment}
+                  />
+                );
+              }
+              if (Component === this.prevComponentClass)
+                return (
+                  <Component
+                    {...this.prevComponentProps}
+                    loading
+                    router={this.props.router}
+                    relayEnvironment={environment}
+                  />
+                );
               return (
                 <div>
                   <LoadingSpinner />
