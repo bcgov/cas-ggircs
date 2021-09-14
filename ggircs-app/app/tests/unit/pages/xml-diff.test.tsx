@@ -33,10 +33,10 @@ describe("The swrs-browser page", () => {
       },
     };
     wrapper.setState({
+      leftSideReport,
+      rightSideReport,
       leftSideId: 1,
-      leftSideReport: leftSideReport,
       rightSideId: 2,
-      rightSideReport: rightSideReport,
       isReversed: false,
       isCollapsed: false,
       renderDiff: true,
