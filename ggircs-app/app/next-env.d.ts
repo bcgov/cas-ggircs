@@ -22,9 +22,9 @@ export type PageComponent = NextComponentType<
   PageComponentProps
 > &
   ComponentClass<PageComponentProps> & {
-    static query: GraphQLTaggedNode;
-    static isAccessProtected: boolean;
-    static allowedGroups: string[];
+    query: GraphQLTaggedNode;
+    isAccessProtected: boolean;
+    allowedGroups: string[];
   };
 
 export interface CacheConfigWithDebounce extends CacheConfig {
@@ -39,4 +39,31 @@ export interface EcccFile {
   name: string;
   size: number;
   created_at: string;
+}
+
+export interface RelayReportObject {
+  node: {
+    swrsReportId: number;
+    latestSwrsReport: {
+      submissionDate: string;
+      ecccXmlFileByEcccXmlFileId: {
+        xmlFileName: string;
+        xmlFile: string;
+        ecccZipFileByZipFileId: {
+          zipFileName: string;
+        };
+      };
+    };
+  };
+}
+
+export interface SwrsReportData {
+  submissionDate: string;
+  ecccXmlFileByEcccXmlFileId: {
+    xmlFileName: string;
+    xmlFile: string;
+    ecccZipFileByZipFileId: {
+      zipFileName: string;
+    };
+  };
 }

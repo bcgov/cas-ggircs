@@ -1,0 +1,186 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`The swrs-browser page renders the diff component when it has two defined xml reports & showDiff is set to true 1`] = `
+<Relay(DefaultLayout)
+  session={null}
+  title="ECCC SWRS XML Diff"
+  width="wide"
+>
+  <Row
+    noGutters={false}
+  >
+    <Col
+      md={
+        Object {
+          "order": 1,
+          "span": 6,
+        }
+      }
+    >
+      <ReportSelector
+        allReports={null}
+        diffSide="First"
+        setSwrsReportId={[Function]}
+        swrsReportId={1}
+      />
+    </Col>
+    <Col
+      md={
+        Object {
+          "order": 2,
+          "span": 6,
+        }
+      }
+    >
+      <ReportSelector
+        allReports={null}
+        diffSide="Second"
+        setSwrsReportId={[Function]}
+        swrsReportId={2}
+      />
+    </Col>
+  </Row>
+  <Row
+    noGutters={false}
+    style={
+      Object {
+        "marginTop": "2em",
+      }
+    }
+  >
+    <Col
+      md={
+        Object {
+          "order": 1,
+          "span": 6,
+        }
+      }
+    >
+      <DiffDetails
+        submissionDate="Jan 1 2020"
+        xmlFileName="xmltestL"
+        zipFileName="ziptest"
+      />
+    </Col>
+    <Col
+      md={
+        Object {
+          "order": 2,
+          "span": 6,
+        }
+      }
+    >
+      <DiffDetails
+        submissionDate="Jan 2 2020"
+        xmlFileName="xmltestR"
+        zipFileName="ziptestR"
+      />
+    </Col>
+  </Row>
+  <Row
+    noGutters={false}
+    style={
+      Object {
+        "marginBottom": "2em",
+        "marginTop": "2em",
+      }
+    }
+  >
+    <Col
+      md={
+        Object {
+          "offset": 6,
+          "span": 3,
+        }
+      }
+    >
+      <Row
+        noGutters={false}
+        style={
+          Object {
+            "float": "right",
+          }
+        }
+      >
+        <p
+          style={
+            Object {
+              "marginBottom": "auto",
+              "marginTop": "auto",
+            }
+          }
+        >
+          <strong>
+            Summarize Changes: 
+          </strong>
+        </p>
+        <ForwardRef(LoadableComponent)
+          checked={false}
+          offlabel="Off"
+          onChange={[Function]}
+          onlabel="On"
+        />
+      </Row>
+    </Col>
+    <Col
+      md={
+        Object {
+          "span": 3,
+        }
+      }
+    >
+      <Button
+        onClick={[Function]}
+        size="small"
+      >
+        <FontAwesomeIcon
+          border={false}
+          className=""
+          fixedWidth={false}
+          flip={null}
+          icon={
+            Object {
+              "icon": Array [
+                512,
+                512,
+                Array [],
+                "f362",
+                "M0 168v-16c0-13.255 10.745-24 24-24h360V80c0-21.367 25.899-32.042 40.971-16.971l80 80c9.372 9.373 9.372 24.569 0 33.941l-80 80C409.956 271.982 384 261.456 384 240v-48H24c-13.255 0-24-10.745-24-24zm488 152H128v-48c0-21.314-25.862-32.08-40.971-16.971l-80 80c-9.372 9.373-9.372 24.569 0 33.941l80 80C102.057 463.997 128 453.437 128 432v-48h360c13.255 0 24-10.745 24-24v-16c0-13.255-10.745-24-24-24z",
+              ],
+              "iconName": "exchange-alt",
+              "prefix": "fas",
+            }
+          }
+          inverse={false}
+          listItem={false}
+          mask={null}
+          pull={null}
+          pulse={false}
+          rotation={null}
+          size={null}
+          spin={false}
+          swapOpacity={false}
+          symbol={false}
+          title=""
+          transform={null}
+        />
+         Swap left/right
+      </Button>
+    </Col>
+  </Row>
+  <div
+    style={
+      Object {
+        "height": "40em",
+        "overflow": "scroll",
+      }
+    }
+  >
+    <RenderDiff
+      collapse={false}
+      newText="<report2></report2>"
+      oldText="<report1></report1>"
+    />
+  </div>
+</Relay(DefaultLayout)>
+`;
