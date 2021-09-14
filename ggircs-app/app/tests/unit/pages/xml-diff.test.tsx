@@ -8,30 +8,30 @@ describe("The swrs-browser page", () => {
       <XmlDiff
         query={{
           session: null,
-          allReports: {edges: null}
+          allReports: { edges: null },
         }}
       />
     );
-    const leftSideReport= {
-      submissionDate: 'Jan 1 2020',
+    const leftSideReport = {
+      submissionDate: "Jan 1 2020",
       ecccXmlFileByEcccXmlFileId: {
-        xmlFileName: 'xmltestL',
-        xmlFile: '<report1></report1>',
+        xmlFileName: "xmltestL",
+        xmlFile: "<report1></report1>",
         ecccZipFileByZipFileId: {
-          zipFileName: 'ziptest'
-        }
-      }
-    }
-    const rightSideReport= {
-      submissionDate: 'Jan 2 2020',
+          zipFileName: "ziptest",
+        },
+      },
+    };
+    const rightSideReport = {
+      submissionDate: "Jan 2 2020",
       ecccXmlFileByEcccXmlFileId: {
-        xmlFileName: 'xmltestR',
-        xmlFile: '<report2></report2>',
+        xmlFileName: "xmltestR",
+        xmlFile: "<report2></report2>",
         ecccZipFileByZipFileId: {
-          zipFileName: 'ziptestR'
-        }
-      }
-    }
+          zipFileName: "ziptestR",
+        },
+      },
+    };
     wrapper.setState({
       leftSideId: 1,
       leftSideReport: leftSideReport,
@@ -39,7 +39,8 @@ describe("The swrs-browser page", () => {
       rightSideReport: rightSideReport,
       isReversed: false,
       isCollapsed: false,
-      renderDiff: true,})
+      renderDiff: true,
+    });
     expect(wrapper).toMatchSnapshot();
   });
 });

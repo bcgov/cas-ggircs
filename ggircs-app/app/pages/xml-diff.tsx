@@ -85,15 +85,17 @@ export default class Index extends Component<Props, State> {
   };
 
   reverse = async () => {
-    this.setState({renderDiff: false});
+    this.setState({ renderDiff: false });
     await this.setState((prevState) => ({ isReversed: !prevState.isReversed }));
-    this.setState({renderDiff: true});
+    this.setState({ renderDiff: true });
   };
 
   summarize = async () => {
-    this.setState({renderDiff: false});
-    await this.setState((prevState) => ({ isCollapsed: !prevState.isCollapsed }));
-    this.setState({renderDiff: true});
+    this.setState({ renderDiff: false });
+    await this.setState((prevState) => ({
+      isCollapsed: !prevState.isCollapsed,
+    }));
+    this.setState({ renderDiff: true });
   };
 
   render() {
@@ -175,35 +177,37 @@ export default class Index extends Component<Props, State> {
           </Col>
         </Row>
 
-        {this.state.leftSideReport && this.state.rightSideReport && this.state.renderDiff && (
-          <div style={{ height: "40em", overflow: "scroll" }}>
-            <RenderDiff
-              oldText={
-                this.state.isReversed
-                  ? format(
-                      this.state.rightSideReport.ecccXmlFileByEcccXmlFileId
-                        .xmlFile
-                    )
-                  : format(
-                      this.state.leftSideReport.ecccXmlFileByEcccXmlFileId
-                        .xmlFile
-                    )
-              }
-              newText={
-                this.state.isReversed
-                  ? format(
-                      this.state.leftSideReport.ecccXmlFileByEcccXmlFileId
-                        .xmlFile
-                    )
-                  : format(
-                      this.state.rightSideReport.ecccXmlFileByEcccXmlFileId
-                        .xmlFile
-                    )
-              }
-              collapse={this.state.isCollapsed}
-            />
-          </div>
-        )}
+        {this.state.leftSideReport &&
+          this.state.rightSideReport &&
+          this.state.renderDiff && (
+            <div style={{ height: "40em", overflow: "scroll" }}>
+              <RenderDiff
+                oldText={
+                  this.state.isReversed
+                    ? format(
+                        this.state.rightSideReport.ecccXmlFileByEcccXmlFileId
+                          .xmlFile
+                      )
+                    : format(
+                        this.state.leftSideReport.ecccXmlFileByEcccXmlFileId
+                          .xmlFile
+                      )
+                }
+                newText={
+                  this.state.isReversed
+                    ? format(
+                        this.state.leftSideReport.ecccXmlFileByEcccXmlFileId
+                          .xmlFile
+                      )
+                    : format(
+                        this.state.rightSideReport.ecccXmlFileByEcccXmlFileId
+                          .xmlFile
+                      )
+                }
+                collapse={this.state.isCollapsed}
+              />
+            </div>
+          )}
       </DefaultLayout>
     );
   }
