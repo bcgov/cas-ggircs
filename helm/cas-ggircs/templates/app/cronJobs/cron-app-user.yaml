@@ -51,7 +51,7 @@ spec:
                 - name: GGIRCS_USER
                   valueFrom:
                     secretKeyRef:
-                      key: ggircs_user
+                      key: relay-user
                       name: {{ template "cas-ggircs.fullname" . }}-app
                 - name: NAMESPACE
                   valueFrom:
