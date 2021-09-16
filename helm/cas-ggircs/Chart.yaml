@@ -2,8 +2,8 @@ apiVersion: v2
 name: cas-ggircs
 description: Helm chart for the GGIRCS database and ETL
 type: application
-version: 0.2.16
-appVersion: 1.7.0
+version: 0.2.17
+appVersion: 1.8.0
 dependencies:
   - name: cas-postgres
     version: "0.8.0"
