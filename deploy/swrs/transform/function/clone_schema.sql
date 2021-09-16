@@ -165,8 +165,10 @@ BEGIN
   LOOP
     IF show_details THEN RAISE NOTICE 'Creating function %...', xrec.func_name; END IF;
     SELECT pg_get_functiondef(xrec.func_oid) INTO qry;
-    SELECT replace(qry, source_schema_dot, dest_schema_dot) INTO dest_qry;
-    EXECUTE dest_qry;
+    -- Split the function by the 'AS' part in order to only replace the source_schema in the definition, paramters and return values.
+    SELECT replace((select split_part(qry, 'AS', 1)), source_schema_dot, dest_schema_dot) INTO dest_qry;
+    -- Rebuild the function by concatenating the replaced definition with the unchanged body
+    EXECUTE dest_qry || 'AS' || (SELECT split_part(qry, 'AS', 2));
   END LOOP;
 
   -- add Table Triggers
