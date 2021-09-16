@@ -44,6 +44,7 @@ persistence:
   user: ggircs
   readonlyUser: ggircs_readonly
   appUser: ggircs_app
+  relayUser: ggircs_user
   preInitDb: ""
 
 cas-postgres:
