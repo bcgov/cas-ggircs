@@ -48,7 +48,7 @@ spec:
                     secretKeyRef:
                       key: database-app-password
                       name: {{ template "cas-ggircs.fullname" . }}-app
-                - name: GGIRCS_USER
+                - name: RELAY_USER
                   valueFrom:
                     secretKeyRef:
                       key: relay-user
@@ -75,8 +75,8 @@ spec:
                   set -euo pipefail;
                   create-user-db -d $(PGDATABASE) -u $(GGIRCS_APP_USER) -p $(GGIRCS_APP_PASSWORD)
                   psql<<EOF
-                    grant usage on schema swrs_history to $(GGIRCS_USER);
-                    grant usage on schema swrs_extract to $(GGIRCS_USER);
-                    grant select on all tables in schema swrs_history to $(GGIRCS_USER);
-                    grant select on all tables in schema swrs_extract to $(GGIRCS_USER);
+                    grant usage on schema swrs_history to $(RELAY_USER);
+                    grant usage on schema swrs_extract to $(RELAY_USER);
+                    grant select on all tables in schema swrs_history to $(RELAY_USER);
+                    grant select on all tables in schema swrs_extract to $(RELAY_USER);
                   EOF
