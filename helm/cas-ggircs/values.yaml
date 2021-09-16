@@ -126,3 +126,8 @@ trigger-ggircs-deploy-db:
   dagId: cas_ggircs_deploy_db
   helm:
     hook: false
+
+ghg-credentials-issuer:
+  enabled: false
+  secretName: ghg-credentials-issuer
+  secretApiKeyProp: api-key

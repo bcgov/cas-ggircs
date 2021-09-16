@@ -158,3 +158,4 @@ swrs/transform/function/clone_schema [swrs/transform/function/clone_schema@v1.7.
 @v1.8.0 2021-09-16T21:38:58Z Dylan Leard <dylan@button.is> # release v1.8.0
 @v1.8.1 2021-09-17T16:15:15Z Dylan Leard <dylan@button.is> # release v1.8.1
 @v1.8.2 2021-09-24T15:41:43Z Dylan Leard <dylan@button.is> # release v1.8.2
+swrs/public/table/organisation_bc_registry_id 2021-09-13T16:21:58Z Matthieu Foucault <matthieu@button.is> # add lookup table for organisations BC registry ids

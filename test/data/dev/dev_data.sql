@@ -147,4 +147,8 @@ do $report$
   end
 $report$;
 
+insert into swrs.organisation_bc_registry_id (swrs_organisation_id, bc_registry_id) values
+(1, 'BC0022383'),
+(6, 'BC0033357');
+
 commit;
