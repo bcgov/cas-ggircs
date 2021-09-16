@@ -24,7 +24,7 @@ export const DiffDetails: React.FunctionComponent<Props> = ({
     <Col md={5}>
       <strong>Date Submitted: </strong>
     </Col>
-    <Col md={7}>{submissionDate.split("T")[0]}</Col>
+    <Col md={7}>{submissionDate?.split("T")[0]}</Col>
   </Row>
 );
 export default DiffDetails;
