@@ -23,8 +23,8 @@ DEFAULT_ATTRIBUTES = [
     'hfcs_emissions',
     'pfcs_emissions',
     'sf6_emissions',
-    # 'verification_body',
-    # 'verification_result',
+    'verification_body',
+    'verification_result',
     'reporting_year',
     'issued_date',
     'effective_date'
@@ -50,20 +50,12 @@ parser.add_argument('--name', '-n',
 parser.add_argument('--version', '-v',
                     dest='schema_version',
                     help='Schema version (optional)')
-parser.add_argument('--mapping', '-m',
-                    dest='csv_schema_mapping',
-                    help='CSV to Schema Mappings (optional)')
-parser.add_argument('--registry', '-r',
-                    dest='company_registry',
-                    help='Company to BC Registration ID Mappings (optional)')
-
 
 def parse_csv(csv_file,
               year,
               schema_file,
               schema_name,
-              schema_version,
-              csv_schema_mapping):
+              schema_version):
 
     _today = date.today().isoformat()
 
@@ -89,9 +81,6 @@ def parse_csv(csv_file,
             _schema_name = schema['name']
             _schema_version = schema['version']
             _schema_attributes = schema['attributes']
-
-    if csv_schema_mapping and pathlib.Path(csv_schema_mapping).exists():
-        _mappings = pd.read_csv(csv_schema_mapping, index_col=False)
 
     _emissions = pd.read_csv(csv_file, index_col=False, header=0, skiprows=0, keep_default_na=True)
 

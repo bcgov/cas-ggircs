@@ -97,14 +97,16 @@ def main():
     sf6 as (select report_id, sum(quantity) sf6_sum from swrs.emission where gas_type ilike 'sf6%' group by report_id)
     select distinct on (f.facility_name, r.reporting_period_duration)
         obcid.bc_registry_id as registration_id,
-        f.facility_name, o.business_legal_name as company_name, r.reporting_period_duration as reporting_year, n.naics_code, nc.naics_category as naics_description, f.latitude, f.longitude,
+        f.facility_name, r.reporting_period_duration as reporting_year, n.naics_code, nc.naics_category as naics_description, f.latitude, f.longitude,
         coalesce((select bio_sum from bio where f.report_id = bio.report_id), 0) as co2bio,
         coalesce((select nonbio_sum from nonbio where f.report_id = nonbio.report_id), 0) as co2nonbio,
         coalesce((select n2o_sum from n2o where f.report_id = n2o.report_id), 0) as n2o,
         coalesce((select ch4_sum from ch4 where f.report_id = ch4.report_id), 0) as ch4,
         coalesce((select hfc_sum from hfc where f.report_id = hfc.report_id), 0) as hfc,
         coalesce((select pfc_sum from pfc where f.report_id = pfc.report_id), 0) as pfc,
-        coalesce((select sf6_sum from sf6 where f.report_id = sf6.report_id), 0) as sf6
+        coalesce((select sf6_sum from sf6 where f.report_id = sf6.report_id), 0) as sf6,
+        (select '') as vr,
+        (select '') as vb
         from swrs.facility f
         join swrs.organisation o on f.organisation_id = o.id
         right join swrs.organisation_bc_registry_id obcid on o.swrs_organisation_id = obcid.swrs_organisation_id
@@ -116,10 +118,26 @@ def main():
         order by f.facility_name, r.reporting_period_duration;
     """)
     db_data = pg_cursor.fetchall()
-    # print(db_data)
+
     with open('/tmp/ghg.csv', 'w', newline='') as csvfile:
         writer = csv.writer(csvfile)
-        writer.writerow(['registration_id','facility_name', 'company_name', 'reporting_year', 'naics_code', 'naics_description', 'latitude', 'longitude', 'co2bio', 'co2nonbio', 'n2o', 'ch4', 'hfc', 'pfc', 'sf6'])
+        writer.writerow([
+            'registration_id',
+            'facility_name',
+            'reporting_year',
+            'primary_activity_code',
+            'primary_activity_description',
+            'facility_latitude',
+            'facility_longitude',
+            'co2_biomass_emissions',
+            'co2_fossil_emissions',
+            'n2o_emissions',
+            'ch4_emissions',
+            'hfcs_emissions',
+            'pfcs_emissions',
+            'sf6_emissions',
+            'verification_result',
+            'verification_body'])
         writer.writerows(db_data)
 
 
@@ -128,8 +146,7 @@ def main():
                        year=args.year,
                        schema_file=args.schema_file,
                        schema_name=args.schema_name,
-                       schema_version=args.schema_version,
-                       csv_schema_mapping=args.csv_schema_mapping)
+                       schema_version=args.schema_version)
 
     py_data = json.loads(json_data)
     print(py_data)
