@@ -68,7 +68,8 @@ ggircs_app_schema = PythonOperator(
     dag=deploy_db_dag)
 
 ggircs_db_init >> ggircs_etl >> ggircs_read_only_user
-ggircs_db_init >> ggircs_app_schema >> ggircs_app_user
+ggircs_etl >> ggircs_app_user
+ggircs_db_init >> ggircs_app_schema
 
 
 """
