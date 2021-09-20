@@ -1,3 +1,6 @@
+defaultImageTag: ~ # set to the GIT SHA1 in the Makefile
+defaultImagePullPolicy: IfNotPresent
+
 # Ciip portal configuration
 # These values need to be set for the chart to configure access from the ciip application/namepsace
 ciip:
@@ -12,16 +15,10 @@ metabase:
 image:
   app:
     repository: gcr.io/ggl-cas-storage/cas-ggircs-app
-    tag: "latest"
-    pullPolicy: Always
   schema:
     repository: gcr.io/ggl-cas-storage/cas-ggircs-app-schema
-    tag: "latest"
-    pullPolicy: Always
   etl:
     repository: gcr.io/ggl-cas-storage/cas-ggircs-etl
-    tag: "1.1.0-alpha5"
-    pullPolicy: Always
   psql:
     repository: gcr.io/ggl-cas-storage/cas-postgres
     pullPolicy: Always
@@ -32,12 +29,8 @@ image:
     tag: "0.1"
   ecccUpload:
     repository: gcr.io/ggl-cas-storage/cas-ggircs-eccc-upload
-    pullPolicy: Always
-    tag: "1.1.0-alpha5"
   ecccExtract:
     repository: gcr.io/ggl-cas-storage/cas-ggircs-eccc-extract
-    pullPolicy: Always
-    tag: "1.1.0-alpha5"
 
 persistence:
   db: ggircs
@@ -83,8 +76,6 @@ storageClassName: netapp-file-standard
 swrsGcpApi:
   image:
     repository: gcr.io/ggl-cas-storage/cas-ggircs-swrs-gcp-api
-    tag: ${GIT_SHA}
-    pullPolicy: Always
 
   replicas: 2
   port: 5000

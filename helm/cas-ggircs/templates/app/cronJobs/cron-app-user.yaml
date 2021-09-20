@@ -59,7 +59,8 @@ spec:
                       apiVersion: v1
                       fieldPath: metadata.namespace
               name: {{ template "cas-ggircs.fullname" . }}-app-user
-              image: {{ .Values.image.psql.repository }}:{{ .Values.image.psql.tag }}
+              image: {{ .Values.image.psql.repository }}:{{ default .Values.defaultImageTag .Values.image.psql.tag }}
+              imagePullPolicy: {{ default .Values.defaultImagePullPolicy .Values.image.psql.pullPolicy }}
               resources:
                 limits:
                   cpu: 500m

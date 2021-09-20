@@ -23,8 +23,8 @@ spec:
     spec:
       containers:
       - name: cas-ggircs-swrs-gcp-api
-        imagePullPolicy: {{ .Values.swrsGcpApi.image.pullPolicy }}
-        image: {{ .Values.swrsGcpApi.image.repository }}:{{ .Values.swrsGcpApi.image.tag }}
+        imagePullPolicy: {{ default .Values.defaultImagePullPolicy .Values.swrsGcpApi.image.pullPolicy }}
+        image: {{ .Values.swrsGcpApi.image.repository }}:{{ default .Values.defaultImageTag .Values.swrsGcpApi.image.tag }}
 {{- if .Values.swrsImportBucket.enable }}
         env:
           - name: GOOGLE_APPLICATION_CREDENTIALS

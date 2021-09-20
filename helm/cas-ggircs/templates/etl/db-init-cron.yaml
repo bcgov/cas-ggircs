@@ -51,7 +51,8 @@ spec:
                       key: database-name
                       name: {{ template "cas-ggircs.fullname" . }}
               name: {{ template "cas-ggircs.fullname" . }}-db-init
-              image: {{ .Values.image.psql.repository }}:{{ .Values.image.psql.tag }}
+              image: {{ .Values.image.psql.repository }}:{{ default .Values.defaultImageTag .Values.image.psql.tag }}
+              imagePullPolicy: {{ default .Values.defaultImagePullPolicy .Values.image.psql.pullPolicy }}
               resources:
                 limits:
                   cpu: 1000m

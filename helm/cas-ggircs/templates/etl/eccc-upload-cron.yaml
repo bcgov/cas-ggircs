@@ -49,8 +49,8 @@ spec:
                 - name: GOOGLE_APPLICATION_CREDENTIALS
                   value: /app/gcs/credentials.json
               name: {{ template "cas-ggircs.fullname" . }}-eccc-upload
-              image: {{ .Values.image.ecccUpload.repository }}:{{ .Values.image.ecccUpload.tag }}
-              imagePullPolicy: {{ .Values.image.ecccUpload.pullPolicy }}
+              image: {{ .Values.image.ecccUpload.repository }}:{{ default .Values.defaultImageTag .Values.image.ecccUpload.tag }}
+              imagePullPolicy: {{ default .Values.defaultImagePullPolicyTag .Values.image.ecccUpload.pullPolicy }}
               volumeMounts:
                 - name: gcs-credentials
                   mountPath: /app/gcs

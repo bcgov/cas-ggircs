@@ -48,7 +48,8 @@ spec:
                 - name: SQITCH_EMAIL
                   value: deployer@pathfinder.gov.bc.ca
               name: {{ template "cas-ggircs.fullname" . }}-etl-revert
-              image: {{ .Values.image.etl.repository }}:{{ .Values.image.etl.tag }}
+              image: {{ .Values.image.etl.repository }}:{{ default .Values.defaultImageTag .Values.image.etl.tag }}
+              imagePullPolicy: {{ default .Values.defaultImagePullPolicy .Values.image.etl.pullPolicy }}
               resources:
                 limits:
                   cpu: 1000m
