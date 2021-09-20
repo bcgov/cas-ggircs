@@ -20,8 +20,6 @@ exports[`The swrs-browser page renders the diff component when it has two define
       <ReportSelector
         allReports={null}
         diffSide="First"
-        setSwrsReportId={[Function]}
-        swrsReportId={1}
       />
     </Col>
     <Col
@@ -35,48 +33,20 @@ exports[`The swrs-browser page renders the diff component when it has two define
       <ReportSelector
         allReports={null}
         diffSide="Second"
-        setSwrsReportId={[Function]}
-        swrsReportId={2}
       />
     </Col>
   </Row>
-  <Row
-    noGutters={false}
-    style={
+  <Relay(DiffDetailsContainer)
+    isReversed={false}
+    query={
       Object {
-        "marginTop": "2em",
+        "allReports": Object {
+          "edges": null,
+        },
+        "session": null,
       }
     }
-  >
-    <Col
-      md={
-        Object {
-          "order": 1,
-          "span": 6,
-        }
-      }
-    >
-      <DiffDetails
-        submissionDate="Jan 1 2020"
-        xmlFileName="xmltestL"
-        zipFileName="ziptest"
-      />
-    </Col>
-    <Col
-      md={
-        Object {
-          "order": 2,
-          "span": 6,
-        }
-      }
-    >
-      <DiffDetails
-        submissionDate="Jan 2 2020"
-        xmlFileName="xmltestR"
-        zipFileName="ziptestR"
-      />
-    </Col>
-  </Row>
+  />
   <Row
     noGutters={false}
     style={
@@ -168,19 +138,15 @@ exports[`The swrs-browser page renders the diff component when it has two define
       </Button>
     </Col>
   </Row>
-  <div
-    style={
+  <Relay(RenderDiff)
+    query={
       Object {
-        "height": "40em",
-        "overflow": "scroll",
+        "allReports": Object {
+          "edges": null,
+        },
+        "session": null,
       }
     }
-  >
-    <RenderDiff
-      collapse={false}
-      newText="<report2></report2>"
-      oldText="<report1></report1>"
-    />
-  </div>
+  />
 </Relay(DefaultLayout)>
 `;
