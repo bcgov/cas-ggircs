@@ -71,12 +71,10 @@ jobs:
           name: Deploy to dev
           command: |
             helm install --atomic --wait-for-jobs --timeout 900s --namespace "9212c9-dev" \
-            --set image.etl.tag="$CIRCLE_SHA1" \
-            --set image.app.tag="$CIRCLE_SHA1" --set image.schema.tag="$CIRCLE_SHA1" \
+            --set defaultImageTag="$CIRCLE_SHA1" \
             --set cas-postgres.patroni.walE.enable=false \
             --set networkSecurityPolicies.enable=false \
             --set swrsImportBucket.enable=false \
-            --set swrsGcpApi.image.tag="$CIRCLE_SHA1" \
             --set app.route.ssl.enable=false --set app.route.ssl.issueCertIfDisabled=false \
             --set ciip.release="cas-ciip-portal" \
             --set ciip.prefix="09269b" \
