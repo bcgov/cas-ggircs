@@ -7,10 +7,9 @@ import { PageComponentProps } from "next-env";
 import DefaultLayout from "components/Layout/DefaultLayout";
 import { USER_GROUP } from "data/group-constants";
 import ReportSelector from "components/XmlDiff/ReportSelector";
-import DiffDetails from "components/XmlDiff/DiffDetails";
+import DiffDetailsContainer from "components/XmlDiff/DiffDetailsContainer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExchangeAlt } from "@fortawesome/free-solid-svg-icons";
-import format from "xml-formatter";
 import RenderDiff from "components/XmlDiff/RenderDiff";
 // Use dynamic import for BootstrapSwitchButton (workaround for SSR bug where window is not defined)
 import dynamic from "next/dynamic";
@@ -38,7 +37,11 @@ export default class Index extends Component<Props, State> {
   static allowedGroups = ALLOWED_GROUPS;
   static isAccessProtected = true;
   static query = graphql`
-    query xmlDiffQuery {
+
+    query xmlDiffQuery (
+      $FirstSideRelayId: ID!
+      $SecondSideRelayId: ID!
+    ) {
       query {
         session {
           ...DefaultLayout_session
@@ -46,23 +49,33 @@ export default class Index extends Component<Props, State> {
         allReports {
           edges {
             node {
+              id
               swrsReportId
-              latestSwrsReport {
-                submissionDate
-                ecccXmlFileByEcccXmlFileId {
-                  xmlFileName
-                  xmlFile
-                  ecccZipFileByZipFileId {
-                    zipFileName
-                  }
-                }
-              }
             }
           }
         }
+        ...DiffDetailsContainer_query
+          @arguments(
+            FirstSideRelayId: $FirstSideRelayId
+            SecondSideRelayId: $SecondSideRelayId
+          )
+        ...RenderDiff_query
+          @arguments(
+            FirstSideRelayId: $FirstSideRelayId
+            SecondSideRelayId: $SecondSideRelayId
+          )
       }
     }
   `;
+
+static async getInitialProps() {
+  return {
+    variables: {
+      FirstSideRelayId: '',
+      SecondSideRelayId: ''
+    }
+  };
+}
 
   state = {
     leftSideReport: null,
@@ -119,38 +132,11 @@ export default class Index extends Component<Props, State> {
           </Col>
         </Row>
 
-        <Row style={{ marginTop: "2em" }}>
-          <Col md={{ span: 6, order: this.state.isReversed ? 2 : 1 }}>
-            {this.state.leftSideReport && (
-              <DiffDetails
-                zipFileName={
-                  this.state.leftSideReport.ecccXmlFileByEcccXmlFileId
-                    .ecccZipFileByZipFileId.zipFileName
-                }
-                xmlFileName={
-                  this.state.leftSideReport.ecccXmlFileByEcccXmlFileId
-                    .xmlFileName
-                }
-                submissionDate={this.state.leftSideReport.submissionDate}
-              />
-            )}
-          </Col>
-          <Col md={{ span: 6, order: this.state.isReversed ? 1 : 2 }}>
-            {this.state.rightSideReport && (
-              <DiffDetails
-                zipFileName={
-                  this.state.rightSideReport.ecccXmlFileByEcccXmlFileId
-                    .ecccZipFileByZipFileId.zipFileName
-                }
-                xmlFileName={
-                  this.state.rightSideReport.ecccXmlFileByEcccXmlFileId
-                    .xmlFileName
-                }
-                submissionDate={this.state.rightSideReport.submissionDate}
-              />
-            )}
-          </Col>
-        </Row>
+        <DiffDetailsContainer
+          query={this.props.query}
+          isReversed={false}
+          router={this.props.router}
+        />
         <Row style={{ marginTop: "2em", marginBottom: "2em" }}>
           <Col md={{ span: 3, offset: 6 }}>
             <Row style={{ float: "right" }}>
@@ -172,38 +158,10 @@ export default class Index extends Component<Props, State> {
             </Button>
           </Col>
         </Row>
-
-        {this.state.leftSideReport &&
-          this.state.rightSideReport &&
-          this.state.renderDiff && (
-            <div style={{ height: "40em", overflow: "scroll" }}>
-              <RenderDiff
-                oldText={
-                  this.state.isReversed
-                    ? format(
-                        this.state.rightSideReport.ecccXmlFileByEcccXmlFileId
-                          .xmlFile
-                      )
-                    : format(
-                        this.state.leftSideReport.ecccXmlFileByEcccXmlFileId
-                          .xmlFile
-                      )
-                }
-                newText={
-                  this.state.isReversed
-                    ? format(
-                        this.state.leftSideReport.ecccXmlFileByEcccXmlFileId
-                          .xmlFile
-                      )
-                    : format(
-                        this.state.rightSideReport.ecccXmlFileByEcccXmlFileId
-                          .xmlFile
-                      )
-                }
-                collapse={this.state.isCollapsed}
-              />
-            </div>
-          )}
+        <RenderDiff
+          query={this.props.query}
+          router={this.props.router}
+        />
       </DefaultLayout>
     );
   }

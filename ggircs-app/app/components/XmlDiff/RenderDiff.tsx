@@ -1,23 +1,31 @@
 import React, { useState, useEffect } from "react";
+import {graphql, createFragmentContainer} from 'react-relay';
+import {RenderDiff_query} from 'RenderDiff_query.graphql';
 import { diffLines, formatLines } from "unidiff";
 import { parseDiff, Diff, Hunk, tokenize } from "react-diff-view";
 import "react-diff-view/style/index.css";
 import LoadingSpinner from "components/LoadingSpinner";
+import format from "xml-formatter";
+import { NextRouter } from "next/router";
 
 const EMPTY_HUNKS = [];
 
 interface Props {
-  oldText: string;
-  newText: string;
-  collapse: boolean;
-}
+  query: RenderDiff_query;
+  router: NextRouter;
+};
 
-export const RenderDiff: React.FunctionComponent<Props> = ({
-  oldText,
-  newText,
-  collapse,
-}) => {
+export const RenderDiff: React.FunctionComponent<Props> = ({query, router}) => {
+  const shouldRenderDiff = query.firstSideReport && query.secondSideReport && router.query.FirstSideRelayId && router.query.SecondSideRelayId;
+  if (!shouldRenderDiff)
+    return null;
+
   const [loaded, setLoaded] = useState(false);
+  const oldText=format(query.firstSideReport.latestSwrsReport.ecccXmlFileByEcccXmlFileId.xmlFile);
+  const newText=format(query.secondSideReport.latestSwrsReport.ecccXmlFileByEcccXmlFileId.xmlFile);
+  const collapse=false;
+
+
 
   // UseEffect & setState to determine if this slow component is loading. Renders the loading spinner while loading.
   useEffect(() => {
@@ -84,16 +92,55 @@ export const RenderDiff: React.FunctionComponent<Props> = ({
   };
 
   return (
-    <Diff
-      viewType="split"
-      diffType={type}
-      hunks={hunks || EMPTY_HUNKS}
-      tokens={tokens}
-      renderToken={renderToken}
-    >
-      {(hunks) => hunks.map((hunk) => <Hunk key={hunk.content} hunk={hunk} />)}
-    </Diff>
+    <div style={{ height: "40em", overflow: "scroll" }}>
+      <Diff
+        viewType="split"
+        diffType={type}
+        hunks={hunks || EMPTY_HUNKS}
+        tokens={tokens}
+        renderToken={renderToken}
+      >
+        {(hunks) => hunks.map((hunk) => <Hunk key={hunk.content} hunk={hunk} />)}
+      </Diff>
+    </div>
   );
 };
 
-export default RenderDiff;
+export default createFragmentContainer(RenderDiff, {
+  query: graphql`
+    fragment RenderDiff_query on Query
+    @argumentDefinitions(
+      FirstSideRelayId: {type: "ID!"}
+      SecondSideRelayId: {type: "ID!"}
+    ) {
+    firstSideReport: report(id: $FirstSideRelayId) {
+      swrsReportId
+      latestSwrsReport {
+        submissionDate
+        ecccXmlFileByEcccXmlFileId {
+          xmlFileName
+          xmlFile
+          ecccZipFileByZipFileId {
+            zipFileName
+          }
+        }
+      }
+    }
+    secondSideReport: report(
+      id: $SecondSideRelayId
+    ) {
+        swrsReportId
+        latestSwrsReport {
+          submissionDate
+          ecccXmlFileByEcccXmlFileId {
+            xmlFileName
+            xmlFile
+            ecccZipFileByZipFileId {
+              zipFileName
+            }
+          }
+        }
+      }
+    }
+  `
+});

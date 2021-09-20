@@ -23,20 +23,19 @@ export const ReportSelector: React.FunctionComponent<Props> = ({
   const [swrsReportId, setSwrsReportId] = useState<number>(Number(router.query[`${diffSide}SideId`]));
 
   const validateReportId = (id: number) => {
-    const edge = allReports.find((edge) => edge.node.swrsReportId === id);
+    const edge = allReports.find((edge) => edge?.node.swrsReportId === id);
     if (!id) {
       setSwrsReportIdIsvalid(null)
       setSwrsReport(null);
-      handleRouter(id, false)
+      handleRouter(null, null, false)
     }
     else if (edge) {
       setSwrsReportIdIsvalid(true);
-      setSwrsReport(edge.node.latestSwrsReport);
-      handleRouter(id, true)
+      handleRouter(id, edge?.node.id, true)
     } else {
       setSwrsReportIdIsvalid(false);
       setSwrsReport(null);
-      handleRouter(id, false)
+      handleRouter(id, edge?.node.id, false)
     }
   };
 
@@ -50,18 +49,22 @@ export const ReportSelector: React.FunctionComponent<Props> = ({
 		debouncedToRouter(nextValue);
 	};
 
-  const handleRouter = (id: number, valid: boolean) => {
+  const handleRouter = (id: number, relayId: string, valid: boolean) => {
     let query;
     if (valid) {
       query = {
         ...router.query,
-        [`${diffSide}SideId`]: id
+        [`${diffSide}SideId`]: id,
+        [`${diffSide}SideRelayId`]: relayId
       };
     }
     else {
       query = router.query
       delete query[`${diffSide}SideId`];
+      delete query[`${diffSide}SideRelayId`];
     }
+    if (!relayId)
+      delete query[`${diffSide}SideRelayId`];
     const url = {
       pathname: router.pathname,
       query: query
