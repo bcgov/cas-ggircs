@@ -27,21 +27,14 @@ interface Props extends PageComponentProps {
   query: xmlDiffQueryResponse["query"];
 }
 interface State {
-  leftSideReport: any;
-  rightSideReport: any;
   isReversed: Boolean;
   isCollapsed: Boolean;
-  renderDiff: Boolean;
 }
 export default class Index extends Component<Props, State> {
   static allowedGroups = ALLOWED_GROUPS;
   static isAccessProtected = true;
   static query = graphql`
-
-    query xmlDiffQuery (
-      $FirstSideRelayId: ID!
-      $SecondSideRelayId: ID!
-    ) {
+    query xmlDiffQuery($FirstSideRelayId: ID!, $SecondSideRelayId: ID!) {
       query {
         session {
           ...DefaultLayout_session
@@ -68,43 +61,28 @@ export default class Index extends Component<Props, State> {
     }
   `;
 
-static async getInitialProps() {
-  return {
-    variables: {
-      FirstSideRelayId: '',
-      SecondSideRelayId: ''
-    }
-  };
-}
+  static async getInitialProps() {
+    return {
+      variables: {
+        FirstSideRelayId: "",
+        SecondSideRelayId: "",
+      },
+    };
+  }
 
   state = {
-    leftSideReport: null,
-    rightSideReport: null,
     isReversed: false,
     isCollapsed: false,
-    renderDiff: true,
-  };
-
-  handleLeftSideChange = (report: any) => {
-    this.setState({ leftSideReport: report });
-  };
-
-  handleRightSideChange = (report: any) => {
-    this.setState({ rightSideReport: report });
   };
 
   reverse = async () => {
-    this.setState({ renderDiff: false });
     await this.setState((prevState) => ({ isReversed: !prevState.isReversed }));
-    this.setState({ renderDiff: true });
   };
 
   summarize = async () => {
-    this.setState({ renderDiff: false });
     await this.setState((prevState) => ({
       isCollapsed: !prevState.isCollapsed,
     }));
-    this.setState({ renderDiff: true });
   };
 
   render() {
@@ -117,7 +95,6 @@ static async getInitialProps() {
           <Col md={{ span: 6, order: this.state.isReversed ? 2 : 1 }}>
             <ReportSelector
               diffSide={this.state.isReversed ? "Second" : "First"}
-              setSwrsReport={this.handleLeftSideChange}
               allReports={query.allReports.edges}
               router={this.props.router}
             />
@@ -125,7 +102,6 @@ static async getInitialProps() {
           <Col md={{ span: 6, order: this.state.isReversed ? 1 : 2 }}>
             <ReportSelector
               diffSide={this.state.isReversed ? "First" : "Second"}
-              setSwrsReport={this.handleRightSideChange}
               allReports={query.allReports.edges}
               router={this.props.router}
             />
@@ -158,10 +134,7 @@ static async getInitialProps() {
             </Button>
           </Col>
         </Row>
-        <RenderDiff
-          query={this.props.query}
-          router={this.props.router}
-        />
+        <RenderDiff query={this.props.query} router={this.props.router} />
       </DefaultLayout>
     );
   }

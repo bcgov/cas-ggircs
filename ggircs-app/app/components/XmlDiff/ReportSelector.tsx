@@ -1,53 +1,26 @@
-import React, { useState, useCallback, useEffect } from "react";
-import { RelayReportObject, SwrsReportData } from "next-env";
+import React, { useState, useCallback } from "react";
+import { RelayReportObject } from "next-env";
 import Input from "@button-inc/bcgov-theme/Input";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { NextRouter } from "next/router";
-import debounce from 'lodash.debounce';
+import debounce from "lodash.debounce";
 
 interface Props {
   diffSide: String;
-  setSwrsReport: (report: SwrsReportData) => void;
   allReports: readonly RelayReportObject[];
-  router: NextRouter
+  router: NextRouter;
 }
 
 export const ReportSelector: React.FunctionComponent<Props> = ({
   diffSide,
-  setSwrsReport,
   allReports,
-  router
+  router,
 }) => {
   const [swrsReportIdIsValid, setSwrsReportIdIsvalid] = useState<boolean>(null);
-  const [swrsReportId, setSwrsReportId] = useState<number>(Number(router.query[`${diffSide}SideId`]));
-
-  const validateReportId = (id: number) => {
-    const edge = allReports.find((edge) => edge?.node.swrsReportId === id);
-    if (!id) {
-      setSwrsReportIdIsvalid(null)
-      setSwrsReport(null);
-      handleRouter(null, null, false)
-    }
-    else if (edge) {
-      setSwrsReportIdIsvalid(true);
-      handleRouter(id, edge?.node.id, true)
-    } else {
-      setSwrsReportIdIsvalid(false);
-      setSwrsReport(null);
-      handleRouter(id, edge?.node.id, false)
-    }
-  };
-
-	const debouncedToRouter = useCallback(
-    debounce(nextValue => validateReportId(Number(nextValue)), 1000),
-  []);
-
-	const handleChange = event => {
-		const { value: nextValue } = event.target;
-		setSwrsReportId(nextValue);
-		debouncedToRouter(nextValue);
-	};
+  const [swrsReportId, setSwrsReportId] = useState<number>(
+    Number(router.query[`${diffSide}SideId`])
+  );
 
   const handleRouter = (id: number, relayId: string, valid: boolean) => {
     let query;
@@ -55,21 +28,44 @@ export const ReportSelector: React.FunctionComponent<Props> = ({
       query = {
         ...router.query,
         [`${diffSide}SideId`]: id,
-        [`${diffSide}SideRelayId`]: relayId
+        [`${diffSide}SideRelayId`]: relayId,
       };
-    }
-    else {
-      query = router.query
+    } else {
+      query = router.query;
       delete query[`${diffSide}SideId`];
       delete query[`${diffSide}SideRelayId`];
     }
-    if (!relayId)
-      delete query[`${diffSide}SideRelayId`];
+    if (!relayId) delete query[`${diffSide}SideRelayId`];
     const url = {
       pathname: router.pathname,
-      query: query
+      query,
     };
-    router.push(url, url, {shallow: true});
+    router.push(url, url, { shallow: true });
+  };
+
+  const validateReportId = (id: number) => {
+    const edge = allReports.find((edge) => edge?.node.swrsReportId === id);
+    if (!id) {
+      setSwrsReportIdIsvalid(null);
+      handleRouter(null, null, false);
+    } else if (edge) {
+      setSwrsReportIdIsvalid(true);
+      handleRouter(id, edge?.node.id, true);
+    } else {
+      setSwrsReportIdIsvalid(false);
+      handleRouter(id, edge?.node.id, false);
+    }
+  };
+
+  const debouncedToRouter = useCallback(
+    debounce((nextValue) => validateReportId(Number(nextValue)), 1000),
+    []
+  );
+
+  const handleChange = (event) => {
+    const { value: nextValue } = event.target;
+    setSwrsReportId(nextValue);
+    debouncedToRouter(nextValue);
   };
 
   const idSelector = (

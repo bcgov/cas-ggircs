@@ -63,9 +63,9 @@ export default class App extends NextApp<AppProps> {
             query={Component.query}
             variables={{
               ...variables,
-              ...router.query
+              ...router.query,
             }}
-            render={({error, props}: {error: any; props: any}) => {
+            render={({ error, props }: { error: any; props: any }) => {
               if (error !== null) throw error; // Let the ErrorBoundary above render the error nicely
               if (props) {
                 this.prevComponentProps = props;
