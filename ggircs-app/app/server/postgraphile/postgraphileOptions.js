@@ -10,7 +10,11 @@ const postgraphileOptions = () => {
 
   let options = {
     pluginHook,
-    appendPlugins: [PgManyToManyPlugin, SmartTagsPlugin, ConnectionFilterPlugin],
+    appendPlugins: [
+      PgManyToManyPlugin,
+      SmartTagsPlugin,
+      ConnectionFilterPlugin,
+    ],
     classicIds: true,
     enableQueryBatching: true,
     dynamicJson: true,
