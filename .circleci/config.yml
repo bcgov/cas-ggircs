@@ -100,10 +100,19 @@ jobs:
       image: ubuntu-1604:201903-01
     steps:
       - checkout
+      - run:
+          name: "Checkout Submodules"
+          command: |
+            git submodule update --init
+      - redhat-openshift/login-and-update-kubeconfig:
+          insecure-skip-tls-verify: true
+          openshift-platform-version: 4.x
+          server-address: $OC_SILVER_SERVER_ADDRESS
+          token: $OC_SILVER_TOKEN
       - helm/install-helm-client:
           version: v3.2.1
       - run:
-          command: helm lint ./helm/cas-ggircs
+          command: make lint_chart
           name: Lint the helm charts
 
   eccc-upload__test:
@@ -505,6 +514,7 @@ workflows:
           requires:
             - tools
       - helm_lint:
+          context: cas-pipeline
           filters:
             tags:
               only: /^v.*/
