@@ -96,3 +96,18 @@ extract_zip_files >> extract_xml_files >> load_ggircs
 extract_zip_files >> extract_attachments >> load_ggircs
 
 load_ggircs >> ggircs_read_only_user >> trigger_ciip_deploy_db_dag
+
+
+ghg_credentials_issuer_dag = DAG(
+    'ghg_credentials_issuer',
+    schedule_interval=None,
+    default_args=default_args,
+    is_paused_upon_creation=True
+)
+
+ghg_credentials_issuer_task = PythonOperator(
+    python_callable=trigger_k8s_cronjob,
+    task_id='ghg_credentials_issuer',
+    op_args=['cas-ggircs-ghg-credentials-issuer', namespace],
+    dag=ghg_credentials_issuer_dag
+)
