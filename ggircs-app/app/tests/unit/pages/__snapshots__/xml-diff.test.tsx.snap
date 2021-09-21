@@ -20,6 +20,16 @@ exports[`The swrs-browser page renders the diff component when it has two define
       <ReportSelector
         allReports={null}
         diffSide="First"
+        router={
+          Object {
+            "query": Object {
+              "FirstSideId": "1",
+              "FirstSideRelayId": "abc",
+              "SecondSideId": "2",
+              "SecondSideRelayId": "def",
+            },
+          }
+        }
       />
     </Col>
     <Col
@@ -33,118 +43,76 @@ exports[`The swrs-browser page renders the diff component when it has two define
       <ReportSelector
         allReports={null}
         diffSide="Second"
+        router={
+          Object {
+            "query": Object {
+              "FirstSideId": "1",
+              "FirstSideRelayId": "abc",
+              "SecondSideId": "2",
+              "SecondSideRelayId": "def",
+            },
+          }
+        }
       />
     </Col>
   </Row>
-  <Relay(DiffDetailsContainer)
-    isReversed={false}
-    query={
+  <DiffDetails
+    router={
       Object {
-        "allReports": Object {
-          "edges": null,
+        "query": Object {
+          "FirstSideId": "1",
+          "FirstSideRelayId": "abc",
+          "SecondSideId": "2",
+          "SecondSideRelayId": "def",
         },
-        "session": null,
       }
     }
   />
-  <Row
-    noGutters={false}
-    style={
-      Object {
-        "marginBottom": "2em",
-        "marginTop": "2em",
-      }
-    }
-  >
-    <Col
-      md={
-        Object {
-          "offset": 6,
-          "span": 3,
-        }
-      }
-    >
-      <Row
-        noGutters={false}
-        style={
-          Object {
-            "float": "right",
-          }
-        }
-      >
-        <p
-          style={
-            Object {
-              "marginBottom": "auto",
-              "marginTop": "auto",
-            }
-          }
-        >
-          <strong>
-            Summarize Changes: 
-          </strong>
-        </p>
-        <ForwardRef(LoadableComponent)
-          checked={false}
-          offlabel="Off"
-          onChange={[Function]}
-          onlabel="On"
-        />
-      </Row>
-    </Col>
-    <Col
-      md={
-        Object {
-          "span": 3,
-        }
-      }
-    >
-      <Button
-        onClick={[Function]}
-        size="small"
-      >
-        <FontAwesomeIcon
-          border={false}
-          className=""
-          fixedWidth={false}
-          flip={null}
-          icon={
-            Object {
-              "icon": Array [
-                512,
-                512,
-                Array [],
-                "f362",
-                "M0 168v-16c0-13.255 10.745-24 24-24h360V80c0-21.367 25.899-32.042 40.971-16.971l80 80c9.372 9.373 9.372 24.569 0 33.941l-80 80C409.956 271.982 384 261.456 384 240v-48H24c-13.255 0-24-10.745-24-24zm488 152H128v-48c0-21.314-25.862-32.08-40.971-16.971l-80 80c-9.372 9.373-9.372 24.569 0 33.941l80 80C102.057 463.997 128 453.437 128 432v-48h360c13.255 0 24-10.745 24-24v-16c0-13.255-10.745-24-24-24z",
-              ],
-              "iconName": "exchange-alt",
-              "prefix": "fas",
-            }
-          }
-          inverse={false}
-          listItem={false}
-          mask={null}
-          pull={null}
-          pulse={false}
-          rotation={null}
-          size={null}
-          spin={false}
-          swapOpacity={false}
-          symbol={false}
-          title=""
-          transform={null}
-        />
-         Swap left/right
-      </Button>
-    </Col>
-  </Row>
-  <Relay(RenderDiff)
+  <Relay(DiffDetailsContainer)
     query={
       Object {
+        " $fragmentRefs": Object {
+          "DiffDetailsContainer_query": true,
+          "RenderDiff_query": true,
+        },
         "allReports": Object {
           "edges": null,
         },
         "session": null,
+      }
+    }
+    router={
+      Object {
+        "query": Object {
+          "FirstSideId": "1",
+          "FirstSideRelayId": "abc",
+          "SecondSideId": "2",
+          "SecondSideRelayId": "def",
+        },
+      }
+    }
+  />
+  <Relay(RenderDiff)
+    query={
+      Object {
+        " $fragmentRefs": Object {
+          "DiffDetailsContainer_query": true,
+          "RenderDiff_query": true,
+        },
+        "allReports": Object {
+          "edges": null,
+        },
+        "session": null,
+      }
+    }
+    router={
+      Object {
+        "query": Object {
+          "FirstSideId": "1",
+          "FirstSideRelayId": "abc",
+          "SecondSideId": "2",
+          "SecondSideRelayId": "def",
+        },
       }
     }
   />
