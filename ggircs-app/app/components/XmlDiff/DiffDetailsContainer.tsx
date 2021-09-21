@@ -7,17 +7,15 @@ import { NextRouter } from "next/router";
 
 interface Props {
   query: DiffDetailsContainer_query;
-  isReversed: boolean;
   router: NextRouter;
 }
 
 export const DiffDetailsContainer: React.FunctionComponent<Props> = ({
   query,
-  isReversed,
   router,
 }) => (
   <Row style={{ marginTop: "2em" }}>
-    <Col md={{ span: 6, order: isReversed ? 2 : 1 }}>
+    <Col md={{ span: 6, order: router.query.reversed ? 2 : 1 }}>
       {query.firstSideDetails && router.query.FirstSideRelayId && (
         <DiffDetails
           zipFileName={
@@ -34,7 +32,7 @@ export const DiffDetailsContainer: React.FunctionComponent<Props> = ({
         />
       )}
     </Col>
-    <Col md={{ span: 6, order: isReversed ? 1 : 2 }}>
+    <Col md={{ span: 6, order: router.query.reversed ? 1 : 2 }}>
       {query.secondSideDetails && router.query.SecondSideRelayId && (
         <DiffDetails
           zipFileName={
