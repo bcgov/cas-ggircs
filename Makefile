@@ -204,11 +204,7 @@ install: whoami
 	if ! oc get route cas-ggircs -o name -n $(GGIRCS_NAMESPACE_PREFIX)-$(ENVIRONMENT); then \
 		helm upgrade --install --atomic --wait-for-jobs --timeout 3600s \
 			--namespace $(GGIRCS_NAMESPACE_PREFIX)-$(ENVIRONMENT) \
-			--set image.etl.tag=$(GIT_SHA1) \
-			--set image.ecccUpload.tag=$(GIT_SHA1) \
-			--set image.ecccExtract.tag=$(GIT_SHA1) \
-			--set swrsGcpApi.image.tag=$(GIT_SHA1) \
-			--set image.app.tag=$(GIT_SHA1) --set image.schema.tag=$(GIT_SHA1) \
+			--set defaultImageTag=$(GIT_SHA1) \
 			--set download-ggircs-dags.dagConfiguration="$$ggircsDagConfig" \
 			--set download-swrs-dags.dagConfiguration="$$swrsDagConfig" \
 			--values ./helm/cas-ggircs/values.yaml \
@@ -222,11 +218,7 @@ install: whoami
 	fi; \
 	helm upgrade --install --atomic --wait-for-jobs --timeout 3600s \
 		--namespace $(GGIRCS_NAMESPACE_PREFIX)-$(ENVIRONMENT) \
-		--set image.etl.tag=$(GIT_SHA1) \
-		--set image.ecccUpload.tag=$(GIT_SHA1) \
-		--set image.ecccExtract.tag=$(GIT_SHA1) \
-		--set swrsGcpApi.image.tag=$(GIT_SHA1) \
-		--set image.app.tag=$(GIT_SHA1) --set image.schema.tag=$(GIT_SHA1) \
+		--set defaultImageTag=$(GIT_SHA1) \
 		--set download-ggircs-dags.dagConfiguration="$$ggircsDagConfig" \
 		--set download-swrs-dags.dagConfiguration="$$swrsDagConfig" \
 		--values ./helm/cas-ggircs/values.yaml \
@@ -241,6 +233,48 @@ install: whoami
 		| jq 'del(.metadata.namespace,.metadata.resourceVersion,.metadata.uid,.metadata.annotations,.metadata.managedFields,.metadata.selfLink) | .metadata.creationTimestamp=null' \
 		| oc apply --namespace="$(CIIP_NAMESPACE_PREFIX)-$(ENVIRONMENT)" -f -
 endif
+
+.PHONY: lint_chart
+lint_chart: $(call make_help,lint_chart,Checks the configured helm chart templates and values against the k8s schema)
+lint_chart: whoami
+lint_chart:
+	@set -euo pipefail; \
+	ggircsDagConfig=$$(echo '{"org": "bcgov", "repo": "cas-ggircs", "ref": "$(GIT_SHA1)", "path": "dags/cas_ggircs_dags.py"}' | base64 -w0); \
+	swrsDagConfig=$$(echo '{"org": "bcgov", "repo": "cas-ggircs", "ref": "$(GIT_SHA1)", "path": "dags/cas_ggircs_swrs_dags.py"}' | base64 -w0); \
+	helm dep up ./helm/cas-ggircs; \
+	helm template --validate \
+		--set defaultImageTag=$(GIT_SHA1) \
+		--set download-ggircs-dags.dagConfiguration="$$ggircsDagConfig" \
+		--set download-swrs-dags.dagConfiguration="$$swrsDagConfig" \
+		--values ./helm/cas-ggircs/values.yaml \
+		--values ./helm/cas-ggircs/values-dev.yaml \
+		--set ciip.release=cas-ciip-portal \
+		--set ciip.namespace=lint-dev \
+		--set ciip.prefix=lint \
+		--set ciip.environment=dev \
+		cas-ggircs ./helm/cas-ggircs; \
+	helm template --validate \
+		--set defaultImageTag=$(GIT_SHA1) \
+		--set download-ggircs-dags.dagConfiguration="$$ggircsDagConfig" \
+		--set download-swrs-dags.dagConfiguration="$$swrsDagConfig" \
+		--values ./helm/cas-ggircs/values.yaml \
+		--values ./helm/cas-ggircs/values-test.yaml \
+		--set ciip.release=cas-ciip-portal \
+		--set ciip.namespace=lint-test \
+		--set ciip.prefix=lint \
+		--set ciip.environment=test \
+		cas-ggircs ./helm/cas-ggircs; \
+	helm template --validate \
+		--set defaultImageTag=$(GIT_SHA1) \
+		--set download-ggircs-dags.dagConfiguration="$$ggircsDagConfig" \
+		--set download-swrs-dags.dagConfiguration="$$swrsDagConfig" \
+		--values ./helm/cas-ggircs/values.yaml \
+		--values ./helm/cas-ggircs/values-prod.yaml \
+		--set ciip.release=cas-ciip-portal \
+		--set ciip.namespace=lint-prod \
+		--set ciip.prefix=lint \
+		--set ciip.environment=prod \
+		cas-ggircs ./helm/cas-ggircs;
 
 .PHONY: mock_storageclass
 mock_storageclass:

@@ -55,7 +55,8 @@ spec:
                       apiVersion: v1
                       fieldPath: metadata.namespace
               name: {{ template "cas-ggircs.fullname" . }}-schema-deploy-data
-              image: {{ .Values.image.schema.repository }}:{{ .Values.image.schema.tag }}
+              image: {{ .Values.image.schema.repository }}:{{ default .Values.defaultImageTag .Values.image.schema.tag }}
+              imagePullPolicy: {{ default .Values.defaultImagePullPolicy .Values.image.schema.pullPolicy }}
               resources:
                 limits:
                   cpu: 500m

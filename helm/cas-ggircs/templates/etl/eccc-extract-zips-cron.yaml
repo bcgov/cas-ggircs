@@ -54,8 +54,8 @@ spec:
                       key: zip_passwords
                       name: eccc-swrs-import
               name: {{ template "cas-ggircs.fullname" . }}-eccc-extract-zips
-              image: {{ .Values.image.ecccExtract.repository }}:{{ .Values.image.ecccExtract.tag }}
-              imagePullPolicy: {{ .Values.image.ecccExtract.pullPolicy }}
+              image: {{ .Values.image.ecccExtract.repository }}:{{ default .Values.defaultImageTag .Values.image.ecccExtract.tag }}
+              imagePullPolicy: {{ default .Values.defaultImagePullPolicy .Values.image.ecccExtract.pullPolicy }}
               command: ["python"]
               args: ["extract_zips.py"]
               volumeMounts:

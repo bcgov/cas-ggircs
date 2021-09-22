@@ -71,12 +71,10 @@ jobs:
           name: Deploy to dev
           command: |
             helm install --atomic --wait-for-jobs --timeout 900s --namespace "9212c9-dev" \
-            --set image.etl.tag="$CIRCLE_SHA1" \
-            --set image.app.tag="$CIRCLE_SHA1" --set image.schema.tag="$CIRCLE_SHA1" \
+            --set defaultImageTag="$CIRCLE_SHA1" \
             --set cas-postgres.patroni.walE.enable=false \
             --set networkSecurityPolicies.enable=false \
             --set swrsImportBucket.enable=false \
-            --set swrsGcpApi.image.tag="$CIRCLE_SHA1" \
             --set app.route.ssl.enable=false --set app.route.ssl.issueCertIfDisabled=false \
             --set ciip.release="cas-ciip-portal" \
             --set ciip.prefix="09269b" \
@@ -100,10 +98,19 @@ jobs:
       image: ubuntu-1604:201903-01
     steps:
       - checkout
+      - run:
+          name: "Checkout Submodules"
+          command: |
+            git submodule update --init
+      - redhat-openshift/login-and-update-kubeconfig:
+          insecure-skip-tls-verify: true
+          openshift-platform-version: 4.x
+          server-address: $OC_SILVER_SERVER_ADDRESS
+          token: $OC_SILVER_TOKEN
       - helm/install-helm-client:
           version: v3.2.1
       - run:
-          command: helm lint ./helm/cas-ggircs
+          command: make lint_chart
           name: Lint the helm charts
 
   eccc-upload__test:
@@ -505,6 +512,7 @@ workflows:
           requires:
             - tools
       - helm_lint:
+          context: cas-pipeline
           filters:
             tags:
               only: /^v.*/

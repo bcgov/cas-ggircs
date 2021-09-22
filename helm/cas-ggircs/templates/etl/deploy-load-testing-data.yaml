@@ -53,7 +53,8 @@ spec:
                       apiVersion: v1
                       fieldPath: metadata.namespace
               name: {{ template "cas-ggircs.fullname" . }}-deploy-load-testing-data
-              image: {{ .Values.image.etl.repository }}:{{ .Values.image.etl.tag }}
+              image: {{ .Values.image.etl.repository }}:{{ default .Values.defaultImageTag .Values.image.etl.tag }}
+              imagePullPolicy: {{ default .Values.defaultImagePullPolicy .Values.image.etl.pullPolicy }}
               resources:
                 limits:
                   cpu: 1000m
