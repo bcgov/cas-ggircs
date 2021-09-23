@@ -3,6 +3,90 @@ A floating point number that requires more precision than IEEE 754 binary 64
 """
 scalar BigFloat
 
+"""
+A filter to be used against BigFloat fields. All fields are combined with a logical ‘and.’
+"""
+input BigFloatFilter {
+  """
+  Not equal to the specified value, treating null like an ordinary value.
+  """
+  distinctFrom: BigFloat
+
+  """Equal to the specified value."""
+  equalTo: BigFloat
+
+  """Greater than the specified value."""
+  greaterThan: BigFloat
+
+  """Greater than or equal to the specified value."""
+  greaterThanOrEqualTo: BigFloat
+
+  """Included in the specified list."""
+  in: [BigFloat!]
+
+  """
+  Is null (if `true` is specified) or is not null (if `false` is specified).
+  """
+  isNull: Boolean
+
+  """Less than the specified value."""
+  lessThan: BigFloat
+
+  """Less than or equal to the specified value."""
+  lessThanOrEqualTo: BigFloat
+
+  """Equal to the specified value, treating null like an ordinary value."""
+  notDistinctFrom: BigFloat
+
+  """Not equal to the specified value."""
+  notEqualTo: BigFloat
+
+  """Not included in the specified list."""
+  notIn: [BigFloat!]
+}
+
+"""
+A filter to be used against Boolean fields. All fields are combined with a logical ‘and.’
+"""
+input BooleanFilter {
+  """
+  Not equal to the specified value, treating null like an ordinary value.
+  """
+  distinctFrom: Boolean
+
+  """Equal to the specified value."""
+  equalTo: Boolean
+
+  """Greater than the specified value."""
+  greaterThan: Boolean
+
+  """Greater than or equal to the specified value."""
+  greaterThanOrEqualTo: Boolean
+
+  """Included in the specified list."""
+  in: [Boolean!]
+
+  """
+  Is null (if `true` is specified) or is not null (if `false` is specified).
+  """
+  isNull: Boolean
+
+  """Less than the specified value."""
+  lessThan: Boolean
+
+  """Less than or equal to the specified value."""
+  lessThanOrEqualTo: Boolean
+
+  """Equal to the specified value, treating null like an ordinary value."""
+  notDistinctFrom: Boolean
+
+  """Not equal to the specified value."""
+  notEqualTo: Boolean
+
+  """Not included in the specified list."""
+  notIn: [Boolean!]
+}
+
 """All input for the create `EcccAttachment` mutation."""
 input CreateEcccAttachmentInput {
   """
@@ -172,6 +256,48 @@ A point in time as described by the [ISO
 8601](https://en.wikipedia.org/wiki/ISO_8601) standard. May or may not include a timezone.
 """
 scalar Datetime
+
+"""
+A filter to be used against Datetime fields. All fields are combined with a logical ‘and.’
+"""
+input DatetimeFilter {
+  """
+  Not equal to the specified value, treating null like an ordinary value.
+  """
+  distinctFrom: Datetime
+
+  """Equal to the specified value."""
+  equalTo: Datetime
+
+  """Greater than the specified value."""
+  greaterThan: Datetime
+
+  """Greater than or equal to the specified value."""
+  greaterThanOrEqualTo: Datetime
+
+  """Included in the specified list."""
+  in: [Datetime!]
+
+  """
+  Is null (if `true` is specified) or is not null (if `false` is specified).
+  """
+  isNull: Boolean
+
+  """Less than the specified value."""
+  lessThan: Datetime
+
+  """Less than or equal to the specified value."""
+  lessThanOrEqualTo: Datetime
+
+  """Equal to the specified value, treating null like an ordinary value."""
+  notDistinctFrom: Datetime
+
+  """Not equal to the specified value."""
+  notEqualTo: Datetime
+
+  """Not included in the specified list."""
+  notIn: [Datetime!]
+}
 
 """All input for the `deleteEcccAttachmentByRowId` mutation."""
 input DeleteEcccAttachmentByRowIdInput {
@@ -415,6 +541,47 @@ input EcccAttachmentCondition {
   zipFileId: Int
 }
 
+"""
+A filter to be used against `EcccAttachment` object types. All fields are combined with a logical ‘and.’
+"""
+input EcccAttachmentFilter {
+  """Checks for all expressions in this list."""
+  and: [EcccAttachmentFilter!]
+
+  """Filter by the object’s `attachmentFileMd5Hash` field."""
+  attachmentFileMd5Hash: StringFilter
+
+  """Filter by the object’s `attachmentFilePath` field."""
+  attachmentFilePath: StringFilter
+
+  """Filter by the object’s `attachmentUploadedFileName` field."""
+  attachmentUploadedFileName: StringFilter
+
+  """Filter by the object’s `ecccZipFileByZipFileId` relation."""
+  ecccZipFileByZipFileId: EcccZipFileFilter
+
+  """Filter by the object’s `importedAt` field."""
+  importedAt: DatetimeFilter
+
+  """Negates the expression."""
+  not: EcccAttachmentFilter
+
+  """Checks for any expressions in this list."""
+  or: [EcccAttachmentFilter!]
+
+  """Filter by the object’s `rowId` field."""
+  rowId: IntFilter
+
+  """Filter by the object’s `sourceTypeId` field."""
+  sourceTypeId: IntFilter
+
+  """Filter by the object’s `swrsReportId` field."""
+  swrsReportId: IntFilter
+
+  """Filter by the object’s `zipFileId` field."""
+  zipFileId: IntFilter
+}
+
 """An input for mutations affecting `EcccAttachment`"""
 input EcccAttachmentInput {
   """
@@ -577,6 +744,41 @@ input EcccFileDownloadLogCondition {
   rowId: Int
 }
 
+"""
+A filter to be used against `EcccFileDownloadLog` object types. All fields are combined with a logical ‘and.’
+"""
+input EcccFileDownloadLogFilter {
+  """Checks for all expressions in this list."""
+  and: [EcccFileDownloadLogFilter!]
+
+  """Filter by the object’s `downloadedAt` field."""
+  downloadedAt: DatetimeFilter
+
+  """Filter by the object’s `downloadedBy` field."""
+  downloadedBy: IntFilter
+
+  """Filter by the object’s `ecccIndividualFilePath` field."""
+  ecccIndividualFilePath: StringFilter
+
+  """Filter by the object’s `ecccZipFileName` field."""
+  ecccZipFileName: StringFilter
+
+  """Filter by the object’s `ggircsUserByDownloadedBy` relation."""
+  ggircsUserByDownloadedBy: GgircsUserFilter
+
+  """A related `ggircsUserByDownloadedBy` exists."""
+  ggircsUserByDownloadedByExists: Boolean
+
+  """Negates the expression."""
+  not: EcccFileDownloadLogFilter
+
+  """Checks for any expressions in this list."""
+  or: [EcccFileDownloadLogFilter!]
+
+  """Filter by the object’s `rowId` field."""
+  rowId: IntFilter
+}
+
 """An input for mutations affecting `EcccFileDownloadLog`"""
 input EcccFileDownloadLogInput {
   """The time at which the download was initiated"""
@@ -680,6 +882,11 @@ type EcccXmlFile implements Node {
     """
     condition: ReportCondition
 
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ReportFilter
+
     """Only read the first `n` values of the set."""
     first: Int
 
@@ -734,6 +941,67 @@ input EcccXmlFileCondition {
 
   """Checks for equality with the object’s `zipFileId` field."""
   zipFileId: Int
+}
+
+"""
+A filter to be used against `EcccXmlFile` object types. All fields are combined with a logical ‘and.’
+"""
+input EcccXmlFileFilter {
+  """Checks for all expressions in this list."""
+  and: [EcccXmlFileFilter!]
+
+  """Filter by the object’s `ecccZipFileByZipFileId` relation."""
+  ecccZipFileByZipFileId: EcccZipFileFilter
+
+  """A related `ecccZipFileByZipFileId` exists."""
+  ecccZipFileByZipFileIdExists: Boolean
+
+  """Filter by the object’s `importedAt` field."""
+  importedAt: DatetimeFilter
+
+  """Negates the expression."""
+  not: EcccXmlFileFilter
+
+  """Checks for any expressions in this list."""
+  or: [EcccXmlFileFilter!]
+
+  """Filter by the object’s `reportsByEcccXmlFileId` relation."""
+  reportsByEcccXmlFileId: EcccXmlFileToManyReportFilter
+
+  """Some related `reportsByEcccXmlFileId` exist."""
+  reportsByEcccXmlFileIdExist: Boolean
+
+  """Filter by the object’s `rowId` field."""
+  rowId: IntFilter
+
+  """Filter by the object’s `xmlFileMd5Hash` field."""
+  xmlFileMd5Hash: StringFilter
+
+  """Filter by the object’s `xmlFileName` field."""
+  xmlFileName: StringFilter
+
+  """Filter by the object’s `zipFileId` field."""
+  zipFileId: IntFilter
+}
+
+"""
+A filter to be used against many `Report` object types. All fields are combined with a logical ‘and.’
+"""
+input EcccXmlFileToManyReportFilter {
+  """
+  Every related `Report` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: ReportFilter
+
+  """
+  No related `Report` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: ReportFilter
+
+  """
+  Some related `Report` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: ReportFilter
 }
 
 """A connection to a list of `EcccXmlFile` values."""
@@ -804,6 +1072,11 @@ type EcccZipFile implements Node {
     """
     condition: EcccAttachmentCondition
 
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: EcccAttachmentFilter
+
     """Only read the first `n` values of the set."""
     first: Int
 
@@ -832,6 +1105,11 @@ type EcccZipFile implements Node {
     A condition to be used in determining which values should be returned by the collection.
     """
     condition: EcccXmlFileCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: EcccXmlFileFilter
 
     """Only read the first `n` values of the set."""
     first: Int
@@ -907,6 +1185,96 @@ input EcccZipFileCondition {
 
   """Checks for equality with the object’s `zipFileName` field."""
   zipFileName: String
+}
+
+"""
+A filter to be used against `EcccZipFile` object types. All fields are combined with a logical ‘and.’
+"""
+input EcccZipFileFilter {
+  """Checks for all expressions in this list."""
+  and: [EcccZipFileFilter!]
+
+  """Filter by the object’s `attachmentsExtractErrorCount` field."""
+  attachmentsExtractErrorCount: IntFilter
+
+  """Filter by the object’s `attachmentsExtracted` field."""
+  attachmentsExtracted: BooleanFilter
+
+  """Filter by the object’s `ecccAttachmentsByZipFileId` relation."""
+  ecccAttachmentsByZipFileId: EcccZipFileToManyEcccAttachmentFilter
+
+  """Some related `ecccAttachmentsByZipFileId` exist."""
+  ecccAttachmentsByZipFileIdExist: Boolean
+
+  """Filter by the object’s `ecccXmlFilesByZipFileId` relation."""
+  ecccXmlFilesByZipFileId: EcccZipFileToManyEcccXmlFileFilter
+
+  """Some related `ecccXmlFilesByZipFileId` exist."""
+  ecccXmlFilesByZipFileIdExist: Boolean
+
+  """Filter by the object’s `importedAt` field."""
+  importedAt: DatetimeFilter
+
+  """Negates the expression."""
+  not: EcccZipFileFilter
+
+  """Checks for any expressions in this list."""
+  or: [EcccZipFileFilter!]
+
+  """Filter by the object’s `rowId` field."""
+  rowId: IntFilter
+
+  """Filter by the object’s `xmlFilesExtractErrorCount` field."""
+  xmlFilesExtractErrorCount: IntFilter
+
+  """Filter by the object’s `xmlFilesExtracted` field."""
+  xmlFilesExtracted: BooleanFilter
+
+  """Filter by the object’s `zipFileMd5Hash` field."""
+  zipFileMd5Hash: StringFilter
+
+  """Filter by the object’s `zipFileName` field."""
+  zipFileName: StringFilter
+}
+
+"""
+A filter to be used against many `EcccAttachment` object types. All fields are combined with a logical ‘and.’
+"""
+input EcccZipFileToManyEcccAttachmentFilter {
+  """
+  Every related `EcccAttachment` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: EcccAttachmentFilter
+
+  """
+  No related `EcccAttachment` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: EcccAttachmentFilter
+
+  """
+  Some related `EcccAttachment` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: EcccAttachmentFilter
+}
+
+"""
+A filter to be used against many `EcccXmlFile` object types. All fields are combined with a logical ‘and.’
+"""
+input EcccZipFileToManyEcccXmlFileFilter {
+  """
+  Every related `EcccXmlFile` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: EcccXmlFileFilter
+
+  """
+  No related `EcccXmlFile` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: EcccXmlFileFilter
+
+  """
+  Some related `EcccXmlFile` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: EcccXmlFileFilter
 }
 
 """A connection to a list of `EcccZipFile` values."""
@@ -985,6 +1353,11 @@ type GgircsUser implements Node {
     """
     condition: EcccFileDownloadLogCondition
 
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: EcccFileDownloadLogFilter
+
     """Only read the first `n` values of the set."""
     first: Int
 
@@ -1029,6 +1402,11 @@ type GgircsUser implements Node {
     """
     condition: GgircsUserCondition
 
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: GgircsUserFilter
+
     """Only read the first `n` values of the set."""
     first: Int
 
@@ -1058,6 +1436,11 @@ type GgircsUser implements Node {
     """
     condition: GgircsUserCondition
 
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: GgircsUserFilter
+
     """Only read the first `n` values of the set."""
     first: Int
 
@@ -1075,6 +1458,210 @@ type GgircsUser implements Node {
   ): GgircsUsersConnection!
 
   """Reads and enables pagination through a set of `GgircsUser`."""
+  ggircsUsersByGgircsUserCreatedByAndDeletedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: GgircsUserCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: GgircsUserFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `GgircsUser`."""
+    orderBy: [GgircsUsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): GgircsUserGgircsUsersByGgircsUserCreatedByAndDeletedByManyToManyConnection!
+
+  """Reads and enables pagination through a set of `GgircsUser`."""
+  ggircsUsersByGgircsUserCreatedByAndUpdatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: GgircsUserCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: GgircsUserFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `GgircsUser`."""
+    orderBy: [GgircsUsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): GgircsUserGgircsUsersByGgircsUserCreatedByAndUpdatedByManyToManyConnection!
+
+  """Reads and enables pagination through a set of `GgircsUser`."""
+  ggircsUsersByGgircsUserDeletedByAndCreatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: GgircsUserCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: GgircsUserFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `GgircsUser`."""
+    orderBy: [GgircsUsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): GgircsUserGgircsUsersByGgircsUserDeletedByAndCreatedByManyToManyConnection!
+
+  """Reads and enables pagination through a set of `GgircsUser`."""
+  ggircsUsersByGgircsUserDeletedByAndUpdatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: GgircsUserCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: GgircsUserFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `GgircsUser`."""
+    orderBy: [GgircsUsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): GgircsUserGgircsUsersByGgircsUserDeletedByAndUpdatedByManyToManyConnection!
+
+  """Reads and enables pagination through a set of `GgircsUser`."""
+  ggircsUsersByGgircsUserUpdatedByAndCreatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: GgircsUserCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: GgircsUserFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `GgircsUser`."""
+    orderBy: [GgircsUsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): GgircsUserGgircsUsersByGgircsUserUpdatedByAndCreatedByManyToManyConnection!
+
+  """Reads and enables pagination through a set of `GgircsUser`."""
+  ggircsUsersByGgircsUserUpdatedByAndDeletedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: GgircsUserCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: GgircsUserFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `GgircsUser`."""
+    orderBy: [GgircsUsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): GgircsUserGgircsUsersByGgircsUserUpdatedByAndDeletedByManyToManyConnection!
+
+  """Reads and enables pagination through a set of `GgircsUser`."""
   ggircsUsersByUpdatedBy(
     """Read all values in the set after (below) this cursor."""
     after: Cursor
@@ -1086,6 +1673,11 @@ type GgircsUser implements Node {
     A condition to be used in determining which values should be returned by the collection.
     """
     condition: GgircsUserCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: GgircsUserFilter
 
     """Only read the first `n` values of the set."""
     first: Int
@@ -1165,6 +1757,473 @@ input GgircsUserCondition {
   uuid: UUID
 }
 
+"""
+A filter to be used against `GgircsUser` object types. All fields are combined with a logical ‘and.’
+"""
+input GgircsUserFilter {
+  """Checks for all expressions in this list."""
+  and: [GgircsUserFilter!]
+
+  """Filter by the object’s `createdAt` field."""
+  createdAt: DatetimeFilter
+
+  """Filter by the object’s `createdBy` field."""
+  createdBy: IntFilter
+
+  """Filter by the object’s `deletedAt` field."""
+  deletedAt: DatetimeFilter
+
+  """Filter by the object’s `deletedBy` field."""
+  deletedBy: IntFilter
+
+  """Filter by the object’s `ecccFileDownloadLogsByDownloadedBy` relation."""
+  ecccFileDownloadLogsByDownloadedBy: GgircsUserToManyEcccFileDownloadLogFilter
+
+  """Some related `ecccFileDownloadLogsByDownloadedBy` exist."""
+  ecccFileDownloadLogsByDownloadedByExist: Boolean
+
+  """Filter by the object’s `emailAddress` field."""
+  emailAddress: StringFilter
+
+  """Filter by the object’s `firstName` field."""
+  firstName: StringFilter
+
+  """Filter by the object’s `ggircsUserByCreatedBy` relation."""
+  ggircsUserByCreatedBy: GgircsUserFilter
+
+  """A related `ggircsUserByCreatedBy` exists."""
+  ggircsUserByCreatedByExists: Boolean
+
+  """Filter by the object’s `ggircsUserByDeletedBy` relation."""
+  ggircsUserByDeletedBy: GgircsUserFilter
+
+  """A related `ggircsUserByDeletedBy` exists."""
+  ggircsUserByDeletedByExists: Boolean
+
+  """Filter by the object’s `ggircsUserByUpdatedBy` relation."""
+  ggircsUserByUpdatedBy: GgircsUserFilter
+
+  """A related `ggircsUserByUpdatedBy` exists."""
+  ggircsUserByUpdatedByExists: Boolean
+
+  """Filter by the object’s `ggircsUsersByCreatedBy` relation."""
+  ggircsUsersByCreatedBy: GgircsUserToManyGgircsUserFilter
+
+  """Some related `ggircsUsersByCreatedBy` exist."""
+  ggircsUsersByCreatedByExist: Boolean
+
+  """Filter by the object’s `ggircsUsersByDeletedBy` relation."""
+  ggircsUsersByDeletedBy: GgircsUserToManyGgircsUserFilter
+
+  """Some related `ggircsUsersByDeletedBy` exist."""
+  ggircsUsersByDeletedByExist: Boolean
+
+  """Filter by the object’s `ggircsUsersByUpdatedBy` relation."""
+  ggircsUsersByUpdatedBy: GgircsUserToManyGgircsUserFilter
+
+  """Some related `ggircsUsersByUpdatedBy` exist."""
+  ggircsUsersByUpdatedByExist: Boolean
+
+  """Filter by the object’s `jwtTokensBySub` relation."""
+  jwtTokensBySub: GgircsUserToManyJwtTokenFilter
+
+  """Some related `jwtTokensBySub` exist."""
+  jwtTokensBySubExist: Boolean
+
+  """Filter by the object’s `lastName` field."""
+  lastName: StringFilter
+
+  """Negates the expression."""
+  not: GgircsUserFilter
+
+  """Checks for any expressions in this list."""
+  or: [GgircsUserFilter!]
+
+  """Filter by the object’s `rowId` field."""
+  rowId: IntFilter
+
+  """Filter by the object’s `updatedAt` field."""
+  updatedAt: DatetimeFilter
+
+  """Filter by the object’s `updatedBy` field."""
+  updatedBy: IntFilter
+
+  """Filter by the object’s `uuid` field."""
+  uuid: UUIDFilter
+}
+
+"""
+A connection to a list of `GgircsUser` values, with data from `GgircsUser`.
+"""
+type GgircsUserGgircsUsersByGgircsUserCreatedByAndDeletedByManyToManyConnection {
+  """
+  A list of edges which contains the `GgircsUser`, info from the `GgircsUser`, and the cursor to aid in pagination.
+  """
+  edges: [GgircsUserGgircsUsersByGgircsUserCreatedByAndDeletedByManyToManyEdge!]!
+
+  """A list of `GgircsUser` objects."""
+  nodes: [GgircsUser]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `GgircsUser` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `GgircsUser` edge in the connection, with data from `GgircsUser`."""
+type GgircsUserGgircsUsersByGgircsUserCreatedByAndDeletedByManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """Reads and enables pagination through a set of `GgircsUser`."""
+  ggircsUsersByDeletedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: GgircsUserCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: GgircsUserFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `GgircsUser`."""
+    orderBy: [GgircsUsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): GgircsUsersConnection!
+
+  """The `GgircsUser` at the end of the edge."""
+  node: GgircsUser
+}
+
+"""
+A connection to a list of `GgircsUser` values, with data from `GgircsUser`.
+"""
+type GgircsUserGgircsUsersByGgircsUserCreatedByAndUpdatedByManyToManyConnection {
+  """
+  A list of edges which contains the `GgircsUser`, info from the `GgircsUser`, and the cursor to aid in pagination.
+  """
+  edges: [GgircsUserGgircsUsersByGgircsUserCreatedByAndUpdatedByManyToManyEdge!]!
+
+  """A list of `GgircsUser` objects."""
+  nodes: [GgircsUser]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `GgircsUser` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `GgircsUser` edge in the connection, with data from `GgircsUser`."""
+type GgircsUserGgircsUsersByGgircsUserCreatedByAndUpdatedByManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """Reads and enables pagination through a set of `GgircsUser`."""
+  ggircsUsersByUpdatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: GgircsUserCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: GgircsUserFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `GgircsUser`."""
+    orderBy: [GgircsUsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): GgircsUsersConnection!
+
+  """The `GgircsUser` at the end of the edge."""
+  node: GgircsUser
+}
+
+"""
+A connection to a list of `GgircsUser` values, with data from `GgircsUser`.
+"""
+type GgircsUserGgircsUsersByGgircsUserDeletedByAndCreatedByManyToManyConnection {
+  """
+  A list of edges which contains the `GgircsUser`, info from the `GgircsUser`, and the cursor to aid in pagination.
+  """
+  edges: [GgircsUserGgircsUsersByGgircsUserDeletedByAndCreatedByManyToManyEdge!]!
+
+  """A list of `GgircsUser` objects."""
+  nodes: [GgircsUser]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `GgircsUser` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `GgircsUser` edge in the connection, with data from `GgircsUser`."""
+type GgircsUserGgircsUsersByGgircsUserDeletedByAndCreatedByManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """Reads and enables pagination through a set of `GgircsUser`."""
+  ggircsUsersByCreatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: GgircsUserCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: GgircsUserFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `GgircsUser`."""
+    orderBy: [GgircsUsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): GgircsUsersConnection!
+
+  """The `GgircsUser` at the end of the edge."""
+  node: GgircsUser
+}
+
+"""
+A connection to a list of `GgircsUser` values, with data from `GgircsUser`.
+"""
+type GgircsUserGgircsUsersByGgircsUserDeletedByAndUpdatedByManyToManyConnection {
+  """
+  A list of edges which contains the `GgircsUser`, info from the `GgircsUser`, and the cursor to aid in pagination.
+  """
+  edges: [GgircsUserGgircsUsersByGgircsUserDeletedByAndUpdatedByManyToManyEdge!]!
+
+  """A list of `GgircsUser` objects."""
+  nodes: [GgircsUser]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `GgircsUser` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `GgircsUser` edge in the connection, with data from `GgircsUser`."""
+type GgircsUserGgircsUsersByGgircsUserDeletedByAndUpdatedByManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """Reads and enables pagination through a set of `GgircsUser`."""
+  ggircsUsersByUpdatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: GgircsUserCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: GgircsUserFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `GgircsUser`."""
+    orderBy: [GgircsUsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): GgircsUsersConnection!
+
+  """The `GgircsUser` at the end of the edge."""
+  node: GgircsUser
+}
+
+"""
+A connection to a list of `GgircsUser` values, with data from `GgircsUser`.
+"""
+type GgircsUserGgircsUsersByGgircsUserUpdatedByAndCreatedByManyToManyConnection {
+  """
+  A list of edges which contains the `GgircsUser`, info from the `GgircsUser`, and the cursor to aid in pagination.
+  """
+  edges: [GgircsUserGgircsUsersByGgircsUserUpdatedByAndCreatedByManyToManyEdge!]!
+
+  """A list of `GgircsUser` objects."""
+  nodes: [GgircsUser]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `GgircsUser` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `GgircsUser` edge in the connection, with data from `GgircsUser`."""
+type GgircsUserGgircsUsersByGgircsUserUpdatedByAndCreatedByManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """Reads and enables pagination through a set of `GgircsUser`."""
+  ggircsUsersByCreatedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: GgircsUserCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: GgircsUserFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `GgircsUser`."""
+    orderBy: [GgircsUsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): GgircsUsersConnection!
+
+  """The `GgircsUser` at the end of the edge."""
+  node: GgircsUser
+}
+
+"""
+A connection to a list of `GgircsUser` values, with data from `GgircsUser`.
+"""
+type GgircsUserGgircsUsersByGgircsUserUpdatedByAndDeletedByManyToManyConnection {
+  """
+  A list of edges which contains the `GgircsUser`, info from the `GgircsUser`, and the cursor to aid in pagination.
+  """
+  edges: [GgircsUserGgircsUsersByGgircsUserUpdatedByAndDeletedByManyToManyEdge!]!
+
+  """A list of `GgircsUser` objects."""
+  nodes: [GgircsUser]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `GgircsUser` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `GgircsUser` edge in the connection, with data from `GgircsUser`."""
+type GgircsUserGgircsUsersByGgircsUserUpdatedByAndDeletedByManyToManyEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """Reads and enables pagination through a set of `GgircsUser`."""
+  ggircsUsersByDeletedBy(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: GgircsUserCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: GgircsUserFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `GgircsUser`."""
+    orderBy: [GgircsUsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): GgircsUsersConnection!
+
+  """The `GgircsUser` at the end of the edge."""
+  node: GgircsUser
+}
+
 """An input for mutations affecting `GgircsUser`"""
 input GgircsUserInput {
   """The date this record was inserted"""
@@ -1235,6 +2294,66 @@ input GgircsUserPatch {
   Universally Unique ID for the user, defined by the single sign-on provider
   """
   uuid: UUID
+}
+
+"""
+A filter to be used against many `EcccFileDownloadLog` object types. All fields are combined with a logical ‘and.’
+"""
+input GgircsUserToManyEcccFileDownloadLogFilter {
+  """
+  Every related `EcccFileDownloadLog` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: EcccFileDownloadLogFilter
+
+  """
+  No related `EcccFileDownloadLog` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: EcccFileDownloadLogFilter
+
+  """
+  Some related `EcccFileDownloadLog` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: EcccFileDownloadLogFilter
+}
+
+"""
+A filter to be used against many `GgircsUser` object types. All fields are combined with a logical ‘and.’
+"""
+input GgircsUserToManyGgircsUserFilter {
+  """
+  Every related `GgircsUser` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: GgircsUserFilter
+
+  """
+  No related `GgircsUser` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: GgircsUserFilter
+
+  """
+  Some related `GgircsUser` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: GgircsUserFilter
+}
+
+"""
+A filter to be used against many `JwtToken` object types. All fields are combined with a logical ‘and.’
+"""
+input GgircsUserToManyJwtTokenFilter {
+  """
+  Every related `JwtToken` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: JwtTokenFilter
+
+  """
+  No related `JwtToken` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: JwtTokenFilter
+
+  """
+  Some related `JwtToken` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: JwtTokenFilter
 }
 
 """A connection to a list of `GgircsUser` values."""
@@ -1326,6 +2445,26 @@ input GhgrImportCondition {
   xmlFile: String
 }
 
+"""
+A filter to be used against `GhgrImport` object types. All fields are combined with a logical ‘and.’
+"""
+input GhgrImportFilter {
+  """Checks for all expressions in this list."""
+  and: [GhgrImportFilter!]
+
+  """Filter by the object’s `importedAt` field."""
+  importedAt: DatetimeFilter
+
+  """Negates the expression."""
+  not: GhgrImportFilter
+
+  """Checks for any expressions in this list."""
+  or: [GhgrImportFilter!]
+
+  """Filter by the object’s `rowId` field."""
+  rowId: IntFilter
+}
+
 """A connection to a list of `GhgrImport` values."""
 type GhgrImportsConnection {
   """
@@ -1365,6 +2504,48 @@ enum GhgrImportsOrderBy {
   XML_FILE_DESC
 }
 
+"""
+A filter to be used against Int fields. All fields are combined with a logical ‘and.’
+"""
+input IntFilter {
+  """
+  Not equal to the specified value, treating null like an ordinary value.
+  """
+  distinctFrom: Int
+
+  """Equal to the specified value."""
+  equalTo: Int
+
+  """Greater than the specified value."""
+  greaterThan: Int
+
+  """Greater than or equal to the specified value."""
+  greaterThanOrEqualTo: Int
+
+  """Included in the specified list."""
+  in: [Int!]
+
+  """
+  Is null (if `true` is specified) or is not null (if `false` is specified).
+  """
+  isNull: Boolean
+
+  """Less than the specified value."""
+  lessThan: Int
+
+  """Less than or equal to the specified value."""
+  lessThanOrEqualTo: Int
+
+  """Equal to the specified value, treating null like an ordinary value."""
+  notDistinctFrom: Int
+
+  """Not equal to the specified value."""
+  notEqualTo: Int
+
+  """Not included in the specified list."""
+  notIn: [Int!]
+}
+
 type JwtToken {
   acr: String
   aud: String
@@ -1390,6 +2571,89 @@ type JwtToken {
   sub: UUID
   typ: String
   userGroups: [String]
+}
+
+"""
+A filter to be used against `JwtToken` object types. All fields are combined with a logical ‘and.’
+"""
+input JwtTokenFilter {
+  """Filter by the object’s `acr` field."""
+  acr: StringFilter
+
+  """Checks for all expressions in this list."""
+  and: [JwtTokenFilter!]
+
+  """Filter by the object’s `aud` field."""
+  aud: StringFilter
+
+  """Filter by the object’s `authTime` field."""
+  authTime: IntFilter
+
+  """Filter by the object’s `azp` field."""
+  azp: StringFilter
+
+  """Filter by the object’s `brokerSessionId` field."""
+  brokerSessionId: StringFilter
+
+  """Filter by the object’s `email` field."""
+  email: StringFilter
+
+  """Filter by the object’s `emailVerified` field."""
+  emailVerified: BooleanFilter
+
+  """Filter by the object’s `exp` field."""
+  exp: IntFilter
+
+  """Filter by the object’s `familyName` field."""
+  familyName: StringFilter
+
+  """Filter by the object’s `ggircsUserBySub` relation."""
+  ggircsUserBySub: GgircsUserFilter
+
+  """A related `ggircsUserBySub` exists."""
+  ggircsUserBySubExists: Boolean
+
+  """Filter by the object’s `givenName` field."""
+  givenName: StringFilter
+
+  """Filter by the object’s `iat` field."""
+  iat: IntFilter
+
+  """Filter by the object’s `iss` field."""
+  iss: StringFilter
+
+  """Filter by the object’s `jti` field."""
+  jti: UUIDFilter
+
+  """Filter by the object’s `name` field."""
+  name: StringFilter
+
+  """Filter by the object’s `nbf` field."""
+  nbf: IntFilter
+
+  """Negates the expression."""
+  not: JwtTokenFilter
+
+  """Checks for any expressions in this list."""
+  or: [JwtTokenFilter!]
+
+  """Filter by the object’s `preferredUsername` field."""
+  preferredUsername: StringFilter
+
+  """Filter by the object’s `priorityGroup` field."""
+  priorityGroup: StringFilter
+
+  """Filter by the object’s `sessionState` field."""
+  sessionState: UUIDFilter
+
+  """Filter by the object’s `sub` field."""
+  sub: UUIDFilter
+
+  """Filter by the object’s `typ` field."""
+  typ: StringFilter
+
+  """Filter by the object’s `userGroups` field."""
+  userGroups: StringListFilter
 }
 
 """
@@ -1567,6 +2831,11 @@ type Query implements Node {
     """
     condition: EcccAttachmentCondition
 
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: EcccAttachmentFilter
+
     """Only read the first `n` values of the set."""
     first: Int
 
@@ -1595,6 +2864,11 @@ type Query implements Node {
     A condition to be used in determining which values should be returned by the collection.
     """
     condition: EcccFileDownloadLogCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: EcccFileDownloadLogFilter
 
     """Only read the first `n` values of the set."""
     first: Int
@@ -1625,6 +2899,11 @@ type Query implements Node {
     """
     condition: EcccXmlFileCondition
 
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: EcccXmlFileFilter
+
     """Only read the first `n` values of the set."""
     first: Int
 
@@ -1653,6 +2932,11 @@ type Query implements Node {
     A condition to be used in determining which values should be returned by the collection.
     """
     condition: EcccZipFileCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: EcccZipFileFilter
 
     """Only read the first `n` values of the set."""
     first: Int
@@ -1683,6 +2967,11 @@ type Query implements Node {
     """
     condition: GgircsUserCondition
 
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: GgircsUserFilter
+
     """Only read the first `n` values of the set."""
     first: Int
 
@@ -1711,6 +3000,11 @@ type Query implements Node {
     A condition to be used in determining which values should be returned by the collection.
     """
     condition: GhgrImportCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: GhgrImportFilter
 
     """Only read the first `n` values of the set."""
     first: Int
@@ -1741,6 +3035,11 @@ type Query implements Node {
     """
     condition: ReportAttachmentCondition
 
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ReportAttachmentFilter
+
     """Only read the first `n` values of the set."""
     first: Int
 
@@ -1769,6 +3068,11 @@ type Query implements Node {
     A condition to be used in determining which values should be returned by the collection.
     """
     condition: ReportCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ReportFilter
 
     """Only read the first `n` values of the set."""
     first: Int
@@ -1919,6 +3223,11 @@ type Report implements Node {
     """
     condition: ReportAttachmentCondition
 
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ReportAttachmentFilter
+
     """Only read the first `n` values of the set."""
     first: Int
 
@@ -2067,6 +3376,62 @@ input ReportAttachmentCondition {
   zipFileName: String
 }
 
+"""
+A filter to be used against `ReportAttachment` object types. All fields are combined with a logical ‘and.’
+"""
+input ReportAttachmentFilter {
+  """Checks for all expressions in this list."""
+  and: [ReportAttachmentFilter!]
+
+  """Filter by the object’s `fileNumber` field."""
+  fileNumber: IntFilter
+
+  """Filter by the object’s `filePath` field."""
+  filePath: StringFilter
+
+  """Filter by the object’s `informationRequirement` field."""
+  informationRequirement: StringFilter
+
+  """Filter by the object’s `md5Hash` field."""
+  md5Hash: StringFilter
+
+  """Negates the expression."""
+  not: ReportAttachmentFilter
+
+  """Checks for any expressions in this list."""
+  or: [ReportAttachmentFilter!]
+
+  """Filter by the object’s `processName` field."""
+  processName: StringFilter
+
+  """Filter by the object’s `reportByReportId` relation."""
+  reportByReportId: ReportFilter
+
+  """A related `reportByReportId` exists."""
+  reportByReportIdExists: Boolean
+
+  """Filter by the object’s `reportId` field."""
+  reportId: IntFilter
+
+  """Filter by the object’s `rowId` field."""
+  rowId: IntFilter
+
+  """Filter by the object’s `subProcessName` field."""
+  subProcessName: StringFilter
+
+  """Filter by the object’s `uploadedAt` field."""
+  uploadedAt: DatetimeFilter
+
+  """Filter by the object’s `uploadedBy` field."""
+  uploadedBy: StringFilter
+
+  """Filter by the object’s `uploadedFileName` field."""
+  uploadedFileName: StringFilter
+
+  """Filter by the object’s `zipFileName` field."""
+  zipFileName: StringFilter
+}
+
 """A connection to a list of `ReportAttachment` values."""
 type ReportAttachmentsConnection {
   """
@@ -2188,6 +3553,106 @@ input ReportCondition {
   version: String
 }
 
+"""
+A filter to be used against `Report` object types. All fields are combined with a logical ‘and.’
+"""
+input ReportFilter {
+  """Checks for all expressions in this list."""
+  and: [ReportFilter!]
+
+  """Filter by the object’s `co2Bioc` field."""
+  co2Bioc: BigFloatFilter
+
+  """Filter by the object’s `ecccXmlFileByEcccXmlFileId` relation."""
+  ecccXmlFileByEcccXmlFileId: EcccXmlFileFilter
+
+  """A related `ecccXmlFileByEcccXmlFileId` exists."""
+  ecccXmlFileByEcccXmlFileIdExists: Boolean
+
+  """Filter by the object’s `ecccXmlFileId` field."""
+  ecccXmlFileId: IntFilter
+
+  """Filter by the object’s `grandTotalLessCo2Bioc` field."""
+  grandTotalLessCo2Bioc: BigFloatFilter
+
+  """Filter by the object’s `importedAt` field."""
+  importedAt: DatetimeFilter
+
+  """Filter by the object’s `lastModifiedBy` field."""
+  lastModifiedBy: StringFilter
+
+  """Filter by the object’s `lastModifiedDate` field."""
+  lastModifiedDate: DatetimeFilter
+
+  """Negates the expression."""
+  not: ReportFilter
+
+  """Checks for any expressions in this list."""
+  or: [ReportFilter!]
+
+  """Filter by the object’s `prepopReportId` field."""
+  prepopReportId: IntFilter
+
+  """Filter by the object’s `reportAttachmentsByReportId` relation."""
+  reportAttachmentsByReportId: ReportToManyReportAttachmentFilter
+
+  """Some related `reportAttachmentsByReportId` exist."""
+  reportAttachmentsByReportIdExist: Boolean
+
+  """Filter by the object’s `reportType` field."""
+  reportType: StringFilter
+
+  """Filter by the object’s `reportingOnlyGrandTotal` field."""
+  reportingOnlyGrandTotal: BigFloatFilter
+
+  """Filter by the object’s `reportingPeriodDuration` field."""
+  reportingPeriodDuration: IntFilter
+
+  """Filter by the object’s `rowId` field."""
+  rowId: IntFilter
+
+  """Filter by the object’s `status` field."""
+  status: StringFilter
+
+  """Filter by the object’s `submissionDate` field."""
+  submissionDate: DatetimeFilter
+
+  """Filter by the object’s `swrsFacilityId` field."""
+  swrsFacilityId: IntFilter
+
+  """Filter by the object’s `swrsOrganisationId` field."""
+  swrsOrganisationId: IntFilter
+
+  """Filter by the object’s `swrsReportId` field."""
+  swrsReportId: IntFilter
+
+  """Filter by the object’s `updateComment` field."""
+  updateComment: StringFilter
+
+  """Filter by the object’s `version` field."""
+  version: StringFilter
+}
+
+"""
+A filter to be used against many `ReportAttachment` object types. All fields are combined with a logical ‘and.’
+"""
+input ReportToManyReportAttachmentFilter {
+  """
+  Every related `ReportAttachment` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: ReportAttachmentFilter
+
+  """
+  No related `ReportAttachment` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: ReportAttachmentFilter
+
+  """
+  Some related `ReportAttachment` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: ReportAttachmentFilter
+}
+
 """A connection to a list of `Report` values."""
 type ReportsConnection {
   """
@@ -2260,9 +3725,246 @@ enum ReportsOrderBy {
 }
 
 """
+A filter to be used against String fields. All fields are combined with a logical ‘and.’
+"""
+input StringFilter {
+  """
+  Not equal to the specified value, treating null like an ordinary value.
+  """
+  distinctFrom: String
+
+  """
+  Not equal to the specified value, treating null like an ordinary value (case-insensitive).
+  """
+  distinctFromInsensitive: String
+
+  """Ends with the specified string (case-sensitive)."""
+  endsWith: String
+
+  """Ends with the specified string (case-insensitive)."""
+  endsWithInsensitive: String
+
+  """Equal to the specified value."""
+  equalTo: String
+
+  """Equal to the specified value (case-insensitive)."""
+  equalToInsensitive: String
+
+  """Greater than the specified value."""
+  greaterThan: String
+
+  """Greater than the specified value (case-insensitive)."""
+  greaterThanInsensitive: String
+
+  """Greater than or equal to the specified value."""
+  greaterThanOrEqualTo: String
+
+  """Greater than or equal to the specified value (case-insensitive)."""
+  greaterThanOrEqualToInsensitive: String
+
+  """Included in the specified list."""
+  in: [String!]
+
+  """Included in the specified list (case-insensitive)."""
+  inInsensitive: [String!]
+
+  """Contains the specified string (case-sensitive)."""
+  includes: String
+
+  """Contains the specified string (case-insensitive)."""
+  includesInsensitive: String
+
+  """
+  Is null (if `true` is specified) or is not null (if `false` is specified).
+  """
+  isNull: Boolean
+
+  """Less than the specified value."""
+  lessThan: String
+
+  """Less than the specified value (case-insensitive)."""
+  lessThanInsensitive: String
+
+  """Less than or equal to the specified value."""
+  lessThanOrEqualTo: String
+
+  """Less than or equal to the specified value (case-insensitive)."""
+  lessThanOrEqualToInsensitive: String
+
+  """
+  Matches the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.
+  """
+  like: String
+
+  """
+  Matches the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.
+  """
+  likeInsensitive: String
+
+  """Equal to the specified value, treating null like an ordinary value."""
+  notDistinctFrom: String
+
+  """
+  Equal to the specified value, treating null like an ordinary value (case-insensitive).
+  """
+  notDistinctFromInsensitive: String
+
+  """Does not end with the specified string (case-sensitive)."""
+  notEndsWith: String
+
+  """Does not end with the specified string (case-insensitive)."""
+  notEndsWithInsensitive: String
+
+  """Not equal to the specified value."""
+  notEqualTo: String
+
+  """Not equal to the specified value (case-insensitive)."""
+  notEqualToInsensitive: String
+
+  """Not included in the specified list."""
+  notIn: [String!]
+
+  """Not included in the specified list (case-insensitive)."""
+  notInInsensitive: [String!]
+
+  """Does not contain the specified string (case-sensitive)."""
+  notIncludes: String
+
+  """Does not contain the specified string (case-insensitive)."""
+  notIncludesInsensitive: String
+
+  """
+  Does not match the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.
+  """
+  notLike: String
+
+  """
+  Does not match the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.
+  """
+  notLikeInsensitive: String
+
+  """Does not start with the specified string (case-sensitive)."""
+  notStartsWith: String
+
+  """Does not start with the specified string (case-insensitive)."""
+  notStartsWithInsensitive: String
+
+  """Starts with the specified string (case-sensitive)."""
+  startsWith: String
+
+  """Starts with the specified string (case-insensitive)."""
+  startsWithInsensitive: String
+}
+
+"""
+A filter to be used against String List fields. All fields are combined with a logical ‘and.’
+"""
+input StringListFilter {
+  """Any array item is equal to the specified value."""
+  anyEqualTo: String
+
+  """Any array item is greater than the specified value."""
+  anyGreaterThan: String
+
+  """Any array item is greater than or equal to the specified value."""
+  anyGreaterThanOrEqualTo: String
+
+  """Any array item is less than the specified value."""
+  anyLessThan: String
+
+  """Any array item is less than or equal to the specified value."""
+  anyLessThanOrEqualTo: String
+
+  """Any array item is not equal to the specified value."""
+  anyNotEqualTo: String
+
+  """Contained by the specified list of values."""
+  containedBy: [String]
+
+  """Contains the specified list of values."""
+  contains: [String]
+
+  """
+  Not equal to the specified value, treating null like an ordinary value.
+  """
+  distinctFrom: [String]
+
+  """Equal to the specified value."""
+  equalTo: [String]
+
+  """Greater than the specified value."""
+  greaterThan: [String]
+
+  """Greater than or equal to the specified value."""
+  greaterThanOrEqualTo: [String]
+
+  """
+  Is null (if `true` is specified) or is not null (if `false` is specified).
+  """
+  isNull: Boolean
+
+  """Less than the specified value."""
+  lessThan: [String]
+
+  """Less than or equal to the specified value."""
+  lessThanOrEqualTo: [String]
+
+  """Equal to the specified value, treating null like an ordinary value."""
+  notDistinctFrom: [String]
+
+  """Not equal to the specified value."""
+  notEqualTo: [String]
+
+  """Overlaps the specified list of values."""
+  overlaps: [String]
+}
+
+"""
 A universally unique identifier as defined by [RFC 4122](https://tools.ietf.org/html/rfc4122).
 """
 scalar UUID
+
+"""
+A filter to be used against UUID fields. All fields are combined with a logical ‘and.’
+"""
+input UUIDFilter {
+  """
+  Not equal to the specified value, treating null like an ordinary value.
+  """
+  distinctFrom: UUID
+
+  """Equal to the specified value."""
+  equalTo: UUID
+
+  """Greater than the specified value."""
+  greaterThan: UUID
+
+  """Greater than or equal to the specified value."""
+  greaterThanOrEqualTo: UUID
+
+  """Included in the specified list."""
+  in: [UUID!]
+
+  """
+  Is null (if `true` is specified) or is not null (if `false` is specified).
+  """
+  isNull: Boolean
+
+  """Less than the specified value."""
+  lessThan: UUID
+
+  """Less than or equal to the specified value."""
+  lessThanOrEqualTo: UUID
+
+  """Equal to the specified value, treating null like an ordinary value."""
+  notDistinctFrom: UUID
+
+  """Not equal to the specified value."""
+  notEqualTo: UUID
+
+  """Not included in the specified list."""
+  notIn: [UUID!]
+}
 
 """All input for the `updateEcccAttachmentByRowId` mutation."""
 input UpdateEcccAttachmentByRowIdInput {

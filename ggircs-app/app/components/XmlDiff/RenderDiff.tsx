@@ -1,35 +1,64 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
+import { graphql, createFragmentContainer } from "react-relay";
+import { RenderDiff_query } from "RenderDiff_query.graphql";
 import { diffLines, formatLines } from "unidiff";
 import { parseDiff, Diff, Hunk, tokenize } from "react-diff-view";
 import "react-diff-view/style/index.css";
+import format from "xml-formatter";
+import { NextRouter } from "next/router";
 import LoadingSpinner from "components/LoadingSpinner";
 
 const EMPTY_HUNKS = [];
 
 interface Props {
-  oldText: string;
-  newText: string;
-  collapse: boolean;
+  query: RenderDiff_query;
+  router: NextRouter;
 }
 
 export const RenderDiff: React.FunctionComponent<Props> = ({
-  oldText,
-  newText,
-  collapse,
+  query,
+  router,
 }) => {
-  const [loaded, setLoaded] = useState(false);
+  const shouldRenderDiff =
+    query.firstSideReport &&
+    query.secondSideReport &&
+    router.query.FirstSideRelayId &&
+    router.query.SecondSideRelayId;
+  if (!shouldRenderDiff) return null;
 
-  // UseEffect & setState to determine if this slow component is loading. Renders the loading spinner while loading.
+  const [isLoading, setIsLoading] = useState(true);
+  const [diffText, setDiffText] = useState(null);
+
+  const oldText = format(
+    query.firstSideReport.latestSwrsReport.ecccXmlFileByEcccXmlFileId.xmlFile
+  );
+  const newText = format(
+    query.secondSideReport.latestSwrsReport.ecccXmlFileByEcccXmlFileId.xmlFile
+  );
+
   useEffect(() => {
-    setLoaded(true);
-  }, []);
-
-  if (!loaded) return <LoadingSpinner />;
-
-  // context is the max number of lines to show around a change. When collapsed, we set it to 1. Otherwise 10000 to ensure we get the whole document.
-  const diffText = formatLines(diffLines(oldText, newText), {
-    context: collapse ? 1 : 10000,
+    setIsLoading(false);
   });
+
+  useMemo(() => {
+    setIsLoading(true);
+    if (router.query.reversed)
+      setDiffText(
+        formatLines(diffLines(newText, oldText), {
+          // context is the max number of lines to show around a change. When collapsed, we set it to 1. Otherwise 10000 to ensure we get the whole document.
+          context: router.query.collapsed ? 1 : 10000,
+        })
+      );
+    else
+      setDiffText(
+        formatLines(diffLines(oldText, newText), {
+          context: router.query.collapsed ? 1 : 10000,
+        })
+      );
+  }, [router.query]);
+
+  if (isLoading) return <LoadingSpinner />;
+
   const [{ type, hunks }] = parseDiff(diffText, { nearbySequences: "zip" });
 
   const getTokens = (hunks) => {
@@ -84,16 +113,55 @@ export const RenderDiff: React.FunctionComponent<Props> = ({
   };
 
   return (
-    <Diff
-      viewType="split"
-      diffType={type}
-      hunks={hunks || EMPTY_HUNKS}
-      tokens={tokens}
-      renderToken={renderToken}
-    >
-      {(hunks) => hunks.map((hunk) => <Hunk key={hunk.content} hunk={hunk} />)}
-    </Diff>
+    <div style={{ height: "40em", overflow: "scroll" }}>
+      <Diff
+        viewType="split"
+        diffType={type}
+        hunks={hunks || EMPTY_HUNKS}
+        tokens={tokens}
+        renderToken={renderToken}
+      >
+        {(hunks) =>
+          hunks.map((hunk) => <Hunk key={hunk.content} hunk={hunk} />)
+        }
+      </Diff>
+    </div>
   );
 };
 
-export default RenderDiff;
+export default createFragmentContainer(RenderDiff, {
+  query: graphql`
+    fragment RenderDiff_query on Query
+    @argumentDefinitions(
+      FirstSideRelayId: { type: "ID!" }
+      SecondSideRelayId: { type: "ID!" }
+    ) {
+      firstSideReport: report(id: $FirstSideRelayId) {
+        swrsReportId
+        latestSwrsReport {
+          submissionDate
+          ecccXmlFileByEcccXmlFileId {
+            xmlFileName
+            xmlFile
+            ecccZipFileByZipFileId {
+              zipFileName
+            }
+          }
+        }
+      }
+      secondSideReport: report(id: $SecondSideRelayId) {
+        swrsReportId
+        latestSwrsReport {
+          submissionDate
+          ecccXmlFileByEcccXmlFileId {
+            xmlFileName
+            xmlFile
+            ecccZipFileByZipFileId {
+              zipFileName
+            }
+          }
+        }
+      }
+    }
+  `,
+});

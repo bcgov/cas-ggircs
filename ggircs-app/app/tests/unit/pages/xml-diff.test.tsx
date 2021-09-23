@@ -7,9 +7,23 @@ describe("The swrs-browser page", () => {
     const wrapper = shallow(
       <XmlDiff
         query={{
+          " $fragmentRefs": {
+            DiffDetailsContainer_query: true,
+            RenderDiff_query: true,
+          },
           session: null,
           allReports: { edges: null },
         }}
+        router={
+          {
+            query: {
+              FirstSideId: "1",
+              SecondSideId: "2",
+              FirstSideRelayId: "abc",
+              SecondSideRelayId: "def",
+            },
+          } as any
+        }
       />
     );
     const leftSideReport = {

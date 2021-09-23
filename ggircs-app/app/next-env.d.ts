@@ -43,17 +43,8 @@ export interface EcccFile {
 
 export interface RelayReportObject {
   node: {
+    id: string;
     swrsReportId: number;
-    latestSwrsReport: {
-      submissionDate: string;
-      ecccXmlFileByEcccXmlFileId: {
-        xmlFileName: string;
-        xmlFile: string;
-        ecccZipFileByZipFileId: {
-          zipFileName: string;
-        };
-      };
-    };
   };
 }
 
