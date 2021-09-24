@@ -157,3 +157,4 @@ swrs/history/computed_column/report_latest_swrs_report [swrs/history/table/repor
 swrs/transform/function/clone_schema [swrs/transform/function/clone_schema@v1.7.0] 2021-09-16T03:17:16Z Dylan Leard <dylan@button.is> # Migration: do not change the body of functions when converting to the *_load schema
 @v1.8.0 2021-09-16T21:38:58Z Dylan Leard <dylan@button.is> # release v1.8.0
 @v1.8.1 2021-09-17T16:15:15Z Dylan Leard <dylan@button.is> # release v1.8.1
+@v1.8.2 2021-09-24T15:41:43Z Dylan Leard <dylan@button.is> # release v1.8.2
