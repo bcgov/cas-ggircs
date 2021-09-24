@@ -100,40 +100,40 @@ do $report$
     for year in 2018..2025 loop
       loop_offset := loop_modifier*600;
       -- SFO
-      for i in 1001..1100 loop
+      for i in 1001..1002 loop
         perform insert_swrs_report(i+loop_offset, i, 1, 'SFO', year);
       end loop;
 
       -- LFO
-      for i in 1101..1133 loop
+      for i in 1003..1034 loop
         perform insert_swrs_report(i+loop_offset, i, 2, 'IF_a', year);
       end loop;
 
-      for i in 1134..1167 loop
+      for i in 1035..1067 loop
         perform insert_swrs_report(i+loop_offset, i, 2, 'IF_b', year);
       end loop;
 
-      for i in 1168..1200 loop
+      for i in 1068..1100 loop
         perform insert_swrs_report(i+loop_offset, i, 2, 'L_c', year);
       end loop;
 
       -- Changes Requested
-      for i in 1201..1300 loop
+      for i in 1101..1102 loop
         perform insert_swrs_report(i+loop_offset, i, 3, 'SFO', year);
       end loop;
 
       -- Draft
-      for i in 1301..1400 loop
+      for i in 1103..1104 loop
         perform insert_swrs_report(i+loop_offset, i, 4, 'SFO', year);
       end loop;
 
       -- Not Started
-      for i in 1401..1500 loop
+      for i in 1105..1106 loop
         perform insert_swrs_report(i+loop_offset, i, 5, 'SFO', year);
       end loop;
 
       -- Submitted
-      for i in 1501..1600 loop
+      for i in 1107..1108 loop
         perform insert_swrs_report(i+loop_offset, i, 6, 'SFO', year);
       end loop;
       loop_modifier = loop_modifier+1;
@@ -141,10 +141,14 @@ do $report$
     raise notice 'Deploy Complete';
     raise notice '** Created % reports. **', (select count(*) from swrs.report);
     raise notice '** % reports for each year from 2018-2025. **', (select count(*)/8 from swrs.report);
-    raise notice '** 100 per year for each operator type. **';
     raise notice '** Operator types: {%} **', (select string_agg(quote_literal(org_name), ', ') as Orgs from org_helper);
 
   end
 $report$;
+
+delete from swrs.organisation_bc_registry_id;
+insert into swrs.organisation_bc_registry_id (swrs_organisation_id, bc_registry_id) values
+(1, 'BC0022383'), -- randomly selected bc registry ids available in the dev instance of Orgbook
+(6, 'BC0033357');
 
 commit;

@@ -1,0 +1,4 @@
+pandas~=1.2.2
+PyYAML~=5.4.1
+requests~=2.25.1
+psycopg2~=2.8.5

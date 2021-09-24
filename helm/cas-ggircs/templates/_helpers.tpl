@@ -64,7 +64,7 @@ Create the name of the service account to use
 
 
 {{/*
-Gets the suffix of the namespace. (-dev, -tools, ... )
+Gets the suffix of the namespace. (dev, tools, ... )
 */}}
 {{- define "cas-ggircs.namespaceSuffix" }}
 {{- (split "-" .Release.Namespace)._1 | trim -}}

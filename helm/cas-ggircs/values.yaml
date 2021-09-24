@@ -31,6 +31,8 @@ image:
     repository: gcr.io/ggl-cas-storage/cas-ggircs-eccc-upload
   ecccExtract:
     repository: gcr.io/ggl-cas-storage/cas-ggircs-eccc-extract
+  ghgCredentialsIssuer:
+    repository: gcr.io/ggl-cas-storage/ghg-credentials-issuer
 
 persistence:
   db: ggircs
@@ -126,3 +128,8 @@ trigger-ggircs-deploy-db:
   dagId: cas_ggircs_deploy_db
   helm:
     hook: false
+
+ghg-credentials-issuer:
+  enabled: false
+  secretName: ghg-credentials-issuer
+  secretApiKeyProp: api-key

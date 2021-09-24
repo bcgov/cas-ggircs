@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-database=${PGDATABASE:-ggircs_dev}
+database=${PGDATABASE:-ggircs}
 user=${PGUSER:-$(whoami)}
 host=${PGHOST:-localhost}
 port=${PGPORT:-5432}
