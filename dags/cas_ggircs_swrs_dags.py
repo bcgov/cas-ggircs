@@ -68,35 +68,16 @@ extract_attachments = PythonOperator(
 )
 
 
-load_ggircs = PythonOperator(
-    python_callable=trigger_k8s_cronjob,
-    task_id='load_ggircs',
-    op_args=['cas-ggircs-etl-deploy', namespace],
-    dag=dag
-)
-
-
-ggircs_read_only_user = PythonOperator(
-    python_callable=trigger_k8s_cronjob,
-    task_id='ggircs_read_only_user',
-    op_args=['cas-ggircs-db-create-readonly-user', namespace],
-    dag=dag
-)
-
-
-trigger_ciip_deploy_db_dag = TriggerDagRunOperator(
-    task_id='trigger_ciip_deploy_db_dag',
-    trigger_dag_id="cas_ciip_portal_deploy_db",
+trigger_load_db_dag = TriggerDagRunOperator(
+    task_id='trigger_cas_ggircs_load_db_dag',
+    trigger_dag_id='cas_ggircs_load_db',
     dag=dag
 )
 
 
 eccc_upload >> extract_zip_files
-extract_zip_files >> extract_xml_files >> load_ggircs
-extract_zip_files >> extract_attachments >> load_ggircs
-
-load_ggircs >> ggircs_read_only_user >> trigger_ciip_deploy_db_dag
-
+extract_zip_files >> extract_xml_files >> trigger_load_db_dag
+extract_zip_files >> extract_attachments >> trigger_load_db_dag
 
 ghg_credentials_issuer_dag = DAG(
     'ghg_credentials_issuer',
