@@ -2,6 +2,7 @@
 from dag_configuration import default_dag_args
 from trigger_k8s_cronjob import trigger_k8s_cronjob
 from walg_backups import create_backup_task
+from airflow.operators.dagrun_operator import TriggerDagRunOperator
 from airflow.operators.python_operator import PythonOperator
 from datetime import datetime, timedelta
 from airflow import DAG
@@ -13,6 +14,7 @@ sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 TWO_DAYS_AGO = datetime.now() - timedelta(days=2)
 
 DEPLOY_DB_DAG_NAME = 'cas_ggircs_deploy_db'
+LOAD_DB_DAG_NAME = 'cas_ggircs_load_db'
 LOAD_TESTING_SETUP_DAG_NAME = 'cas_ggircs_ciip_load_testing_data'
 CERT_RENEWAL_DAG_NAME = 'cas_ggircs_cert_renewal'
 BACKUP_DAG_NAME = 'walg_backup_ggircs_full'
@@ -35,7 +37,7 @@ default_args = {
 
 
 deploy_db_dag = DAG(DEPLOY_DB_DAG_NAME, schedule_interval=None,
-                    default_args=default_args, is_paused_upon_creation=False)
+    default_args=default_args, is_paused_upon_creation=False)
 
 ggircs_db_init = PythonOperator(
     python_callable=trigger_k8s_cronjob,
@@ -43,34 +45,52 @@ ggircs_db_init = PythonOperator(
     op_args=['cas-ggircs-db-init', ggircs_namespace],
     dag=deploy_db_dag)
 
+trigger_load_db_dag = TriggerDagRunOperator(
+    task_id='trigger_cas_ggircs_load_db_dag',
+    trigger_dag_id=LOAD_DB_DAG_NAME,
+    dag=deploy_db_dag
+)
+
+ggircs_db_init >> trigger_load_db_dag
+
+load_db_dag = DAG(LOAD_DB_DAG_NAME, schedule_interval=None,
+    default_args=default_args, is_paused_upon_creation=False)
+
 ggircs_etl = PythonOperator(
     python_callable=trigger_k8s_cronjob,
     task_id='ggircs_etl',
     op_args=['cas-ggircs-etl-deploy', ggircs_namespace],
-    dag=deploy_db_dag)
+    dag=load_db_dag)
 
 ggircs_read_only_user = PythonOperator(
     python_callable=trigger_k8s_cronjob,
     task_id='ggircs_read_only_user',
     op_args=['cas-ggircs-db-create-readonly-user', ggircs_namespace],
-    dag=deploy_db_dag)
+    dag=load_db_dag)
 
 ggircs_app_user = PythonOperator(
     python_callable=trigger_k8s_cronjob,
     task_id='ggircs_app_user',
     op_args=['cas-ggircs-app-user', ggircs_namespace],
-    dag=deploy_db_dag)
+    dag=load_db_dag)
 
 ggircs_app_schema = PythonOperator(
     python_callable=trigger_k8s_cronjob,
     task_id='ggircs_app_schema',
     op_args=['cas-ggircs-schema-deploy-data', ggircs_namespace],
-    dag=deploy_db_dag)
+    dag=load_db_dag)
 
-ggircs_db_init >> ggircs_etl >> ggircs_read_only_user
+trigger_ciip_deploy_db_dag = TriggerDagRunOperator(
+    task_id='trigger_ciip_deploy_db_dag',
+    trigger_dag_id="cas_ciip_portal_deploy_db",
+    dag=load_db_dag
+)
+
+ggircs_etl >> ggircs_read_only_user
 ggircs_etl >> ggircs_app_user
-ggircs_db_init >> ggircs_app_schema
-
+ggircs_app_schema >> ggircs_read_only_user
+ggircs_app_schema >> ggircs_app_user
+ggircs_etl >> trigger_ciip_deploy_db_dag
 
 """
 ###############################################################################
