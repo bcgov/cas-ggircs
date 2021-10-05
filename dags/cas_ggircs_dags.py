@@ -48,7 +48,8 @@ ggircs_db_init = PythonOperator(
 trigger_load_db_dag = TriggerDagRunOperator(
     task_id='trigger_cas_ggircs_load_db_dag',
     trigger_dag_id=LOAD_DB_DAG_NAME,
-    dag=deploy_db_dag
+    dag=deploy_db_dag,
+    wait_for_completion=True
 )
 
 ggircs_db_init >> trigger_load_db_dag
