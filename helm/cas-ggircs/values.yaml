@@ -126,6 +126,7 @@ trigger-ggircs-deploy-db:
   enabled: true
   airflowEndpoint: https://cas-airflow-dev.apps.silver.devops.gov.bc.ca
   dagId: cas_ggircs_deploy_db
+  activeDeadlineSeconds: 3600
   helm:
     hook: false
 
