@@ -301,7 +301,7 @@ jobs:
       - restore_cache:
           name: Restore Cpan Package Cache
           keys:
-            - cpanm-packages-{{ checksum "cpanfile" }}-v1
+            - cpanm-packages-{{ checksum "cpanfile" }}-v2
       - run:
           name: Install Cpan Dependencies
           command: |
@@ -311,7 +311,7 @@ jobs:
             make install_cpandeps
       - save_cache:
           name: Save Cpan Package Cache
-          key: cpanm-packages-{{ checksum "cpanfile" }}-v1
+          key: cpanm-packages-{{ checksum "cpanfile" }}-v2
           paths:
             - ~/perl5
       - persist_to_workspace:
