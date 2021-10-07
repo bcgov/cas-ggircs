@@ -63,7 +63,7 @@
   "devDependencies": {
     "@babel/core": "^7.12.13",
     "@types/enzyme": "^3.10.8",
-    "@types/jest": "^26.0.20",
+    "@types/jest": "^27.0.2",
     "@types/react": "^16.14.0",
     "@types/react-dom": "^16.9.0",
     "@types/react-relay": "^7.0.17",
@@ -90,7 +90,7 @@
     "graphql-query-test-mock": "^0.12.1",
     "happo-cypress": "^1.16.1",
     "happo.io": "^6.4.0",
-    "jest": "^26.6.3",
+    "jest": "^27.2.4",
     "jest-canvas-mock": "^2.3.0",
     "jest-extended": "^0.11.5",
     "jest-raw-loader": "^1.0.1",
@@ -104,7 +104,9 @@
   },
   "resolutions": {
     "**/hosted-git-info": "4.0.1",
-    "unidiff/diff": "5.0.0"
+    "unidiff/diff": "5.0.0",
+    "**/ansi-regex": "5.0.1",
+    "**/set-value": "4.0.1"
   },
   "jest": {
     "testMatch": [
