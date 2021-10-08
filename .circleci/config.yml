@@ -259,7 +259,7 @@ jobs:
       - restore_cache:
           name: Restore asdf Tools Cache
           keys:
-            - tool-versions-{{ checksum ".tool-versions" }}-v1
+            - tool-versions-{{ checksum ".tool-versions" }}-v2
       - run:
           name: Install tools via asdf
           command: |
@@ -274,7 +274,7 @@ jobs:
             pg_ctl stop
       - save_cache:
           name: Save asdf Tools Cache
-          key: tool-versions-{{ checksum ".tool-versions" }}-v1
+          key: tool-versions-{{ checksum ".tool-versions" }}-v2
           paths:
             - ~/.asdf
       - restore_cache:
