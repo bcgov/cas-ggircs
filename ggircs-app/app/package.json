@@ -103,7 +103,6 @@
     "wait-on": "^5.2.1"
   },
   "resolutions": {
-    "**/hosted-git-info": "4.0.1",
     "unidiff/diff": "5.0.0",
     "**/ansi-regex": "5.0.1",
     "**/set-value": "4.0.1"
