@@ -7,7 +7,7 @@ orbs:
 jobs:
   etl_db_test:
     machine:
-      image: ubuntu-1604:201903-01
+      image: ubuntu-2004:202107-02
     working_directory: ~/cas-ggircs
     steps:
       - run:
@@ -95,7 +95,7 @@ jobs:
 
   helm_lint:
     machine:
-      image: ubuntu-1604:201903-01
+      image: ubuntu-2004:202107-02
     steps:
       - checkout
       - run:
@@ -241,7 +241,7 @@ jobs:
                   echo "Digest is: $(</tmp/digest.txt)"
   tools:
     machine:
-      image: ubuntu-1604:201903-01
+      image: ubuntu-2004:202107-02
     working_directory: ~/cas-ggircs
     steps:
       - checkout:
@@ -259,7 +259,7 @@ jobs:
       - restore_cache:
           name: Restore asdf Tools Cache
           keys:
-            - tool-versions-{{ checksum ".tool-versions" }}-v1
+            - tool-versions-{{ checksum ".tool-versions" }}-v2
       - run:
           name: Install tools via asdf
           command: |
@@ -274,7 +274,7 @@ jobs:
             pg_ctl stop
       - save_cache:
           name: Save asdf Tools Cache
-          key: tool-versions-{{ checksum ".tool-versions" }}-v1
+          key: tool-versions-{{ checksum ".tool-versions" }}-v2
           paths:
             - ~/.asdf
       - restore_cache:
@@ -301,7 +301,7 @@ jobs:
       - restore_cache:
           name: Restore Cpan Package Cache
           keys:
-            - cpanm-packages-{{ checksum "cpanfile" }}-v1
+            - cpanm-packages-{{ checksum "cpanfile" }}-v2
       - run:
           name: Install Cpan Dependencies
           command: |
@@ -311,7 +311,7 @@ jobs:
             make install_cpandeps
       - save_cache:
           name: Save Cpan Package Cache
-          key: cpanm-packages-{{ checksum "cpanfile" }}-v1
+          key: cpanm-packages-{{ checksum "cpanfile" }}-v2
           paths:
             - ~/perl5
       - persist_to_workspace:
@@ -324,7 +324,7 @@ jobs:
             - perl5
   lint:
     machine:
-      image: ubuntu-1604:201903-01
+      image: ubuntu-2004:202107-02
     working_directory: ~/cas-ggircs
     steps:
       - attach_workspace:
@@ -340,7 +340,7 @@ jobs:
           command: git diff --exit-code || (echo 'These files are not formatted correctly. Did you forget to \"yarn format\"?' && false)
   ggircs_app_audit:
     machine:
-      image: ubuntu-1604:201903-01
+      image: ubuntu-2004:202107-02
     working_directory: ~/cas-ggircs/ggircs-app/app
     steps:
       - attach_workspace:
@@ -352,7 +352,7 @@ jobs:
             yarn run improved-yarn-audit
   ggircs_app_schema:
     machine:
-      image: ubuntu-1604:201903-01
+      image: ubuntu-2004:202107-02
     working_directory: ~/cas-ggircs/ggircs-app
     steps:
       - run:
@@ -415,7 +415,7 @@ jobs:
           command: git diff --exit-code || (echo 'The contents of the `schema` folder are out of sync with `app/server/schema.graphql`. Did you forget to \"yarn build:relay\"?' && false)
   ggircs_app_compile:
     machine:
-      image: ubuntu-1604:201903-01
+      image: ubuntu-2004:202107-02
     working_directory: ~/cas-ggircs/ggircs-app/app
     steps:
       - attach_workspace:
@@ -432,7 +432,7 @@ jobs:
             - cas-ggircs/ggircs-app # persist the build for e2e tests
   ggircs_app_unit:
     machine:
-      image: ubuntu-1604:201903-01
+      image: ubuntu-2004:202107-02
     working_directory: ~/cas-ggircs/ggircs-app/app
     steps:
       - attach_workspace:
@@ -444,7 +444,7 @@ jobs:
             yarn test
   ggircs_app_test_database:
     machine:
-      image: ubuntu-1604:201903-01
+      image: ubuntu-2004:202107-02
     working_directory: ~/cas-ggircs/ggircs-app
     steps:
       - run:
@@ -469,14 +469,15 @@ jobs:
             popd
   ggircs_app_e2e-snapshots:
     machine:
-      image: ubuntu-1604:201903-01
+      image: ubuntu-2004:202107-02
     working_directory: ~/cas-ggircs/ggircs-app
     steps:
       - run:
-          name: install libdbd-pg-perl
+          # From https://docs.cypress.io/guides/continuous-integration/introduction#Dependencies
+          name: install cypress dependencies + libdbd-pg-perl
           command: |
             sudo apt-get update
-            sudo apt-get install libdbd-pg-perl
+            sudo apt-get install libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb libdbd-pg-perl
       - attach_workspace:
           at: ~/
       - run:
