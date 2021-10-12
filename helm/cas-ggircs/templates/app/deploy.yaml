@@ -23,7 +23,7 @@ spec:
 {{ include "cas-ggircs.labels" . | indent 8 }}
     spec:
       initContainers:
-{{- if .Values.trigger-ggircs-deploy-db.enabled }}
+{{- if (index .Values "trigger-ggircs-deploy-db" "enabled") }}
       - env:
           - name: SQITCH_TARGET
             value: "db:pg:"
