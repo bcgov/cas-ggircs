@@ -162,3 +162,5 @@ swrs/public/table/organisation_bc_registry_id 2021-09-13T16:21:58Z Matthieu Fouc
 @v1.9.0 2021-09-24T19:51:46Z Dylan Leard <dylan@button.is> # release v1.9.0
 @v1.9.1 2021-10-06T16:45:16Z Matthieu Foucault <matthieu@button.is> # release v1.9.1
 swrs/transform/materialized_view/historical_report_attachment_data [swrs/transform/materialized_view/historical_report_attachment_data@v1.9.0] 2021-10-12T20:48:19Z Dylan Leard <dylan@button.is> # Migration: retrieve report comments
+swrs/history/table/attachments_002 [swrs/history/table/attachments] 2021-10-13T20:14:30Z Dylan Leard <dylan@button.is> # Migration: add comments column to table
+swrs/transform/function/load_report_attachment [swrs/transform/function/load_report_attachment@v1.9.0] 2021-10-13T20:12:20Z Dylan Leard <dylan@button.is> # Migration: add comment column to load function
