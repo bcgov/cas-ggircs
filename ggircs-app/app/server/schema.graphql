@@ -3179,7 +3179,6 @@ type Query implements Node {
   session: JwtToken
 }
 
-"""The table housing all report data, derived from eccc_xml_file table"""
 type Report implements Node {
   co2Bioc: BigFloat
 
@@ -3203,8 +3202,6 @@ type Report implements Node {
 
   """The timestamp recorded in SWRS when the report was last modified"""
   lastModifiedDate: Datetime
-
-  """Computed column returns the latest report ordered by zip_file_name"""
   latestSwrsReport: Report
 
   """The prepop report id"""
@@ -3281,8 +3278,9 @@ type Report implements Node {
   version: String
 }
 
-"""The table housing all attachments for reports"""
 type ReportAttachment implements Node {
+  comment: String
+
   """The file_number corresponds to the type of attachment"""
   fileNumber: Int
 
@@ -3299,7 +3297,7 @@ type ReportAttachment implements Node {
   """
   informationRequirement: String
 
-  """The md5 hash of the attachment"""
+  """Comments relating to a specific attachment or the report itself"""
   md5Hash: String
 
   """
@@ -3339,6 +3337,9 @@ A condition to be used against `ReportAttachment` object types. All fields are
 tested for equality and combined with a logical ‘and.’
 """
 input ReportAttachmentCondition {
+  """Checks for equality with the object’s `comment` field."""
+  comment: String
+
   """Checks for equality with the object’s `fileNumber` field."""
   fileNumber: Int
 
@@ -3382,6 +3383,9 @@ A filter to be used against `ReportAttachment` object types. All fields are comb
 input ReportAttachmentFilter {
   """Checks for all expressions in this list."""
   and: [ReportAttachmentFilter!]
+
+  """Filter by the object’s `comment` field."""
+  comment: StringFilter
 
   """Filter by the object’s `fileNumber` field."""
   fileNumber: IntFilter
@@ -3462,6 +3466,8 @@ type ReportAttachmentsEdge {
 
 """Methods to use when ordering `ReportAttachment`."""
 enum ReportAttachmentsOrderBy {
+  COMMENT_ASC
+  COMMENT_DESC
   FILE_NUMBER_ASC
   FILE_NUMBER_DESC
   FILE_PATH_ASC

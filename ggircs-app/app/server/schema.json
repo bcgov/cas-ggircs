@@ -11344,7 +11344,7 @@
         {
           "kind": "OBJECT",
           "name": "Report",
-          "description": "The table housing all report data, derived from eccc_xml_file table",
+          "description": null,
           "fields": [
             {
               "name": "co2Bioc",
@@ -11448,7 +11448,7 @@
             },
             {
               "name": "latestSwrsReport",
-              "description": "Computed column returns the latest report ordered by zip_file_name",
+              "description": null,
               "args": [],
               "type": {
                 "kind": "OBJECT",
@@ -11742,8 +11742,20 @@
         {
           "kind": "OBJECT",
           "name": "ReportAttachment",
-          "description": "The table housing all attachments for reports",
+          "description": null,
           "fields": [
+            {
+              "name": "comment",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
             {
               "name": "fileNumber",
               "description": "The file_number corresponds to the type of attachment",
@@ -11798,7 +11810,7 @@
             },
             {
               "name": "md5Hash",
-              "description": "The md5 hash of the attachment",
+              "description": "Comments relating to a specific attachment or the report itself",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -11938,6 +11950,16 @@
           "description": "A condition to be used against `ReportAttachment` object types. All fields are\ntested for equality and combined with a logical ‘and.’",
           "fields": null,
           "inputFields": [
+            {
+              "name": "comment",
+              "description": "Checks for equality with the object’s `comment` field.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
             {
               "name": "fileNumber",
               "description": "Checks for equality with the object’s `fileNumber` field.",
@@ -12084,6 +12106,16 @@
                     "ofType": null
                   }
                 }
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "comment",
+              "description": "Filter by the object’s `comment` field.",
+              "type": {
+                "kind": "INPUT_OBJECT",
+                "name": "StringFilter",
+                "ofType": null
               },
               "defaultValue": null
             },
@@ -12390,6 +12422,18 @@
           "inputFields": null,
           "interfaces": null,
           "enumValues": [
+            {
+              "name": "COMMENT_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "COMMENT_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
             {
               "name": "FILE_NUMBER_ASC",
               "description": null,
