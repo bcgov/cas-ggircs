@@ -3,7 +3,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(6);
+select plan(7);
 
 -- Test matview report exists in schema swrs_transform
 select has_materialized_view('swrs_transform', 'historical_report_attachment_data', 'Materialized view historical_report_attachment_data exists');
@@ -28,9 +28,12 @@ insert into swrs_extract.eccc_xml_file (imported_at, zip_file_id, xml_file) VALU
         <LastModifiedDate>2018-09-28T11:55:39.423</LastModifiedDate>
       </ReportStatus>
     </ReportDetails>
-  <ReportComments>
+    <ReportComments>
       <Process ProcessName="Comments and Supporting Information">
         <SubProcess SubprocessName="Comments Regarding GHG Reporting" InformationRequirement="Optional">
+          <Comments>
+            I am a comment
+          </Comments>
           <FileDetails>
             <File>38</File>
           </FileDetails>
@@ -97,7 +100,7 @@ insert into swrs_extract.eccc_xml_file (imported_at, zip_file_id, xml_file) VALU
         </SubProcess>
       </Process>
     </FileNameSpace>
-    </ReportData>
+  </ReportData>
 $$);
 
 -- Ensure fixture is processed correctly
@@ -105,9 +108,9 @@ refresh materialized view swrs_transform.historical_report_attachment_data with 
 
 select is_empty(
   $$
-    select * from swrs_transform.historical_report_attachment_data where file_number in (38, 39)
+    select * from swrs_transform.historical_report_attachment_data where file_number = 39
   $$,
-  'Does not parse data where the UploadedFileName tag does not exist or is empty'
+  'Does not parse data where the UploadedFileName tag does not exist or is empty and the Comments tag does not exist or is empty'
 );
 
 select results_eq(
@@ -120,7 +123,7 @@ select results_eq(
       file_number,
       uploaded_by,
       uploaded_at
-    from swrs_transform.historical_report_attachment_data limit 1
+    from swrs_transform.historical_report_attachment_data where process_name = 'ProcessFlowDiagram'
   $$,
   $$
     values (
@@ -169,6 +172,18 @@ select results_eq(
     values ('Space  Time.pdf'::varchar)
   $$,
   'Leaves spacing intact for filenames'
+);
+
+select results_eq(
+  $$
+    select
+      comment
+    from swrs_transform.historical_report_attachment_data where process_name = 'Comments and Supporting Information'
+  $$,
+  $$
+    values ('I am a comment'::varchar)
+  $$,
+  'Parses comments from the ReportComments tag'
 );
 
 select finish();

@@ -4,7 +4,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(5);
+select plan(7);
 
 -- Setup fixture
 insert into swrs_extract.eccc_zip_file (zip_file_name) values ('GHGBC_PROD_20180930.zip');
@@ -44,15 +44,18 @@ insert into swrs_extract.eccc_xml_file (imported_at, zip_file_id, xml_file) valu
         <LastModifiedDate>2018-09-28T11:55:39.423</LastModifiedDate>
       </ReportStatus>
     </ReportDetails>
-    <report_attachmentComments>
+    <ReportComments>
       <Process ProcessName="Comments and Supporting Information">
-        <SubProcess SubprocessName="Comments Regarding GHG report_attachmenting" InformationRequirement="Optional">
+        <SubProcess SubprocessName="Comments Regarding GHG Reportting" InformationRequirement="Optional">
+          <Comments>
+            I am a comment
+          </Comments>
           <FileDetails>
             <File>38</File>
           </FileDetails>
         </SubProcess>
       </Process>
-    </report_attachmentComments>
+    </ReportComments>
     <ConfidentialityRequest>
       <Process ProcessName="ConfidentialityRequest">
         <SubProcess SubprocessName="Confidentiality Request" InformationRequirement="Required">
@@ -104,7 +107,7 @@ select isnt_empty('select * from swrs_history.report_attachment', 'there is data
 -- report_attachment has the correct emission-total data
 select results_eq(
   $$
-    select uploaded_file_name, md5_hash, file_path, zip_file_name  from swrs_history.report_attachment;
+    select uploaded_file_name, md5_hash, file_path, zip_file_name  from swrs_history.report_attachment where process_name='ProcessFlowDiagram';
   $$,
   $$
     values(
@@ -114,7 +117,28 @@ select results_eq(
       'GHGBC_PROD_20180930.zip'::varchar
     )
   $$,
-  'The swrs_history.report_attachment received the correct data'
+  'The swrs_history.report_attachment received the correct attachment data'
+);
+
+-- report_attachment has the correct comment data
+select results_eq(
+  $$
+    select comment  from swrs_history.report_attachment where process_name='Comments and Supporting Information';
+  $$,
+  $$
+    values(
+      'I am a comment'::varchar
+    )
+  $$,
+  'The swrs_history.report_attachment received the correct comment data'
+);
+
+-- report_attachment does not have data where UploadedFileName does not exist and there are no comments
+select is_empty(
+  $$
+    select * from swrs_history.report_attachment where process_name='ConfidentialityRequest';
+  $$,
+  'The swrs_history.report_attachment correctly ignored tags where UploadedFileName does not exist and there are no comments'
 );
 
 select * from finish();
