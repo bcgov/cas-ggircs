@@ -16,11 +16,11 @@ create materialized view swrs_transform.historical_report_attachment_data as (
            '/ReportData/ReportDetails'
            passing xml_file
            columns
-             swrs_report_id integer path 'ReportID[normalize-space(.)]' not null
+             swrs_report_id integer path 'ReportID[normalize-space(.)]'
          ) as report_details,
 
       xmltable(
-        '//UploadedFileName[string-length(text()) > 0]/parent::FileDetails'
+        '//FileDetails[child::UploadedFileName[string-length(text()) > 0] or parent::SubProcess/Comments[string-length(text()) > 0]]'
         passing xml_file
         columns
           process_name varchar(1000) path 'normalize-space(./ancestor::Process/@ProcessName)',
@@ -28,10 +28,11 @@ create materialized view swrs_transform.historical_report_attachment_data as (
           information_requirement varchar(1000) path 'normalize-space(./ancestor::SubProcess/@InformationRequirement)',
           file_number int path './File[normalize-space(.)]' default null,
           uploaded_file_name varchar(1000) path './UploadedFileName',
-          uploaded_by varchar(1000) path 'normalize-space(./UploadedBy)',
-          uploaded_at timestamptz path './UploadedDate[not(contains(normalize-space(.), "/")) and not(contains(normalize-space(.), "AM")) and not(contains(normalize-space(.), "am")) and not(contains(normalize-space(.), "PM")) and not(contains(normalize-space(.), "pm"))]' default null
+          uploaded_by varchar(1000) path 'normalize-space(./UploadedBy)' default null,
+          uploaded_at timestamptz path './UploadedDate[string-length(text()) > 0 and not(contains(normalize-space(.), "/")) and not(contains(normalize-space(.), "AM")) and not(contains(normalize-space(.), "am")) and not(contains(normalize-space(.), "PM")) and not(contains(normalize-space(.), "pm"))]' default null,
+          comment varchar(100000) path 'normalize-space(./ancestor::SubProcess/Comments[string-length(text()) > 0])' default null
       ) as attachment_data
-) with no data;
+) with data;
 
 create index historical_attachment_primary_key on swrs_transform.historical_report_attachment_data (eccc_xml_file_id);
 
@@ -47,5 +48,6 @@ comment on column swrs_transform.historical_report_attachment_data.file_number i
 comment on column swrs_transform.historical_report_attachment_data.uploaded_file_name is 'The name of the attachment file that was uploaded';
 comment on column swrs_transform.historical_report_attachment_data.uploaded_by is 'The name of the user who uploaded the attachment file';
 comment on column swrs_transform.historical_report_attachment_data.uploaded_at is 'The date of upload';
+comment on column swrs_transform.historical_report_attachment_data.comment is 'Comments relating to a specific attachment or the report itself';
 
 commit;
