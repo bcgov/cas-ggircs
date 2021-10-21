@@ -29,3 +29,6 @@ persistence:
       drop database if exists $(GGIRCS_DATABASE);
       drop user if exists $(GGIRCS_USER);
     EOF
+
+nginx-sidecar:
+  hostName: cas-ggircs-dev.apps.silver.devops.gov.bc.ca

@@ -22,3 +22,6 @@ download-swrs-dags:
 
 trigger-ggircs-deploy-db:
   airflowEndpoint: https://cas-airflow-prod.apps.silver.devops.gov.bc.ca
+
+nginx-sidecar:
+  hostName: cas-ggircs.apps.silver.devops.gov.bc.ca

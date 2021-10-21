@@ -16,7 +16,8 @@ TWO_DAYS_AGO = datetime.now() - timedelta(days=2)
 DEPLOY_DB_DAG_NAME = 'cas_ggircs_deploy_db'
 LOAD_DB_DAG_NAME = 'cas_ggircs_load_db'
 LOAD_TESTING_SETUP_DAG_NAME = 'cas_ggircs_ciip_load_testing_data'
-CERT_RENEWAL_DAG_NAME = 'cas_ggircs_cert_renewal'
+CERT_RENEWAL_DAG_NAME = 'cas_ggircs_acme_renewal'
+CERT_ISSUE_DAG_NAME = 'cas_ggircs_acme_issue'
 BACKUP_DAG_NAME = 'walg_backup_ggircs_full'
 
 ggircs_namespace = os.getenv('GGIRCS_NAMESPACE')
@@ -152,18 +153,39 @@ ggircs_load_testing_data >> ciip_init_db >> ciip_swrs_import >> ciip_load_testin
 #                                                                             #
 ###############################################################################
 """
-
 SCHEDULE_INTERVAL = '0 8 * * *'
 
-cert_renewal_dag = DAG(CERT_RENEWAL_DAG_NAME, schedule_interval=SCHEDULE_INTERVAL,
-                       default_args=default_args, is_paused_upon_creation=False)
+acme_renewal_args = {
+    **default_dag_args,
+    'start_date': TWO_DAYS_AGO,
+    'is_paused_upon_creation': False
+}
+
+"""
+DAG cas_ggircs_issue
+Issues site certificates for the GGIRCS app
+"""
+acme_issue_dag = DAG(CERT_ISSUE_DAG_NAME,
+                     schedule_interval=None, default_args=acme_renewal_args)
+
+cron_acme_issue_task = PythonOperator(
+    python_callable=trigger_k8s_cronjob,
+    task_id='ciip_portal_acme_issue',
+    op_args=['cas-ggircs-acme-issue', ggircs_namespace],
+    dag=acme_issue_dag)
+
+"""
+DAG cas_ggircs_acme_renewal
+Renews site certificates for the GGIRCS app
+"""
+acme_renewal_dag = DAG(CERT_RENEWAL_DAG_NAME, schedule_interval=SCHEDULE_INTERVAL,
+                       default_args=acme_renewal_args)
 
 cert_renewal_task = PythonOperator(
     python_callable=trigger_k8s_cronjob,
     task_id='cert_renewal',
     op_args=['cas-ggircs-acme-renewal', ggircs_namespace],
-    dag=cert_renewal_dag)
-
+    dag=acme_renewal_dag)
 
 """
 ###############################################################################
