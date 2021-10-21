@@ -214,6 +214,7 @@ install: whoami
 			--set ciip.prefix="$(CIIP_NAMESPACE_PREFIX)" \
 			--set ciip.environment="$(ENVIRONMENT)" \
 			--set app.route.ssl.enable=false \
+			--set nginx-sidecar.sslTermination=false \
 			cas-ggircs ./helm/cas-ggircs; \
 	fi; \
 	helm upgrade --install --atomic --wait-for-jobs --timeout 3600s \
