@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from dag_configuration import default_dag_args
 from trigger_k8s_cronjob import trigger_k8s_cronjob
+from reload_nginx_containers import reload_nginx_containers
 from walg_backups import create_backup_task
 from airflow.operators.dagrun_operator import TriggerDagRunOperator
 from airflow.operators.python_operator import PythonOperator
@@ -170,7 +171,7 @@ acme_issue_dag = DAG(CERT_ISSUE_DAG_NAME,
 
 cron_acme_issue_task = PythonOperator(
     python_callable=trigger_k8s_cronjob,
-    task_id='ciip_portal_acme_issue',
+    task_id='cas_ggircs_cert_issue',
     op_args=['cas-ggircs-acme-issue', ggircs_namespace],
     dag=acme_issue_dag)
 
@@ -183,9 +184,17 @@ acme_renewal_dag = DAG(CERT_RENEWAL_DAG_NAME, schedule_interval=SCHEDULE_INTERVA
 
 cert_renewal_task = PythonOperator(
     python_callable=trigger_k8s_cronjob,
-    task_id='cert_renewal',
+    task_id='cas_ggircs_cert_renewal',
     op_args=['cas-ggircs-acme-renewal', ggircs_namespace],
     dag=acme_renewal_dag)
+
+reload_nginx_task = PythonOperator(
+    python_callable=reload_nginx_containers,
+    task_id='cas_ggircs_reload_nginx',
+    op_args=['cas-ggircs', ggircs_namespace],
+    dag=acme_renewal_dag)
+
+cert_renewal_task >> reload_nginx_task
 
 """
 ###############################################################################
