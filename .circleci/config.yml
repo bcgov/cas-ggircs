@@ -82,6 +82,7 @@ jobs:
             --set download-ggircs-dags.enabled=false \
             --set download-swrs-dags.enabled=false \
             --set trigger-ggircs-deploy-db.enabled=false \
+            --set nginx-sidecar.sslTermination=false \
             cas-ggircs ./helm/cas-ggircs
       - run:
           command: |

@@ -23,3 +23,6 @@ dependencies:
     repository: https://bcgov.github.io/cas-airflow
     alias: trigger-ggircs-deploy-db
     condition: trigger-ggircs-deploy-db.enabled
+  - name: nginx-sidecar
+    repository: https://bcgov.github.io/cas-template-app
+    version: 0.1.7
