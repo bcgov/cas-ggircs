@@ -1,14 +1,13 @@
 const express = require("express");
 const http = require("http");
-const https = require("https");
-const path = require("path");
-const fs = require("fs");
 const Bowser = require("bowser");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const nextjs = require("next");
+const { createLightship } = require("lightship");
+const delay = require("delay");
 const { postgraphile } = require("postgraphile");
 const postgraphileOptions = require("./postgraphile/postgraphileOptions");
 const authenticationPgSettings = require("./postgraphile/authenticationPgSettings");
@@ -22,23 +21,25 @@ const handle = app.getRequestHandler();
 const UNSUPPORTED_BROWSERS = require("../data/unsupported-browsers");
 const { dbPool } = require("./storage/db");
 
-const secure = /^https/.test(process.env.HOST);
-
 app.prepare().then(async () => {
   const server = express();
+
+  // nginx proxy is running in the same pod
+  server.set("trust proxy", "loopback");
+
+  const lightship = createLightship();
+
+  lightship.registerShutdownHandler(async () => {
+    await delay(10000);
+    await new Promise((resolve) => {
+      server.close(() => dbPool.end(resolve));
+    });
+  });
 
   server.use(
     morgan("combined", {
       skip: (_, res) => res.statusCode < 400,
     })
-  );
-
-  // Enable serving ACME HTTP-01 challenge response written to disk by acme.sh
-  // https://letsencrypt.org/docs/challenge-types/#http-01-challenge
-  // https://github.com/acmesh-official/acme.sh
-  server.use(
-    "/.well-known",
-    express.static(path.resolve(__dirname, "../.well-known"))
   );
 
   server.use(ssoRouter);
@@ -92,43 +93,21 @@ app.prepare().then(async () => {
 
   server.get("*", async (req, res) => handle(req, res));
 
-  if (secure) {
-    const domain = /^https:\/\/(.+?)\/?$/.exec(process.env.HOST)[1];
-    const key = fs.readFileSync(
-      `/root/.acme.sh/${domain}/${domain}.key`,
-      "utf8"
-    );
-    const cert = fs.readFileSync(
-      `/root/.acme.sh/${domain}/fullchain.cer`,
-      "utf8"
-    );
-    const options = { key, cert };
-    https.createServer(options, server).listen(port, (err) => {
+  const handleError = (err) => {
+    console.error(err);
+    lightship.shutdown();
+  };
+
+  http
+    .createServer(server)
+    .listen(port, (err) => {
       if (err) {
-        throw err;
+        handleError(err);
+        return;
       }
 
-      console.log(`> Ready on https://localhost:${port}`);
-    });
-  } else {
-    http.createServer(server).listen(port, (err) => {
-      if (err) {
-        throw err;
-      }
-
+      lightship.signalReady();
       console.log(`> Ready on http://localhost:${port}`);
-    });
-  }
-
-  process.on("SIGTERM", () => {
-    console.info("SIGTERM signal received.");
-    console.log("Closing http server.");
-    server.close(() => {
-      console.log("Http server closed.");
-      dbPool.end(() => {
-        console.log("Database connection closed.");
-        process.exit(0);
-      });
-    });
-  });
+    })
+    .on("error", handleError);
 });
