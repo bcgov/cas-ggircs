@@ -105,6 +105,7 @@ app:
   sitewide_notice:
     content: ""
   port: 3000
+  probesPort: 9000
   env:
     supportEmail: ggircs@gov.bc.ca
 
