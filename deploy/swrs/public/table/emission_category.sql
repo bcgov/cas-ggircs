@@ -1,9 +1,6 @@
 -- Deploy ggircs:swrs/public/table/emission_category to pg
 -- requires: swrs/public/schema
 
--- Deploy ggircs-portal:table_emission_category to pg
--- requires: schema_swrs
-
 begin;
 
 create table swrs.emission_category (
