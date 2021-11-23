@@ -165,3 +165,5 @@ swrs/transform/materialized_view/historical_report_attachment_data [swrs/transfo
 swrs/history/table/attachments_002 [swrs/history/table/attachments] 2021-10-13T20:14:30Z Dylan Leard <dylan@button.is> # Migration: add comments column to table
 swrs/transform/function/load_report_attachment [swrs/transform/function/load_report_attachment@v1.9.0] 2021-10-13T20:12:20Z Dylan Leard <dylan@button.is> # Migration: add comment column to load function
 @v1.10.0 2021-11-09T19:14:00Z Dylan Leard <dylan@button.is> # release v1.10.0
+
+swrs/public/table/emission_category [swrs/public/schema] 2021-11-23T21:32:32Z Dylan Leard <dylan@button.is> # Table for emission category data
