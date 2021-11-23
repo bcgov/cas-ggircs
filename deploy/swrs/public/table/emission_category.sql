@@ -7,7 +7,7 @@
 begin;
 
 create table swrs.emission_category (
-  id integer primary key generated always as identity,
+  id integer primary key,
   swrs_emission_category varchar(1000),
   carbon_taxed boolean default true,
   category_definition varchar(100000)
