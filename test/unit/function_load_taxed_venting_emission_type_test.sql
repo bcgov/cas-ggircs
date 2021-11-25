@@ -14,7 +14,7 @@ select has_function(
 
 create schema swrs_load;
 create table swrs_load.taxed_venting_emission_type (
-  id integer primary key,
+  id integer primary key generated always as identity,
   taxed_emission_type varchar(1000)
 );
 

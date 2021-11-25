@@ -12,13 +12,11 @@ $function$
         delete from swrs_load.emission_category;
 
         insert into swrs_load.emission_category(
-          id,
           swrs_emission_category,
           carbon_taxed,
           category_definition
         )
         values (
-          1,
           'BC_ScheduleB_GeneralStationaryCombustionEmissions',
           true,
           $$ "general stationary combustion" means the combustion of fuel or waste in a boiler, combustion turbine, stationary engine, kiln, heater, incinerator, furnace, mobile crude oil compressor, or natural gas drilling rig while being used at a well site, or any other stationary device using combustion
@@ -33,7 +31,6 @@ $function$
           $$
         ),
         (
-          2,
           'BC_ScheduleB_IndustrialProcessEmissions',
           false,
           $$
@@ -41,7 +38,6 @@ $function$
           $$
         ),
         (
-          3,
           'BC_ScheduleB_VentingEmissions',
           true,
           $$
@@ -57,7 +53,6 @@ $function$
           $$
         ),
         (
-          4,
           'BC_ScheduleB_FlaringEmissions',
           true,
           $$
@@ -65,7 +60,6 @@ $function$
           $$
         ),
         (
-          5,
           'BC_ScheduleB_FugitiveEmissions',
           false,
           $$
@@ -73,7 +67,6 @@ $function$
           $$
         ),
         (
-          6,
           'BC_ScheduleB_OnSiteTransportationEmissions',
           true,
           $$
@@ -81,15 +74,13 @@ $function$
           $$
         ),
         (
-          7,
           'BC_ScheduleB_WasteEmissions',
           true,
           $$
-            General stationary combustion of waste without production of useful energy
+            General stationary combustion of fuel without production of useful energy
           $$
         ),
         (
-          8,
           'BC_ScheduleB_WastewaterEmissions',
           false,
           $$

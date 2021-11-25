@@ -14,7 +14,7 @@ select has_function(
 
 create schema swrs_load;
 create table swrs_load.emission_category (
-  id integer primary key,
+  id integer primary key generated always as identity,
   swrs_emission_category varchar(1000),
   carbon_taxed boolean default true,
   category_definition varchar(100000)
@@ -51,7 +51,7 @@ select results_eq(
     'BC_ScheduleB_FugitiveEmissions'::varchar,
     'BC_ScheduleB_WastewaterEmissions'::varchar
   ],
-  'The proper records were created as carbon_taxed=true'
+  'The proper records were created as carbon_taxed=false'
 );
 
 select * from finish();
