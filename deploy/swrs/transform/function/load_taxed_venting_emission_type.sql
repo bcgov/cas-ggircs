@@ -37,4 +37,3 @@ $function$
 $function$ language plpgsql volatile;
 
 commit;
-
