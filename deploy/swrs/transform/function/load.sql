@@ -26,7 +26,7 @@ $function$
       report, organisation, facility,
       activity, unit, identifier, naics, fuel,
       emission, permit, parent_organisation, address,
-      contact, additional_data, measured_emission_factor}
+      contact, additional_data, measured_emission_factor, emission_category, taxed_venting_emission_type}
       $$;
 
     history_array text[] := $$
