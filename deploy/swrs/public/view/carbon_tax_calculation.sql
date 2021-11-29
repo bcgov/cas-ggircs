@@ -8,86 +8,55 @@ begin;
 
 drop view swrs.carbon_tax_calculation;
 
+-- Column unit_conversion_factor should be numeric, not integer.
+-- Change must be done immediately after dropping the view since the view relies on the column
+alter table swrs.fuel_carbon_tax_details alter column unit_conversion_factor type numeric;
+
 create or replace view swrs.carbon_tax_calculation as
-    with fuel as (
-        select _report.id                                                    as report_id,
-               _organisation.id                                              as organisation_id,
-               _facility.id                               as facility_id,
-               _activity.id                                                  as activity_id,
-               _fuel.id                                                      as fuel_id,
-               _emission.id                                                  as emission_id,
-               _naics.id                                                     as naics_id,
-               _fuel_mapping.fuel_type                                       as fuel_type,
-               coalesce(_fuel.annual_fuel_amount, _emission.quantity)        as fuel_amount,
-               _report.reporting_period_duration as year,
-               _fuel_carbon_tax_details.cta_rate_units                      as units,
-               _fuel_carbon_tax_details.unit_conversion_factor              as unit_conversion_factor,
-               _fuel_carbon_tax_details.id                      as ctd_id,
-               _emission.emission_type,
-               _fuel_charge.fuel_charge,
-               (_fuel_charge.fuel_charge * _fuel_carbon_tax_details.unit_conversion_factor) as flat_rate
-        from swrs.fuel as _fuel
-                 join swrs.unit as _unit
-                      on _fuel.unit_id = _unit.id
-                 left join swrs.emission as _emission
-                      on _fuel.id = _emission.fuel_id
-                      and _emission.fuel_mapping_id is not null
-                 join swrs.fuel_mapping as _fuel_mapping
-                      on _fuel.fuel_mapping_id = _fuel_mapping.id
-                      or _emission.fuel_mapping_id = _fuel_mapping.id
-                 join swrs.report as _report
-                      on _fuel.report_id = _report.id
-                 join swrs.organisation as _organisation
-                      on _report.id = _organisation.report_id
-                 left join swrs.facility as _facility
-                      on _report.id = _facility.report_id
-                 left join swrs.naics as _naics
-                      on _report.id = _naics.report_id
-                      and ((_naics.path_context = 'RegistrationData'
-                      and (_naics.naics_priority = 'Primary'
-                            or _naics.naics_priority = '100.00'
-                            or _naics.naics_priority = '100')
-                      and (select count(eccc_xml_file_id)
-                           from swrs.naics as __naics
-                           where eccc_xml_file_id = _emission.eccc_xml_file_id
-                           and __naics.path_context = 'RegistrationData'
-                           and (__naics.naics_priority = 'Primary'
-                            or __naics.naics_priority = '100.00'
-                            or __naics.naics_priority = '100')) < 2)
-                       or (_naics.path_context='VerifyTombstone'
-                           and _naics.naics_code is not null
-                           and (select count(eccc_xml_file_id)
-                           from swrs.naics as __naics
-                           where eccc_xml_file_id = _emission.eccc_xml_file_id
-                           and __naics.path_context = 'RegistrationData'
-                           and (__naics.naics_priority = 'Primary'
-                            or __naics.naics_priority = '100.00'
-                            or __naics.naics_priority = '100')) > 1))
-                 join swrs.activity as _activity
-                      on _unit.activity_id = _activity.id
-                 join swrs.fuel_carbon_tax_details as _fuel_carbon_tax_details
-                      on _fuel_mapping.fuel_carbon_tax_details_id = _fuel_carbon_tax_details.id
-                 join swrs.carbon_tax_act_fuel_type as _cta
-                      on _fuel_carbon_tax_details.carbon_tax_act_fuel_type_id = _cta.id
-                 join swrs.fuel_charge as _fuel_charge
-                      on _fuel_charge.carbon_tax_act_fuel_type_id = _cta.id
-                      and (concat(_report.reporting_period_duration::text, '-12-31')::date
-                      between _fuel_charge.start_date and _fuel_charge.end_date)
+  with fuel_data as (
+
+    -- FLARED EMISSION
+    select e.report_id, 'Natural Gas (Sm^3)' as fuel_type, e.fuel_mapping_id, fm.fuel_carbon_tax_details_id, ctd.carbon_tax_act_fuel_type_id, (coalesce(e.quantity, 0::numeric) * ctd.unit_conversion_factor::numeric) as fuel_amount
+        from swrs.emission e
+        join swrs.fuel_mapping fm
+          on e.fuel_mapping_id = fm.id
+          and e.fuel_mapping_id = 145
+        join swrs.fuel_carbon_tax_details ctd
+          on fm.fuel_carbon_tax_details_id = ctd.id
+
+    union
+
+    -- VENTED EMISSION
+    select e.report_id, 'Natural Gas (Sm^3)' as fuel_type, e.fuel_mapping_id, fm.fuel_carbon_tax_details_id, ctd.carbon_tax_act_fuel_type_id, (coalesce(e.quantity, 0::numeric) * ctd.unit_conversion_factor::numeric) as fuel_amount
+        from swrs.emission e
+        join swrs.fuel_mapping fm
+          on e.fuel_mapping_id = fm.id
+          and e.fuel_mapping_id = 148
+        join swrs.fuel_carbon_tax_details ctd
+          on fm.fuel_carbon_tax_details_id = ctd.id
+
+    union
+
+    -- FUEL
+    select f.report_id, ctd.normalized_fuel_type, f.fuel_mapping_id, fm.fuel_carbon_tax_details_id, ctd.carbon_tax_act_fuel_type_id, (coalesce(f.annual_fuel_amount, 0::numeric) * ctd.unit_conversion_factor::numeric) as fuel_amount
+        from swrs.fuel f
+        join swrs.fuel_mapping fm
+          on f.fuel_mapping_id = fm.id
+        join swrs.fuel_carbon_tax_details ctd
+          on fm.fuel_carbon_tax_details_id = ctd.id
+
     )
-select distinct on (ctd_id) report_id,
-       organisation_id,
-       fuel.facility_id,
-       activity_id,
-       fuel_id,
-       emission_id,
-       naics_id,
-       year,
-       fuel_type,
-       fuel_amount,
-       fuel_charge,
-       unit_conversion_factor,
-       round((fuel_amount * flat_rate), 2) as calculated_carbon_tax,
-       'Flat Rate Calculation: (fuel_amount * fuel_charge * unit_conversion_factor)'::varchar(1000) as flat_calculation
-from fuel;
+    select fd.*, r.reporting_period_duration, _fuel_charge.fuel_charge, round((fuel_amount * _fuel_charge.fuel_charge), 2) as calculated_carbon_tax from fuel_data fd
+    join swrs.report r
+        on r.id = fd.report_id
+    join swrs.facility as _facility
+        on r.id = _facility.report_id
+        and _facility.facility_type != 'LFO'
+    join swrs.carbon_tax_act_fuel_type as _cta
+      on carbon_tax_act_fuel_type_id = _cta.id
+    join swrs.fuel_charge as _fuel_charge
+      on _fuel_charge.carbon_tax_act_fuel_type_id = _cta.id
+      and (concat(r.reporting_period_duration::text, '-12-31')::date
+      between _fuel_charge.start_date and _fuel_charge.end_date);
 
 commit;

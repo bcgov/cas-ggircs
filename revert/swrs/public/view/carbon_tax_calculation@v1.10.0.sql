@@ -6,7 +6,7 @@
 
 begin;
 
-drop view swrs.carbon_tax_calculation;
+drop view if exists swrs.carbon_tax_calculation;
 
 create or replace view swrs.carbon_tax_calculation as
     with fuel as (
@@ -20,12 +20,11 @@ create or replace view swrs.carbon_tax_calculation as
                _fuel_mapping.fuel_type                                       as fuel_type,
                coalesce(_fuel.annual_fuel_amount, _emission.quantity)        as fuel_amount,
                _report.reporting_period_duration as year,
+               _pro_rated_fuel_charge.pro_rated_fuel_charge,
+               _pro_rated_fuel_charge.flat_rate,
                _fuel_carbon_tax_details.cta_rate_units                      as units,
                _fuel_carbon_tax_details.unit_conversion_factor              as unit_conversion_factor,
-               _fuel_carbon_tax_details.id                      as ctd_id,
-               _emission.emission_type,
-               _fuel_charge.fuel_charge,
-               (_fuel_charge.fuel_charge * _fuel_carbon_tax_details.unit_conversion_factor) as flat_rate
+               _fuel_charge.fuel_charge
         from swrs.fuel as _fuel
                  join swrs.unit as _unit
                       on _fuel.unit_id = _unit.id
@@ -65,16 +64,17 @@ create or replace view swrs.carbon_tax_calculation as
                             or __naics.naics_priority = '100')) > 1))
                  join swrs.activity as _activity
                       on _unit.activity_id = _activity.id
+                 join swrs.pro_rated_fuel_charge as _pro_rated_fuel_charge
+                      on _fuel_mapping.id = _pro_rated_fuel_charge.fuel_mapping_id
+                      and _report.reporting_period_duration::integer = _pro_rated_fuel_charge.year
                  join swrs.fuel_carbon_tax_details as _fuel_carbon_tax_details
                       on _fuel_mapping.fuel_carbon_tax_details_id = _fuel_carbon_tax_details.id
-                 join swrs.carbon_tax_act_fuel_type as _cta
-                      on _fuel_carbon_tax_details.carbon_tax_act_fuel_type_id = _cta.id
                  join swrs.fuel_charge as _fuel_charge
-                      on _fuel_charge.carbon_tax_act_fuel_type_id = _cta.id
+                      on _fuel_charge.fuel_mapping_id = _fuel_mapping.id
                       and (concat(_report.reporting_period_duration::text, '-12-31')::date
                       between _fuel_charge.start_date and _fuel_charge.end_date)
     )
-select distinct on (ctd_id) report_id,
+select report_id,
        organisation_id,
        fuel.facility_id,
        activity_id,
@@ -85,9 +85,12 @@ select distinct on (ctd_id) report_id,
        fuel_type,
        fuel_amount,
        fuel_charge,
+       round(pro_rated_fuel_charge / unit_conversion_factor, 4) as pro_rated_fuel_charge,
        unit_conversion_factor,
        round((fuel_amount * flat_rate), 2) as calculated_carbon_tax,
-       'Flat Rate Calculation: (fuel_amount * fuel_charge * unit_conversion_factor)'::varchar(1000) as flat_calculation
+       'Flat Rate Calculation: (fuel_amount * fuel_charge * unit_conversion_factor)'::varchar(1000) as flat_calculation,
+       round((fuel_amount * pro_rated_fuel_charge), 2) as pro_rated_calculated_carbon_tax,
+       'Pro-rated Rate Calculation: (fuel_amount * pro_rated_fuel_charge * unit_conversion_factor)'::varchar(1000) as pro_rated_calculation
 from fuel;
 
 commit;

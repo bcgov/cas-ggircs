@@ -170,3 +170,4 @@ swrs/transform/function/load_emission_category [swrs/transform/schema swrs/publi
 swrs/public/table/taxed_venting_emission_type [swrs/public/schema] 2021-11-23T22:43:05Z Dylan Leard <dylan@button.is> # Table contains all emission types that are carbon taxed in relation to venting
 swrs/transform/function/load_taxed_venting_emission_type [swrs/transform/schema swrs/public/table/taxed_venting_emission_type] 2021-11-23T22:50:57Z Dylan Leard <dylan@button.is> # Function to load data into the taxed_venting_emission_type table
 swrs/transform/function/load [swrs/transform/function/load@v1.10.0] 2021-11-24T17:08:31Z Dylan Leard <dylan@button.is> # Rework load function to include new tables
+swrs/public/view/carbon_tax_calculation [swrs/public/view/carbon_tax_calculation@v1.10.0] 2021-11-29T21:53:54Z Dylan Leard <dylan@button.is> # Migration: re-write calculation to be more performant/accurate
