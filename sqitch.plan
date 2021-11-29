@@ -173,3 +173,4 @@ swrs/transform/function/load [swrs/transform/function/load@v1.10.0] 2021-11-24T1
 swrs/public/view/carbon_tax_calculation [swrs/public/view/carbon_tax_calculation@v1.10.0] 2021-11-29T21:53:54Z Dylan Leard <dylan@button.is> # Migration: re-write calculation to be more performant/accurate
 swrs/public/table/emission_002 [swrs/public/table/emission_001] 2021-11-29T22:04:54Z Dylan Leard <dylan@button.is> # Migration: add missing index to emission table
 swrs/public/table/fuel_mapping_001 [swrs/public/table/fuel_mapping] 2021-11-29T22:08:31Z Dylan Leard <dylan@button.is> # Migration: add missing index
+swrs/transform/function/load_fuel_carbon_tax_details [swrs/transform/function/load_fuel_carbon_tax_details@v1.10.0] 2021-11-29T22:15:15Z Dylan Leard <dylan@button.is> # Migration: map flaring & venting to natural gas in carbon_tax_act_fuel_type
