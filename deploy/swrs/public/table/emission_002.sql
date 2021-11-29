@@ -3,6 +3,6 @@
 
 begin;
 
-create index ggircs_emission_fuel_mapping_foreign_key on swrs.emission(fuel_mapping_id);
+create index emission_fuel_mapping_foreign_key on swrs.emission(fuel_mapping_id);
 
 commit;

@@ -2,6 +2,6 @@
 
 begin;
 
-drop index swrs.ggircs_emission_fuel_mapping_foreign_key;
+drop index swrs.emission_fuel_mapping_foreign_key;
 
 commit;
