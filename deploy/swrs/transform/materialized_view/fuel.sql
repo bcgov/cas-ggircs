@@ -4,7 +4,7 @@
 begin;
 
 -- Fuels from Units
--- todo: explore any other attributes for units
+drop materialized view if exists swrs_transform.fuel;
 create materialized view swrs_transform.fuel as (
   select row_number() over () as id, id as eccc_xml_file_id, fuel_details.*
   from swrs_extract.eccc_xml_file,
@@ -38,7 +38,8 @@ create materialized view swrs_transform.fuel as (
              q3 numeric path './Q3[normalize-space(.)]',
              q4 numeric path './Q4[normalize-space(.)]',
              wastewater_processing_factors xml path './WastewaterProcessingFactors',
-             measured_conversion_factors xml path './MeasuredConversionFactors'
+             measured_conversion_factors xml path './MeasuredConversionFactors',
+             emission_category varchar(1000) path '(./descendant::Groups/EmissionGroupTypes/text()[contains(normalize-space(.), "BC_ScheduleB_")])[1]'
          ) as fuel_details
 ) with no data;
 

@@ -4,7 +4,7 @@
 begin;
 
 -- Fuels from Units
-drop materialized view if exists swrs_transform.fuel;
+-- todo: explore any other attributes for units
 create materialized view swrs_transform.fuel as (
   select row_number() over () as id, id as eccc_xml_file_id, fuel_details.*
   from swrs_extract.eccc_xml_file,

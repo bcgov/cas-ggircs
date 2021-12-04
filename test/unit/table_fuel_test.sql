@@ -4,7 +4,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select * from no_plan();
+select plan(8);
 
 insert into swrs_extract.eccc_xml_file (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -215,6 +215,38 @@ $$), ($$
                   <AnnualFuelAmount>9441</AnnualFuelAmount>
                   <AnnualWeightedAverageCarbonContent>0.862</AnnualWeightedAverageCarbonContent>
                   <AlternativeMethodologyDescription/>
+                  <Emissions>
+                    <Emission>
+                      <Groups>
+                        <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                        <EmissionGroupTypes>BC_ScheduleB_FugitiveEmissions</EmissionGroupTypes>
+                        <EmissionGroupTypes>EC_SpeciatedHFCs</EmissionGroupTypes>
+                      </Groups>
+                      <NotApplicable>true</NotApplicable>
+                      <CalculatedQuantity xsi:nil="true"/>
+                      <GasType>HFC23_CHF3</GasType>
+                    </Emission>
+                    <Emission>
+                      <Groups>
+                        <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                        <EmissionGroupTypes>BC_ScheduleB_do_not_parse_me</EmissionGroupTypes>
+                        <EmissionGroupTypes>EC_SpeciatedHFCs</EmissionGroupTypes>
+                      </Groups>
+                      <NotApplicable>true</NotApplicable>
+                      <CalculatedQuantity xsi:nil="true"/>
+                      <GasType>HFC32_CH2F2</GasType>
+                    </Emission>
+                    <Emission>
+                      <Groups>
+                        <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                        <EmissionGroupTypes>BC_ScheduleB_do_not_parse_me_either</EmissionGroupTypes>
+                        <EmissionGroupTypes>EC_SpeciatedHFCs</EmissionGroupTypes>
+                      </Groups>
+                      <NotApplicable>true</NotApplicable>
+                      <CalculatedQuantity xsi:nil="true"/>
+                      <GasType>HFC41_CH3F</GasType>
+                    </Emission>
+                  </Emissions>
                 </Fuel>
               </Fuels>
             </Unit>
@@ -236,6 +268,8 @@ $$);
 -- Run table export function without clearing the materialized views (for data equality tests below)
 SET client_min_messages TO WARNING; -- load is a bit verbose
 select swrs_transform.load(true, false);
+
+select * from swrs.emission_category;
 
 -- Table swrs.fuel exists
 select has_table('swrs'::name, 'fuel'::name);
@@ -298,7 +332,8 @@ select set_eq(
                   q1,
                   q2,
                   q3,
-                  q4
+                  q4,
+                  emission_category
                 from swrs_transform.fuel
                 order by
                     eccc_xml_file_id,
@@ -328,7 +363,8 @@ select set_eq(
                   q1,
                   q2,
                   q3,
-                  q4
+                  q4,
+                  emission_category
                 from swrs.fuel
                 order by
                     eccc_xml_file_id,
@@ -339,6 +375,12 @@ select set_eq(
               $$,
 
               'data in swrs_transform.fuel === swrs.fuel');
+
+select results_eq(
+    'select emission_category from swrs_transform.fuel where id=4',
+    ARRAY['BC_ScheduleB_FugitiveEmissions'::varchar],
+    'column emission_category was properly extracted from the materialized view'
+);
 
 select * from finish();
 rollback;
