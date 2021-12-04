@@ -18,92 +18,15 @@ $function$
     begin
 
         delete from swrs_load.emission;
-
-        create temporary table all_emissions(
-          id serial,
-          eccc_xml_file_id int,
-          activity_name varchar(1000),
-          sub_activity_name varchar(1000),
-          unit_name varchar(1000),
-          sub_unit_name varchar(1000),
-          process_idx integer,
-          sub_process_idx integer,
-          units_idx integer,
-          unit_idx integer,
-          substances_idx integer,
-          substance_idx integer,
-          fuel_idx integer,
-          fuel_name varchar(1000),
-          emissions_idx integer,
-          emission_idx integer,
-          emission_type varchar(1000),
-          gas_type varchar(1000),
-          methodology varchar(1000),
-          not_applicable boolean,
-          quantity numeric,
-          calculated_quantity numeric,
-          emission_category varchar(1000),
-          cas_number varchar(1000)
-        ) on commit drop;
-
-        insert into all_emissions(
-            eccc_xml_file_id,
-            activity_name,
-            sub_activity_name,
-            unit_name,
-            sub_unit_name,
-            process_idx,
-            sub_process_idx,
-            units_idx,
-            unit_idx,
-            substances_idx,
-            substance_idx,
-            fuel_idx,
-            fuel_name,
-            emissions_idx,
-            emission_idx,
-            emission_type,
-            gas_type,
-            methodology,
-            not_applicable,
-            quantity,
-            calculated_quantity,
-            emission_category)
-          select eccc_xml_file_id, activity_name, sub_activity_name, unit_name, sub_unit_name, process_idx, sub_process_idx,
-                 units_idx, unit_idx, substances_idx, substance_idx, fuel_idx, fuel_name, emissions_idx, emission_idx,
-                 emission_type, gas_type, methodology, not_applicable, quantity, calculated_quantity, emission_category
-          from swrs_transform.emission;
-
-        insert into all_emissions(
-          eccc_xml_file_id,
-          activity_name,
-          emissions_idx,
-          emission_idx,
-          gas_type,
-          quantity,
-          calculated_quantity,
-          cas_number
-        ) select
-          eccc_xml_file_id,
-          activity_name,
-          emissions_idx,
-          emission_idx,
-          gas_type,
-          quantity,
-          calculated_quantity,
-          cas_number
-        from swrs_transform.r3_emission;
-
-
         insert into swrs_load.emission (id, eccc_xml_file_id, activity_id, facility_id,  fuel_id, naics_id, fuel_mapping_id, organisation_id, report_id, unit_id, activity_name, sub_activity_name,
                                      unit_name, sub_unit_name, fuel_name, emission_type,
-                                     gas_type, methodology, not_applicable, quantity, calculated_quantity, emission_category, cas_number)
+                                     gas_type, methodology, not_applicable, quantity, calculated_quantity, emission_category)
 
         select _emission.id, _emission.eccc_xml_file_id, _activity.id, _facility.id,  _fuel.id, _naics.id, _fuel_mapping.id, _organisation.id, _report.id, _unit.id,
                _emission.activity_name, _emission.sub_activity_name, _emission.unit_name, _emission.sub_unit_name, _emission.fuel_name, _emission.emission_type,
-               _emission.gas_type, _emission.methodology, _emission.not_applicable, _emission.quantity, _emission.calculated_quantity, _emission.emission_category, _emission.cas_number
+               _emission.gas_type, _emission.methodology, _emission.not_applicable, _emission.quantity, _emission.calculated_quantity, _emission.emission_category
 
-        from all_emissions as _emission
+        from swrs_transform.emission as _emission
         -- join swrs_transform.emission to use _idx columns in FK creations
         inner join swrs_transform.final_report as _final_report on _emission.eccc_xml_file_id = _final_report.eccc_xml_file_id
         -- FK Emission -> Activity

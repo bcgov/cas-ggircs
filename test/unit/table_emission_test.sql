@@ -4,7 +4,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(12);
+select plan(13);
 
 insert into swrs_extract.eccc_xml_file (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -349,17 +349,17 @@ $$), ($$
                   <AlternativeMethodologyDescription/>
                 </Fuel>
                 <Fuel>
-                  <FuelType>Residual Fuel Oil (#5 &amp; 6)</FuelType>
+                  <FuelType>Vented Natural Gas</FuelType>
                   <FuelClassification>non-biomass</FuelClassification>
                   <FuelDescription/>
                   <FuelUnits>kilolitres</FuelUnits>
                   <AnnualFuelAmount>9441</AnnualFuelAmount>
                   <AnnualWeightedAverageCarbonContent>0.862</AnnualWeightedAverageCarbonContent>
-                  <Emissions>
+                  <Emissions EmissionsType="NG Distribution: NG continuous high bleed devices venting">
                     <Emission>
                       <Groups>
                         <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
-                        <EmissionGroupTypes>BC_ScheduleB_GeneralStationaryCombustionEmissions</EmissionGroupTypes>
+                        <EmissionGroupTypes>BC_ScheduleB_VentingEmissions</EmissionGroupTypes>
                         <EmissionGroupTypes>EC_GeneralStationaryCombustionEmissions</EmissionGroupTypes>
                       </Groups>
                       <NotApplicable>false</NotApplicable>
@@ -699,6 +699,14 @@ select set_eq(
       and report.report_type = 'R3'
   $$,
   'R3 report data from swrs_transform.r3_emission is contained in swrs.emission'
+);
+
+select results_eq(
+  $$
+    select emission_category from swrs.emission where fuel_mapping_id = 148
+  $$,
+  ARRAY['BC_ScheduleB_VentingEmissions'::varchar],
+  'Vented emissions with an emission_type in swrs.taxed_venting_emission_type are populated with the correct fuel_mapping_id'
 );
 
 select * from finish();
