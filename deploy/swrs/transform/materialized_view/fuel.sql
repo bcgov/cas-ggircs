@@ -73,8 +73,8 @@ comment on column swrs_transform.fuel.q1 is 'The fuel used in the first quarter'
 comment on column swrs_transform.fuel.q2 is 'The fuel used in the second quarter';
 comment on column swrs_transform.fuel.q3 is 'The fuel used in the third quarter';
 comment on column swrs_transform.fuel.q4 is 'The fuel used in the fourth quarter';
-
 comment on column swrs_transform.fuel.wastewater_processing_factors is 'Details on the wastewater processing factors for this fuel';
 comment on column swrs_transform.fuel.measured_conversion_factors is 'Details on the measured_conversion_factors for this fuel';
+comment on column swrs_transform.fuel.emission_category is 'The emission category the reported fuel belongs to';
 
 commit;
