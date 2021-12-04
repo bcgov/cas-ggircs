@@ -174,7 +174,7 @@ $function$
                 and _emission.gas_type = 'N2O')
             or (_fuel_mapping.fuel_type = 'Vented Natural Gas'
                 and _emission.emission_type
-                    in ((select taxed_emission_type from swrs.taxed_venting_emission_type))
+                    in ((select taxed_emission_type from swrs_load.taxed_venting_emission_type))
                 )
             )
         -- FK Emission -> Organisation
