@@ -70,8 +70,8 @@ begin
     (_id*2, _id*2),
     (_id*2+1, _id*2+1);
 
-  insert into swrs.fuel (id, report_id, unit_id, fuel_mapping_id, fuel_type, fuel_description, fuel_units, annual_fuel_amount)
-  values (_id, _id, (_id)*2, 96, 'Natural Gas (Sm^3)', 'Natural Gas (Sm^3)', 'Sm^3', 1234);
+  insert into swrs.fuel (id, report_id, unit_id, fuel_mapping_id, fuel_type, fuel_description, fuel_units, annual_fuel_amount, emission_category)
+  values (_id, _id, (_id)*2, 96, 'Natural Gas (Sm^3)', 'Natural Gas (Sm^3)', 'Sm^3', 1234, 'BC_ScheduleB_GeneralStationaryCombustionEmissions');
 
   insert into swrs.emission (id, activity_id, facility_id, fuel_id, naics_id, organisation_id, report_id, unit_id, quantity, calculated_quantity, emission_category, gas_type)
   values

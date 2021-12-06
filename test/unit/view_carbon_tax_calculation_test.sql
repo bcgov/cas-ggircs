@@ -24,7 +24,8 @@ select columns_are('swrs'::name, 'carbon_tax_calculation'::name, array[
     'fuel_type'::name,
     'fuel_amount'::name,
     'fuel_charge'::name,
-    'calculated_carbon_tax'::name
+    'calculated_carbon_tax'::name,
+    'emission_category'::name
 ]);
 
 -- XML fixture for testing
