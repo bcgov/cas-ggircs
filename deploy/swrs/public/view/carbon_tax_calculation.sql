@@ -27,7 +27,7 @@ create or replace view swrs.carbon_tax_calculation as
     from swrs.emission e
     join swrs.fuel_mapping fm
       on e.fuel_mapping_id = fm.id
-      and e.fuel_mapping_id = 145 -- Flared Natural Gas CO2
+      and e.fuel_mapping_id = (select id from swrs.fuel_mapping where fuel_type = 'Flared Natural Gas CO2')
     join swrs.fuel_carbon_tax_details ctd
       on fm.fuel_carbon_tax_details_id = ctd.id
 
@@ -45,7 +45,7 @@ create or replace view swrs.carbon_tax_calculation as
     from swrs.emission e
     join swrs.fuel_mapping fm
       on e.fuel_mapping_id = fm.id
-      and e.fuel_mapping_id = 148 -- Vented Natural Gas
+      and e.fuel_mapping_id = (select id from swrs.fuel_mapping where fuel_type = 'Vented Natural Gas')
     join swrs.fuel_carbon_tax_details ctd
       on fm.fuel_carbon_tax_details_id = ctd.id
 
@@ -77,7 +77,6 @@ create or replace view swrs.carbon_tax_calculation as
       fd.fuel_carbon_tax_details_id,
       fd.carbon_tax_act_fuel_type_id,
       _facility.facility_name,
-      r.reporting_period_duration as reporting_year,
       fd.fuel_type,
       fd.emission_category,
       fd.fuel_amount,
@@ -106,10 +105,9 @@ comment on column swrs.carbon_tax_calculation.fuel_amount is $$
   The amount of fuel reported for the fuel type.
   This fuel_amount is the annual_fuel_amount as reported in the swrs report multiplied by the unit_conversion_factor in the fuel_carbon_tax_details table to normalize the units with the rate defined in the carbon tax.
   Vented and Flared emissions return a fuel_amount that has been converted to a natural gas fuel_amount of m3.
-  X tonnes of Flared CO2 emissions return a record with a Natural gas fuel amount of Y (as per WCI.20 EF for non-marketable gas, Table 20-3: 2.151 kgCO2/m3 non-marketable NG in BC)
+  X tonnes of Flared CO2 emissions return a record with a Natural gas fuel amount of Y where Y = X * 1000000 / 2151 (as per WCI.20 EF for non-marketable gas, Table 20-3: 2.151 kgCO2/m3 non-marketable NG in BC)
 $$;
 comment on column swrs.carbon_tax_calculation.facility_id is 'The id of the facility the fuel was reported for';
-comment on column swrs.carbon_tax_calculation.reporting_year is 'The reporting year the fuel was reported';
 comment on column swrs.carbon_tax_calculation.fuel_charge is 'The fuel charge applied to the fuel_type for the reporting year it was reported';
 comment on column swrs.carbon_tax_calculation.calculated_carbon_tax is 'The calculated carbon tax for the reported fuel';
 

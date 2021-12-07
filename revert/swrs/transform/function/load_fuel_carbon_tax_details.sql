@@ -2,7 +2,7 @@
 -- requires: swrs/transform/schema
 -- requires: swrs/public/table/fuel_carbon_tax_details
 
-BEGIN;
+begin;
 
 create or replace function swrs_transform.load_fuel_carbon_tax_details()
   returns void as
@@ -99,4 +99,4 @@ $function$
         insert into swrs_load.fuel_carbon_tax_details (normalized_fuel_type, state, carbon_tax_act_fuel_type_id, cta_rate_units, unit_conversion_factor) values ('Carpet fibre (tonnes)','(Solid)',null,'n/a',1);
     end
 $function$ language plpgsql volatile;
-COMMIT;
+commit;

@@ -20,7 +20,6 @@ select columns_are('swrs'::name, 'carbon_tax_calculation'::name, array[
     'carbon_tax_act_fuel_type_id'::name,
     'facility_id'::name,
     'facility_name'::name,
-    'reporting_year'::name,
     'fuel_type'::name,
     'fuel_amount'::name,
     'fuel_charge'::name,
@@ -139,37 +138,6 @@ $$);
 SET client_min_messages TO WARNING; -- load is a bit verbose
 select swrs_transform.load(true, false);
 
--- Test fk relations
--- Organisation
--- select results_eq(
---     $$ select organisation.swrs_organisation_id from swrs.carbon_tax_calculation as ct
---        join swrs.organisation on ct.organisation_id = organisation.id
---        and ct.fuel_type='Residual Fuel Oil (#5 & 6)'
---     $$,
---     'select swrs_organisation_id from swrs.organisation',
---     'fk organisation_id references organisation'
--- );
-
--- -- Facility
--- select set_eq(
---     $$ select facility.swrs_facility_id from swrs.carbon_tax_calculation as ct
---        join swrs.facility on ct.facility_id = facility.id
---        and ct.fuel_type='Residual Fuel Oil (#5 & 6)'
---     $$,
---     'select swrs_facility_id from swrs.facility',
---     'fk facility_id references facility'
--- );
-
--- -- Naics
--- select set_eq(
---     $$ select naics.naics_code from swrs.carbon_tax_calculation as ct
---        join swrs.naics on ct.naics_id = naics.id
---        and ct.fuel_type='Residual Fuel Oil (#5 & 6)'
---     $$,
---     'select naics_code from swrs.naics',
---     'fk naics_id references naics'
--- );
-
 -- Test validity of calculation
 select results_eq(
     $$
@@ -205,7 +173,7 @@ select is_empty(
       select calculated_carbon_tax from swrs.carbon_tax_calculation
       where fuel_type='Wood Waste'
     $$,
-    'swrs.carbon_tax_calculation does not calculate carbon tax for Fuels in non-cargon taxed emission categories'
+    'swrs.carbon_tax_calculation does not calculate carbon tax for Fuels in non-carbon taxed emission categories'
 );
 
 select results_eq(
