@@ -174,24 +174,9 @@ $function$
                 and _emission.gas_type = 'N2O')
             or (_fuel_mapping.fuel_type = 'Vented Natural Gas'
                 and _emission.emission_type
-                    in (
-                       'NG Distribution: NG continuous high bleed devices venting',
-                       'NG Distribution: NG continuous low bleed devices venting',
-                       'NG Distribution: NG intermittent devices venting',
-                       'NG Distribution: NG pneumatic pumps venting',
-                       'Onshore NG Transmission Compression/Pipelines: NG continuous high bleed devices venting',
-                       'Onshore NG Transmission Compression/Pipelines: NG continuous low bleed devices venting',
-                       'Onshore NG Transmission Compression/Pipelines: NG intermittent devices venting',
-                       'Onshore NG Transmission Compression/Pipelines: NG pneumatic pumps venting',
-                       'Onshore Petroleum and NG Production: NG continuous high bleed devices venting',
-                       'Onshore Petroleum and NG Production: NG continuous low bleed devices venting',
-                       'Onshore Petroleum and NG Production: NG intermittent devices venting',
-                       'Onshore Petroleum and NG Production: NG pneumatic pump venting',
-                       'Underground NG Storage: NG continuous high bleed devices venting',
-                       'Underground NG Storage: NG continuous low bleed devices venting',
-                       'Underground NG Storage: NG intermittent devices venting',
-                       'Underground NG Storage: NG pneumatic pumps venting'
-                       )))
+                    in ((select taxed_emission_type from swrs_load.taxed_venting_emission_type))
+                )
+            )
         -- FK Emission -> Organisation
         left join swrs_transform.organisation as _organisation
           on _emission.eccc_xml_file_id = _organisation.eccc_xml_file_id

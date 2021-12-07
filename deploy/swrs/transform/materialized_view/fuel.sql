@@ -4,7 +4,7 @@
 begin;
 
 -- Fuels from Units
--- todo: explore any other attributes for units
+drop materialized view if exists swrs_transform.fuel;
 create materialized view swrs_transform.fuel as (
   select row_number() over () as id, id as eccc_xml_file_id, fuel_details.*
   from swrs_extract.eccc_xml_file,
@@ -38,7 +38,8 @@ create materialized view swrs_transform.fuel as (
              q3 numeric path './Q3[normalize-space(.)]',
              q4 numeric path './Q4[normalize-space(.)]',
              wastewater_processing_factors xml path './WastewaterProcessingFactors',
-             measured_conversion_factors xml path './MeasuredConversionFactors'
+             measured_conversion_factors xml path './MeasuredConversionFactors',
+             emission_category varchar(1000) path '(./descendant::Groups/EmissionGroupTypes/text()[contains(normalize-space(.), "BC_ScheduleB_")])[1]'
          ) as fuel_details
 ) with no data;
 
@@ -72,8 +73,8 @@ comment on column swrs_transform.fuel.q1 is 'The fuel used in the first quarter'
 comment on column swrs_transform.fuel.q2 is 'The fuel used in the second quarter';
 comment on column swrs_transform.fuel.q3 is 'The fuel used in the third quarter';
 comment on column swrs_transform.fuel.q4 is 'The fuel used in the fourth quarter';
-
 comment on column swrs_transform.fuel.wastewater_processing_factors is 'Details on the wastewater processing factors for this fuel';
 comment on column swrs_transform.fuel.measured_conversion_factors is 'Details on the measured_conversion_factors for this fuel';
+comment on column swrs_transform.fuel.emission_category is 'The emission category the reported fuel belongs to';
 
 commit;

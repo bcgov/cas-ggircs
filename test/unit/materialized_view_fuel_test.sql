@@ -5,7 +5,7 @@ reset client_min_messages;
 
 begin;
 
-select plan(116);
+select plan(117);
 
 
 select has_materialized_view(
@@ -47,8 +47,8 @@ select columns_are('swrs_transform'::name, 'fuel'::name, array[
     'q3'::name,
     'q4'::name,
     'wastewater_processing_factors'::name,
-    'measured_conversion_factors'::name
-
+    'measured_conversion_factors'::name,
+    'emission_category'::name
 ]);
 
 
@@ -231,6 +231,38 @@ insert into swrs_extract.eccc_xml_file (xml_file) values ($$
                   <MeasuredEmissionFactors/>
                   <WastewaterProcessingFactors/>
                   <MeasuredConversionFactors/>
+                  <Emissions>
+                    <Emission>
+                      <Groups>
+                        <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                        <EmissionGroupTypes>BC_ScheduleB_FugitiveEmissions</EmissionGroupTypes>
+                        <EmissionGroupTypes>EC_SpeciatedHFCs</EmissionGroupTypes>
+                      </Groups>
+                      <NotApplicable>true</NotApplicable>
+                      <CalculatedQuantity xsi:nil="true"/>
+                      <GasType>HFC23_CHF3</GasType>
+                    </Emission>
+                    <Emission>
+                      <Groups>
+                        <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                        <EmissionGroupTypes>BC_ScheduleB_do_not_parse_me</EmissionGroupTypes>
+                        <EmissionGroupTypes>EC_SpeciatedHFCs</EmissionGroupTypes>
+                      </Groups>
+                      <NotApplicable>true</NotApplicable>
+                      <CalculatedQuantity xsi:nil="true"/>
+                      <GasType>HFC32_CH2F2</GasType>
+                    </Emission>
+                    <Emission>
+                      <Groups>
+                        <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                        <EmissionGroupTypes>BC_ScheduleB_do_not_parse_me_either</EmissionGroupTypes>
+                        <EmissionGroupTypes>EC_SpeciatedHFCs</EmissionGroupTypes>
+                      </Groups>
+                      <NotApplicable>true</NotApplicable>
+                      <CalculatedQuantity xsi:nil="true"/>
+                      <GasType>HFC41_CH3F</GasType>
+                    </Emission>
+                  </Emissions>
                 </Fuel>
               </Fuels>
             </Unit>
@@ -442,6 +474,12 @@ select results_eq(
     'select measured_conversion_factors::text from swrs_transform.fuel where fuel_idx=0 and unit_idx=0',
     ARRAY['<MeasuredConversionFactors/>'::text],
     'column measured_conversion_factors in swrs_transform.fuel was properly parsed from xml'
+);
+
+select results_eq(
+    'select emission_category from swrs_transform.fuel where fuel_idx=0 and unit_idx=0',
+    ARRAY['BC_ScheduleB_FugitiveEmissions'::varchar],
+    'column emission_category was properly parsed from xml by parsing the first available EmissionGroupTypes descendant containing BC_ScheduleB_*'
 );
 
 select * from finish();
