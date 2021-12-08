@@ -178,3 +178,4 @@ swrs/public/table/fuel_001 [swrs/public/table/fuel] 2021-12-03T22:58:51Z Dylan L
 swrs/transform/function/load_fuel [swrs/transform/function/load_fuel@v1.10.0] 2021-12-03T23:56:32Z Dylan Leard <dylan@button.is> # Migration: add emission_category column to load_fuel function
 swrs/public/view/carbon_tax_calculation [swrs/public/view/carbon_tax_calculation@v1.10.0 swrs/transform/function/load_fuel] 2021-11-29T21:53:54Z Dylan Leard <dylan@button.is> # Migration: re-write calculation to be more performant/accurate
 swrs/transform/function/load_emission [swrs/transform/function/load_emission@v1.10.0] 2021-12-04T00:40:44Z Dylan Leard <dylan@button.is> # Migration: use taxed_venting_emission_type in load_emission function
+@v1.11.0 2021-12-08T00:17:00Z Dylan Leard <dylan@button.is> # release v1.11.0
