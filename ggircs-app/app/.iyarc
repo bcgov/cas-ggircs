@@ -11,3 +11,6 @@
 # Temporarily ignoring this advisory until https://github.com/button-inc/service-development-toolkit/issues/337 is fixed
 # This CVE is on a storybook dependency, which should be a devDependency of @button-inc/bcgov-theme, but is in the dependencies
 1004966
+
+# Marking this as ignored until we update the major version of next
+GHSA-25mp-g6fv-mqxx
