@@ -179,3 +179,4 @@ swrs/transform/function/load_fuel [swrs/transform/function/load_fuel@v1.10.0] 20
 swrs/public/view/carbon_tax_calculation [swrs/public/view/carbon_tax_calculation@v1.10.0 swrs/transform/function/load_fuel] 2021-11-29T21:53:54Z Dylan Leard <dylan@button.is> # Migration: re-write calculation to be more performant/accurate
 swrs/transform/function/load_emission [swrs/transform/function/load_emission@v1.10.0] 2021-12-04T00:40:44Z Dylan Leard <dylan@button.is> # Migration: use taxed_venting_emission_type in load_emission function
 @v1.11.0 2021-12-08T17:28:18Z Dylan Leard <dylan@button.is> # release v1.11.0
+swrs/transform/function/load_emission [swrs/transform/function/load_emission@v1.11.0] 2021-12-09T21:16:07Z Dylan Leard <dylan@button.is> # Migration: only consider CH4 emissions when calculating carbon tax for venting
