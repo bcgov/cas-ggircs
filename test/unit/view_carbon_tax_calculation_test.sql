@@ -4,7 +4,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(8);
+select plan(9);
 
 -- View should exist
 select has_view(
@@ -146,6 +146,17 @@ insert into swrs_extract.eccc_xml_file (xml_file) values ($$
                                       <Quantity>1000</Quantity>
                                       <CalculatedQuantity>10</CalculatedQuantity>
                                       <GasType>CH4</GasType>
+                                  </Emission>
+                                  <Emission>
+                                      <Groups>
+                                          <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                          <EmissionGroupTypes>BC_ScheduleB_VentingEmissions</EmissionGroupTypes>
+                                          <EmissionGroupTypes>EC_VentingEmissions</EmissionGroupTypes>
+                                      </Groups>
+                                      <NotApplicable>true</NotApplicable>
+                                      <Quantity>1000</Quantity>
+                                      <CalculatedQuantity>10</CalculatedQuantity>
+                                      <GasType>CO2</GasType>
                                   </Emission>
                               </Emissions>
                           </Fuel>
@@ -309,6 +320,12 @@ select results_eq(
     $$,
 
     'swrs.carbon_tax_calculation properly converts vented emissions to a natural gas fuel amount'
+);
+
+select is(
+    (select gas_type from swrs.emission where fuel_mapping_id = (select id from swrs.fuel_mapping where fuel_type = 'Vented Natural Gas')),
+    'CH4'::varchar,
+    'swrs.carbon_tax_calculation only considers the gas_type CH4 when calculating vented emissions'
 );
 
 select * from finish();
