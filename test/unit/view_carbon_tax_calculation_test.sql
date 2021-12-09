@@ -4,7 +4,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(6);
+select plan(8);
 
 -- View should exist
 select has_view(
@@ -129,6 +129,31 @@ insert into swrs_extract.eccc_xml_file (xml_file) values ($$
               </Units>
           </SubProcess>
       </Process>
+      <Process ProcessName="OGExtractionProcessing">
+          <SubProcess SubprocessName="Venting" InformationRequirement="Required">
+              <Units>
+                  <Unit>
+                      <Fuels>
+                          <Fuel>
+                              <Emissions EmissionsType="NG Distribution: NG continuous high bleed devices venting">
+                                  <Emission>
+                                      <Groups>
+                                          <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                          <EmissionGroupTypes>BC_ScheduleB_VentingEmissions</EmissionGroupTypes>
+                                          <EmissionGroupTypes>EC_VentingEmissions</EmissionGroupTypes>
+                                      </Groups>
+                                      <NotApplicable>true</NotApplicable>
+                                      <Quantity>1000</Quantity>
+                                      <CalculatedQuantity>10</CalculatedQuantity>
+                                      <GasType>CH4</GasType>
+                                  </Emission>
+                              </Emissions>
+                          </Fuel>
+                      </Fuels>
+                  </Unit>
+              </Units>
+          </SubProcess>
+      </Process>
     </ActivityPages>
   </ActivityData>
 </ReportData>
@@ -179,7 +204,8 @@ select is_empty(
 select results_eq(
     $$
       select calculated_carbon_tax from swrs.carbon_tax_calculation
-      where fuel_type='Natural Gas (Sm^3)';
+      where fuel_type='Natural Gas (Sm^3)'
+      and emission_category='BC_ScheduleB_FlaringEmissions';
     $$,
 
     $$
@@ -196,6 +222,7 @@ select results_eq(
           join swrs.fuel_charge fc
           on fc.carbon_tax_act_fuel_type_id = cta.id
           and concat(r.reporting_period_duration::text, '-12-31')::date between fc.start_date and fc.end_date
+          where e.emission_category = 'BC_ScheduleB_FlaringEmissions'
       )
       select round(x.fuel_charge * x.natural_gas_amount, 2) from x;
     $$,
@@ -205,8 +232,38 @@ select results_eq(
 
 select results_eq(
     $$
+      select calculated_carbon_tax from swrs.carbon_tax_calculation
+      where fuel_type='Natural Gas (Sm^3)'
+      and emission_category='BC_ScheduleB_VentingEmissions';
+    $$,
+
+    $$
+      with x as (
+          select (quantity * unit_conversion_factor) as natural_gas_amount, fuel_charge
+          from swrs.emission e
+          join swrs.report r on e.report_id = r.id
+          join swrs.fuel_mapping fm
+          on e.fuel_mapping_id = fm.id
+          join swrs.fuel_carbon_tax_details ctd
+          on fm.fuel_carbon_tax_details_id = ctd.id
+          join swrs.carbon_tax_act_fuel_type cta
+          on ctd.carbon_tax_act_fuel_type_id = cta.id
+          join swrs.fuel_charge fc
+          on fc.carbon_tax_act_fuel_type_id = cta.id
+          and concat(r.reporting_period_duration::text, '-12-31')::date between fc.start_date and fc.end_date
+          where e.emission_category = 'BC_ScheduleB_VentingEmissions'
+      )
+      select round(x.fuel_charge * x.natural_gas_amount, 2) from x;
+    $$,
+
+    'swrs.carbon_tax_calculation properly calculates carbon tax based on vented emission quantity'
+);
+
+select results_eq(
+    $$
       select fuel_amount from swrs.carbon_tax_calculation
-      where fuel_type='Natural Gas (Sm^3)';
+      where fuel_type='Natural Gas (Sm^3)'
+      and emission_category='BC_ScheduleB_FlaringEmissions';
     $$,
 
     $$
@@ -220,14 +277,38 @@ select results_eq(
           on fm.fuel_carbon_tax_details_id = ctd.id
           join swrs.carbon_tax_act_fuel_type cta
           on ctd.carbon_tax_act_fuel_type_id = cta.id
-          join swrs.fuel_charge fc
-          on fc.carbon_tax_act_fuel_type_id = cta.id
-          and concat(r.reporting_period_duration::text, '-12-31')::date between fc.start_date and fc.end_date
+          where e.emission_category = 'BC_ScheduleB_FlaringEmissions'
       )
       select x.natural_gas_amount from x
     $$,
 
     'swrs.carbon_tax_calculation properly converts flaring emissions to a natural gas fuel amount'
+);
+
+select results_eq(
+    $$
+      select fuel_amount from swrs.carbon_tax_calculation
+      where fuel_type='Natural Gas (Sm^3)'
+      and emission_category='BC_ScheduleB_VentingEmissions';
+    $$,
+
+    $$
+      with x as (
+          select (quantity * unit_conversion_factor) as natural_gas_amount
+          from swrs.emission e
+          join swrs.report r on e.report_id = r.id
+          join swrs.fuel_mapping fm
+          on e.fuel_mapping_id = fm.id
+          join swrs.fuel_carbon_tax_details ctd
+          on fm.fuel_carbon_tax_details_id = ctd.id
+          join swrs.carbon_tax_act_fuel_type cta
+          on ctd.carbon_tax_act_fuel_type_id = cta.id
+          where e.emission_category = 'BC_ScheduleB_VentingEmissions'
+      )
+      select x.natural_gas_amount from x
+    $$,
+
+    'swrs.carbon_tax_calculation properly converts vented emissions to a natural gas fuel amount'
 );
 
 select * from finish();
