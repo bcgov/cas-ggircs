@@ -365,7 +365,7 @@ $$), ($$
                       <NotApplicable>false</NotApplicable>
                       <Quantity>29819.5973</Quantity>
                       <CalculatedQuantity>29819.5973</CalculatedQuantity>
-                      <GasType>CO2nonbio</GasType>
+                      <GasType>CH4</GasType>
                       <Methodology>Methodology 3 (measured CC/Steam)</Methodology>
                     </Emission>
                   </Emissions>
