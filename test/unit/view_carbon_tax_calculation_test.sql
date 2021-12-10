@@ -4,7 +4,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(6);
+select plan(7);
 
 -- View should exist
 select has_view(
@@ -129,6 +129,42 @@ insert into swrs_extract.eccc_xml_file (xml_file) values ($$
               </Units>
           </SubProcess>
       </Process>
+      <Process ProcessName="OGExtractionProcessing">
+          <SubProcess SubprocessName="Venting" InformationRequirement="Required">
+              <Units>
+                  <Unit>
+                      <Fuels>
+                          <Fuel>
+                              <Emissions EmissionsType="NG Distribution: NG continuous high bleed devices venting">
+                                  <Emission>
+                                      <Groups>
+                                          <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                          <EmissionGroupTypes>BC_ScheduleB_VentingEmissions</EmissionGroupTypes>
+                                          <EmissionGroupTypes>EC_VentingEmissions</EmissionGroupTypes>
+                                      </Groups>
+                                      <NotApplicable>true</NotApplicable>
+                                      <Quantity>10</Quantity>
+                                      <CalculatedQuantity>10</CalculatedQuantity>
+                                      <GasType>CH4</GasType>
+                                  </Emission>
+                                  <Emission>
+                                      <Groups>
+                                          <EmissionGroupTypes>BC_FacilityTotal</EmissionGroupTypes>
+                                          <EmissionGroupTypes>BC_ScheduleB_VentingEmissions</EmissionGroupTypes>
+                                          <EmissionGroupTypes>EC_VentingEmissions</EmissionGroupTypes>
+                                      </Groups>
+                                      <NotApplicable>true</NotApplicable>
+                                      <Quantity>1000</Quantity>
+                                      <CalculatedQuantity>10</CalculatedQuantity>
+                                      <GasType>CO2</GasType>
+                                  </Emission>
+                              </Emissions>
+                          </Fuel>
+                      </Fuels>
+                  </Unit>
+              </Units>
+          </SubProcess>
+      </Process>
     </ActivityPages>
   </ActivityData>
 </ReportData>
@@ -179,55 +215,44 @@ select is_empty(
 select results_eq(
     $$
       select calculated_carbon_tax from swrs.carbon_tax_calculation
-      where fuel_type='Natural Gas (Sm^3)';
+      where fuel_type='Natural Gas (Sm^3)'
+      and emission_category='BC_ScheduleB_FlaringEmissions';
     $$,
 
     $$
-      with x as (
-          select (quantity * unit_conversion_factor) as natural_gas_amount, fuel_charge
-          from swrs.emission e
-          join swrs.report r on e.report_id = r.id
-          join swrs.fuel_mapping fm
-          on e.fuel_mapping_id = fm.id
-          join swrs.fuel_carbon_tax_details ctd
-          on fm.fuel_carbon_tax_details_id = ctd.id
-          join swrs.carbon_tax_act_fuel_type cta
-          on ctd.carbon_tax_act_fuel_type_id = cta.id
-          join swrs.fuel_charge fc
-          on fc.carbon_tax_act_fuel_type_id = cta.id
-          and concat(r.reporting_period_duration::text, '-12-31')::date between fc.start_date and fc.end_date
-      )
-      select round(x.fuel_charge * x.natural_gas_amount, 2) from x;
+      select round((10 * (1000000 / 2151.0) * 0.057), 2);
     $$,
 
-    'swrs.carbon_tax_calculation properly calculates carbon tax based on flaring emission quantity'
+    'The carbon tax calculator properly calculates the tax for Flaring emissions:
+      Given the quantity of 10 tonnes of Flared CO2, and a fuel charge for Natural Gas of 0.057 (for reporting year 2015)
+      We apply a modifier of 1000 to convert tonnes to kg: 10 * 1000 = 10000kg CO2
+      Then apply the kg/m3 ratio: 10000 / 2.151 = 464900.05 (we now have a Natural Gas fuel amount here)
+      The NG fuel amount would be multiplied by its fuel_charge for that year: 464900.04 * 0.057 = 264.99 CAD'
 );
+
 
 select results_eq(
     $$
-      select fuel_amount from swrs.carbon_tax_calculation
-      where fuel_type='Natural Gas (Sm^3)';
+      select calculated_carbon_tax from swrs.carbon_tax_calculation
+      where fuel_type='Natural Gas (Sm^3)'
+      and emission_category='BC_ScheduleB_VentingEmissions';
     $$,
 
     $$
-      with x as (
-          select (quantity * unit_conversion_factor) as natural_gas_amount
-          from swrs.emission e
-          join swrs.report r on e.report_id = r.id
-          join swrs.fuel_mapping fm
-          on e.fuel_mapping_id = fm.id
-          join swrs.fuel_carbon_tax_details ctd
-          on fm.fuel_carbon_tax_details_id = ctd.id
-          join swrs.carbon_tax_act_fuel_type cta
-          on ctd.carbon_tax_act_fuel_type_id = cta.id
-          join swrs.fuel_charge fc
-          on fc.carbon_tax_act_fuel_type_id = cta.id
-          and concat(r.reporting_period_duration::text, '-12-31')::date between fc.start_date and fc.end_date
-      )
-      select x.natural_gas_amount from x
+      select round((10 * (1000000 / 678.5) * 0.057), 2);
     $$,
 
-    'swrs.carbon_tax_calculation properly converts flaring emissions to a natural gas fuel amount'
+    'The carbon tax calculator properly calculates the tax for Venting emissions:
+      Given the quantity of 10 tonnes of Vented CH4, and a fuel charge for Natural Gas of 0.057 (for reporting year 2015)
+      We apply a modifier of 1000 to convert tonnes to kg: 10 * 1000 = 10000kg CH4
+      Then apply the kg/m3 ratio: 10000 / 0.6785 = 1473839.35 (we now have a Natural Gas fuel amount here)
+      The NG fuel amount would be multiplied by its fuel_charge for that year: 1473839.35 * 0.057 = 840.09 CAD'
+);
+
+select is(
+    (select gas_type from swrs.emission where fuel_mapping_id = (select id from swrs.fuel_mapping where fuel_type = 'Vented Natural Gas CH4')),
+    'CH4'::varchar,
+    'swrs.carbon_tax_calculation only considers the gas_type CH4 when calculating vented emissions'
 );
 
 select * from finish();

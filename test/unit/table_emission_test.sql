@@ -365,7 +365,7 @@ $$), ($$
                       <NotApplicable>false</NotApplicable>
                       <Quantity>29819.5973</Quantity>
                       <CalculatedQuantity>29819.5973</CalculatedQuantity>
-                      <GasType>CO2nonbio</GasType>
+                      <GasType>CH4</GasType>
                       <Methodology>Methodology 3 (measured CC/Steam)</Methodology>
                     </Emission>
                   </Emissions>
@@ -703,7 +703,7 @@ select set_eq(
 
 select results_eq(
   $$
-    select emission_category from swrs.emission where fuel_mapping_id = 148
+    select emission_category from swrs.emission where fuel_mapping_id = (select id from swrs.fuel_mapping where fuel_type = 'Vented Natural Gas CH4')
   $$,
   ARRAY['BC_ScheduleB_VentingEmissions'::varchar],
   'Vented emissions with an emission_type in swrs.taxed_venting_emission_type are populated with the correct fuel_mapping_id'
