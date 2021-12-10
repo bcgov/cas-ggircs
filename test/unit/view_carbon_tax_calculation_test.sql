@@ -143,7 +143,7 @@ insert into swrs_extract.eccc_xml_file (xml_file) values ($$
                                           <EmissionGroupTypes>EC_VentingEmissions</EmissionGroupTypes>
                                       </Groups>
                                       <NotApplicable>true</NotApplicable>
-                                      <Quantity>1000</Quantity>
+                                      <Quantity>10</Quantity>
                                       <CalculatedQuantity>10</CalculatedQuantity>
                                       <GasType>CH4</GasType>
                                   </Emission>
@@ -212,6 +212,12 @@ select is_empty(
     'swrs.carbon_tax_calculation does not calculate carbon tax for Fuels in non-carbon taxed emission categories'
 );
 
+select calculated_carbon_tax from swrs.carbon_tax_calculation
+      where fuel_type='Natural Gas (Sm^3)'
+      and emission_category='BC_ScheduleB_FlaringEmissions';
+
+select (10 * (1000000 / 2151.0) * 0.057);
+
 select results_eq(
     $$
       select calculated_carbon_tax from swrs.carbon_tax_calculation
@@ -220,26 +226,16 @@ select results_eq(
     $$,
 
     $$
-      with x as (
-          select (quantity * unit_conversion_factor) as natural_gas_amount, fuel_charge
-          from swrs.emission e
-          join swrs.report r on e.report_id = r.id
-          join swrs.fuel_mapping fm
-          on e.fuel_mapping_id = fm.id
-          join swrs.fuel_carbon_tax_details ctd
-          on fm.fuel_carbon_tax_details_id = ctd.id
-          join swrs.carbon_tax_act_fuel_type cta
-          on ctd.carbon_tax_act_fuel_type_id = cta.id
-          join swrs.fuel_charge fc
-          on fc.carbon_tax_act_fuel_type_id = cta.id
-          and concat(r.reporting_period_duration::text, '-12-31')::date between fc.start_date and fc.end_date
-          where e.emission_category = 'BC_ScheduleB_FlaringEmissions'
-      )
-      select round(x.fuel_charge * x.natural_gas_amount, 2) from x;
+      select round((10 * (1000000 / 2151.0) * 0.057), 2);
     $$,
 
-    'swrs.carbon_tax_calculation properly calculates carbon tax based on flaring emission quantity'
+    'The carbon tax calculator properly calculates the tax for Flaring emissions:
+      Given the quantity of 10 tonnes of Flared CO2, and a fuel charge for Natural Gas of 0.057 (for reporting year 2015)
+      We apply a modifier of 10 to convert tonnes to kg: 10 * 1000 = 10000kg CH4
+      Then apply the kg/m3 ratio: 10000 / 2.151 = 464900.05 (we now have a Natural Gas fuel amount here)
+      The NG fuel amount would be multiplied by its fuel_charge for that year: 464900.04 * 0.057 = 264.99 CAD'
 );
+
 
 select results_eq(
     $$
@@ -249,25 +245,14 @@ select results_eq(
     $$,
 
     $$
-      with x as (
-          select (quantity * unit_conversion_factor) as natural_gas_amount, fuel_charge
-          from swrs.emission e
-          join swrs.report r on e.report_id = r.id
-          join swrs.fuel_mapping fm
-          on e.fuel_mapping_id = fm.id
-          join swrs.fuel_carbon_tax_details ctd
-          on fm.fuel_carbon_tax_details_id = ctd.id
-          join swrs.carbon_tax_act_fuel_type cta
-          on ctd.carbon_tax_act_fuel_type_id = cta.id
-          join swrs.fuel_charge fc
-          on fc.carbon_tax_act_fuel_type_id = cta.id
-          and concat(r.reporting_period_duration::text, '-12-31')::date between fc.start_date and fc.end_date
-          where e.emission_category = 'BC_ScheduleB_VentingEmissions'
-      )
-      select round(x.fuel_charge * x.natural_gas_amount, 2) from x;
+      select round((10 * (1000000 / 678.5) * 0.057), 2);
     $$,
 
-    'swrs.carbon_tax_calculation properly calculates carbon tax based on vented emission quantity'
+    'The carbon tax calculator properly calculates the tax for Vented emissions:
+      Given the quantity of 10 tonnes of Vented CH4, and a fuel charge for Natural Gas of 0.057 (for reporting year 2015)
+      We apply a modifier of 10 to convert tonnes to kg: 10 * 1000 = 10000kg CH4
+      Then apply the kg/m3 ratio: 10000 / 0.6785 = 1473839.35 (we now have a Natural Gas fuel amount here)
+      The NG fuel amount would be multiplied by its fuel_charge for that year: 1473839.35 * 0.057 = 840.09 CAD'
 );
 
 select results_eq(
@@ -300,7 +285,7 @@ select results_eq(
     $$
       select fuel_amount from swrs.carbon_tax_calculation
       where fuel_type='Natural Gas (Sm^3)'
-      and emission_category='BC_ScheduleB_VentingEmissions';
+      and emission_category='BC_ScheduleB_VentedEmissions';
     $$,
 
     $$
@@ -314,16 +299,16 @@ select results_eq(
           on fm.fuel_carbon_tax_details_id = ctd.id
           join swrs.carbon_tax_act_fuel_type cta
           on ctd.carbon_tax_act_fuel_type_id = cta.id
-          where e.emission_category = 'BC_ScheduleB_VentingEmissions'
+          where e.emission_category = 'BC_ScheduleB_VentedEmissions'
       )
       select x.natural_gas_amount from x
     $$,
 
-    'swrs.carbon_tax_calculation properly converts vented emissions to a natural gas fuel amount'
+    'swrs.carbon_tax_calculation properly converts flaring emissions to a natural gas fuel amount'
 );
 
 select is(
-    (select gas_type from swrs.emission where fuel_mapping_id = (select id from swrs.fuel_mapping where fuel_type = 'Vented Natural Gas')),
+    (select gas_type from swrs.emission where fuel_mapping_id = (select id from swrs.fuel_mapping where fuel_type = 'Vented Natural Gas CH4')),
     'CH4'::varchar,
     'swrs.carbon_tax_calculation only considers the gas_type CH4 when calculating vented emissions'
 );

@@ -41,7 +41,7 @@ create or replace view swrs.carbon_tax_calculation as
     from swrs.emission e
     join swrs.fuel_mapping fm
       on e.fuel_mapping_id = fm.id
-      and e.fuel_mapping_id = (select id from swrs.fuel_mapping where fuel_type = 'Vented Natural Gas')
+      and e.fuel_mapping_id = (select id from swrs.fuel_mapping where fuel_type = 'Vented Natural Gas CH4')
     join swrs.fuel_carbon_tax_details ctd
       on fm.fuel_carbon_tax_details_id = ctd.id
 
