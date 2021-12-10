@@ -182,3 +182,4 @@ swrs/transform/function/load_emission [swrs/transform/function/load_emission@v1.
 swrs/transform/function/load_emission [swrs/transform/function/load_emission@v1.11.0] 2021-12-09T21:16:07Z Dylan Leard <dylan@button.is> # Migration: only consider CH4 emissions when calculating carbon tax for venting
 swrs/transform/function/load_fuel_carbon_tax_details [swrs/transform/function/load_fuel_carbon_tax_details@v1.11.0] 2021-12-09T21:27:22Z Dylan Leard <dylan@button.is> # Migration: update unit_conversion_factor for venting
 swrs/public/view/carbon_tax_calculation [swrs/public/view/carbon_tax_calculation@v1.11.0] 2021-12-09T21:33:56Z Dylan Leard <dylan@button.is> # Migration: update comment for vented emission calculation
+swrs/transform/function/load_fuel_mapping [swrs/transform/function/load_fuel_mapping@v1.11.0] 2021-12-10T17:17:49Z Dylan Leard <dylan@button.is> # Migration: remove unused CH4 and N2O flared gas types from fuel_mapping table

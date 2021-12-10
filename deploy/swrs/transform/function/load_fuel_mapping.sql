@@ -153,16 +153,14 @@ $function$
         INSERT INTO swrs_load.fuel_mapping (fuel_type, fuel_carbon_tax_details_id) VALUES ('Wood Waste', 84);
         INSERT INTO swrs_load.fuel_mapping (fuel_type, fuel_carbon_tax_details_id) VALUES ('Wood Waste (bone dry tonnes)', 84);
         INSERT INTO swrs_load.fuel_mapping (fuel_type, fuel_carbon_tax_details_id) VALUES ('Flared Natural Gas CO2', 85);
-        INSERT INTO swrs_load.fuel_mapping (fuel_type, fuel_carbon_tax_details_id) VALUES ('Flared Natural Gas CH4', 86);
-        INSERT INTO swrs_load.fuel_mapping (fuel_type, fuel_carbon_tax_details_id) VALUES ('Flared Natural Gas N2O', 87);
-        INSERT INTO swrs_load.fuel_mapping (fuel_type, fuel_carbon_tax_details_id) VALUES ('Vented Natural Gas CH4', 88);
+        INSERT INTO swrs_load.fuel_mapping (fuel_type, fuel_carbon_tax_details_id) VALUES ('Vented Natural Gas CH4', 86);
         INSERT INTO swrs_load.fuel_mapping (fuel_type, fuel_carbon_tax_details_id) VALUES ('ANFO', 43);
         INSERT INTO swrs_load.fuel_mapping (fuel_type, fuel_carbon_tax_details_id) VALUES ('Concentrated Non-Condensable Gases', 16);
         INSERT INTO swrs_load.fuel_mapping (fuel_type, fuel_carbon_tax_details_id) VALUES ('Field gas', 36);
         INSERT INTO swrs_load.fuel_mapping (fuel_type, fuel_carbon_tax_details_id) VALUES ('Gasoline', 47);
         INSERT INTO swrs_load.fuel_mapping (fuel_type, fuel_carbon_tax_details_id) VALUES ('Process vent gas', 53);
         INSERT INTO swrs_load.fuel_mapping (fuel_type, fuel_carbon_tax_details_id) VALUES ('Concentrated Non-Condensible Gases (CNCG) (Sm^3)', 16);
-        INSERT INTO swrs_load.fuel_mapping (fuel_type, fuel_carbon_tax_details_id) VALUES ('Carpet fibre (tonnes)', 89);
+        INSERT INTO swrs_load.fuel_mapping (fuel_type, fuel_carbon_tax_details_id) VALUES ('Carpet fibre (tonnes)', 87);
 
     end
 $function$ language plpgsql volatile;
