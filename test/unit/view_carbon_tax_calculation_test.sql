@@ -4,7 +4,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(9);
+select plan(7);
 
 -- View should exist
 select has_view(
