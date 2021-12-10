@@ -212,12 +212,6 @@ select is_empty(
     'swrs.carbon_tax_calculation does not calculate carbon tax for Fuels in non-carbon taxed emission categories'
 );
 
-select calculated_carbon_tax from swrs.carbon_tax_calculation
-      where fuel_type='Natural Gas (Sm^3)'
-      and emission_category='BC_ScheduleB_FlaringEmissions';
-
-select (10 * (1000000 / 2151.0) * 0.057);
-
 select results_eq(
     $$
       select calculated_carbon_tax from swrs.carbon_tax_calculation
@@ -231,7 +225,7 @@ select results_eq(
 
     'The carbon tax calculator properly calculates the tax for Flaring emissions:
       Given the quantity of 10 tonnes of Flared CO2, and a fuel charge for Natural Gas of 0.057 (for reporting year 2015)
-      We apply a modifier of 10 to convert tonnes to kg: 10 * 1000 = 10000kg CH4
+      We apply a modifier of 1000 to convert tonnes to kg: 10 * 1000 = 10000kg CO2
       Then apply the kg/m3 ratio: 10000 / 2.151 = 464900.05 (we now have a Natural Gas fuel amount here)
       The NG fuel amount would be multiplied by its fuel_charge for that year: 464900.04 * 0.057 = 264.99 CAD'
 );
@@ -248,63 +242,11 @@ select results_eq(
       select round((10 * (1000000 / 678.5) * 0.057), 2);
     $$,
 
-    'The carbon tax calculator properly calculates the tax for Vented emissions:
+    'The carbon tax calculator properly calculates the tax for Venting emissions:
       Given the quantity of 10 tonnes of Vented CH4, and a fuel charge for Natural Gas of 0.057 (for reporting year 2015)
-      We apply a modifier of 10 to convert tonnes to kg: 10 * 1000 = 10000kg CH4
+      We apply a modifier of 1000 to convert tonnes to kg: 10 * 1000 = 10000kg CH4
       Then apply the kg/m3 ratio: 10000 / 0.6785 = 1473839.35 (we now have a Natural Gas fuel amount here)
       The NG fuel amount would be multiplied by its fuel_charge for that year: 1473839.35 * 0.057 = 840.09 CAD'
-);
-
-select results_eq(
-    $$
-      select fuel_amount from swrs.carbon_tax_calculation
-      where fuel_type='Natural Gas (Sm^3)'
-      and emission_category='BC_ScheduleB_FlaringEmissions';
-    $$,
-
-    $$
-      with x as (
-          select (quantity * unit_conversion_factor) as natural_gas_amount
-          from swrs.emission e
-          join swrs.report r on e.report_id = r.id
-          join swrs.fuel_mapping fm
-          on e.fuel_mapping_id = fm.id
-          join swrs.fuel_carbon_tax_details ctd
-          on fm.fuel_carbon_tax_details_id = ctd.id
-          join swrs.carbon_tax_act_fuel_type cta
-          on ctd.carbon_tax_act_fuel_type_id = cta.id
-          where e.emission_category = 'BC_ScheduleB_FlaringEmissions'
-      )
-      select x.natural_gas_amount from x
-    $$,
-
-    'swrs.carbon_tax_calculation properly converts flaring emissions to a natural gas fuel amount'
-);
-
-select results_eq(
-    $$
-      select fuel_amount from swrs.carbon_tax_calculation
-      where fuel_type='Natural Gas (Sm^3)'
-      and emission_category='BC_ScheduleB_VentedEmissions';
-    $$,
-
-    $$
-      with x as (
-          select (quantity * unit_conversion_factor) as natural_gas_amount
-          from swrs.emission e
-          join swrs.report r on e.report_id = r.id
-          join swrs.fuel_mapping fm
-          on e.fuel_mapping_id = fm.id
-          join swrs.fuel_carbon_tax_details ctd
-          on fm.fuel_carbon_tax_details_id = ctd.id
-          join swrs.carbon_tax_act_fuel_type cta
-          on ctd.carbon_tax_act_fuel_type_id = cta.id
-          where e.emission_category = 'BC_ScheduleB_VentedEmissions'
-      )
-      select x.natural_gas_amount from x
-    $$,
-
-    'swrs.carbon_tax_calculation properly converts flaring emissions to a natural gas fuel amount'
 );
 
 select is(
