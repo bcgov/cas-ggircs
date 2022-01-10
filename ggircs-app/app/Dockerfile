@@ -23,8 +23,6 @@ SHELL ["/usr/bin/env", "bash", "-c"]
 RUN printf "nodejs 14.15.4\nyarn 1.22.10\n" > .tool-versions
 RUN cat ${HOME}/.tool-versions | cut -f 1 -d ' ' | xargs -n 1 asdf plugin-add
 RUN asdf plugin-update --all
-# The nodejs release team keyring is needed to install the asdf node plugin
-RUN ~/.asdf/plugins/nodejs/bin/import-release-team-keyring
 
 RUN asdf install
 RUN asdf reshim
