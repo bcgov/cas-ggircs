@@ -13,8 +13,8 @@ WORKDIR ${HOME}
 
 COPY ./ ${HOME}/
 
-RUN git clone https://github.com/asdf-vm/asdf.git ${HOME}/asdf --branch v0.8.0
-RUN cd ${HOME}/asdf && git checkout v0.8.0
+RUN git clone https://github.com/asdf-vm/asdf.git ${HOME}/asdf --branch v0.8.1
+RUN cd ${HOME}/asdf && git checkout v0.8.1
 ENV BASH_ENV="${HOME}/asdf/asdf.sh"
 # Because asdf is loaded via BASH_ENV, all commands using adsf need to be executed using /usr/bin/env bash -c
 SHELL ["/usr/bin/env", "bash", "-c"]
@@ -23,8 +23,6 @@ SHELL ["/usr/bin/env", "bash", "-c"]
 RUN printf "nodejs 14.15.4\nyarn 1.22.10\n" > .tool-versions
 RUN cat ${HOME}/.tool-versions | cut -f 1 -d ' ' | xargs -n 1 asdf plugin-add
 RUN asdf plugin-update --all
-# The nodejs release team keyring is needed to install the asdf node plugin
-RUN ~/.asdf/plugins/nodejs/bin/import-release-team-keyring
 
 RUN asdf install
 RUN asdf reshim
