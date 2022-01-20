@@ -3,9 +3,9 @@ import { graphql } from "react-relay";
 import { requestAccessNoticeQueryResponse } from "requestAccessNoticeQuery.graphql";
 import { PageComponentProps } from "next-env";
 import DefaultLayout from "components/Layout/DefaultLayout";
-import { GUEST } from "data/group-constants";
+import { PENDING_GGIRCS_USER } from "data/group-constants";
 
-const ALLOWED_GROUPS = [GUEST];
+const ALLOWED_GROUPS = [PENDING_GGIRCS_USER];
 
 interface Props extends PageComponentProps {
   query: requestAccessNoticeQueryResponse["query"];
