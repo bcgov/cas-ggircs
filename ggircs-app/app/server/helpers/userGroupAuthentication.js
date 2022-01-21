@@ -13,20 +13,16 @@ const getUserGroups = (req) => {
   )
     return [groupConstants.GUEST];
 
-  const brokerSessionId = req.kauth.grant.id_token.content.broker_session_id;
+  const identityProvider = req.kauth.grant.id_token.content.identity_provider;
   const { groups } = req.kauth.grant.id_token.content;
-
-  console.log(groups);
 
   const processedGroups = groups.map((value) => removeFirstLetter(value));
   const validGroups = compactGroups(processedGroups);
 
   if (validGroups.length === 0) {
-    return brokerSessionId &&
-      brokerSessionId.length === 41 &&
-      brokerSessionId.startsWith("idir.")
+    return identityProvider === "idir"
       ? [groupConstants.PENDING_GGIRCS_USER]
-      : [groupConstants.GUEST];
+      : [groupConstants.USER];
   }
 
   return validGroups;
