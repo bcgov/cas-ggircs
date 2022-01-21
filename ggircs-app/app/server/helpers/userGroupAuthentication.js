@@ -20,7 +20,6 @@ const getUserGroups = (req) => {
   const validGroups = compactGroups(processedGroups);
 
   if (validGroups.length === 0) {
-    console.log('HERE');
     return identityProvider === "idir"
       ? [groupConstants.PENDING_GGIRCS_USER]
       : [groupConstants.USER];
