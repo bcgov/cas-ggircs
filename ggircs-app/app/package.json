@@ -108,7 +108,8 @@
     "unidiff/diff": "5.0.0",
     "**/ansi-regex": "5.0.1",
     "**/set-value": "4.0.1",
-    "cypress/@cypress/request/http-signature/jsprim/json-schema": "0.4.0"
+    "cypress/@cypress/request/http-signature/jsprim/json-schema": "0.4.0",
+    "**/follow-redirects": "^1.14.7"
   },
   "jest": {
     "testMatch": [
