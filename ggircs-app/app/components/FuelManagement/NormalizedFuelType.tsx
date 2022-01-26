@@ -3,6 +3,7 @@ import { Card, Col, Row } from "react-bootstrap";
 import { NormalizedFuelSelection } from "./NormalizedFuelSelection";
 import { createFragmentContainer, graphql, RelayProp } from "react-relay";
 import { NormalizedFuelType_query } from "__generated__/NormalizedFuelType_query.graphql";
+import MappedFuelTypeTable from "./MappedFuelTypeTable";
 
 interface Props {
   relay: RelayProp;
@@ -54,14 +55,7 @@ export const NormalizedFuelType: React.FunctionComponent<Props> = ({
               <br />
               <Row>
                 <Col md="12">
-                <p><strong>FUELS</strong></p>
-                  <ul>
-                  {currentNormalizedFuel.fuelMappingsByFuelCarbonTaxDetailsId.edges.map(({node}) => {
-                    return (
-                      <li key={node.id}>{node.fuelType}</li>
-                    );
-                  })}
-                  </ul>
+                <MappedFuelTypeTable normalizedFuelType={query.fuelCarbonTaxDetail} />
                 </Col>
               </Row>
             </>
@@ -90,19 +84,12 @@ export default createFragmentContainer(NormalizedFuelType, {
     fragment NormalizedFuelType_query on Query
     @argumentDefinitions(fuelCarbonTaxDetailId: { type: "ID!" }) {
       fuelCarbonTaxDetail(id: $fuelCarbonTaxDetailId) {
+        ...MappedFuelTypeTable_normalizedFuelType
         id
         normalizedFuelType
         state
         ctaRateUnits
         unitConversionFactor
-        fuelMappingsByFuelCarbonTaxDetailsId {
-          edges {
-            node {
-              id
-              fuelType
-            }
-          }
-        }
         carbonTaxActFuelTypeByCarbonTaxActFuelTypeId {
           carbonTaxFuelType
         }
