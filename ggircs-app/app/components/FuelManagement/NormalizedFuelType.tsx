@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Col, Row } from "react-bootstrap";
+import { Card, Col, Row, Table } from "react-bootstrap";
 import { NormalizedFuelSelection } from "./NormalizedFuelSelection";
 import { createFragmentContainer, graphql, RelayProp } from "react-relay";
 import { NormalizedFuelType_query } from "__generated__/NormalizedFuelType_query.graphql";
@@ -38,18 +38,33 @@ export const NormalizedFuelType: React.FunctionComponent<Props> = ({
             <>
               <Row>
                 <Col md="12">
-                  <h2>
-                    {currentNormalizedFuel.normalizedFuelType}
-                  </h2>
-                </Col>
-              </Row>
-              <Row>
-                <Col md="12">
-                  <p><strong>FUEL CARBON TAX DETAILS</strong></p>
-                  <p>STATE: {currentNormalizedFuel.state}</p>
-                  <p>CTA RATE UNITS: {currentNormalizedFuel.ctaRateUnits}</p>
-                  <p>UNIT CONVERSION FACTOR: {currentNormalizedFuel.unitConversionFactor}</p>
-                  <p>CTA FUEL TYPE: {currentNormalizedFuel.carbonTaxActFuelTypeByCarbonTaxActFuelTypeId?.carbonTaxFuelType}</p>
+                  <Card>
+                    <Card.Header className="bc-card-header">
+                      <Card.Title>{currentNormalizedFuel.normalizedFuelType}</Card.Title>
+                    </Card.Header>
+                    <Card.Body>
+                      <Table striped bordered hover>
+                        <tbody>
+                          <tr>
+                            <td>State: </td>
+                            <td>{currentNormalizedFuel.state}</td>
+                          </tr>
+                          <tr>
+                            <td>CTA Rate Units: </td>
+                            <td>{currentNormalizedFuel.ctaRateUnits}</td>
+                          </tr>
+                          <tr>
+                            <td>Unit Conversion Factor: </td>
+                            <td>{currentNormalizedFuel.unitConversionFactor}</td>
+                          </tr>
+                          <tr>
+                            <td>CTA Fuel Type: </td>
+                            <td>{currentNormalizedFuel.carbonTaxActFuelTypeByCarbonTaxActFuelTypeId?.carbonTaxFuelType}</td>
+                          </tr>
+                        </tbody>
+                      </Table>
+                    </Card.Body>
+                  </Card>
                 </Col>
               </Row>
               <br />
