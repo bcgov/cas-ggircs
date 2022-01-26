@@ -16,6 +16,17 @@
        * tables with the same name and you don't want this rule to apply to
        * all of them.
        */
+      "swrs.report": {
+        tags: {
+          omit: ["create","update","delete","read","all","filter","order","many"],
+          name: "swrsReport"
+        },
+      },
+      "swrs.activity": {
+        tags: {
+          omit: ["create","update","delete","read","all","filter","order","many"],
+        },
+      },
       "swrs_history.report_attachment": {
         tags: {
           omit: ["create", "update", "delete"],
