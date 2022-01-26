@@ -28,7 +28,7 @@ export default class Index extends Component<Props> {
           }
         }
         ...NormalizedFuelType_query
-        @arguments(fuelCarbonTaxDetailId: $fuelCarbonTaxDetailId)
+          @arguments(fuelCarbonTaxDetailId: $fuelCarbonTaxDetailId)
         session {
           ...DefaultLayout_session
         }
@@ -42,38 +42,44 @@ export default class Index extends Component<Props> {
         fuelCarbonTaxDetailId: "",
       },
     };
-  };
-
-
+  }
 
   render() {
     const { query } = this.props;
     const { session } = query || {};
 
     // Dummy data for now, this should be replaced with data returned in a UnMappedFuelTypes fragment query
-    const unMappedFuels=['fuel1', 'fuel2', 'fuel3'];
+    const unMappedFuels = ["fuel1", "fuel2", "fuel3"];
 
     return (
       <>
-      <DefaultLayout
-        session={session}
-        title="Fuel Type Management"
-        width="wide"
-      >
-        <div id="unmapped">
-          {unMappedFuels.length > 0 && <UnmappedFuelTypes unMappedFuels={unMappedFuels} normalizedFuels={query.allFuelCarbonTaxDetails.edges}/>}
-        </div>
-        <div>
-          <NormalizedFuelType query={query} allNormalizedFuelTypes={query.allFuelCarbonTaxDetails.edges}/>
-        </div>
-      </DefaultLayout>
-      <style jsx>
-        {`
-          #unmapped {
-            margin-bottom: 2em;
-          }
-        `}
-      </style>
+        <DefaultLayout
+          session={session}
+          title="Fuel Type Management"
+          width="wide"
+        >
+          <div id="unmapped">
+            {unMappedFuels.length > 0 && (
+              <UnmappedFuelTypes
+                unMappedFuels={unMappedFuels}
+                normalizedFuels={query.allFuelCarbonTaxDetails.edges}
+              />
+            )}
+          </div>
+          <div>
+            <NormalizedFuelType
+              query={query}
+              allNormalizedFuelTypes={query.allFuelCarbonTaxDetails.edges}
+            />
+          </div>
+        </DefaultLayout>
+        <style jsx>
+          {`
+            #unmapped {
+              margin-bottom: 2em;
+            }
+          `}
+        </style>
       </>
     );
   }

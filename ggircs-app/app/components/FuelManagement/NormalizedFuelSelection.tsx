@@ -28,7 +28,10 @@ export const NormalizedFuelSelection: React.FunctionComponent<Props> = ({
                 },
               }}
             >
-              <ListGroup.Item action active={router.query?.fuelCarbonTaxDetailId === id}>
+              <ListGroup.Item
+                action
+                active={router.query?.fuelCarbonTaxDetailId === id}
+              >
                 <b>{normalizedFuelType}</b>
               </ListGroup.Item>
             </Link>

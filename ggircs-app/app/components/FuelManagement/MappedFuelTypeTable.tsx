@@ -8,11 +8,12 @@ interface Props {
   normalizedFuelType: MappedFuelTypeTable_normalizedFuelType;
 }
 
-export const MappedFuelTypeTable: React.FunctionComponent<Props> = (
-  {normalizedFuelType}
-) => {
-
-  if (!normalizedFuelType?.fuelMappingsByFuelCarbonTaxDetailsId?.edges?.length) {
+export const MappedFuelTypeTable: React.FunctionComponent<Props> = ({
+  normalizedFuelType,
+}) => {
+  if (
+    !normalizedFuelType?.fuelMappingsByFuelCarbonTaxDetailsId?.edges?.length
+  ) {
     return (
       <Alert variant="secondary" id="no-search-results">
         No fuels are mapped to this normalized fuel type.
@@ -29,14 +30,14 @@ export const MappedFuelTypeTable: React.FunctionComponent<Props> = (
           </tr>
         </thead>
         <tbody>
-          {normalizedFuelType?.fuelMappingsByFuelCarbonTaxDetailsId?.edges?.map(({node}) => (
-            <tr key={node.id}>
-              <td>{node.fuelType}</td>
-              <td className="centered">
-                Delete
-              </td>
-            </tr>
-          ))}
+          {normalizedFuelType?.fuelMappingsByFuelCarbonTaxDetailsId?.edges?.map(
+            ({ node }) => (
+              <tr key={node.id}>
+                <td>{node.fuelType}</td>
+                <td className="centered">Delete</td>
+              </tr>
+            )
+          )}
         </tbody>
       </Table>
       <style jsx>{`
@@ -56,9 +57,7 @@ export default createFragmentContainer(MappedFuelTypeTable, {
   normalizedFuelType: graphql`
     fragment MappedFuelTypeTable_normalizedFuelType on FuelCarbonTaxDetail {
       id
-      fuelMappingsByFuelCarbonTaxDetailsId(
-        first: 2147483647
-      )
+      fuelMappingsByFuelCarbonTaxDetailsId(first: 2147483647)
         @connection(
           key: "MappedFuelTypes_fuelMappingsByFuelCarbonTaxDetailsId"
           filters: []

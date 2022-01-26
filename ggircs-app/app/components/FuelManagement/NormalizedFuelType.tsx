@@ -12,13 +12,13 @@ interface Props {
 }
 
 export const NormalizedFuelType: React.FunctionComponent<Props> = ({
-  query, allNormalizedFuelTypes
+  query,
+  allNormalizedFuelTypes,
 }) => {
-
   const normalizedFuelTypes = allNormalizedFuelTypes?.map((e) => {
     return {
       id: e.node.id,
-      normalizedFuelType: e.node.normalizedFuelType
+      normalizedFuelType: e.node.normalizedFuelType,
     };
   });
 
@@ -32,7 +32,9 @@ export const NormalizedFuelType: React.FunctionComponent<Props> = ({
             <Card.Header className="bc-card-header">
               Select a Normalized Fuel Type:
             </Card.Header>
-            <NormalizedFuelSelection normalizedFuelTypes={normalizedFuelTypes} />
+            <NormalizedFuelSelection
+              normalizedFuelTypes={normalizedFuelTypes}
+            />
           </Card>
         </Col>
         <Col md="8">
@@ -42,7 +44,9 @@ export const NormalizedFuelType: React.FunctionComponent<Props> = ({
                 <Col md="12">
                   <Card>
                     <Card.Header className="bc-card-header">
-                      <Card.Title>{currentNormalizedFuel.normalizedFuelType}</Card.Title>
+                      <Card.Title>
+                        {currentNormalizedFuel.normalizedFuelType}
+                      </Card.Title>
                     </Card.Header>
                     <Card.Body>
                       <Table striped bordered hover>
@@ -57,11 +61,19 @@ export const NormalizedFuelType: React.FunctionComponent<Props> = ({
                           </tr>
                           <tr>
                             <td>Unit Conversion Factor: </td>
-                            <td>{currentNormalizedFuel.unitConversionFactor}</td>
+                            <td>
+                              {currentNormalizedFuel.unitConversionFactor}
+                            </td>
                           </tr>
                           <tr>
                             <td>CTA Fuel Type: </td>
-                            <td>{currentNormalizedFuel.carbonTaxActFuelTypeByCarbonTaxActFuelTypeId?.carbonTaxFuelType}</td>
+                            <td>
+                              {
+                                currentNormalizedFuel
+                                  .carbonTaxActFuelTypeByCarbonTaxActFuelTypeId
+                                  ?.carbonTaxFuelType
+                              }
+                            </td>
                           </tr>
                         </tbody>
                       </Table>
@@ -72,7 +84,9 @@ export const NormalizedFuelType: React.FunctionComponent<Props> = ({
               <br />
               <Row>
                 <Col md="12">
-                <MappedFuelTypeTable normalizedFuelType={query.fuelCarbonTaxDetail} />
+                  <MappedFuelTypeTable
+                    normalizedFuelType={query.fuelCarbonTaxDetail}
+                  />
                 </Col>
               </Row>
             </>
@@ -80,7 +94,8 @@ export const NormalizedFuelType: React.FunctionComponent<Props> = ({
           {!currentNormalizedFuel && (
             <Row>
               <Col>
-                Please select a Normalized Fuel on the left to view details and associated fuel types
+                Please select a Normalized Fuel on the left to view details and
+                associated fuel types
               </Col>
             </Row>
           )}

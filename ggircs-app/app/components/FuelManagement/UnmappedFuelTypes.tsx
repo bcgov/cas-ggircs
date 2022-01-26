@@ -1,15 +1,16 @@
 import React from "react";
-import {Table} from 'react-bootstrap';
-import Alert from '@button-inc/bcgov-theme/Alert';
-import UnmappedFuelTypeRow from './UnmappedFuelTypeRow';
+import { Table } from "react-bootstrap";
+import Alert from "@button-inc/bcgov-theme/Alert";
+import UnmappedFuelTypeRow from "./UnmappedFuelTypeRow";
 
 interface Props {
-  unMappedFuels: any[],
-  normalizedFuels: any
+  unMappedFuels: any[];
+  normalizedFuels: any;
 }
 
 export const UnmappedFuelTypes: React.FunctionComponent<Props> = ({
-  unMappedFuels, normalizedFuels
+  unMappedFuels,
+  normalizedFuels,
 }) => {
   return (
     <>
@@ -19,13 +20,17 @@ export const UnmappedFuelTypes: React.FunctionComponent<Props> = ({
           <tr>
             <th>Un-mapped fuel type</th>
             <th>Select a normalized fuel type</th>
-            <th/>
+            <th />
           </tr>
         </thead>
         <tbody>
-        {unMappedFuels.map((fuel, index) => (
-          <UnmappedFuelTypeRow fuel={fuel} index={index} normalizedFuels={normalizedFuels} />
-        ))}
+          {unMappedFuels.map((fuel, index) => (
+            <UnmappedFuelTypeRow
+              fuel={fuel}
+              index={index}
+              normalizedFuels={normalizedFuels}
+            />
+          ))}
         </tbody>
       </Table>
       <style jsx>{`

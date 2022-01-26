@@ -32,25 +32,23 @@ const SwrsDataAccessCard: React.FunctionComponent = () => (
     </Grid.Col>
     <Grid.Col span={5}>
       <Card title="SWRS Fuels">
-      <p>
-        Manage fuel types and normalized fuel types in the SWRS database
-      </p>
-      <Link href="/fuel-type-management" passHref>
-        <Button marginTop="2em">Manage SWRS fuel types</Button>
-      </Link>
-      <style jsx>
-        {`
-          #bottom-button {
-            margin-top: 2em;
-          }
-          p {
-            margin-bottom: 1.5em;
-          }
-        `}
-      </style>
-    </Card>
-  </Grid.Col>
-</Grid.Row>
+        <p>Manage fuel types and normalized fuel types in the SWRS database</p>
+        <Link href="/fuel-type-management" passHref>
+          <Button marginTop="2em">Manage SWRS fuel types</Button>
+        </Link>
+        <style jsx>
+          {`
+            #bottom-button {
+              margin-top: 2em;
+            }
+            p {
+              margin-bottom: 1.5em;
+            }
+          `}
+        </style>
+      </Card>
+    </Grid.Col>
+  </Grid.Row>
 );
 
 export default SwrsDataAccessCard;

@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import Dropdown from "@button-inc/bcgov-theme/Dropdown";
 import Button from "@button-inc/bcgov-theme/Button";
 
@@ -9,9 +9,10 @@ interface Props {
 }
 
 export const UnmappedFuelTypeRow: React.FunctionComponent<Props> = ({
-  fuel, normalizedFuels, index
+  fuel,
+  normalizedFuels,
+  index,
 }) => {
-
   const [selectedNormalizedFuel, setSelectedNormalizedFuel] = useState(null);
   const [disabledApplyButton, setDisabledApplyButton] = useState(true);
   const [disabledDropdown, setDisabledDropdown] = useState(false);
@@ -31,26 +32,40 @@ export const UnmappedFuelTypeRow: React.FunctionComponent<Props> = ({
   const handleUndo = () => {
     console.log("undo");
     setDisabledDropdown(false);
-  }
+  };
 
   return (
     <>
       <tr key={fuel}>
         <td>{fuel}</td>
         <td>
-          <Dropdown id={`normalized-fuel-select-${index}`}
+          <Dropdown
+            id={`normalized-fuel-select-${index}`}
             name="normalized-fuel-select"
             rounded
             size="medium"
             disabled={disabledDropdown}
-            onChange={handleChange}>
-            <option value={null}></option>
-            {normalizedFuels.map(({node}) => (
-              <option key={node.id} value={node.rowId}>{node.normalizedFuelType}</option>
+            onChange={handleChange}
+          >
+            <option value={null} />
+            {normalizedFuels.map(({ node }) => (
+              <option key={node.id} value={node.rowId}>
+                {node.normalizedFuelType}
+              </option>
             ))}
           </Dropdown>
         </td>
-        <td>{disabledDropdown ? <Button variant="secondary" onClick={handleUndo}>Undo</Button> : <Button onClick={handleApply} disabled={disabledApplyButton}>Apply</Button>}</td>
+        <td>
+          {disabledDropdown ? (
+            <Button variant="secondary" onClick={handleUndo}>
+              Undo
+            </Button>
+          ) : (
+            <Button onClick={handleApply} disabled={disabledApplyButton}>
+              Apply
+            </Button>
+          )}
+        </td>
       </tr>
     </>
   );
