@@ -1,6 +1,10 @@
 import React from "react";
 import Card from "@button-inc/bcgov-theme/Card";
 import Grid from "@button-inc/bcgov-theme/Grid";
+import Dropdown from "@button-inc/bcgov-theme/Dropdown";
+import {Table} from 'react-bootstrap';
+import Callout from '@button-inc/bcgov-theme/Callout';
+import Alert from '@button-inc/bcgov-theme/Alert';
 
 interface Props {
   unMappedFuels: any[]
@@ -12,20 +16,34 @@ export const UnmappedFuelTypes: React.FunctionComponent<Props> = ({
 
   return (
     <>
-      <Card title="Normalize unmapped SWRS fuel types">
+      <Alert>Normalize un-mapped SWRS fuel types</Alert>
+      <Table striped bordered hover>
+        <thead>
+          <tr>
+            <th>Un-mapped fuel type</th>
+            <th>Select a normalized fuel type</th>
+          </tr>
+        </thead>
+        <tbody>
         {unMappedFuels.map((fuel) => (
-          <Grid.Row>
-          <Grid.Col span={6}>
-            <p>
-              {fuel}
-            </p>
-          </Grid.Col>
-          <Grid.Col span={4}>
-            DROPDOWN SELECT
-          </Grid.Col>
-        </Grid.Row>
+          <tr key={fuel}>
+            <td>{fuel}</td>
+            <td>
+              <Dropdown />
+            </td>
+          </tr>
         ))}
-      </Card>
+        </tbody>
+      </Table>
+      <style jsx>{`
+        th {
+          color: white;
+          background: #003366;
+        }
+        th.centered {
+          text-align: center;
+        }
+      `}</style>
     </>
   );
 };
