@@ -18,6 +18,15 @@ export default class Index extends Component<Props> {
   static query = graphql`
     query fuelTypeManagementQuery($fuelCarbonTaxDetailId: ID!) {
       query {
+        allFuelCarbonTaxDetails {
+          edges {
+            node {
+              id
+              rowId
+              normalizedFuelType
+            }
+          }
+        }
         ...NormalizedFuelType_query
         @arguments(fuelCarbonTaxDetailId: $fuelCarbonTaxDetailId)
         session {
@@ -52,10 +61,10 @@ export default class Index extends Component<Props> {
         width="wide"
       >
         <div id="unmapped">
-          {unMappedFuels.length > 0 && <UnmappedFuelTypes unMappedFuels={unMappedFuels}/>}
+          {unMappedFuels.length > 0 && <UnmappedFuelTypes unMappedFuels={unMappedFuels} normalizedFuels={query.allFuelCarbonTaxDetails.edges}/>}
         </div>
         <div>
-          <NormalizedFuelType query={query}/>
+          <NormalizedFuelType query={query} allNormalizedFuelTypes={query.allFuelCarbonTaxDetails.edges}/>
         </div>
       </DefaultLayout>
       <style jsx>

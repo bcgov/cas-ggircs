@@ -8,12 +8,14 @@ import MappedFuelTypeTable from "./MappedFuelTypeTable";
 interface Props {
   relay: RelayProp;
   query: NormalizedFuelType_query;
+  allNormalizedFuelTypes: any;
 }
 
 export const NormalizedFuelType: React.FunctionComponent<Props> = ({
-  query,
+  query, allNormalizedFuelTypes
 }) => {
-  const normalizedFuelTypes = query.allFuelCarbonTaxDetails?.edges.map((e) => {
+
+  const normalizedFuelTypes = allNormalizedFuelTypes?.map((e) => {
     return {
       id: e.node.id,
       normalizedFuelType: e.node.normalizedFuelType
@@ -99,7 +101,6 @@ export default createFragmentContainer(NormalizedFuelType, {
     fragment NormalizedFuelType_query on Query
     @argumentDefinitions(fuelCarbonTaxDetailId: { type: "ID!" }) {
       fuelCarbonTaxDetail(id: $fuelCarbonTaxDetailId) {
-        ...MappedFuelTypeTable_normalizedFuelType
         id
         normalizedFuelType
         state
@@ -108,14 +109,7 @@ export default createFragmentContainer(NormalizedFuelType, {
         carbonTaxActFuelTypeByCarbonTaxActFuelTypeId {
           carbonTaxFuelType
         }
-      }
-      allFuelCarbonTaxDetails {
-        edges {
-          node {
-            id
-            normalizedFuelType
-          }
-        }
+        ...MappedFuelTypeTable_normalizedFuelType
       }
     }
   `,

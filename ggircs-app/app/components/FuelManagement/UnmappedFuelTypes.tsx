@@ -1,19 +1,16 @@
 import React from "react";
-import Card from "@button-inc/bcgov-theme/Card";
-import Grid from "@button-inc/bcgov-theme/Grid";
-import Dropdown from "@button-inc/bcgov-theme/Dropdown";
 import {Table} from 'react-bootstrap';
-import Callout from '@button-inc/bcgov-theme/Callout';
 import Alert from '@button-inc/bcgov-theme/Alert';
+import UnmappedFuelTypeRow from './UnmappedFuelTypeRow';
 
 interface Props {
-  unMappedFuels: any[]
+  unMappedFuels: any[],
+  normalizedFuels: any
 }
 
 export const UnmappedFuelTypes: React.FunctionComponent<Props> = ({
-  unMappedFuels
+  unMappedFuels, normalizedFuels
 }) => {
-
   return (
     <>
       <Alert>Normalize un-mapped SWRS fuel types</Alert>
@@ -22,16 +19,12 @@ export const UnmappedFuelTypes: React.FunctionComponent<Props> = ({
           <tr>
             <th>Un-mapped fuel type</th>
             <th>Select a normalized fuel type</th>
+            <th/>
           </tr>
         </thead>
         <tbody>
-        {unMappedFuels.map((fuel) => (
-          <tr key={fuel}>
-            <td>{fuel}</td>
-            <td>
-              <Dropdown />
-            </td>
-          </tr>
+        {unMappedFuels.map((fuel, index) => (
+          <UnmappedFuelTypeRow fuel={fuel} index={index} normalizedFuels={normalizedFuels} />
         ))}
         </tbody>
       </Table>
