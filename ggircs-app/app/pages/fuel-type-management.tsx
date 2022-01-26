@@ -5,6 +5,7 @@ import { PageComponentProps } from "next-env";
 import DefaultLayout from "components/Layout/DefaultLayout";
 import { USER_GROUP } from "data/group-constants";
 import NormalizedFuelType from "components/FuelManagement/NormalizedFuelType";
+import UnmappedFuelTypes from "components/FuelManagement/UnmappedFuelTypes";
 
 const ALLOWED_GROUPS = [...USER_GROUP];
 
@@ -40,14 +41,31 @@ export default class Index extends Component<Props> {
     const { query } = this.props;
     const { session } = query || {};
 
+    // Dummy data for now, this should be replaced with data returned in a UnMappedFuelTypes fragment query
+    const unMappedFuels=['fuel1', 'fuel2', 'fuel3'];
+
     return (
+      <>
       <DefaultLayout
         session={session}
         title="Fuel Type Management"
         width="wide"
       >
-      <NormalizedFuelType query={query}/>
+        <div id="unmapped">
+          {unMappedFuels.length > 0 && <UnmappedFuelTypes unMappedFuels={unMappedFuels}/>}
+        </div>
+        <div>
+          <NormalizedFuelType query={query}/>
+        </div>
       </DefaultLayout>
+      <style jsx>
+        {`
+          #unmapped {
+            margin-bottom: 2em;
+          }
+        `}
+      </style>
+      </>
     );
   }
 }
