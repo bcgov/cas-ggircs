@@ -1,15 +1,18 @@
 import React from "react";
+import { createFragmentContainer, graphql, RelayProp } from "react-relay";
 import { Table } from "react-bootstrap";
 import Alert from "@button-inc/bcgov-theme/Alert";
 import UnmappedFuelTypeRow from "./UnmappedFuelTypeRow";
+import { UnmappedFuelTypes_query } from "__generated__/UnmappedFuelTypes_query.graphql";
 
 interface Props {
-  unMappedFuels: any[];
+  relay: RelayProp;
+  query: UnmappedFuelTypes_query;
   normalizedFuels: any;
 }
 
 export const UnmappedFuelTypes: React.FunctionComponent<Props> = ({
-  unMappedFuels,
+  query,
   normalizedFuels,
 }) => {
   return (
@@ -24,9 +27,9 @@ export const UnmappedFuelTypes: React.FunctionComponent<Props> = ({
           </tr>
         </thead>
         <tbody>
-          {unMappedFuels.map((fuel, index) => (
+          {query.unmappedFuel.edges.map(({node}, index) => (
             <UnmappedFuelTypeRow
-              fuel={fuel}
+              fuel={node}
               index={index}
               normalizedFuels={normalizedFuels}
             />
@@ -46,4 +49,14 @@ export const UnmappedFuelTypes: React.FunctionComponent<Props> = ({
   );
 };
 
-export default UnmappedFuelTypes;
+export default createFragmentContainer(UnmappedFuelTypes, {
+  query: graphql`
+    fragment UnmappedFuelTypes_query on Query {
+      unmappedFuel {
+        edges {
+          node
+        }
+      }
+    }
+  `,
+});

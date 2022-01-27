@@ -29,6 +29,7 @@ export default class Index extends Component<Props> {
         }
         ...NormalizedFuelType_query
           @arguments(fuelCarbonTaxDetailId: $fuelCarbonTaxDetailId)
+        ...UnmappedFuelTypes_query
         session {
           ...DefaultLayout_session
         }
@@ -61,7 +62,7 @@ export default class Index extends Component<Props> {
           <div id="unmapped">
             {unMappedFuels.length > 0 && (
               <UnmappedFuelTypes
-                unMappedFuels={unMappedFuels}
+                query={query}
                 normalizedFuels={query.allFuelCarbonTaxDetails.edges}
               />
             )}
