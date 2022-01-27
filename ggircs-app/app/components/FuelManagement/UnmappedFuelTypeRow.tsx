@@ -28,7 +28,7 @@ export const UnmappedFuelTypeRow: React.FunctionComponent<Props> = ({
   const handleApply = () => {
     console.log("apply");
     console.log(selectedNormalizedFuel);
-    handleFuelMapping({rowId: fuel.fuelMappingId, fuelCarbonTaxDetailsId: selectedNormalizedFuel});
+    handleFuelMapping({rowId: fuel.fuelMappingId, fuelType: fuel.fuelType, fuelCarbonTaxDetailsId: selectedNormalizedFuel});
     setDisabledDropdown(true);
   };
 

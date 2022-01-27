@@ -5,6 +5,7 @@ import Alert from "@button-inc/bcgov-theme/Alert";
 import UnmappedFuelTypeRow from "./UnmappedFuelTypeRow";
 import { UnmappedFuelTypes_query } from "__generated__/UnmappedFuelTypes_query.graphql";
 import updateFuelMappingMutation from 'mutations/fuelManagement/updateFuelMapping';
+import createFuelMappingCascadeMutation from 'mutations/fuelManagement/createFuelMappingCascade';
 
 interface Props {
   relay: RelayProp;
@@ -18,16 +19,26 @@ export const UnmappedFuelTypes: React.FunctionComponent<Props> = ({
   normalizedFuels,
 }) => {
 
-  const handleFuelMapping = async (map) => {
-    const variables = {
-      input: {
-        rowId: map.rowId,
-        fuelMappingPatch: {
-          fuelCarbonTaxDetailsId: Number(map.fuelCarbonTaxDetailsId),
+  const handleFuelMapping = async (map: {rowId?: number, fuelType?: string, fuelCarbonTaxDetailsId: number}) => {
+    if (map.rowId) {
+      const variables = {
+        input: {
+          rowId: map.rowId,
+          fuelMappingPatch: {
+            fuelCarbonTaxDetailsId: Number(map.fuelCarbonTaxDetailsId),
+          },
         },
-      },
-    };
-    await updateFuelMappingMutation(relay.environment, variables);
+      };
+      await updateFuelMappingMutation(relay.environment, variables);
+    } else {
+      const variables = {
+        input: {
+          fuelTypeInput: map.fuelType,
+          fuelCarbonTaxDetailsIdInput: Number(map.fuelCarbonTaxDetailsId),
+        }
+      };
+      await createFuelMappingCascadeMutation(relay.environment, variables);
+    }
   };
 
   return (
