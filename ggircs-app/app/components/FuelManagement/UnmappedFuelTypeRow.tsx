@@ -6,12 +6,14 @@ interface Props {
   fuel: {fuelType: string, fuelMappingId: number};
   index: number;
   normalizedFuels: any;
+  handleFuelMapping: (map: any) => void;
 }
 
 export const UnmappedFuelTypeRow: React.FunctionComponent<Props> = ({
   fuel,
   normalizedFuels,
   index,
+  handleFuelMapping
 }) => {
   const [selectedNormalizedFuel, setSelectedNormalizedFuel] = useState(null);
   const [disabledApplyButton, setDisabledApplyButton] = useState(true);
@@ -20,12 +22,13 @@ export const UnmappedFuelTypeRow: React.FunctionComponent<Props> = ({
   const handleChange = (e: any) => {
     console.log(e.target.value);
     setSelectedNormalizedFuel(e.target.value);
-    setDisabledApplyButton(false);
+    e.target.value ? setDisabledApplyButton(false) : setDisabledApplyButton(true);
   };
 
   const handleApply = () => {
     console.log("apply");
     console.log(selectedNormalizedFuel);
+    handleFuelMapping({rowId: fuel.fuelMappingId, fuelCarbonTaxDetailsId: selectedNormalizedFuel});
     setDisabledDropdown(true);
   };
 

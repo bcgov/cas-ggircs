@@ -4,6 +4,7 @@ import { Table } from "react-bootstrap";
 import Alert from "@button-inc/bcgov-theme/Alert";
 import UnmappedFuelTypeRow from "./UnmappedFuelTypeRow";
 import { UnmappedFuelTypes_query } from "__generated__/UnmappedFuelTypes_query.graphql";
+import updateFuelMappingMutation from 'mutations/fuelManagement/updateFuelMapping';
 
 interface Props {
   relay: RelayProp;
@@ -12,9 +13,23 @@ interface Props {
 }
 
 export const UnmappedFuelTypes: React.FunctionComponent<Props> = ({
+  relay,
   query,
   normalizedFuels,
 }) => {
+
+  const handleFuelMapping = async (map) => {
+    const variables = {
+      input: {
+        rowId: map.rowId,
+        fuelMappingPatch: {
+          fuelCarbonTaxDetailsId: Number(map.fuelCarbonTaxDetailsId),
+        },
+      },
+    };
+    await updateFuelMappingMutation(relay.environment, variables);
+  };
+
   return (
     <>
       <Alert>Normalize un-mapped SWRS fuel types</Alert>
@@ -32,6 +47,7 @@ export const UnmappedFuelTypes: React.FunctionComponent<Props> = ({
               fuel={node}
               index={index}
               normalizedFuels={normalizedFuels}
+              handleFuelMapping={handleFuelMapping}
             />
           ))}
         </tbody>
