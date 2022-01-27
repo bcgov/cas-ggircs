@@ -54,7 +54,10 @@ export default createFragmentContainer(UnmappedFuelTypes, {
     fragment UnmappedFuelTypes_query on Query {
       unmappedFuel {
         edges {
-          node
+          node {
+            fuelType
+            fuelMappingId
+          }
         }
       }
     }

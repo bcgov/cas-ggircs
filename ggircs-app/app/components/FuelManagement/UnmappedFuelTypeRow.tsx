@@ -3,7 +3,7 @@ import Dropdown from "@button-inc/bcgov-theme/Dropdown";
 import Button from "@button-inc/bcgov-theme/Button";
 
 interface Props {
-  fuel: string;
+  fuel: {fuelType: string, fuelMappingId: number};
   index: number;
   normalizedFuels: any;
 }
@@ -36,8 +36,8 @@ export const UnmappedFuelTypeRow: React.FunctionComponent<Props> = ({
 
   return (
     <>
-      <tr key={fuel}>
-        <td>{fuel}</td>
+      <tr key={fuel.fuelType}>
+        <td>{fuel.fuelType}</td>
         <td>
           <Dropdown
             id={`normalized-fuel-select-${index}`}

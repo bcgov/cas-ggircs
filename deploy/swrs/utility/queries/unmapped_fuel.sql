@@ -5,9 +5,9 @@
 begin;
 
 create or replace function swrs_utility.unmapped_fuel()
-  returns setof text
+  returns table (fuel_type text, fuel_mapping_id int)
   as $$
-    select distinct on (fuel_type) fuel.fuel_type from swrs.fuel
+    select distinct on (fuel_type) fuel.fuel_type, fm.id from swrs.fuel
     join swrs.report
     on fuel.report_id = report.id
     left join swrs.fuel_mapping fm
