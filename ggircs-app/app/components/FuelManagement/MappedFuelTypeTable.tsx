@@ -60,7 +60,6 @@ export default createFragmentContainer(MappedFuelTypeTable, {
       fuelMappingsByFuelCarbonTaxDetailsId(first: 2147483647)
         @connection(
           key: "MappedFuelTypes_fuelMappingsByFuelCarbonTaxDetailsId"
-          filters: []
         ) {
         edges {
           node {

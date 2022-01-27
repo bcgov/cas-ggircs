@@ -20,21 +20,13 @@ export const UnmappedFuelTypeRow: React.FunctionComponent<Props> = ({
   const [disabledDropdown, setDisabledDropdown] = useState(false);
 
   const handleChange = (e: any) => {
-    console.log(e.target.value);
     setSelectedNormalizedFuel(e.target.value);
     e.target.value ? setDisabledApplyButton(false) : setDisabledApplyButton(true);
   };
 
-  const handleApply = () => {
-    console.log("apply");
-    console.log(selectedNormalizedFuel);
+  const handleApply = async () => {
     handleFuelMapping({rowId: fuel.fuelMappingId, fuelType: fuel.fuelType, fuelCarbonTaxDetailsId: selectedNormalizedFuel});
     setDisabledDropdown(true);
-  };
-
-  const handleUndo = () => {
-    console.log("undo");
-    setDisabledDropdown(false);
   };
 
   return (
@@ -59,15 +51,9 @@ export const UnmappedFuelTypeRow: React.FunctionComponent<Props> = ({
           </Dropdown>
         </td>
         <td>
-          {disabledDropdown ? (
-            <Button variant="secondary" onClick={handleUndo}>
-              Undo
-            </Button>
-          ) : (
-            <Button onClick={handleApply} disabled={disabledApplyButton}>
-              Apply
-            </Button>
-          )}
+          <Button onClick={handleApply} disabled={disabledApplyButton}>
+            Apply
+          </Button>
         </td>
       </tr>
     </>
