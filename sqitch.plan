@@ -187,3 +187,4 @@ swrs/transform/function/load_fuel_mapping [swrs/transform/function/load_fuel_map
 swrs/transform/function/load_fuel_charge [swrs/transform/function/load_fuel_charge@v1.11.1] 2022-01-10T23:34:48Z Dylan Leard <dylan@button.is> # Migration: fix 2021-22 fuel charge rate for Tires - Shredded
 swrs/utility/schema 2022-01-27T17:56:37Z Dylan Leard <dylan@button.is> # Add a schema for mutations, custom queries and other contextual data relating to data in the swrs ETL schema
 swrs/utility/queries/unmapped_fuel [swrs/public/table/fuel swrs/utility/schema] 2022-01-27T18:01:20Z Dylan Leard <dylan@button.is> # A custom query to return a set of distinct unmapped fuel types
+swrs/utility/mutations/create_fuel_mapping_cascade [swrs/public/table/fuel swrs/utility/schema] 2022-01-27T20:50:53Z Dylan Leard <dylan@button.is> # Custom mutation to add a row to the fuel_mapping table and cascade the id to all fuel records with the matching fuel_type
