@@ -75,11 +75,12 @@ app.prepare().then(async () => {
   const swrsHistorySchema = process.env.SWRS_HISTORY_SCHEMA || "swrs_history";
   const swrsExtractSchema = process.env.SWRS_EXTRACT_SCHEMA || "swrs_extract";
   const swrsSchema = process.env.SWRS_SCHEMA || "swrs";
+  const swrsUtilitySchema = process.env.SWRS_UTILITY_SCHEMA || "swrs_utility";
 
   server.use(
     postgraphile(
       dbPool,
-      [ggircsAppSchema, swrsHistorySchema, swrsExtractSchema, swrsSchema],
+      [ggircsAppSchema, swrsHistorySchema, swrsExtractSchema, swrsSchema, swrsUtilitySchema],
       {
         ...postgraphileOptions(),
         pgSettings: (req) => {
