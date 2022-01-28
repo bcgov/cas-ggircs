@@ -1,5 +1,10 @@
 import React from "react";
-import { Popover, OverlayTrigger } from "react-bootstrap";
+import {
+  Popover,
+  PopoverHeader,
+  PopoverBody,
+  OverlayTrigger,
+} from "react-bootstrap";
 
 interface Props {
   title?: string | JSX.Element;
@@ -9,8 +14,8 @@ interface Props {
 export const HelpComponent: React.FunctionComponent<Props> = (props) => {
   const popover = (
     <Popover className="ciip-help" id="popover-basic">
-      <Popover.Title as="h3">{props.title}</Popover.Title>
-      <Popover.Content>{props.helpMessage}</Popover.Content>
+      <PopoverHeader as="h3">{props.title}</PopoverHeader>
+      <PopoverBody>{props.helpMessage}</PopoverBody>
     </Popover>
   );
 
