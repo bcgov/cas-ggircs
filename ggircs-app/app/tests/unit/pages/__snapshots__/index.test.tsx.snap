@@ -5,9 +5,7 @@ exports[`landing matches the last accepted Snapshot 1`] = `
   session={null}
   title="GGIRCS Dashboard"
 >
-  <Row
-    noGutters={false}
-  >
+  <Row>
     <SwrsDataAccessCard />
   </Row>
 </Relay(DefaultLayout)>

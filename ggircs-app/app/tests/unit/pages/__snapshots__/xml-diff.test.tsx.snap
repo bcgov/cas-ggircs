@@ -6,9 +6,7 @@ exports[`The swrs-browser page renders the diff component when it has two define
   title="ECCC SWRS XML Diff"
   width="wide"
 >
-  <Row
-    noGutters={false}
-  >
+  <Row>
     <Col
       md={
         Object {

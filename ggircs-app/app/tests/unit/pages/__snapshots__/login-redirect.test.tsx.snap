@@ -4,9 +4,7 @@ exports[`re-direct matches the last accepted Snapshot 1`] = `
 <Relay(DefaultLayout)
   session={null}
 >
-  <Row
-    noGutters={false}
-  >
+  <Row>
     <Col
       md={6}
     >
@@ -29,9 +27,7 @@ exports[`re-direct session idled matches the last accepted Snapshot 1`] = `
 <Relay(DefaultLayout)
   session={null}
 >
-  <Row
-    noGutters={false}
-  >
+  <Row>
     <Col
       md={6}
     >
