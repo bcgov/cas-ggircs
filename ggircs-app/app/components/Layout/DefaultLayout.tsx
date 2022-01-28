@@ -1,4 +1,3 @@
-import React from "react";
 import Grid from "@button-inc/bcgov-theme/Grid";
 import { graphql, createFragmentContainer } from "react-relay";
 import { DefaultLayout_session } from "DefaultLayout_session.graphql";

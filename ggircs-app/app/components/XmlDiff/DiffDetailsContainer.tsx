@@ -1,4 +1,3 @@
-import React from "react";
 import { graphql, createFragmentContainer } from "react-relay";
 import { Row, Col } from "react-bootstrap";
 import { DiffDetailsContainer_query } from "DiffDetailsContainer_query.graphql";

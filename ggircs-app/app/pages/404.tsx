@@ -1,4 +1,3 @@
-import React from "react";
 import { Row, Col } from "react-bootstrap";
 import DefaultLayout from "components/Layout/DefaultLayout";
 import Link from "next/link";

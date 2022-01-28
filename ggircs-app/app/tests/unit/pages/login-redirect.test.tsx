@@ -1,4 +1,3 @@
-import React from "react";
 import { shallow } from "enzyme";
 import LoginRedirect from "pages/login-redirect";
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { EcccFile } from "types";
 import { ListGroup } from "react-bootstrap";
 import LoadingSpinner from "components/LoadingSpinner";

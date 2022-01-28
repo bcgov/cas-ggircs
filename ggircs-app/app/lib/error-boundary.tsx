@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import { Component } from "react";
 import { DefaultLayoutComponent } from "components/Layout/DefaultLayout";
 import { Alert } from "react-bootstrap";
 import getConfig from "next/config";

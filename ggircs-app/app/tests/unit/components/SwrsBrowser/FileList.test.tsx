@@ -1,4 +1,3 @@
-import React from "react";
 import { EcccFile } from "types";
 import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import { useState, useRef } from "react";
 import Link from "next/link";
 import LoginButton from "components/LoginButton";
 import Navigation from "@button-inc/bcgov-theme/Navigation";

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import { Component } from "react";
 import { graphql } from "react-relay";
 import { requestAccessNoticeQueryResponse } from "requestAccessNoticeQuery.graphql";
 import { PageComponentProps } from "types";

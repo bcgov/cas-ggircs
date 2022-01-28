@@ -1,5 +1,3 @@
-import React from "react";
-
 const SiteNoticeBanner = ({ content }) => (
   /* eslint-disable react/no-danger */
   <>

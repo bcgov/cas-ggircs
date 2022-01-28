@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { graphql, createFragmentContainer } from "react-relay";
 import { RenderDiff_query } from "RenderDiff_query.graphql";
 import { diffLines, formatLines } from "unidiff";

@@ -1,4 +1,3 @@
-import React from "react";
 import Card from "@button-inc/bcgov-theme/Card";
 import Button from "@button-inc/bcgov-theme/Button";
 import Link from "next/link";
