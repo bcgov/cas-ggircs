@@ -10,14 +10,16 @@ import createFuelMappingCascadeMutation from 'mutations/fuelManagement/createFue
 interface Props {
   relay: RelayProp;
   query: UnmappedFuelTypes_query;
-  normalizedFuels: any;
 }
 
 export const UnmappedFuelTypes: React.FunctionComponent<Props> = ({
   relay,
-  query,
-  normalizedFuels,
+  query
 }) => {
+
+  if (query.unmappedFuel.edges.length < 1) return null;
+
+  const normalizedFuels = query.allFuelCarbonTaxDetails.edges;
 
   const handleFuelMapping = async (map: {rowId?: number, fuelType?: string, fuelCarbonTaxDetailsId: number}) => {
     if (map.rowId) {
@@ -87,6 +89,15 @@ export default createFragmentContainer(UnmappedFuelTypes, {
           }
         }
       }
+      allFuelCarbonTaxDetails {
+          edges {
+            node {
+              id
+              rowId
+              normalizedFuelType
+            }
+          }
+        }
     }
   `,
 });

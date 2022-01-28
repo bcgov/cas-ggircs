@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import { ListGroup } from "react-bootstrap";
@@ -12,29 +11,28 @@ export const NormalizedFuelSelection: React.FunctionComponent<Props> = ({
 }) => {
   const router = useRouter();
 
+  const handleClick = (id) => {
+    const url = {
+      pathname: router.pathname,
+      query: {
+        fuelCarbonTaxDetailId: id
+      },
+    };
+    router.push(url, url, { shallow: true });
+  }
+
   return (
     <>
       <div className="scrollable" tabIndex={0}>
         <ListGroup variant="flush">
           {normalizedFuelTypes.map(({ normalizedFuelType, id }) => (
-            <Link
-              key={id}
-              prefetch={false}
-              href={{
-                pathname: router.pathname,
-                query: {
-                  ...router.query,
-                  fuelCarbonTaxDetailId: id,
-                },
-              }}
-            >
               <ListGroup.Item
                 action
+                onClick={() => handleClick(id)}
                 active={router.query?.fuelCarbonTaxDetailId === id}
               >
                 <b>{normalizedFuelType}</b>
               </ListGroup.Item>
-            </Link>
           ))}
         </ListGroup>
       </div>
