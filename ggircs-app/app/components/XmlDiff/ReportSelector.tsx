@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from "react";
-import { RelayReportObject } from "next-env";
+import { RelayReportObject } from "types";
 import Input from "@button-inc/bcgov-theme/Input";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faTimes } from "@fortawesome/free-solid-svg-icons";

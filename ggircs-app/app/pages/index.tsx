@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { graphql } from "react-relay";
 import { pagesQueryResponse } from "pagesQuery.graphql";
-import { PageComponentProps } from "next-env";
+import { PageComponentProps } from "types";
 import DefaultLayout from "components/Layout/DefaultLayout";
 import { USER_GROUP } from "data/group-constants";
 import { Row } from "react-bootstrap";

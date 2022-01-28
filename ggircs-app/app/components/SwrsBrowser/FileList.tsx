@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { EcccFile } from "next-env";
+import { EcccFile } from "types";
 import { Row, Col, ListGroup } from "react-bootstrap";
 import FileDetails from "./FileDetails";
 

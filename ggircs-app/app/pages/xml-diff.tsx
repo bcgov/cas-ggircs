@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { graphql } from "react-relay";
 import { Row, Col } from "react-bootstrap";
 import { xmlDiffQueryResponse } from "xmlDiffQuery.graphql";
-import { PageComponentProps } from "next-env";
+import { PageComponentProps } from "types";
 import DefaultLayout from "components/Layout/DefaultLayout";
 import { USER_GROUP } from "data/group-constants";
 import ReportSelector from "components/XmlDiff/ReportSelector";

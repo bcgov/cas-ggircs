@@ -1,5 +1,5 @@
 import React from "react";
-import { EcccFile } from "next-env";
+import { EcccFile } from "types";
 import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import FileList from "components/SwrsBrowser/FileList";

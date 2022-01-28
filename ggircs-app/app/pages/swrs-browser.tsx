@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { graphql } from "react-relay";
 import { swrsBrowserQueryResponse } from "swrsBrowserQuery.graphql";
-import { PageComponentProps } from "next-env";
+import { PageComponentProps } from "types";
 import DefaultLayout from "components/Layout/DefaultLayout";
 import FileList from "components/SwrsBrowser/FileList";
 import { USER_GROUP } from "data/group-constants";
