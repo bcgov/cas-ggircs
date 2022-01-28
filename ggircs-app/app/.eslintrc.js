@@ -16,7 +16,7 @@ module.exports = {
     "react-hooks/rules-of-hooks": 1,
     // "react/prop-types": 0, // don't need react/prop-types when components are typed with typescript
     // "react/state-in-constructor": [1, "never"],
-    // "@typescript-eslint/no-unused-expressions": [1, { allowTernary: true }],
+    "@typescript-eslint/no-unused-expressions": [1, { allowTernary: true }],
     // "import/prefer-default-export": 0,
     // "no-plusplus": 0, // not sure why this would be needed when we require semicolons
     // "jsx-a11y/anchor-is-valid": 0, // Next.js's Link component inject the href in our <a> elements

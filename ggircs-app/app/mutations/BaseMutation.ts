@@ -19,8 +19,11 @@ const debouncedMutationMap = new Map<string, Disposable>();
 
 export default class BaseMutation<T extends BaseMutationType = never> {
   counter: number;
+
   mutationName: string;
+
   configs?: DeclarativeMutationConfig[];
+
   constructor(mutationName: string, configs?: DeclarativeMutationConfig[]) {
     this.mutationName = mutationName;
     this.counter = 0;
