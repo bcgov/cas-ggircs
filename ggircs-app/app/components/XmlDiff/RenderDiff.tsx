@@ -96,9 +96,10 @@ export const RenderDiff: React.FunctionComponent<Props> = ({
       "#1978d4",
     ];
     if (Number.isInteger(leadingWhiteSpace))
-      leadingWhiteSpace < 25
-        ? (tagColor = tagHighlighterArray[leadingWhiteSpace / 4])
-        : "#ff0000";
+      if (leadingWhiteSpace < 25)
+        (tagColor = tagHighlighterArray[leadingWhiteSpace / 4])
+      else
+        tagColor = "#ff0000";
 
     if (token.type === "text") {
       return (

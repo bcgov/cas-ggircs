@@ -3,7 +3,7 @@ import DefaultLayout from "components/Layout/DefaultLayout";
 import Link from "next/link";
 import getConfig from "next/config";
 
-export default () => {
+const ForbiddenPage = () => {
   const supportEmail = getConfig()?.publicRuntimeConfig.SUPPORT_EMAIL;
   const mailtoLink = `mailto:${supportEmail}?subject=Support Request`;
   return (
@@ -32,3 +32,5 @@ export default () => {
     </>
   );
 };
+
+export default ForbiddenPage;

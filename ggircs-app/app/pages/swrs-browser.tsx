@@ -13,7 +13,9 @@ interface Props extends PageComponentProps {
 }
 export default class Index extends Component<Props> {
   static allowedGroups = ALLOWED_GROUPS;
+
   static isAccessProtected = true;
+
   static query = graphql`
     query swrsBrowserQuery {
       query {

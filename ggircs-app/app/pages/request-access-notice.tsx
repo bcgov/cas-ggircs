@@ -12,6 +12,7 @@ interface Props extends PageComponentProps {
 }
 export default class Index extends Component<Props> {
   static allowedGroups = ALLOWED_GROUPS;
+
   static isAccessProtected = false;
 
   static query = graphql`

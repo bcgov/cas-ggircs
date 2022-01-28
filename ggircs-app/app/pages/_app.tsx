@@ -34,6 +34,7 @@ export default class App extends NextApp<AppProps> {
   };
 
   prevComponentProps = null;
+
   prevComponentClass = null;
 
   render() {
