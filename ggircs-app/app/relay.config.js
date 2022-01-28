@@ -3,9 +3,9 @@ module.exports = {
   language: "typescript",
   artifactDirectory: "./__generated__",
   customScalars: {
-    Datetime: "String",
+    Datetime: "string",
     JSON: "any",
-    BigFloat: "String",
+    BigFloat: "string",
   },
   exclude: [
     "**/.next/**",
@@ -13,6 +13,6 @@ module.exports = {
     "**/__generated__/**",
     "**/server/**",
   ],
-  schema: "./server/schema.graphql",
+  schema: "./schema/schema.graphql",
   noFutureProofEnums: true,
 };
