@@ -1,0 +1,11 @@
+[
+  {
+    "routePaths": ["/", "/login-redirect", "/404", "/403", "/request-access-notice"],
+    "isProtected": false
+  },
+  {
+    "routePaths": ["/ggircs/(.*)"],
+    "isProtected": true,
+    "allowedRoles": ["ggircs_user", "Realm Administrator"]
+  }
+]

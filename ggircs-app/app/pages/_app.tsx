@@ -4,7 +4,6 @@ import { RelayEnvironmentProvider } from "react-relay/hooks";
 import { getInitialPreloadedQuery, getRelayProps } from "relay-nextjs/app";
 import { getClientEnvironment } from "../lib/relay/client";
 import "normalize.css";
-// import BCGovTypography from "components/BCGovTypography";
 // import SessionExpiryHandler from "components/Session/SessionExpiryHandler";
 import { Suspense } from "react";
 const clientEnv = getClientEnvironment();
@@ -27,8 +26,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <RelayEnvironmentProvider environment={env}>
-      {/* {typeof window !== "undefined" && <SessionExpiryHandler />}
-      <BCGovTypography /> */}
+      {/* {typeof window !== "undefined" && <SessionExpiryHandler />}*/}
       {component}
     </RelayEnvironmentProvider>
   );

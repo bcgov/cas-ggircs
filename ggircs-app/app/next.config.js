@@ -20,6 +20,9 @@ module.exports = {
 
     return configWithPlugins;
   },
+  serverRuntimeConfig: {
+    PORT: process.env.PORT || "3004",
+  },
   publicRuntimeConfig: {
     SUPPORT_EMAIL: process.env.SUPPORT_EMAIL,
   },

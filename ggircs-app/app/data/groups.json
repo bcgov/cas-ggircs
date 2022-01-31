@@ -7,12 +7,12 @@
   "GGIRCS User": {
     "pgRole": "ggircs_user",
     "priority": 2,
-    "path": "/"
+    "path": "/ggircs/index"
   },
   "Realm Administrator": {
     "pgRole": "ggircs_user",
     "priority": 0,
-    "path": "/"
+    "path": "/ggircs/index"
   },
   "Pending GGIRCS User": {
     "pgRole": "ggircs_guest",

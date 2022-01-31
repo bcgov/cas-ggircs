@@ -1,5 +1,5 @@
 import { shallow } from "enzyme";
-import Index from "pages";
+import Index from "pages/ggircs";
 
 describe("landing", () => {
   it("matches the last accepted Snapshot", () => {

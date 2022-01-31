@@ -1,5 +1,5 @@
 import { getClientEnvironment } from "./client";
-import { getUserGroupLandingRoute } from "lib/userGroups";
+import { getUserGroupLandingRoute } from "lib/user-groups";
 import { isRouteAuthorized } from "lib/authorization";
 import type { NextPageContext } from "next";
 import type { Request } from "express";
@@ -23,7 +23,7 @@ const withRelayOptions: WiredOptions<any> = {
 
     if (isAuthorized) return {};
 
-    if (groups.length === 0) {
+    if (groups.length === 0 || groups[0] === 'Guest') {
       return {
         redirect: {
           destination: `/login-redirect?redirectTo=${encodeURIComponent(
