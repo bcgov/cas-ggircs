@@ -1,7 +1,49 @@
-import Document, { Html, Head, Main, NextScript } from "next/document";
+import Document, {
+  Html,
+  Head,
+  Main,
+  NextScript,
+  DocumentContext,
+} from "next/document";
 
-class MyDocument extends Document {
+import { createRelayDocument, RelayDocument } from "relay-nextjs/document";
+import { ServerStyleSheet } from "styled-components";
+
+interface DocumentProps {
+  relayDocument: RelayDocument;
+}
+
+class MyDocument extends Document<DocumentProps> {
+  static async getInitialProps(ctx: DocumentContext) {
+    const relayDocument = createRelayDocument();
+    const sheet = new ServerStyleSheet();
+
+    const renderPage = ctx.renderPage;
+    ctx.renderPage = () =>
+      renderPage({
+        enhanceApp: (App) => (props) => {
+          const AppWithRelay = relayDocument.enhance(App);
+          return sheet.collectStyles(<AppWithRelay {...props} />);
+        },
+      });
+
+    const initialProps = await Document.getInitialProps(ctx);
+    const styles = (
+      <>
+        {initialProps.styles}
+        {sheet.getStyleElement()}
+      </>
+    );
+    sheet.seal();
+    return {
+      ...initialProps,
+      relayDocument,
+      styles,
+    };
+  }
+
   render() {
+    const { relayDocument } = this.props;
     return (
       <Html lang="en">
         <Head>
@@ -33,6 +75,7 @@ class MyDocument extends Document {
             color="#036"
           />
           <link rel="icon" href="/icons/bcid-favicon-32x32.png" />
+          <relayDocument.Script />
         </Head>
         <body>
           <Main />
