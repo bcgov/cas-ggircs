@@ -20,7 +20,7 @@ function SwrsBrowser({ preloadedQuery }: RelayProps<{}, swrsBrowserQuery>) {
   const { query } = usePreloadedQuery(SwrsBrowserQuery, preloadedQuery);
   return (
     <DefaultLayout
-        session={session}
+        session={query.session}
         title="ECCC SWRS File Explorer"
         width="wide"
       >

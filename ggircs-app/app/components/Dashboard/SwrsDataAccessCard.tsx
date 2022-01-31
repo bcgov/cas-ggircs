@@ -7,11 +7,11 @@ const SwrsDataAccessCard: React.FunctionComponent = () => (
     <p>
       Access reports and attachments from the Single Window Reporting System
     </p>
-    <Link href="/swrs-browser" passHref>
+    <Link href="/ggircs/swrs-browser" passHref>
       <Button marginTop="2em">Browse SWRS files</Button>
     </Link>
     <div id="bottom-button">
-      <Link href="/xml-diff" passHref>
+      <Link href="/ggircs/xml-diff?FirstSideRelayId=&SecondSideRelayId=''" passHref>
         <Button marginTop="2em">Compare SWRS report XML files</Button>
       </Link>
     </div>
