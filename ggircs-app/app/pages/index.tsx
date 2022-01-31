@@ -22,7 +22,6 @@ function Index({ preloadedQuery }: RelayProps<{}, pagesQuery>) {
   return (
     <DefaultLayout session={query.session} title="GGIRCS Dashboard">
       <Row>
-        {/* <SwrsDataAccessCard /> */}
         INDEX
       </Row>
     </DefaultLayout>

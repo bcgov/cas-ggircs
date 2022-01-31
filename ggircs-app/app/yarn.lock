@@ -395,6 +395,14 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
+"@bcgov-cas/sso-react@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@bcgov-cas/sso-react/-/sso-react-1.0.1.tgz#c8d311d828fb437823feb0e422c40c5361701cad"
+  integrity sha512-I7bX2ZRquSAoKH1FfyTE9lwbTvwOzlARNtE8+kHHMOZaZeO1QX+0ZzWFb+KluHJKFAvXdX6j/YAN7aFZakYUrw==
+  dependencies:
+    "@button-inc/bcgov-theme" "^1.0.1"
+    lodash.throttle "^4.1.1"
+
 "@bcgov/bc-sans@^1.0.1":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@bcgov/bc-sans/-/bc-sans-1.0.1.tgz#8b622032465463934319771ea92fa3df74e6c9d3"
@@ -7260,6 +7268,11 @@ lodash.sortby@^4.7.0:
   version "4.7.0"
   resolved "https://registry.yarnpkg.com/lodash.sortby/-/lodash.sortby-4.7.0.tgz#edd14c824e2cc9c1e0b0a1b42bb5210516a42438"
   integrity sha1-7dFMgk4sycHgsKG0K7UhBRakJDg=
+
+lodash.throttle@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/lodash.throttle/-/lodash.throttle-4.1.1.tgz#c23e91b710242ac70c37f1e1cda9274cc39bf2f4"
+  integrity sha1-wj6RtxAkKscMN/HhzaknTMOb8vQ=
 
 lodash.truncate@^4.4.2:
   version "4.4.2"
