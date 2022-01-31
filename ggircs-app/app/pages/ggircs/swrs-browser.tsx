@@ -1,43 +1,32 @@
 import { Component } from "react";
-import { graphql } from "react-relay";
-import { swrsBrowserQueryResponse } from "swrsBrowserQuery.graphql";
-import { PageComponentProps } from "types";
+import { withRelay, RelayProps } from "relay-nextjs";
+import { graphql, usePreloadedQuery } from "react-relay/hooks";
+import withRelayOptions from "lib/relay/withRelayOptions";
+import { swrsBrowserQuery } from "__generated__/swrsBrowserQuery.graphql";
 import DefaultLayout from "components/Layout/DefaultLayout";
 import FileList from "components/SwrsBrowser/FileList";
-import { USER_GROUP } from "data/group-constants";
 
-const ALLOWED_GROUPS = [...USER_GROUP];
-
-interface Props extends PageComponentProps {
-  query: swrsBrowserQueryResponse["query"];
-}
-export default class Index extends Component<Props> {
-  static allowedGroups = ALLOWED_GROUPS;
-
-  static isAccessProtected = true;
-
-  static query = graphql`
-    query swrsBrowserQuery {
-      query {
-        session {
-          ...DefaultLayout_session
-        }
+const SwrsBrowserQuery = graphql`
+  query swrsBrowserQuery {
+    query {
+      session {
+        ...DefaultLayout_session
       }
     }
-  `;
+  }
+`;
 
-  render() {
-    const { query } = this.props;
-    const { session } = query || {};
-
-    return (
-      <DefaultLayout
+function SwrsBrowser({ preloadedQuery }: RelayProps<{}, swrsBrowserQuery>) {
+  const { query } = usePreloadedQuery(SwrsBrowserQuery, preloadedQuery);
+  return (
+    <DefaultLayout
         session={session}
         title="ECCC SWRS File Explorer"
         width="wide"
       >
         <FileList />
       </DefaultLayout>
-    );
-  }
+  );
 }
+
+export default withRelay(SwrsBrowser, SwrsBrowserQuery, withRelayOptions);

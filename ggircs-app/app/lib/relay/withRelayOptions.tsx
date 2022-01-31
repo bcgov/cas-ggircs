@@ -19,6 +19,7 @@ const withRelayOptions: WiredOptions<any> = {
     );
 
     const groups = getUserGroups(ctx.req as Request);
+
     const isAuthorized = isRouteAuthorized(ctx.req.url, groups);
 
     if (isAuthorized) return {};

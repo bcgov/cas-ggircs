@@ -1,7 +1,6 @@
 import DefaultLayout from "components/Layout/DefaultLayout";
 import { withRelay, RelayProps } from "relay-nextjs";
 import { graphql, usePreloadedQuery } from "react-relay/hooks";
-
 import type { loginRedirectQuery } from "__generated__/loginRedirectQuery.graphql";
 import defaultRelayOptions from "lib/relay/withRelayOptions";
 import { useRouter } from "next/router";
