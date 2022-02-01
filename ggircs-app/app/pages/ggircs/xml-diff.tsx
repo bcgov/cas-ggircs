@@ -9,7 +9,7 @@ import DiffDetailsContainer from "components/XmlDiff/DiffDetailsContainer";
 import RenderDiff from "components/XmlDiff/RenderDiff";
 import DiffControls from "components/XmlDiff/DiffControls";
 import { useRouter } from "next/router";
-import type { NextPageContext, Redirect } from "next";
+import type { NextPageContext } from "next";
 import { NextRouter } from "next/router";
 
 const XmlDiffQuery = graphql`
@@ -40,7 +40,7 @@ const XmlDiffQuery = graphql`
   }
 `;
 
-function XmlDiff({ preloadedQuery }: RelayProps<{}, xmlDiffQuery>, props) {
+function XmlDiff({ preloadedQuery }: RelayProps<{}, xmlDiffQuery>) {
   const { query } = usePreloadedQuery(XmlDiffQuery, preloadedQuery);
   const router = useRouter();
 

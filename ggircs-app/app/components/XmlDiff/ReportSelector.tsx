@@ -3,7 +3,6 @@ import { RelayReportObject } from "types";
 import Input from "@button-inc/bcgov-theme/Input";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faTimes } from "@fortawesome/free-solid-svg-icons";
-import { NextRouter } from "next/router";
 import debounce from "lodash.debounce";
 import { useRouter } from "next/router";
 
