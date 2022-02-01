@@ -47,7 +47,7 @@ export const withRelayOptions = {
     );
 
     const groups = getUserGroups(ctx.req);
-    if (groups.length === 0 || groups[0] === 'Guest') return {};
+    if (groups.length === 0 || groups[0] === "Guest") return {};
 
     // we don't care about the actual base here, just want to parse the search params
     const url = new URL(ctx.req.url, "https://example.org/");

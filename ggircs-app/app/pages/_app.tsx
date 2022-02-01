@@ -1,4 +1,3 @@
-
 import { AppProps } from "next/app";
 import { RelayEnvironmentProvider } from "react-relay/hooks";
 import { getInitialPreloadedQuery, getRelayProps } from "relay-nextjs/app";

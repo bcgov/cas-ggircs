@@ -14,18 +14,15 @@ interface Props {
   query: RenderDiff_query$key;
 }
 
-const RenderDiff: React.FC<Props> = ({
-  query
-}) => {
-
+const RenderDiff: React.FC<Props> = ({ query }) => {
   const router = useRouter();
-  const {
-    firstSideReport,
-    secondSideReport
-  } = useFragment(
+  const { firstSideReport, secondSideReport } = useFragment(
     graphql`
       fragment RenderDiff_query on Query
-        @argumentDefinitions(FirstSideRelayId: {type: "ID!"}, SecondSideRelayId: {type: "ID!"}) {
+      @argumentDefinitions(
+        FirstSideRelayId: { type: "ID!" }
+        SecondSideRelayId: { type: "ID!" }
+      ) {
         firstSideReport: report(id: $FirstSideRelayId) {
           swrsReportId
           latestSwrsReport {
@@ -137,7 +134,6 @@ const RenderDiff: React.FC<Props> = ({
       leadingWhiteSpace < 25
         ? (tagColor = tagHighlighterArray[leadingWhiteSpace / 4])
         : "#ff0000";
-
 
     if (token.type === "text") {
       return (

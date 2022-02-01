@@ -9,8 +9,8 @@ import DiffDetailsContainer from "components/XmlDiff/DiffDetailsContainer";
 import RenderDiff from "components/XmlDiff/RenderDiff";
 import DiffControls from "components/XmlDiff/DiffControls";
 import { useRouter } from "next/router";
-import type { NextPageContext, Redirect } from 'next';
-import { NextRouter } from 'next/router';
+import type { NextPageContext, Redirect } from "next";
+import { NextRouter } from "next/router";
 
 const XmlDiffQuery = graphql`
   query xmlDiffQuery($FirstSideRelayId: ID!, $SecondSideRelayId: ID!) {
@@ -40,42 +40,46 @@ const XmlDiffQuery = graphql`
   }
 `;
 
-
 function XmlDiff({ preloadedQuery }: RelayProps<{}, xmlDiffQuery>, props) {
   const { query } = usePreloadedQuery(XmlDiffQuery, preloadedQuery);
   const router = useRouter();
 
   return (
-    <DefaultLayout session={query.session} title="ECCC SWRS XML Diff" width="wide">
+    <DefaultLayout
+      session={query.session}
+      title="ECCC SWRS XML Diff"
+      width="wide"
+    >
       <Row>
-        <Col
-          md={{ span: 6, order: router.query.reversed ? 2 : 1 }}
-        >
+        <Col md={{ span: 6, order: router.query.reversed ? 2 : 1 }}>
           <ReportSelector
             diffSide={router.query.reversed ? "Second" : "First"}
             allReports={query.allReports.edges}
           />
         </Col>
-        <Col
-          md={{ span: 6, order: router.query.reversed ? 1 : 2 }}
-        >
+        <Col md={{ span: 6, order: router.query.reversed ? 1 : 2 }}>
           <ReportSelector
             diffSide={router.query.reversed ? "First" : "Second"}
             allReports={query.allReports.edges}
           />
         </Col>
       </Row>
-      <DiffControls  />
+      <DiffControls />
 
-      <DiffDetailsContainer
-        query={query}
-      />
+      <DiffDetailsContainer query={query} />
 
       <RenderDiff query={query} />
     </DefaultLayout>
   );
 }
 
-const withRelayOptionsOverride = {...withRelayOptions, variablesFromContext: (ctx: NextPageContext | NextRouter) => ({FirstSideRelayId: "", SecondSideRelayId: "", ...ctx.query})};
+const withRelayOptionsOverride = {
+  ...withRelayOptions,
+  variablesFromContext: (ctx: NextPageContext | NextRouter) => ({
+    FirstSideRelayId: "",
+    SecondSideRelayId: "",
+    ...ctx.query,
+  }),
+};
 
 export default withRelay(XmlDiff, XmlDiffQuery, withRelayOptionsOverride);

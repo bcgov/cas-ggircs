@@ -8,18 +8,15 @@ interface Props {
   query: DiffDetailsContainer_query$key;
 }
 
-export const DiffDetailsContainer: React.FC<Props> = ({
-  query
-}) => {
-
+export const DiffDetailsContainer: React.FC<Props> = ({ query }) => {
   const router = useRouter();
-  const {
-    firstSideDetails,
-    secondSideDetails
-  } = useFragment(
+  const { firstSideDetails, secondSideDetails } = useFragment(
     graphql`
       fragment DiffDetailsContainer_query on Query
-        @argumentDefinitions(FirstSideRelayId: {type: "ID!"}, SecondSideRelayId: {type: "ID!"}) {
+      @argumentDefinitions(
+        FirstSideRelayId: { type: "ID!" }
+        SecondSideRelayId: { type: "ID!" }
+      ) {
         firstSideDetails: report(id: $FirstSideRelayId) {
           latestSwrsReport {
             submissionDate
@@ -49,7 +46,6 @@ export const DiffDetailsContainer: React.FC<Props> = ({
     query
   );
 
-
   return (
     <Row style={{ marginTop: "2em" }}>
       <Col md={{ span: 6, order: router.query.reversed ? 2 : 1 }}>
@@ -63,9 +59,7 @@ export const DiffDetailsContainer: React.FC<Props> = ({
               firstSideDetails.latestSwrsReport.ecccXmlFileByEcccXmlFileId
                 .xmlFileName
             }
-            submissionDate={
-              firstSideDetails.latestSwrsReport.submissionDate
-            }
+            submissionDate={firstSideDetails.latestSwrsReport.submissionDate}
           />
         )}
       </Col>
@@ -80,9 +74,7 @@ export const DiffDetailsContainer: React.FC<Props> = ({
               secondSideDetails.latestSwrsReport.ecccXmlFileByEcccXmlFileId
                 .xmlFileName
             }
-            submissionDate={
-              secondSideDetails.latestSwrsReport.submissionDate
-            }
+            submissionDate={secondSideDetails.latestSwrsReport.submissionDate}
           />
         )}
       </Col>

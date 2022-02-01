@@ -24,7 +24,7 @@ const withRelayOptions: WiredOptions<any> = {
 
     if (isAuthorized) return {};
 
-    if (groups.length === 0 || groups[0] === 'Guest') {
+    if (groups.length === 0 || groups[0] === "Guest") {
       return {
         redirect: {
           destination: `/login-redirect?redirectTo=${encodeURIComponent(

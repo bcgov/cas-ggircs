@@ -21,9 +21,7 @@ function Index({ preloadedQuery }: RelayProps<{}, pagesQuery>, props) {
 
   return (
     <DefaultLayout session={query.session} title="GGIRCS Dashboard">
-      <Row>
-        INDEX
-      </Row>
+      <Row>INDEX</Row>
     </DefaultLayout>
   );
 }
@@ -38,7 +36,7 @@ export const withRelayOptions = {
     );
 
     const groups = getUserGroups(ctx.req);
-    if (groups.length === 0 || groups[0] === 'Guest') return {};
+    if (groups.length === 0 || groups[0] === "Guest") return {};
     return {
       redirect: {
         destination: getUserGroupLandingRoute(groups),
