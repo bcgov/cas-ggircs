@@ -8,9 +8,7 @@ import {
   RelayMockEnvironment,
 } from "relay-test-utils";
 import { RelayEnvironmentProvider, loadQuery } from "react-relay";
-import {
-  ggircsLandingQuery,
-} from "__generated__/ggircsLandingQuery.graphql";
+import { ggircsLandingQuery } from "__generated__/ggircsLandingQuery.graphql";
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator";
 
 let environment: RelayMockEnvironment;
@@ -24,10 +22,7 @@ const defaultMockResolver = {
   },
 };
 
-const loadIndexQuery = (
-  mockResolver: MockResolvers = defaultMockResolver
-) => {
-
+const loadIndexQuery = (mockResolver: MockResolvers = defaultMockResolver) => {
   environment.mock.queueOperationResolver((operation) => {
     return MockPayloadGenerator.generate(operation, mockResolver);
   });
@@ -56,6 +51,10 @@ describe("The index page", () => {
     loadIndexQuery();
     renderIndex();
 
-    expect(screen.getByText(/Access reports and attachments from the Single Window Reporting System/i)).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        /Access reports and attachments from the Single Window Reporting System/i
+      )
+    ).toBeInTheDocument();
   });
 });

@@ -15,7 +15,9 @@ export const GgircsLandingQuery = graphql`
   }
 `;
 
-export function GgircsLanding({ preloadedQuery }: RelayProps<{}, ggircsLandingQuery>) {
+export function GgircsLanding({
+  preloadedQuery,
+}: RelayProps<{}, ggircsLandingQuery>) {
   const { query } = usePreloadedQuery(GgircsLandingQuery, preloadedQuery);
   return (
     <DefaultLayout session={query.session}>
