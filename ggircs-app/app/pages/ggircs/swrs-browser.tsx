@@ -15,7 +15,9 @@ export const SwrsBrowserQuery = graphql`
   }
 `;
 
-export function SwrsBrowser({ preloadedQuery }: RelayProps<{}, swrsBrowserQuery>) {
+export function SwrsBrowser({
+  preloadedQuery,
+}: RelayProps<{}, swrsBrowserQuery>) {
   const { query } = usePreloadedQuery(SwrsBrowserQuery, preloadedQuery);
   return (
     <DefaultLayout

@@ -1,5 +1,8 @@
 import React from "react";
-import { SwrsBrowser, SwrsBrowserQuery } from "../../../pages/ggircs/swrs-browser";
+import {
+  SwrsBrowser,
+  SwrsBrowserQuery,
+} from "../../../pages/ggircs/swrs-browser";
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import {
@@ -51,11 +54,6 @@ describe("The swrs-browser page", () => {
     loadTestQuery();
     renderComponentUnderTest();
 
-    expect(
-      screen.getByText(
-        /ECCC SWRS File Explorer/i
-      )
-    ).toBeInTheDocument();
+    expect(screen.getByText(/ECCC SWRS File Explorer/i)).toBeInTheDocument();
   });
 });
-

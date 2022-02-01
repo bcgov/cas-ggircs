@@ -8,7 +8,10 @@ import {
   RelayMockEnvironment,
 } from "relay-test-utils";
 import { RelayEnvironmentProvider, loadQuery } from "react-relay";
-import { xmlDiffQuery, xmlDiffQuery$variables, } from "__generated__/xmlDiffQuery.graphql";
+import {
+  xmlDiffQuery,
+  xmlDiffQuery$variables,
+} from "__generated__/xmlDiffQuery.graphql";
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator";
 import { useRouter } from "next/router";
 import { mocked } from "jest-mock";
@@ -31,26 +34,26 @@ const defaultMockResolver = {
         edges: [
           {
             node: {
-              id: '1',
+              id: "1",
               swrsReportId: "1",
-            }
+            },
           },
           {
             node: {
-              id: '2',
+              id: "2",
               swrsReportId: "2",
-            }
+            },
           },
-        ]
-      }
+        ],
+      },
     };
   },
 };
 
 const loadTestQuery = (mockResolver: MockResolvers = defaultMockResolver) => {
   const variables: xmlDiffQuery$variables = {
-    FirstSideRelayId: '1',
-    SecondSideRelayId: '2'
+    FirstSideRelayId: "1",
+    SecondSideRelayId: "2",
   };
 
   environment.mock.queueOperationResolver((operation) => {
@@ -81,11 +84,6 @@ describe("The xml-diff page", () => {
     loadTestQuery();
     renderComponentUnderTest();
 
-    expect(
-      screen.getByText(
-        /ECCC SWRS XML Diff/i
-      )
-    ).toBeInTheDocument();
+    expect(screen.getByText(/ECCC SWRS XML Diff/i)).toBeInTheDocument();
   });
 });
-

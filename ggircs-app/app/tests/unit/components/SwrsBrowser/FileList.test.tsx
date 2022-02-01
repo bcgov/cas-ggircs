@@ -3,6 +3,12 @@ import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import FileList from "components/SwrsBrowser/FileList";
 
+import Enzyme from "enzyme";
+import Adapter from "@wojtekmaj/enzyme-adapter-react-17";
+
+// React 17 Enzyme adapter
+Enzyme.configure({ adapter: new Adapter() });
+
 const ecccFiles: EcccFile[] = [
   {
     created_at: "Thu, 14 May 2020 05:25:43 GMT",
@@ -50,24 +56,29 @@ describe("The FileList component", () => {
     const component = await mount(<FileList />);
     await act(async () => {
       //
-      await new Promise((resolve) => setImmediate(resolve));
+      await new Promise((resolve) =>
+        jest.requireActual("timers").setImmediate(resolve)
+      );
       component.update();
     });
-    expect(component).toMatchSnapshot();
+
     expect(component.find("button.list-group-item")).toHaveLength(3);
   });
 
   it("should load a file's content when clicking on it", async () => {
     const component = await mount(<FileList />);
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await new Promise((resolve) =>
+        jest.requireActual("timers").setImmediate(resolve)
+      );
       component.update();
       component.find("button.list-group-item").first().simulate("click");
-      await new Promise((resolve) => setImmediate(resolve));
+      await new Promise((resolve) =>
+        jest.requireActual("timers").setImmediate(resolve)
+      );
       component.update();
     });
 
-    expect(component).toMatchSnapshot();
     expect(component.find("button.list-group-item.active")).toHaveLength(1);
     expect(component.find(".col-md-8 .list-group-item a")).toHaveLength(2);
   });

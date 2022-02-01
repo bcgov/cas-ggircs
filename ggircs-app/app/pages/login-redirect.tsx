@@ -5,7 +5,7 @@ import type { loginRedirectQuery } from "__generated__/loginRedirectQuery.graphq
 import defaultRelayOptions from "lib/relay/withRelayOptions";
 import { useRouter } from "next/router";
 
-const loginRedirect = graphql`
+export const LoginRedirectQuery = graphql`
   query loginRedirectQuery {
     query {
       session {
@@ -15,10 +15,10 @@ const loginRedirect = graphql`
   }
 `;
 
-const LoginRedirect = ({
+export const LoginRedirect = ({
   preloadedQuery,
 }: RelayProps<{}, loginRedirectQuery>) => {
-  const { query } = usePreloadedQuery(loginRedirect, preloadedQuery);
+  const { query } = usePreloadedQuery(LoginRedirectQuery, preloadedQuery);
   const router = useRouter();
 
   const headerText = router.query.sessionIdled
@@ -60,4 +60,4 @@ export const withRelayOptions = {
   },
 };
 
-export default withRelay(LoginRedirect, loginRedirect, withRelayOptions);
+export default withRelay(LoginRedirect, LoginRedirectQuery, withRelayOptions);
