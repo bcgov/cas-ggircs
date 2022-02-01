@@ -20,7 +20,7 @@ interface Props {
   };
 }
 
-const DefaultLayout: React.FunctionComponent<Props> = ({
+const DefaultLayout: React.FC<Props> = ({
   children,
   title,
   titleControls,

@@ -3,7 +3,7 @@ import { EcccFile } from "types";
 import { Row, Col, ListGroup } from "react-bootstrap";
 import FileDetails from "./FileDetails";
 
-const FileList: React.FunctionComponent = () => {
+const FileList: React.FC = () => {
   const [selectedFile, setSelectedFile] = useState<EcccFile>(null);
   const [files, setFiles] = useState<EcccFile[]>([]);
 

@@ -2,7 +2,7 @@ import Card from "@button-inc/bcgov-theme/Card";
 import Button from "@button-inc/bcgov-theme/Button";
 import Link from "next/link";
 
-const SwrsDataAccessCard: React.FunctionComponent = () => (
+const SwrsDataAccessCard: React.FC = () => (
   <Card title="SWRS">
     <p>
       Access reports and attachments from the Single Window Reporting System
