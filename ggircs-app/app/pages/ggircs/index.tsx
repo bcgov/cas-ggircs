@@ -5,7 +5,7 @@ import { ggircsLandingQuery } from "__generated__/ggircsLandingQuery.graphql";
 import withRelayOptions from "lib/relay/withRelayOptions";
 import SwrsDataAccessCard from "components/Dashboard/SwrsDataAccessCard";
 
-const GgircsLandingQuery = graphql`
+export const GgircsLandingQuery = graphql`
   query ggircsLandingQuery {
     query {
       session {
@@ -15,7 +15,7 @@ const GgircsLandingQuery = graphql`
   }
 `;
 
-function GgircsLanding({ preloadedQuery }: RelayProps<{}, ggircsLandingQuery>) {
+export function GgircsLanding({ preloadedQuery }: RelayProps<{}, ggircsLandingQuery>) {
   const { query } = usePreloadedQuery(GgircsLandingQuery, preloadedQuery);
   return (
     <DefaultLayout session={query.session}>
