@@ -26,16 +26,18 @@ export const DefaultLayoutComponent: React.FunctionComponent<Props> = ({
   titleControls = null,
   help = null,
   session,
-  width = "narrow"
+  width = "narrow",
 }) => {
   useFragment(
     graphql`
       fragment DefaultLayout_session on JwtToken {
-      ggircsUserBySub {
-        __typename
+        ggircsUserBySub {
+          __typename
+        }
       }
-    }
-    `,session);
+    `,
+    session
+  );
   return (
     <div className="page-wrap">
       <Header isLoggedIn={Boolean(session)}>
@@ -156,6 +158,6 @@ export const DefaultLayoutComponent: React.FunctionComponent<Props> = ({
       </style>
     </div>
   );
-}
+};
 
 export default DefaultLayoutComponent;
