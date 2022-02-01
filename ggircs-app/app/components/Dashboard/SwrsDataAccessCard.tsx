@@ -11,7 +11,7 @@ const SwrsDataAccessCard: React.FunctionComponent = () => (
       <Button marginTop="2em">Browse SWRS files</Button>
     </Link>
     <div id="bottom-button">
-      <Link href="/ggircs/xml-diff?FirstSideRelayId=&SecondSideRelayId=''" passHref>
+      <Link href="/ggircs/xml-diff" passHref>
         <Button marginTop="2em">Compare SWRS report XML files</Button>
       </Link>
     </div>

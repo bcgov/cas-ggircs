@@ -8,6 +8,9 @@ import ReportSelector from "components/XmlDiff/ReportSelector";
 import DiffDetailsContainer from "components/XmlDiff/DiffDetailsContainer";
 import RenderDiff from "components/XmlDiff/RenderDiff";
 import DiffControls from "components/XmlDiff/DiffControls";
+import { useRouter } from "next/router";
+import type { NextPageContext, Redirect } from 'next';
+import { NextRouter } from 'next/router';
 
 const XmlDiffQuery = graphql`
   query xmlDiffQuery($FirstSideRelayId: ID!, $SecondSideRelayId: ID!) {
@@ -38,40 +41,41 @@ const XmlDiffQuery = graphql`
 `;
 
 
-function XmlDiff({ preloadedQuery }: RelayProps<{}, xmlDiffQuery>) {
+function XmlDiff({ preloadedQuery }: RelayProps<{}, xmlDiffQuery>, props) {
   const { query } = usePreloadedQuery(XmlDiffQuery, preloadedQuery);
+  const router = useRouter();
+
   return (
     <DefaultLayout session={query.session} title="ECCC SWRS XML Diff" width="wide">
       <Row>
         <Col
-          md={{ span: 6, order: this.props.router.query.reversed ? 2 : 1 }}
+          md={{ span: 6, order: router.query.reversed ? 2 : 1 }}
         >
           <ReportSelector
-            diffSide={this.props.router.query.reversed ? "Second" : "First"}
+            diffSide={router.query.reversed ? "Second" : "First"}
             allReports={query.allReports.edges}
-            router={this.props.router}
           />
         </Col>
         <Col
-          md={{ span: 6, order: this.props.router.query.reversed ? 1 : 2 }}
+          md={{ span: 6, order: router.query.reversed ? 1 : 2 }}
         >
           <ReportSelector
-            diffSide={this.props.router.query.reversed ? "First" : "Second"}
+            diffSide={router.query.reversed ? "First" : "Second"}
             allReports={query.allReports.edges}
-            router={this.props.router}
           />
         </Col>
       </Row>
-      <DiffControls router={this.props.router} />
+      <DiffControls  />
 
       <DiffDetailsContainer
-        query={this.props.query}
-        router={this.props.router}
+        query={query}
       />
 
-      <RenderDiff query={this.props.query} router={this.props.router} />
+      <RenderDiff query={query} />
     </DefaultLayout>
   );
 }
 
-export default withRelay(XmlDiff, XmlDiffQuery, withRelayOptions);
+const withRelayOptionsOverride = {...withRelayOptions, variablesFromContext: (ctx: NextPageContext | NextRouter) => ({FirstSideRelayId: "", SecondSideRelayId: "", ...ctx.query})};
+
+export default withRelay(XmlDiff, XmlDiffQuery, withRelayOptionsOverride);

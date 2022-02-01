@@ -45,7 +45,7 @@ const Header = ({ isLoggedIn = false, children }) => {
           {isLoggedIn ? (
             <>
               <li>
-                <Link href="/">
+                <Link href="/ggircs">
                   <a>Dashboard</a>
                 </Link>
               </li>

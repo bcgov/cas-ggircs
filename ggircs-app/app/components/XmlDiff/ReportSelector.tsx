@@ -5,30 +5,33 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { NextRouter } from "next/router";
 import debounce from "lodash.debounce";
+import { useRouter } from "next/router";
 
 interface Props {
   diffSide: String;
   allReports: readonly RelayReportObject[];
-  router: NextRouter;
+  // router: NextRouter;
 }
 
 export const ReportSelector: React.FunctionComponent<Props> = ({
   diffSide,
   allReports,
-  router,
+  // router,
 }) => {
+  const router = useRouter();
+  console.log(diffSide)
   const [swrsReportIdIsValid, setSwrsReportIdIsvalid] = useState<boolean>(null);
   const [swrsReportId, setSwrsReportId] = useState<number>(
     Number(router.query[`${diffSide}SideId`])
   );
 
-  const handleRouter = (id: number, relayId: string, valid: boolean) => {
+  const handleRouter = useCallback((id: number, relayId: string, valid: boolean) => {
     let query;
     if (valid) {
       query = {
         ...router.query,
         [`${diffSide}SideId`]: id,
-        [`${diffSide}SideRelayId`]: relayId,
+        [`${diffSide}SideRelayId`]: relayId || "",
       };
     } else {
       query = router.query;
@@ -41,7 +44,7 @@ export const ReportSelector: React.FunctionComponent<Props> = ({
       query,
     };
     router.push(url, url, { shallow: true });
-  };
+  }, [router, diffSide]);
 
   const validateReportId = (id: number) => {
     const edge = allReports.find((edge) => edge?.node.swrsReportId === id);

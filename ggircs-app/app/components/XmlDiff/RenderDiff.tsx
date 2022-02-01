@@ -1,27 +1,65 @@
 import { useState, useEffect, useMemo } from "react";
-import { graphql, createFragmentContainer } from "react-relay";
-import { RenderDiff_query } from "RenderDiff_query.graphql";
+import { useFragment, graphql } from "react-relay";
 import { diffLines, formatLines } from "unidiff";
 import { parseDiff, Diff, Hunk, tokenize } from "react-diff-view";
 import "react-diff-view/style/index.css";
 import format from "xml-formatter";
-import { NextRouter } from "next/router";
+import { useRouter } from "next/router";
 import LoadingSpinner from "components/LoadingSpinner";
+import { RenderDiff_query$key } from "__generated__/RenderDiff_query.graphql";
 
 const EMPTY_HUNKS = [];
 
 interface Props {
-  query: RenderDiff_query;
-  router: NextRouter;
+  query: RenderDiff_query$key;
 }
 
-export const RenderDiff: React.FunctionComponent<Props> = ({
-  query,
-  router,
+const RenderDiff: React.FC<Props> = ({
+  query
 }) => {
+
+  const router = useRouter();
+  const {
+    firstSideReport,
+    secondSideReport
+  } = useFragment(
+    graphql`
+      fragment RenderDiff_query on Query
+        @argumentDefinitions(FirstSideRelayId: {type: "ID!"}, SecondSideRelayId: {type: "ID!"}) {
+        firstSideReport: report(id: $FirstSideRelayId) {
+          swrsReportId
+          latestSwrsReport {
+            submissionDate
+            ecccXmlFileByEcccXmlFileId {
+              xmlFileName
+              xmlFile
+              ecccZipFileByZipFileId {
+                zipFileName
+              }
+            }
+          }
+        }
+        secondSideReport: report(id: $SecondSideRelayId) {
+          swrsReportId
+          latestSwrsReport {
+            submissionDate
+            ecccXmlFileByEcccXmlFileId {
+              xmlFileName
+              xmlFile
+              ecccZipFileByZipFileId {
+                zipFileName
+              }
+            }
+          }
+        }
+      }
+    `,
+    query
+  );
+
   const shouldRenderDiff =
-    query.firstSideReport &&
-    query.secondSideReport &&
+    firstSideReport &&
+    secondSideReport &&
     router.query.FirstSideRelayId &&
     router.query.SecondSideRelayId;
   if (!shouldRenderDiff) return null;
@@ -30,10 +68,10 @@ export const RenderDiff: React.FunctionComponent<Props> = ({
   const [diffText, setDiffText] = useState(null);
 
   const oldText = format(
-    query.firstSideReport.latestSwrsReport.ecccXmlFileByEcccXmlFileId.xmlFile
+    firstSideReport.latestSwrsReport.ecccXmlFileByEcccXmlFileId.xmlFile
   );
   const newText = format(
-    query.secondSideReport.latestSwrsReport.ecccXmlFileByEcccXmlFileId.xmlFile
+    secondSideReport.latestSwrsReport.ecccXmlFileByEcccXmlFileId.xmlFile
   );
 
   useEffect(() => {
@@ -130,39 +168,4 @@ export const RenderDiff: React.FunctionComponent<Props> = ({
   );
 };
 
-export default createFragmentContainer(RenderDiff, {
-  query: graphql`
-    fragment RenderDiff_query on Query
-    @argumentDefinitions(
-      FirstSideRelayId: { type: "ID!" }
-      SecondSideRelayId: { type: "ID!" }
-    ) {
-      firstSideReport: report(id: $FirstSideRelayId) {
-        swrsReportId
-        latestSwrsReport {
-          submissionDate
-          ecccXmlFileByEcccXmlFileId {
-            xmlFileName
-            xmlFile
-            ecccZipFileByZipFileId {
-              zipFileName
-            }
-          }
-        }
-      }
-      secondSideReport: report(id: $SecondSideRelayId) {
-        swrsReportId
-        latestSwrsReport {
-          submissionDate
-          ecccXmlFileByEcccXmlFileId {
-            xmlFileName
-            xmlFile
-            ecccZipFileByZipFileId {
-              zipFileName
-            }
-          }
-        }
-      }
-    }
-  `,
-});
+export default RenderDiff;

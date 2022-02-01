@@ -16,7 +16,7 @@ export const IndexQuery = graphql`
   }
 `;
 
-function Index({ preloadedQuery }: RelayProps<{}, pagesQuery>) {
+function Index({ preloadedQuery }: RelayProps<{}, pagesQuery>, props) {
   const { query } = usePreloadedQuery(IndexQuery, preloadedQuery);
 
   return (
