@@ -29,7 +29,7 @@ export const ReportSelector: React.FunctionComponent<Props> = ({
       query = {
         ...router.query,
         [`${diffSide}SideId`]: id,
-        [`${diffSide}SideRelayId`]: relayId ||,
+        [`${diffSide}SideRelayId`]: relayId
       };
     } else {
       query = router.query;
