@@ -59,7 +59,7 @@ describe("The login-redirect page", () => {
     environment = createMockEnvironment();
   });
 
-  it("renders the login-redirect page", () => {
+  it("renders the login-redirect page with correct messaging when sessionIdled is false", () => {
     loadTestQuery();
     renderComponentUnderTest();
 
@@ -70,7 +70,7 @@ describe("The login-redirect page", () => {
     ).toBeInTheDocument();
   });
 
-  it("renders the login-redirect page", () => {
+  it("renders the login-redirect page with correct messaging when sessionIdled is true", () => {
     mocked(useRouter).mockReturnValue({
       route: "/login-redirect",
       query: { sessionIdled: true },
