@@ -47,7 +47,7 @@ describe("The index page", () => {
     environment = createMockEnvironment();
   });
 
-  it("renders the list of projects", () => {
+  it("renders the index page", () => {
     loadIndexQuery();
     renderIndex();
 

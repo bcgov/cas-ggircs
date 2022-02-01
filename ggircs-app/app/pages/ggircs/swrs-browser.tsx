@@ -5,7 +5,7 @@ import { swrsBrowserQuery } from "__generated__/swrsBrowserQuery.graphql";
 import DefaultLayout from "components/Layout/DefaultLayout";
 import FileList from "components/SwrsBrowser/FileList";
 
-const SwrsBrowserQuery = graphql`
+export const SwrsBrowserQuery = graphql`
   query swrsBrowserQuery {
     query {
       session {
@@ -15,7 +15,7 @@ const SwrsBrowserQuery = graphql`
   }
 `;
 
-function SwrsBrowser({ preloadedQuery }: RelayProps<{}, swrsBrowserQuery>) {
+export function SwrsBrowser({ preloadedQuery }: RelayProps<{}, swrsBrowserQuery>) {
   const { query } = usePreloadedQuery(SwrsBrowserQuery, preloadedQuery);
   return (
     <DefaultLayout

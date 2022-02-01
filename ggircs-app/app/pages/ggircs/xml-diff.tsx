@@ -12,7 +12,7 @@ import { useRouter } from "next/router";
 import type { NextPageContext } from "next";
 import { NextRouter } from "next/router";
 
-const XmlDiffQuery = graphql`
+export const XmlDiffQuery = graphql`
   query xmlDiffQuery($FirstSideRelayId: ID!, $SecondSideRelayId: ID!) {
     query {
       session {
@@ -40,7 +40,7 @@ const XmlDiffQuery = graphql`
   }
 `;
 
-function XmlDiff({ preloadedQuery }: RelayProps<{}, xmlDiffQuery>) {
+export function XmlDiff({ preloadedQuery }: RelayProps<{}, xmlDiffQuery>) {
   const { query } = usePreloadedQuery(XmlDiffQuery, preloadedQuery);
   const router = useRouter();
 
