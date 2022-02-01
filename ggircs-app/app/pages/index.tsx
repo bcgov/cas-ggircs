@@ -3,7 +3,6 @@ import { withRelay, RelayProps } from "relay-nextjs";
 import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import { pagesQuery } from "__generated__/pagesQuery.graphql";
 import defaultRelayOptions from "lib/relay/withRelayOptions";
-import { Row } from "react-bootstrap";
 import { getUserGroupLandingRoute } from "lib/user-groups";
 
 export const IndexQuery = graphql`
@@ -18,10 +17,14 @@ export const IndexQuery = graphql`
 
 function Index({ preloadedQuery }: RelayProps<{}, pagesQuery>) {
   const { query } = usePreloadedQuery(IndexQuery, preloadedQuery);
-
   return (
-    <DefaultLayout session={query.session} title="GGIRCS Dashboard">
-      <Row>INDEX</Row>
+    <DefaultLayout session={query.session}>
+      <h3 className="blue">You need to be logged in to access this page.</h3>
+      <p>
+        Please log in to access this page.
+        <br />
+        You will be redirected to the requested page after doing so.
+      </p>
     </DefaultLayout>
   );
 }
