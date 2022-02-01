@@ -1,6 +1,6 @@
 import { ToastContainer } from "react-toastify";
 
-export const Toaster: React.FC = () => (
+export const Toaster: React.FunctionComponent = () => (
   <ToastContainer limit={3} />
 );
 

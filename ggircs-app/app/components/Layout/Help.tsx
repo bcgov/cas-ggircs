@@ -10,7 +10,7 @@ interface Props {
   helpMessage?: string | JSX.Element;
 }
 
-export const HelpComponent: React.FC<Props> = (props) => {
+export const HelpComponent: React.FunctionComponent<Props> = (props) => {
   const popover = (
     <Popover className="ciip-help" id="popover-basic">
       <PopoverHeader as="h3">{props.title}</PopoverHeader>

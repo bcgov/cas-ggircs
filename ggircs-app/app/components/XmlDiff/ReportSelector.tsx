@@ -10,44 +10,39 @@ import { useRouter } from "next/router";
 interface Props {
   diffSide: String;
   allReports: readonly RelayReportObject[];
-  // router: NextRouter;
 }
 
 export const ReportSelector: React.FunctionComponent<Props> = ({
   diffSide,
-  allReports,
-  // router,
+  allReports
 }) => {
   const router = useRouter();
-  console.log(diffSide);
+
   const [swrsReportIdIsValid, setSwrsReportIdIsvalid] = useState<boolean>(null);
   const [swrsReportId, setSwrsReportId] = useState<number>(
     Number(router.query[`${diffSide}SideId`])
   );
 
-  const handleRouter = useCallback(
-    (id: number, relayId: string, valid: boolean) => {
-      let query;
-      if (valid) {
-        query = {
-          ...router.query,
-          [`${diffSide}SideId`]: id,
-          [`${diffSide}SideRelayId`]: relayId || "",
-        };
-      } else {
-        query = router.query;
-        delete query[`${diffSide}SideId`];
-        delete query[`${diffSide}SideRelayId`];
-      }
-      if (!relayId) delete query[`${diffSide}SideRelayId`];
-      const url = {
-        pathname: router.pathname,
-        query,
+  const handleRouter = useCallback((id: number, relayId: string, valid: boolean) => {
+    let query;
+    if (valid) {
+      query = {
+        ...router.query,
+        [`${diffSide}SideId`]: id,
+        [`${diffSide}SideRelayId`]: relayId ||,
       };
-      router.push(url, url, { shallow: true });
-    },
-    [router, diffSide]
-  );
+    } else {
+      query = router.query;
+      delete query[`${diffSide}SideId`];
+      delete query[`${diffSide}SideRelayId`];
+    }
+    if (!relayId) delete query[`${diffSide}SideRelayId`];
+    const url = {
+      pathname: router.pathname,
+      query,
+    };
+    router.push(url, url, { shallow: true });
+  }, [router, diffSide]);
 
   const validateReportId = (id: number) => {
     const edge = allReports.find((edge) => edge?.node.swrsReportId === id);

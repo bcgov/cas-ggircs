@@ -9,7 +9,7 @@ interface Props {
   ecccFile: EcccFile;
 }
 
-const FileDetails: React.FC<Props> = ({ ecccFile }) => {
+const FileDetails: React.FunctionComponent<Props> = ({ ecccFile }) => {
   const [fileContents, setFileContents] = useState<string[]>(null);
 
   useEffect(() => {

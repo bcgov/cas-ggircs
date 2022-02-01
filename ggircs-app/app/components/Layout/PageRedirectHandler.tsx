@@ -27,7 +27,7 @@ const sessionQuery = graphql`
   }
 `;
 
-const PageRedirectHandler: React.FC<Props> = ({
+const PageRedirectHandler: React.FunctionComponent<Props> = ({
   children,
   environment,
   pageComponent,
