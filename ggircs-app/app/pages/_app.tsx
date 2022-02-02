@@ -7,7 +7,7 @@ import SessionExpiryHandler from "components/Session/SessionExpiryHandler";
 import { Suspense } from "react";
 const clientEnv = getClientEnvironment();
 const initialPreloadedQuery = getInitialPreloadedQuery({
-  createClientEnvironment: () => getClientEnvironment()! as any,
+  createClientEnvironment: () => getClientEnvironment()!,
 });
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -24,7 +24,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     );
 
   return (
-    <RelayEnvironmentProvider environment={env as any}>
+    <RelayEnvironmentProvider environment={env}>
       {typeof window !== "undefined" && <SessionExpiryHandler />}
       {component}
     </RelayEnvironmentProvider>
