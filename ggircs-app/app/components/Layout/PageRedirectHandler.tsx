@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { fetchQuery, graphql } from "relay-runtime";
 import LoadingSpinner from "components/LoadingSpinner";
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment";
-import { PageComponent } from "next-env";
+import { PageComponent } from "types";
 import { getUserGroupLandingRoute } from "lib/user-groups";
 import {
   PageRedirectHandlerQuery,

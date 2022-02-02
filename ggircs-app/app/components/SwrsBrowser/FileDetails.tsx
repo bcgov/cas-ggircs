@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { EcccFile } from "next-env";
+import { useEffect, useState } from "react";
+import { EcccFile } from "types";
 import { ListGroup } from "react-bootstrap";
 import LoadingSpinner from "components/LoadingSpinner";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

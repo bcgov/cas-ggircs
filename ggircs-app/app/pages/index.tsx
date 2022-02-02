@@ -1,40 +1,51 @@
-import React, { Component } from "react";
-import { graphql } from "react-relay";
-import { pagesQueryResponse } from "pagesQuery.graphql";
-import { PageComponentProps } from "next-env";
 import DefaultLayout from "components/Layout/DefaultLayout";
-import { USER_GROUP } from "data/group-constants";
-import { Row } from "react-bootstrap";
-import SwrsDataAccessCard from "components/Dashboard/SwrsDataAccessCard";
+import { withRelay, RelayProps } from "relay-nextjs";
+import { graphql, usePreloadedQuery } from "react-relay/hooks";
+import { pagesQuery } from "__generated__/pagesQuery.graphql";
+import defaultRelayOptions from "lib/relay/withRelayOptions";
+import { getUserGroupLandingRoute } from "lib/user-groups";
 
-const ALLOWED_GROUPS = [...USER_GROUP];
-
-interface Props extends PageComponentProps {
-  query: pagesQueryResponse["query"];
-}
-export default class Index extends Component<Props> {
-  static allowedGroups = ALLOWED_GROUPS;
-  static isAccessProtected = true;
-  static query = graphql`
-    query pagesQuery {
-      query {
-        session {
-          ...DefaultLayout_session
-        }
+export const IndexQuery = graphql`
+  query pagesQuery {
+    query {
+      session {
+        ...DefaultLayout_session
       }
     }
-  `;
-
-  render() {
-    const { query } = this.props;
-    const { session } = query || {};
-
-    return (
-      <DefaultLayout session={session} title="GGIRCS Dashboard">
-        <Row>
-          <SwrsDataAccessCard />
-        </Row>
-      </DefaultLayout>
-    );
   }
+`;
+
+function Index({ preloadedQuery }: RelayProps<{}, pagesQuery>) {
+  const { query } = usePreloadedQuery(IndexQuery, preloadedQuery);
+  return (
+    <DefaultLayout session={query.session}>
+      <h3 className="blue">You need to be logged in to access this page.</h3>
+      <p>
+        Please log in to access this page.
+        <br />
+        You will be redirected to the requested page after doing so.
+      </p>
+    </DefaultLayout>
+  );
 }
+
+export const withRelayOptions = {
+  ...defaultRelayOptions,
+  serverSideProps: async (ctx) => {
+    const props = await defaultRelayOptions.serverSideProps(ctx);
+    if ("redirect" in props) return props;
+    const { getUserGroups } = await import(
+      "server/helpers/userGroupAuthentication"
+    );
+
+    const groups = getUserGroups(ctx.req);
+    if (groups.length === 0 || groups[0] === "Guest") return {};
+    return {
+      redirect: {
+        destination: getUserGroupLandingRoute(groups),
+      },
+    };
+  },
+};
+
+export default withRelay(Index, IndexQuery, withRelayOptions);

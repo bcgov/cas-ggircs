@@ -1,5 +1,8 @@
 import React from "react";
-import { GgircsLanding, GgircsLandingQuery } from "../../../pages/ggircs/index";
+import {
+  SwrsBrowser,
+  SwrsBrowserQuery,
+} from "../../../../pages/ggircs/swrs-browser";
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import {
@@ -8,7 +11,7 @@ import {
   RelayMockEnvironment,
 } from "relay-test-utils";
 import { RelayEnvironmentProvider, loadQuery } from "react-relay";
-import { ggircsLandingQuery } from "__generated__/ggircsLandingQuery.graphql";
+import { swrsBrowserQuery } from "__generated__/swrsBrowserQuery.graphql";
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator";
 
 let environment: RelayMockEnvironment;
@@ -22,39 +25,35 @@ const defaultMockResolver = {
   },
 };
 
-const loadIndexQuery = (mockResolver: MockResolvers = defaultMockResolver) => {
+const loadTestQuery = (mockResolver: MockResolvers = defaultMockResolver) => {
   environment.mock.queueOperationResolver((operation) => {
     return MockPayloadGenerator.generate(operation, mockResolver);
   });
 
-  environment.mock.queuePendingOperation(GgircsLandingQuery, {});
-  initialQueryRef = loadQuery<ggircsLandingQuery>(
+  environment.mock.queuePendingOperation(SwrsBrowserQuery, {});
+  initialQueryRef = loadQuery<swrsBrowserQuery>(
     environment,
-    GgircsLandingQuery,
+    SwrsBrowserQuery,
     {}
   );
 };
 
-const renderIndex = () =>
+const renderComponentUnderTest = () =>
   render(
     <RelayEnvironmentProvider environment={environment}>
-      <GgircsLanding CSN preloadedQuery={initialQueryRef} />
+      <SwrsBrowser CSN preloadedQuery={initialQueryRef} />
     </RelayEnvironmentProvider>
   );
 
-describe("The index page", () => {
+describe("The swrs-browser page", () => {
   beforeEach(() => {
     environment = createMockEnvironment();
   });
 
-  it("renders the index page", () => {
-    loadIndexQuery();
-    renderIndex();
+  it("renders the swrs-browser page", () => {
+    loadTestQuery();
+    renderComponentUnderTest();
 
-    expect(
-      screen.getByText(
-        /Access reports and attachments from the Single Window Reporting System/i
-      )
-    ).toBeInTheDocument();
+    expect(screen.getByText(/ECCC SWRS File Explorer/i)).toBeInTheDocument();
   });
 });

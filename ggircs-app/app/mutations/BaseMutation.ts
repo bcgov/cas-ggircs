@@ -9,7 +9,7 @@ import {
 } from "relay-runtime";
 import { toast } from "react-toastify";
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment";
-import { MutationConfigWithDebounce } from "next-env";
+import { MutationConfigWithDebounce } from "types";
 
 interface BaseMutationType extends MutationParameters {
   variables: { input: any; messages?: { success: string; failure: string } };
@@ -19,8 +19,11 @@ const debouncedMutationMap = new Map<string, Disposable>();
 
 export default class BaseMutation<T extends BaseMutationType = never> {
   counter: number;
+
   mutationName: string;
+
   configs?: DeclarativeMutationConfig[];
+
   constructor(mutationName: string, configs?: DeclarativeMutationConfig[]) {
     this.mutationName = mutationName;
     this.counter = 0;

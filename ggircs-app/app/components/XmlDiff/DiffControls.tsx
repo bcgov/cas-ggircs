@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Row, Col } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExchangeAlt } from "@fortawesome/free-solid-svg-icons";
 import Button from "@button-inc/bcgov-theme/Button";
-import { NextRouter } from "next/router";
 // Use dynamic import for BootstrapSwitchButton (workaround for SSR bug where window is not defined)
 import dynamic from "next/dynamic";
 const BootstrapSwitchButton = dynamic(
@@ -13,14 +12,12 @@ const BootstrapSwitchButton = dynamic(
     ssr: false, // This line is important. It's what prevents server-side render
   }
 );
+import { useRouter } from "next/router";
 
-interface Props {
-  router: NextRouter;
-}
-
-export const DiffDetails: React.FunctionComponent<Props> = ({ router }) => {
+export const DiffControls: React.FunctionComponent = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [reversed, setReversed] = useState(false);
+  const router = useRouter();
 
   const handleRouter = (control: string, value: boolean) => {
     const query = {
@@ -69,4 +66,4 @@ export const DiffDetails: React.FunctionComponent<Props> = ({ router }) => {
     </Row>
   );
 };
-export default DiffDetails;
+export default DiffControls;

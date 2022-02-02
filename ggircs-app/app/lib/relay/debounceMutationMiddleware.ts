@@ -2,8 +2,12 @@ import {
   Middleware,
   RelayNetworkLayerRequest,
   RelayNetworkLayerResponse,
+  CacheConfig,
 } from "react-relay-network-modern/node8";
-import { CacheConfigWithDebounce } from "next-env";
+
+export interface CacheConfigWithDebounce extends CacheConfig {
+  debounceKey?: string;
+}
 
 let debouncedMutation: {
   debounceKey: string;
@@ -11,10 +15,8 @@ let debouncedMutation: {
   timeoutId: number;
 } = null;
 
-const debounceMutationMiddleware =
-  (timeout = 250): Middleware =>
-  (next) =>
-  async (req) => {
+const debounceMutationMiddleware = (timeout = 250): Middleware => {
+  return (next) => async (req) => {
     if (!(req instanceof RelayNetworkLayerRequest) || !req.isMutation()) {
       if (debouncedMutation) {
         debouncedMutation.debouncedFn();
@@ -37,8 +39,8 @@ const debounceMutationMiddleware =
       debouncedMutation.debouncedFn();
     }
 
-    const debounced = async () =>
-      new Promise<RelayNetworkLayerResponse>((resolve) => {
+    const debounced = async () => {
+      return new Promise<RelayNetworkLayerResponse>((resolve) => {
         if (
           debouncedMutation &&
           debouncedMutation.debounceKey === debounceKey
@@ -48,6 +50,8 @@ const debounceMutationMiddleware =
 
         const debouncedFn = () => {
           window.clearTimeout(debouncedMutation.timeoutId);
+          // Unset debouncedMutation to ensure it does not get called again with the next network request
+          debouncedMutation = null;
           resolve(next(req));
         };
 
@@ -57,8 +61,10 @@ const debounceMutationMiddleware =
           timeoutId: window.setTimeout(debouncedFn, timeout),
         };
       });
+    };
 
     return debounced();
   };
+};
 
 export default debounceMutationMiddleware;

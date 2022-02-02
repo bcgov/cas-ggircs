@@ -391,7 +391,7 @@ jobs:
             popd
       - run:
           name: check for inconsistency between schema ddl & graphql
-          command: git diff --exit-code || (echo 'The contents of the `schema` folder are out of sync with `ggircs-app/app/server/schema.graphql`. Did you forget to \"yarn build:relay\"?' && false)
+          command: git diff --exit-code || (echo 'The contents of the `schema` folder are out of sync with `ggircs-app/app/schema/schema.graphql`. Did you forget to \"yarn build:relay\"?' && false)
       - run:
           name: redeploy schema
           command: |
@@ -413,7 +413,7 @@ jobs:
             popd
       - run:
           name: check for inconsistency between schema ddl & graphql
-          command: git diff --exit-code || (echo 'The contents of the `schema` folder are out of sync with `app/server/schema.graphql`. Did you forget to \"yarn build:relay\"?' && false)
+          command: git diff --exit-code || (echo 'The contents of the `schema` folder are out of sync with `app/schema/schema.graphql`. Did you forget to \"yarn build:relay\"?' && false)
   ggircs_app_compile:
     machine:
       image: ubuntu-2004:202107-02

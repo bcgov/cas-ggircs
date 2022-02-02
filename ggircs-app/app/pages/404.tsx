@@ -1,11 +1,19 @@
-import React from "react";
 import { Row, Col } from "react-bootstrap";
-import DefaultLayout from "components/Layout/DefaultLayout";
 import Link from "next/link";
+import Header from "components/Layout/Header";
+import getConfig from "next/config";
+import SiteNoticeBanner from "components/Layout/SiteNoticeBanner";
 
-const NotFoundPage = () => (
-  <>
-    <DefaultLayout session={null}>
+const runtimeConfig = getConfig()?.publicRuntimeConfig ?? {};
+
+function NotFoundPage() {
+  return (
+    <>
+      <Header isLoggedIn={false}>
+        {runtimeConfig.SITEWIDE_NOTICE && (
+          <SiteNoticeBanner content={runtimeConfig.SITEWIDE_NOTICE} />
+        )}
+      </Header>
       <Row className="justify-content-center" style={{ paddingTop: "3em" }}>
         <Col md={{ span: 6 }} style={{ textAlign: "center" }}>
           <h1>Page not found</h1>
@@ -17,13 +25,13 @@ const NotFoundPage = () => (
           </p>
         </Col>
       </Row>
-    </DefaultLayout>
-    <style jsx>{`
-      p {
-        margin: 2em 0;
-      }
-    `}</style>
-  </>
-);
+      <style jsx>{`
+        p {
+          margin: 2em 0;
+        }
+      `}</style>
+    </>
+  );
+}
 
 export default NotFoundPage;
