@@ -2,7 +2,7 @@ import React from "react";
 import {
   SwrsBrowser,
   SwrsBrowserQuery,
-} from "../../../pages/ggircs/swrs-browser";
+} from "../../../../pages/ggircs/swrs-browser";
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import {

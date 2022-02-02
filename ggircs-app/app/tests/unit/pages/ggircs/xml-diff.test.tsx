@@ -1,5 +1,5 @@
 import React from "react";
-import { XmlDiff, XmlDiffQuery } from "../../../pages/ggircs/xml-diff";
+import { XmlDiff, XmlDiffQuery } from "../../../../pages/ggircs/xml-diff";
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import {
