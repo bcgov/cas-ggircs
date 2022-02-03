@@ -186,3 +186,7 @@ swrs/transform/function/load_fuel_mapping [swrs/transform/function/load_fuel_map
 @v1.11.1 2021-12-10T19:05:02Z Dylan Leard <dylan@button.is> # release v1.11.1
 swrs/transform/function/load_fuel_charge [swrs/transform/function/load_fuel_charge@v1.11.1] 2022-01-10T23:34:48Z Dylan Leard <dylan@button.is> # Migration: fix 2021-22 fuel charge rate for Tires - Shredded
 swrs/utility/schema 2022-02-03T21:58:53Z Dylan Leard <dylan@button.is> # Add a schema for mutations, custom queries and other contextual data relating to data in the swrs ETL schema
+swrs/utility/table/carbon_tax_act_fuel_type [swrs/utility/schema] 2022-02-03T22:04:55Z Dylan Leard <dylan@button.is> # Table contains only the fuel_types listed in the carbon tax act https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/08040_01
+swrs/utility/table/fuel_carbon_tax_detail [swrs/utility/table/carbon_tax_act_fuel_type] 2022-02-03T22:11:54Z Dylan Leard <dylan@button.is> # add fuel carbon tax details table
+swrs/utility/table/fuel_mapping [swrs/utility/table/fuel_carbon_tax_detail] 2022-02-03T22:27:04Z Dylan Leard <dylan@button.is> # add fuel mapping table to swrs_utility schema
+swrs/utility/table/fuel_charge [swrs/utility/table/carbon_tax_act_fuel_type] 2022-02-03T22:36:17Z Dylan Leard <dylan@button.is> # add table fuel_charge to schema swrs_utility
