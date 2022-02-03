@@ -1,18 +1,36 @@
-import React from "react";
 import { Alert, Table } from "react-bootstrap";
-import { createFragmentContainer, graphql, RelayProp } from "react-relay";
-import { MappedFuelTypeTable_normalizedFuelType } from "__generated__/MappedFuelTypeTable_normalizedFuelType.graphql";
+import { useFragment, graphql } from "react-relay";
+import { MappedFuelTypeTable_normalizedFuelType$key } from "__generated__/MappedFuelTypeTable_normalizedFuelType.graphql";
 
 interface Props {
-  relay: RelayProp;
-  normalizedFuelType: MappedFuelTypeTable_normalizedFuelType;
+  normalizedFuelType: MappedFuelTypeTable_normalizedFuelType$key;
 }
 
 export const MappedFuelTypeTable: React.FunctionComponent<Props> = ({
   normalizedFuelType,
 }) => {
+  const {fuelMappingsByFuelCarbonTaxDetailsId} = useFragment(
+    graphql`
+      fragment MappedFuelTypeTable_normalizedFuelType on FuelCarbonTaxDetail {
+        id
+        fuelMappingsByFuelCarbonTaxDetailsId(first: 2147483647)
+          @connection(
+            key: "MappedFuelTypes_fuelMappingsByFuelCarbonTaxDetailsId"
+          ) {
+          edges {
+            node {
+              id
+              fuelType
+            }
+          }
+        }
+      }
+    `,
+    normalizedFuelType
+  );
+
   if (
-    !normalizedFuelType?.fuelMappingsByFuelCarbonTaxDetailsId?.edges?.length
+    !fuelMappingsByFuelCarbonTaxDetailsId?.edges?.length
   ) {
     return (
       <Alert variant="secondary" id="no-search-results">
@@ -30,7 +48,7 @@ export const MappedFuelTypeTable: React.FunctionComponent<Props> = ({
           </tr>
         </thead>
         <tbody>
-          {normalizedFuelType?.fuelMappingsByFuelCarbonTaxDetailsId?.edges?.map(
+          {fuelMappingsByFuelCarbonTaxDetailsId?.edges?.map(
             ({ node }) => (
               <tr key={node.id}>
                 <td>{node.fuelType}</td>
@@ -53,21 +71,4 @@ export const MappedFuelTypeTable: React.FunctionComponent<Props> = ({
   );
 };
 
-export default createFragmentContainer(MappedFuelTypeTable, {
-  normalizedFuelType: graphql`
-    fragment MappedFuelTypeTable_normalizedFuelType on FuelCarbonTaxDetail {
-      id
-      fuelMappingsByFuelCarbonTaxDetailsId(first: 2147483647)
-        @connection(
-          key: "MappedFuelTypes_fuelMappingsByFuelCarbonTaxDetailsId"
-        ) {
-        edges {
-          node {
-            id
-            fuelType
-          }
-        }
-      }
-    }
-  `,
-});
+export default MappedFuelTypeTable;

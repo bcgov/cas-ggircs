@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { withRelay, RelayProps } from "relay-nextjs";
 import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import withRelayOptions from "lib/relay/withRelayOptions";
+import type { NextPageContext } from "next";
+import { NextRouter } from "next/router";
 import { fuelTypeManagementQuery } from "__generated__/fuelTypeManagementQuery.graphql";
 import DefaultLayout from "components/Layout/DefaultLayout";
 import NormalizedFuelType from "components/FuelManagement/NormalizedFuelType";
@@ -52,6 +54,14 @@ export function FuelTypeManagement({
       </style>
     </>
   );
-}
+};
 
-export default withRelay(FuelTypeManagement, FuelTypeManagementQuery, withRelayOptions);
+const withRelayOptionsOverride = {
+  ...withRelayOptions,
+  variablesFromContext: (ctx: NextPageContext | NextRouter) => ({
+    fuelCarbonTaxDetailId: "",
+    ...ctx.query,
+  }),
+};
+
+export default withRelay(FuelTypeManagement, FuelTypeManagementQuery, withRelayOptionsOverride);

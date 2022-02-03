@@ -1,26 +1,55 @@
-import React from "react";
 import { Card, Col, Row, Table } from "react-bootstrap";
 import { NormalizedFuelSelection } from "./NormalizedFuelSelection";
-import { createFragmentContainer, graphql, RelayProp } from "react-relay";
-import { NormalizedFuelType_query } from "__generated__/NormalizedFuelType_query.graphql";
+import { useFragment, graphql } from "react-relay";
+import { NormalizedFuelType_query$key } from "__generated__/NormalizedFuelType_query.graphql";
 import MappedFuelTypeTable from "./MappedFuelTypeTable";
 
 interface Props {
-  relay: RelayProp;
-  query: NormalizedFuelType_query;
+  query: NormalizedFuelType_query$key;
 }
 
 export const NormalizedFuelType: React.FunctionComponent<Props> = ({
   query
 }) => {
-  const normalizedFuelTypes = query.allFuelCarbonTaxDetails.edges?.map((e) => {
+  const {fuelCarbonTaxDetail, allFuelCarbonTaxDetails} = useFragment(
+    graphql`
+      fragment NormalizedFuelType_query on Query
+      @argumentDefinitions(fuelCarbonTaxDetailId: { type: "ID!" }) {
+        fuelCarbonTaxDetail(id: $fuelCarbonTaxDetailId) {
+          id
+          normalizedFuelType
+          state
+          ctaRateUnits
+          unitConversionFactor
+          carbonTaxActFuelTypeByCarbonTaxActFuelTypeId {
+            carbonTaxFuelType
+          }
+          ...MappedFuelTypeTable_normalizedFuelType
+        }
+        allFuelCarbonTaxDetails {
+            edges {
+              node {
+                id
+                rowId
+                normalizedFuelType
+              }
+            }
+          }
+      }
+    `,
+    query
+  );
+
+
+
+  const normalizedFuelTypes = allFuelCarbonTaxDetails.edges?.map((e) => {
     return {
       id: e.node.id,
       normalizedFuelType: e.node.normalizedFuelType,
     };
   });
 
-  const currentNormalizedFuel = query.fuelCarbonTaxDetail;
+  const currentNormalizedFuel = fuelCarbonTaxDetail;
 
   return (
     <>
@@ -36,7 +65,7 @@ export const NormalizedFuelType: React.FunctionComponent<Props> = ({
           </Card>
         </Col>
         <Col md="8">
-          {currentNormalizedFuel && query.fuelCarbonTaxDetail && (
+          {currentNormalizedFuel && fuelCarbonTaxDetail && (
             <>
               <Row>
                 <Col md="12">
@@ -83,7 +112,7 @@ export const NormalizedFuelType: React.FunctionComponent<Props> = ({
               <Row>
                 <Col md="12">
                   <MappedFuelTypeTable
-                    normalizedFuelType={query.fuelCarbonTaxDetail}
+                    normalizedFuelType={fuelCarbonTaxDetail}
                   />
                 </Col>
               </Row>
@@ -109,30 +138,4 @@ export const NormalizedFuelType: React.FunctionComponent<Props> = ({
   );
 };
 
-export default createFragmentContainer(NormalizedFuelType, {
-  query: graphql`
-    fragment NormalizedFuelType_query on Query
-    @argumentDefinitions(fuelCarbonTaxDetailId: { type: "ID!" }) {
-      fuelCarbonTaxDetail(id: $fuelCarbonTaxDetailId) {
-        id
-        normalizedFuelType
-        state
-        ctaRateUnits
-        unitConversionFactor
-        carbonTaxActFuelTypeByCarbonTaxActFuelTypeId {
-          carbonTaxFuelType
-        }
-        ...MappedFuelTypeTable_normalizedFuelType
-      }
-      allFuelCarbonTaxDetails {
-          edges {
-            node {
-              id
-              rowId
-              normalizedFuelType
-            }
-          }
-        }
-    }
-  `,
-});
+export default NormalizedFuelType;

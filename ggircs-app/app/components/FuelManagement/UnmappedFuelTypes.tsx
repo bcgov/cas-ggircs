@@ -1,25 +1,49 @@
 import React from "react";
-import { createFragmentContainer, graphql, RelayProp } from "react-relay";
+import { useFragment, graphql } from "react-relay";
 import { Table } from "react-bootstrap";
 import Alert from "@button-inc/bcgov-theme/Alert";
 import UnmappedFuelTypeRow from "./UnmappedFuelTypeRow";
-import { UnmappedFuelTypes_query } from "__generated__/UnmappedFuelTypes_query.graphql";
+import { UnmappedFuelTypes_query$key } from "__generated__/UnmappedFuelTypes_query.graphql";
 import updateFuelMappingMutation from 'mutations/fuelManagement/updateFuelMapping';
 import createFuelMappingCascadeMutation from 'mutations/fuelManagement/createFuelMappingCascade';
 
 interface Props {
-  relay: RelayProp;
-  query: UnmappedFuelTypes_query;
+  query: UnmappedFuelTypes_query$key;
 }
 
 export const UnmappedFuelTypes: React.FunctionComponent<Props> = ({
-  relay,
   query
 }) => {
 
-  if (query.unmappedFuel.edges.length < 1) return null;
+  const {unmappedFuel, allFuelCarbonTaxDetails} = useFragment(
+    graphql`
+      fragment UnmappedFuelTypes_query on Query {
+        unmappedFuel {
+          edges {
+            node {
+              fuelType
+              fuelMappingId
+            }
+          }
+        }
+        allFuelCarbonTaxDetails {
+          edges {
+            node {
+              id
+              rowId
+              normalizedFuelType
+            }
+          }
+        }
+      }
+    `,
+    query
+  );
 
-  const normalizedFuels = query.allFuelCarbonTaxDetails.edges;
+
+  if (unmappedFuel.edges.length < 1) return null;
+
+  const normalizedFuels = allFuelCarbonTaxDetails.edges;
 
   const handleFuelMapping = async (map: {rowId?: number, fuelType?: string, fuelCarbonTaxDetailsId: number}) => {
     if (map.rowId) {
@@ -31,7 +55,7 @@ export const UnmappedFuelTypes: React.FunctionComponent<Props> = ({
           },
         },
       };
-      await updateFuelMappingMutation(relay.environment, variables);
+      // await updateFuelMappingMutation(relay.environment, variables);
     } else {
       const variables = {
         input: {
@@ -39,7 +63,7 @@ export const UnmappedFuelTypes: React.FunctionComponent<Props> = ({
           fuelCarbonTaxDetailsIdInput: Number(map.fuelCarbonTaxDetailsId),
         }
       };
-      await createFuelMappingCascadeMutation(relay.environment, variables);
+      // await createFuelMappingCascadeMutation(relay.environment, variables);
     }
   };
 
@@ -55,7 +79,7 @@ export const UnmappedFuelTypes: React.FunctionComponent<Props> = ({
           </tr>
         </thead>
         <tbody>
-          {query.unmappedFuel.edges.map(({node}, index) => (
+          {unmappedFuel.edges.map(({node}, index) => (
             <UnmappedFuelTypeRow
               fuel={node}
               index={index}
@@ -78,26 +102,4 @@ export const UnmappedFuelTypes: React.FunctionComponent<Props> = ({
   );
 };
 
-export default createFragmentContainer(UnmappedFuelTypes, {
-  query: graphql`
-    fragment UnmappedFuelTypes_query on Query {
-      unmappedFuel {
-        edges {
-          node {
-            fuelType
-            fuelMappingId
-          }
-        }
-      }
-      allFuelCarbonTaxDetails {
-          edges {
-            node {
-              id
-              rowId
-              normalizedFuelType
-            }
-          }
-        }
-    }
-  `,
-});
+export default UnmappedFuelTypes;
