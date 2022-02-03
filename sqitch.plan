@@ -196,3 +196,7 @@ swrs/transform/function/load_naics_category_type [swrs/transform/function/load_n
 swrs/transform/function/load_naics_mapping [swrs/transform/function/load_naics_mapping@v1.11.1] 2022-02-07T22:40:15Z Dylan Leard <dylan@button.is> # DROP: drop unused load function
 swrs/transform/function/load [swrs/transform/function/load@v1.11.1] 2022-02-07T22:41:31Z Dylan Leard <dylan@button.is> # Migration: remove deprecated tables from load function
 swrs/utility/schema 2022-02-03T21:58:53Z Dylan Leard <dylan@button.is> # Add a schema for mutations, custom queries and other contextual data relating to data in the swrs ETL schema
+swrs/utility/table/carbon_tax_act_fuel_type [swrs/utility/schema] 2022-02-03T22:04:55Z Dylan Leard <dylan@button.is> # Table contains only the fuel_types listed in the carbon tax act https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/08040_01
+swrs/utility/table/fuel_carbon_tax_detail [swrs/utility/table/carbon_tax_act_fuel_type] 2022-02-03T22:11:54Z Dylan Leard <dylan@button.is> # add fuel carbon tax details table
+swrs/utility/table/fuel_mapping [swrs/utility/table/fuel_carbon_tax_detail] 2022-02-03T22:27:04Z Dylan Leard <dylan@button.is> # add fuel mapping table to swrs_utility schema
+swrs/utility/table/fuel_charge [swrs/utility/table/carbon_tax_act_fuel_type] 2022-02-03T22:36:17Z Dylan Leard <dylan@button.is> # add table fuel_charge to schema swrs_utility
