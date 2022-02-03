@@ -3,7 +3,7 @@ import Button from "@button-inc/bcgov-theme/Button";
 import Grid from "@button-inc/bcgov-theme/Grid";
 import Link from "next/link";
 
-const SwrsDataAccessCard: React.FunctionComponent = () => (
+const SwrsDataAccessCard: React.FC = () => (
   <Grid.Row>
     <Grid.Col span={5}>
       <Card title="SWRS Reports">

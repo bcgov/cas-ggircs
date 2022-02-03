@@ -6,7 +6,7 @@ interface Props {
   submissionDate: string;
 }
 
-export const DiffDetails: React.FunctionComponent<Props> = ({
+export const DiffDetails: React.FC<Props> = ({
   zipFileName,
   xmlFileName,
   submissionDate,

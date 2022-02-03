@@ -6,7 +6,7 @@ interface Props {
   normalizedFuelType: MappedFuelTypeTable_normalizedFuelType$key;
 }
 
-export const MappedFuelTypeTable: React.FunctionComponent<Props> = ({
+export const MappedFuelTypeTable: React.FC<Props> = ({
   normalizedFuelType,
 }) => {
   const {fuelMappingsByFuelCarbonTaxDetailsId} = useFragment(

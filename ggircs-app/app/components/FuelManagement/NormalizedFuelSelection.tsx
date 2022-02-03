@@ -6,7 +6,7 @@ interface Props {
   normalizedFuelTypes: any[];
 }
 
-export const NormalizedFuelSelection: React.FunctionComponent<Props> = ({
+export const NormalizedFuelSelection: React.FC<Props> = ({
   normalizedFuelTypes,
 }) => {
   const router = useRouter();

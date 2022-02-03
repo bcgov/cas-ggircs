@@ -11,7 +11,7 @@ interface Props {
   query: UnmappedFuelTypes_query$key;
 }
 
-export const UnmappedFuelTypes: React.FunctionComponent<Props> = ({
+export const UnmappedFuelTypes: React.FC<Props> = ({
   query
 }) => {
 

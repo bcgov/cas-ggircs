@@ -20,7 +20,7 @@ interface Props {
   };
 }
 
-export const DefaultLayoutComponent: React.FunctionComponent<Props> = ({
+export const DefaultLayoutComponent: React.FC<Props> = ({
   children,
   title = "Greenhouse Gas Industrial Reporting and Control System",
   titleControls = null,

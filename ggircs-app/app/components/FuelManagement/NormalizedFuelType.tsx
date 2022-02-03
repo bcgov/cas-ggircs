@@ -8,7 +8,7 @@ interface Props {
   query: NormalizedFuelType_query$key;
 }
 
-export const NormalizedFuelType: React.FunctionComponent<Props> = ({
+export const NormalizedFuelType: React.FC<Props> = ({
   query
 }) => {
   const {fuelCarbonTaxDetail, allFuelCarbonTaxDetails} = useFragment(

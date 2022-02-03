@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 
-const LoginButton: React.FunctionComponent = () => {
+const LoginButton: React.FC = () => {
   const router = useRouter();
   let loginURI = "/login";
 

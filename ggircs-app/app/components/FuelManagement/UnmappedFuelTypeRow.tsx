@@ -9,7 +9,7 @@ interface Props {
   handleFuelMapping: (map: any) => void;
 }
 
-export const UnmappedFuelTypeRow: React.FunctionComponent<Props> = ({
+export const UnmappedFuelTypeRow: React.FC<Props> = ({
   fuel,
   normalizedFuels,
   index,

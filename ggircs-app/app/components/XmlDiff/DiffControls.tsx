@@ -14,7 +14,7 @@ const BootstrapSwitchButton = dynamic(
 );
 import { useRouter } from "next/router";
 
-export const DiffControls: React.FunctionComponent = () => {
+export const DiffControls: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [reversed, setReversed] = useState(false);
   const router = useRouter();

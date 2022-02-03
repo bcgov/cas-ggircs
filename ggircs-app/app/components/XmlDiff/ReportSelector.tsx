@@ -11,7 +11,7 @@ interface Props {
   allReports: readonly RelayReportObject[];
 }
 
-export const ReportSelector: React.FunctionComponent<Props> = ({
+export const ReportSelector: React.FC<Props> = ({
   diffSide,
   allReports,
 }) => {
