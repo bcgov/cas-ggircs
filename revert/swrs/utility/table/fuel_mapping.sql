@@ -3,4 +3,5 @@
 begin;
 
 drop table swrs_utility.fuel_mapping;
+
 commit;
