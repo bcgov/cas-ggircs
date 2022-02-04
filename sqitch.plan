@@ -207,3 +207,4 @@ swrs/utility/table/naics_naics_category [swrs/utility/table/naics_category] 2022
 swrs/public/table/remap-fkey-constraints [swrs/utility/table/fuel_mapping swrs/utility/table/emission_category swrs/utility/table/fuel_charge] 2022-02-04T17:04:56Z Dylan Leard <dylan@button.is> # Migration: Map old fkey contraints to new tables in swrs_utility schema
 swrs/public/view/carbon_tax_calculation [swrs/public/view/carbon_tax_calculation@v1.11.1] 2022-02-04T23:45:16Z Dylan Leard <dylan@button.is> # Migration: use the tables in the swrs_utility schema
 swrs/transform/function/load_emission [swrs/transform/function/load_emission@v1.11.1] 2022-02-04T23:48:43Z Dylan Leard <dylan@button.is> # Migration: use the swrs_utility tables in load_emission function
+swrs/transform/function/load_fuel [swrs/transform/function/load_fuel@v1.11.1] 2022-02-04T23:52:45Z Dylan Leard <dylan@button.is> # Migration: use utility tables in load_fuel function
