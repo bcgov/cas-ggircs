@@ -8,6 +8,10 @@ begin;
 
 drop view swrs.carbon_tax_calculation;
 
+-- Column unit_conversion_factor should be numeric, not integer.
+-- Change must be done immediately after dropping the view since the view relies on the column
+alter table swrs.fuel_carbon_tax_details alter column unit_conversion_factor type numeric;
+
 create or replace view swrs.carbon_tax_calculation as
   with fuel_data as (
 
@@ -41,7 +45,7 @@ create or replace view swrs.carbon_tax_calculation as
     from swrs.emission e
     join swrs.fuel_mapping fm
       on e.fuel_mapping_id = fm.id
-      and e.fuel_mapping_id = (select id from swrs.fuel_mapping where fuel_type = 'Vented Natural Gas CH4')
+      and e.fuel_mapping_id = (select id from swrs.fuel_mapping where fuel_type = 'Vented Natural Gas')
     join swrs.fuel_carbon_tax_details ctd
       on fm.fuel_carbon_tax_details_id = ctd.id
 
@@ -101,7 +105,6 @@ comment on column swrs.carbon_tax_calculation.fuel_amount is $$
   The amount of fuel reported for the fuel type.
   This fuel_amount is the annual_fuel_amount as reported in the swrs report multiplied by the unit_conversion_factor in the fuel_carbon_tax_details table to normalize the units with the rate defined in the carbon tax.
   Vented and Flared emissions return a fuel_amount that has been converted to a natural gas fuel_amount of m3.
-  X tonnes of Vented CH4 emissions return a record with a Natural gas fuel amount of Y where Y = X * 1000000 / 678.5 (as per WCI.353 Calculation of Greenhouse Gas Emissions, Equations 350-9 & 360-20: 0.6785 kgCH4/m3)
   X tonnes of Flared CO2 emissions return a record with a Natural gas fuel amount of Y where Y = X * 1000000 / 2151 (as per WCI.20 EF for non-marketable gas, Table 20-3: 2.151 kgCO2/m3 non-marketable NG in BC)
 $$;
 comment on column swrs.carbon_tax_calculation.facility_id is 'The id of the facility the fuel was reported for';
