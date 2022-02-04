@@ -200,3 +200,5 @@ swrs/utility/table/carbon_tax_act_fuel_type [swrs/utility/schema] 2022-02-03T22:
 swrs/utility/table/fuel_carbon_tax_detail [swrs/utility/table/carbon_tax_act_fuel_type] 2022-02-03T22:11:54Z Dylan Leard <dylan@button.is> # add fuel carbon tax details table
 swrs/utility/table/fuel_mapping [swrs/utility/table/fuel_carbon_tax_detail] 2022-02-03T22:27:04Z Dylan Leard <dylan@button.is> # add fuel mapping table to swrs_utility schema
 swrs/utility/table/fuel_charge [swrs/utility/table/carbon_tax_act_fuel_type] 2022-02-03T22:36:17Z Dylan Leard <dylan@button.is> # add table fuel_charge to schema swrs_utility
+swrs/utility/table/emission_category [swrs/utility/schema] 2022-02-03T23:49:41Z Dylan Leard <dylan@button.is> # Table for emission category data
+swrs/utility/table/taxed_venting_emission_type [swrs/utility/schema] 2022-02-04T00:09:31Z Dylan Leard <dylan@button.is> # Table contains all emission types that are carbon taxed in relation to venting
