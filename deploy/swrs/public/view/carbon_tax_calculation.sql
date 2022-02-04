@@ -21,10 +21,10 @@ create or replace view swrs.carbon_tax_calculation as
       ctd.carbon_tax_act_fuel_type_id,
       (coalesce(e.quantity, 0::numeric) * ctd.unit_conversion_factor::numeric) as fuel_amount
     from swrs.emission e
-    join swrs.fuel_mapping fm
+    join swrs_utility.fuel_mapping fm
       on e.fuel_mapping_id = fm.id
-      and e.fuel_mapping_id = (select id from swrs.fuel_mapping where fuel_type = 'Flared Natural Gas CO2')
-    join swrs.fuel_carbon_tax_details ctd
+      and e.fuel_mapping_id = (select id from swrs_utility.fuel_mapping where fuel_type = 'Flared Natural Gas CO2')
+    join swrs_utility.fuel_carbon_tax_detail ctd
       on fm.fuel_carbon_tax_details_id = ctd.id
 
     union
@@ -39,10 +39,10 @@ create or replace view swrs.carbon_tax_calculation as
       ctd.carbon_tax_act_fuel_type_id,
       (coalesce(e.quantity, 0::numeric) * ctd.unit_conversion_factor::numeric) as fuel_amount
     from swrs.emission e
-    join swrs.fuel_mapping fm
+    join swrs_utility.fuel_mapping fm
       on e.fuel_mapping_id = fm.id
-      and e.fuel_mapping_id = (select id from swrs.fuel_mapping where fuel_type = 'Vented Natural Gas CH4')
-    join swrs.fuel_carbon_tax_details ctd
+      and e.fuel_mapping_id = (select id from swrs_utility.fuel_mapping where fuel_type = 'Vented Natural Gas CH4')
+    join swrs_utility.fuel_carbon_tax_detail ctd
       on fm.fuel_carbon_tax_details_id = ctd.id
 
     union
@@ -57,9 +57,9 @@ create or replace view swrs.carbon_tax_calculation as
       ctd.carbon_tax_act_fuel_type_id,
       (coalesce(f.annual_fuel_amount, 0::numeric) * ctd.unit_conversion_factor::numeric) as fuel_amount
     from swrs.fuel f
-    join swrs.fuel_mapping fm
+    join swrs_utility.fuel_mapping fm
       on f.fuel_mapping_id = fm.id
-    join swrs.fuel_carbon_tax_details ctd
+    join swrs_utility.fuel_carbon_tax_detail ctd
       on fm.fuel_carbon_tax_details_id = ctd.id
     join swrs.emission_category ec
       on f.emission_category = ec.swrs_emission_category
@@ -83,9 +83,9 @@ create or replace view swrs.carbon_tax_calculation as
     join swrs.facility as _facility
         on r.id = _facility.report_id
         and _facility.facility_type != 'LFO'
-    join swrs.carbon_tax_act_fuel_type as _cta
+    join swrs_utility.carbon_tax_act_fuel_type as _cta
       on carbon_tax_act_fuel_type_id = _cta.id
-    join swrs.fuel_charge as _fuel_charge
+    join swrs_utility.fuel_charge as _fuel_charge
       on _fuel_charge.carbon_tax_act_fuel_type_id = _cta.id
       and (concat(r.reporting_period_duration::text, '-12-31')::date
       between _fuel_charge.start_date and _fuel_charge.end_date);
