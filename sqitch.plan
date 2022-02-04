@@ -196,3 +196,4 @@ swrs/utility/table/naics_category [swrs/utility/schema] 2022-02-04T00:30:29Z Dyl
 swrs/utility/table/naics_naics_category [swrs/utility/table/naics_category] 2022-02-04T00:35:27Z Dylan Leard <dylan@button.is> # add through table naics_naics_category to schema swrs_utility
 swrs/public/table/remap-fkey-constraints [swrs/utility/table/fuel_mapping swrs/utility/table/emission_category swrs/utility/table/fuel_charge] 2022-02-04T17:04:56Z Dylan Leard <dylan@button.is> # Migration: Map old fkey contraints to new tables in swrs_utility schema
 swrs/public/view/carbon_tax_calculation [swrs/public/view/carbon_tax_calculation@v1.11.1] 2022-02-04T23:45:16Z Dylan Leard <dylan@button.is> # Migration: use the tables in the swrs_utility schema
+swrs/transform/function/load_emission [swrs/transform/function/load_emission@v1.11.1] 2022-02-04T23:48:43Z Dylan Leard <dylan@button.is> # Migration: use the swrs_utility tables in load_emission function
