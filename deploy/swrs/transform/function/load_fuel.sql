@@ -36,7 +36,7 @@ $function$
           and _fuel.activity_name = _unit.activity_name
           and _fuel.units_idx = _unit.units_idx
           and _fuel.unit_idx = _unit.unit_idx
-        left join swrs_load.fuel_mapping as _fuel_mapping
+        left join swrs_utility.fuel_mapping as _fuel_mapping
           on _fuel.fuel_type = _fuel_mapping.fuel_type;
 
     end
