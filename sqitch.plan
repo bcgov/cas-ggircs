@@ -210,3 +210,7 @@ swrs/transform/function/load_fuel_carbon_tax_details [swrs/transform/function/lo
 swrs/transform/function/load_emission_category [swrs/transform/function/load_emission_category@v1.11.1] 2022-02-05T00:31:48Z Dylan Leard <dylan@button.is> # DROP: drop unused load function
 swrs/transform/function/load_carbon_tax_rate_mapping [swrs/transform/function/load_carbon_tax_rate_mapping@v1.11.1] 2022-02-05T00:33:12Z Dylan Leard <dylan@button.is> # DROP: drop unused load function
 swrs/transform/function/load_carbon_tax_act_fuel_type [swrs/transform/function/load_carbon_tax_act_fuel_type@v1.11.1] 2022-02-05T00:34:34Z Dylan Leard <dylan@button.is> # DROP: drop unused load function
+swrs/public/view/pro_rated_implied_emission_factor [swrs/public/view/pro_rated_implied_emission_factor@v1.11.1] 2022-02-05T00:38:09Z Dylan Leard <dylan@button.is> # DROP: drop deprecated view
+swrs/public/view/pro_rated_carbon_tax_rate [swrs/public/view/pro_rated_carbon_tax_rate@v1.11.1] 2022-02-05T00:40:47Z Dylan Leard <dylan@button.is> # DROP: drop deprecated view
+swrs/public/view/naics_category_mapping [swrs/public/view/naics_category_mapping@v1.11.1] 2022-02-05T00:41:44Z Dylan Leard <dylan@button.is> # DROP: drop deprecated view
+swrs/public/view/facility_details [swrs/public/view/facility_details@v1.11.1] 2022-02-05T00:43:04Z Dylan Leard <dylan@button.is> # DROP: drop deprecated view
