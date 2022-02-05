@@ -20,10 +20,7 @@ $function$
   declare
 
     mv_array text[] := $$
-      {carbon_tax_act_fuel_type, naics_mapping, fuel_mapping, fuel_carbon_tax_details,
-       emission_category, taxed_venting_emission_type,
-       naics_category, naics_naics_category, naics_category_type,
-       carbon_tax_rate_mapping, fuel_charge, implied_emission_factor,
+      {
        report, organisation, facility,
        activity, unit, identifier, naics, fuel,
        emission, permit, parent_organisation, address,

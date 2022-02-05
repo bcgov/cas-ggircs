@@ -61,7 +61,7 @@ create or replace view swrs.carbon_tax_calculation as
       on f.fuel_mapping_id = fm.id
     join swrs_utility.fuel_carbon_tax_detail ctd
       on fm.fuel_carbon_tax_detail_id = ctd.id
-    join swrs.emission_category ec
+    join swrs_utility.emission_category ec
       on f.emission_category = ec.swrs_emission_category
       and ec.carbon_taxed=true
 
