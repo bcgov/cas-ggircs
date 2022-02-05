@@ -184,7 +184,6 @@ swrs/transform/function/load_fuel_carbon_tax_details [swrs/transform/function/lo
 swrs/public/view/carbon_tax_calculation [swrs/public/view/carbon_tax_calculation@v1.11.0] 2021-12-09T21:33:56Z Dylan Leard <dylan@button.is> # Migration: update comment for vented emission calculation
 swrs/transform/function/load_fuel_mapping [swrs/transform/function/load_fuel_mapping@v1.11.0] 2021-12-10T17:17:49Z Dylan Leard <dylan@button.is> # Migration: remove unused CH4 and N2O flared gas types from fuel_mapping table
 @v1.11.1 2021-12-10T19:05:02Z Dylan Leard <dylan@button.is> # release v1.11.1
-swrs/transform/function/load_fuel_charge [swrs/transform/function/load_fuel_charge@v1.11.1] 2022-01-10T23:34:48Z Dylan Leard <dylan@button.is> # Migration: fix 2021-22 fuel charge rate for Tires - Shredded
 swrs/utility/schema 2022-02-03T21:58:53Z Dylan Leard <dylan@button.is> # Add a schema for mutations, custom queries and other contextual data relating to data in the swrs ETL schema
 swrs/utility/table/carbon_tax_act_fuel_type [swrs/utility/schema] 2022-02-03T22:04:55Z Dylan Leard <dylan@button.is> # Table contains only the fuel_types listed in the carbon tax act https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/08040_01
 swrs/utility/table/fuel_carbon_tax_detail [swrs/utility/table/carbon_tax_act_fuel_type] 2022-02-03T22:11:54Z Dylan Leard <dylan@button.is> # add fuel carbon tax details table
@@ -198,4 +197,16 @@ swrs/public/table/remap-fkey-constraints [swrs/utility/table/fuel_mapping swrs/u
 swrs/public/view/carbon_tax_calculation [swrs/public/view/carbon_tax_calculation@v1.11.1] 2022-02-04T23:45:16Z Dylan Leard <dylan@button.is> # Migration: use the tables in the swrs_utility schema
 swrs/transform/function/load_emission [swrs/transform/function/load_emission@v1.11.1] 2022-02-04T23:48:43Z Dylan Leard <dylan@button.is> # Migration: use the swrs_utility tables in load_emission function
 swrs/transform/function/load_fuel [swrs/transform/function/load_fuel@v1.11.1] 2022-02-04T23:52:45Z Dylan Leard <dylan@button.is> # Migration: use utility tables in load_fuel function
-swrs/transform/function/load [swrs/transform/function/load@v1.11.1] 2022-02-04T23:54:06Z Dylan Leard <dylan@button.is> # Migration: remove non ETL tables from swrs.load function 
+swrs/transform/function/load [swrs/transform/function/load@v1.11.1] 2022-02-04T23:54:06Z Dylan Leard <dylan@button.is> # Migration: remove non ETL tables from swrs.load function
+swrs/transform/function/load_taxed_venting_emission_type [swrs/transform/function/load_taxed_venting_emission_type@v1.11.1] 2022-02-05T00:06:27Z Dylan Leard <dylan@button.is> # DROP: drop unused load function
+swrs/transform/function/load_naics_naics_category [swrs/transform/function/load_naics_naics_category@v1.11.1] 2022-02-05T00:12:21Z Dylan Leard <dylan@button.is> # DROP: drop unused load function
+swrs/transform/function/load_naics_mapping [swrs/transform/function/load_naics_mapping@v1.11.1] 2022-02-05T00:14:29Z Dylan Leard <dylan@button.is> # DROP: drop unused load function
+swrs/transform/function/load_naics_category [swrs/transform/function/load_naics_category@v1.11.1] 2022-02-05T00:15:56Z Dylan Leard <dylan@button.is> # DROP: drop unused load function
+swrs/transform/function/load_naics_category_type [swrs/transform/function/load_naics_category_type@v1.11.1] 2022-02-05T00:17:11Z Dylan Leard <dylan@button.is> # DROP: drop unused load function
+swrs/transform/function/load_implied_emission_factor [swrs/transform/function/load_implied_emission_factor@v1.11.1] 2022-02-05T00:18:46Z Dylan Leard <dylan@button.is> # DROP: drop unused load function
+swrs/transform/function/load_fuel_mapping [swrs/transform/function/load_fuel_mapping@v1.11.1] 2022-02-05T00:20:23Z Dylan Leard <dylan@button.is> # DROP: drop unused load function
+swrs/transform/function/load_fuel_charge [swrs/transform/function/load_fuel_charge@v1.11.1] 2022-01-10T23:34:48Z Dylan Leard <dylan@button.is> # DROP: drop unused load function
+swrs/transform/function/load_fuel_carbon_tax_details [swrs/transform/function/load_fuel_carbon_tax_details@v1.11.1] 2022-02-05T00:29:30Z Dylan Leard <dylan@button.is> # DROP: drop unused load function
+swrs/transform/function/load_emission_category [swrs/transform/function/load_emission_category@v1.11.1] 2022-02-05T00:31:48Z Dylan Leard <dylan@button.is> # DROP: drop unused load function
+swrs/transform/function/load_carbon_tax_rate_mapping [swrs/transform/function/load_carbon_tax_rate_mapping@v1.11.1] 2022-02-05T00:33:12Z Dylan Leard <dylan@button.is> # DROP: drop unused load function
+swrs/transform/function/load_carbon_tax_act_fuel_type [swrs/transform/function/load_carbon_tax_act_fuel_type@v1.11.1] 2022-02-05T00:34:34Z Dylan Leard <dylan@button.is> # DROP: drop unused load function

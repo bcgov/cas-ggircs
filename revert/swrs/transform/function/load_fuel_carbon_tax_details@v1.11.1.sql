@@ -92,8 +92,10 @@ $function$
         insert into swrs_load.fuel_carbon_tax_details (normalized_fuel_type, state, carbon_tax_act_fuel_type_id, cta_rate_units, unit_conversion_factor) values ('Vegetable Oil (kilolitres)','(Liquid)',null,'n/a',1000);
         insert into swrs_load.fuel_carbon_tax_details (normalized_fuel_type, state, carbon_tax_act_fuel_type_id, cta_rate_units, unit_conversion_factor) values ('Waste Oil (kilolitres)','(Liquid)',null,'n/a',1000);
         insert into swrs_load.fuel_carbon_tax_details (normalized_fuel_type, state, carbon_tax_act_fuel_type_id, cta_rate_units, unit_conversion_factor) values ('Wood Waste (bone dry tonnes)','(Solid)',null,'n/a',1);
-        insert into swrs_load.fuel_carbon_tax_details (normalized_fuel_type, state, carbon_tax_act_fuel_type_id, cta_rate_units, unit_conversion_factor) values ('Flared Natural Gas CO2','Gas',13,'$/m3',1000000/2151.0);  -- unit_conversion_factor as per WCI.20 Table 20-3
-        insert into swrs_load.fuel_carbon_tax_details (normalized_fuel_type, state, carbon_tax_act_fuel_type_id, cta_rate_units, unit_conversion_factor) values ('Vented Natural Gas CH4','Gas',13,'$/m3',1000000/678.5);       -- unit_conversion_factor as per WCI.353 Equations 350-9 &  360-20
+        insert into swrs_load.fuel_carbon_tax_details (normalized_fuel_type, state, carbon_tax_act_fuel_type_id, cta_rate_units, unit_conversion_factor) values ('Flared Natural Gas CO2','Gas',13,'$/m3',1000000/2151.0);
+        insert into swrs_load.fuel_carbon_tax_details (normalized_fuel_type, state, carbon_tax_act_fuel_type_id, cta_rate_units, unit_conversion_factor) values ('Flared Natural Gas CH4','Gas',13,'$/m3',1000000/6.5);
+        insert into swrs_load.fuel_carbon_tax_details (normalized_fuel_type, state, carbon_tax_act_fuel_type_id, cta_rate_units, unit_conversion_factor) values ('Flared Natural Gas N20','Gas',13,'$/m3',1000000/0.06);
+        insert into swrs_load.fuel_carbon_tax_details (normalized_fuel_type, state, carbon_tax_act_fuel_type_id, cta_rate_units, unit_conversion_factor) values ('Vented Natural Gas','Gas',13,'$/m3',1);
         insert into swrs_load.fuel_carbon_tax_details (normalized_fuel_type, state, carbon_tax_act_fuel_type_id, cta_rate_units, unit_conversion_factor) values ('Carpet fibre (tonnes)','(Solid)',null,'n/a',1);
     end
 $function$ language plpgsql volatile;
