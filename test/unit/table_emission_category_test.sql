@@ -6,16 +6,16 @@ reset client_min_messages;
 begin;
 select plan(3);
 
--- exists in swrs schema
+-- exists in swrs_utility schema
 select has_table(
-    'swrs', 'emission_category',
-    'swrs.emission_category should exist as a table'
+    'swrs_utility', 'emission_category',
+    'swrs_utility.emission_category should exist as a table'
 );
 
 -- primary key
-select col_is_pk('swrs', 'emission_category', 'id', 'Column id is Primary Key');
+select col_is_pk('swrs_utility', 'emission_category', 'id', 'Column id is Primary Key');
 
-select columns_are('swrs'::name, 'emission_category'::name, array[
+select columns_are('swrs_utility'::name, 'emission_category'::name, array[
   'id'::name,
   'swrs_emission_category'::name,
   'carbon_taxed'::name,
