@@ -2,6 +2,15 @@
 
 begin;
 
-select pg_get_functiondef('swrs_transform.load_carbon_tax_rate_mapping()'::regprocedure);
+do $$
+  begin
+
+    if (select exists(select * from pg_proc where proname='swrs.load_carbon_tax_rate_mapping')) then
+      raise exception 'load_carbon_tax_rate_mapping() exists when it should not';
+    else
+      perform true;
+    end if;
+
+  end; $$;
 
 rollback;
