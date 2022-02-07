@@ -189,3 +189,4 @@ swrs/public/view/pro_rated_implied_emission_factor [swrs/public/view/pro_rated_i
 swrs/public/view/pro_rated_carbon_tax_rate [swrs/public/view/pro_rated_carbon_tax_rate@v1.11.1] 2022-02-07T22:22:44Z Dylan Leard <dylan@button.is> # DROP: drop deprecated view
 swrs/public/view/naics_category_mapping [swrs/public/view/naics_category_mapping@v1.11.1] 2022-02-07T22:23:26Z Dylan Leard <dylan@button.is> # DROP: drop deprecated view
 swrs/public/view/facility_details [swrs/public/view/facility_details@v1.11.1] 2022-02-07T22:23:59Z Dylan Leard <dylan@button.is> # DROP: drop deprecated view
+swrs/public/table/drop-deprecated-tables 2022-02-07T22:28:49Z Dylan Leard <dylan@button.is> # DROP: drop deprecated tables from swrs schema
