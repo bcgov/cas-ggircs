@@ -1,7 +1,12 @@
--- Revert ggircs:table_carbon_tax_rate_mapping from pg
+-- Deploy ggircs:table_carbon_tax_rate_mapping to pg
+-- requires: schema_ggircs_swrs
 
 begin;
 
-drop table swrs.carbon_tax_rate_mapping;
+/**
+    do nothing
+    this rework is intended to ignore verification of the old non-idempotent change for this table which was dropped in
+    the migration 'drop-non-etl-tables'.
+**/
 
 commit;

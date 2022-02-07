@@ -1,7 +1,11 @@
--- Revert ggircs:swrs/public/table/fuel_charge_002 from pg
+-- Deploy ggircs:swrs/public/table/fuel_charge_002 to pg
 
 begin;
 
-alter table swrs.fuel_charge drop column carbon_tax_act_fuel_type_id;
+/**
+    do nothing
+    this rework is intended to ignore verification of the old non-idempotent change for this table which was dropped in
+    the migration 'drop-non-etl-tables'.
+**/
 
 commit;

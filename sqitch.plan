@@ -215,3 +215,13 @@ swrs/public/view/pro_rated_carbon_tax_rate [swrs/public/view/pro_rated_carbon_ta
 swrs/public/view/naics_category_mapping [swrs/public/view/naics_category_mapping@v1.11.1] 2022-02-05T00:41:44Z Dylan Leard <dylan@button.is> # DROP: drop deprecated view
 swrs/public/view/facility_details [swrs/public/view/facility_details@v1.11.1] 2022-02-05T00:43:04Z Dylan Leard <dylan@button.is> # DROP: drop deprecated view
 swrs/public/table/drop-non-etl-tables 2022-02-05T00:44:52Z Dylan Leard <dylan@button.is> # Drop all non-etl tables (moved to swrs_utility schema or dropped as deprecated)
+swrs/public/table/fuel_carbon_tax_details_002 [swrs/public/table/fuel_carbon_tax_details_002@v1.11.1] 2022-02-07T20:49:26Z Dylan Leard <dylan@button.is> # DROP: rework old non-idempotent change for dropped table
+swrs/public/table/fuel_carbon_tax_details_001 [swrs/public/table/fuel_carbon_tax_details_001@v1.11.1] 2022-02-07T20:08:25Z Dylan Leard <dylan@button.is> # DROP: rework old non-idempotent change for dropped table
+swrs/public/table/fuel_carbon_tax_details [swrs/public/table/fuel_carbon_tax_details@v1.11.1] 2022-02-07T20:49:39Z Dylan Leard <dylan@button.is> # DROP: rework old non-idempotent change for dropped table
+swrs/public/table/carbon_tax_act_fuel_type [swrs/public/table/carbon_tax_act_fuel_type@v1.11.1] 2022-02-07T20:51:03Z Dylan Leard <dylan@button.is> # DROP: rework old non-idempotent change for dropped table
+swrs/public/table/carbon_tax_rate_mapping [swrs/public/table/carbon_tax_rate_mapping@v1.11.1] 2022-02-07T20:51:27Z Dylan Leard <dylan@button.is> # DROP: rework old non-idempotent change for dropped table
+swrs/public/table/emission_category [swrs/public/table/emission_category@v1.11.1] 2022-02-07T20:51:46Z Dylan Leard <dylan@button.is> # DROP: rework old non-idempotent change for dropped table
+swrs/public/table/fuel_charge_003 [swrs/public/table/fuel_charge_003@v1.11.1] 2022-02-07T20:52:03Z Dylan Leard <dylan@button.is> # DROP: rework old non-idempotent change for dropped table
+swrs/public/table/fuel_charge_002 [swrs/public/table/fuel_charge_002@v1.11.1] 2022-02-07T20:52:07Z Dylan Leard <dylan@button.is> # DROP: rework old non-idempotent change for dropped table
+swrs/public/table/fuel_charge_001 [swrs/public/table/fuel_charge_001@v1.11.1] 2022-02-07T20:52:12Z Dylan Leard <dylan@button.is> # DROP: rework old non-idempotent change for dropped table
+swrs/public/table/fuel_charge [swrs/public/table/fuel_charge@v1.11.1] 2022-02-07T20:52:21Z Dylan Leard <dylan@button.is> # DROP: rework old non-idempotent change for dropped table

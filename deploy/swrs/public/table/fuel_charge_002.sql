@@ -2,10 +2,10 @@
 
 begin;
 
-alter table swrs.fuel_charge add column metadata varchar(10000);
-comment on column swrs.fuel_charge.metadata is 'Column contains metadata pertaining to each fuel charge row';
-alter table swrs.fuel_charge add column carbon_tax_act_fuel_type_id int references swrs.carbon_tax_act_fuel_type(id);
-comment on column swrs.fuel_charge.carbon_tax_act_fuel_type_id is 'Foreign key references the carbon_tax_act_fuel_type table';
-create index swrs_fuel_charge_ct_fuels_foreign_key on swrs.fuel_charge(carbon_tax_act_fuel_type_id);
+/**
+    do nothing
+    this rework is intended to ignore verification of the old non-idempotent change for this table which was dropped in
+    the migration 'drop-non-etl-tables'.
+**/
 
 commit;
