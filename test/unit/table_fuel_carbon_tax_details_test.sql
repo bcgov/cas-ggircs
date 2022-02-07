@@ -35,4 +35,3 @@ SELECT has_index(
 
 select * from finish();
 rollback;
-

@@ -14,4 +14,3 @@ do $$
   end; $$;
 
 rollback;
-
