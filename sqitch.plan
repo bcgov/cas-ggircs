@@ -190,3 +190,8 @@ swrs/public/view/pro_rated_carbon_tax_rate [swrs/public/view/pro_rated_carbon_ta
 swrs/public/view/naics_category_mapping [swrs/public/view/naics_category_mapping@v1.11.1] 2022-02-07T22:23:26Z Dylan Leard <dylan@button.is> # DROP: drop deprecated view
 swrs/public/view/facility_details [swrs/public/view/facility_details@v1.11.1] 2022-02-07T22:23:59Z Dylan Leard <dylan@button.is> # DROP: drop deprecated view
 swrs/public/table/drop-deprecated-tables 2022-02-07T22:28:49Z Dylan Leard <dylan@button.is> # DROP: drop deprecated tables from swrs schema
+swrs/transform/function/load_carbon_tax_rate_mapping [swrs/transform/function/load_carbon_tax_rate_mapping@v1.11.1] 2022-02-07T22:35:10Z Dylan Leard <dylan@button.is> # DROP: drop unused load function
+swrs/transform/function/load_implied_emission_factor [swrs/transform/function/load_implied_emission_factor@v1.11.1] 2022-02-07T22:37:52Z Dylan Leard <dylan@button.is> # DROP: drop unused load function
+swrs/transform/function/load_naics_category_type [swrs/transform/function/load_naics_category_type@v1.11.1] 2022-02-07T22:39:18Z Dylan Leard <dylan@button.is> # DROP: drop unused load function
+swrs/transform/function/load_naics_mapping [swrs/transform/function/load_naics_mapping@v1.11.1] 2022-02-07T22:40:15Z Dylan Leard <dylan@button.is> # DROP: drop unused load function
+swrs/transform/function/load [swrs/transform/function/load@v1.11.1] 2022-02-07T22:41:31Z Dylan Leard <dylan@button.is> # Migration: remove deprecated tables from load function

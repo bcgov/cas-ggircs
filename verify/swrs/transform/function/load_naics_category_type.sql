@@ -2,6 +2,15 @@
 
 begin;
 
-select pg_get_functiondef('swrs_transform.load_naics_category_type()'::regprocedure);
+do $$
+  begin
+
+    if (select exists(select * from pg_proc where proname='swrs.load_naics_category_type')) then
+      raise exception 'load_naics_category_type() exists when it should not';
+    else
+      perform true;
+    end if;
+
+  end; $$;
 
 rollback;
