@@ -1,7 +1,12 @@
--- Revert ggircs:swrs/public/table/fuel_mapping_001 from pg
+-- Deploy ggircs:swrs/public/table/fuel_mapping_001 to pg
+-- requires: swrs/public/table/fuel_mapping
 
 begin;
 
-drop index if exists swrs.fuel_mapping_ct_details_foreign_key;
+/**
+    do nothing
+    this rework is intended to ignore verification of the old non-idempotent change for this table which was dropped in
+    the migration 'drop-non-etl-tables'.
+**/
 
 commit;

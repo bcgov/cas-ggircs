@@ -1,7 +1,12 @@
--- Revert ggircs:table_implied_emission_factor from pg
+-- Deploy ggircs:table_implied_emission_factor to pg
+-- requires: schema_ggircs_swrs
 
 begin;
 
-drop table swrs.implied_emission_factor;
+/**
+    do nothing
+    this rework is intended to ignore verification of the old non-idempotent change for this table which was dropped in
+    the migration 'drop-non-etl-tables'.
+**/
 
 commit;

@@ -3,6 +3,10 @@
 
 begin;
 
-create index fuel_mapping_ct_details_foreign_key on swrs.fuel_mapping(fuel_carbon_tax_details_id);
+/**
+    do nothing
+    this rework is intended to ignore verification of the old non-idempotent change for this table which was dropped in
+    the migration 'drop-non-etl-tables'.
+**/
 
 commit;

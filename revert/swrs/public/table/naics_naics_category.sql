@@ -1,7 +1,12 @@
--- Revert swrs_transform:table_naics_naics_category from pg
+-- Deploy swrs_transform:table_naics_naics_category to pg
+-- requires: schema_ggircs_swrs
 
 begin;
 
-drop table swrs.naics_naics_category;
+/**
+    do nothing
+    this rework is intended to ignore verification of the old non-idempotent change for this table which was dropped in
+    the migration 'drop-non-etl-tables'.
+**/
 
 commit;

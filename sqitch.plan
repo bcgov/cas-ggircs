@@ -225,3 +225,11 @@ swrs/public/table/fuel_charge_003 [swrs/public/table/fuel_charge_003@v1.11.1] 20
 swrs/public/table/fuel_charge_002 [swrs/public/table/fuel_charge_002@v1.11.1] 2022-02-07T20:52:07Z Dylan Leard <dylan@button.is> # DROP: rework old non-idempotent change for dropped table
 swrs/public/table/fuel_charge_001 [swrs/public/table/fuel_charge_001@v1.11.1] 2022-02-07T20:52:12Z Dylan Leard <dylan@button.is> # DROP: rework old non-idempotent change for dropped table
 swrs/public/table/fuel_charge [swrs/public/table/fuel_charge@v1.11.1] 2022-02-07T20:52:21Z Dylan Leard <dylan@button.is> # DROP: rework old non-idempotent change for dropped table
+swrs/public/table/fuel_mapping_001 [swrs/public/table/fuel_mapping_001@v1.11.1] 2022-02-07T21:04:33Z Dylan Leard <dylan@button.is> # DROP: rework old non-idempotent change for dropped table
+swrs/public/table/fuel_mapping [swrs/public/table/fuel_mapping@v1.11.1] 2022-02-07T21:04:38Z Dylan Leard <dylan@button.is> # DROP: rework old non-idempotent change for dropped table
+swrs/public/table/implied_emission_factor [swrs/public/table/implied_emission_factor@v1.11.1] 2022-02-07T21:04:52Z Dylan Leard <dylan@button.is> # DROP: rework old non-idempotent change for dropped table
+swrs/public/table/naics_category_type [swrs/public/table/naics_category_type@v1.11.1] 2022-02-07T21:05:14Z Dylan Leard <dylan@button.is> # DROP: rework old non-idempotent change for dropped table
+swrs/public/table/naics_category [swrs/public/table/naics_category@v1.11.1] 2022-02-07T21:05:21Z Dylan Leard <dylan@button.is> # DROP: rework old non-idempotent change for dropped table
+swrs/public/table/naics_mapping [swrs/public/table/naics_mapping@v1.11.1] 2022-02-07T21:05:31Z Dylan Leard <dylan@button.is> # DROP: rework old non-idempotent change for dropped table
+swrs/public/table/naics_naics_category [swrs/public/table/naics_naics_category@v1.11.1] 2022-02-07T21:05:43Z Dylan Leard <dylan@button.is> # DROP: rework old non-idempotent change for dropped table
+swrs/public/table/taxed_venting_emission_type [swrs/public/table/taxed_venting_emission_type@v1.11.1] 2022-02-07T21:06:07Z Dylan Leard <dylan@button.is> # DROP: rework old non-idempotent change for dropped table
