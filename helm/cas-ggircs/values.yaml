@@ -9,6 +9,14 @@ ciip:
   prefix: ~
   environment: ~
 
+# Cif app configuration
+# These values need to be set for the chart to configure access from the cif application/namepsace
+cif:
+  namespace: ~
+  release: ~
+  prefix: ~
+  environment: ~
+
 metabase:
   instanceName: cas-metabase
 
