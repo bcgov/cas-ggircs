@@ -269,8 +269,6 @@ $$);
 SET client_min_messages TO WARNING; -- load is a bit verbose
 select swrs_transform.load(true, false);
 
-select * from swrs.emission_category;
-
 -- Table swrs.fuel exists
 select has_table('swrs'::name, 'fuel'::name);
 

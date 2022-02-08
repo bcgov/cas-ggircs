@@ -6,19 +6,19 @@ reset client_min_messages;
 begin;
 select plan(5);
 
--- exists in swrs schema
+-- exists in swrs_utility schema
 select has_table(
-    'swrs', 'fuel_charge',
-    'swrs.fuel_charge should exist as a table'
+    'swrs_utility', 'fuel_charge',
+    'swrs_utility.fuel_charge should exist as a table'
 );
 
 -- primary key
-select col_is_pk('swrs', 'fuel_charge', 'id', 'Column id is Primary Key');
+select col_is_pk('swrs_utility', 'fuel_charge', 'id', 'Column id is Primary Key');
 
 -- foreign keys
-select col_is_fk('swrs', 'fuel_charge', 'carbon_tax_act_fuel_type_id', 'has a foreign key to swrs.carbon_tax_act_fuel_type');
+select col_is_fk('swrs_utility', 'fuel_charge', 'carbon_tax_act_fuel_type_id', 'has a foreign key to swrs_utility.carbon_tax_act_fuel_type');
 
-select columns_are('swrs'::name, 'fuel_charge'::name, array[
+select columns_are('swrs_utility'::name, 'fuel_charge'::name, array[
   'id'::name,
   'fuel_charge'::name,
   'start_date'::name,
@@ -28,10 +28,10 @@ select columns_are('swrs'::name, 'fuel_charge'::name, array[
 ]);
 
 SELECT has_index(
-  'swrs',
+  'swrs_utility',
   'fuel_charge',
-  'swrs_fuel_charge_ct_fuels_foreign_key',
-  'fuel_charge has index: swrs_fuel_charge_ct_fuels_foreign_key' );
+  'swrs_utility_fuel_charge_ct_fuels_foreign_key',
+  'fuel_charge has index: swrs_utility_fuel_charge_ct_fuels_foreign_key' );
 
 select * from finish();
 rollback;

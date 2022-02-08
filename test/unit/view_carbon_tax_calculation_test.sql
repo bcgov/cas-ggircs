@@ -16,7 +16,7 @@ select has_view(
 select columns_are('swrs'::name, 'carbon_tax_calculation'::name, array[
     'report_id'::name,
     'fuel_mapping_id'::name,
-    'fuel_carbon_tax_details_id'::name,
+    'fuel_carbon_tax_detail_id'::name,
     'carbon_tax_act_fuel_type_id'::name,
     'facility_id'::name,
     'facility_name'::name,
@@ -187,13 +187,13 @@ select results_eq(
           select (fuel_charge * unit_conversion_factor) as flat_rate
           from swrs.fuel f
           join swrs.report r on f.report_id = r.id
-          join swrs.fuel_mapping fm
+          join swrs_utility.fuel_mapping fm
           on f.fuel_mapping_id = fm.id
-          join swrs.fuel_carbon_tax_details ctd
-          on fm.fuel_carbon_tax_details_id = ctd.id
-          join swrs.carbon_tax_act_fuel_type cta
+          join swrs_utility.fuel_carbon_tax_detail ctd
+          on fm.fuel_carbon_tax_detail_id = ctd.id
+          join swrs_utility.carbon_tax_act_fuel_type cta
           on ctd.carbon_tax_act_fuel_type_id = cta.id
-          join swrs.fuel_charge fc
+          join swrs_utility.fuel_charge fc
           on fc.carbon_tax_act_fuel_type_id = cta.id
           and f.fuel_type = 'Residual Fuel Oil (#5 & 6)'
           and concat(r.reporting_period_duration::text, '-12-31')::date between fc.start_date and fc.end_date
@@ -250,7 +250,7 @@ select results_eq(
 );
 
 select is(
-    (select gas_type from swrs.emission where fuel_mapping_id = (select id from swrs.fuel_mapping where fuel_type = 'Vented Natural Gas CH4')),
+    (select gas_type from swrs.emission where fuel_mapping_id = (select id from swrs_utility.fuel_mapping where fuel_type = 'Vented Natural Gas CH4')),
     'CH4'::varchar,
     'swrs.carbon_tax_calculation only considers the gas_type CH4 when calculating vented emissions'
 );
