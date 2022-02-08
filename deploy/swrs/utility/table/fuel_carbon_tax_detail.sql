@@ -5,7 +5,7 @@ begin;
 
 create table swrs_utility.fuel_carbon_tax_detail (
   id integer generated always as identity primary key,
-  carbon_tax_act_fuel_type_id int references swrs.carbon_tax_act_fuel_type(id),
+  carbon_tax_act_fuel_type_id int references swrs_utility.carbon_tax_act_fuel_type(id),
   normalized_fuel_type varchar(1000),
   state varchar(1000),
   cta_rate_units varchar(1000),
