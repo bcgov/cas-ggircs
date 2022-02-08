@@ -9,7 +9,7 @@ create table swrs_utility.fuel_carbon_tax_detail (
   normalized_fuel_type varchar(1000),
   state varchar(1000),
   cta_rate_units varchar(1000),
-  unit_conversion_factor integer
+  unit_conversion_factor numeric
 );
 
 create index swrs_utility_ctd_ct_fuels_fkey on swrs_utility.fuel_carbon_tax_detail(carbon_tax_act_fuel_type_id);
