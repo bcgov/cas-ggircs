@@ -5,4 +5,3 @@ begin;
 drop table swrs_utility.taxed_venting_emission_type;
 
 commit;
-

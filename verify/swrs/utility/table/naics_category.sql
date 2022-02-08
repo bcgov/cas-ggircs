@@ -5,4 +5,3 @@ begin;
 select pg_catalog.has_table_privilege('swrs_utility.naics_category', 'select');
 
 rollback;
-
