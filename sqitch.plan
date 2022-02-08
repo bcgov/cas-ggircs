@@ -215,3 +215,4 @@ swrs/transform/function/load_fuel_mapping [swrs/transform/function/load_fuel_map
 swrs/transform/function/load_naics_category [swrs/transform/function/load_naics_category@v1.11.1] 2022-02-07T23:48:44Z Dylan Leard <dylan@button.is> # DROP: drop unused load function
 swrs/transform/function/load_naics_naics_category [swrs/transform/function/load_naics_naics_category@v1.11.1] 2022-02-07T23:49:18Z Dylan Leard <dylan@button.is> # DROP: drop unused load function
 swrs/transform/function/load_taxed_venting_emission_type [swrs/transform/function/load_taxed_venting_emission_type@v1.11.1] 2022-02-07T23:49:57Z Dylan Leard <dylan@button.is> # DROP: drop unused load function
+swrs/public/table/drop-non-etl-tables 2022-02-08T00:23:29Z Dylan Leard <dylan@button.is> # DROP: drop all non-etl tables (moved to swrs_utility schema)
