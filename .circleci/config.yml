@@ -79,9 +79,9 @@ jobs:
             --set ciip.release="cas-ciip-portal" \
             --set ciip.prefix="09269b" \
             --set ciip.environment="dev" \
-            --set ciip.release="cas-cif" \
-            --set ciip.prefix="c53ff1" \
-            --set ciip.environment="dev" \
+            --set cif.release="cas-cif" \
+            --set cif.prefix="c53ff1" \
+            --set cif.environment="dev" \
             --set download-ggircs-dags.enabled=false \
             --set download-swrs-dags.enabled=false \
             --set trigger-ggircs-deploy-db.enabled=false \
