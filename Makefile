@@ -213,6 +213,10 @@ install: whoami
 			--set ciip.namespace="$(CIIP_NAMESPACE_PREFIX)-$(ENVIRONMENT)" \
 			--set ciip.prefix="$(CIIP_NAMESPACE_PREFIX)" \
 			--set ciip.environment="$(ENVIRONMENT)" \
+			--set cif.release=cas-cif \
+			--set cif.namespace="$(CIF_NAMESPACE_PREFIX)-$(ENVIRONMENT)" \
+			--set cif.prefix="$(CIF_NAMESPACE_PREFIX)" \
+			--set cif.environment="$(ENVIRONMENT)" \
 			--set app.route.ssl.enable=false \
 			--set nginx-sidecar.sslTermination=false \
 			cas-ggircs ./helm/cas-ggircs; \
@@ -228,11 +232,19 @@ install: whoami
 		--set ciip.namespace="$(CIIP_NAMESPACE_PREFIX)-$(ENVIRONMENT)" \
 		--set ciip.prefix="$(CIIP_NAMESPACE_PREFIX)" \
 		--set ciip.environment="$(ENVIRONMENT)" \
+		--set cif.release=cas-cif \
+		--set cif.namespace="$(CIF_NAMESPACE_PREFIX)-$(ENVIRONMENT)" \
+		--set cif.prefix="$(CIF_NAMESPACE_PREFIX)" \
+		--set cif.environment="$(ENVIRONMENT)" \
 		cas-ggircs ./helm/cas-ggircs
 	# Copying generated ggircs database secret to ciip namespace, removing namespace-specific metadata
 	$(OC) get secret cas-ggircs --namespace=$(GGIRCS_NAMESPACE_PREFIX)-$(ENVIRONMENT) -o json \
 		| jq 'del(.metadata.namespace,.metadata.resourceVersion,.metadata.uid,.metadata.annotations,.metadata.managedFields,.metadata.selfLink) | .metadata.creationTimestamp=null' \
 		| oc apply --namespace="$(CIIP_NAMESPACE_PREFIX)-$(ENVIRONMENT)" -f -
+	# Copying generated ggircs database secret to cif namespace, removing namespace-specific metadata
+	$(OC) get secret cas-ggircs --namespace=$(GGIRCS_NAMESPACE_PREFIX)-$(ENVIRONMENT) -o json \
+		| jq 'del(.metadata.namespace,.metadata.resourceVersion,.metadata.uid,.metadata.annotations,.metadata.managedFields,.metadata.selfLink) | .metadata.creationTimestamp=null' \
+		| oc apply --namespace="$(CIF_NAMESPACE_PREFIX)-$(ENVIRONMENT)" -f -
 endif
 
 .PHONY: lint_chart
@@ -253,6 +265,10 @@ lint_chart:
 		--set ciip.namespace=lint-dev \
 		--set ciip.prefix=lint \
 		--set ciip.environment=dev \
+		--set cif.release=cas-cif \
+		--set cif.namespace=lint-cif-dev \
+		--set cif.prefix=lint-cif \
+		--set cif.environment=dev \
 		cas-ggircs ./helm/cas-ggircs; \
 	helm template --validate \
 		--set defaultImageTag=$(GIT_SHA1) \
@@ -264,6 +280,10 @@ lint_chart:
 		--set ciip.namespace=lint-test \
 		--set ciip.prefix=lint \
 		--set ciip.environment=test \
+		--set cif.release=cas-cif \
+		--set cif.namespace=lint-cif-test \
+		--set cif.prefix=lint-cif \
+		--set cif.environment=test \
 		cas-ggircs ./helm/cas-ggircs; \
 	helm template --validate \
 		--set defaultImageTag=$(GIT_SHA1) \
@@ -275,6 +295,10 @@ lint_chart:
 		--set ciip.namespace=lint-prod \
 		--set ciip.prefix=lint \
 		--set ciip.environment=prod \
+		--set cif.release=cas-cif \
+		--set cif.namespace=lint-cif-prod \
+		--set cif.prefix=lint-cif \
+		--set cif.environment=prod \
 		cas-ggircs ./helm/cas-ggircs;
 
 .PHONY: mock_storageclass

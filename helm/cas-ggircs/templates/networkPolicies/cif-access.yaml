@@ -1,0 +1,20 @@
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: {{ .Release.Name }}-cif-access
+  labels:
+    release: {{ .Release.Name }}
+{{ include "cas-ggircs.labels" . | nindent 4 }}
+spec:
+  podSelector:
+    matchLabels:
+      release: {{ .Release.Name }}
+  ingress:
+    - from:
+      - namespaceSelector:
+          matchLabels:
+            name: {{ .Values.cif.prefix }}
+            environment: {{ .Values.cif.environment }}
+        podSelector:
+          matchLabels:
+            release: {{ .Values.cif.release }}
