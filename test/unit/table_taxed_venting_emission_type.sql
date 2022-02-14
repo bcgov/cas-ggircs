@@ -6,16 +6,16 @@ reset client_min_messages;
 begin;
 select plan(3);
 
--- exists in swrs schema
+-- exists in ggircs_parameters schema
 select has_table(
-    'swrs', 'taxed_venting_emission_type',
-    'swrs.taxed_venting_emission_type should exist as a table'
+    'ggircs_parameters', 'taxed_venting_emission_type',
+    'ggircs_parameters.taxed_venting_emission_type should exist as a table'
 );
 
 -- primary key
-select col_is_pk('swrs', 'taxed_venting_emission_type', 'id', 'Column id is Primary Key');
+select col_is_pk('ggircs_parameters', 'taxed_venting_emission_type', 'id', 'Column id is Primary Key');
 
-select columns_are('swrs'::name, 'taxed_venting_emission_type'::name, array[
+select columns_are('ggircs_parameters'::name, 'taxed_venting_emission_type'::name, array[
   'id'::name,
   'taxed_venting_emission_type'::name
 ]);

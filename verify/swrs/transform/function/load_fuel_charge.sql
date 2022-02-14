@@ -2,6 +2,15 @@
 
 begin;
 
-select pg_get_functiondef('swrs_transform.load_fuel_charge()'::regprocedure);
+do $$
+  begin
+
+    if (select exists(select * from pg_proc where proname='swrs.load_fuel_charge')) then
+      raise exception 'load_fuel_charge() exists when it should not';
+    else
+      perform true;
+    end if;
+
+  end; $$;
 
 rollback;

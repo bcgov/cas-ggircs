@@ -6,19 +6,19 @@ reset client_min_messages;
 begin;
 select plan(5);
 
--- exists in swrs schema
+-- exists in ggircs_parameters schema
 select has_table(
-    'swrs', 'fuel_carbon_tax_details',
-    'swrs.fuel_carbon_tax_details should exist as a table'
+    'ggircs_parameters', 'fuel_carbon_tax_detail',
+    'ggircs_parameters.fuel_carbon_tax_detail should exist as a table'
 );
 
 -- primary key
-select col_is_pk('swrs', 'fuel_carbon_tax_details', 'id', 'Column id is Primary Key');
+select col_is_pk('ggircs_parameters', 'fuel_carbon_tax_detail', 'id', 'Column id is Primary Key');
 
 -- foreign keys
-select col_is_fk('swrs', 'fuel_carbon_tax_details', 'carbon_tax_act_fuel_type_id', 'has a foreign key to swrs.carbon_tax_act_fuel_type');
+select col_is_fk('ggircs_parameters', 'fuel_carbon_tax_detail', 'carbon_tax_act_fuel_type_id', 'has a foreign key to ggircs_parameters.carbon_tax_act_fuel_type');
 
-select columns_are('swrs'::name, 'fuel_carbon_tax_details'::name, array[
+select columns_are('ggircs_parameters'::name, 'fuel_carbon_tax_detail'::name, array[
   'id'::name,
   'normalized_fuel_type'::name,
   'state'::name,
@@ -28,10 +28,10 @@ select columns_are('swrs'::name, 'fuel_carbon_tax_details'::name, array[
 ]);
 
 SELECT has_index(
-  'swrs',
-  'fuel_carbon_tax_details',
-  'swrs_ctd_ct_fuels_foreign_key',
-  'fuel_carbon_tax_details has index: swrs_ctd_ct_fuels_foreign_key' );
+  'ggircs_parameters',
+  'fuel_carbon_tax_detail',
+  'ggircs_parameters_ctd_ct_fuels_fkey',
+  'fuel_carbon_tax_detail has index: ggircs_parameters_ctd_ct_fuels_fkey' );
 
 select * from finish();
 rollback;
