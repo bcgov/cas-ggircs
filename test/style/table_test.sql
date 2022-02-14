@@ -11,7 +11,7 @@ begin;
 -- TODO: set search_path to change dynamically for each schema, I don't think this will work once
 --       schemas other than swrs_transform become populated with tables
 --       use this: select table_schema || '.' || table_name
-set search_path to swrs,swrs_transform,swrs_extract,swrs_history,swrs_utility,public;
+set search_path to swrs,swrs_transform,swrs_extract,swrs_history,ggircs_parameters,public;
 
 select * from no_plan();
 

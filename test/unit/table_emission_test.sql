@@ -703,7 +703,7 @@ select set_eq(
 
 select results_eq(
   $$
-    select emission_category from swrs.emission where fuel_mapping_id = (select id from swrs_utility.fuel_mapping where fuel_type = 'Vented Natural Gas CH4')
+    select emission_category from swrs.emission where fuel_mapping_id = (select id from ggircs_parameters.fuel_mapping where fuel_type = 'Vented Natural Gas CH4')
   $$,
   ARRAY['BC_ScheduleB_VentingEmissions'::varchar],
   'Vented emissions with an emission_type in swrs.taxed_venting_emission_type are populated with the correct fuel_mapping_id'

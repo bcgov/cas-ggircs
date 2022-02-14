@@ -156,14 +156,14 @@ $function$
                 or __naics.naics_priority = '100.00'
                 or __naics.naics_priority = '100')) > 1))
         -- FK Emission -> Fuel Mapping
-        left join swrs_utility.fuel_mapping as _fuel_mapping
+        left join ggircs_parameters.fuel_mapping as _fuel_mapping
             on ((_fuel_mapping.fuel_type = 'Flared Natural Gas CO2'
                 and _activity.sub_process_name = 'Flaring'
                 and _emission.gas_type like 'CO2%')
             or (_fuel_mapping.fuel_type = 'Vented Natural Gas CH4'
                 and _emission.gas_type = 'CH4'
                 and _emission.emission_type
-                    in ((select taxed_emission_type from swrs_utility.taxed_venting_emission_type))
+                    in ((select taxed_emission_type from ggircs_parameters.taxed_venting_emission_type))
                 )
             )
         -- FK Emission -> Organisation
