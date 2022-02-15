@@ -218,3 +218,4 @@ swrs/transform/function/load_taxed_venting_emission_type [swrs/transform/functio
 swrs/public/table/drop-non-etl-tables 2022-02-08T00:23:29Z Dylan Leard <dylan@button.is> # DROP: drop all non-etl tables (moved to ggircs_parameters schema)
 swrs/public/view/carbon_tax_act_fuel_type [swrs/parameters/table/carbon_tax_act_fuel_type] 2022-02-15T17:57:00Z Dylan Leard <dylan@button.is> # Add a view as a replacement for this table that was moved into the ggircs_parameters schema
 swrs/public/view/emission_category [swrs/parameters/table/emission_category] 2022-02-15T19:40:40Z Dylan Leard <dylan@button.is> # Add a view as a replacement for this table that was moved into the ggircs_parameters schema
+swrs/public/view/fuel_carbon_tax_details [swrs/parameters/table/fuel_carbon_tax_detail] 2022-02-15T19:47:10Z Dylan Leard <dylan@button.is> # Add a view as a replacement for this table that was moved into the ggircs_parameters schema
