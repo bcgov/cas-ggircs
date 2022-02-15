@@ -222,3 +222,4 @@ swrs/public/view/fuel_carbon_tax_details [swrs/parameters/table/fuel_carbon_tax_
 swrs/public/view/fuel_charge [swrs/parameters/table/fuel_charge] 2022-02-15T20:24:21Z Dylan Leard <dylan@button.is> # Add a view as a replacement for this table that was moved into the ggircs_parameters schema
 swrs/public/view/fuel_mapping [swrs/parameters/table/fuel_mapping] 2022-02-15T21:29:02Z Dylan Leard <dylan@button.is> # Add a view as a replacement for this table that was moved into the ggircs_parameters schema
 swrs/public/view/naics_category [swrs/parameters/table/naics_category] 2022-02-15T21:34:02Z Dylan Leard <dylan@button.is> # Add a view as a replacement for this table that was moved into the ggircs_parameters schema
+swrs/public/view/naics_naics_category [swrs/parameters/table/naics_naics_category] 2022-02-15T21:43:45Z Dylan Leard <dylan@button.is> # Add a view as a replacement for this table that was moved into the ggircs_parameters schema
