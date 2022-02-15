@@ -1,7 +1,7 @@
 -- Revert ggircs:swrs/public/view/naics_naics_category from pg
 
-BEGIN;
+begin;
 
--- XXX Add DDLs here.
+drop view if exists swrs.naics_naics_category;
 
-COMMIT;
+commit;
