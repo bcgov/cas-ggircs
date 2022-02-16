@@ -5,7 +5,7 @@ begin;
 do $$
   begin
 
-    if (select exists(select * from information_schema.views
+    if (select exists(select * from information_schema.tables
                         where table_schema='swrs'
                         and table_name in (
                           'taxed_venting_emisison_type',
@@ -17,6 +17,7 @@ do $$
                           'emission_category',
                           'carbon_tax_act_fuel_type'
                         )
+                        and table_type != 'VIEW'
                       )
         ) then
       raise exception 'A non-ETL table exists in the swrs schema where it should not';
