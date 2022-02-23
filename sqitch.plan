@@ -224,3 +224,4 @@ swrs/public/view/fuel_mapping [swrs/parameters/table/fuel_mapping] 2022-02-15T21
 swrs/public/view/naics_category [swrs/parameters/table/naics_category] 2022-02-15T21:34:02Z Dylan Leard <dylan@button.is> # Add a view as a replacement for this table that was moved into the ggircs_parameters schema
 swrs/public/view/naics_naics_category [swrs/parameters/table/naics_naics_category] 2022-02-15T21:43:45Z Dylan Leard <dylan@button.is> # Add a view as a replacement for this table that was moved into the ggircs_parameters schema
 swrs/public/view/taxed_venting_emission_type [swrs/parameters/table/taxed_venting_emission_type] 2022-02-15T21:54:27Z Dylan Leard <dylan@button.is> # Add a view as a replacement for this table that was moved into the ggircs_parameters schema
+@v1.11.2 2022-02-23T22:30:21Z Dylan Leard <dylan@button.is> # release v1.11.2
