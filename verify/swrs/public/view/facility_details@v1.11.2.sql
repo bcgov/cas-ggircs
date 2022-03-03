@@ -6,9 +6,9 @@ do $$
   begin
 
     if (select exists(select * from information_schema.views where table_schema='swrs' and table_name='facility_details')) then
-      perform true;
+      raise exception 'swrs.facility_details exists when it should not';
     else
-      raise exception 'swrs.facility_details does not exist';
+      perform true;
     end if;
 
   end; $$;
