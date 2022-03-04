@@ -8,9 +8,8 @@ import ReportSelector from "components/XmlDiff/ReportSelector";
 import DiffDetailsContainer from "components/XmlDiff/DiffDetailsContainer";
 import RenderDiff from "components/XmlDiff/RenderDiff";
 import DiffControls from "components/XmlDiff/DiffControls";
-import { useRouter } from "next/router";
+import { useRouter, NextRouter } from "next/router";
 import type { NextPageContext } from "next";
-import { NextRouter } from "next/router";
 
 export const XmlDiffQuery = graphql`
   query xmlDiffQuery($FirstSideRelayId: ID!, $SecondSideRelayId: ID!) {
