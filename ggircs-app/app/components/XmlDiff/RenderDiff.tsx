@@ -54,22 +54,19 @@ const RenderDiff: React.FC<Props> = ({ query }) => {
     query
   );
 
-  const shouldRenderDiff =
-    firstSideReport &&
-    secondSideReport &&
-    router.query.FirstSideRelayId &&
-    router.query.SecondSideRelayId;
-  if (!shouldRenderDiff) return null;
-
   const [isLoading, setIsLoading] = useState(true);
   const [diffText, setDiffText] = useState(null);
 
-  const oldText = format(
-    firstSideReport.latestSwrsReport.ecccXmlFileByEcccXmlFileId.xmlFile
-  );
-  const newText = format(
-    secondSideReport.latestSwrsReport.ecccXmlFileByEcccXmlFileId.xmlFile
-  );
+  const oldText = firstSideReport
+    ? format(
+        firstSideReport.latestSwrsReport.ecccXmlFileByEcccXmlFileId.xmlFile
+      )
+    : "";
+  const newText = secondSideReport
+    ? format(
+        secondSideReport.latestSwrsReport.ecccXmlFileByEcccXmlFileId.xmlFile
+      )
+    : "";
 
   useEffect(() => {
     setIsLoading(false);
@@ -90,7 +87,14 @@ const RenderDiff: React.FC<Props> = ({ query }) => {
           context: router.query.collapsed ? 1 : 10000,
         })
       );
-  }, [router.query]);
+  }, [router.query, newText, oldText]);
+
+  const shouldRenderDiff =
+    firstSideReport &&
+    secondSideReport &&
+    router.query.FirstSideRelayId &&
+    router.query.SecondSideRelayId;
+  if (!shouldRenderDiff) return null;
 
   if (isLoading) return <LoadingSpinner />;
 
