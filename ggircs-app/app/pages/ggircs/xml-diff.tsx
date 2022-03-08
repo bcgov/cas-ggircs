@@ -57,14 +57,12 @@ export function XmlDiff({ preloadedQuery }: RelayProps<{}, xmlDiffQuery>) {
           <ReportSelector
             diffSide={router.query.reversed ? "Second" : "First"}
             allReports={query.allReports.edges}
-            router={router}
           />
         </Col>
         <Col md={{ span: 6, order: router.query.reversed ? 1 : 2 }}>
           <ReportSelector
             diffSide={router.query.reversed ? "First" : "Second"}
             allReports={query.allReports.edges}
-            router={router}
           />
         </Col>
       </Row>
