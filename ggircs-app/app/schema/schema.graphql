@@ -87,6 +87,264 @@ input BooleanFilter {
   notIn: [Boolean!]
 }
 
+"""
+Table contains the list of fuels as defined by the carbon tax act https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/08040_01
+"""
+type CarbonTaxActFuelType implements Node {
+  """Fuel type defined by the carbon tax act"""
+  carbonTaxFuelType: String!
+
+  """Reads and enables pagination through a set of `FuelCarbonTaxDetail`."""
+  fuelCarbonTaxDetailsByCarbonTaxActFuelTypeId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: FuelCarbonTaxDetailCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: FuelCarbonTaxDetailFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `FuelCarbonTaxDetail`."""
+    orderBy: [FuelCarbonTaxDetailsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): FuelCarbonTaxDetailsConnection!
+
+  """Reads and enables pagination through a set of `FuelCharge`."""
+  fuelChargesByCarbonTaxActFuelTypeId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: FuelChargeCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: FuelChargeFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `FuelCharge`."""
+    orderBy: [FuelChargesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): FuelChargesConnection!
+
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  id: ID!
+
+  """The internal primary key"""
+  rowId: Int!
+}
+
+"""
+A condition to be used against `CarbonTaxActFuelType` object types. All fields
+are tested for equality and combined with a logical ‘and.’
+"""
+input CarbonTaxActFuelTypeCondition {
+  """Checks for equality with the object’s `carbonTaxFuelType` field."""
+  carbonTaxFuelType: String
+
+  """Checks for equality with the object’s `rowId` field."""
+  rowId: Int
+}
+
+"""
+A filter to be used against `CarbonTaxActFuelType` object types. All fields are combined with a logical ‘and.’
+"""
+input CarbonTaxActFuelTypeFilter {
+  """Checks for all expressions in this list."""
+  and: [CarbonTaxActFuelTypeFilter!]
+
+  """Filter by the object’s `carbonTaxFuelType` field."""
+  carbonTaxFuelType: StringFilter
+
+  """
+  Filter by the object’s `fuelCarbonTaxDetailsByCarbonTaxActFuelTypeId` relation.
+  """
+  fuelCarbonTaxDetailsByCarbonTaxActFuelTypeId: CarbonTaxActFuelTypeToManyFuelCarbonTaxDetailFilter
+
+  """Some related `fuelCarbonTaxDetailsByCarbonTaxActFuelTypeId` exist."""
+  fuelCarbonTaxDetailsByCarbonTaxActFuelTypeIdExist: Boolean
+
+  """Filter by the object’s `fuelChargesByCarbonTaxActFuelTypeId` relation."""
+  fuelChargesByCarbonTaxActFuelTypeId: CarbonTaxActFuelTypeToManyFuelChargeFilter
+
+  """Some related `fuelChargesByCarbonTaxActFuelTypeId` exist."""
+  fuelChargesByCarbonTaxActFuelTypeIdExist: Boolean
+
+  """Negates the expression."""
+  not: CarbonTaxActFuelTypeFilter
+
+  """Checks for any expressions in this list."""
+  or: [CarbonTaxActFuelTypeFilter!]
+
+  """Filter by the object’s `rowId` field."""
+  rowId: IntFilter
+}
+
+"""An input for mutations affecting `CarbonTaxActFuelType`"""
+input CarbonTaxActFuelTypeInput {
+  """Fuel type defined by the carbon tax act"""
+  carbonTaxFuelType: String!
+}
+
+"""
+Represents an update to a `CarbonTaxActFuelType`. Fields that are set will be updated.
+"""
+input CarbonTaxActFuelTypePatch {
+  """Fuel type defined by the carbon tax act"""
+  carbonTaxFuelType: String
+}
+
+"""
+A filter to be used against many `FuelCarbonTaxDetail` object types. All fields are combined with a logical ‘and.’
+"""
+input CarbonTaxActFuelTypeToManyFuelCarbonTaxDetailFilter {
+  """
+  Every related `FuelCarbonTaxDetail` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: FuelCarbonTaxDetailFilter
+
+  """
+  No related `FuelCarbonTaxDetail` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: FuelCarbonTaxDetailFilter
+
+  """
+  Some related `FuelCarbonTaxDetail` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: FuelCarbonTaxDetailFilter
+}
+
+"""
+A filter to be used against many `FuelCharge` object types. All fields are combined with a logical ‘and.’
+"""
+input CarbonTaxActFuelTypeToManyFuelChargeFilter {
+  """
+  Every related `FuelCharge` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: FuelChargeFilter
+
+  """
+  No related `FuelCharge` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: FuelChargeFilter
+
+  """
+  Some related `FuelCharge` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: FuelChargeFilter
+}
+
+"""A connection to a list of `CarbonTaxActFuelType` values."""
+type CarbonTaxActFuelTypesConnection {
+  """
+  A list of edges which contains the `CarbonTaxActFuelType` and cursor to aid in pagination.
+  """
+  edges: [CarbonTaxActFuelTypesEdge!]!
+
+  """A list of `CarbonTaxActFuelType` objects."""
+  nodes: [CarbonTaxActFuelType]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """
+  The count of *all* `CarbonTaxActFuelType` you could get from the connection.
+  """
+  totalCount: Int!
+}
+
+"""A `CarbonTaxActFuelType` edge in the connection."""
+type CarbonTaxActFuelTypesEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `CarbonTaxActFuelType` at the end of the edge."""
+  node: CarbonTaxActFuelType
+}
+
+"""Methods to use when ordering `CarbonTaxActFuelType`."""
+enum CarbonTaxActFuelTypesOrderBy {
+  CARBON_TAX_FUEL_TYPE_ASC
+  CARBON_TAX_FUEL_TYPE_DESC
+  ID_ASC
+  ID_DESC
+  NATURAL
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+"""All input for the create `CarbonTaxActFuelType` mutation."""
+input CreateCarbonTaxActFuelTypeInput {
+  """The `CarbonTaxActFuelType` to be created by this mutation."""
+  carbonTaxActFuelType: CarbonTaxActFuelTypeInput!
+
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+}
+
+"""The output of our create `CarbonTaxActFuelType` mutation."""
+type CreateCarbonTaxActFuelTypePayload {
+  """The `CarbonTaxActFuelType` that was created by this mutation."""
+  carbonTaxActFuelType: CarbonTaxActFuelType
+
+  """An edge for our `CarbonTaxActFuelType`. May be used by Relay 1."""
+  carbonTaxActFuelTypeEdge(
+    """The method to use when ordering `CarbonTaxActFuelType`."""
+    orderBy: [CarbonTaxActFuelTypesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CarbonTaxActFuelTypesEdge
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
 """All input for the create `EcccAttachment` mutation."""
 input CreateEcccAttachmentInput {
   """
@@ -158,6 +416,161 @@ type CreateEcccFileDownloadLogPayload {
   Reads a single `GgircsUser` that is related to this `EcccFileDownloadLog`.
   """
   ggircsUserByDownloadedBy: GgircsUser
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the create `EmissionCategory` mutation."""
+input CreateEmissionCategoryInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `EmissionCategory` to be created by this mutation."""
+  emissionCategory: EmissionCategoryInput!
+}
+
+"""The output of our create `EmissionCategory` mutation."""
+type CreateEmissionCategoryPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `EmissionCategory` that was created by this mutation."""
+  emissionCategory: EmissionCategory
+
+  """An edge for our `EmissionCategory`. May be used by Relay 1."""
+  emissionCategoryEdge(
+    """The method to use when ordering `EmissionCategory`."""
+    orderBy: [EmissionCategoriesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): EmissionCategoriesEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the create `FuelCarbonTaxDetail` mutation."""
+input CreateFuelCarbonTaxDetailInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `FuelCarbonTaxDetail` to be created by this mutation."""
+  fuelCarbonTaxDetail: FuelCarbonTaxDetailInput!
+}
+
+"""The output of our create `FuelCarbonTaxDetail` mutation."""
+type CreateFuelCarbonTaxDetailPayload {
+  """
+  Reads a single `CarbonTaxActFuelType` that is related to this `FuelCarbonTaxDetail`.
+  """
+  carbonTaxActFuelTypeByCarbonTaxActFuelTypeId: CarbonTaxActFuelType
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `FuelCarbonTaxDetail` that was created by this mutation."""
+  fuelCarbonTaxDetail: FuelCarbonTaxDetail
+
+  """An edge for our `FuelCarbonTaxDetail`. May be used by Relay 1."""
+  fuelCarbonTaxDetailEdge(
+    """The method to use when ordering `FuelCarbonTaxDetail`."""
+    orderBy: [FuelCarbonTaxDetailsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): FuelCarbonTaxDetailsEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the create `FuelCharge` mutation."""
+input CreateFuelChargeInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `FuelCharge` to be created by this mutation."""
+  fuelCharge: FuelChargeInput!
+}
+
+"""The output of our create `FuelCharge` mutation."""
+type CreateFuelChargePayload {
+  """
+  Reads a single `CarbonTaxActFuelType` that is related to this `FuelCharge`.
+  """
+  carbonTaxActFuelTypeByCarbonTaxActFuelTypeId: CarbonTaxActFuelType
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `FuelCharge` that was created by this mutation."""
+  fuelCharge: FuelCharge
+
+  """An edge for our `FuelCharge`. May be used by Relay 1."""
+  fuelChargeEdge(
+    """The method to use when ordering `FuelCharge`."""
+    orderBy: [FuelChargesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): FuelChargesEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the create `FuelMapping` mutation."""
+input CreateFuelMappingInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `FuelMapping` to be created by this mutation."""
+  fuelMapping: FuelMappingInput!
+}
+
+"""The output of our create `FuelMapping` mutation."""
+type CreateFuelMappingPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """
+  Reads a single `FuelCarbonTaxDetail` that is related to this `FuelMapping`.
+  """
+  fuelCarbonTaxDetailByFuelCarbonTaxDetailId: FuelCarbonTaxDetail
+
+  """The `FuelMapping` that was created by this mutation."""
+  fuelMapping: FuelMapping
+
+  """An edge for our `FuelMapping`. May be used by Relay 1."""
+  fuelMappingEdge(
+    """The method to use when ordering `FuelMapping`."""
+    orderBy: [FuelMappingsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): FuelMappingsEdge
 
   """
   Our root query field type. Allows us to run any query from our mutation payload.
@@ -248,8 +661,163 @@ type CreateGgircsUserPayload {
   query: Query
 }
 
+"""All input for the create `NaicsCategory` mutation."""
+input CreateNaicsCategoryInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `NaicsCategory` to be created by this mutation."""
+  naicsCategory: NaicsCategoryInput!
+}
+
+"""The output of our create `NaicsCategory` mutation."""
+type CreateNaicsCategoryPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `NaicsCategory` that was created by this mutation."""
+  naicsCategory: NaicsCategory
+
+  """An edge for our `NaicsCategory`. May be used by Relay 1."""
+  naicsCategoryEdge(
+    """The method to use when ordering `NaicsCategory`."""
+    orderBy: [NaicsCategoriesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): NaicsCategoriesEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the create `NaicsNaicsCategory` mutation."""
+input CreateNaicsNaicsCategoryInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `NaicsNaicsCategory` to be created by this mutation."""
+  naicsNaicsCategory: NaicsNaicsCategoryInput!
+}
+
+"""The output of our create `NaicsNaicsCategory` mutation."""
+type CreateNaicsNaicsCategoryPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """
+  Reads a single `NaicsCategory` that is related to this `NaicsNaicsCategory`.
+  """
+  naicsCategoryByCategoryId: NaicsCategory
+
+  """The `NaicsNaicsCategory` that was created by this mutation."""
+  naicsNaicsCategory: NaicsNaicsCategory
+
+  """An edge for our `NaicsNaicsCategory`. May be used by Relay 1."""
+  naicsNaicsCategoryEdge(
+    """The method to use when ordering `NaicsNaicsCategory`."""
+    orderBy: [NaicsNaicsCategoriesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): NaicsNaicsCategoriesEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the create `TaxedVentingEmissionType` mutation."""
+input CreateTaxedVentingEmissionTypeInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `TaxedVentingEmissionType` to be created by this mutation."""
+  taxedVentingEmissionType: TaxedVentingEmissionTypeInput!
+}
+
+"""The output of our create `TaxedVentingEmissionType` mutation."""
+type CreateTaxedVentingEmissionTypePayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """The `TaxedVentingEmissionType` that was created by this mutation."""
+  taxedVentingEmissionType: TaxedVentingEmissionType
+
+  """An edge for our `TaxedVentingEmissionType`. May be used by Relay 1."""
+  taxedVentingEmissionTypeEdge(
+    """The method to use when ordering `TaxedVentingEmissionType`."""
+    orderBy: [TaxedVentingEmissionTypesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): TaxedVentingEmissionTypesEdge
+}
+
 """A location in a connection that can be used for resuming pagination."""
 scalar Cursor
+
+"""The day, does not include a time."""
+scalar Date
+
+"""
+A filter to be used against Date fields. All fields are combined with a logical ‘and.’
+"""
+input DateFilter {
+  """
+  Not equal to the specified value, treating null like an ordinary value.
+  """
+  distinctFrom: Date
+
+  """Equal to the specified value."""
+  equalTo: Date
+
+  """Greater than the specified value."""
+  greaterThan: Date
+
+  """Greater than or equal to the specified value."""
+  greaterThanOrEqualTo: Date
+
+  """Included in the specified list."""
+  in: [Date!]
+
+  """
+  Is null (if `true` is specified) or is not null (if `false` is specified).
+  """
+  isNull: Boolean
+
+  """Less than the specified value."""
+  lessThan: Date
+
+  """Less than or equal to the specified value."""
+  lessThanOrEqualTo: Date
+
+  """Equal to the specified value, treating null like an ordinary value."""
+  notDistinctFrom: Date
+
+  """Not equal to the specified value."""
+  notEqualTo: Date
+
+  """Not included in the specified list."""
+  notIn: [Date!]
+}
 
 """
 A point in time as described by the [ISO
@@ -297,6 +865,56 @@ input DatetimeFilter {
 
   """Not included in the specified list."""
   notIn: [Datetime!]
+}
+
+"""All input for the `deleteCarbonTaxActFuelTypeByRowId` mutation."""
+input DeleteCarbonTaxActFuelTypeByRowIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The internal primary key"""
+  rowId: Int!
+}
+
+"""All input for the `deleteCarbonTaxActFuelType` mutation."""
+input DeleteCarbonTaxActFuelTypeInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `CarbonTaxActFuelType` to be deleted.
+  """
+  id: ID!
+}
+
+"""The output of our delete `CarbonTaxActFuelType` mutation."""
+type DeleteCarbonTaxActFuelTypePayload {
+  """The `CarbonTaxActFuelType` that was deleted by this mutation."""
+  carbonTaxActFuelType: CarbonTaxActFuelType
+
+  """An edge for our `CarbonTaxActFuelType`. May be used by Relay 1."""
+  carbonTaxActFuelTypeEdge(
+    """The method to use when ordering `CarbonTaxActFuelType`."""
+    orderBy: [CarbonTaxActFuelTypesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CarbonTaxActFuelTypesEdge
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+  deletedCarbonTaxActFuelTypeId: ID
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
 }
 
 """All input for the `deleteEcccAttachmentByRowId` mutation."""
@@ -407,6 +1025,235 @@ type DeleteEcccFileDownloadLogPayload {
   query: Query
 }
 
+"""All input for the `deleteEmissionCategoryByRowId` mutation."""
+input DeleteEmissionCategoryByRowIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """Unique ID for the emission_category"""
+  rowId: Int!
+}
+
+"""
+All input for the `deleteEmissionCategoryBySwrsEmissionCategory` mutation.
+"""
+input DeleteEmissionCategoryBySwrsEmissionCategoryInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The emission category name as displayed in the swrs xml reports"""
+  swrsEmissionCategory: String!
+}
+
+"""All input for the `deleteEmissionCategory` mutation."""
+input DeleteEmissionCategoryInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `EmissionCategory` to be deleted.
+  """
+  id: ID!
+}
+
+"""The output of our delete `EmissionCategory` mutation."""
+type DeleteEmissionCategoryPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+  deletedEmissionCategoryId: ID
+
+  """The `EmissionCategory` that was deleted by this mutation."""
+  emissionCategory: EmissionCategory
+
+  """An edge for our `EmissionCategory`. May be used by Relay 1."""
+  emissionCategoryEdge(
+    """The method to use when ordering `EmissionCategory`."""
+    orderBy: [EmissionCategoriesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): EmissionCategoriesEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the `deleteFuelCarbonTaxDetailByRowId` mutation."""
+input DeleteFuelCarbonTaxDetailByRowIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The internal primary key for the mapping"""
+  rowId: Int!
+}
+
+"""All input for the `deleteFuelCarbonTaxDetail` mutation."""
+input DeleteFuelCarbonTaxDetailInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `FuelCarbonTaxDetail` to be deleted.
+  """
+  id: ID!
+}
+
+"""The output of our delete `FuelCarbonTaxDetail` mutation."""
+type DeleteFuelCarbonTaxDetailPayload {
+  """
+  Reads a single `CarbonTaxActFuelType` that is related to this `FuelCarbonTaxDetail`.
+  """
+  carbonTaxActFuelTypeByCarbonTaxActFuelTypeId: CarbonTaxActFuelType
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+  deletedFuelCarbonTaxDetailId: ID
+
+  """The `FuelCarbonTaxDetail` that was deleted by this mutation."""
+  fuelCarbonTaxDetail: FuelCarbonTaxDetail
+
+  """An edge for our `FuelCarbonTaxDetail`. May be used by Relay 1."""
+  fuelCarbonTaxDetailEdge(
+    """The method to use when ordering `FuelCarbonTaxDetail`."""
+    orderBy: [FuelCarbonTaxDetailsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): FuelCarbonTaxDetailsEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the `deleteFuelChargeByRowId` mutation."""
+input DeleteFuelChargeByRowIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The internal primary key"""
+  rowId: Int!
+}
+
+"""All input for the `deleteFuelCharge` mutation."""
+input DeleteFuelChargeInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `FuelCharge` to be deleted.
+  """
+  id: ID!
+}
+
+"""The output of our delete `FuelCharge` mutation."""
+type DeleteFuelChargePayload {
+  """
+  Reads a single `CarbonTaxActFuelType` that is related to this `FuelCharge`.
+  """
+  carbonTaxActFuelTypeByCarbonTaxActFuelTypeId: CarbonTaxActFuelType
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+  deletedFuelChargeId: ID
+
+  """The `FuelCharge` that was deleted by this mutation."""
+  fuelCharge: FuelCharge
+
+  """An edge for our `FuelCharge`. May be used by Relay 1."""
+  fuelChargeEdge(
+    """The method to use when ordering `FuelCharge`."""
+    orderBy: [FuelChargesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): FuelChargesEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the `deleteFuelMappingByRowId` mutation."""
+input DeleteFuelMappingByRowIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The internal primary key for the mapping"""
+  rowId: Int!
+}
+
+"""All input for the `deleteFuelMapping` mutation."""
+input DeleteFuelMappingInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `FuelMapping` to be deleted.
+  """
+  id: ID!
+}
+
+"""The output of our delete `FuelMapping` mutation."""
+type DeleteFuelMappingPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+  deletedFuelMappingId: ID
+
+  """
+  Reads a single `FuelCarbonTaxDetail` that is related to this `FuelMapping`.
+  """
+  fuelCarbonTaxDetailByFuelCarbonTaxDetailId: FuelCarbonTaxDetail
+
+  """The `FuelMapping` that was deleted by this mutation."""
+  fuelMapping: FuelMapping
+
+  """An edge for our `FuelMapping`. May be used by Relay 1."""
+  fuelMappingEdge(
+    """The method to use when ordering `FuelMapping`."""
+    orderBy: [FuelMappingsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): FuelMappingsEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
 """All input for the `deleteGgircsUserByRowId` mutation."""
 input DeleteGgircsUserByRowIdInput {
   """
@@ -464,6 +1311,161 @@ type DeleteGgircsUserPayload {
   Our root query field type. Allows us to run any query from our mutation payload.
   """
   query: Query
+}
+
+"""All input for the `deleteNaicsCategoryByRowId` mutation."""
+input DeleteNaicsCategoryByRowIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The internal primary key for the mapping"""
+  rowId: Int!
+}
+
+"""All input for the `deleteNaicsCategory` mutation."""
+input DeleteNaicsCategoryInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `NaicsCategory` to be deleted.
+  """
+  id: ID!
+}
+
+"""The output of our delete `NaicsCategory` mutation."""
+type DeleteNaicsCategoryPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+  deletedNaicsCategoryId: ID
+
+  """The `NaicsCategory` that was deleted by this mutation."""
+  naicsCategory: NaicsCategory
+
+  """An edge for our `NaicsCategory`. May be used by Relay 1."""
+  naicsCategoryEdge(
+    """The method to use when ordering `NaicsCategory`."""
+    orderBy: [NaicsCategoriesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): NaicsCategoriesEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the `deleteNaicsNaicsCategoryByRowId` mutation."""
+input DeleteNaicsNaicsCategoryByRowIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The internal primary key for the mapping"""
+  rowId: Int!
+}
+
+"""All input for the `deleteNaicsNaicsCategory` mutation."""
+input DeleteNaicsNaicsCategoryInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `NaicsNaicsCategory` to be deleted.
+  """
+  id: ID!
+}
+
+"""The output of our delete `NaicsNaicsCategory` mutation."""
+type DeleteNaicsNaicsCategoryPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+  deletedNaicsNaicsCategoryId: ID
+
+  """
+  Reads a single `NaicsCategory` that is related to this `NaicsNaicsCategory`.
+  """
+  naicsCategoryByCategoryId: NaicsCategory
+
+  """The `NaicsNaicsCategory` that was deleted by this mutation."""
+  naicsNaicsCategory: NaicsNaicsCategory
+
+  """An edge for our `NaicsNaicsCategory`. May be used by Relay 1."""
+  naicsNaicsCategoryEdge(
+    """The method to use when ordering `NaicsNaicsCategory`."""
+    orderBy: [NaicsNaicsCategoriesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): NaicsNaicsCategoriesEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the `deleteTaxedVentingEmissionTypeByRowId` mutation."""
+input DeleteTaxedVentingEmissionTypeByRowIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """Unique ID for the taxed_venting_emission_type table"""
+  rowId: Int!
+}
+
+"""All input for the `deleteTaxedVentingEmissionType` mutation."""
+input DeleteTaxedVentingEmissionTypeInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `TaxedVentingEmissionType` to be deleted.
+  """
+  id: ID!
+}
+
+"""The output of our delete `TaxedVentingEmissionType` mutation."""
+type DeleteTaxedVentingEmissionTypePayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+  deletedTaxedVentingEmissionTypeId: ID
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """The `TaxedVentingEmissionType` that was deleted by this mutation."""
+  taxedVentingEmissionType: TaxedVentingEmissionType
+
+  """An edge for our `TaxedVentingEmissionType`. May be used by Relay 1."""
+  taxedVentingEmissionTypeEdge(
+    """The method to use when ordering `TaxedVentingEmissionType`."""
+    orderBy: [TaxedVentingEmissionTypesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): TaxedVentingEmissionTypesEdge
 }
 
 """
@@ -1324,6 +2326,702 @@ enum EcccZipFilesOrderBy {
   ZIP_FILE_MD5_HASH_DESC
   ZIP_FILE_NAME_ASC
   ZIP_FILE_NAME_DESC
+}
+
+"""A connection to a list of `EmissionCategory` values."""
+type EmissionCategoriesConnection {
+  """
+  A list of edges which contains the `EmissionCategory` and cursor to aid in pagination.
+  """
+  edges: [EmissionCategoriesEdge!]!
+
+  """A list of `EmissionCategory` objects."""
+  nodes: [EmissionCategory]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """
+  The count of *all* `EmissionCategory` you could get from the connection.
+  """
+  totalCount: Int!
+}
+
+"""A `EmissionCategory` edge in the connection."""
+type EmissionCategoriesEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `EmissionCategory` at the end of the edge."""
+  node: EmissionCategory
+}
+
+"""Methods to use when ordering `EmissionCategory`."""
+enum EmissionCategoriesOrderBy {
+  CARBON_TAXED_ASC
+  CARBON_TAXED_DESC
+  CATEGORY_DEFINITION_ASC
+  CATEGORY_DEFINITION_DESC
+  ID_ASC
+  ID_DESC
+  NATURAL
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+  SWRS_EMISSION_CATEGORY_ASC
+  SWRS_EMISSION_CATEGORY_DESC
+}
+
+"""
+Table of emission categories used in the CIIP program as defined in Schedule A / Schedule B of the Greenhouse Gas Industrial Reporting and Control Act (https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/249_2015#ScheduleA)
+"""
+type EmissionCategory implements Node {
+  """
+  Boolean carbon_taxed column indicates whether or not a fuel reported in this category is taxed
+  """
+  carbonTaxed: Boolean
+
+  """
+  Definition of the emission_category as defined in Schedule A / Schedule B of the Greenhouse Gas Industrial Reporting and Control Act (https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/249_2015#ScheduleA)
+  """
+  categoryDefinition: String
+
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  id: ID!
+
+  """Unique ID for the emission_category"""
+  rowId: Int!
+
+  """The emission category name as displayed in the swrs xml reports"""
+  swrsEmissionCategory: String
+}
+
+"""
+A condition to be used against `EmissionCategory` object types. All fields are
+tested for equality and combined with a logical ‘and.’
+"""
+input EmissionCategoryCondition {
+  """Checks for equality with the object’s `carbonTaxed` field."""
+  carbonTaxed: Boolean
+
+  """Checks for equality with the object’s `categoryDefinition` field."""
+  categoryDefinition: String
+
+  """Checks for equality with the object’s `rowId` field."""
+  rowId: Int
+
+  """Checks for equality with the object’s `swrsEmissionCategory` field."""
+  swrsEmissionCategory: String
+}
+
+"""
+A filter to be used against `EmissionCategory` object types. All fields are combined with a logical ‘and.’
+"""
+input EmissionCategoryFilter {
+  """Checks for all expressions in this list."""
+  and: [EmissionCategoryFilter!]
+
+  """Filter by the object’s `carbonTaxed` field."""
+  carbonTaxed: BooleanFilter
+
+  """Filter by the object’s `categoryDefinition` field."""
+  categoryDefinition: StringFilter
+
+  """Negates the expression."""
+  not: EmissionCategoryFilter
+
+  """Checks for any expressions in this list."""
+  or: [EmissionCategoryFilter!]
+
+  """Filter by the object’s `rowId` field."""
+  rowId: IntFilter
+
+  """Filter by the object’s `swrsEmissionCategory` field."""
+  swrsEmissionCategory: StringFilter
+}
+
+"""An input for mutations affecting `EmissionCategory`"""
+input EmissionCategoryInput {
+  """
+  Boolean carbon_taxed column indicates whether or not a fuel reported in this category is taxed
+  """
+  carbonTaxed: Boolean
+
+  """
+  Definition of the emission_category as defined in Schedule A / Schedule B of the Greenhouse Gas Industrial Reporting and Control Act (https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/249_2015#ScheduleA)
+  """
+  categoryDefinition: String
+
+  """The emission category name as displayed in the swrs xml reports"""
+  swrsEmissionCategory: String
+}
+
+"""
+Represents an update to a `EmissionCategory`. Fields that are set will be updated.
+"""
+input EmissionCategoryPatch {
+  """
+  Boolean carbon_taxed column indicates whether or not a fuel reported in this category is taxed
+  """
+  carbonTaxed: Boolean
+
+  """
+  Definition of the emission_category as defined in Schedule A / Schedule B of the Greenhouse Gas Industrial Reporting and Control Act (https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/249_2015#ScheduleA)
+  """
+  categoryDefinition: String
+
+  """The emission category name as displayed in the swrs xml reports"""
+  swrsEmissionCategory: String
+}
+
+"""The fuel mapping table that maps fuel type with carbon tax rates"""
+type FuelCarbonTaxDetail implements Node {
+  """
+  Reads a single `CarbonTaxActFuelType` that is related to this `FuelCarbonTaxDetail`.
+  """
+  carbonTaxActFuelTypeByCarbonTaxActFuelTypeId: CarbonTaxActFuelType
+
+  """The foreign key that maps to the carbon_tax_act_fuel_type table"""
+  carbonTaxActFuelTypeId: Int
+
+  """The units of measure"""
+  ctaRateUnits: String
+
+  """Reads and enables pagination through a set of `FuelMapping`."""
+  fuelMappingsByFuelCarbonTaxDetailId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: FuelMappingCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: FuelMappingFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `FuelMapping`."""
+    orderBy: [FuelMappingsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): FuelMappingsConnection!
+
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  id: ID!
+
+  """The type of fuel (Normalized)"""
+  normalizedFuelType: String
+
+  """The internal primary key for the mapping"""
+  rowId: Int!
+
+  """The state of the fuel (gas, liquid, solid)"""
+  state: String
+
+  """The conversion factor for cta units to reported units"""
+  unitConversionFactor: BigFloat
+}
+
+"""
+A condition to be used against `FuelCarbonTaxDetail` object types. All fields
+are tested for equality and combined with a logical ‘and.’
+"""
+input FuelCarbonTaxDetailCondition {
+  """Checks for equality with the object’s `carbonTaxActFuelTypeId` field."""
+  carbonTaxActFuelTypeId: Int
+
+  """Checks for equality with the object’s `ctaRateUnits` field."""
+  ctaRateUnits: String
+
+  """Checks for equality with the object’s `normalizedFuelType` field."""
+  normalizedFuelType: String
+
+  """Checks for equality with the object’s `rowId` field."""
+  rowId: Int
+
+  """Checks for equality with the object’s `state` field."""
+  state: String
+
+  """Checks for equality with the object’s `unitConversionFactor` field."""
+  unitConversionFactor: BigFloat
+}
+
+"""
+A filter to be used against `FuelCarbonTaxDetail` object types. All fields are combined with a logical ‘and.’
+"""
+input FuelCarbonTaxDetailFilter {
+  """Checks for all expressions in this list."""
+  and: [FuelCarbonTaxDetailFilter!]
+
+  """
+  Filter by the object’s `carbonTaxActFuelTypeByCarbonTaxActFuelTypeId` relation.
+  """
+  carbonTaxActFuelTypeByCarbonTaxActFuelTypeId: CarbonTaxActFuelTypeFilter
+
+  """A related `carbonTaxActFuelTypeByCarbonTaxActFuelTypeId` exists."""
+  carbonTaxActFuelTypeByCarbonTaxActFuelTypeIdExists: Boolean
+
+  """Filter by the object’s `carbonTaxActFuelTypeId` field."""
+  carbonTaxActFuelTypeId: IntFilter
+
+  """Filter by the object’s `ctaRateUnits` field."""
+  ctaRateUnits: StringFilter
+
+  """Filter by the object’s `fuelMappingsByFuelCarbonTaxDetailId` relation."""
+  fuelMappingsByFuelCarbonTaxDetailId: FuelCarbonTaxDetailToManyFuelMappingFilter
+
+  """Some related `fuelMappingsByFuelCarbonTaxDetailId` exist."""
+  fuelMappingsByFuelCarbonTaxDetailIdExist: Boolean
+
+  """Filter by the object’s `normalizedFuelType` field."""
+  normalizedFuelType: StringFilter
+
+  """Negates the expression."""
+  not: FuelCarbonTaxDetailFilter
+
+  """Checks for any expressions in this list."""
+  or: [FuelCarbonTaxDetailFilter!]
+
+  """Filter by the object’s `rowId` field."""
+  rowId: IntFilter
+
+  """Filter by the object’s `state` field."""
+  state: StringFilter
+
+  """Filter by the object’s `unitConversionFactor` field."""
+  unitConversionFactor: BigFloatFilter
+}
+
+"""An input for mutations affecting `FuelCarbonTaxDetail`"""
+input FuelCarbonTaxDetailInput {
+  """The foreign key that maps to the carbon_tax_act_fuel_type table"""
+  carbonTaxActFuelTypeId: Int
+
+  """The units of measure"""
+  ctaRateUnits: String
+
+  """The type of fuel (Normalized)"""
+  normalizedFuelType: String
+
+  """The state of the fuel (gas, liquid, solid)"""
+  state: String
+
+  """The conversion factor for cta units to reported units"""
+  unitConversionFactor: BigFloat
+}
+
+"""
+Represents an update to a `FuelCarbonTaxDetail`. Fields that are set will be updated.
+"""
+input FuelCarbonTaxDetailPatch {
+  """The foreign key that maps to the carbon_tax_act_fuel_type table"""
+  carbonTaxActFuelTypeId: Int
+
+  """The units of measure"""
+  ctaRateUnits: String
+
+  """The type of fuel (Normalized)"""
+  normalizedFuelType: String
+
+  """The state of the fuel (gas, liquid, solid)"""
+  state: String
+
+  """The conversion factor for cta units to reported units"""
+  unitConversionFactor: BigFloat
+}
+
+"""
+A filter to be used against many `FuelMapping` object types. All fields are combined with a logical ‘and.’
+"""
+input FuelCarbonTaxDetailToManyFuelMappingFilter {
+  """
+  Every related `FuelMapping` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: FuelMappingFilter
+
+  """
+  No related `FuelMapping` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: FuelMappingFilter
+
+  """
+  Some related `FuelMapping` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: FuelMappingFilter
+}
+
+"""A connection to a list of `FuelCarbonTaxDetail` values."""
+type FuelCarbonTaxDetailsConnection {
+  """
+  A list of edges which contains the `FuelCarbonTaxDetail` and cursor to aid in pagination.
+  """
+  edges: [FuelCarbonTaxDetailsEdge!]!
+
+  """A list of `FuelCarbonTaxDetail` objects."""
+  nodes: [FuelCarbonTaxDetail]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """
+  The count of *all* `FuelCarbonTaxDetail` you could get from the connection.
+  """
+  totalCount: Int!
+}
+
+"""A `FuelCarbonTaxDetail` edge in the connection."""
+type FuelCarbonTaxDetailsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `FuelCarbonTaxDetail` at the end of the edge."""
+  node: FuelCarbonTaxDetail
+}
+
+"""Methods to use when ordering `FuelCarbonTaxDetail`."""
+enum FuelCarbonTaxDetailsOrderBy {
+  CARBON_TAX_ACT_FUEL_TYPE_ID_ASC
+  CARBON_TAX_ACT_FUEL_TYPE_ID_DESC
+  CTA_RATE_UNITS_ASC
+  CTA_RATE_UNITS_DESC
+  ID_ASC
+  ID_DESC
+  NATURAL
+  NORMALIZED_FUEL_TYPE_ASC
+  NORMALIZED_FUEL_TYPE_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+  STATE_ASC
+  STATE_DESC
+  UNIT_CONVERSION_FACTOR_ASC
+  UNIT_CONVERSION_FACTOR_DESC
+}
+
+"""
+The fuel charge table contains the carbon tax fuel charge rate band for each fuel
+"""
+type FuelCharge implements Node {
+  """
+  Reads a single `CarbonTaxActFuelType` that is related to this `FuelCharge`.
+  """
+  carbonTaxActFuelTypeByCarbonTaxActFuelTypeId: CarbonTaxActFuelType
+
+  """Foreign key references the carbon_tax_act_fuel_type table"""
+  carbonTaxActFuelTypeId: Int
+
+  """The date on which the fuel charge rate band stops/stopped being used"""
+  endDate: Date
+
+  """The ministry-defined fuel charge pertaining to a specific fuel type"""
+  fuelCharge: BigFloat
+
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  id: ID!
+
+  """Column contains metadata pertaining to each fuel charge row"""
+  metadata: String
+
+  """The internal primary key"""
+  rowId: Int!
+
+  """The date on which the fuel charge rate band came into effect"""
+  startDate: Date
+}
+
+"""
+A condition to be used against `FuelCharge` object types. All fields are tested
+for equality and combined with a logical ‘and.’
+"""
+input FuelChargeCondition {
+  """Checks for equality with the object’s `carbonTaxActFuelTypeId` field."""
+  carbonTaxActFuelTypeId: Int
+
+  """Checks for equality with the object’s `endDate` field."""
+  endDate: Date
+
+  """Checks for equality with the object’s `fuelCharge` field."""
+  fuelCharge: BigFloat
+
+  """Checks for equality with the object’s `metadata` field."""
+  metadata: String
+
+  """Checks for equality with the object’s `rowId` field."""
+  rowId: Int
+
+  """Checks for equality with the object’s `startDate` field."""
+  startDate: Date
+}
+
+"""
+A filter to be used against `FuelCharge` object types. All fields are combined with a logical ‘and.’
+"""
+input FuelChargeFilter {
+  """Checks for all expressions in this list."""
+  and: [FuelChargeFilter!]
+
+  """
+  Filter by the object’s `carbonTaxActFuelTypeByCarbonTaxActFuelTypeId` relation.
+  """
+  carbonTaxActFuelTypeByCarbonTaxActFuelTypeId: CarbonTaxActFuelTypeFilter
+
+  """A related `carbonTaxActFuelTypeByCarbonTaxActFuelTypeId` exists."""
+  carbonTaxActFuelTypeByCarbonTaxActFuelTypeIdExists: Boolean
+
+  """Filter by the object’s `carbonTaxActFuelTypeId` field."""
+  carbonTaxActFuelTypeId: IntFilter
+
+  """Filter by the object’s `endDate` field."""
+  endDate: DateFilter
+
+  """Filter by the object’s `fuelCharge` field."""
+  fuelCharge: BigFloatFilter
+
+  """Filter by the object’s `metadata` field."""
+  metadata: StringFilter
+
+  """Negates the expression."""
+  not: FuelChargeFilter
+
+  """Checks for any expressions in this list."""
+  or: [FuelChargeFilter!]
+
+  """Filter by the object’s `rowId` field."""
+  rowId: IntFilter
+
+  """Filter by the object’s `startDate` field."""
+  startDate: DateFilter
+}
+
+"""An input for mutations affecting `FuelCharge`"""
+input FuelChargeInput {
+  """Foreign key references the carbon_tax_act_fuel_type table"""
+  carbonTaxActFuelTypeId: Int
+
+  """The date on which the fuel charge rate band stops/stopped being used"""
+  endDate: Date
+
+  """The ministry-defined fuel charge pertaining to a specific fuel type"""
+  fuelCharge: BigFloat
+
+  """Column contains metadata pertaining to each fuel charge row"""
+  metadata: String
+
+  """The date on which the fuel charge rate band came into effect"""
+  startDate: Date
+}
+
+"""
+Represents an update to a `FuelCharge`. Fields that are set will be updated.
+"""
+input FuelChargePatch {
+  """Foreign key references the carbon_tax_act_fuel_type table"""
+  carbonTaxActFuelTypeId: Int
+
+  """The date on which the fuel charge rate band stops/stopped being used"""
+  endDate: Date
+
+  """The ministry-defined fuel charge pertaining to a specific fuel type"""
+  fuelCharge: BigFloat
+
+  """Column contains metadata pertaining to each fuel charge row"""
+  metadata: String
+
+  """The date on which the fuel charge rate band came into effect"""
+  startDate: Date
+}
+
+"""A connection to a list of `FuelCharge` values."""
+type FuelChargesConnection {
+  """
+  A list of edges which contains the `FuelCharge` and cursor to aid in pagination.
+  """
+  edges: [FuelChargesEdge!]!
+
+  """A list of `FuelCharge` objects."""
+  nodes: [FuelCharge]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `FuelCharge` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `FuelCharge` edge in the connection."""
+type FuelChargesEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `FuelCharge` at the end of the edge."""
+  node: FuelCharge
+}
+
+"""Methods to use when ordering `FuelCharge`."""
+enum FuelChargesOrderBy {
+  CARBON_TAX_ACT_FUEL_TYPE_ID_ASC
+  CARBON_TAX_ACT_FUEL_TYPE_ID_DESC
+  END_DATE_ASC
+  END_DATE_DESC
+  FUEL_CHARGE_ASC
+  FUEL_CHARGE_DESC
+  ID_ASC
+  ID_DESC
+  METADATA_ASC
+  METADATA_DESC
+  NATURAL
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+  START_DATE_ASC
+  START_DATE_DESC
+}
+
+"""
+The fuel mapping table that maps all reported fuel types from swrs to a normalized fuel type with carbon tax details
+"""
+type FuelMapping implements Node {
+  """
+  Reads a single `FuelCarbonTaxDetail` that is related to this `FuelMapping`.
+  """
+  fuelCarbonTaxDetailByFuelCarbonTaxDetailId: FuelCarbonTaxDetail
+
+  """The foreign key to ggircs_parameters.fuel_carbon_tax_detail"""
+  fuelCarbonTaxDetailId: Int
+
+  """The type of fuel (from GHGR), Foreign key to fuel"""
+  fuelType: String
+
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  id: ID!
+
+  """The internal primary key for the mapping"""
+  rowId: Int!
+}
+
+"""
+A condition to be used against `FuelMapping` object types. All fields are tested
+for equality and combined with a logical ‘and.’
+"""
+input FuelMappingCondition {
+  """Checks for equality with the object’s `fuelCarbonTaxDetailId` field."""
+  fuelCarbonTaxDetailId: Int
+
+  """Checks for equality with the object’s `fuelType` field."""
+  fuelType: String
+
+  """Checks for equality with the object’s `rowId` field."""
+  rowId: Int
+}
+
+"""
+A filter to be used against `FuelMapping` object types. All fields are combined with a logical ‘and.’
+"""
+input FuelMappingFilter {
+  """Checks for all expressions in this list."""
+  and: [FuelMappingFilter!]
+
+  """
+  Filter by the object’s `fuelCarbonTaxDetailByFuelCarbonTaxDetailId` relation.
+  """
+  fuelCarbonTaxDetailByFuelCarbonTaxDetailId: FuelCarbonTaxDetailFilter
+
+  """A related `fuelCarbonTaxDetailByFuelCarbonTaxDetailId` exists."""
+  fuelCarbonTaxDetailByFuelCarbonTaxDetailIdExists: Boolean
+
+  """Filter by the object’s `fuelCarbonTaxDetailId` field."""
+  fuelCarbonTaxDetailId: IntFilter
+
+  """Filter by the object’s `fuelType` field."""
+  fuelType: StringFilter
+
+  """Negates the expression."""
+  not: FuelMappingFilter
+
+  """Checks for any expressions in this list."""
+  or: [FuelMappingFilter!]
+
+  """Filter by the object’s `rowId` field."""
+  rowId: IntFilter
+}
+
+"""An input for mutations affecting `FuelMapping`"""
+input FuelMappingInput {
+  """The foreign key to ggircs_parameters.fuel_carbon_tax_detail"""
+  fuelCarbonTaxDetailId: Int
+
+  """The type of fuel (from GHGR), Foreign key to fuel"""
+  fuelType: String
+}
+
+"""
+Represents an update to a `FuelMapping`. Fields that are set will be updated.
+"""
+input FuelMappingPatch {
+  """The foreign key to ggircs_parameters.fuel_carbon_tax_detail"""
+  fuelCarbonTaxDetailId: Int
+
+  """The type of fuel (from GHGR), Foreign key to fuel"""
+  fuelType: String
+}
+
+"""A connection to a list of `FuelMapping` values."""
+type FuelMappingsConnection {
+  """
+  A list of edges which contains the `FuelMapping` and cursor to aid in pagination.
+  """
+  edges: [FuelMappingsEdge!]!
+
+  """A list of `FuelMapping` objects."""
+  nodes: [FuelMapping]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `FuelMapping` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `FuelMapping` edge in the connection."""
+type FuelMappingsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `FuelMapping` at the end of the edge."""
+  node: FuelMapping
+}
+
+"""Methods to use when ordering `FuelMapping`."""
+enum FuelMappingsOrderBy {
+  FUEL_CARBON_TAX_DETAIL_ID_ASC
+  FUEL_CARBON_TAX_DETAIL_ID_DESC
+  FUEL_TYPE_ASC
+  FUEL_TYPE_DESC
+  ID_ASC
+  ID_DESC
+  NATURAL
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
 }
 
 """Table containing the benchmark and eligibility threshold for a product"""
@@ -2660,6 +4358,14 @@ input JwtTokenFilter {
 The root mutation type which contains root level fields which mutate data.
 """
 type Mutation {
+  """Creates a single `CarbonTaxActFuelType`."""
+  createCarbonTaxActFuelType(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateCarbonTaxActFuelTypeInput!
+  ): CreateCarbonTaxActFuelTypePayload
+
   """Creates a single `EcccAttachment`."""
   createEcccAttachment(
     """
@@ -2676,6 +4382,38 @@ type Mutation {
     input: CreateEcccFileDownloadLogInput!
   ): CreateEcccFileDownloadLogPayload
 
+  """Creates a single `EmissionCategory`."""
+  createEmissionCategory(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateEmissionCategoryInput!
+  ): CreateEmissionCategoryPayload
+
+  """Creates a single `FuelCarbonTaxDetail`."""
+  createFuelCarbonTaxDetail(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateFuelCarbonTaxDetailInput!
+  ): CreateFuelCarbonTaxDetailPayload
+
+  """Creates a single `FuelCharge`."""
+  createFuelCharge(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateFuelChargeInput!
+  ): CreateFuelChargePayload
+
+  """Creates a single `FuelMapping`."""
+  createFuelMapping(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateFuelMappingInput!
+  ): CreateFuelMappingPayload
+
   """Creates a single `GgircsUser`."""
   createGgircsUser(
     """
@@ -2689,6 +4427,46 @@ type Mutation {
     """
     input: CreateGgircsUserFromSessionInput!
   ): CreateGgircsUserFromSessionPayload
+
+  """Creates a single `NaicsCategory`."""
+  createNaicsCategory(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateNaicsCategoryInput!
+  ): CreateNaicsCategoryPayload
+
+  """Creates a single `NaicsNaicsCategory`."""
+  createNaicsNaicsCategory(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateNaicsNaicsCategoryInput!
+  ): CreateNaicsNaicsCategoryPayload
+
+  """Creates a single `TaxedVentingEmissionType`."""
+  createTaxedVentingEmissionType(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateTaxedVentingEmissionTypeInput!
+  ): CreateTaxedVentingEmissionTypePayload
+
+  """Deletes a single `CarbonTaxActFuelType` using its globally unique id."""
+  deleteCarbonTaxActFuelType(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteCarbonTaxActFuelTypeInput!
+  ): DeleteCarbonTaxActFuelTypePayload
+
+  """Deletes a single `CarbonTaxActFuelType` using a unique key."""
+  deleteCarbonTaxActFuelTypeByRowId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteCarbonTaxActFuelTypeByRowIdInput!
+  ): DeleteCarbonTaxActFuelTypePayload
 
   """Deletes a single `EcccAttachment` using its globally unique id."""
   deleteEcccAttachment(
@@ -2722,6 +4500,78 @@ type Mutation {
     input: DeleteEcccFileDownloadLogByRowIdInput!
   ): DeleteEcccFileDownloadLogPayload
 
+  """Deletes a single `EmissionCategory` using its globally unique id."""
+  deleteEmissionCategory(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteEmissionCategoryInput!
+  ): DeleteEmissionCategoryPayload
+
+  """Deletes a single `EmissionCategory` using a unique key."""
+  deleteEmissionCategoryByRowId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteEmissionCategoryByRowIdInput!
+  ): DeleteEmissionCategoryPayload
+
+  """Deletes a single `EmissionCategory` using a unique key."""
+  deleteEmissionCategoryBySwrsEmissionCategory(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteEmissionCategoryBySwrsEmissionCategoryInput!
+  ): DeleteEmissionCategoryPayload
+
+  """Deletes a single `FuelCarbonTaxDetail` using its globally unique id."""
+  deleteFuelCarbonTaxDetail(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteFuelCarbonTaxDetailInput!
+  ): DeleteFuelCarbonTaxDetailPayload
+
+  """Deletes a single `FuelCarbonTaxDetail` using a unique key."""
+  deleteFuelCarbonTaxDetailByRowId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteFuelCarbonTaxDetailByRowIdInput!
+  ): DeleteFuelCarbonTaxDetailPayload
+
+  """Deletes a single `FuelCharge` using its globally unique id."""
+  deleteFuelCharge(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteFuelChargeInput!
+  ): DeleteFuelChargePayload
+
+  """Deletes a single `FuelCharge` using a unique key."""
+  deleteFuelChargeByRowId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteFuelChargeByRowIdInput!
+  ): DeleteFuelChargePayload
+
+  """Deletes a single `FuelMapping` using its globally unique id."""
+  deleteFuelMapping(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteFuelMappingInput!
+  ): DeleteFuelMappingPayload
+
+  """Deletes a single `FuelMapping` using a unique key."""
+  deleteFuelMappingByRowId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteFuelMappingByRowIdInput!
+  ): DeleteFuelMappingPayload
+
   """Deletes a single `GgircsUser` using its globally unique id."""
   deleteGgircsUser(
     """
@@ -2737,6 +4587,76 @@ type Mutation {
     """
     input: DeleteGgircsUserByRowIdInput!
   ): DeleteGgircsUserPayload
+
+  """Deletes a single `NaicsCategory` using its globally unique id."""
+  deleteNaicsCategory(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteNaicsCategoryInput!
+  ): DeleteNaicsCategoryPayload
+
+  """Deletes a single `NaicsCategory` using a unique key."""
+  deleteNaicsCategoryByRowId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteNaicsCategoryByRowIdInput!
+  ): DeleteNaicsCategoryPayload
+
+  """Deletes a single `NaicsNaicsCategory` using its globally unique id."""
+  deleteNaicsNaicsCategory(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteNaicsNaicsCategoryInput!
+  ): DeleteNaicsNaicsCategoryPayload
+
+  """Deletes a single `NaicsNaicsCategory` using a unique key."""
+  deleteNaicsNaicsCategoryByRowId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteNaicsNaicsCategoryByRowIdInput!
+  ): DeleteNaicsNaicsCategoryPayload
+
+  """
+  Deletes a single `TaxedVentingEmissionType` using its globally unique id.
+  """
+  deleteTaxedVentingEmissionType(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteTaxedVentingEmissionTypeInput!
+  ): DeleteTaxedVentingEmissionTypePayload
+
+  """Deletes a single `TaxedVentingEmissionType` using a unique key."""
+  deleteTaxedVentingEmissionTypeByRowId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteTaxedVentingEmissionTypeByRowIdInput!
+  ): DeleteTaxedVentingEmissionTypePayload
+
+  """
+  Updates a single `CarbonTaxActFuelType` using its globally unique id and a patch.
+  """
+  updateCarbonTaxActFuelType(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateCarbonTaxActFuelTypeInput!
+  ): UpdateCarbonTaxActFuelTypePayload
+
+  """
+  Updates a single `CarbonTaxActFuelType` using a unique key and a patch.
+  """
+  updateCarbonTaxActFuelTypeByRowId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateCarbonTaxActFuelTypeByRowIdInput!
+  ): UpdateCarbonTaxActFuelTypePayload
 
   """
   Updates a single `EcccAttachment` using its globally unique id and a patch.
@@ -2775,6 +4695,86 @@ type Mutation {
   ): UpdateEcccFileDownloadLogPayload
 
   """
+  Updates a single `EmissionCategory` using its globally unique id and a patch.
+  """
+  updateEmissionCategory(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateEmissionCategoryInput!
+  ): UpdateEmissionCategoryPayload
+
+  """Updates a single `EmissionCategory` using a unique key and a patch."""
+  updateEmissionCategoryByRowId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateEmissionCategoryByRowIdInput!
+  ): UpdateEmissionCategoryPayload
+
+  """Updates a single `EmissionCategory` using a unique key and a patch."""
+  updateEmissionCategoryBySwrsEmissionCategory(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateEmissionCategoryBySwrsEmissionCategoryInput!
+  ): UpdateEmissionCategoryPayload
+
+  """
+  Updates a single `FuelCarbonTaxDetail` using its globally unique id and a patch.
+  """
+  updateFuelCarbonTaxDetail(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateFuelCarbonTaxDetailInput!
+  ): UpdateFuelCarbonTaxDetailPayload
+
+  """Updates a single `FuelCarbonTaxDetail` using a unique key and a patch."""
+  updateFuelCarbonTaxDetailByRowId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateFuelCarbonTaxDetailByRowIdInput!
+  ): UpdateFuelCarbonTaxDetailPayload
+
+  """
+  Updates a single `FuelCharge` using its globally unique id and a patch.
+  """
+  updateFuelCharge(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateFuelChargeInput!
+  ): UpdateFuelChargePayload
+
+  """Updates a single `FuelCharge` using a unique key and a patch."""
+  updateFuelChargeByRowId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateFuelChargeByRowIdInput!
+  ): UpdateFuelChargePayload
+
+  """
+  Updates a single `FuelMapping` using its globally unique id and a patch.
+  """
+  updateFuelMapping(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateFuelMappingInput!
+  ): UpdateFuelMappingPayload
+
+  """Updates a single `FuelMapping` using a unique key and a patch."""
+  updateFuelMappingByRowId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateFuelMappingByRowIdInput!
+  ): UpdateFuelMappingPayload
+
+  """
   Updates a single `GgircsUser` using its globally unique id and a patch.
   """
   updateGgircsUser(
@@ -2791,6 +4791,350 @@ type Mutation {
     """
     input: UpdateGgircsUserByRowIdInput!
   ): UpdateGgircsUserPayload
+
+  """
+  Updates a single `NaicsCategory` using its globally unique id and a patch.
+  """
+  updateNaicsCategory(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateNaicsCategoryInput!
+  ): UpdateNaicsCategoryPayload
+
+  """Updates a single `NaicsCategory` using a unique key and a patch."""
+  updateNaicsCategoryByRowId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateNaicsCategoryByRowIdInput!
+  ): UpdateNaicsCategoryPayload
+
+  """
+  Updates a single `NaicsNaicsCategory` using its globally unique id and a patch.
+  """
+  updateNaicsNaicsCategory(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateNaicsNaicsCategoryInput!
+  ): UpdateNaicsNaicsCategoryPayload
+
+  """Updates a single `NaicsNaicsCategory` using a unique key and a patch."""
+  updateNaicsNaicsCategoryByRowId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateNaicsNaicsCategoryByRowIdInput!
+  ): UpdateNaicsNaicsCategoryPayload
+
+  """
+  Updates a single `TaxedVentingEmissionType` using its globally unique id and a patch.
+  """
+  updateTaxedVentingEmissionType(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateTaxedVentingEmissionTypeInput!
+  ): UpdateTaxedVentingEmissionTypePayload
+
+  """
+  Updates a single `TaxedVentingEmissionType` using a unique key and a patch.
+  """
+  updateTaxedVentingEmissionTypeByRowId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateTaxedVentingEmissionTypeByRowIdInput!
+  ): UpdateTaxedVentingEmissionTypePayload
+}
+
+"""A connection to a list of `NaicsCategory` values."""
+type NaicsCategoriesConnection {
+  """
+  A list of edges which contains the `NaicsCategory` and cursor to aid in pagination.
+  """
+  edges: [NaicsCategoriesEdge!]!
+
+  """A list of `NaicsCategory` objects."""
+  nodes: [NaicsCategory]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `NaicsCategory` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `NaicsCategory` edge in the connection."""
+type NaicsCategoriesEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `NaicsCategory` at the end of the edge."""
+  node: NaicsCategory
+}
+
+"""Methods to use when ordering `NaicsCategory`."""
+enum NaicsCategoriesOrderBy {
+  ID_ASC
+  ID_DESC
+  NAICS_CATEGORY_ASC
+  NAICS_CATEGORY_DESC
+  NATURAL
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+"""
+The fuel mapping table that maps naics codes with hhw and irc categories
+"""
+type NaicsCategory implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  id: ID!
+
+  """The naics category"""
+  naicsCategory: String
+
+  """Reads and enables pagination through a set of `NaicsNaicsCategory`."""
+  naicsNaicsCategoriesByCategoryId(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: NaicsNaicsCategoryCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: NaicsNaicsCategoryFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `NaicsNaicsCategory`."""
+    orderBy: [NaicsNaicsCategoriesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): NaicsNaicsCategoriesConnection!
+
+  """The internal primary key for the mapping"""
+  rowId: Int!
+}
+
+"""
+A condition to be used against `NaicsCategory` object types. All fields are
+tested for equality and combined with a logical ‘and.’
+"""
+input NaicsCategoryCondition {
+  """Checks for equality with the object’s `naicsCategory` field."""
+  naicsCategory: String
+
+  """Checks for equality with the object’s `rowId` field."""
+  rowId: Int
+}
+
+"""
+A filter to be used against `NaicsCategory` object types. All fields are combined with a logical ‘and.’
+"""
+input NaicsCategoryFilter {
+  """Checks for all expressions in this list."""
+  and: [NaicsCategoryFilter!]
+
+  """Filter by the object’s `naicsCategory` field."""
+  naicsCategory: StringFilter
+
+  """Filter by the object’s `naicsNaicsCategoriesByCategoryId` relation."""
+  naicsNaicsCategoriesByCategoryId: NaicsCategoryToManyNaicsNaicsCategoryFilter
+
+  """Some related `naicsNaicsCategoriesByCategoryId` exist."""
+  naicsNaicsCategoriesByCategoryIdExist: Boolean
+
+  """Negates the expression."""
+  not: NaicsCategoryFilter
+
+  """Checks for any expressions in this list."""
+  or: [NaicsCategoryFilter!]
+
+  """Filter by the object’s `rowId` field."""
+  rowId: IntFilter
+}
+
+"""An input for mutations affecting `NaicsCategory`"""
+input NaicsCategoryInput {
+  """The naics category"""
+  naicsCategory: String
+}
+
+"""
+Represents an update to a `NaicsCategory`. Fields that are set will be updated.
+"""
+input NaicsCategoryPatch {
+  """The naics category"""
+  naicsCategory: String
+}
+
+"""
+A filter to be used against many `NaicsNaicsCategory` object types. All fields are combined with a logical ‘and.’
+"""
+input NaicsCategoryToManyNaicsNaicsCategoryFilter {
+  """
+  Every related `NaicsNaicsCategory` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: NaicsNaicsCategoryFilter
+
+  """
+  No related `NaicsNaicsCategory` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: NaicsNaicsCategoryFilter
+
+  """
+  Some related `NaicsNaicsCategory` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: NaicsNaicsCategoryFilter
+}
+
+"""A connection to a list of `NaicsNaicsCategory` values."""
+type NaicsNaicsCategoriesConnection {
+  """
+  A list of edges which contains the `NaicsNaicsCategory` and cursor to aid in pagination.
+  """
+  edges: [NaicsNaicsCategoriesEdge!]!
+
+  """A list of `NaicsNaicsCategory` objects."""
+  nodes: [NaicsNaicsCategory]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """
+  The count of *all* `NaicsNaicsCategory` you could get from the connection.
+  """
+  totalCount: Int!
+}
+
+"""A `NaicsNaicsCategory` edge in the connection."""
+type NaicsNaicsCategoriesEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `NaicsNaicsCategory` at the end of the edge."""
+  node: NaicsNaicsCategory
+}
+
+"""Methods to use when ordering `NaicsNaicsCategory`."""
+enum NaicsNaicsCategoriesOrderBy {
+  CATEGORY_ID_ASC
+  CATEGORY_ID_DESC
+  ID_ASC
+  ID_DESC
+  NAICS_CODE_PATTERN_ASC
+  NAICS_CODE_PATTERN_DESC
+  NATURAL
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+"""
+The fuel mapping table that maps naics codes with hhw and irc categories
+"""
+type NaicsNaicsCategory implements Node {
+  """The foreign key for the category"""
+  categoryId: Int
+
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  id: ID!
+
+  """
+  Reads a single `NaicsCategory` that is related to this `NaicsNaicsCategory`.
+  """
+  naicsCategoryByCategoryId: NaicsCategory
+
+  """The naics code pattern"""
+  naicsCodePattern: String
+
+  """The internal primary key for the mapping"""
+  rowId: Int!
+}
+
+"""
+A condition to be used against `NaicsNaicsCategory` object types. All fields are
+tested for equality and combined with a logical ‘and.’
+"""
+input NaicsNaicsCategoryCondition {
+  """Checks for equality with the object’s `categoryId` field."""
+  categoryId: Int
+
+  """Checks for equality with the object’s `naicsCodePattern` field."""
+  naicsCodePattern: String
+
+  """Checks for equality with the object’s `rowId` field."""
+  rowId: Int
+}
+
+"""
+A filter to be used against `NaicsNaicsCategory` object types. All fields are combined with a logical ‘and.’
+"""
+input NaicsNaicsCategoryFilter {
+  """Checks for all expressions in this list."""
+  and: [NaicsNaicsCategoryFilter!]
+
+  """Filter by the object’s `categoryId` field."""
+  categoryId: IntFilter
+
+  """Filter by the object’s `naicsCategoryByCategoryId` relation."""
+  naicsCategoryByCategoryId: NaicsCategoryFilter
+
+  """A related `naicsCategoryByCategoryId` exists."""
+  naicsCategoryByCategoryIdExists: Boolean
+
+  """Filter by the object’s `naicsCodePattern` field."""
+  naicsCodePattern: StringFilter
+
+  """Negates the expression."""
+  not: NaicsNaicsCategoryFilter
+
+  """Checks for any expressions in this list."""
+  or: [NaicsNaicsCategoryFilter!]
+
+  """Filter by the object’s `rowId` field."""
+  rowId: IntFilter
+}
+
+"""An input for mutations affecting `NaicsNaicsCategory`"""
+input NaicsNaicsCategoryInput {
+  """The foreign key for the category"""
+  categoryId: Int
+
+  """The naics code pattern"""
+  naicsCodePattern: String
+}
+
+"""
+Represents an update to a `NaicsNaicsCategory`. Fields that are set will be updated.
+"""
+input NaicsNaicsCategoryPatch {
+  """The foreign key for the category"""
+  categoryId: Int
+
+  """The naics code pattern"""
+  naicsCodePattern: String
 }
 
 """An object with a globally unique `ID`."""
@@ -2818,6 +5162,40 @@ type PageInfo {
 
 """The root query type which gives access points into the data universe."""
 type Query implements Node {
+  """Reads and enables pagination through a set of `CarbonTaxActFuelType`."""
+  allCarbonTaxActFuelTypes(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CarbonTaxActFuelTypeCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CarbonTaxActFuelTypeFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `CarbonTaxActFuelType`."""
+    orderBy: [CarbonTaxActFuelTypesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CarbonTaxActFuelTypesConnection
+
   """Reads and enables pagination through a set of `EcccAttachment`."""
   allEcccAttachments(
     """Read all values in the set after (below) this cursor."""
@@ -2954,6 +5332,142 @@ type Query implements Node {
     orderBy: [EcccZipFilesOrderBy!] = [PRIMARY_KEY_ASC]
   ): EcccZipFilesConnection
 
+  """Reads and enables pagination through a set of `EmissionCategory`."""
+  allEmissionCategories(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: EmissionCategoryCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: EmissionCategoryFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `EmissionCategory`."""
+    orderBy: [EmissionCategoriesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): EmissionCategoriesConnection
+
+  """Reads and enables pagination through a set of `FuelCarbonTaxDetail`."""
+  allFuelCarbonTaxDetails(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: FuelCarbonTaxDetailCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: FuelCarbonTaxDetailFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `FuelCarbonTaxDetail`."""
+    orderBy: [FuelCarbonTaxDetailsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): FuelCarbonTaxDetailsConnection
+
+  """Reads and enables pagination through a set of `FuelCharge`."""
+  allFuelCharges(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: FuelChargeCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: FuelChargeFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `FuelCharge`."""
+    orderBy: [FuelChargesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): FuelChargesConnection
+
+  """Reads and enables pagination through a set of `FuelMapping`."""
+  allFuelMappings(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: FuelMappingCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: FuelMappingFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `FuelMapping`."""
+    orderBy: [FuelMappingsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): FuelMappingsConnection
+
   """Reads and enables pagination through a set of `GgircsUser`."""
   allGgircsUsers(
     """Read all values in the set after (below) this cursor."""
@@ -3021,6 +5535,74 @@ type Query implements Node {
     """The method to use when ordering `GhgrImport`."""
     orderBy: [GhgrImportsOrderBy!] = [PRIMARY_KEY_ASC]
   ): GhgrImportsConnection
+
+  """Reads and enables pagination through a set of `NaicsCategory`."""
+  allNaicsCategories(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: NaicsCategoryCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: NaicsCategoryFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `NaicsCategory`."""
+    orderBy: [NaicsCategoriesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): NaicsCategoriesConnection
+
+  """Reads and enables pagination through a set of `NaicsNaicsCategory`."""
+  allNaicsNaicsCategories(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: NaicsNaicsCategoryCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: NaicsNaicsCategoryFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `NaicsNaicsCategory`."""
+    orderBy: [NaicsNaicsCategoriesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): NaicsNaicsCategoriesConnection
 
   """Reads and enables pagination through a set of `ReportAttachment`."""
   allReportAttachments(
@@ -3090,6 +5672,51 @@ type Query implements Node {
     orderBy: [ReportsOrderBy!] = [PRIMARY_KEY_ASC]
   ): ReportsConnection
 
+  """
+  Reads and enables pagination through a set of `TaxedVentingEmissionType`.
+  """
+  allTaxedVentingEmissionTypes(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: TaxedVentingEmissionTypeCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: TaxedVentingEmissionTypeFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `TaxedVentingEmissionType`."""
+    orderBy: [TaxedVentingEmissionTypesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): TaxedVentingEmissionTypesConnection
+
+  """Reads a single `CarbonTaxActFuelType` using its globally unique `ID`."""
+  carbonTaxActFuelType(
+    """
+    The globally unique `ID` to be used in selecting a single `CarbonTaxActFuelType`.
+    """
+    id: ID!
+  ): CarbonTaxActFuelType
+  carbonTaxActFuelTypeByRowId(rowId: Int!): CarbonTaxActFuelType
+
   """Reads a single `EcccAttachment` using its globally unique `ID`."""
   ecccAttachment(
     """
@@ -3126,6 +5753,43 @@ type Query implements Node {
   ): EcccZipFile
   ecccZipFileByRowId(rowId: Int!): EcccZipFile
 
+  """Reads a single `EmissionCategory` using its globally unique `ID`."""
+  emissionCategory(
+    """
+    The globally unique `ID` to be used in selecting a single `EmissionCategory`.
+    """
+    id: ID!
+  ): EmissionCategory
+  emissionCategoryByRowId(rowId: Int!): EmissionCategory
+  emissionCategoryBySwrsEmissionCategory(swrsEmissionCategory: String!): EmissionCategory
+
+  """Reads a single `FuelCarbonTaxDetail` using its globally unique `ID`."""
+  fuelCarbonTaxDetail(
+    """
+    The globally unique `ID` to be used in selecting a single `FuelCarbonTaxDetail`.
+    """
+    id: ID!
+  ): FuelCarbonTaxDetail
+  fuelCarbonTaxDetailByRowId(rowId: Int!): FuelCarbonTaxDetail
+
+  """Reads a single `FuelCharge` using its globally unique `ID`."""
+  fuelCharge(
+    """
+    The globally unique `ID` to be used in selecting a single `FuelCharge`.
+    """
+    id: ID!
+  ): FuelCharge
+  fuelChargeByRowId(rowId: Int!): FuelCharge
+
+  """Reads a single `FuelMapping` using its globally unique `ID`."""
+  fuelMapping(
+    """
+    The globally unique `ID` to be used in selecting a single `FuelMapping`.
+    """
+    id: ID!
+  ): FuelMapping
+  fuelMappingByRowId(rowId: Int!): FuelMapping
+
   """Reads a single `GgircsUser` using its globally unique `ID`."""
   ggircsUser(
     """
@@ -3148,6 +5812,24 @@ type Query implements Node {
   The root query type must be a `Node` to work well with Relay 1 mutations. This just resolves to `query`.
   """
   id: ID!
+
+  """Reads a single `NaicsCategory` using its globally unique `ID`."""
+  naicsCategory(
+    """
+    The globally unique `ID` to be used in selecting a single `NaicsCategory`.
+    """
+    id: ID!
+  ): NaicsCategory
+  naicsCategoryByRowId(rowId: Int!): NaicsCategory
+
+  """Reads a single `NaicsNaicsCategory` using its globally unique `ID`."""
+  naicsNaicsCategory(
+    """
+    The globally unique `ID` to be used in selecting a single `NaicsNaicsCategory`.
+    """
+    id: ID!
+  ): NaicsNaicsCategory
+  naicsNaicsCategoryByRowId(rowId: Int!): NaicsNaicsCategory
 
   """Fetches an object given its globally unique `ID`."""
   node(
@@ -3177,9 +5859,19 @@ type Query implements Node {
   reportAttachmentByRowId(rowId: Int!): ReportAttachment
   reportByRowId(rowId: Int!): Report
   session: JwtToken
+
+  """
+  Reads a single `TaxedVentingEmissionType` using its globally unique `ID`.
+  """
+  taxedVentingEmissionType(
+    """
+    The globally unique `ID` to be used in selecting a single `TaxedVentingEmissionType`.
+    """
+    id: ID!
+  ): TaxedVentingEmissionType
+  taxedVentingEmissionTypeByRowId(rowId: Int!): TaxedVentingEmissionType
 }
 
-"""The table housing all report data, derived from eccc_xml_file table"""
 type Report implements Node {
   co2Bioc: BigFloat
 
@@ -3203,8 +5895,6 @@ type Report implements Node {
 
   """The timestamp recorded in SWRS when the report was last modified"""
   lastModifiedDate: Datetime
-
-  """Computed column returns the latest report ordered by zip_file_name"""
   latestSwrsReport: Report
 
   """The prepop report id"""
@@ -3281,7 +5971,6 @@ type Report implements Node {
   version: String
 }
 
-"""The table housing all attachments for reports"""
 type ReportAttachment implements Node {
   comment: String
 
@@ -3930,6 +6619,107 @@ input StringListFilter {
 }
 
 """
+Table of emission types that are carbon taxed in relation to venting as per https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/249_2015#ScheduleA
+"""
+type TaxedVentingEmissionType implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  id: ID!
+
+  """Unique ID for the taxed_venting_emission_type table"""
+  rowId: Int!
+
+  """The name of the carbon taxed emission type"""
+  taxedEmissionType: String
+}
+
+"""
+A condition to be used against `TaxedVentingEmissionType` object types. All
+fields are tested for equality and combined with a logical ‘and.’
+"""
+input TaxedVentingEmissionTypeCondition {
+  """Checks for equality with the object’s `rowId` field."""
+  rowId: Int
+
+  """Checks for equality with the object’s `taxedEmissionType` field."""
+  taxedEmissionType: String
+}
+
+"""
+A filter to be used against `TaxedVentingEmissionType` object types. All fields are combined with a logical ‘and.’
+"""
+input TaxedVentingEmissionTypeFilter {
+  """Checks for all expressions in this list."""
+  and: [TaxedVentingEmissionTypeFilter!]
+
+  """Negates the expression."""
+  not: TaxedVentingEmissionTypeFilter
+
+  """Checks for any expressions in this list."""
+  or: [TaxedVentingEmissionTypeFilter!]
+
+  """Filter by the object’s `rowId` field."""
+  rowId: IntFilter
+
+  """Filter by the object’s `taxedEmissionType` field."""
+  taxedEmissionType: StringFilter
+}
+
+"""An input for mutations affecting `TaxedVentingEmissionType`"""
+input TaxedVentingEmissionTypeInput {
+  """The name of the carbon taxed emission type"""
+  taxedEmissionType: String
+}
+
+"""
+Represents an update to a `TaxedVentingEmissionType`. Fields that are set will be updated.
+"""
+input TaxedVentingEmissionTypePatch {
+  """The name of the carbon taxed emission type"""
+  taxedEmissionType: String
+}
+
+"""A connection to a list of `TaxedVentingEmissionType` values."""
+type TaxedVentingEmissionTypesConnection {
+  """
+  A list of edges which contains the `TaxedVentingEmissionType` and cursor to aid in pagination.
+  """
+  edges: [TaxedVentingEmissionTypesEdge!]!
+
+  """A list of `TaxedVentingEmissionType` objects."""
+  nodes: [TaxedVentingEmissionType]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """
+  The count of *all* `TaxedVentingEmissionType` you could get from the connection.
+  """
+  totalCount: Int!
+}
+
+"""A `TaxedVentingEmissionType` edge in the connection."""
+type TaxedVentingEmissionTypesEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `TaxedVentingEmissionType` at the end of the edge."""
+  node: TaxedVentingEmissionType
+}
+
+"""Methods to use when ordering `TaxedVentingEmissionType`."""
+enum TaxedVentingEmissionTypesOrderBy {
+  ID_ASC
+  ID_DESC
+  NATURAL
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+  TAXED_EMISSION_TYPE_ASC
+  TAXED_EMISSION_TYPE_DESC
+}
+
+"""
 A universally unique identifier as defined by [RFC 4122](https://tools.ietf.org/html/rfc4122).
 """
 scalar UUID
@@ -3974,6 +6764,65 @@ input UUIDFilter {
 
   """Not included in the specified list."""
   notIn: [UUID!]
+}
+
+"""All input for the `updateCarbonTaxActFuelTypeByRowId` mutation."""
+input UpdateCarbonTaxActFuelTypeByRowIdInput {
+  """
+  An object where the defined keys will be set on the `CarbonTaxActFuelType` being updated.
+  """
+  carbonTaxActFuelTypePatch: CarbonTaxActFuelTypePatch!
+
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The internal primary key"""
+  rowId: Int!
+}
+
+"""All input for the `updateCarbonTaxActFuelType` mutation."""
+input UpdateCarbonTaxActFuelTypeInput {
+  """
+  An object where the defined keys will be set on the `CarbonTaxActFuelType` being updated.
+  """
+  carbonTaxActFuelTypePatch: CarbonTaxActFuelTypePatch!
+
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `CarbonTaxActFuelType` to be updated.
+  """
+  id: ID!
+}
+
+"""The output of our update `CarbonTaxActFuelType` mutation."""
+type UpdateCarbonTaxActFuelTypePayload {
+  """The `CarbonTaxActFuelType` that was updated by this mutation."""
+  carbonTaxActFuelType: CarbonTaxActFuelType
+
+  """An edge for our `CarbonTaxActFuelType`. May be used by Relay 1."""
+  carbonTaxActFuelTypeEdge(
+    """The method to use when ordering `CarbonTaxActFuelType`."""
+    orderBy: [CarbonTaxActFuelTypesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CarbonTaxActFuelTypesEdge
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
 }
 
 """All input for the `updateEcccAttachmentByRowId` mutation."""
@@ -4102,6 +6951,276 @@ type UpdateEcccFileDownloadLogPayload {
   query: Query
 }
 
+"""All input for the `updateEmissionCategoryByRowId` mutation."""
+input UpdateEmissionCategoryByRowIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  An object where the defined keys will be set on the `EmissionCategory` being updated.
+  """
+  emissionCategoryPatch: EmissionCategoryPatch!
+
+  """Unique ID for the emission_category"""
+  rowId: Int!
+}
+
+"""
+All input for the `updateEmissionCategoryBySwrsEmissionCategory` mutation.
+"""
+input UpdateEmissionCategoryBySwrsEmissionCategoryInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  An object where the defined keys will be set on the `EmissionCategory` being updated.
+  """
+  emissionCategoryPatch: EmissionCategoryPatch!
+
+  """The emission category name as displayed in the swrs xml reports"""
+  swrsEmissionCategory: String!
+}
+
+"""All input for the `updateEmissionCategory` mutation."""
+input UpdateEmissionCategoryInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  An object where the defined keys will be set on the `EmissionCategory` being updated.
+  """
+  emissionCategoryPatch: EmissionCategoryPatch!
+
+  """
+  The globally unique `ID` which will identify a single `EmissionCategory` to be updated.
+  """
+  id: ID!
+}
+
+"""The output of our update `EmissionCategory` mutation."""
+type UpdateEmissionCategoryPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `EmissionCategory` that was updated by this mutation."""
+  emissionCategory: EmissionCategory
+
+  """An edge for our `EmissionCategory`. May be used by Relay 1."""
+  emissionCategoryEdge(
+    """The method to use when ordering `EmissionCategory`."""
+    orderBy: [EmissionCategoriesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): EmissionCategoriesEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the `updateFuelCarbonTaxDetailByRowId` mutation."""
+input UpdateFuelCarbonTaxDetailByRowIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  An object where the defined keys will be set on the `FuelCarbonTaxDetail` being updated.
+  """
+  fuelCarbonTaxDetailPatch: FuelCarbonTaxDetailPatch!
+
+  """The internal primary key for the mapping"""
+  rowId: Int!
+}
+
+"""All input for the `updateFuelCarbonTaxDetail` mutation."""
+input UpdateFuelCarbonTaxDetailInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  An object where the defined keys will be set on the `FuelCarbonTaxDetail` being updated.
+  """
+  fuelCarbonTaxDetailPatch: FuelCarbonTaxDetailPatch!
+
+  """
+  The globally unique `ID` which will identify a single `FuelCarbonTaxDetail` to be updated.
+  """
+  id: ID!
+}
+
+"""The output of our update `FuelCarbonTaxDetail` mutation."""
+type UpdateFuelCarbonTaxDetailPayload {
+  """
+  Reads a single `CarbonTaxActFuelType` that is related to this `FuelCarbonTaxDetail`.
+  """
+  carbonTaxActFuelTypeByCarbonTaxActFuelTypeId: CarbonTaxActFuelType
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `FuelCarbonTaxDetail` that was updated by this mutation."""
+  fuelCarbonTaxDetail: FuelCarbonTaxDetail
+
+  """An edge for our `FuelCarbonTaxDetail`. May be used by Relay 1."""
+  fuelCarbonTaxDetailEdge(
+    """The method to use when ordering `FuelCarbonTaxDetail`."""
+    orderBy: [FuelCarbonTaxDetailsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): FuelCarbonTaxDetailsEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the `updateFuelChargeByRowId` mutation."""
+input UpdateFuelChargeByRowIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  An object where the defined keys will be set on the `FuelCharge` being updated.
+  """
+  fuelChargePatch: FuelChargePatch!
+
+  """The internal primary key"""
+  rowId: Int!
+}
+
+"""All input for the `updateFuelCharge` mutation."""
+input UpdateFuelChargeInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  An object where the defined keys will be set on the `FuelCharge` being updated.
+  """
+  fuelChargePatch: FuelChargePatch!
+
+  """
+  The globally unique `ID` which will identify a single `FuelCharge` to be updated.
+  """
+  id: ID!
+}
+
+"""The output of our update `FuelCharge` mutation."""
+type UpdateFuelChargePayload {
+  """
+  Reads a single `CarbonTaxActFuelType` that is related to this `FuelCharge`.
+  """
+  carbonTaxActFuelTypeByCarbonTaxActFuelTypeId: CarbonTaxActFuelType
+
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `FuelCharge` that was updated by this mutation."""
+  fuelCharge: FuelCharge
+
+  """An edge for our `FuelCharge`. May be used by Relay 1."""
+  fuelChargeEdge(
+    """The method to use when ordering `FuelCharge`."""
+    orderBy: [FuelChargesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): FuelChargesEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the `updateFuelMappingByRowId` mutation."""
+input UpdateFuelMappingByRowIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  An object where the defined keys will be set on the `FuelMapping` being updated.
+  """
+  fuelMappingPatch: FuelMappingPatch!
+
+  """The internal primary key for the mapping"""
+  rowId: Int!
+}
+
+"""All input for the `updateFuelMapping` mutation."""
+input UpdateFuelMappingInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  An object where the defined keys will be set on the `FuelMapping` being updated.
+  """
+  fuelMappingPatch: FuelMappingPatch!
+
+  """
+  The globally unique `ID` which will identify a single `FuelMapping` to be updated.
+  """
+  id: ID!
+}
+
+"""The output of our update `FuelMapping` mutation."""
+type UpdateFuelMappingPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """
+  Reads a single `FuelCarbonTaxDetail` that is related to this `FuelMapping`.
+  """
+  fuelCarbonTaxDetailByFuelCarbonTaxDetailId: FuelCarbonTaxDetail
+
+  """The `FuelMapping` that was updated by this mutation."""
+  fuelMapping: FuelMapping
+
+  """An edge for our `FuelMapping`. May be used by Relay 1."""
+  fuelMappingEdge(
+    """The method to use when ordering `FuelMapping`."""
+    orderBy: [FuelMappingsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): FuelMappingsEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
 """All input for the `updateGgircsUserByRowId` mutation."""
 input UpdateGgircsUserByRowIdInput {
   """
@@ -4168,4 +7287,186 @@ type UpdateGgircsUserPayload {
   Our root query field type. Allows us to run any query from our mutation payload.
   """
   query: Query
+}
+
+"""All input for the `updateNaicsCategoryByRowId` mutation."""
+input UpdateNaicsCategoryByRowIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  An object where the defined keys will be set on the `NaicsCategory` being updated.
+  """
+  naicsCategoryPatch: NaicsCategoryPatch!
+
+  """The internal primary key for the mapping"""
+  rowId: Int!
+}
+
+"""All input for the `updateNaicsCategory` mutation."""
+input UpdateNaicsCategoryInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `NaicsCategory` to be updated.
+  """
+  id: ID!
+
+  """
+  An object where the defined keys will be set on the `NaicsCategory` being updated.
+  """
+  naicsCategoryPatch: NaicsCategoryPatch!
+}
+
+"""The output of our update `NaicsCategory` mutation."""
+type UpdateNaicsCategoryPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `NaicsCategory` that was updated by this mutation."""
+  naicsCategory: NaicsCategory
+
+  """An edge for our `NaicsCategory`. May be used by Relay 1."""
+  naicsCategoryEdge(
+    """The method to use when ordering `NaicsCategory`."""
+    orderBy: [NaicsCategoriesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): NaicsCategoriesEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the `updateNaicsNaicsCategoryByRowId` mutation."""
+input UpdateNaicsNaicsCategoryByRowIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  An object where the defined keys will be set on the `NaicsNaicsCategory` being updated.
+  """
+  naicsNaicsCategoryPatch: NaicsNaicsCategoryPatch!
+
+  """The internal primary key for the mapping"""
+  rowId: Int!
+}
+
+"""All input for the `updateNaicsNaicsCategory` mutation."""
+input UpdateNaicsNaicsCategoryInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `NaicsNaicsCategory` to be updated.
+  """
+  id: ID!
+
+  """
+  An object where the defined keys will be set on the `NaicsNaicsCategory` being updated.
+  """
+  naicsNaicsCategoryPatch: NaicsNaicsCategoryPatch!
+}
+
+"""The output of our update `NaicsNaicsCategory` mutation."""
+type UpdateNaicsNaicsCategoryPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """
+  Reads a single `NaicsCategory` that is related to this `NaicsNaicsCategory`.
+  """
+  naicsCategoryByCategoryId: NaicsCategory
+
+  """The `NaicsNaicsCategory` that was updated by this mutation."""
+  naicsNaicsCategory: NaicsNaicsCategory
+
+  """An edge for our `NaicsNaicsCategory`. May be used by Relay 1."""
+  naicsNaicsCategoryEdge(
+    """The method to use when ordering `NaicsNaicsCategory`."""
+    orderBy: [NaicsNaicsCategoriesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): NaicsNaicsCategoriesEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the `updateTaxedVentingEmissionTypeByRowId` mutation."""
+input UpdateTaxedVentingEmissionTypeByRowIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """Unique ID for the taxed_venting_emission_type table"""
+  rowId: Int!
+
+  """
+  An object where the defined keys will be set on the `TaxedVentingEmissionType` being updated.
+  """
+  taxedVentingEmissionTypePatch: TaxedVentingEmissionTypePatch!
+}
+
+"""All input for the `updateTaxedVentingEmissionType` mutation."""
+input UpdateTaxedVentingEmissionTypeInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `TaxedVentingEmissionType` to be updated.
+  """
+  id: ID!
+
+  """
+  An object where the defined keys will be set on the `TaxedVentingEmissionType` being updated.
+  """
+  taxedVentingEmissionTypePatch: TaxedVentingEmissionTypePatch!
+}
+
+"""The output of our update `TaxedVentingEmissionType` mutation."""
+type UpdateTaxedVentingEmissionTypePayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """The `TaxedVentingEmissionType` that was updated by this mutation."""
+  taxedVentingEmissionType: TaxedVentingEmissionType
+
+  """An edge for our `TaxedVentingEmissionType`. May be used by Relay 1."""
+  taxedVentingEmissionTypeEdge(
+    """The method to use when ordering `TaxedVentingEmissionType`."""
+    orderBy: [TaxedVentingEmissionTypesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): TaxedVentingEmissionTypesEdge
 }
