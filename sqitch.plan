@@ -226,3 +226,4 @@ swrs/public/view/naics_naics_category [swrs/parameters/table/naics_naics_categor
 swrs/public/view/taxed_venting_emission_type [swrs/parameters/table/taxed_venting_emission_type] 2022-02-15T21:54:27Z Dylan Leard <dylan@button.is> # Add a view as a replacement for this table that was moved into the ggircs_parameters schema
 @v1.11.2 2022-02-23T22:30:21Z Dylan Leard <dylan@button.is> # release v1.11.2
 swrs/public/view/facility_details [swrs/public/view/facility_details@v1.11.2] 2022-02-28T23:11:31Z Dylan Leard <dylan@button.is> # Re-implement this view to be more performant rather than dropping it
+swrs/parameters/queries/unmapped_fuel [swrs/parameters/schema swrs/parameters/table/fuel_mapping swrs/public/table/fuel] 2022-03-09T23:06:25Z Dylan Leard <dylan@button.is> # Custom query to return fuel types that are not mapped to a fuel type in the fuel_mapping table
