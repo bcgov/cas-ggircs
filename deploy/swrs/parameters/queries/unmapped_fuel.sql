@@ -11,12 +11,12 @@ create or replace function ggircs_parameters.unmapped_fuel()
     select distinct on (fuel_type) fuel.fuel_type, fm.id from swrs.fuel
     join swrs.report
     on fuel.report_id = report.id
-    left join swrs.fuel_mapping fm
+    left join ggircs_parameters.fuel_mapping fm
     on fuel.fuel_mapping_id = fm.id
     where
       (
-        fuel.fuel_type not in (select fuel_type from swrs.fuel_mapping)
-        or fm.fuel_carbon_tax_details_id is null
+        fuel.fuel_type not in (select fuel_type from ggircs_parameters.fuel_mapping)
+        or fm.fuel_carbon_tax_detail_id is null
       )
       and report.reporting_period_duration > 2014;
   $$ language 'sql' stable;
