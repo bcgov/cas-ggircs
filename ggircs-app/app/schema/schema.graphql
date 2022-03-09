@@ -538,6 +538,43 @@ type CreateFuelChargePayload {
   query: Query
 }
 
+"""All input for the `createFuelMappingCascade` mutation."""
+input CreateFuelMappingCascadeInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  fuelCarbonTaxDetailIdInput: Int!
+  fuelTypeInput: String!
+}
+
+"""The output of our `createFuelMappingCascade` mutation."""
+type CreateFuelMappingCascadePayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """
+  Reads a single `FuelCarbonTaxDetail` that is related to this `FuelMapping`.
+  """
+  fuelCarbonTaxDetailByFuelCarbonTaxDetailId: FuelCarbonTaxDetail
+  fuelMapping: FuelMapping
+
+  """An edge for our `FuelMapping`. May be used by Relay 1."""
+  fuelMappingEdge(
+    """The method to use when ordering `FuelMapping`."""
+    orderBy: [FuelMappingsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): FuelMappingsEdge
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
 """All input for the create `FuelMapping` mutation."""
 input CreateFuelMappingInput {
   """
@@ -4413,6 +4450,12 @@ type Mutation {
     """
     input: CreateFuelMappingInput!
   ): CreateFuelMappingPayload
+  createFuelMappingCascade(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateFuelMappingCascadeInput!
+  ): CreateFuelMappingCascadePayload
 
   """Creates a single `GgircsUser`."""
   createGgircsUser(
@@ -5870,6 +5913,34 @@ type Query implements Node {
     id: ID!
   ): TaxedVentingEmissionType
   taxedVentingEmissionTypeByRowId(rowId: Int!): TaxedVentingEmissionType
+
+  """
+  A custom function to return fuel types that are not mapped to a fuel type in the fuel_mapping table.
+  """
+  unmappedFuel(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: UnmappedFuelRecordFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+  ): UnmappedFuelConnection
 }
 
 type Report implements Node {
@@ -6764,6 +6835,57 @@ input UUIDFilter {
 
   """Not included in the specified list."""
   notIn: [UUID!]
+}
+
+"""A connection to a list of `UnmappedFuelRecord` values."""
+type UnmappedFuelConnection {
+  """
+  A list of edges which contains the `UnmappedFuelRecord` and cursor to aid in pagination.
+  """
+  edges: [UnmappedFuelEdge!]!
+
+  """A list of `UnmappedFuelRecord` objects."""
+  nodes: [UnmappedFuelRecord]!
+
+  """
+  The count of *all* `UnmappedFuelRecord` you could get from the connection.
+  """
+  totalCount: Int!
+}
+
+"""A `UnmappedFuelRecord` edge in the connection."""
+type UnmappedFuelEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `UnmappedFuelRecord` at the end of the edge."""
+  node: UnmappedFuelRecord
+}
+
+"""The return type of our `unmappedFuel` query."""
+type UnmappedFuelRecord {
+  fuelMappingId: Int
+  fuelType: String
+}
+
+"""
+A filter to be used against `UnmappedFuelRecord` object types. All fields are combined with a logical ‘and.’
+"""
+input UnmappedFuelRecordFilter {
+  """Checks for all expressions in this list."""
+  and: [UnmappedFuelRecordFilter!]
+
+  """Filter by the object’s `fuelMappingId` field."""
+  fuelMappingId: IntFilter
+
+  """Filter by the object’s `fuelType` field."""
+  fuelType: StringFilter
+
+  """Negates the expression."""
+  not: UnmappedFuelRecordFilter
+
+  """Checks for any expressions in this list."""
+  or: [UnmappedFuelRecordFilter!]
 }
 
 """All input for the `updateCarbonTaxActFuelTypeByRowId` mutation."""

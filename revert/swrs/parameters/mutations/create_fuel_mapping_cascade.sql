@@ -2,6 +2,6 @@
 
 begin;
 
-drop function ggircs_parameters.create_fuel_mapping_cascade();
+drop function ggircs_parameters.create_fuel_mapping_cascade;
 
 commit;
