@@ -3,7 +3,7 @@ import { Table } from "react-bootstrap";
 import Alert from "@button-inc/bcgov-theme/Alert";
 import UnmappedFuelTypeRow from "./UnmappedFuelTypeRow";
 import { UnmappedFuelTypes_query$key } from "__generated__/UnmappedFuelTypes_query.graphql";
-import updateFuelMappingMutation from "mutations/fuelManagement/updateFuelMapping";
+import { useUpdateFuelMappingMutation } from "mutations/fuelManagement/updateFuelMapping";
 import { useCreateFuelMappingCascade } from "mutations/fuelManagement/createFuelMappingCascade";
 
 interface Props {
@@ -28,6 +28,17 @@ export const UnmappedFuelTypes: React.FC<Props> = ({ query }) => {
               id
               rowId
               normalizedFuelType
+              fuelMappingsByFuelCarbonTaxDetailId(first: 2147483647)
+              @connection(
+                key: "MappedFuelTypes_fuelMappingsByFuelCarbonTaxDetailId"
+              ) {
+                __id
+                edges {
+                  node {
+                    __typename
+                  }
+                }
+              }
             }
           }
         }
@@ -36,30 +47,37 @@ export const UnmappedFuelTypes: React.FC<Props> = ({ query }) => {
     query
   );
 
-  if (unmappedFuel.edges.length < 1) return null;
-
   const normalizedFuels = allFuelCarbonTaxDetails.edges;
 
-  const [createFuelMapping, isCreatingFuelMapping] = useCreateFuelMappingCascade();
+  const [createFuelMapping] = useCreateFuelMappingCascade();
+  const [updateFuelMapping] = useUpdateFuelMappingMutation();
 
   const handleFuelMapping = async (map: {
     rowId?: number;
     fuelType?: string;
-    fuelCarbonTaxDetailId: number;
+    fuelCarbonTaxDetailId: string;
   }) => {
+    // The index of the fuelCarbonTaxDetail record is needed to apply the @connection and update the store with @appendEdge
+    const pos = allFuelCarbonTaxDetails.edges.findIndex(({node}) => node.rowId === Number(map.fuelCarbonTaxDetailId));
     if (map.rowId) {
-      const variables = {
-        input: {
-          rowId: map.rowId,
-          fuelMappingPatch: {
-            fuelCarbonTaxDetailId: Number(map.fuelCarbonTaxDetailId),
-          },
+      updateFuelMapping({
+        variables: {
+          connections: [allFuelCarbonTaxDetails.edges[pos].node.fuelMappingsByFuelCarbonTaxDetailId.__id],
+          input: {
+            rowId: map.rowId,
+            fuelMappingPatch: {
+              fuelCarbonTaxDetailId: Number(map.fuelCarbonTaxDetailId),
+            }
+          }
         },
-      };
-      // await updateFuelMappingMutation(relay.environment, variables);
+        onError: (error: Error) => {
+          console.error(error);
+        }
+      });
     } else {
       createFuelMapping({
         variables: {
+          connections: [allFuelCarbonTaxDetails.edges[pos].node.fuelMappingsByFuelCarbonTaxDetailId.__id],
           input: {
             fuelTypeInput: map.fuelType,
             fuelCarbonTaxDetailIdInput: Number(map.fuelCarbonTaxDetailId),
@@ -72,6 +90,7 @@ export const UnmappedFuelTypes: React.FC<Props> = ({ query }) => {
     }
   };
 
+  if (unmappedFuel.edges.length < 1) return null;
   return (
     <>
       <Alert>Normalize un-mapped SWRS fuel types</Alert>

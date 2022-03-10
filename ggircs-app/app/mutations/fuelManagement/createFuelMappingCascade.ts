@@ -5,18 +5,30 @@ import { createFuelMappingCascadeMutation } from "createFuelMappingCascadeMutati
 export const mutation = graphql`
   mutation createFuelMappingCascadeMutation(
     $input: CreateFuelMappingCascadeInput!
+    $connections: [ID!]!
   ) {
     createFuelMappingCascade(input: $input) {
-      fuelMapping {
-        id
-        fuelType
-        fuelCarbonTaxDetailId
+      fuelMappingEdge @appendEdge(connections: $connections) {
+        cursor
+        node {
+          id
+          fuelType
+          fuelCarbonTaxDetailId
+        }
+      }
+      query {
+        unmappedFuel {
+          edges {
+            node {
+              fuelType
+              fuelMappingId
+            }
+          }
+        }
       }
     }
   }
 `;
-
-export default createFuelMappingCascadeMutation;
 
 export const useCreateFuelMappingCascade = (
   commitMutationFn?: (

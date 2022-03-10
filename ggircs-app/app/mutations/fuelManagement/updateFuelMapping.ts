@@ -1,42 +1,30 @@
-import { graphql } from "react-relay";
-import {
-  updateFuelMappingMutation as mutationType,
-  updateFuelMappingMutationVariables as mutationVariables,
-} from "updateFuelMappingMutation.graphql";
-import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment";
-import BaseMutation from "mutations/BaseMutation";
+import { useMutation, graphql, Disposable, Environment } from "react-relay";
+import { MutationConfig } from "relay-runtime";
+import { updateFuelMappingMutation } from "updateFuelMappingMutation.graphql";
 
-const mutation = graphql`
-  mutation updateFuelMappingMutation($input: UpdateFuelMappingByRowIdInput!) {
+export const mutation = graphql`
+  mutation updateFuelMappingMutation($input: UpdateFuelMappingByRowIdInput! $connections: [ID!]!) {
     updateFuelMappingByRowId(input: $input) {
-      fuelMapping {
-        id
-        fuelType
-        fuelCarbonTaxDetailId
+      fuelMappingEdge @appendEdge(connections: $connections) {
+        cursor
+        node {
+          id
+          fuelType
+          fuelCarbonTaxDetailId
+        }
       }
     }
   }
 `;
 
-const updateFuelMappingMutation = async (
-  environment: RelayModernEnvironment,
-  variables: mutationVariables
+export const useUpdateFuelMappingMutation = (
+  commitMutationFn?: (
+    environment: Environment,
+    config: MutationConfig<updateFuelMappingMutation>
+  ) => Disposable
 ) => {
-  const optimisticResponse = {
-    updateFuelMappingByRowId: {
-      fuelMapping: {
-        rowId: variables.input.rowId,
-        ...variables.input.fuelMappingPatch,
-      },
-    },
-  };
-  const m = new BaseMutation<mutationType>("update-fuel-mapping-mutation");
-  return m.performMutation(
-    environment,
+  return useMutation<updateFuelMappingMutation>(
     mutation,
-    variables,
-    optimisticResponse
+    commitMutationFn
   );
 };
-
-export default updateFuelMappingMutation;
