@@ -13,6 +13,16 @@ export const mutation = graphql`
           fuelCarbonTaxDetailId
         }
       }
+      query {
+        unmappedFuel {
+          edges {
+            node {
+              fuelType
+              fuelMappingId
+            }
+          }
+        }
+      }
     }
   }
 `;
