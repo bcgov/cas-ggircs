@@ -46,8 +46,6 @@ export function XmlDiff({ preloadedQuery }: RelayProps<{}, xmlDiffQuery>) {
   const [firstSelectorEditing, setFirstSelectorEditing] = useState(false);
   const [secondSelectorEditing, setSecondSelectorEditing] = useState(false);
 
-  // We need to ensure both ReportSelector components share the same router, otherwise they
-  // can't write on the same query in the URL.
   const router = useRouter();
 
   return (
