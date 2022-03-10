@@ -27,6 +27,7 @@ export const NormalizedFuelSelection: React.FC<Props> = ({
         <ListGroup variant="flush">
           {normalizedFuelTypes.map(({ normalizedFuelType, id }) => (
             <ListGroup.Item
+              key={id}
               action
               onClick={() => handleClick(id)}
               active={router.query?.fuelCarbonTaxDetailId === id}

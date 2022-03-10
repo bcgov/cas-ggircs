@@ -30,7 +30,7 @@ export const UnmappedFuelTypeRow: React.FC<Props> = ({
     handleFuelMapping({
       rowId: fuel.fuelMappingId,
       fuelType: fuel.fuelType,
-      fuelCarbonTaxDetailsId: selectedNormalizedFuel,
+      fuelCarbonTaxDetailId: selectedNormalizedFuel,
     });
     setDisabledDropdown(true);
   };

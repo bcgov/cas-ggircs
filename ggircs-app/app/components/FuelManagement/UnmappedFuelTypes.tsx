@@ -1,11 +1,10 @@
-import React from "react";
 import { useFragment, graphql } from "react-relay";
 import { Table } from "react-bootstrap";
 import Alert from "@button-inc/bcgov-theme/Alert";
 import UnmappedFuelTypeRow from "./UnmappedFuelTypeRow";
 import { UnmappedFuelTypes_query$key } from "__generated__/UnmappedFuelTypes_query.graphql";
 import updateFuelMappingMutation from "mutations/fuelManagement/updateFuelMapping";
-import createFuelMappingCascadeMutation from "mutations/fuelManagement/createFuelMappingCascade";
+import { useCreateFuelMappingCascade } from "mutations/fuelManagement/createFuelMappingCascade";
 
 interface Props {
   query: UnmappedFuelTypes_query$key;
@@ -41,29 +40,35 @@ export const UnmappedFuelTypes: React.FC<Props> = ({ query }) => {
 
   const normalizedFuels = allFuelCarbonTaxDetails.edges;
 
+  const [createFuelMapping, isCreatingFuelMapping] = useCreateFuelMappingCascade();
+
   const handleFuelMapping = async (map: {
     rowId?: number;
     fuelType?: string;
-    fuelCarbonTaxDetailsId: number;
+    fuelCarbonTaxDetailId: number;
   }) => {
     if (map.rowId) {
       const variables = {
         input: {
           rowId: map.rowId,
           fuelMappingPatch: {
-            fuelCarbonTaxDetailsId: Number(map.fuelCarbonTaxDetailsId),
+            fuelCarbonTaxDetailId: Number(map.fuelCarbonTaxDetailId),
           },
         },
       };
       // await updateFuelMappingMutation(relay.environment, variables);
     } else {
-      const variables = {
-        input: {
-          fuelTypeInput: map.fuelType,
-          fuelCarbonTaxDetailsIdInput: Number(map.fuelCarbonTaxDetailsId),
+      createFuelMapping({
+        variables: {
+          input: {
+            fuelTypeInput: map.fuelType,
+            fuelCarbonTaxDetailIdInput: Number(map.fuelCarbonTaxDetailId),
+          }
         },
-      };
-      // await createFuelMappingCascadeMutation(relay.environment, variables);
+        onError: (error: Error) => {
+          console.error(error);
+        }
+      });
     }
   };
 
@@ -81,6 +86,7 @@ export const UnmappedFuelTypes: React.FC<Props> = ({ query }) => {
         <tbody>
           {unmappedFuel.edges.map(({ node }, index) => (
             <UnmappedFuelTypeRow
+              key={node.fuelType}
               fuel={node}
               index={index}
               normalizedFuels={normalizedFuels}

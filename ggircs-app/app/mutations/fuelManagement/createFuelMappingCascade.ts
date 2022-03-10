@@ -1,12 +1,8 @@
-import { graphql } from "react-relay";
-import {
-  createFuelMappingCascadeMutation as mutationType,
-  createFuelMappingCascadeMutationVariables as mutationVariables,
-} from "createFuelMappingCascadeMutation.graphql";
-import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment";
-import BaseMutation from "mutations/BaseMutation";
+import { useMutation, graphql, Disposable, Environment } from "react-relay";
+import { MutationConfig } from "relay-runtime";
+import { createFuelMappingCascadeMutation } from "createFuelMappingCascadeMutation.graphql";
 
-const mutation = graphql`
+export const mutation = graphql`
   mutation createFuelMappingCascadeMutation(
     $input: CreateFuelMappingCascadeInput!
   ) {
@@ -20,14 +16,16 @@ const mutation = graphql`
   }
 `;
 
-const createFuelMappingCascadeMutation = async (
-  environment: RelayModernEnvironment,
-  variables: mutationVariables
-) => {
-  const m = new BaseMutation<mutationType>(
-    "create-fuel-mapping-cascade-mutation"
-  );
-  return m.performMutation(environment, mutation, variables);
-};
-
 export default createFuelMappingCascadeMutation;
+
+export const useCreateFuelMappingCascade = (
+  commitMutationFn?: (
+    environment: Environment,
+    config: MutationConfig<createFuelMappingCascadeMutation>
+  ) => Disposable
+) => {
+  return useMutation<createFuelMappingCascadeMutation>(
+    mutation,
+    commitMutationFn
+  );
+};
