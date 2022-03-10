@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Dropdown from "@button-inc/bcgov-theme/Dropdown";
 import Button from "@button-inc/bcgov-theme/Button";
 

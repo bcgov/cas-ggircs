@@ -1,6 +1,9 @@
-import { Alert, Table } from "react-bootstrap";
+import { Table } from "react-bootstrap";
+import Button from "@button-inc/bcgov-theme/Button";
+import Alert from "@button-inc/bcgov-theme/Alert";
 import { useFragment, graphql } from "react-relay";
 import { MappedFuelTypeTable_normalizedFuelType$key } from "__generated__/MappedFuelTypeTable_normalizedFuelType.graphql";
+import { useDeleteFuelMappingMutation } from "mutations/fuelManagement/deleteFuelMapping";
 
 interface Props {
   normalizedFuelType: MappedFuelTypeTable_normalizedFuelType$key;
@@ -12,11 +15,11 @@ export const MappedFuelTypeTable: React.FC<Props> = ({
   const { fuelMappingsByFuelCarbonTaxDetailId } = useFragment(
     graphql`
       fragment MappedFuelTypeTable_normalizedFuelType on FuelCarbonTaxDetail {
-        id
         fuelMappingsByFuelCarbonTaxDetailId(first: 2147483647)
           @connection(
             key: "MappedFuelTypes_fuelMappingsByFuelCarbonTaxDetailId"
           ) {
+          __id
           edges {
             node {
               id
@@ -29,13 +32,33 @@ export const MappedFuelTypeTable: React.FC<Props> = ({
     normalizedFuelType
   );
 
+  const [deleteFuelMapping] = useDeleteFuelMappingMutation();
+
+  const handleRemove = (id: string) => {
+      deleteFuelMapping({
+        variables: {
+          connections: [fuelMappingsByFuelCarbonTaxDetailId.__id],
+          input: {
+            id: id,
+            fuelMappingPatch: {
+              fuelCarbonTaxDetailId: null,
+            }
+          }
+        },
+        onError: (error: Error) => {
+          console.error(error);
+        },
+        onCompleted: () => console.log('deleted')
+      });
+  };
+
   if (!fuelMappingsByFuelCarbonTaxDetailId?.edges?.length) {
     return (
-      <Alert variant="secondary" id="no-search-results">
+      <Alert id="no-search-results">
         No fuels are mapped to this normalized fuel type.
       </Alert>
     );
-  }
+  };
 
   return (
     <>
@@ -49,7 +72,11 @@ export const MappedFuelTypeTable: React.FC<Props> = ({
           {fuelMappingsByFuelCarbonTaxDetailId?.edges?.map(({ node }) => (
             <tr key={node.id}>
               <td>{node.fuelType}</td>
-              <td className="centered">Delete</td>
+              <td>
+                <Button onClick={() => handleRemove(node.id)} >
+                  Remove
+                </Button>
+              </td>
             </tr>
           ))}
         </tbody>
@@ -61,6 +88,9 @@ export const MappedFuelTypeTable: React.FC<Props> = ({
         }
         th.centered {
           text-align: center;
+        }
+        td {
+          text-align:center;
         }
       `}</style>
     </>
