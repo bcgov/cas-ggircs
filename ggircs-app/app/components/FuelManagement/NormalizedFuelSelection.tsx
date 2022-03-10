@@ -1,15 +1,30 @@
 import { useRouter } from "next/router";
-import React from "react";
+import { useFragment, graphql } from "react-relay";
+import { NormalizedFuelSelection_query$key } from "__generated__/NormalizedFuelSelection_query.graphql";
 import { ListGroup } from "react-bootstrap";
 
 interface Props {
-  normalizedFuelTypes: any[];
+  query: NormalizedFuelSelection_query$key;
 }
 
-export const NormalizedFuelSelection: React.FC<Props> = ({
-  normalizedFuelTypes,
-}) => {
+export const NormalizedFuelSelection: React.FC<Props> = ({query}) => {
   const router = useRouter();
+
+  const { allFuelCarbonTaxDetails } = useFragment(
+    graphql`
+      fragment NormalizedFuelSelection_query on Query {
+        allFuelCarbonTaxDetails {
+          edges {
+            node {
+              id
+              normalizedFuelType
+            }
+          }
+        }
+      }
+    `,
+    query
+  );
 
   const handleClick = (id) => {
     const url = {
@@ -25,14 +40,14 @@ export const NormalizedFuelSelection: React.FC<Props> = ({
     <>
       <div className="scrollable" tabIndex={0}>
         <ListGroup variant="flush">
-          {normalizedFuelTypes.map(({ normalizedFuelType, id }) => (
+          {allFuelCarbonTaxDetails.edges.map(({ node }) => (
             <ListGroup.Item
-              key={id}
+              key={node.id}
               action
               onClick={() => handleClick(id)}
-              active={router.query?.fuelCarbonTaxDetailId === id}
+              active={router.query?.fuelCarbonTaxDetailId === node.id}
             >
-              <b>{normalizedFuelType}</b>
+              <b>{node.normalizedFuelType}</b>
             </ListGroup.Item>
           ))}
         </ListGroup>

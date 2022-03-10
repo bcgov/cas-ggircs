@@ -24,15 +24,7 @@ export const NormalizedFuelType: React.FC<Props> = ({ query }) => {
           }
           ...MappedFuelTypeTable_normalizedFuelType
         }
-        allFuelCarbonTaxDetails {
-          edges {
-            node {
-              id
-              rowId
-              normalizedFuelType
-            }
-          }
-        }
+        ...NormalizedFuelSelection_query
       }
     `,
     query
@@ -56,7 +48,7 @@ export const NormalizedFuelType: React.FC<Props> = ({ query }) => {
               Select a Normalized Fuel Type:
             </Card.Header>
             <NormalizedFuelSelection
-              normalizedFuelTypes={normalizedFuelTypes}
+              query={query}
             />
           </Card>
         </Col>
