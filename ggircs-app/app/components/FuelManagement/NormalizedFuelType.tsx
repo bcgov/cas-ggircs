@@ -9,7 +9,7 @@ interface Props {
 }
 
 export const NormalizedFuelType: React.FC<Props> = ({ query }) => {
-  const { fuelCarbonTaxDetail, allFuelCarbonTaxDetails } = useFragment(
+  const { fuelCarbonTaxDetail, normalizedFuels } = useFragment(
     graphql`
       fragment NormalizedFuelType_query on Query
       @argumentDefinitions(fuelCarbonTaxDetailId: { type: "ID!" }) {
@@ -24,18 +24,13 @@ export const NormalizedFuelType: React.FC<Props> = ({ query }) => {
           }
           ...MappedFuelTypeTable_normalizedFuelType
         }
-        ...NormalizedFuelSelection_query
+        normalizedFuels: query {
+          ...NormalizedFuelSelection_query
+        }
       }
     `,
     query
   );
-
-  const normalizedFuelTypes = allFuelCarbonTaxDetails.edges?.map((e) => {
-    return {
-      id: e.node.id,
-      normalizedFuelType: e.node.normalizedFuelType,
-    };
-  });
 
   const currentNormalizedFuel = fuelCarbonTaxDetail;
 
@@ -47,9 +42,7 @@ export const NormalizedFuelType: React.FC<Props> = ({ query }) => {
             <Card.Header className="bc-card-header">
               Select a Normalized Fuel Type:
             </Card.Header>
-            <NormalizedFuelSelection
-              query={query}
-            />
+            <NormalizedFuelSelection query={normalizedFuels} />
           </Card>
         </Col>
         <Col md="8">

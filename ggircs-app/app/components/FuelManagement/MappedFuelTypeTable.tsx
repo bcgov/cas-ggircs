@@ -35,21 +35,20 @@ export const MappedFuelTypeTable: React.FC<Props> = ({
   const [deleteFuelMapping] = useDeleteFuelMappingMutation();
 
   const handleRemove = (id: string) => {
-      deleteFuelMapping({
-        variables: {
-          connections: [fuelMappingsByFuelCarbonTaxDetailId.__id],
-          input: {
-            id: id,
-            fuelMappingPatch: {
-              fuelCarbonTaxDetailId: null,
-            }
-          }
+    deleteFuelMapping({
+      variables: {
+        connections: [fuelMappingsByFuelCarbonTaxDetailId.__id],
+        input: {
+          id: id,
+          fuelMappingPatch: {
+            fuelCarbonTaxDetailId: null,
+          },
         },
-        onError: (error: Error) => {
-          console.error(error);
-        },
-        onCompleted: () => console.log('deleted')
-      });
+      },
+      onError: (error: Error) => {
+        console.error(error);
+      },
+    });
   };
 
   if (!fuelMappingsByFuelCarbonTaxDetailId?.edges?.length) {
@@ -58,7 +57,7 @@ export const MappedFuelTypeTable: React.FC<Props> = ({
         No fuels are mapped to this normalized fuel type.
       </Alert>
     );
-  };
+  }
 
   return (
     <>
@@ -73,9 +72,7 @@ export const MappedFuelTypeTable: React.FC<Props> = ({
             <tr key={node.id}>
               <td>{node.fuelType}</td>
               <td>
-                <Button onClick={() => handleRemove(node.id)} >
-                  Remove
-                </Button>
+                <Button onClick={() => handleRemove(node.id)}>Remove</Button>
               </td>
             </tr>
           ))}
@@ -90,7 +87,7 @@ export const MappedFuelTypeTable: React.FC<Props> = ({
           text-align: center;
         }
         td {
-          text-align:center;
+          text-align: center;
         }
       `}</style>
     </>

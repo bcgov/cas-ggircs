@@ -3,7 +3,10 @@ import { MutationConfig } from "relay-runtime";
 import { deleteFuelMappingMutation } from "deleteFuelMappingMutation.graphql";
 
 export const mutation = graphql`
-  mutation deleteFuelMappingMutation($input: UpdateFuelMappingInput! $connections: [ID!]!) {
+  mutation deleteFuelMappingMutation(
+    $input: UpdateFuelMappingInput!
+    $connections: [ID!]!
+  ) {
     updateFuelMapping(input: $input) {
       fuelMapping {
         id @deleteEdge(connections: $connections)
@@ -28,8 +31,5 @@ export const useDeleteFuelMappingMutation = (
     config: MutationConfig<deleteFuelMappingMutation>
   ) => Disposable
 ) => {
-  return useMutation<deleteFuelMappingMutation>(
-    mutation,
-    commitMutationFn
-  );
+  return useMutation<deleteFuelMappingMutation>(mutation, commitMutationFn);
 };

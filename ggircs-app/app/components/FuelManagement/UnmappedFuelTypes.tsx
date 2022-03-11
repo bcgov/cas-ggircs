@@ -3,15 +3,13 @@ import { Table } from "react-bootstrap";
 import Alert from "@button-inc/bcgov-theme/Alert";
 import UnmappedFuelTypeRow from "./UnmappedFuelTypeRow";
 import { UnmappedFuelTypes_query$key } from "__generated__/UnmappedFuelTypes_query.graphql";
-import { useUpdateFuelMappingMutation } from "mutations/fuelManagement/updateFuelMapping";
-import { useCreateFuelMappingCascade } from "mutations/fuelManagement/createFuelMappingCascade";
 
 interface Props {
   query: UnmappedFuelTypes_query$key;
 }
 
 export const UnmappedFuelTypes: React.FC<Props> = ({ query }) => {
-  const { unmappedFuel, allFuelCarbonTaxDetails } = useFragment(
+  const { unmappedFuel, normalizedFuels } = useFragment(
     graphql`
       fragment UnmappedFuelTypes_query on Query {
         unmappedFuel {
@@ -22,73 +20,13 @@ export const UnmappedFuelTypes: React.FC<Props> = ({ query }) => {
             }
           }
         }
-        allFuelCarbonTaxDetails {
-          edges {
-            node {
-              id
-              rowId
-              normalizedFuelType
-              fuelMappingsByFuelCarbonTaxDetailId(first: 2147483647)
-              @connection(
-                key: "MappedFuelTypes_fuelMappingsByFuelCarbonTaxDetailId"
-              ) {
-                __id
-                edges {
-                  node {
-                    __typename
-                  }
-                }
-              }
-            }
-          }
+        normalizedFuels: query {
+          ...UnmappedFuelTypeRow_query
         }
       }
     `,
     query
   );
-
-  const normalizedFuels = allFuelCarbonTaxDetails.edges;
-
-  const [createFuelMapping] = useCreateFuelMappingCascade();
-  const [updateFuelMapping] = useUpdateFuelMappingMutation();
-
-  const handleFuelMapping = async (map: {
-    rowId?: number;
-    fuelType?: string;
-    fuelCarbonTaxDetailId: string;
-  }) => {
-    // The index of the fuelCarbonTaxDetail record is needed to apply the @connection and update the store with @appendEdge
-    const pos = allFuelCarbonTaxDetails.edges.findIndex(({node}) => node.rowId === Number(map.fuelCarbonTaxDetailId));
-    if (map.rowId) {
-      updateFuelMapping({
-        variables: {
-          connections: [allFuelCarbonTaxDetails.edges[pos].node.fuelMappingsByFuelCarbonTaxDetailId.__id],
-          input: {
-            rowId: map.rowId,
-            fuelMappingPatch: {
-              fuelCarbonTaxDetailId: Number(map.fuelCarbonTaxDetailId),
-            }
-          }
-        },
-        onError: (error: Error) => {
-          console.error(error);
-        }
-      });
-    } else {
-      createFuelMapping({
-        variables: {
-          connections: [allFuelCarbonTaxDetails.edges[pos].node.fuelMappingsByFuelCarbonTaxDetailId.__id],
-          input: {
-            fuelTypeInput: map.fuelType,
-            fuelCarbonTaxDetailIdInput: Number(map.fuelCarbonTaxDetailId),
-          }
-        },
-        onError: (error: Error) => {
-          console.error(error);
-        }
-      });
-    }
-  };
 
   if (unmappedFuel.edges.length < 1) return null;
   return (
@@ -108,8 +46,7 @@ export const UnmappedFuelTypes: React.FC<Props> = ({ query }) => {
               key={node.fuelType}
               fuel={node}
               index={index}
-              normalizedFuels={normalizedFuels}
-              handleFuelMapping={handleFuelMapping}
+              query={normalizedFuels}
             />
           ))}
         </tbody>

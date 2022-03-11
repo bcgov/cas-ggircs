@@ -3,7 +3,10 @@ import { MutationConfig } from "relay-runtime";
 import { updateFuelMappingMutation } from "updateFuelMappingMutation.graphql";
 
 export const mutation = graphql`
-  mutation updateFuelMappingMutation($input: UpdateFuelMappingByRowIdInput! $connections: [ID!]!) {
+  mutation updateFuelMappingMutation(
+    $input: UpdateFuelMappingByRowIdInput!
+    $connections: [ID!]!
+  ) {
     updateFuelMappingByRowId(input: $input) {
       fuelMappingEdge @appendEdge(connections: $connections) {
         cursor
@@ -33,8 +36,5 @@ export const useUpdateFuelMappingMutation = (
     config: MutationConfig<updateFuelMappingMutation>
   ) => Disposable
 ) => {
-  return useMutation<updateFuelMappingMutation>(
-    mutation,
-    commitMutationFn
-  );
+  return useMutation<updateFuelMappingMutation>(mutation, commitMutationFn);
 };

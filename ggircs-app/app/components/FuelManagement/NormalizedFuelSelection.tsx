@@ -7,10 +7,10 @@ interface Props {
   query: NormalizedFuelSelection_query$key;
 }
 
-export const NormalizedFuelSelection: React.FC<Props> = ({query}) => {
+export const NormalizedFuelSelection: React.FC<Props> = ({ query }) => {
   const router = useRouter();
 
-  const { allFuelCarbonTaxDetails } = useFragment(
+  const data = useFragment(
     graphql`
       fragment NormalizedFuelSelection_query on Query {
         allFuelCarbonTaxDetails {
@@ -40,12 +40,12 @@ export const NormalizedFuelSelection: React.FC<Props> = ({query}) => {
     <>
       <div className="scrollable" tabIndex={0}>
         <ListGroup variant="flush">
-          {allFuelCarbonTaxDetails.edges.map(({ node }) => (
+          {data?.allFuelCarbonTaxDetails?.edges?.map(({ node }) => (
             <ListGroup.Item
               key={node.id}
               action
-              onClick={() => handleClick(id)}
-              active={router.query?.fuelCarbonTaxDetailId === node.id}
+              onClick={() => handleClick(node?.id)}
+              active={router.query?.fuelCarbonTaxDetailId === node?.id}
             >
               <b>{node.normalizedFuelType}</b>
             </ListGroup.Item>
