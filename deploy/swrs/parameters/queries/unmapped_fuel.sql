@@ -21,8 +21,6 @@ create or replace function ggircs_parameters.unmapped_fuel()
       and report.reporting_period_duration > 2014;
   $$ language 'sql' stable;
 
-grant execute on function ggircs_parameters.unmapped_fuel to ggircs_user;
-
 comment on function ggircs_parameters.unmapped_fuel is 'A custom function to return fuel types that are not mapped to a fuel type in the fuel_mapping table.';
 
 commit;

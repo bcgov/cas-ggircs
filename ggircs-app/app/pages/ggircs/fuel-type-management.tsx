@@ -1,4 +1,3 @@
-import React, { Component } from "react";
 import { withRelay, RelayProps } from "relay-nextjs";
 import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import withRelayOptions from "lib/relay/withRelayOptions";

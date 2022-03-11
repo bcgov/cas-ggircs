@@ -27,6 +27,4 @@ begin
 end;
 $function$ language plpgsql strict volatile;
 
-grant execute on function ggircs_parameters.create_fuel_mapping_cascade to ggircs_user;
-
 commit;
