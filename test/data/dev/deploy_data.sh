@@ -42,6 +42,7 @@ _psql() {
 
 deployDevData() {
   _psql -f "./dev_data.sql"
+  _psql -f "./dev_history_data.sql"
   return 0;
 }
 

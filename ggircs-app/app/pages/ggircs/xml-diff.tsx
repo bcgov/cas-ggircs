@@ -8,9 +8,9 @@ import ReportSelector from "components/XmlDiff/ReportSelector";
 import DiffDetailsContainer from "components/XmlDiff/DiffDetailsContainer";
 import RenderDiff from "components/XmlDiff/RenderDiff";
 import DiffControls from "components/XmlDiff/DiffControls";
-import { useRouter } from "next/router";
+import { useRouter, NextRouter } from "next/router";
 import type { NextPageContext } from "next";
-import { NextRouter } from "next/router";
+import { useState } from "react";
 
 export const XmlDiffQuery = graphql`
   query xmlDiffQuery($FirstSideRelayId: ID!, $SecondSideRelayId: ID!) {
@@ -42,6 +42,10 @@ export const XmlDiffQuery = graphql`
 
 export function XmlDiff({ preloadedQuery }: RelayProps<{}, xmlDiffQuery>) {
   const { query } = usePreloadedQuery(XmlDiffQuery, preloadedQuery);
+
+  const [firstSelectorEditing, setFirstSelectorEditing] = useState(false);
+  const [secondSelectorEditing, setSecondSelectorEditing] = useState(false);
+
   const router = useRouter();
 
   return (
@@ -55,12 +59,20 @@ export function XmlDiff({ preloadedQuery }: RelayProps<{}, xmlDiffQuery>) {
           <ReportSelector
             diffSide={router.query.reversed ? "Second" : "First"}
             allReports={query.allReports.edges}
+            onUserTyping={(isUserTyping) =>
+              setFirstSelectorEditing(isUserTyping)
+            }
+            disabled={secondSelectorEditing}
           />
         </Col>
         <Col md={{ span: 6, order: router.query.reversed ? 1 : 2 }}>
           <ReportSelector
             diffSide={router.query.reversed ? "First" : "Second"}
             allReports={query.allReports.edges}
+            onUserTyping={(isUserTyping) =>
+              setSecondSelectorEditing(isUserTyping)
+            }
+            disabled={firstSelectorEditing}
           />
         </Col>
       </Row>

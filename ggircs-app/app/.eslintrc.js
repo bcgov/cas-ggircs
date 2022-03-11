@@ -13,7 +13,6 @@ module.exports = {
   },
   rules: {
     "@typescript-eslint/no-shadow": 1,
-    "react-hooks/rules-of-hooks": 1,
     // "react/prop-types": 0, // don't need react/prop-types when components are typed with typescript
     // "react/state-in-constructor": [1, "never"],
     "@typescript-eslint/no-unused-expressions": [1, { allowTernary: true }],

@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useCallback, useState } from "react";
 import { RelayReportObject } from "types";
 import Input from "@button-inc/bcgov-theme/Input";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -9,11 +9,15 @@ import { useRouter } from "next/router";
 interface Props {
   diffSide: String;
   allReports: readonly RelayReportObject[];
+  onUserTyping: (isUserTyping: boolean) => void;
+  disabled: boolean;
 }
 
 export const ReportSelector: React.FunctionComponent<Props> = ({
   diffSide,
   allReports,
+  onUserTyping,
+  disabled,
 }) => {
   const router = useRouter();
 
@@ -32,7 +36,7 @@ export const ReportSelector: React.FunctionComponent<Props> = ({
           [`${diffSide}SideRelayId`]: relayId,
         };
       } else {
-        query = router.query;
+        query = { ...router.query };
         delete query[`${diffSide}SideId`];
         delete query[`${diffSide}SideRelayId`];
       }
@@ -61,13 +65,17 @@ export const ReportSelector: React.FunctionComponent<Props> = ({
   };
 
   const debouncedToRouter = useCallback(
-    debounce((nextValue) => validateReportId(Number(nextValue)), 1000),
-    []
+    debounce((nextValue) => {
+      onUserTyping(false);
+      validateReportId(Number(nextValue));
+    }, 1000),
+    [router]
   );
 
   const handleChange = (event) => {
     const { value: nextValue } = event.target;
     setSwrsReportId(nextValue);
+    onUserTyping(true);
     debouncedToRouter(nextValue);
   };
 
@@ -82,6 +90,7 @@ export const ReportSelector: React.FunctionComponent<Props> = ({
       size="medium"
       onChange={handleChange}
       value={String(swrsReportId)}
+      disabled={disabled}
     />
   );
 
