@@ -7,4 +7,6 @@ module.exports = {
   GUEST,
   USER_GROUP,
   PENDING_GGIRCS_USER,
+  GGIRCS_USER,
+  REALM_ADMINISTRATOR,
 };

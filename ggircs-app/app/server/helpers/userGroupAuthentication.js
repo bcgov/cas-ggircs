@@ -4,6 +4,9 @@ const { compactGroups } = require("../../lib/user-groups");
 const removeFirstLetter = (str) => str.slice(1);
 
 const getUserGroups = (req) => {
+  if (process.argv.includes("AS_CYPRESS") && req.cookies["mocks.auth"]) {
+    return [req.cookies["mocks.auth"]];
+  }
   if (
     !req.kauth ||
     !req.kauth.grant ||
@@ -22,7 +25,7 @@ const getUserGroups = (req) => {
   if (validGroups.length === 0) {
     return identityProvider === "idir"
       ? [groupConstants.PENDING_GGIRCS_USER]
-      : [groupConstants.USER];
+      : [groupConstants.GUEST];
   }
 
   return validGroups;

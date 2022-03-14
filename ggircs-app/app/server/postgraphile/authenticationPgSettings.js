@@ -1,10 +1,8 @@
-const { getAllGroups, getPriorityGroup } = require("../../lib/user-groups");
+const { getPriorityGroup } = require("../../lib/user-groups");
 const { getUserGroups } = require("../helpers/userGroupAuthentication");
 const groupData = require("../../data/groups.json");
-const databaseConnectionService = require("../storage/db");
 
 const AUTH_BYPASS_COOKIE = "mocks.auth";
-const NO_AUTH = process.argv.includes("NO_AUTH");
 const AS_PENDING = process.argv.includes("AS_PENDING");
 const AS_CYPRESS = process.argv.includes("AS_CYPRESS");
 const AS_USER = process.argv.includes("AS_USER");
@@ -13,27 +11,16 @@ const allowCypressForRole = (roleName, req) =>
   AS_CYPRESS && req.cookies[AUTH_BYPASS_COOKIE] === roleName;
 
 const authenticationPgSettings = (req) => {
-  if (NO_AUTH) {
-    const groups = getAllGroups();
-    const priorityGroup = getPriorityGroup(groups);
-    return {
-      "jwt.claims.sub": "00000000-0000-0000-0000-000000000000",
-      "jwt.claims.user_groups": groups.join(","),
-      "jwt.claims.priority_group": priorityGroup,
-      role: databaseConnectionService.NO_AUTH_POSTGRES_ROLE,
-    };
-  }
-
-  if (AS_USER || allowCypressForRole("user", req)) {
+  if (AS_USER || allowCypressForRole("GGIRCS User", req)) {
     return {
       "jwt.claims.sub": "15a21af2-ce88-42e6-ac90-0a5e24260ec6",
-      "jwt.claims.user_groups": "User",
-      "jwt.claims.priority_group": "User",
+      "jwt.claims.user_groups": "GGIRCS User",
+      "jwt.claims.priority_group": "GGIRCS User",
       role: "ggircs_user",
     };
   }
 
-  if (AS_PENDING || allowCypressForRole("pending", req)) {
+  if (AS_PENDING || allowCypressForRole("Pending GGIRCS User", req)) {
     return {
       "jwt.claims.sub": "00000000-0000-0000-0000-000000000000",
       "jwt.claims.user_groups": "Pending GGIRCS User",
