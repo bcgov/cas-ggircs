@@ -5927,7 +5927,7 @@ type Query implements Node {
     """
     A filter to be used in determining which values should be returned by the collection.
     """
-    filter: UnmappedFuelRecordFilter
+    filter: UnmappedFuelReturnFilter
 
     """Only read the first `n` values of the set."""
     first: Int
@@ -5940,7 +5940,7 @@ type Query implements Node {
     based pagination. May not be used with `last`.
     """
     offset: Int
-  ): UnmappedFuelConnection
+  ): UnmappedFuelReturnsConnection
 }
 
 """The table housing all report data, derived from eccc_xml_file table"""
@@ -6841,43 +6841,17 @@ input UUIDFilter {
   notIn: [UUID!]
 }
 
-"""A connection to a list of `UnmappedFuelRecord` values."""
-type UnmappedFuelConnection {
-  """
-  A list of edges which contains the `UnmappedFuelRecord` and cursor to aid in pagination.
-  """
-  edges: [UnmappedFuelEdge!]!
-
-  """A list of `UnmappedFuelRecord` objects."""
-  nodes: [UnmappedFuelRecord]!
-
-  """
-  The count of *all* `UnmappedFuelRecord` you could get from the connection.
-  """
-  totalCount: Int!
-}
-
-"""A `UnmappedFuelRecord` edge in the connection."""
-type UnmappedFuelEdge {
-  """A cursor for use in pagination."""
-  cursor: Cursor
-
-  """The `UnmappedFuelRecord` at the end of the edge."""
-  node: UnmappedFuelRecord
-}
-
-"""The return type of our `unmappedFuel` query."""
-type UnmappedFuelRecord {
+type UnmappedFuelReturn {
   fuelMappingId: Int
   fuelType: String
 }
 
 """
-A filter to be used against `UnmappedFuelRecord` object types. All fields are combined with a logical ‘and.’
+A filter to be used against `UnmappedFuelReturn` object types. All fields are combined with a logical ‘and.’
 """
-input UnmappedFuelRecordFilter {
+input UnmappedFuelReturnFilter {
   """Checks for all expressions in this list."""
-  and: [UnmappedFuelRecordFilter!]
+  and: [UnmappedFuelReturnFilter!]
 
   """Filter by the object’s `fuelMappingId` field."""
   fuelMappingId: IntFilter
@@ -6886,10 +6860,38 @@ input UnmappedFuelRecordFilter {
   fuelType: StringFilter
 
   """Negates the expression."""
-  not: UnmappedFuelRecordFilter
+  not: UnmappedFuelReturnFilter
 
   """Checks for any expressions in this list."""
-  or: [UnmappedFuelRecordFilter!]
+  or: [UnmappedFuelReturnFilter!]
+}
+
+"""A connection to a list of `UnmappedFuelReturn` values."""
+type UnmappedFuelReturnsConnection {
+  """
+  A list of edges which contains the `UnmappedFuelReturn` and cursor to aid in pagination.
+  """
+  edges: [UnmappedFuelReturnsEdge!]!
+
+  """A list of `UnmappedFuelReturn` objects."""
+  nodes: [UnmappedFuelReturn]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """
+  The count of *all* `UnmappedFuelReturn` you could get from the connection.
+  """
+  totalCount: Int!
+}
+
+"""A `UnmappedFuelReturn` edge in the connection."""
+type UnmappedFuelReturnsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `UnmappedFuelReturn` at the end of the edge."""
+  node: UnmappedFuelReturn
 }
 
 """All input for the `updateCarbonTaxActFuelTypeByRowId` mutation."""

@@ -20697,7 +20697,7 @@
                   "description": "A filter to be used in determining which values should be returned by the collection.",
                   "type": {
                     "kind": "INPUT_OBJECT",
-                    "name": "UnmappedFuelRecordFilter",
+                    "name": "UnmappedFuelReturnFilter",
                     "ofType": null
                   },
                   "defaultValue": null
@@ -20735,7 +20735,7 @@
               ],
               "type": {
                 "kind": "OBJECT",
-                "name": "UnmappedFuelConnection",
+                "name": "UnmappedFuelReturnsConnection",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -24102,114 +24102,8 @@
         },
         {
           "kind": "OBJECT",
-          "name": "UnmappedFuelConnection",
-          "description": "A connection to a list of `UnmappedFuelRecord` values.",
-          "fields": [
-            {
-              "name": "edges",
-              "description": "A list of edges which contains the `UnmappedFuelRecord` and cursor to aid in pagination.",
-              "args": [],
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "NON_NULL",
-                    "name": null,
-                    "ofType": {
-                      "kind": "OBJECT",
-                      "name": "UnmappedFuelEdge",
-                      "ofType": null
-                    }
-                  }
-                }
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "nodes",
-              "description": "A list of `UnmappedFuelRecord` objects.",
-              "args": [],
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "UnmappedFuelRecord",
-                    "ofType": null
-                  }
-                }
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "totalCount",
-              "description": "The count of *all* `UnmappedFuelRecord` you could get from the connection.",
-              "args": [],
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
-                }
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            }
-          ],
-          "inputFields": null,
-          "interfaces": [],
-          "enumValues": null,
-          "possibleTypes": null
-        },
-        {
-          "kind": "OBJECT",
-          "name": "UnmappedFuelEdge",
-          "description": "A `UnmappedFuelRecord` edge in the connection.",
-          "fields": [
-            {
-              "name": "cursor",
-              "description": "A cursor for use in pagination.",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "Cursor",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "node",
-              "description": "The `UnmappedFuelRecord` at the end of the edge.",
-              "args": [],
-              "type": {
-                "kind": "OBJECT",
-                "name": "UnmappedFuelRecord",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            }
-          ],
-          "inputFields": null,
-          "interfaces": [],
-          "enumValues": null,
-          "possibleTypes": null
-        },
-        {
-          "kind": "OBJECT",
-          "name": "UnmappedFuelRecord",
-          "description": "The return type of our `unmappedFuel` query.",
+          "name": "UnmappedFuelReturn",
+          "description": null,
           "fields": [
             {
               "name": "fuelMappingId",
@@ -24243,8 +24137,8 @@
         },
         {
           "kind": "INPUT_OBJECT",
-          "name": "UnmappedFuelRecordFilter",
-          "description": "A filter to be used against `UnmappedFuelRecord` object types. All fields are combined with a logical ‘and.’",
+          "name": "UnmappedFuelReturnFilter",
+          "description": "A filter to be used against `UnmappedFuelReturn` object types. All fields are combined with a logical ‘and.’",
           "fields": null,
           "inputFields": [
             {
@@ -24258,7 +24152,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "INPUT_OBJECT",
-                    "name": "UnmappedFuelRecordFilter",
+                    "name": "UnmappedFuelReturnFilter",
                     "ofType": null
                   }
                 }
@@ -24290,7 +24184,7 @@
               "description": "Negates the expression.",
               "type": {
                 "kind": "INPUT_OBJECT",
-                "name": "UnmappedFuelRecordFilter",
+                "name": "UnmappedFuelReturnFilter",
                 "ofType": null
               },
               "defaultValue": null
@@ -24306,7 +24200,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "INPUT_OBJECT",
-                    "name": "UnmappedFuelRecordFilter",
+                    "name": "UnmappedFuelReturnFilter",
                     "ofType": null
                   }
                 }
@@ -24315,6 +24209,128 @@
             }
           ],
           "interfaces": null,
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "UnmappedFuelReturnsConnection",
+          "description": "A connection to a list of `UnmappedFuelReturn` values.",
+          "fields": [
+            {
+              "name": "edges",
+              "description": "A list of edges which contains the `UnmappedFuelReturn` and cursor to aid in pagination.",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "OBJECT",
+                      "name": "UnmappedFuelReturnsEdge",
+                      "ofType": null
+                    }
+                  }
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "nodes",
+              "description": "A list of `UnmappedFuelReturn` objects.",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "UnmappedFuelReturn",
+                    "ofType": null
+                  }
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "pageInfo",
+              "description": "Information to aid in pagination.",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "PageInfo",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "totalCount",
+              "description": "The count of *all* `UnmappedFuelReturn` you could get from the connection.",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "UnmappedFuelReturnsEdge",
+          "description": "A `UnmappedFuelReturn` edge in the connection.",
+          "fields": [
+            {
+              "name": "cursor",
+              "description": "A cursor for use in pagination.",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Cursor",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "node",
+              "description": "The `UnmappedFuelReturn` at the end of the edge.",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "UnmappedFuelReturn",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
           "enumValues": null,
           "possibleTypes": null
         },
