@@ -1,9 +1,11 @@
-import { Table } from "react-bootstrap";
+import { Table, Tooltip, OverlayTrigger } from "react-bootstrap";
 import Button from "@button-inc/bcgov-theme/Button";
 import Alert from "@button-inc/bcgov-theme/Alert";
 import { useFragment, graphql } from "react-relay";
 import { MappedFuelTypeTable_normalizedFuelType$key } from "__generated__/MappedFuelTypeTable_normalizedFuelType.graphql";
 import { useDeleteFuelMappingMutation } from "mutations/fuelManagement/deleteFuelMapping";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
 
 interface Props {
   normalizedFuelType: MappedFuelTypeTable_normalizedFuelType$key;
@@ -64,7 +66,22 @@ export const MappedFuelTypeTable: React.FC<Props> = ({
       <Table striped bordered hover>
         <thead>
           <tr>
-            <th scope="col">Mapped Fuel Type Variations</th>
+            <OverlayTrigger
+              placement="top"
+              delay={{ show: 250, hide: 400 }}
+              overlay={
+                <Tooltip id="fuel-type-variations-tooltip">
+                  The fuel type variations listed below are the different fuel
+                  types as reported in SWRS reports that are currently mapped to
+                  the Normalized Fuel Type above.
+                </Tooltip>
+              }
+            >
+              <th scope="col">
+                Mapped Fuel Type Variations &ensp;
+                <FontAwesomeIcon icon={faQuestionCircle} />
+              </th>
+            </OverlayTrigger>
           </tr>
         </thead>
         <tbody>
