@@ -55,3 +55,7 @@ ${fixture}
 EOF`)
   );
 });
+
+Cypress.Commands.add("getCypressPath", () => {
+  cy.exec(`pwd`);
+});

@@ -7,5 +7,5 @@
   "env": {
     "RETRIES": 3
   },
-  "fixturesFolder": "../schema/data"
+  "fixturesFolder": "../schema/test/cypress_fixtures"
 }
