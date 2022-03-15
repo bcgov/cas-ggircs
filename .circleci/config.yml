@@ -506,7 +506,7 @@ jobs:
             source ~/.asdf/asdf.sh
             pushd app
             yarn start & yarn wait-on http://localhost:3004
-            yarn test:e2e-snapshots
+            yarn test:e2e
             popd
 
 workflows:
