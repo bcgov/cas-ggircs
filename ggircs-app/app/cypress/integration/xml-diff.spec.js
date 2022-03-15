@@ -32,6 +32,11 @@ describe("When using the XML diff tool", () => {
     cy.get(":nth-child(13) > .diff-code-delete").should("contain", "true");
     cy.get(":nth-child(13) > .diff-code-insert").should("contain", "false");
 
+    cy.get("body").happoScreenshot({
+      component: "XML Diff",
+      variant: "shows diff",
+    });
+
     // Swap the sides of the diff
     cy.contains("Swap").click();
 
