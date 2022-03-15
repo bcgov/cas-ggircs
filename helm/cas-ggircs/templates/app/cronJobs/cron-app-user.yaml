@@ -78,6 +78,11 @@ spec:
                   psql<<EOF
                     grant usage on schema swrs_history to $(RELAY_USER);
                     grant usage on schema swrs_extract to $(RELAY_USER);
+                    grant usage on schema ggircs_parameters to $(RELAY_USER);
+                    grant usage on schema swrs to $(RELAY_USER);
                     grant select on all tables in schema swrs_history to $(RELAY_USER);
                     grant select on all tables in schema swrs_extract to $(RELAY_USER);
+                    grant select, insert, update on all tables in schema ggircs_parameters to $(RELAY_USER);
+                    grant select, update on swrs.fuel to $(RELAY_USER);
+                    grant select on swrs.report to $(RELAY_USER);
                   EOF
