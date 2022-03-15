@@ -508,7 +508,7 @@ jobs:
           command: |
             source ~/.asdf/asdf.sh
             pushd app
-            yarn start & yarn wait-on http://localhost:3004
+            yarn start AS_CYPRESS & yarn wait-on http://localhost:3004
             yarn test:e2e
             popd
 
