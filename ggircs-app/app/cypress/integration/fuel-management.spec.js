@@ -18,6 +18,10 @@ describe("When using the fuel type management tool", () => {
     cy.get(".page-title").contains("Fuel Type Management");
     // An unmapped fuel exists
     cy.get("tbody.jsx-1511681825 > tr > :nth-child(1)").contains("Not Mapped");
+    cy.get("body").happoScreenshot({
+      component: "Fuel Type Management",
+      variant: "unmapped fuel",
+    });
     cy.get("#normalized-fuel-select-0")
       .select("Acetylene (Sm^3)")
       .then(() => {
@@ -27,6 +31,10 @@ describe("When using the fuel type management tool", () => {
         cy.get("tbody.jsx-2096797517 > :nth-child(3) > :nth-child(1)").contains(
           "Not Mapped"
         );
+        cy.get("body").happoScreenshot({
+          component: "Fuel Type Management",
+          variant: "mapped fuel",
+        });
         cy.get("tbody.jsx-2096797517 > :nth-child(3) > :nth-child(2)").click();
         // The mapped fuel was ummapped when 'Remove' was clicked
         cy.get("tbody.jsx-1511681825 > tr > :nth-child(1)").contains(
