@@ -11,6 +11,8 @@ const { dbPool } = require("../storage/db");
 dotenv.config();
 
 const ssoRouter = express.Router();
+
+const AS_CYPRESS = process.argv.includes("AS_CYPRESS");
 /**
  * Override keycloak accessDenied handler to redirect to our 403 page
  */
@@ -81,6 +83,9 @@ ssoRouter.use(
 // Returns the time, in seconds, before the refresh_token expires.
 // This corresponds to the SSO idle timeout configured in keycloak.
 ssoRouter.get("/session-idle-remaining-time", async (req, res) => {
+  if (AS_CYPRESS) {
+    return res.json(3600);
+  }
   if (!req.kauth || !req.kauth.grant) {
     return res.json(null);
   }

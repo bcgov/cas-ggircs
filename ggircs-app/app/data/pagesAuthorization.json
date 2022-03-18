@@ -6,6 +6,6 @@
   {
     "routePaths": ["/ggircs(.*)"],
     "isProtected": true,
-    "allowedRoles": ["ggircs_user", "Realm Administrator"]
+    "allowedRoles": ["GGIRCS User", "Realm Administrator"]
   }
 ]
