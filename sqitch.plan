@@ -229,3 +229,4 @@ swrs/public/view/facility_details [swrs/public/view/facility_details@v1.11.2] 20
 swrs/parameters/types/umapped_fuel_return_type 2022-03-14T22:17:14Z Dylan Leard <dylan@button.is> # Custom return type for unmapped_fuel() function
 swrs/parameters/queries/unmapped_fuel [swrs/parameters/schema swrs/parameters/table/fuel_mapping swrs/public/table/fuel swrs/parameters/types/umapped_fuel_return_type] 2022-03-09T23:06:25Z Dylan Leard <dylan@button.is> # Custom query to return fuel types that are not mapped to a fuel type in the fuel_mapping table
 swrs/parameters/mutations/create_fuel_mapping_cascade [swrs/parameters/schema swrs/parameters/table/fuel_mapping swrs/public/table/fuel] 2022-03-09T23:11:47Z Dylan Leard <dylan@button.is> # Custom mutation to create a fuel mapping record and update any fuel records with the id from that mapping
+@v1.12.0 2022-03-23T18:02:32Z Dylan Leard <dylan@button.is> # release v1.12.0
