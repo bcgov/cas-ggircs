@@ -4,5 +4,5 @@ deploy:
     - make install:
         timeout: 7200
 ci:
-  hide:
+  allow_failures:
     - "ci/circleci: ggircs_app_audit"
