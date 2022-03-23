@@ -3,3 +3,6 @@ deploy:
     - git submodule update --init --quiet
     - make install:
         timeout: 7200
+ci:
+  hide:
+    - "ci/circleci: ggircs_app_audit"
