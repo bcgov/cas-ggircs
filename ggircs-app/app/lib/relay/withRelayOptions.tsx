@@ -4,9 +4,11 @@ import { isRouteAuthorized } from "lib/authorization";
 import type { NextPageContext } from "next";
 import type { Request } from "express";
 import { WiredOptions } from "relay-nextjs/wired/component";
+import { NextRouter } from "next/router";
+import LoadingFallback from "components/Layout/LoadingFallback";
 
 const withRelayOptions: WiredOptions<any> = {
-  fallback: <div>Loading...</div>,
+  fallback: <LoadingFallback />,
   createClientEnvironment: () => getClientEnvironment()!,
   createServerEnvironment: async (ctx: NextPageContext) => {
     const { createServerEnvironment } = await import("./server");
@@ -37,6 +39,11 @@ const withRelayOptions: WiredOptions<any> = {
 
     return {
       redirect: { destination: landingRoute, permanent: false },
+    };
+  },
+  variablesFromContext: (ctx: NextPageContext | NextRouter) => {
+    return {
+      ...ctx.query,
     };
   },
 };
