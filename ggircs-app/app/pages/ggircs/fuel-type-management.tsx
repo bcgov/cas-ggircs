@@ -25,6 +25,7 @@ export function FuelTypeManagement({
   preloadedQuery,
 }: RelayProps<{}, fuelTypeManagementQuery>) {
   const { query } = usePreloadedQuery(FuelTypeManagementQuery, preloadedQuery);
+
   return (
     <>
       <DefaultLayout
@@ -36,7 +37,10 @@ export function FuelTypeManagement({
           <UnmappedFuelTypes query={query} />
         </div>
         <div>
-          <NormalizedFuelType query={query} />
+          <NormalizedFuelType
+            query={query}
+            pageQuery={FuelTypeManagementQuery}
+          />
         </div>
       </DefaultLayout>
       <style jsx>
