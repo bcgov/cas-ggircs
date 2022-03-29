@@ -5,9 +5,13 @@ import { ListGroup } from "react-bootstrap";
 
 interface Props {
   query: NormalizedFuelSelection_query$key;
+  handleRouteUpdate: any;
 }
 
-export const NormalizedFuelSelection: React.FC<Props> = ({ query }) => {
+export const NormalizedFuelSelection: React.FC<Props> = ({
+  query,
+  handleRouteUpdate,
+}) => {
   const router = useRouter();
 
   const data = useFragment(
@@ -33,7 +37,7 @@ export const NormalizedFuelSelection: React.FC<Props> = ({ query }) => {
         fuelCarbonTaxDetailId: id,
       },
     };
-    router.push(url, url, { shallow: true });
+    handleRouteUpdate(url, "replace");
   };
 
   return (
