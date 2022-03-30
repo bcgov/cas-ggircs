@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, act } from "@testing-library/react";
 import NormalizedFuelType from "components/FuelManagement/NormalizedFuelType";
 import {
   graphql,
@@ -16,10 +16,12 @@ import { useRouter } from "next/router";
 jest.mock("next/router");
 
 const routerPush = jest.fn();
+const routerReplace = jest.fn();
 mocked(useRouter).mockReturnValue({
   pathname: "/",
   query: {},
   push: routerPush,
+  replace: routerReplace,
 } as any);
 
 const loadedQuery = graphql`
@@ -36,7 +38,7 @@ const TestRenderer = () => {
   const data = useLazyLoadQuery<NormalizedFuelTypeQuery>(loadedQuery, {
     fuelCarbonTaxDetailId: "test-fuel-carbon-tax-detail-id",
   });
-  return <NormalizedFuelType query={data.query} />;
+  return <NormalizedFuelType query={data.query} pageQuery={loadedQuery} />;
 };
 const renderNormalizedFuelTypeComponent = () => {
   return render(
@@ -76,6 +78,12 @@ const getMockQueryPayload = () => ({
             node: {
               id: "test-normalized-fuel-id",
               normalizedFuelType: "test-normalized-fuel-type",
+            },
+          },
+          {
+            node: {
+              id: "test-normalized-fuel-id-2",
+              normalizedFuelType: "test-normalized-fuel-type-2",
             },
           },
         ],
@@ -131,6 +139,29 @@ describe("The NormalizedFuelType component when there are unmapped fuels", () =>
           },
         },
       },
+    });
+  });
+
+  it("when given a pageQuery prop, pre-fetches the query with the new variables", () => {
+    renderNormalizedFuelTypeComponent();
+    fireEvent.click(screen.getByText("test-normalized-fuel-type-2"));
+
+    expect(routerReplace).not.toHaveBeenCalled();
+    act(() => {
+      environment.mock.resolveMostRecentOperation(() => ({
+        data: { query: { id: "abc", __typename: "Query" } },
+      }));
+    });
+
+    const expectedRoute = {
+      pathname: "/",
+      query: {
+        fuelCarbonTaxDetailId: "test-normalized-fuel-id-2",
+      },
+    };
+
+    expect(routerReplace).toHaveBeenCalledWith(expectedRoute, expectedRoute, {
+      shallow: true,
     });
   });
 });
