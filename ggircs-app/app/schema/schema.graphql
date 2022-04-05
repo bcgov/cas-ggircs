@@ -94,6 +94,11 @@ type CarbonTaxActFuelType implements Node {
   """Fuel type defined by the carbon tax act"""
   carbonTaxFuelType: String!
 
+  """
+  The units of measure for the fuel type as defined in the carbon tax act https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/08040_01
+  """
+  ctaRateUnits: String
+
   """Reads and enables pagination through a set of `FuelCarbonTaxDetail`."""
   fuelCarbonTaxDetailsByCarbonTaxActFuelTypeId(
     """Read all values in the set after (below) this cursor."""
@@ -167,6 +172,9 @@ type CarbonTaxActFuelType implements Node {
   """
   id: ID!
 
+  """Column contains metadata pertaining to each fuel type"""
+  metadata: String
+
   """The internal primary key"""
   rowId: Int!
 }
@@ -178,6 +186,12 @@ are tested for equality and combined with a logical ‘and.’
 input CarbonTaxActFuelTypeCondition {
   """Checks for equality with the object’s `carbonTaxFuelType` field."""
   carbonTaxFuelType: String
+
+  """Checks for equality with the object’s `ctaRateUnits` field."""
+  ctaRateUnits: String
+
+  """Checks for equality with the object’s `metadata` field."""
+  metadata: String
 
   """Checks for equality with the object’s `rowId` field."""
   rowId: Int
@@ -193,6 +207,9 @@ input CarbonTaxActFuelTypeFilter {
   """Filter by the object’s `carbonTaxFuelType` field."""
   carbonTaxFuelType: StringFilter
 
+  """Filter by the object’s `ctaRateUnits` field."""
+  ctaRateUnits: StringFilter
+
   """
   Filter by the object’s `fuelCarbonTaxDetailsByCarbonTaxActFuelTypeId` relation.
   """
@@ -206,6 +223,9 @@ input CarbonTaxActFuelTypeFilter {
 
   """Some related `fuelChargesByCarbonTaxActFuelTypeId` exist."""
   fuelChargesByCarbonTaxActFuelTypeIdExist: Boolean
+
+  """Filter by the object’s `metadata` field."""
+  metadata: StringFilter
 
   """Negates the expression."""
   not: CarbonTaxActFuelTypeFilter
@@ -221,6 +241,14 @@ input CarbonTaxActFuelTypeFilter {
 input CarbonTaxActFuelTypeInput {
   """Fuel type defined by the carbon tax act"""
   carbonTaxFuelType: String!
+
+  """
+  The units of measure for the fuel type as defined in the carbon tax act https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/08040_01
+  """
+  ctaRateUnits: String
+
+  """Column contains metadata pertaining to each fuel type"""
+  metadata: String
 }
 
 """
@@ -229,6 +257,14 @@ Represents an update to a `CarbonTaxActFuelType`. Fields that are set will be up
 input CarbonTaxActFuelTypePatch {
   """Fuel type defined by the carbon tax act"""
   carbonTaxFuelType: String
+
+  """
+  The units of measure for the fuel type as defined in the carbon tax act https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/08040_01
+  """
+  ctaRateUnits: String
+
+  """Column contains metadata pertaining to each fuel type"""
+  metadata: String
 }
 
 """
@@ -303,8 +339,12 @@ type CarbonTaxActFuelTypesEdge {
 enum CarbonTaxActFuelTypesOrderBy {
   CARBON_TAX_FUEL_TYPE_ASC
   CARBON_TAX_FUEL_TYPE_DESC
+  CTA_RATE_UNITS_ASC
+  CTA_RATE_UNITS_DESC
   ID_ASC
   ID_DESC
+  METADATA_ASC
+  METADATA_DESC
   NATURAL
   PRIMARY_KEY_ASC
   PRIMARY_KEY_DESC
