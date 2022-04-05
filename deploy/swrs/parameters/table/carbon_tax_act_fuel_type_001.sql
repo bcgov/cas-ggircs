@@ -6,6 +6,9 @@ begin;
 alter table ggircs_parameters.carbon_tax_act_fuel_type add column cta_rate_units varchar(1000);
 alter table ggircs_parameters.carbon_tax_act_fuel_type add column metadata varchar(10000);
 
+comment on column ggircs_parameters.carbon_tax_act_fuel_type.cta_rate_units is 'The units of measure for the fuel type as defined in the carbon tax act https://www.bclaws.gov.bc.ca/civix/document/id/complete/statreg/08040_01';
+comment on column ggircs_parameters.carbon_tax_act_fuel_type.metadata is 'Column contains metadata pertaining to each fuel type';
+
 /** Add the Combustible Waste fuel type **/
 insert into ggircs_parameters.carbon_tax_act_fuel_type (
   carbon_tax_fuel_type,
