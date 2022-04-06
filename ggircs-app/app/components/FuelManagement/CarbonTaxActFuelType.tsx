@@ -1,8 +1,17 @@
-import { Card, Col, Row } from "react-bootstrap";
+import {
+  Card,
+  Col,
+  Row,
+  Table,
+  OverlayTrigger,
+  Tooltip,
+} from "react-bootstrap";
 import React from "react";
 import { GraphQLTaggedNode, useFragment, graphql } from "react-relay";
 import { CarbonTaxActFuelType_query$key } from "__generated__/CarbonTaxActFuelType_query.graphql";
 import { FuelSelectionComponent } from "components/FuelManagement/FuelSelectionComponent";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEdit } from "@fortawesome/free-solid-svg-icons";
 
 interface Props {
   query: CarbonTaxActFuelType_query$key;
@@ -18,6 +27,17 @@ export const CarbonTaxActFuelType: React.FC<Props> = ({ query, pageQuery }) => {
           id
           carbonTaxFuelType
           ctaRateUnits
+          fuelChargesByCarbonTaxActFuelTypeId {
+            edges {
+              node {
+                id
+                startDate
+                endDate
+                fuelCharge
+                metadata
+              }
+            }
+          }
         }
         allCarbonTaxActFuelTypes: query {
           allCarbonTaxActFuelTypes {
@@ -33,8 +53,6 @@ export const CarbonTaxActFuelType: React.FC<Props> = ({ query, pageQuery }) => {
     `,
     query
   );
-
-  // const currentCarbonTaxActFuel = fuelCarbonTaxDetail;
 
   console.log(carbonTaxActFuelType);
 
@@ -54,74 +72,85 @@ export const CarbonTaxActFuelType: React.FC<Props> = ({ query, pageQuery }) => {
             />
           </Card>
         </Col>
-        {/* <Col md="8">
-          {currentCarbonTaxActFuel && fuelCarbonTaxDetail && (
+        <Col md="8">
+          {carbonTaxActFuelType && (
             <>
               <Row>
                 <Col md="12">
                   <Card>
                     <Card.Header className="bc-card-header">
                       <Card.Title>
-                        {currentCarbonTaxActFuel.ncarbonTaxActFuelType}
+                        {carbonTaxActFuelType.carbonTaxFuelType} (
+                        {carbonTaxActFuelType.ctaRateUnits})
                       </Card.Title>
                     </Card.Header>
                     <Card.Body>
                       <Table striped bordered hover>
+                        <thead>
+                          <th>Rate Period Start</th>
+                          <th>Rate Period End</th>
+                          <th>Fuel Charge</th>
+                          <th>Comments</th>
+                        </thead>
                         <tbody>
-                          <tr>
-                            <td>State: </td>
-                            <td>{currentCarbonTaxActFuel.state}</td>
-                          </tr>
-                          <tr>
-                            <td>CTA Rate Units: </td>
-                            <td>{currentCarbonTaxActFuel.ctaRateUnits}</td>
-                          </tr>
-                          <tr>
-                            <td>Unit Conversion Factor: </td>
-                            <td>
-                              {currentCarbonTaxActFuel.unitConversionFactor}
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>CTA Fuel Type: </td>
-                            <td>
-                              {
-                                currentCarbonTaxActFuel
-                                  .carbonTaxActFuelTypeByCarbonTaxActFuelTypeId
-                                  ?.carbonTaxFuelType
-                              }
-                            </td>
-                          </tr>
+                          {carbonTaxActFuelType.fuelChargesByCarbonTaxActFuelTypeId.edges.map(
+                            ({ node }) => (
+                              <tr key={node.id}>
+                                <td>{node.startDate}</td>
+                                <td>{node.endDate}</td>
+                                <td>{node.fuelCharge}</td>
+                                <td>{node.metadata}</td>
+                                <td>
+                                  <OverlayTrigger
+                                    placement="top"
+                                    delay={{ show: 250, hide: 400 }}
+                                    overlay={
+                                      <Tooltip id="fuel-type-variations-tooltip">
+                                        Edit
+                                      </Tooltip>
+                                    }
+                                  >
+                                    <th scope="col">
+                                      <FontAwesomeIcon
+                                        id="edit-button"
+                                        icon={faEdit}
+                                        onClick={() => console.log("I AM EDIT")}
+                                      />
+                                    </th>
+                                  </OverlayTrigger>
+                                </td>
+                              </tr>
+                            )
+                          )}
                         </tbody>
                       </Table>
                     </Card.Body>
                   </Card>
                 </Col>
               </Row>
-              <br />
-              <Row>
-                <Col md="12">
-                  <MappedFuelTypeTable
-                    ncarbonTaxActFuelType={fuelCarbonTaxDetail}
-                  />
-                </Col>
-              </Row>
             </>
           )}
-          {!currentCarbonTaxActFuel && (
+          {!carbonTaxActFuelType && (
             <Row>
               <Col>
-                Please select a CarbonTaxAct Fuel on the left to view details and
-                associated fuel types
+                Please select a Carbon Tax Act Fuel on the left to view details
+                and related fuel charges
               </Col>
             </Row>
           )}
-        </Col> */}
+        </Col>
       </Row>
       <style jsx>{`
         :global(.bc-card-header) {
           color: white;
           background: #003366;
+        }
+        :global(#edit-button) {
+          color: #003366;
+        }
+        :global(#edit-button):hover {
+          color: #000000;
+          cursor: pointer;
         }
       `}</style>
     </>
