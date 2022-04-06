@@ -78,7 +78,7 @@ export const FuelSelectionComponent: React.FC<Props> = ({
     const url = {
       pathname: router.pathname,
       query: {
-        fuelCarbonTaxDetailId: id,
+        [queryParameter]: id,
       },
     };
     handleRouteUpdate(url, "replace");
