@@ -1,17 +1,14 @@
-import {
-  Card,
-  Col,
-  Row,
-  Table,
-  OverlayTrigger,
-  Tooltip,
-} from "react-bootstrap";
+import { Card, Col, Row, Table } from "react-bootstrap";
 import React from "react";
 import { GraphQLTaggedNode, useFragment, graphql } from "react-relay";
 import { CarbonTaxActFuelType_query$key } from "__generated__/CarbonTaxActFuelType_query.graphql";
-import { FuelSelectionComponent } from "components/FuelManagement/FuelSelectionComponent";
+import { FuelSelectionComponent } from "./FuelSelectionComponent";
+import { FuelChargeRow } from "./FuelChargeRow";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faTimes } from "@fortawesome/free-solid-svg-icons";
+import DatePicker from "@button-inc/bcgov-theme/DatePicker";
+import Input from "@button-inc/bcgov-theme/Input";
+import Textarea from "@button-inc/bcgov-theme/Textarea";
 
 interface Props {
   query: CarbonTaxActFuelType_query$key;
@@ -31,10 +28,7 @@ export const CarbonTaxActFuelType: React.FC<Props> = ({ query, pageQuery }) => {
             edges {
               node {
                 id
-                startDate
-                endDate
-                fuelCharge
-                metadata
+                ...FuelChargeRow_fuelCharge
               }
             }
           }
@@ -54,15 +48,13 @@ export const CarbonTaxActFuelType: React.FC<Props> = ({ query, pageQuery }) => {
     query
   );
 
-  console.log(carbonTaxActFuelType);
-
   return (
     <>
       <Row>
-        <Col md="4">
+        <Col md="3">
           <Card>
             <Card.Header className="bc-card-header">
-              Select a carbon taxed fuel type:
+              Select a carbon taxed fuel:
             </Card.Header>
             <FuelSelectionComponent
               queryParameter="carbonTaxActFuelTypeId"
@@ -72,7 +64,7 @@ export const CarbonTaxActFuelType: React.FC<Props> = ({ query, pageQuery }) => {
             />
           </Card>
         </Col>
-        <Col md="8">
+        <Col md="9">
           {carbonTaxActFuelType && (
             <>
               <Row>
@@ -85,43 +77,80 @@ export const CarbonTaxActFuelType: React.FC<Props> = ({ query, pageQuery }) => {
                       </Card.Title>
                     </Card.Header>
                     <Card.Body>
-                      <Table striped bordered hover>
+                      <Table responsive striped bordered hover size="small">
                         <thead>
-                          <th>Rate Period Start</th>
-                          <th>Rate Period End</th>
-                          <th>Fuel Charge</th>
+                          <th>Period Start</th>
+                          <th>Period End</th>
+                          <th>Charge</th>
                           <th>Comments</th>
+                          <th>Edit</th>
                         </thead>
                         <tbody>
                           {carbonTaxActFuelType.fuelChargesByCarbonTaxActFuelTypeId.edges.map(
                             ({ node }) => (
-                              <tr key={node.id}>
-                                <td>{node.startDate}</td>
-                                <td>{node.endDate}</td>
-                                <td>{node.fuelCharge}</td>
-                                <td>{node.metadata}</td>
-                                <td>
-                                  <OverlayTrigger
-                                    placement="top"
-                                    delay={{ show: 250, hide: 400 }}
-                                    overlay={
-                                      <Tooltip id="fuel-type-variations-tooltip">
-                                        Edit
-                                      </Tooltip>
-                                    }
-                                  >
-                                    <th scope="col">
-                                      <FontAwesomeIcon
-                                        id="edit-button"
-                                        icon={faEdit}
-                                        onClick={() => console.log("I AM EDIT")}
-                                      />
-                                    </th>
-                                  </OverlayTrigger>
-                                </td>
-                              </tr>
+                              <FuelChargeRow key={node.id} fuelCharge={node} />
                             )
                           )}
+                          <th colSpan={4}>Add a New Rate Period</th>
+                          <tr>
+                            <td>
+                              <DatePicker
+                                id="date-picker"
+                                label="Period Start"
+                                name="date"
+                                size="small"
+                                onBlur={() => console.log("blurrrr-1")}
+                              />
+                            </td>
+                            <td>
+                              <DatePicker
+                                id="date-picker-2"
+                                label="Period End"
+                                name="date"
+                                size="small"
+                                onBlur={() => console.log("blurrrr-2")}
+                              />
+                            </td>
+                            <td>
+                              <Input
+                                id="input-1"
+                                label="Charge"
+                                size="small"
+                                style={{ width: "50%" }}
+                                onBlur={() => console.log("blurrrr-3")}
+                              />
+                            </td>
+                            <td className="icon-cell" colSpan={2}>
+                              <Row>
+                                <Col>
+                                  <FontAwesomeIcon
+                                    id="edit-button"
+                                    size="lg"
+                                    icon={faCheck}
+                                    onClick={() => console.log("I AM SAVE")}
+                                  />
+                                </Col>
+                                <Col>
+                                  <FontAwesomeIcon
+                                    id="edit-button"
+                                    size="lg"
+                                    icon={faTimes}
+                                    onClick={() => console.log("I AM CANCEL")}
+                                  />
+                                </Col>
+                              </Row>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td colSpan={5}>
+                              <Textarea
+                                id="textarea-1"
+                                label="Comments"
+                                size="large"
+                                fullWidth
+                              />
+                            </td>
+                          </tr>
                         </tbody>
                       </Table>
                     </Card.Body>
@@ -151,6 +180,15 @@ export const CarbonTaxActFuelType: React.FC<Props> = ({ query, pageQuery }) => {
         :global(#edit-button):hover {
           color: #000000;
           cursor: pointer;
+        }
+        .icon-header {
+          border: none;
+          margin: auto;
+          display: block;
+        }
+        .icon-cell {
+          vertical-align: middle;
+          text-align: center;
         }
       `}</style>
     </>
