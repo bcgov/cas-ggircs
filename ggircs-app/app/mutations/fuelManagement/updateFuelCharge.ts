@@ -3,20 +3,14 @@ import { MutationConfig } from "relay-runtime";
 import { updateFuelChargeMutation } from "updateFuelChargeMutation.graphql";
 
 export const mutation = graphql`
-  mutation updateFuelChargeMutation(
-    $input: UpdateFuelChargeInput!
-    $connections: [ID!]!
-  ) {
+  mutation updateFuelChargeMutation($input: UpdateFuelChargeInput!) {
     updateFuelCharge(input: $input) {
-      fuelChargeEdge @appendEdge(connections: $connections) {
-        cursor
-        node {
-          id
-          startDate
-          endDate
-          fuelCharge
-          metadata
-        }
+      fuelCharge {
+        id
+        startDate
+        endDate
+        fuelCharge
+        metadata
       }
     }
   }
