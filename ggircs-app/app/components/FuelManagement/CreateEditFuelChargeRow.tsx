@@ -19,6 +19,7 @@ interface Props {
     metadata: string;
   };
   fuelId: number;
+  connectionId?: string;
   validateRatePeriod: (date: string, id?: string) => boolean;
   setIsEditing?: (x: boolean) => void;
 }
@@ -32,6 +33,7 @@ export const CreateEditFuelChargeRow: React.FC<Props> = ({
   operation,
   charge,
   fuelId,
+  connectionId,
   validateRatePeriod,
   setIsEditing,
 }) => {
@@ -44,6 +46,8 @@ export const CreateEditFuelChargeRow: React.FC<Props> = ({
   });
   const [fuelChargeData, setFuelChargeData] = useState<string>();
   const [commentData, setCommentData] = useState<string>();
+
+  console.log(connectionId);
 
   useEffect(() => {
     setStartPeriodData({ date: charge?.startDate, error: false });
@@ -67,7 +71,7 @@ export const CreateEditFuelChargeRow: React.FC<Props> = ({
             metadata: commentData,
           },
         },
-        connections: ["asdf"],
+        connections: [connectionId],
       },
     });
   };

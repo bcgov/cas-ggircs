@@ -23,7 +23,14 @@ export const CarbonTaxActFuelType: React.FC<Props> = ({ query, pageQuery }) => {
           rowId
           carbonTaxFuelType
           ctaRateUnits
-          fuelChargesByCarbonTaxActFuelTypeId(orderBy: START_DATE_ASC) {
+          fuelChargesByCarbonTaxActFuelTypeId(
+            first: 1000
+            orderBy: START_DATE_ASC
+          )
+            @connection(
+              key: "CarbonTaxActFuelType_fuelChargesByCarbonTaxActFuelTypeId"
+            ) {
+            __id
             edges {
               node {
                 id
@@ -143,6 +150,10 @@ export const CarbonTaxActFuelType: React.FC<Props> = ({ query, pageQuery }) => {
                           <CreateEditFuelChargeRow
                             operation={"create"}
                             fuelId={carbonTaxActFuelType.rowId}
+                            connectionId={
+                              carbonTaxActFuelType
+                                .fuelChargesByCarbonTaxActFuelTypeId.__id
+                            }
                             validateRatePeriod={validateRatePeriod}
                           />
                         </tbody>
