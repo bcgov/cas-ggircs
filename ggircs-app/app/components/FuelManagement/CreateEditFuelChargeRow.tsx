@@ -6,10 +6,19 @@ import DatePicker from "@button-inc/bcgov-theme/DatePicker";
 import Input from "@button-inc/bcgov-theme/Input";
 import Textarea from "@button-inc/bcgov-theme/Textarea";
 import Alert from "@button-inc/bcgov-theme/Alert";
+import { useCreateFuelChargeMutation } from "mutations/fuelManagement/createFuelCharge";
+import { useUpdateFuelChargeMutation } from "mutations/fuelManagement/updateFuelCharge";
 
 interface Props {
   operation: "create" | "edit";
-  charge?: any;
+  charge?: {
+    id: string;
+    startDate: string;
+    endDate: string;
+    fuelCharge: string;
+    metadata: string;
+  };
+  fuelId: number;
   validateRatePeriod: (date: string, id?: string) => boolean;
   setIsEditing?: (x: boolean) => void;
 }
@@ -22,6 +31,7 @@ interface CustomRatePeriodState {
 export const CreateEditFuelChargeRow: React.FC<Props> = ({
   operation,
   charge,
+  fuelId,
   validateRatePeriod,
   setIsEditing,
 }) => {
@@ -41,6 +51,42 @@ export const CreateEditFuelChargeRow: React.FC<Props> = ({
     setFuelChargeData(charge?.fuelCharge);
     setCommentData(charge?.metadata);
   }, [charge]);
+
+  const [addFuelChargeMutation] = useCreateFuelChargeMutation();
+  const [updateFuelChargeMutation] = useUpdateFuelChargeMutation();
+
+  const addFuelCharge = () => {
+    addFuelChargeMutation({
+      variables: {
+        input: {
+          fuelCharge: {
+            carbonTaxActFuelTypeId: fuelId,
+            startDate: startPeriodData.date,
+            endDate: endPeriodData.date,
+            fuelCharge: fuelChargeData,
+            metadata: commentData,
+          },
+        },
+        connections: ["asdf"],
+      },
+    });
+  };
+
+  const updateFuelCharge = () => {
+    updateFuelChargeMutation({
+      variables: {
+        input: {
+          id: charge?.id,
+          fuelChargePatch: {
+            startDate: startPeriodData.date,
+            endDate: endPeriodData.date,
+            fuelCharge: fuelChargeData,
+            metadata: commentData,
+          },
+        },
+      },
+    });
+  };
 
   const handleChange = (dataTarget: string, value: string | null) => {
     switch (dataTarget) {
@@ -84,7 +130,12 @@ export const CreateEditFuelChargeRow: React.FC<Props> = ({
     console.log("charge: ", fuelChargeData);
     console.log("metadata: ", commentData);
     clearStateData();
-    if (operation === "edit") setIsEditing(false);
+    if (operation === "edit") {
+      setIsEditing(false);
+      updateFuelCharge();
+    } else {
+      addFuelCharge();
+    }
   };
 
   return (

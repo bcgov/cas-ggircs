@@ -20,9 +20,10 @@ export const CarbonTaxActFuelType: React.FC<Props> = ({ query, pageQuery }) => {
       @argumentDefinitions(carbonTaxActFuelTypeId: { type: "ID!" }) {
         carbonTaxActFuelType(id: $carbonTaxActFuelTypeId) {
           id
+          rowId
           carbonTaxFuelType
           ctaRateUnits
-          fuelChargesByCarbonTaxActFuelTypeId {
+          fuelChargesByCarbonTaxActFuelTypeId(orderBy: START_DATE_ASC) {
             edges {
               node {
                 id
@@ -134,12 +135,14 @@ export const CarbonTaxActFuelType: React.FC<Props> = ({ query, pageQuery }) => {
                             .map(({ node }) => (
                               <FuelChargeRow
                                 key={node.id}
+                                fuelId={carbonTaxActFuelType.rowId}
                                 fuelCharge={node}
                                 validateRatePeriod={validateRatePeriod}
                               />
                             ))}
                           <CreateEditFuelChargeRow
                             operation={"create"}
+                            fuelId={carbonTaxActFuelType.rowId}
                             validateRatePeriod={validateRatePeriod}
                           />
                         </tbody>

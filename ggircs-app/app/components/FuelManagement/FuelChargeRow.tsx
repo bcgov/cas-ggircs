@@ -8,11 +8,13 @@ import { faEdit, faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
 
 interface Props {
   fuelCharge: FuelChargeRow_fuelCharge$key;
+  fuelId: number;
   validateRatePeriod: (date: string, id?: string) => boolean;
 }
 
 export const FuelChargeRow: React.FC<Props> = ({
   fuelCharge,
+  fuelId,
   validateRatePeriod,
 }) => {
   const charge = useFragment(
@@ -35,6 +37,7 @@ export const FuelChargeRow: React.FC<Props> = ({
       <CreateEditFuelChargeRow
         operation={"edit"}
         charge={charge}
+        fuelId={fuelId}
         validateRatePeriod={validateRatePeriod}
         setIsEditing={setIsEditing}
       />
