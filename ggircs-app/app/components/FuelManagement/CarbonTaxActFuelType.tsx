@@ -5,6 +5,8 @@ import { CarbonTaxActFuelType_query$key } from "__generated__/CarbonTaxActFuelTy
 import { FuelSelectionComponent } from "./FuelSelectionComponent";
 import { FuelChargeRow } from "./FuelChargeRow";
 import CreateEditFuelChargeRow from "./CreateEditFuelChargeRow";
+import { useRouter } from "next/router";
+import Button from "@button-inc/bcgov-theme/Button";
 
 interface Props {
   query: CarbonTaxActFuelType_query$key;
@@ -46,6 +48,8 @@ export const CarbonTaxActFuelType: React.FC<Props> = ({ query, pageQuery }) => {
     query
   );
 
+  const router = useRouter();
+
   const validateRatePeriod = (date: string, id?: string) => {
     const dateToValidate = new Date(date);
     const invalidDate =
@@ -59,6 +63,27 @@ export const CarbonTaxActFuelType: React.FC<Props> = ({ query, pageQuery }) => {
     if (invalidDate) return false;
 
     return true;
+  };
+
+  const fromIndex =
+    router.query.showAll === "true"
+      ? 0
+      : carbonTaxActFuelType?.fuelChargesByCarbonTaxActFuelTypeId?.edges
+          ?.length - 3;
+  const showPeriodText =
+    router.query.showAll === "true"
+      ? "Show Less Rate Periods"
+      : `Show More Rate Periods (${carbonTaxActFuelType?.fuelChargesByCarbonTaxActFuelTypeId?.edges?.length})`;
+
+  const handleShowCharges = () => {
+    const url = {
+      pathname: router.pathname,
+      query: {
+        ...router.query,
+        showAll: router.query.showAll === "false" ? "true" : "false",
+      },
+    };
+    router.push(url, url, { shallow: true });
   };
 
   return (
@@ -90,6 +115,9 @@ export const CarbonTaxActFuelType: React.FC<Props> = ({ query, pageQuery }) => {
                       </Card.Title>
                     </Card.Header>
                     <Card.Body>
+                      <Button variant="secondary" onClick={handleShowCharges}>
+                        {showPeriodText}
+                      </Button>
                       <Table responsive striped bordered hover size="small">
                         <thead>
                           <tr>
@@ -101,15 +129,15 @@ export const CarbonTaxActFuelType: React.FC<Props> = ({ query, pageQuery }) => {
                           </tr>
                         </thead>
                         <tbody>
-                          {carbonTaxActFuelType.fuelChargesByCarbonTaxActFuelTypeId.edges.map(
-                            ({ node }) => (
+                          {carbonTaxActFuelType.fuelChargesByCarbonTaxActFuelTypeId.edges
+                            .filter((node, idx) => idx >= fromIndex)
+                            .map(({ node }) => (
                               <FuelChargeRow
                                 key={node.id}
                                 fuelCharge={node}
                                 validateRatePeriod={validateRatePeriod}
                               />
-                            )
-                          )}
+                            ))}
                           <CreateEditFuelChargeRow
                             operation={"create"}
                             validateRatePeriod={validateRatePeriod}

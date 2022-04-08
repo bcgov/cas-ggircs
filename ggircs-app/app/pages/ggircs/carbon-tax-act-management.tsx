@@ -49,6 +49,7 @@ const withRelayOptionsOverride = {
   ...withRelayOptions,
   variablesFromContext: (ctx: NextPageContext | NextRouter) => ({
     carbonTaxActFuelTypeId: "",
+    showAll: "false",
     ...ctx.query,
   }),
 };
