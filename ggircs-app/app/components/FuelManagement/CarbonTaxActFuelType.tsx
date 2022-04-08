@@ -4,11 +4,7 @@ import { GraphQLTaggedNode, useFragment, graphql } from "react-relay";
 import { CarbonTaxActFuelType_query$key } from "__generated__/CarbonTaxActFuelType_query.graphql";
 import { FuelSelectionComponent } from "./FuelSelectionComponent";
 import { FuelChargeRow } from "./FuelChargeRow";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck, faTimes } from "@fortawesome/free-solid-svg-icons";
-import DatePicker from "@button-inc/bcgov-theme/DatePicker";
-import Input from "@button-inc/bcgov-theme/Input";
-import Textarea from "@button-inc/bcgov-theme/Textarea";
+import CreateEditFuelChargeRow from "./CreateEditFuelChargeRow";
 
 interface Props {
   query: CarbonTaxActFuelType_query$key;
@@ -28,6 +24,8 @@ export const CarbonTaxActFuelType: React.FC<Props> = ({ query, pageQuery }) => {
             edges {
               node {
                 id
+                startDate
+                endDate
                 ...FuelChargeRow_fuelCharge
               }
             }
@@ -47,6 +45,21 @@ export const CarbonTaxActFuelType: React.FC<Props> = ({ query, pageQuery }) => {
     `,
     query
   );
+
+  const validateRatePeriod = (date: string, id?: string) => {
+    const dateToValidate = new Date(date);
+    const invalidDate =
+      carbonTaxActFuelType.fuelChargesByCarbonTaxActFuelTypeId.edges
+        .filter((edge) => edge.node.id !== id)
+        .some(
+          (edge) =>
+            new Date(edge.node.startDate) <= dateToValidate &&
+            new Date(edge.node.endDate) >= dateToValidate
+        );
+    if (invalidDate) return false;
+
+    return true;
+  };
 
   return (
     <>
@@ -79,78 +92,28 @@ export const CarbonTaxActFuelType: React.FC<Props> = ({ query, pageQuery }) => {
                     <Card.Body>
                       <Table responsive striped bordered hover size="small">
                         <thead>
-                          <th>Period Start</th>
-                          <th>Period End</th>
-                          <th>Charge</th>
-                          <th>Comments</th>
-                          <th>Edit</th>
+                          <tr>
+                            <th>Period Start</th>
+                            <th>Period End</th>
+                            <th>Charge</th>
+                            <th>Comments</th>
+                            <th>Edit</th>
+                          </tr>
                         </thead>
                         <tbody>
                           {carbonTaxActFuelType.fuelChargesByCarbonTaxActFuelTypeId.edges.map(
                             ({ node }) => (
-                              <FuelChargeRow key={node.id} fuelCharge={node} />
+                              <FuelChargeRow
+                                key={node.id}
+                                fuelCharge={node}
+                                validateRatePeriod={validateRatePeriod}
+                              />
                             )
                           )}
-                          <th colSpan={4}>Add a New Rate Period</th>
-                          <tr>
-                            <td>
-                              <DatePicker
-                                id="date-picker"
-                                label="Period Start"
-                                name="date"
-                                size="small"
-                                onBlur={() => console.log("blurrrr-1")}
-                              />
-                            </td>
-                            <td>
-                              <DatePicker
-                                id="date-picker-2"
-                                label="Period End"
-                                name="date"
-                                size="small"
-                                onBlur={() => console.log("blurrrr-2")}
-                              />
-                            </td>
-                            <td>
-                              <Input
-                                id="input-1"
-                                label="Charge"
-                                size="small"
-                                style={{ width: "50%" }}
-                                onBlur={() => console.log("blurrrr-3")}
-                              />
-                            </td>
-                            <td className="icon-cell" colSpan={2}>
-                              <Row>
-                                <Col>
-                                  <FontAwesomeIcon
-                                    id="edit-button"
-                                    size="lg"
-                                    icon={faCheck}
-                                    onClick={() => console.log("I AM SAVE")}
-                                  />
-                                </Col>
-                                <Col>
-                                  <FontAwesomeIcon
-                                    id="edit-button"
-                                    size="lg"
-                                    icon={faTimes}
-                                    onClick={() => console.log("I AM CANCEL")}
-                                  />
-                                </Col>
-                              </Row>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td colSpan={5}>
-                              <Textarea
-                                id="textarea-1"
-                                label="Comments"
-                                size="large"
-                                fullWidth
-                              />
-                            </td>
-                          </tr>
+                          <CreateEditFuelChargeRow
+                            operation={"create"}
+                            validateRatePeriod={validateRatePeriod}
+                          />
                         </tbody>
                       </Table>
                     </Card.Body>
@@ -181,13 +144,8 @@ export const CarbonTaxActFuelType: React.FC<Props> = ({ query, pageQuery }) => {
           color: #000000;
           cursor: pointer;
         }
-        .icon-header {
-          border: none;
-          margin: auto;
-          display: block;
-        }
-        .icon-cell {
-          vertical-align: middle;
+        :global(.icon-cell) {
+          vertical-align: middle !important;
           text-align: center;
         }
       `}</style>
