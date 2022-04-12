@@ -123,7 +123,13 @@ export const CreateEditFuelChargeRow: React.FC<Props> = ({
       <tr>
         <td colSpan={5}>
           {operation === "edit" ? (
-            <Alert variant="warning">Editing Row</Alert>
+            <Alert
+              id={`edit-row-aria-label-${charge?.id}`}
+              aria-label={`edit-row-label-${charge?.id}`}
+              variant="warning"
+            >
+              Editing Row
+            </Alert>
           ) : (
             <Alert variant="info">Add a New Rate Period</Alert>
           )}
@@ -132,9 +138,8 @@ export const CreateEditFuelChargeRow: React.FC<Props> = ({
       <tr>
         <td>
           <DatePicker
-            id="date-picker"
             label="Period Start"
-            name="date"
+            name="start-date"
             size="small"
             value={startPeriodData}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
@@ -152,9 +157,8 @@ export const CreateEditFuelChargeRow: React.FC<Props> = ({
         </td>
         <td>
           <DatePicker
-            id="date-picker-2"
             label="Period End"
-            name="date"
+            name="end-date"
             size="small"
             value={endPeriodData}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
@@ -172,9 +176,9 @@ export const CreateEditFuelChargeRow: React.FC<Props> = ({
         </td>
         <td>
           <Input
-            id="input-1"
             label="Charge"
             size="small"
+            name="charge"
             type="number"
             value={fuelChargeData}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
@@ -192,7 +196,7 @@ export const CreateEditFuelChargeRow: React.FC<Props> = ({
               >
                 <div>
                   <FontAwesomeIcon
-                    id={
+                    className={
                       startPeriodHasError || endPeriodHasError
                         ? "save-button-disabled"
                         : "save-cancel-button"
@@ -212,7 +216,7 @@ export const CreateEditFuelChargeRow: React.FC<Props> = ({
               >
                 <div>
                   <FontAwesomeIcon
-                    id="save-cancel-button"
+                    className="save-cancel-button"
                     size="lg"
                     icon={faTimes}
                     onClick={handleCancelEdit}
@@ -227,7 +231,6 @@ export const CreateEditFuelChargeRow: React.FC<Props> = ({
         <td colSpan={5}>
           <Textarea
             fullWidth
-            id="textarea-1"
             label="Comments"
             rows={10}
             value={commentData}
@@ -238,17 +241,17 @@ export const CreateEditFuelChargeRow: React.FC<Props> = ({
         </td>
       </tr>
       <style jsx>{`
-        :global(#save-cancel-button) {
+        :global(.save-cancel-button) {
           color: #003366;
         }
-        :global(#save-cancel-button:hover) {
+        :global(.save-cancel-button:hover) {
           color: #000000;
           cursor: pointer;
         }
-        :global(#save-button-disabled) {
+        :global(.save-button-disabled) {
           color: gray;
         }
-        :global(#save-button-disabled:hover) {
+        :global(.save-button-disabled:hover) {
           color: gray;
         }
       `}</style>

@@ -31,7 +31,7 @@ export function CarbonTaxActManagement({
     <>
       <DefaultLayout
         session={query.session}
-        title="Fuel Type Management"
+        title="Carbon Tax Act Management"
         width="wide"
       >
         <div>

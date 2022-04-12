@@ -123,7 +123,11 @@ export const CarbonTaxActFuelType: React.FC<Props> = ({ query, pageQuery }) => {
                       </Card.Title>
                     </Card.Header>
                     <Card.Body>
-                      <Button variant="secondary" onClick={handleShowCharges}>
+                      <Button
+                        id="show-hide-toggle"
+                        variant="secondary"
+                        onClick={handleShowCharges}
+                      >
                         {showPeriodText}
                       </Button>
                       <Table responsive striped bordered hover size="small">
@@ -179,10 +183,10 @@ export const CarbonTaxActFuelType: React.FC<Props> = ({ query, pageQuery }) => {
           color: white;
           background: #003366;
         }
-        :global(#edit-button) {
+        :global(.edit-button) {
           color: #003366;
         }
-        :global(#edit-button):hover {
+        :global(.edit-button):hover {
           color: #000000;
           cursor: pointer;
         }

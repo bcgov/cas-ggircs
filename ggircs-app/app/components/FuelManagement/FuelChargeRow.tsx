@@ -53,10 +53,15 @@ export const FuelChargeRow: React.FC<Props> = ({
           <OverlayTrigger
             placement="top"
             delay={{ show: 250, hide: 400 }}
-            overlay={<Tooltip id="comment-tooltip">{charge.metadata}</Tooltip>}
+            overlay={
+              <Tooltip className="comment-tooltip">{charge.metadata}</Tooltip>
+            }
           >
             <div>
-              <FontAwesomeIcon id="edit-button" icon={faQuestionCircle} />
+              <FontAwesomeIcon
+                className="edit-button"
+                icon={faQuestionCircle}
+              />
             </div>
           </OverlayTrigger>
         )}
@@ -69,7 +74,7 @@ export const FuelChargeRow: React.FC<Props> = ({
         >
           <div>
             <FontAwesomeIcon
-              id="edit-button"
+              className="edit-button"
               icon={faEdit}
               onClick={() => setIsEditing(true)}
             />
