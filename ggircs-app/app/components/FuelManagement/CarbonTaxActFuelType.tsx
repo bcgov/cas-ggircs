@@ -81,7 +81,7 @@ export const CarbonTaxActFuelType: React.FC<Props> = ({ query, pageQuery }) => {
   const showPeriodText =
     router.query.showAll === "true"
       ? "Show Less Rate Periods"
-      : `Show More Rate Periods (${carbonTaxActFuelType?.fuelChargesByCarbonTaxActFuelTypeId?.edges?.length})`;
+      : `Show All Rate Periods (${carbonTaxActFuelType?.fuelChargesByCarbonTaxActFuelTypeId?.edges?.length})`;
 
   const handleShowCharges = () => {
     const url = {
@@ -105,7 +105,7 @@ export const CarbonTaxActFuelType: React.FC<Props> = ({ query, pageQuery }) => {
             <FuelSelectionComponent
               queryParameter="carbonTaxActFuelTypeId"
               displayParameter="carbonTaxFuelType"
-              data={allCarbonTaxActFuelTypes.allCarbonTaxActFuelTypes}
+              data={allCarbonTaxActFuelTypes?.allCarbonTaxActFuelTypes}
               pageQuery={pageQuery}
             />
           </Card>

@@ -32,7 +32,7 @@ export const NormalizedFuelSelection: React.FC<Props> = ({
       <FuelSelectionComponent
         queryParameter="fuelCarbonTaxDetailId"
         displayParameter="normalizedFuelType"
-        data={data.allFuelCarbonTaxDetails}
+        data={data?.allFuelCarbonTaxDetails}
         pageQuery={pageQuery}
       />
     </div>
