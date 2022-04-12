@@ -75,9 +75,11 @@ export const FuelSelectionComponent: React.FC<Props> = ({
   );
 
   const handleClick = (id: string) => {
+    const routerParams = router.query;
     const url = {
       pathname: router.pathname,
       query: {
+        ...routerParams,
         [queryParameter]: id,
       },
     };

@@ -47,8 +47,6 @@ export const CreateEditFuelChargeRow: React.FC<Props> = ({
   const [fuelChargeData, setFuelChargeData] = useState<string>();
   const [commentData, setCommentData] = useState<string>();
 
-  console.log(connectionId);
-
   useEffect(() => {
     setStartPeriodData({ date: charge?.startDate, error: false });
     setEndPeriodData({ date: charge?.endDate, error: false });
@@ -129,10 +127,6 @@ export const CreateEditFuelChargeRow: React.FC<Props> = ({
 
   const handleSave = () => {
     if (startPeriodData.error || endPeriodData.error) return;
-    console.log("start: ", startPeriodData.date);
-    console.log("end: ", endPeriodData.date);
-    console.log("charge: ", fuelChargeData);
-    console.log("metadata: ", commentData);
     clearStateData();
     if (operation === "edit") {
       setIsEditing(false);
