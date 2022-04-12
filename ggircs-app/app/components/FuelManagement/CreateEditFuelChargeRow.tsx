@@ -24,11 +24,6 @@ interface Props {
   setIsEditing?: (x: boolean) => void;
 }
 
-interface CustomRatePeriodState {
-  date: string;
-  error: boolean;
-}
-
 export const CreateEditFuelChargeRow: React.FC<Props> = ({
   operation,
   charge,
@@ -37,21 +32,19 @@ export const CreateEditFuelChargeRow: React.FC<Props> = ({
   validateRatePeriod,
   setIsEditing,
 }) => {
-  const [startPeriodData, setStartPeriodData] = useState<CustomRatePeriodState>(
-    { date: "", error: false }
-  );
-  const [endPeriodData, setEndPeriodData] = useState<CustomRatePeriodState>({
-    date: "",
-    error: false,
-  });
-  const [fuelChargeData, setFuelChargeData] = useState<string>();
-  const [commentData, setCommentData] = useState<string>();
+  const [startPeriodData, setStartPeriodData] = useState<string>("");
+  const [startPeriodHasError, setStartPeriodHasError] =
+    useState<boolean>(false);
+  const [endPeriodData, setEndPeriodData] = useState<string>("");
+  const [endPeriodHasError, setEndPeriodHasError] = useState<boolean>(false);
+  const [fuelChargeData, setFuelChargeData] = useState<string>("");
+  const [commentData, setCommentData] = useState<string>("");
 
   useEffect(() => {
-    setStartPeriodData({ date: charge?.startDate, error: false });
-    setEndPeriodData({ date: charge?.endDate, error: false });
-    setFuelChargeData(charge?.fuelCharge);
-    setCommentData(charge?.metadata);
+    setStartPeriodData(charge?.startDate || "");
+    setEndPeriodData(charge?.endDate || "");
+    setFuelChargeData(charge?.fuelCharge || "");
+    setCommentData(charge?.metadata || "");
   }, [charge]);
 
   const [addFuelChargeMutation] = useCreateFuelChargeMutation();
@@ -63,8 +56,8 @@ export const CreateEditFuelChargeRow: React.FC<Props> = ({
         input: {
           fuelCharge: {
             carbonTaxActFuelTypeId: fuelId,
-            startDate: startPeriodData.date,
-            endDate: endPeriodData.date,
+            startDate: startPeriodData,
+            endDate: endPeriodData,
             fuelCharge: fuelChargeData,
             metadata: commentData,
           },
@@ -80,8 +73,8 @@ export const CreateEditFuelChargeRow: React.FC<Props> = ({
         input: {
           id: charge?.id,
           fuelChargePatch: {
-            startDate: startPeriodData.date,
-            endDate: endPeriodData.date,
+            startDate: startPeriodData,
+            endDate: endPeriodData,
             fuelCharge: fuelChargeData,
             metadata: commentData,
           },
@@ -90,43 +83,32 @@ export const CreateEditFuelChargeRow: React.FC<Props> = ({
     });
   };
 
-  const handleChange = (dataTarget: string, value: string | null) => {
-    switch (dataTarget) {
-      case "startPeriod":
-        if (validateRatePeriod(value, charge?.id))
-          setStartPeriodData({ date: value, error: false });
-        else setStartPeriodData({ date: value, error: true });
-        break;
-      case "endPeriod":
-        if (validateRatePeriod(value, charge?.id))
-          setEndPeriodData({ date: value, error: false });
-        else setEndPeriodData({ date: value, error: true });
-        break;
-      case "fuelCharge":
-        setFuelChargeData(value);
-        break;
-      case "metadata":
-        setCommentData(value);
-        break;
-      default:
-        break;
+  const handleValidate = (dataTarget: string, value: string) => {
+    if (!validateRatePeriod(value, charge?.id)) {
+      if (dataTarget === "startPeriod") {
+        setStartPeriodHasError(true);
+      } else {
+        setEndPeriodHasError(true);
+      }
     }
   };
 
   const clearStateData = () => {
-    setStartPeriodData({ date: "", error: false });
-    setEndPeriodData({ date: "", error: false });
+    setStartPeriodData("");
+    setEndPeriodData("");
     setFuelChargeData("");
     setCommentData("");
+    setStartPeriodHasError(false);
+    setEndPeriodHasError(false);
   };
 
   const handleCancelEdit = () => {
     clearStateData();
-    setIsEditing(false);
+    if (operation === "edit") setIsEditing(false);
   };
 
   const handleSave = () => {
-    if (startPeriodData.error || endPeriodData.error) return;
+    if (startPeriodHasError || endPeriodHasError) return;
     clearStateData();
     if (operation === "edit") {
       setIsEditing(false);
@@ -154,12 +136,15 @@ export const CreateEditFuelChargeRow: React.FC<Props> = ({
             label="Period Start"
             name="date"
             size="small"
-            defaultValue={charge?.startDate}
+            value={startPeriodData}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setStartPeriodData(e.target.value)
+            }
             onBlur={(e: ChangeEvent<HTMLInputElement>) =>
-              handleChange("startPeriod", e.target.value)
+              handleValidate("startPeriod", e.target.value)
             }
           />
-          {startPeriodData.error && (
+          {startPeriodHasError && (
             <p style={{ fontSize: "0.8rem", color: "#cd2026" }}>
               Date overlaps with an existing period
             </p>
@@ -171,12 +156,15 @@ export const CreateEditFuelChargeRow: React.FC<Props> = ({
             label="Period End"
             name="date"
             size="small"
-            defaultValue={charge?.endDate}
+            value={endPeriodData}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setEndPeriodData(e.target.value)
+            }
             onBlur={(e: ChangeEvent<HTMLInputElement>) =>
-              handleChange("endPeriod", e.target.value)
+              handleValidate("endPeriod", e.target.value)
             }
           />
-          {endPeriodData.error && (
+          {endPeriodHasError && (
             <p style={{ fontSize: "0.8rem", color: "#cd2026" }}>
               Date overlaps with an existing period
             </p>
@@ -188,9 +176,9 @@ export const CreateEditFuelChargeRow: React.FC<Props> = ({
             label="Charge"
             size="small"
             type="number"
-            defaultValue={charge?.fuelCharge}
-            onBlur={(e: ChangeEvent<HTMLInputElement>) =>
-              handleChange("fuelCharge", e.target.value)
+            value={fuelChargeData}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setFuelChargeData(e.target.value)
             }
           />
         </td>
@@ -205,7 +193,7 @@ export const CreateEditFuelChargeRow: React.FC<Props> = ({
                 <div>
                   <FontAwesomeIcon
                     id={
-                      startPeriodData.error || endPeriodData.error
+                      startPeriodHasError || endPeriodHasError
                         ? "save-button-disabled"
                         : "save-cancel-button"
                     }
@@ -242,9 +230,9 @@ export const CreateEditFuelChargeRow: React.FC<Props> = ({
             id="textarea-1"
             label="Comments"
             rows={10}
-            defaultValue={charge?.metadata}
-            onBlur={(e: ChangeEvent<HTMLInputElement>) =>
-              handleChange("metadata", e.target.value)
+            value={commentData}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setCommentData(e.target.value)
             }
           />
         </td>
