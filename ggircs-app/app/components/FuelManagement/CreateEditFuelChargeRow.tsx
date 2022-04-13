@@ -40,6 +40,7 @@ export const CreateEditFuelChargeRow: React.FC<Props> = ({
   const [fuelChargeData, setFuelChargeData] = useState<string>("");
   const [commentData, setCommentData] = useState<string>("");
 
+  // Set the initial values for the form
   useEffect(() => {
     setStartPeriodData(charge?.startDate || "");
     setEndPeriodData(charge?.endDate || "");
@@ -83,6 +84,7 @@ export const CreateEditFuelChargeRow: React.FC<Props> = ({
     });
   };
 
+  // Validate that the date values are valid (do not overlap)
   const handleValidate = (dataTarget: string, value: string) => {
     if (!validateRatePeriod(value, charge?.id)) {
       if (dataTarget === "startPeriod") {
@@ -107,8 +109,16 @@ export const CreateEditFuelChargeRow: React.FC<Props> = ({
     if (operation === "edit") setIsEditing(false);
   };
 
+  // Disable saving if there are errors or the data is incomplete
+  const disableSaveButton =
+    startPeriodHasError ||
+    endPeriodHasError ||
+    !startPeriodData ||
+    !endPeriodData ||
+    !fuelChargeData;
+
   const handleSave = () => {
-    if (startPeriodHasError || endPeriodHasError) return;
+    if (disableSaveButton) return;
     clearStateData();
     if (operation === "edit") {
       setIsEditing(false);
@@ -196,8 +206,9 @@ export const CreateEditFuelChargeRow: React.FC<Props> = ({
               >
                 <div>
                   <FontAwesomeIcon
+                    title={`save-icon-${charge?.id || "add"}`}
                     className={
-                      startPeriodHasError || endPeriodHasError
+                      disableSaveButton
                         ? "save-button-disabled"
                         : "save-cancel-button"
                     }
@@ -216,6 +227,7 @@ export const CreateEditFuelChargeRow: React.FC<Props> = ({
               >
                 <div>
                   <FontAwesomeIcon
+                    title={`cancel-icon-${charge?.id || "add"}`}
                     className="save-cancel-button"
                     size="lg"
                     icon={faTimes}

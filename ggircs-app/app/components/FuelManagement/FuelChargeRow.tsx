@@ -59,6 +59,7 @@ export const FuelChargeRow: React.FC<Props> = ({
           >
             <div>
               <FontAwesomeIcon
+                title={`comment-icon-${charge?.id}`}
                 className="edit-button"
                 icon={faQuestionCircle}
               />
@@ -74,6 +75,7 @@ export const FuelChargeRow: React.FC<Props> = ({
         >
           <div>
             <FontAwesomeIcon
+              title={`edit-icon-${charge?.id}`}
               className="edit-button"
               icon={faEdit}
               onClick={() => setIsEditing(true)}
