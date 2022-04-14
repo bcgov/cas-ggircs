@@ -135,7 +135,7 @@ describe("The CarbonTaxActFuelType component", () => {
     fireEvent.click(screen.getByTitle("edit-icon-test-charge-id"));
     const chargeInput = screen.getAllByLabelText(/Charge/i)[0] as any;
     fireEvent.change(chargeInput, { target: { value: "0.9" } });
-    fireEvent.click(screen.getByTitle("save-icon-test-charge-id"));
+    fireEvent.click(screen.getAllByRole("button", { name: /save/i })[0]);
 
     expect(mutationSpy).toHaveBeenCalledWith({
       variables: {
@@ -166,7 +166,7 @@ describe("The CarbonTaxActFuelType component", () => {
     fireEvent.change(startInput, { target: { value: "2099-04-01" } });
     fireEvent.change(endInput, { target: { value: "2100-03-31" } });
     fireEvent.change(chargeInput, { target: { value: "0.5" } });
-    fireEvent.click(screen.getByTitle("save-icon-add"));
+    fireEvent.click(screen.getAllByRole("button", { name: /save/i })[0]);
 
     expect(mutationSpy).toHaveBeenCalledWith({
       variables: {
