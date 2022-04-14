@@ -2,7 +2,7 @@ version: 2.1
 
 orbs:
   redhat-openshift: circleci/redhat-openshift@0.2.0
-  gcp-gcr: circleci/gcp-gcr@0.7.1
+  gcp-gcr: circleci/gcp-gcr@0.15.0
   helm: circleci/helm@1.2.0
 jobs:
   etl_db_test:
@@ -30,7 +30,8 @@ jobs:
             make test PSQL="psql -h localhost"
 
   test-local-cluster:
-    executor: redhat-openshift/machine-for-local-cluster
+    machine:
+      image: ubuntu-2004:202107-02
     steps:
       - checkout
       - run:
@@ -676,7 +677,3 @@ workflows:
           image_tag: ${CIRCLE_SHA1}
           dockerfile_directory: cas-ggircs/ggircs-app/schema
           context: cas-pipeline
-
-notify:
-  webhooks:
-    - url: https://outlook.office.com/webhook/a00d3135-7e96-47a0-817e-0086ec993205@55bc71c2-5150-4ff8-bbcd-d94bc32bf20c/CircleCI/4dd288af085245bf96cc07dce642e3ed/c436c63a-5475-4837-ae24-c21c300bd4e1
