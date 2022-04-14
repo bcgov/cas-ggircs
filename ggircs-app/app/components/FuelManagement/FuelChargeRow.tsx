@@ -9,13 +9,13 @@ import { faEdit, faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
 interface Props {
   fuelCharge: FuelChargeRow_fuelCharge$key;
   fuelId: number;
-  validateRatePeriod: (date: string, id?: string) => boolean;
+  isDateInFuelTypeFuelCharges: (date: string, id?: string) => boolean;
 }
 
 export const FuelChargeRow: React.FC<Props> = ({
   fuelCharge,
   fuelId,
-  validateRatePeriod,
+  isDateInFuelTypeFuelCharges,
 }) => {
   const charge = useFragment(
     graphql`
@@ -38,7 +38,7 @@ export const FuelChargeRow: React.FC<Props> = ({
         operation={"edit"}
         charge={charge}
         fuelId={fuelId}
-        validateRatePeriod={validateRatePeriod}
+        isDateInFuelTypeFuelCharges={isDateInFuelTypeFuelCharges}
         setIsEditing={setIsEditing}
       />
     );

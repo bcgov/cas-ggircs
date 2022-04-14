@@ -20,7 +20,7 @@ interface Props {
   };
   fuelId: number;
   connectionId?: string;
-  validateRatePeriod: (date: string, id?: string) => boolean;
+  isDateInFuelTypeFuelCharges: (date: string, id?: string) => boolean;
   setIsEditing?: (x: boolean) => void;
 }
 
@@ -29,7 +29,7 @@ export const CreateEditFuelChargeRow: React.FC<Props> = ({
   charge,
   fuelId,
   connectionId,
-  validateRatePeriod,
+  isDateInFuelTypeFuelCharges,
   setIsEditing,
 }) => {
   const [startPeriodData, setStartPeriodData] = useState<string>("");
@@ -86,7 +86,7 @@ export const CreateEditFuelChargeRow: React.FC<Props> = ({
 
   // Validate that the date values are valid (do not overlap)
   const handleValidate = (dataTarget: string, value: string) => {
-    if (!validateRatePeriod(value, charge?.id)) {
+    if (!isDateInFuelTypeFuelCharges(value, charge?.id)) {
       if (dataTarget === "startPeriod") {
         setStartPeriodHasError(true);
       } else {
@@ -254,21 +254,6 @@ export const CreateEditFuelChargeRow: React.FC<Props> = ({
           />
         </td>
       </tr>
-      <style jsx>{`
-        :global(.save-cancel-button) {
-          color: #003366;
-        }
-        :global(.save-cancel-button:hover) {
-          color: #000000;
-          cursor: pointer;
-        }
-        :global(.save-button-disabled) {
-          color: gray;
-        }
-        :global(.save-button-disabled:hover) {
-          color: gray;
-        }
-      `}</style>
     </>
   );
 };

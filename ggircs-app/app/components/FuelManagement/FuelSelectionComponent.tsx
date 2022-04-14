@@ -108,11 +108,6 @@ export const FuelSelectionComponent: React.FC<Props> = ({
             background-color: #38598a;
             color: white;
           }
-        `}
-      </style>
-      <style jsx>
-        {`{
-
           .scrollable {
             overflow-y: scroll;
             max-height: calc(100vh - 180px);

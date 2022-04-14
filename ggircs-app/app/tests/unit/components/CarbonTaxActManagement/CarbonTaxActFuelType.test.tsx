@@ -132,7 +132,7 @@ describe("The CarbonTaxActFuelType component", () => {
 
     renderCarbonTaxActFuelTypeComponent();
 
-    fireEvent.click(screen.getByTitle("edit-icon-test-charge-id"));
+    fireEvent.click(screen.getAllByRole("button", { name: /start-edit/i })[0]);
     const chargeInput = screen.getAllByLabelText(/Charge/i)[0] as any;
     fireEvent.change(chargeInput, { target: { value: "0.9" } });
     fireEvent.click(screen.getAllByRole("button", { name: /save/i })[0]);

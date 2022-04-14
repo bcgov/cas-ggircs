@@ -41,13 +41,11 @@ export const CarbonTaxActFuelType: React.FC<Props> = ({ query, pageQuery }) => {
             }
           }
         }
-        allCarbonTaxActFuelTypes: query {
-          allCarbonTaxActFuelTypes {
-            edges {
-              node {
-                id
-                carbonTaxFuelType
-              }
+        allCarbonTaxActFuelTypes {
+          edges {
+            node {
+              id
+              carbonTaxFuelType
             }
           }
         }
@@ -58,11 +56,11 @@ export const CarbonTaxActFuelType: React.FC<Props> = ({ query, pageQuery }) => {
 
   const router = useRouter();
 
-  const validateRatePeriod = (date: string, id?: string) => {
+  const isDateInFuelTypeFuelCharges = (date: string, fuelChargeId?: string) => {
     const dateToValidate = new Date(date);
     const invalidDate =
       carbonTaxActFuelType.fuelChargesByCarbonTaxActFuelTypeId.edges
-        .filter((edge) => edge.node.id !== id)
+        .filter((edge) => edge.node.id !== fuelChargeId)
         .some(
           (edge) =>
             new Date(edge.node.startDate) <= dateToValidate &&
@@ -73,6 +71,8 @@ export const CarbonTaxActFuelType: React.FC<Props> = ({ query, pageQuery }) => {
     return true;
   };
 
+  // Default the number of fuel charge rows shown to the last 3 rows in the list.
+  // Allow alternating between showing all rows or the last 3 rows with handleShowCharges().
   const fromIndex =
     router.query.showAll === "true"
       ? 0
@@ -105,94 +105,109 @@ export const CarbonTaxActFuelType: React.FC<Props> = ({ query, pageQuery }) => {
             <FuelSelectionComponent
               queryParameter="carbonTaxActFuelTypeId"
               displayParameter="carbonTaxFuelType"
-              data={allCarbonTaxActFuelTypes?.allCarbonTaxActFuelTypes}
+              data={allCarbonTaxActFuelTypes}
               pageQuery={pageQuery}
             />
           </Card>
         </Col>
         <Col md="9">
           {carbonTaxActFuelType && (
-            <>
-              <Row>
-                <Col md="12">
-                  <Card>
-                    <Card.Header className="bc-card-header">
-                      <Card.Title>
-                        {carbonTaxActFuelType.carbonTaxFuelType} (
-                        {carbonTaxActFuelType.ctaRateUnits})
-                      </Card.Title>
-                    </Card.Header>
-                    <Card.Body>
-                      <Button
-                        id="show-hide-toggle"
-                        variant="secondary"
-                        onClick={handleShowCharges}
-                      >
-                        {showPeriodText}
-                      </Button>
-                      <Table responsive striped bordered hover size="small">
-                        <thead>
-                          <tr>
-                            <th>Period Start</th>
-                            <th>Period End</th>
-                            <th>Charge</th>
-                            <th>Comments</th>
-                            <th>Edit</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {carbonTaxActFuelType.fuelChargesByCarbonTaxActFuelTypeId.edges
-                            .filter((node, idx) => idx >= fromIndex)
-                            .map(({ node }) => (
-                              <FuelChargeRow
-                                key={node.id}
-                                fuelId={carbonTaxActFuelType.rowId}
-                                fuelCharge={node}
-                                validateRatePeriod={validateRatePeriod}
-                              />
-                            ))}
-                          <CreateEditFuelChargeRow
-                            operation={"create"}
-                            fuelId={carbonTaxActFuelType.rowId}
-                            connectionId={
-                              carbonTaxActFuelType
-                                .fuelChargesByCarbonTaxActFuelTypeId.__id
-                            }
-                            validateRatePeriod={validateRatePeriod}
-                          />
-                        </tbody>
-                      </Table>
-                    </Card.Body>
-                  </Card>
-                </Col>
-              </Row>
-            </>
+            <Row>
+              <Col md="12">
+                <Card>
+                  <Card.Header className="bc-card-header">
+                    <Card.Title>
+                      {carbonTaxActFuelType.carbonTaxFuelType} (
+                      {carbonTaxActFuelType.ctaRateUnits})
+                    </Card.Title>
+                  </Card.Header>
+                  <Card.Body>
+                    <Button
+                      id="show-hide-toggle"
+                      variant="secondary"
+                      onClick={handleShowCharges}
+                    >
+                      {showPeriodText}
+                    </Button>
+                    <Table responsive striped bordered hover size="small">
+                      <thead>
+                        <tr>
+                          <th>Period Start</th>
+                          <th>Period End</th>
+                          <th>Charge</th>
+                          <th>Comments</th>
+                          <th>Edit</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {carbonTaxActFuelType.fuelChargesByCarbonTaxActFuelTypeId.edges
+                          .filter((node, idx) => idx >= fromIndex)
+                          .map(({ node }) => (
+                            <FuelChargeRow
+                              key={node.id}
+                              fuelId={carbonTaxActFuelType.rowId}
+                              fuelCharge={node}
+                              isDateInFuelTypeFuelCharges={
+                                isDateInFuelTypeFuelCharges
+                              }
+                            />
+                          ))}
+                        <CreateEditFuelChargeRow
+                          operation={"create"}
+                          fuelId={carbonTaxActFuelType.rowId}
+                          connectionId={
+                            carbonTaxActFuelType
+                              .fuelChargesByCarbonTaxActFuelTypeId.__id
+                          }
+                          isDateInFuelTypeFuelCharges={
+                            isDateInFuelTypeFuelCharges
+                          }
+                        />
+                      </tbody>
+                    </Table>
+                  </Card.Body>
+                </Card>
+              </Col>
+            </Row>
           )}
           {!carbonTaxActFuelType && (
             <Row>
               <Col>
                 Please select a Carbon Tax Act Fuel on the left to view details
-                and related fuel charges
+                and related fuel rates
               </Col>
             </Row>
           )}
         </Col>
       </Row>
       <style jsx>{`
-        :global(.bc-card-header) {
+        div :global(.bc-card-header) {
           color: white;
           background: #003366;
         }
-        :global(.edit-button) {
+        div :global(.edit-button) {
           color: #003366;
         }
-        :global(.edit-button):hover {
+        div :global(.edit-button):hover {
           color: #000000;
           cursor: pointer;
         }
-        :global(.icon-cell) {
+        div :global(.icon-cell) {
           vertical-align: middle !important;
           text-align: center;
+        }
+        div :global(.save-cancel-button) {
+          color: #003366;
+        }
+        div :global(.save-cancel-button:hover) {
+          color: #000000;
+          cursor: pointer;
+        }
+        div :global(.save-button-disabled) {
+          color: gray;
+        }
+        div :global(.save-button-disabled:hover) {
+          color: gray;
         }
       `}</style>
     </div>
