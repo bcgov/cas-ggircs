@@ -95,7 +95,7 @@ export const CarbonTaxActFuelType: React.FC<Props> = ({ query, pageQuery }) => {
   };
 
   return (
-    <>
+    <div>
       <Row>
         <Col md="3">
           <Card>
@@ -195,7 +195,7 @@ export const CarbonTaxActFuelType: React.FC<Props> = ({ query, pageQuery }) => {
           text-align: center;
         }
       `}</style>
-    </>
+    </div>
   );
 };
 

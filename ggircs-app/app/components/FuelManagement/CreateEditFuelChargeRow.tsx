@@ -206,7 +206,8 @@ export const CreateEditFuelChargeRow: React.FC<Props> = ({
               >
                 <div>
                   <FontAwesomeIcon
-                    title={`save-icon-${charge?.id || "add"}`}
+                    role="button"
+                    name="save"
                     className={
                       disableSaveButton
                         ? "save-button-disabled"
@@ -227,7 +228,8 @@ export const CreateEditFuelChargeRow: React.FC<Props> = ({
               >
                 <div>
                   <FontAwesomeIcon
-                    title={`cancel-icon-${charge?.id || "add"}`}
+                    role="button"
+                    name="cancel"
                     className="save-cancel-button"
                     size="lg"
                     icon={faTimes}
