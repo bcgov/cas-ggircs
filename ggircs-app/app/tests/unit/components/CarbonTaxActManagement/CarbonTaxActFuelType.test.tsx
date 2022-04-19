@@ -130,12 +130,18 @@ describe("The CarbonTaxActFuelType component", () => {
       .spyOn(require("react-relay"), "useMutation")
       .mockImplementation(() => [mutationSpy, jest.fn()]);
 
-    renderCarbonTaxActFuelTypeComponent();
+    const { container } = renderCarbonTaxActFuelTypeComponent();
+    const editElement = container.querySelector(
+      "[data-icon='edit']"
+    ) as HTMLImageElement;
 
-    fireEvent.click(screen.getAllByRole("button", { name: /start-edit/i })[0]);
+    fireEvent.click(editElement);
+    const saveElement = container.querySelector(
+      "[data-icon='check']"
+    ) as HTMLImageElement;
     const chargeInput = screen.getAllByLabelText(/Charge/i)[0] as any;
     fireEvent.change(chargeInput, { target: { value: "0.9" } });
-    fireEvent.click(screen.getAllByRole("button", { name: /save/i })[0]);
+    fireEvent.click(saveElement);
 
     expect(mutationSpy).toHaveBeenCalledWith({
       variables: {
@@ -158,15 +164,18 @@ describe("The CarbonTaxActFuelType component", () => {
       .spyOn(require("react-relay"), "useMutation")
       .mockImplementation(() => [mutationSpy, jest.fn()]);
 
-    renderCarbonTaxActFuelTypeComponent();
+    const { container } = renderCarbonTaxActFuelTypeComponent();
+    const saveElement = container.querySelector(
+      "[data-icon='check']"
+    ) as HTMLImageElement;
 
     const startInput = screen.getByLabelText(/Period Start/i) as any;
     const endInput = screen.getByLabelText(/Period End/i) as any;
-    const chargeInput = screen.getAllByLabelText(/Charge/i)[2] as any;
+    const chargeInput = screen.getAllByLabelText(/Charge/i)[0] as any;
     fireEvent.change(startInput, { target: { value: "2099-04-01" } });
     fireEvent.change(endInput, { target: { value: "2100-03-31" } });
     fireEvent.change(chargeInput, { target: { value: "0.5" } });
-    fireEvent.click(screen.getAllByRole("button", { name: /save/i })[0]);
+    fireEvent.click(saveElement);
 
     expect(mutationSpy).toHaveBeenCalledWith({
       variables: {
