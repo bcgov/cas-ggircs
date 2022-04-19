@@ -19,14 +19,14 @@ describe("When using the carbon tax act management tool", () => {
   it("can show and hide all rate periods", () => {
     cy.get(".page-title").contains("Carbon Tax Act Management");
     cy.contains("Butterflies").click();
-    cy.get("tbody.jsx-882639014 > :nth-child(1) > :nth-child(1)").contains(
+    cy.get("tbody.jsx-1975127758 > :nth-child(1) > :nth-child(1)").contains(
       "2020-04-01"
     );
-    cy.get("tbody.jsx-882639014 > :nth-child(1) > :nth-child(1)").contains(
+    cy.get("tbody.jsx-1975127758 > :nth-child(1) > :nth-child(1)").contains(
       "2020"
     );
     cy.get("#show-hide-toggle").click();
-    cy.get("tbody.jsx-882639014 > :nth-child(1) > :nth-child(1)").contains(
+    cy.get("tbody.jsx-1975127758 > :nth-child(1) > :nth-child(1)").contains(
       "1899"
     );
     cy.injectAxe();
@@ -49,7 +49,7 @@ describe("When using the carbon tax act management tool", () => {
     });
     cy.get("input[name=charge]").first().clear().type("0.5");
     cy.get(".save-cancel-button").first().click();
-    cy.get("tbody.jsx-882639014 > :nth-child(1) > :nth-child(3)").contains(
+    cy.get("tbody.jsx-1975127758 > :nth-child(1) > :nth-child(3)").contains(
       "0.5"
     );
   });
@@ -70,7 +70,7 @@ describe("When using the carbon tax act management tool", () => {
     cy.get("input[name=end-date]").click().type("2100-03-31");
     cy.get("input[name=charge]").clear().type("0.5");
     cy.get(".save-cancel-button").first().click();
-    cy.get("tbody.jsx-882639014 > :nth-child(3) > :nth-child(1)").contains(
+    cy.get("tbody.jsx-1975127758 > :nth-child(3) > :nth-child(1)").contains(
       "2099-04-01"
     );
   });
