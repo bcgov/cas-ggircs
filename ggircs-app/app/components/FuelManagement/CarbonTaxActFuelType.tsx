@@ -13,6 +13,8 @@ interface Props {
   pageQuery: GraphQLTaggedNode;
 }
 
+const DEFAULT_RATE_PERIODS_TO_SHOW = 3;
+
 export const CarbonTaxActFuelType: React.FC<Props> = ({ query, pageQuery }) => {
   const { carbonTaxActFuelType, allCarbonTaxActFuelTypes } = useFragment(
     graphql`
@@ -77,7 +79,7 @@ export const CarbonTaxActFuelType: React.FC<Props> = ({ query, pageQuery }) => {
     router.query.showAll === "true"
       ? 0
       : carbonTaxActFuelType?.fuelChargesByCarbonTaxActFuelTypeId?.edges
-          ?.length - 3;
+          ?.length - DEFAULT_RATE_PERIODS_TO_SHOW;
   const showPeriodText =
     router.query.showAll === "true"
       ? "Show Less Rate Periods"
