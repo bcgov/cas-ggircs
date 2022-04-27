@@ -125,25 +125,22 @@ describe("The CarbonTaxActFuelType component", () => {
   });
 
   it("Calls the update mutation when editing a fuel charge", () => {
-    const mutationSpy = jest.fn();
-    jest
-      .spyOn(require("react-relay"), "useMutation")
-      .mockImplementation(() => [mutationSpy, jest.fn()]);
-
     const { container } = renderCarbonTaxActFuelTypeComponent();
     const editElement = container.querySelector(
       "[data-icon='edit']"
     ) as HTMLImageElement;
 
     fireEvent.click(editElement);
-    const saveElement = container.querySelector(
-      "[data-icon='check']"
-    ) as HTMLImageElement;
     const chargeInput = screen.getAllByLabelText(/Charge/i)[0] as any;
     fireEvent.change(chargeInput, { target: { value: "0.9" } });
-    fireEvent.click(saveElement);
+    fireEvent.click(screen.getAllByText("Save")[0]);
 
-    expect(mutationSpy).toHaveBeenCalledWith({
+    expect(environment.mock.getMostRecentOperation().request).toMatchObject({
+      node: {
+        params: {
+          name: "updateFuelChargeMutation",
+        },
+      },
       variables: {
         input: {
           fuelChargePatch: {
@@ -159,15 +156,7 @@ describe("The CarbonTaxActFuelType component", () => {
   });
 
   it("Calls the create mutation when adding a fuel charge", () => {
-    const mutationSpy = jest.fn();
-    jest
-      .spyOn(require("react-relay"), "useMutation")
-      .mockImplementation(() => [mutationSpy, jest.fn()]);
-
-    const { container } = renderCarbonTaxActFuelTypeComponent();
-    const saveElement = container.querySelector(
-      "[data-icon='check']"
-    ) as HTMLImageElement;
+    renderCarbonTaxActFuelTypeComponent();
 
     const startInput = screen.getByLabelText(/Period Start/i) as any;
     const endInput = screen.getByLabelText(/Period End/i) as any;
@@ -175,9 +164,14 @@ describe("The CarbonTaxActFuelType component", () => {
     fireEvent.change(startInput, { target: { value: "2099-04-01" } });
     fireEvent.change(endInput, { target: { value: "2100-03-31" } });
     fireEvent.change(chargeInput, { target: { value: "0.5" } });
-    fireEvent.click(saveElement);
+    fireEvent.click(screen.getAllByText("Save")[0]);
 
-    expect(mutationSpy).toHaveBeenCalledWith({
+    expect(environment.mock.getMostRecentOperation().request).toMatchObject({
+      node: {
+        params: {
+          name: "createFuelChargeMutation",
+        },
+      },
       variables: {
         connections: [
           'client:test-fuel-id:__CarbonTaxActFuelType_fuelChargesByCarbonTaxActFuelTypeId_connection(orderBy:"START_DATE_ASC")',
