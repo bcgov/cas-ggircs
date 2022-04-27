@@ -197,18 +197,11 @@ export const CarbonTaxActFuelType: React.FC<Props> = ({ query, pageQuery }) => {
           vertical-align: middle !important;
           text-align: center;
         }
-        div :global(.save-cancel-button) {
-          color: #003366;
+        div :global(.save-cancel-controls) {
+          float: right;
         }
-        div :global(.save-cancel-button:hover) {
-          color: #000000;
-          cursor: pointer;
-        }
-        div :global(.save-button-disabled) {
-          color: gray;
-        }
-        div :global(.save-button-disabled:hover) {
-          color: gray;
+        div :global(.cancel-button) {
+          margin-right: 0.5rem;
         }
       `}</style>
     </div>

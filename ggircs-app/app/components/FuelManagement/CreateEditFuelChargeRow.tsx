@@ -1,11 +1,9 @@
-import { Col, Row, OverlayTrigger, Tooltip } from "react-bootstrap";
 import React, { useState, useEffect, ChangeEvent } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck, faTimes } from "@fortawesome/free-solid-svg-icons";
 import DatePicker from "@button-inc/bcgov-theme/DatePicker";
 import Input from "@button-inc/bcgov-theme/Input";
 import Textarea from "@button-inc/bcgov-theme/Textarea";
 import Alert from "@button-inc/bcgov-theme/Alert";
+import Button from "@button-inc/bcgov-theme/Button";
 import { useCreateFuelChargeMutation } from "mutations/fuelManagement/createFuelCharge";
 import { useUpdateFuelChargeMutation } from "mutations/fuelManagement/updateFuelCharge";
 
@@ -196,50 +194,7 @@ export const CreateEditFuelChargeRow: React.FC<Props> = ({
             }
           />
         </td>
-        <td className="icon-cell" colSpan={2}>
-          <Row>
-            <Col>
-              <OverlayTrigger
-                placement="top"
-                delay={{ show: 250, hide: 400 }}
-                overlay={<Tooltip id="save-tooltip">Save</Tooltip>}
-              >
-                <div>
-                  <FontAwesomeIcon
-                    role="button"
-                    name="save"
-                    className={
-                      disableSaveButton
-                        ? "save-button-disabled"
-                        : "save-cancel-button"
-                    }
-                    size="lg"
-                    icon={faCheck}
-                    onClick={handleSave}
-                  />
-                </div>
-              </OverlayTrigger>
-            </Col>
-            <Col>
-              <OverlayTrigger
-                placement="top"
-                delay={{ show: 250, hide: 400 }}
-                overlay={<Tooltip id="cancel-tooltip">Cancel</Tooltip>}
-              >
-                <div>
-                  <FontAwesomeIcon
-                    role="button"
-                    name="cancel"
-                    className="save-cancel-button"
-                    size="lg"
-                    icon={faTimes}
-                    onClick={handleCancelEdit}
-                  />
-                </div>
-              </OverlayTrigger>
-            </Col>
-          </Row>
-        </td>
+        <td className="icon-cell" colSpan={2} />
       </tr>
       <tr>
         <td colSpan={5}>
@@ -252,6 +207,18 @@ export const CreateEditFuelChargeRow: React.FC<Props> = ({
               setCommentData(e.target.value)
             }
           />
+          <div className="save-cancel-controls">
+            <Button
+              variant="secondary"
+              className="cancel-button"
+              onClick={handleCancelEdit}
+            >
+              Cancel
+            </Button>
+            <Button disabled={disableSaveButton} onClick={handleSave}>
+              Save
+            </Button>
+          </div>
         </td>
       </tr>
     </>
