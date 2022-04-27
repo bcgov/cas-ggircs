@@ -68,14 +68,13 @@ export const CarbonTaxActFuelType: React.FC<Props> = ({ query, pageQuery }) => {
             new Date(edge.node.startDate) <= dateToValidate &&
             new Date(edge.node.endDate) >= dateToValidate
         );
-    if (invalidDate) return false;
 
-    return true;
+    return !invalidDate;
   };
 
   // Default the number of fuel charge rows shown to the last 3 rows in the list.
   // Allow alternating between showing all rows or the last 3 rows with handleShowCharges().
-  const fromIndex =
+  const startIndex =
     router.query.showAll === "true"
       ? 0
       : carbonTaxActFuelType?.fuelChargesByCarbonTaxActFuelTypeId?.edges
@@ -93,7 +92,7 @@ export const CarbonTaxActFuelType: React.FC<Props> = ({ query, pageQuery }) => {
         showAll: router.query.showAll === "false" ? "true" : "false",
       },
     };
-    router.push(url, url, { shallow: true });
+    router.replace(url, url, { shallow: true });
   };
 
   return (
@@ -143,7 +142,7 @@ export const CarbonTaxActFuelType: React.FC<Props> = ({ query, pageQuery }) => {
                       </thead>
                       <tbody>
                         {carbonTaxActFuelType.fuelChargesByCarbonTaxActFuelTypeId.edges
-                          .filter((node, idx) => idx >= fromIndex)
+                          .slice(startIndex)
                           .map(({ node }) => (
                             <FuelChargeRow
                               key={node.id}
