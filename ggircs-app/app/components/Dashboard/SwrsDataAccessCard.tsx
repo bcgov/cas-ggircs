@@ -36,6 +36,13 @@ const SwrsDataAccessCard: React.FC = () => (
         <Link href="/ggircs/fuel-type-management" passHref>
           <Button marginTop="2em">Manage SWRS fuel types</Button>
         </Link>
+        <div id="bottom-button">
+          <Link href="/ggircs/carbon-tax-act-management?showAll=false" passHref>
+            <Button marginTop="2em">
+              Manage tax rates for carbon-taxed fuels
+            </Button>
+          </Link>
+        </div>
         <style jsx>
           {`
             #bottom-button {

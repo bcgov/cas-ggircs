@@ -12,7 +12,9 @@ select col_is_pk('ggircs_parameters', 'carbon_tax_act_fuel_type', 'id', 'Column 
 
 select columns_are('ggircs_parameters'::name, 'carbon_tax_act_fuel_type'::name, array[
     'id'::name,
-    'carbon_tax_fuel_type'::name
+    'carbon_tax_fuel_type'::name,
+    'cta_rate_units'::name,
+    'metadata'::name
 ]);
 
 -- Test column attributes

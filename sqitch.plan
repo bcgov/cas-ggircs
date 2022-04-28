@@ -231,3 +231,5 @@ swrs/parameters/queries/unmapped_fuel [swrs/parameters/schema swrs/parameters/ta
 swrs/parameters/mutations/create_fuel_mapping_cascade [swrs/parameters/schema swrs/parameters/table/fuel_mapping swrs/public/table/fuel] 2022-03-09T23:11:47Z Dylan Leard <dylan@button.is> # Custom mutation to create a fuel mapping record and update any fuel records with the id from that mapping
 @v1.12.0 2022-03-23T18:02:32Z Dylan Leard <dylan@button.is> # release v1.12.0
 @v1.12.1 2022-04-01T21:58:57Z Dylan Leard <dylan@button.is> # release v1.12.1
+swrs/parameters/table/carbon_tax_act_fuel_type_001 [swrs/parameters/table/carbon_tax_act_fuel_type] 2022-04-05T16:13:31Z Dylan Leard <dylan@button.is> # Migration: add cta_rate_units to the table data
+swrs/public/view/carbon_tax_act_fuel_type [swrs/public/view/carbon_tax_act_fuel_type@v1.12.1] 2022-04-05T16:14:00Z Dylan Leard <dylan@button.is> # Migration: include columns added to the carbon_tax_act_fuel_type table
