@@ -12,7 +12,9 @@ from smart_open import open
 from multiprocessing import Pool
 
 quarantined_files_md5_hash = [
-    'd9fa31d1c971fe7573e808252713254c']  # pragma: allowlist secret
+    'd9fa31d1c971fe7573e808252713254c',
+    'b5db7c337ab20e9e1c9009bc7977c7de'
+]
 
 
 # zipfile.read expects the password to be in bytes
