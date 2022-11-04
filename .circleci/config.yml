@@ -6,6 +6,8 @@ orbs:
   helm: circleci/helm@1.2.0
 jobs:
   etl_db_test:
+    environment:
+      PGUSER: postgres
     machine:
       image: ubuntu-2004:202107-02
     working_directory: ~/cas-ggircs
@@ -267,6 +269,8 @@ jobs:
             - tool-versions-{{ checksum ".tool-versions" }}-v2
       - run:
           name: Install tools via asdf
+          environment:
+            PGUSER: postgres
           command: |
             [[ -d ~/.asdf ]] || git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.8.1
             pushd ~/.asdf && git checkout v0.8.1 && popd
@@ -359,6 +363,8 @@ jobs:
     machine:
       image: ubuntu-2004:202107-02
     working_directory: ~/cas-ggircs/ggircs-app
+    environment:
+      PGUSER: postgres
     steps:
       - run:
           name: install libdbd-pg-perl
@@ -451,6 +457,8 @@ jobs:
     machine:
       image: ubuntu-2004:202107-02
     working_directory: ~/cas-ggircs/ggircs-app
+    environment:
+      PGUSER: postgres
     steps:
       - run:
           name: install libdbd-pg-perl
@@ -476,6 +484,8 @@ jobs:
     machine:
       image: ubuntu-2004:202107-02
     working_directory: ~/cas-ggircs/ggircs-app
+    environment:
+      PGUSER: postgres
     steps:
       - run:
           # From https://docs.cypress.io/guides/continuous-integration/introduction#Dependencies

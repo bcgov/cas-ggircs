@@ -117,6 +117,8 @@ The materials published include:
 
 - [GGIRCS Style Guide](https://developer.gov.bc.ca/components)
 
+- [Database Disaster Recovery](https://github.com/bcgov/cas-postgres#point-in-time-recovery)
+
 ## Contributors
 
 - [Developers](https://github.com/bcgov/cas-ggircs/graphs/contributors)

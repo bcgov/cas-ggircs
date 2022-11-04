@@ -1,6 +1,6 @@
 {
   "name": "ggircs-app",
-  "version": "0.1.0",
+  "version": "1.13.2",
   "private": true,
   "scripts": {
     "predev": "yarn build:schema && yarn build:relay",
@@ -65,7 +65,7 @@
     "relay-runtime": "^13.0.1",
     "relay-test-utils": "^13.0.2",
     "styled-components": "^5.3.3",
-    "styled-jsx": "^3.4.1",
+    "styled-jsx": "^5.0.0",
     "unidiff": "^1.0.2",
     "xml-formatter": "^2.4.0"
   },
