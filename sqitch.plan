@@ -235,3 +235,4 @@ swrs/parameters/table/carbon_tax_act_fuel_type_001 [swrs/parameters/table/carbon
 swrs/public/view/carbon_tax_act_fuel_type [swrs/public/view/carbon_tax_act_fuel_type@v1.12.1] 2022-04-05T16:14:00Z Dylan Leard <dylan@button.is> # Migration: include columns added to the carbon_tax_act_fuel_type table
 @v.1.13.0 2022-05-03T20:14:40Z Dylan Leard <dylan@button.is> # release v1.13.0
 @v1.13.1 2022-05-27T16:56:26Z Matthieu Foucault <matthieu@button.is> # release v1.13.1
+@v1.13.2 2022-11-04T21:07:12Z Dylan Leard <dylan@button.is> # release v1.13.2
