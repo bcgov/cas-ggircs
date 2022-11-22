@@ -2,11 +2,11 @@ apiVersion: v2
 name: cas-ggircs
 description: Helm chart for the GGIRCS database and ETL
 type: application
-version: 0.2.29
+version: 0.2.30
 appVersion: 1.13.2
 dependencies:
   - name: cas-postgres
-    version: "0.8.3"
+    version: "0.8.4"
     repository: https://bcgov.github.io/cas-postgres/
   - name: cas-airflow-dag-trigger
     version: 1.0.7
@@ -25,4 +25,4 @@ dependencies:
     condition: trigger-ggircs-deploy-db.enabled
   - name: nginx-sidecar
     repository: https://bcgov.github.io/cas-template-app
-    version: 0.1.8
+    version: 0.1.11
