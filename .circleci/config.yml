@@ -30,76 +30,6 @@ jobs:
           command: |
             source ~/.bashrc
             make test PSQL="psql -h localhost"
-
-  test-local-cluster:
-    machine:
-      image: ubuntu-2004:202107-02
-    steps:
-      - checkout
-      - run:
-          name: "Checkout Submodules"
-          command: |
-            git submodule update --init
-      - run:
-          name: Add Docker registry to /etc/hosts
-          command: echo "172.30.1.1 docker-registry.default.svc" | sudo tee -a /etc/hosts
-      - redhat-openshift/create-local-cluster-with-oc:
-          skip-registry-check: true
-
-      - run:
-          command: docker login -u "$RED_HAT_DOCKER_USERNAME" -p "$RED_HAT_DOCKER_PASSWORD" "$RED_HAT_DOCKER_SERVER"
-          name: Log in to Red Hat docker registry
-      - run:
-          name: Login as cluster admin
-          command: oc login -u system:admin
-      - run:
-          command: make mock_storageclass
-          name: Mock the storage classes
-      - redhat-openshift/login-and-update-kubeconfig:
-          insecure-skip-tls-verify: true
-          openshift-platform-version: 4.x
-          password: password
-          server-address: "https://127.0.0.1:8443"
-          username: dev1
-      - run:
-          command: make provision
-          name: Provision the cluster project set
-      - helm/install-helm-client:
-          version: v3.6.2
-      - run:
-          name: Helm dep up
-          command: |
-            helm dep up ./helm/cas-ggircs
-      - run:
-          name: Deploy to dev
-          command: |
-            helm install --atomic --wait-for-jobs --timeout 900s --namespace "9212c9-dev" \
-            --set defaultImageTag="$CIRCLE_SHA1" \
-            --set cas-postgres.patroni.walE.enable=false \
-            --set networkSecurityPolicies.enable=false \
-            --set swrsImportBucket.enable=false \
-            --set app.route.ssl.enable=false --set app.route.ssl.issueCertIfDisabled=false \
-            --set ciip.release="cas-ciip-portal" \
-            --set ciip.prefix="09269b" \
-            --set ciip.environment="dev" \
-            --set cif.release="cas-cif" \
-            --set cif.prefix="c53ff1" \
-            --set cif.environment="dev" \
-            --set download-ggircs-dags.enabled=false \
-            --set download-swrs-dags.enabled=false \
-            --set trigger-ggircs-deploy-db.enabled=false \
-            --set nginx-sidecar.sslTermination=false \
-            cas-ggircs ./helm/cas-ggircs
-      - run:
-          command: |
-            oc -n 9212c9-dev get all
-          name: Print namespace contents
-      - run:
-          command: |
-            helm test cas-ggircs --timeout 1200s --namespace "9212c9-dev"
-          name: Test helm chart
-          no_output_timeout: 21m
-
   helm_lint:
     machine:
       image: ubuntu-2004:202107-02
@@ -543,12 +473,6 @@ workflows:
           image_tag: ${CIRCLE_SHA1}
           requires:
             - helm_lint
-      - test-local-cluster:
-          context: cas-pipeline
-          requires:
-            - cas-ggircs-etl__sha1_build_and_push
-            - cas-ggircs-app__sha1_build_and_push
-            - cas-ggircs-app-schema__sha1_build_and_push
       - build_cache_and_push:
           name: cas-ggircs-etl__tag_build_and_push
           context: cas-pipeline
