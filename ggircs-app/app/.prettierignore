@@ -1,0 +1,11 @@
+# Prettier shouldn't try to handle minimized files
+**/*.min.css
+**/*.min.js
+
+# Ignore generated files
+**/__generated__/**
+schema/schema.graphql
+schema/schema.json
+
+# Ignore postgraphile json5 syntax
+*.json5

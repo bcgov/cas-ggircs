@@ -1,6 +1,12 @@
 [
   {
-    "routePaths": ["/", "/login-redirect", "/404", "/403", "/request-access-notice"],
+    "routePaths": [
+      "/",
+      "/login-redirect",
+      "/404",
+      "/403",
+      "/request-access-notice"
+    ],
     "isProtected": false
   },
   {
