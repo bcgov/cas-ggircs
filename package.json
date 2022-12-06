@@ -24,6 +24,7 @@
     },
     "hooks": {
       "before:bump": [
+        "npm --prefix ggircs-app/app version v${version}",
         "sqitch tag ${version} -m 'release v${version}'",
         "sqitch --chdir ggircs-app/schema tag ${version} -m 'release v${version}'"
       ]
