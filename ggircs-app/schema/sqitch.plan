@@ -16,3 +16,4 @@ functions/session [types/jwt_token] 2021-01-18T18:47:24Z Matthieu Foucault <matt
 tables/ggircs_user 2021-01-18T18:53:34Z Matthieu Foucault <matthieu@button.is> # add ggircs_user table
 mutations/create_ggircs_user_from_session 2021-01-27T01:42:06Z Matthieu Foucault <matthieu@button.is> # add mutation to insert the ggircs_user for the current session
 tables/eccc_file_download_log 2021-02-18T19:07:13Z Matthieu Foucault <matthieu@button.is> # add table to log eccc file downloads
+@1.13.4 2022-12-07T18:26:30Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # release v1.13.4
