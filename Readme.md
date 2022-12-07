@@ -16,6 +16,10 @@ GGIRCS is a tool designed to modernize the annual reporting and verification of 
 
 ## Usage
 
+### Release procedure
+
+- [GGIRCS release procedure](doc/Release.md)
+
 ### Clone repository
 
 > In terminal:
@@ -29,6 +33,7 @@ GGIRCS is a tool designed to modernize the annual reporting and verification of 
 - If needed, create a development database using `$ createdb ggircs`
 
 - Run `sqitch deploy` to deploy to a `ggircs` database
+
 
 ### Using Sqitch
 

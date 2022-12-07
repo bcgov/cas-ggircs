@@ -1,0 +1,33 @@
+{
+  "name": "ggircs-app",
+  "version": "1.13.2",
+  "description": "GGIRCS: Greenhouse Gas Industrial Reporting and Control System. Data schema for the data extracted from the SWRS, and a small app to access the raw data and attachments from the SWRS extracts.",
+  "repository": "https://github.com/bcgov/cas-ggircs",
+  "author": "ggircs@gov.bc.ca",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "@release-it/conventional-changelog": "^5.1.1",
+    "release-it": "^15.5.1"
+  },
+  "release-it": {
+    "npm": {
+      "publish": false
+    },
+    "git": {
+      "commitMessage": "chore: release v${version}"
+    },
+    "plugins": {
+      "@release-it/conventional-changelog": {
+        "preset": "angular",
+        "infile": "CHANGELOG.md"
+      }
+    },
+    "hooks": {
+      "before:bump": [
+        "npm --prefix ggircs-app/app version v${version}",
+        "sqitch tag ${version} -m 'release v${version}'",
+        "sqitch --chdir ggircs-app/schema tag ${version} -m 'release v${version}'"
+      ]
+    }
+  }
+}
