@@ -3,7 +3,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(2);
+select plan(6);
 
 select has_function(
   'ggircs_app', 'create_ggircs_user_from_session',
@@ -16,7 +16,7 @@ select ggircs_app.create_ggircs_user_from_session();
 
 select isnt_empty (
   $$
-    select * from ggircs_app.ggircs_user where session_sub = '11111111-1111-1111-1111-111111111111';
+    select * from ggircs_app.ggircs_user where session_sub = 'this-is-a-sub-value@an-identity-provider';
   $$,
   'create_ggircs_user_from_session() successfully creates a user'
 );
@@ -29,7 +29,7 @@ set jwt.claims.email to 'bob.loblaw@gov.bc.ca';
 -- Returns the user that was created
 select results_eq(
   $$
-    select session_sub, given_name, family_name from ggircs_app.create_ggircs_user_from_session();
+    select session_sub, first_name, last_name from ggircs_app.create_ggircs_user_from_session();
   $$,
   $$
     values (
@@ -45,7 +45,7 @@ select results_eq(
 -- Adds a user if the email doesn't exist in the system
 select results_eq (
   $$
-    select given_name, family_name, email_address, allow_sub_update
+    select first_name, last_name, email_address, allow_sub_update
     from ggircs_app.ggircs_user
     where session_sub = '11111111-1111-1111-1111-111111111111'
   $$,
@@ -61,7 +61,7 @@ select results_eq (
 );
 
 -- Updates the sub if the email already exists and we allow the sub update, and disallows sub update from then on
-update cif.cif_user set allow_sub_update = true where session_sub = '11111111-1111-1111-1111-111111111111';
+update ggircs_app.ggircs_user set allow_sub_update = true where session_sub = '11111111-1111-1111-1111-111111111111';
 
 set jwt.claims.sub to 'ABCDEF@provider';
 set jwt.claims.given_name to 'Bob';
@@ -72,8 +72,8 @@ select ggircs_app.create_ggircs_user_from_session();
 
 select results_eq (
   $$
-    select given_name, family_name, email_address, allow_sub_update
-    from cif.cif_user
+    select first_name, last_name, email_address, allow_sub_update
+    from ggircs_app.ggircs_user
     where session_sub = 'ABCDEF@provider'::varchar
   $$,
   $$

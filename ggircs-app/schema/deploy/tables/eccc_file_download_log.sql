@@ -2,9 +2,6 @@
 
 begin;
 
--- Replacing the function is not enough, we need to drop and recreate the trigger
-drop trigger eccc_file_download_log_set_downloaded_by on ggircs_app.eccc_file_download_log;
-
 create or replace function ggircs_app_private.eccc_file_download_log_insert()
   returns trigger as $$
 declare
@@ -16,12 +13,5 @@ begin
   return new;
 end;
 $$ language plpgsql;
-
-grant execute on function ggircs_app_private.eccc_file_download_log_insert to ggircs_user;
-
-create trigger eccc_file_download_log_set_downloaded_by
-  before insert on ggircs_app.eccc_file_download_log
-  for each row execute procedure ggircs_app_private.eccc_file_download_log_insert();
-
 
 commit;

@@ -22,3 +22,4 @@ triggers/user_session_sub_immutable_with_flag 2022-12-14T17:29:15Z Pierre Bastia
 tables/ggircs_user [tables/ggircs_user@1.13.4] 2022-12-10T00:07:33Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # changing the uuid column to be session_sub of type text
 mutations/create_ggircs_user_from_session [mutations/create_ggircs_user_from_session@1.13.4] 2022-12-14T19:11:22Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Updating the create user session to update the session sub if required
 tables/eccc_file_download_log [tables/eccc_file_download_log@1.13.4] 2022-12-14T22:36:58Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Trigger on insert needs to fetch the user's session_sub instead of the uuid
+triggers/update_timestamps [triggers/update_timestamps@1.13.4] 2022-12-14T23:04:47Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Updating timestamp trigger to fetch the session_sub from the user table

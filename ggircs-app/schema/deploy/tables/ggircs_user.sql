@@ -13,6 +13,9 @@ alter table ggircs_app.ggircs_user rename column uuid to session_sub;
 -- but does not change their name
 alter index ggircs_app.ggircs_user_uuid rename to ggircs_user_session_sub;
 
+-- Necessary index for the email conflict
+create unique index ggircs_app_user_email_address on ggircs_app.ggircs_user(email_address);
+
 -- Rebuilding policies with the proper session_sub reference
 do
 $policy$

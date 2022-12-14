@@ -20,8 +20,8 @@ begin
     on conflict(email_address) do
     update
     set session_sub=excluded.session_sub,
-        given_name=excluded.first_name,
-        family_name=excluded.last_name,
+        first_name=excluded.first_name,
+        last_name=excluded.last_name,
         allow_sub_update=false;
 
   end if;
