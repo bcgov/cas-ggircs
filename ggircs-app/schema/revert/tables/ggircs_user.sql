@@ -2,7 +2,7 @@
 
 begin;
 
-drop trigger ggircs_user_session_sub_immutable_with_flag;
+drop trigger ggircs_user_session_sub_immutable_with_flag on ggircs_app.ggircs_user;
 alter table ggircs_app.ggircs_user drop column allow_sub_update;
 
 

@@ -15,13 +15,13 @@ begin
   if (select count(*) from ggircs_app.ggircs_user where session_sub=jwt.sub) = 0
   then
 
-    insert into ggircs_app.ggircs_user(session_sub, given_name, family_name, email_address, allow_sub_update)
+    insert into ggircs_app.ggircs_user(session_sub, first_name, last_name, email_address, allow_sub_update)
     values (jwt.sub, jwt.given_name, jwt.family_name, jwt.email, false)
     on conflict(email_address) do
     update
     set session_sub=excluded.session_sub,
-        given_name=excluded.given_name,
-        family_name=excluded.family_name,
+        given_name=excluded.first_name,
+        family_name=excluded.last_name,
         allow_sub_update=false;
 
   end if;

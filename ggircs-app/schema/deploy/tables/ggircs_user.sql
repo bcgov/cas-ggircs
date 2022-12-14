@@ -31,7 +31,7 @@ create trigger ggircs_user_session_sub_immutable_with_flag
     for each row
     execute function ggircs_app_private.user_session_sub_immutable_with_flag_set();
 
-    -- Allowing all the existing users to update the sub once.
+-- Allowing all the existing users to update the sub once.
 update ggircs_app.ggircs_user set allow_sub_update = true;
 
 comment on column ggircs_app.ggircs_user.allow_sub_update is 'Boolean value determines whether a legacy user can be updated. Legacy users may be updated only once.';
