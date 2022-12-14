@@ -18,5 +18,5 @@ mutations/create_ggircs_user_from_session 2021-01-27T01:42:06Z Matthieu Foucault
 tables/eccc_file_download_log 2021-02-18T19:07:13Z Matthieu Foucault <matthieu@button.is> # add table to log eccc file downloads
 @1.13.4 2022-12-07T18:26:30Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # release v1.13.4
 types/jwt_token [types/jwt_token@1.13.4] 2022-12-09T23:44:55Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Updating the sub to be of type text
-tables/ggircs_user [tables/ggircs_user@1.13.4] 2022-12-10T00:07:33Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # changing the uuid column to be session_sub of type text
 triggers/user_session_sub_immutable_with_flag 2022-12-14T17:29:15Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Trigger that ensures the session_sub of a user can't be updated unless the allow flag is set
+tables/ggircs_user [tables/ggircs_user@1.13.4] 2022-12-10T00:07:33Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # changing the uuid column to be session_sub of type text

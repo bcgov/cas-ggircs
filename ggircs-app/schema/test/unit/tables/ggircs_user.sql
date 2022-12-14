@@ -14,7 +14,7 @@ select has_table(
 select has_index(
   'ggircs_app',
   'ggircs_user',
-  'ggircs_user_uuid',
+  'ggircs_user_session_sub',
   'ggircs_user has index: ggircs_user_uuid' );
 
 select finish();
