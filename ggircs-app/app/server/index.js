@@ -11,7 +11,6 @@ const delay = require("delay");
 const { postgraphile } = require("postgraphile");
 const postgraphileOptions = require("./postgraphile/postgraphileOptions");
 const authenticationPgSettings = require("./postgraphile/authenticationPgSettings");
-const { ssoRouter } = require("./routers/sso");
 const { ecccApiRouter } = require("./routers/api/eccc");
 
 const port = Number.parseInt(process.env.PORT, 10) || 3004;
@@ -20,6 +19,8 @@ const app = nextjs({ dev });
 const handle = app.getRequestHandler();
 const UNSUPPORTED_BROWSERS = require("../data/unsupported-browsers");
 const { dbPool } = require("./storage/db");
+const session = require("./middleware/session");
+const ssoMiddleware = require("./middleware/sso");
 
 app.prepare().then(async () => {
   const server = express();
@@ -42,7 +43,10 @@ app.prepare().then(async () => {
     })
   );
 
-  server.use(ssoRouter);
+  const { middleware: sessionMiddleware } = session();
+  server.use(sessionMiddleware);
+  server.use(await ssoMiddleware());
+
   server.use("/api/eccc", ecccApiRouter);
 
   server.use(bodyParser.json({ limit: "50mb" }));

@@ -10583,6 +10583,22 @@
           "description": "Table containing the benchmark and eligibility threshold for a product",
           "fields": [
             {
+              "name": "allowSubUpdate",
+              "description": "Boolean value determines whether a legacy user can be updated. Legacy users may be updated only once.",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "createdAt",
               "description": "The date this record was inserted",
               "args": [],
@@ -11789,6 +11805,22 @@
               "deprecationReason": null
             },
             {
+              "name": "sessionSub",
+              "description": "Unique ID for the user/provider combination, defined by the single sign-on provider.",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "updatedAt",
               "description": "The date this record was last updated",
               "args": [],
@@ -11815,22 +11847,6 @@
               },
               "isDeprecated": false,
               "deprecationReason": null
-            },
-            {
-              "name": "uuid",
-              "description": "Universally Unique ID for the user, defined by the single sign-on provider",
-              "args": [],
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "UUID",
-                  "ofType": null
-                }
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
             }
           ],
           "inputFields": null,
@@ -11850,6 +11866,16 @@
           "description": "A condition to be used against `GgircsUser` object types. All fields are tested\nfor equality and combined with a logical ‘and.’",
           "fields": null,
           "inputFields": [
+            {
+              "name": "allowSubUpdate",
+              "description": "Checks for equality with the object’s `allowSubUpdate` field.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
             {
               "name": "createdAt",
               "description": "Checks for equality with the object’s `createdAt` field.",
@@ -11931,6 +11957,16 @@
               "defaultValue": null
             },
             {
+              "name": "sessionSub",
+              "description": "Checks for equality with the object’s `sessionSub` field.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
               "name": "updatedAt",
               "description": "Checks for equality with the object’s `updatedAt` field.",
               "type": {
@@ -11949,16 +11985,6 @@
                 "ofType": null
               },
               "defaultValue": null
-            },
-            {
-              "name": "uuid",
-              "description": "Checks for equality with the object’s `uuid` field.",
-              "type": {
-                "kind": "SCALAR",
-                "name": "UUID",
-                "ofType": null
-              },
-              "defaultValue": null
             }
           ],
           "interfaces": null,
@@ -11971,6 +11997,16 @@
           "description": "A filter to be used against `GgircsUser` object types. All fields are combined with a logical ‘and.’",
           "fields": null,
           "inputFields": [
+            {
+              "name": "allowSubUpdate",
+              "description": "Filter by the object’s `allowSubUpdate` field.",
+              "type": {
+                "kind": "INPUT_OBJECT",
+                "name": "BooleanFilter",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
             {
               "name": "and",
               "description": "Checks for all expressions in this list.",
@@ -12258,6 +12294,16 @@
               "defaultValue": null
             },
             {
+              "name": "sessionSub",
+              "description": "Filter by the object’s `sessionSub` field.",
+              "type": {
+                "kind": "INPUT_OBJECT",
+                "name": "StringFilter",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
               "name": "updatedAt",
               "description": "Filter by the object’s `updatedAt` field.",
               "type": {
@@ -12273,16 +12319,6 @@
               "type": {
                 "kind": "INPUT_OBJECT",
                 "name": "IntFilter",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "uuid",
-              "description": "Filter by the object’s `uuid` field.",
-              "type": {
-                "kind": "INPUT_OBJECT",
-                "name": "UUIDFilter",
                 "ofType": null
               },
               "defaultValue": null
@@ -13661,6 +13697,16 @@
           "fields": null,
           "inputFields": [
             {
+              "name": "allowSubUpdate",
+              "description": "Boolean value determines whether a legacy user can be updated. Legacy users may be updated only once.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
               "name": "createdAt",
               "description": "The date this record was inserted",
               "type": {
@@ -13731,6 +13777,20 @@
               "defaultValue": null
             },
             {
+              "name": "sessionSub",
+              "description": "Unique ID for the user/provider combination, defined by the single sign-on provider.",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "defaultValue": null
+            },
+            {
               "name": "updatedAt",
               "description": "The date this record was last updated",
               "type": {
@@ -13747,20 +13807,6 @@
                 "kind": "SCALAR",
                 "name": "Int",
                 "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "uuid",
-              "description": "Universally Unique ID for the user, defined by the single sign-on provider",
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "UUID",
-                  "ofType": null
-                }
               },
               "defaultValue": null
             }
@@ -13776,6 +13822,16 @@
           "fields": null,
           "inputFields": [
             {
+              "name": "allowSubUpdate",
+              "description": "Boolean value determines whether a legacy user can be updated. Legacy users may be updated only once.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
               "name": "createdAt",
               "description": "The date this record was inserted",
               "type": {
@@ -13846,6 +13902,16 @@
               "defaultValue": null
             },
             {
+              "name": "sessionSub",
+              "description": "Unique ID for the user/provider combination, defined by the single sign-on provider.",
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
               "name": "updatedAt",
               "description": "The date this record was last updated",
               "type": {
@@ -13861,16 +13927,6 @@
               "type": {
                 "kind": "SCALAR",
                 "name": "Int",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "uuid",
-              "description": "Universally Unique ID for the user, defined by the single sign-on provider",
-              "type": {
-                "kind": "SCALAR",
-                "name": "UUID",
                 "ofType": null
               },
               "defaultValue": null
@@ -14134,6 +14190,18 @@
           "interfaces": null,
           "enumValues": [
             {
+              "name": "ALLOW_SUB_UPDATE_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "ALLOW_SUB_UPDATE_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "CREATED_AT_ASC",
               "description": null,
               "isDeprecated": false,
@@ -14248,6 +14316,18 @@
               "deprecationReason": null
             },
             {
+              "name": "SESSION_SUB_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "SESSION_SUB_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "UPDATED_AT_ASC",
               "description": null,
               "isDeprecated": false,
@@ -14267,18 +14347,6 @@
             },
             {
               "name": "UPDATED_BY_DESC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "UUID_ASC",
-              "description": null,
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "UUID_DESC",
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
@@ -15068,7 +15136,7 @@
               "args": [],
               "type": {
                 "kind": "SCALAR",
-                "name": "UUID",
+                "name": "String",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -15365,7 +15433,7 @@
               "description": "Filter by the object’s `sub` field.",
               "type": {
                 "kind": "INPUT_OBJECT",
-                "name": "UUIDFilter",
+                "name": "StringFilter",
                 "ofType": null
               },
               "defaultValue": null
@@ -15645,7 +15713,7 @@
             },
             {
               "name": "createGgircsUserFromSession",
-              "description": null,
+              "description": "Function creates a user if a user with the matching session_sub does not exist, otherwise returns the matching user",
               "args": [
                 {
                   "name": "input",
