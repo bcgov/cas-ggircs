@@ -3,7 +3,7 @@
 
 begin;
 
-create function ggircs_app_private.update_timestamps()
+create or replace function ggircs_app_private.update_timestamps()
   returns trigger as $$
 
 declare
