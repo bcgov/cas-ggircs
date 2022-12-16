@@ -13,7 +13,7 @@ const getUserGroups = (req) => {
   if (!isAuthenticated(req)) return [groupConstants.GUEST];
 
   const identityProvider = req.claims.identity_provider;
-  const { groups } = req.claims.groups || [];
+  const groups = req.claims.groups || [];
 
   const processedGroups = groups.map((value) => removeLeadingSlash(value));
   const validGroups = compactGroups(processedGroups);

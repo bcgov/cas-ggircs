@@ -7,7 +7,7 @@ dotenv.config();
 
 const mockLogin = process.argv.includes("AS_CYPRESS");
 
-const host = process.env.HOST;
+const host = process.env.HOST || "http://localhost:3004";
 const namespace = process.env.NAMESPACE;
 const kcClientSecret = process.env.KC_CLIENT_SECRET;
 
@@ -44,16 +44,13 @@ async function middleware() {
     },
     oidcConfig: {
       baseUrl: host,
-      clientId: "cif-4311",
+      clientId: "ggircs-4112",
       oidcIssuer: `https://${ssoServerHost}/auth/realms/standard`,
       clientSecret: kcClientSecret,
     },
     authorizationUrlParams: (req) => {
       if (req.query.kc_idp_hint === "idir") return { kc_idp_hint: "idir" };
       return {};
-    },
-    onAuthCallback: (...args) => {
-      console.error(args);
     },
   });
 }
