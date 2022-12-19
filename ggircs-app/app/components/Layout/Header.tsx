@@ -2,6 +2,7 @@ import { useState, useRef } from "react";
 import Link from "next/link";
 import LoginButton from "components/LoginButton";
 import Navigation from "@button-inc/bcgov-theme/Navigation";
+import LogoutForm from "components/Session/LogoutForm";
 
 const DESKTOP_BREAKPOINT_QUERY = "(min-width: 992px)";
 
@@ -55,9 +56,7 @@ const Header = ({ isLoggedIn = false, children }) => {
                 </Link>
               </li>
               <li>
-                <Link href="/logout">
-                  <a>Logout</a>
-                </Link>
+                <LogoutForm />
               </li>
             </>
           ) : (
