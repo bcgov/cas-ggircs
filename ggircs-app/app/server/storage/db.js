@@ -3,6 +3,9 @@
   based on database options in the environment variables of calling process.
 
 */
+const dotenv = require("dotenv");
+
+dotenv.config();
 
 const pg = require("pg");
 

@@ -1,7 +1,10 @@
 const expressSession = require("express-session");
 const connectPgSimple = require("connect-pg-simple");
 const crypto = require("crypto");
+const dotenv = require("dotenv");
 const { dbPool } = require("../storage/db");
+
+dotenv.config();
 
 const PgSession = connectPgSimple(expressSession);
 // True if the host has been configured to use https
