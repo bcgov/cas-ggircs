@@ -42,4 +42,4 @@ const getDatabaseUrl = () => {
 
 const dbPool = new pg.Pool({ connectionString: getDatabaseUrl() });
 
-module.exports = { dbPool, NO_AUTH_POSTGRES_ROLE };
+module.exports = { dbPool, getDatabaseUrl, NO_AUTH_POSTGRES_ROLE };

@@ -2,7 +2,7 @@ const { default: ssoExpress } = require("@bcgov-cas/sso-express");
 const dotenv = require("dotenv");
 const { getUserGroupLandingRoute } = require("../../lib/user-groups");
 const { getUserGroups } = require("../helpers/userGroupAuthentication");
-const { default: createUserMiddleware } = require("./createUser");
+const createUserMiddleware = require("./createUser");
 
 dotenv.config();
 

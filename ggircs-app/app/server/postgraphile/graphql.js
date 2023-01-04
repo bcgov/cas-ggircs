@@ -30,13 +30,13 @@ const postgraphileSchema = async () => {
 
 async function performQuery(query, variables, request) {
   const settings = pgSettings(request);
+
   return withPostGraphileContext(
     {
-      dbPool,
+      pgPool: dbPool,
       pgSettings: settings,
     },
     async (context) => {
-      // Execute your GraphQL query in this function with the provided
       // `context` object, which should NOT be used outside of this
       // function.
       const result = graphql(

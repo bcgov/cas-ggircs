@@ -1,6 +1,6 @@
-import { getUserGroups } from "../helpers/userGroupAuthentication";
-import { performQuery } from "../postgraphile/graphql";
-import { UNAUTHORIZED_IDIR_USER } from "../../data/group-constants";
+const { getUserGroups } = require("../helpers/userGroupAuthentication");
+const { performQuery } = require("../postgraphile/graphql");
+const { UNAUTHORIZED_IDIR_USER } = require("../../data/group-constants");
 
 // This middleware calls the createUserFromSession mutation.
 
@@ -12,7 +12,7 @@ mutation {
 }
 `;
 
-const createUserMiddleware = () => {
+function createUserMiddleware() {
   const f = async (req) => {
     if (getUserGroups(req).includes(UNAUTHORIZED_IDIR_USER)) {
       return;
@@ -30,6 +30,6 @@ const createUserMiddleware = () => {
   };
 
   return f;
-};
+}
 
-export default createUserMiddleware;
+module.exports = createUserMiddleware;
