@@ -2,6 +2,7 @@ const GUEST = "Guest";
 const GGIRCS_USER = "GGIRCS User";
 const PENDING_GGIRCS_USER = "Pending GGIRCS User";
 const REALM_ADMINISTRATOR = "Realm Administrator";
+const UNAUTHORIZED_IDIR_USER = "UNAUTHORIZED_IDIR_USER";
 const USER_GROUP = [GGIRCS_USER, REALM_ADMINISTRATOR];
 module.exports = {
   GUEST,
@@ -9,4 +10,5 @@ module.exports = {
   PENDING_GGIRCS_USER,
   GGIRCS_USER,
   REALM_ADMINISTRATOR,
+  UNAUTHORIZED_IDIR_USER,
 };

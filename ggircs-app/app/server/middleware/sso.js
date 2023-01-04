@@ -2,6 +2,7 @@ const { default: ssoExpress } = require("@bcgov-cas/sso-express");
 const dotenv = require("dotenv");
 const { getUserGroupLandingRoute } = require("../../lib/user-groups");
 const { getUserGroups } = require("../helpers/userGroupAuthentication");
+const { default: createUserMiddleware } = require("./createUser");
 
 dotenv.config();
 
@@ -52,6 +53,7 @@ async function middleware() {
       if (req.query.kc_idp_hint === "idir") return { kc_idp_hint: "idir" };
       return {};
     },
+    onAuthCallback: createUserMiddleware(),
   });
 }
 
