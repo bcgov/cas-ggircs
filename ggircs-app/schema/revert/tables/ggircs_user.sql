@@ -14,6 +14,7 @@ alter table ggircs_app.ggircs_user alter column session_sub type uuid using sess
 alter table ggircs_app.ggircs_user rename column session_sub to uuid;
 
 alter index ggircs_app.ggircs_user_session_sub rename to ggircs_user_uuid;
+drop index ggircs_app.ggircs_app_user_email_address;
 
 -- Rebuilding policies with the proper session_sub reference
 -- Casting in the check preserves the functionality

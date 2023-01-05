@@ -2,6 +2,10 @@
 
 begin;
 
+-- Disabling the trigger to allow this migration to make changes to the data in the table
+-- while keeping the audit values in updated_at/by unchanged
+alter table ggircs_app.ggircs_user disable trigger _100_timestamps;
+
 -- Dropping existing policies that depend on the uuid
 drop policy ggircs_user_insert_ggircs_user on ggircs_app.ggircs_user;
 drop policy ggircs_user_update_ggircs_user on ggircs_app.ggircs_user;
@@ -36,6 +40,9 @@ create trigger ggircs_user_session_sub_immutable_with_flag
 
 -- Allowing all the existing users to update the sub once.
 update ggircs_app.ggircs_user set allow_sub_update = true;
+
+-- Re-enabling the trigger after we update the data
+alter table ggircs_app.ggircs_user enable trigger _100_timestamps;
 
 comment on column ggircs_app.ggircs_user.allow_sub_update is 'Boolean value determines whether a legacy user can be updated. Legacy users may be updated only once.';
 comment on column ggircs_app.ggircs_user.session_sub is 'Unique ID for the user/provider combination, defined by the single sign-on provider.';
