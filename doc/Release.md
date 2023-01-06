@@ -1,4 +1,3 @@
-
 # GGIRCS Release process
 
 Before releasing our application to our `test` and `prod` environments, an essential step is to add a tag to our sqitch plan, to identify which database mutations are released to prod and should be immutable.
@@ -22,3 +21,12 @@ If you want to override the version number, which is automatically determined ba
 ```
 yarn release-it 1.0.0-rc.1
 ```
+
+## Sqitch migrations guardrails
+
+As mentioned above, the critical part of the release process is to tag the sqitch plan. While tagging the sqitch plan in itself doesn't change the behaviour of our migrations scripts, it does allow us to know which changes are deployed to prod (or about to be deployed), and therefore should be considered immutable.
+
+We developed some guardrails (i.e. GitHub actions) to:
+
+- ensure that changes that are part of a release are immutable: [immutable-sqitch-change.yml](.github/workflows/immutable-sqitch-change.yml)
+- ensure that the sqitch plan ends with a tag on the `master` branch, preventing deployments if it is not the case. Our release command automatically sets this tag: [pre-release.yml](.github/workflows/pre-release.yml).

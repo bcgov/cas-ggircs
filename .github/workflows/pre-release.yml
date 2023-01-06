@@ -1,0 +1,13 @@
+name: Pre-release checks
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  sqitch-plan-ends-with-tag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: ./.bin/sqitch-last-change-is-tag.sh .
+      - run: ./.bin/sqitch-last-change-is-tag.sh ggircs-app/schema
