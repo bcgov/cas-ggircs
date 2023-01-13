@@ -112,6 +112,7 @@
     "happo.io": "^8.3.1",
     "jest": "^29.3.1",
     "jest-canvas-mock": "^2.3.0",
+    "jest-environment-jsdom": "^29.3.1",
     "jest-extended": "^3.2.3",
     "jest-mock": "^27.4.2",
     "jest-raw-loader": "^1.0.1",
