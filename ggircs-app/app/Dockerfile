@@ -20,7 +20,7 @@ ENV BASH_ENV="${HOME}/asdf/asdf.sh"
 SHELL ["/usr/bin/env", "bash", "-c"]
 
 # The app only needs yarn and node
-RUN printf "nodejs 14.17.5\nyarn 1.22.10\n" > .tool-versions
+RUN printf "nodejs 16.15.0\nyarn 1.22.10\n" > .tool-versions
 RUN cat ${HOME}/.tool-versions | cut -f 1 -d ' ' | xargs -n 1 asdf plugin-add
 RUN asdf plugin-update --all
 
