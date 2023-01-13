@@ -1,4 +1,4 @@
 postgres 14.0
-nodejs 14.21.1
+nodejs 16.15.0
 yarn 1.22.10
 python 3.9.2
