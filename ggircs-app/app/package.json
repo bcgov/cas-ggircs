@@ -128,6 +128,8 @@
     "**/http-signature/jsprim/json-schema": "0.4.0",
     "**/follow-redirects": "^1.14.8",
     "**/node-fetch": "^2.6.7",
-    "**/prismjs": "1.27.0"
+    "**/prismjs": "1.27.0",
+    "**/jsonwebtoken": "9.0.0",
+    "**/json5": "2.2.2"
   }
 }
