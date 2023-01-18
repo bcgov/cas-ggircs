@@ -3,6 +3,9 @@
   based on database options in the environment variables of calling process.
 
 */
+const dotenv = require("dotenv");
+
+dotenv.config();
 
 const pg = require("pg");
 
@@ -39,4 +42,4 @@ const getDatabaseUrl = () => {
 
 const dbPool = new pg.Pool({ connectionString: getDatabaseUrl() });
 
-module.exports = { dbPool, NO_AUTH_POSTGRES_ROLE };
+module.exports = { dbPool, getDatabaseUrl, NO_AUTH_POSTGRES_ROLE };

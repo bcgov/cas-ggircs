@@ -16,7 +16,7 @@ select has_index(
   'eccc_file_download_log_downloaded_by_idx',
   'eccc_file_download_log has index: eccc_file_download_log_downloaded_by_idx' );
 
-insert into ggircs_app.ggircs_user(id, uuid, first_name, last_name, email_address)
+insert into ggircs_app.ggircs_user(id, session_sub, first_name, last_name, email_address)
 overriding system value
 values (42, '00000000-0000-0000-0000-000000000000', 'Test', 'User', 'ciip@mailinator.com');
 

@@ -1,6 +1,8 @@
 require("isomorphic-fetch");
 const express = require("express");
-const { keycloak } = require("../sso");
+const { isAuthenticated } = require("@bcgov-cas/sso-express/dist/helpers");
+const { getUserGroups } = require("../../helpers/userGroupAuthentication");
+const { getUserGroupLandingRoute } = require("../../../lib/user-groups");
 
 const ecccApiRouter = express.Router();
 const { ECCC_FILE_BROWSER_HOST, ECCC_FILE_BROWSER_PORT, HOST, PORT } =
@@ -20,11 +22,13 @@ const graphqlEndpoint = secure
  */
 ecccApiRouter.get(
   "*",
-  keycloak.protect(
-    (token) =>
-      token.content.groups.includes("/GGIRCS User") ||
-      token.content.groups.includes("/Realm Administrator")
-  ),
+  (req, res, next) => {
+    if (!isAuthenticated(req)) {
+      const groups = getUserGroups(req);
+      return res.redirect(getUserGroupLandingRoute(groups));
+    }
+    return next();
+  },
   async (req, res) => {
     const ecccApiRes = await fetch(
       `${ECCC_FILE_BROWSER_HOST}:${ECCC_FILE_BROWSER_PORT}${req.url}`

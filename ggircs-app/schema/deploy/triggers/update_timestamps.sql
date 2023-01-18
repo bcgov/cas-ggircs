@@ -3,16 +3,14 @@
 
 begin;
 
-create function ggircs_app_private.update_timestamps()
+create or replace function ggircs_app_private.update_timestamps()
   returns trigger as $$
-
 declare
-  user_sub uuid;
+  user_sub text;
   ggircs_user_id int;
-
 begin
   user_sub := (select sub from ggircs_app.session());
-  ggircs_user_id := (select id from ggircs_app.ggircs_user as cu where cu.uuid = user_sub);
+  ggircs_user_id := (select id from ggircs_app.ggircs_user as gu where gu.session_sub = user_sub);
   if tg_op = 'INSERT' then
     new.created_at = now();
     new.created_by = ggircs_user_id;
@@ -31,23 +29,5 @@ begin
   return new;
 end;
 $$ language plpgsql;
-
-grant execute on function ggircs_app_private.update_timestamps to ggircs_user;
-
-comment on function ggircs_app_private.update_timestamps()
-  is $$
-  a trigger to set created_at and updated_at columns.
-  example usage:
-
-  create table some_schema.some_table (
-    ...
-    created_at timestamp with time zone not null default now(),
-    updated_at timestamp with time zone not null default now()
-  );
-  create trigger _100_timestamps
-    before insert or update on some_schema.some_table
-    for each row
-    execute procedure ggircs_app_private.update_timestamps();
-  $$;
 
 commit;
