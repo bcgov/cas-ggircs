@@ -11,6 +11,7 @@
 ### Features
 
 * add scripts to ensure sqitch changes are immutable ([1f9b5a6](https://github.com/bcgov/cas-ggircs/commit/1f9b5a663f0d25ef1315781e237ede3724c2c982))
+* Keycloak Gold integration ([893b80d](https://github.com/bcgov/cas-ggircs/commit/893b80dd9ad689ffe3503ae274a21682854a08f4))
 
 ## [1.13.4](https://github.com/bcgov/cas-ggircs/compare/v1.13.0...v1.13.4) (2022-12-07)
 
