@@ -23,3 +23,4 @@ tables/ggircs_user [tables/ggircs_user@1.13.4] 2022-12-10T00:07:33Z Pierre Basti
 mutations/create_ggircs_user_from_session [mutations/create_ggircs_user_from_session@1.13.4] 2022-12-14T19:11:22Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Updating the create user session to update the session sub if required
 triggers/eccc_file_download_log_insert 2023-01-05T01:20:01Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # A trigger that automatically registers a log entry every time a file is downloaded
 triggers/update_timestamps [triggers/update_timestamps@1.13.4] 2022-12-14T23:04:47Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Updating timestamp trigger to fetch the session_sub from the user table
+@1.14.0 2023-01-19T18:27:10Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # release v1.14.0

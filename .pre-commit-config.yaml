@@ -22,7 +22,7 @@ repos:
       - id: check-yaml
         exclude: ^helm/.*/templates/
       - id: end-of-file-fixer
-        exclude: current_version\.txt
+        exclude: current_version\.txt|CHANGELOG\.md
       - id: trailing-whitespace
         exclude: .*/tests/.*
   - repo: https://github.com/zricethezav/gitleaks
