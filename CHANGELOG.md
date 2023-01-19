@@ -1,5 +1,7 @@
 
 
+## [1.14.1](https://github.com/bcgov/cas-ggircs/compare/v1.14.0...v1.14.1) (2023-01-19)
+
 # [1.14.0](https://github.com/bcgov/cas-ggircs/compare/v1.13.4...v1.14.0) (2023-01-19)
 
 
