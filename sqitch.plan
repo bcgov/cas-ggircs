@@ -239,3 +239,4 @@ swrs/public/view/carbon_tax_act_fuel_type [swrs/public/view/carbon_tax_act_fuel_
 @1.13.4 2022-12-07T18:26:30Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # release v1.13.4
 @1.14.0 2023-01-19T18:27:10Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # release v1.14.0
 @1.14.1 2023-01-19T19:24:37Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # release v1.14.1
+swrs/transform/materialized_view/other_venting 2023-01-24T21:17:51Z Dylan Leard <dylan@button.is> # Materialized view parses data from tags that contain the words other venting details
