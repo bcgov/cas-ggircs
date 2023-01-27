@@ -1,4 +1,4 @@
--- Verify ggircs:swrs/public/table/other_venting.sql on pg
+-- Verify ggircs:swrs/public/table/other_venting on pg
 
 begin;
 

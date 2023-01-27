@@ -13,7 +13,7 @@ $function$
     from swrs_transform.other_venting as _other_venting
     inner join swrs_transform.final_report as _final_report on _other_venting.eccc_xml_file_id = _final_report.eccc_xml_file_id
     left join swrs_transform.report as _report
-    on _other_venting.eccc_xml_file_id = _report.eccc_xml_file_id
+    on _other_venting.eccc_xml_file_id = _report.eccc_xml_file_id;
   end
 $function$ language plpgsql volatile;
 

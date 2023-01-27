@@ -1,4 +1,4 @@
--- Deploy ggircs:swrs/public/table/other_venting.sql to pg
+-- Deploy ggircs:swrs/public/table/other_venting to pg
 
 begin;
 
