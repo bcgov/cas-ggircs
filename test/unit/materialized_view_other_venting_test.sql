@@ -5,17 +5,12 @@ reset client_min_messages;
 
 begin;
 
-select plan(16);
+select plan(15);
 
 
 select has_materialized_view(
     'swrs_transform', 'other_venting',
     'swrs_transform.other_venting should be a materialized view'
-);
-
-select has_index(
-    'swrs_transform', 'other_venting', 'ggircs_other_venting_primary_key',
-    'swrs_transform.other_venting should have a primary key'
 );
 
 select columns_are('swrs_transform'::name, 'other_venting'::name, array[

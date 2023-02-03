@@ -17,8 +17,6 @@ create materialized view swrs_transform.other_venting as (
   order by eccc_xml_file_id
 ) with no data;
 
-create unique index ggircs_other_venting_primary_key on swrs_transform.other_venting (eccc_xml_file_id, detail_tag, detail_value);
-
 comment on materialized view swrs_transform.other_venting is 'The materialized view containing all tags and data where the tag contains the words "Other" and "VentingDetails"';
 comment on column swrs_transform.other_venting.id is 'A generated index used for keying in the ggircs schema';
 comment on column swrs_transform.other_venting.eccc_xml_file_id is 'A foreign key reference to swrs_extract.eccc_xml_file';
