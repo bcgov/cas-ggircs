@@ -5,7 +5,7 @@
 
 set -xeuo pipefail
 # gets the list of modified files via git diff, and removes the schema/deploy prefix, and the .sql suffix to match the sqitch plan change name
-modified_changes=$(git diff --name-only "${2}" -- "${1}"/deploy | sed -e "s/.*\/\(deploy\)\///g; s/@.*//g; s/\.sql$//g")
+modified_changes=$(git diff --name-only "${2}" -- "${1}"/deploy | sed -e "s/deploy\///g; s/@.*//g; s/\.sql$//g")
 
 # finds the last tag in the sqitch plan in the base branch
 git show "${2}":"${1}"/sqitch.plan | tac > sqitch.plan.base.tac
