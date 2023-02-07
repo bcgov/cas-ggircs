@@ -101,7 +101,7 @@ select results_eq(
   'swrs_transform.other_venting.eccc_xml_file_id relates to swrs_extract.eccc_xml_file.id'
 );
 
--- 
+--
 select results_eq(
   'select count(*) from swrs_transform.other_venting',
   ARRAY[6::bigint],
