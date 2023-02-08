@@ -1,5 +1,13 @@
 
 
+# [1.15.0](https://github.com/bcgov/cas-ggircs/compare/v1.14.1...v1.15.0) (2023-02-08)
+
+
+### Features
+
+* add materialized view to parse details on other venting sources ([0edb1ec](https://github.com/bcgov/cas-ggircs/commit/0edb1ec3965185b1fad90dc92549d1637a736f85))
+* add table for other_venting details ([f818c4f](https://github.com/bcgov/cas-ggircs/commit/f818c4fe75736643b22d3dcdd9ae3db2e2b9ebc5))
+
 ## [1.14.1](https://github.com/bcgov/cas-ggircs/compare/v1.14.0...v1.14.1) (2023-01-19)
 
 # [1.14.0](https://github.com/bcgov/cas-ggircs/compare/v1.13.4...v1.14.0) (2023-01-19)
