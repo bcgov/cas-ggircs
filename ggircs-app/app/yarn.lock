@@ -6573,10 +6573,10 @@ jws@^3.2.2:
     jwa "^1.4.1"
     safe-buffer "^5.0.1"
 
-keycloak-connect@^12.0.1:
-  version "12.0.4"
-  resolved "https://registry.yarnpkg.com/keycloak-connect/-/keycloak-connect-12.0.4.tgz#3de6626e186c863167219ab30b77c5f1baa6b7f7"
-  integrity sha512-teWx7loS3EH8sU/t9N2fstaTuqtiyu+VIgBUdtriY7Qww+pSxbyOtsRZynmvf5YsFyphr8DjcXNbBoeXI1iZOA==
+keycloak-connect@^21.0.1:
+  version "21.0.1"
+  resolved "https://registry.yarnpkg.com/keycloak-connect/-/keycloak-connect-21.0.1.tgz#22ba0bedd131a8ca8001a8501b87fbc502c95c51"
+  integrity sha512-jCLX1sYQpMb2TYK4H1gd2XOwMLXyzMd+ict+Z7295JtFs7GZ0kfBOT7St/RY/3xjen/zd2bHBlnuUBJVZZrciQ==
   dependencies:
     jwk-to-pem "^2.0.0"
   optionalDependencies:
@@ -9495,6 +9495,8 @@ typography@^0.16.19:
 
 ua-parser-js@^0.7.30:
   version "0.7.33"
+  resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.33.tgz#1d04acb4ccef9293df6f70f2c3d22f3030d8b532"
+  integrity sha512-s8ax/CeZdK9R/56Sui0WM6y9OFREJarMRHqLB2EwkovemBxNQ+Bqu8GAsUnVcXKgphb++ghr/B2BZx4mahujPw==
 
 uid-safe@~2.1.5:
   version "2.1.5"
