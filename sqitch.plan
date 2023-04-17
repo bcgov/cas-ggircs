@@ -244,3 +244,4 @@ swrs/public/table/other_venting 2023-01-25T20:58:48Z Mike Vesprini <mike@button.
 swrs/transform/function/load_other_venting 2023-01-25T22:03:25Z Mike Vesprini <mike@button.is> # Add function load_other_venting to schema ggircs_swrs
 swrs/transform/function/load [swrs/transform/function/load@v.1.13.0] 2023-01-27T21:49:53Z Mike Vesprini <mike@button.is> # Add other_venting to mv_array
 @1.15.0 2023-02-08T18:45:15Z Dylan Leard <dylan@button.is> # release v1.15.0
+swrs/transform/materialized_view/emission_factor 2023-04-17T18:13:33Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> #  Create an emission_factor materialized_view
