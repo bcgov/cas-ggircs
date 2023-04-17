@@ -249,3 +249,4 @@ swrs/transform/materialized_view/measured_emission_factor [swrs/transform/materi
 swrs/public/table/emission_factor 2023-04-17T17:16:17Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Create an emission factor table
 swrs/transform/function/load_emission_factor 2023-04-17T17:19:14Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Function that inserts data from the old measured_emission_factor materialized view and then data from the newly created emission_factor materialized view
 swrs/transform/function/load [swrs/transform/function/load@1.15.0] 2023-04-17T17:54:37Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Replace measured_emission_factor in the mv_array with emission_factor in load()
+swrs/transform/function/load_measured_emission_factor [swrs/transform/function/load_measured_emission_factor@1.15.0] 2023-04-17T17:56:08Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Drop load_measured_emission_factor function
