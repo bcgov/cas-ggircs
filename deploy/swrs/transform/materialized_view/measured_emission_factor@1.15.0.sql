@@ -3,7 +3,6 @@
 
 begin;
 
-drop materialized view swrs_transform.measured_emission_factor;
 create materialized view swrs_transform.measured_emission_factor as (
   select row_number() over () as id, id as eccc_xml_file_id, factor_details.*
   from swrs_extract.eccc_xml_file,
