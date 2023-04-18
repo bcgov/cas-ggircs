@@ -5,7 +5,7 @@ reset client_min_messages;
 
 begin;
 
-select plan(43);
+select plan(37);
 
 select has_materialized_view(
     'swrs_transform', 'measured_emission_factor',
@@ -22,8 +22,6 @@ select columns_are('swrs_transform'::name, 'measured_emission_factor'::name, arr
     'eccc_xml_file_id'::name,
     'activity_name'::name,
     'sub_activity_name'::name,
-    'unit_name'::name,
-    'sub_unit_name'::name,
     'process_idx'::name,
     'sub_process_idx'::name,
     'units_idx'::name,
@@ -52,15 +50,6 @@ select col_type_is(      'swrs_transform', 'measured_emission_factor', 'sub_acti
 select col_is_null(      'swrs_transform', 'measured_emission_factor', 'sub_activity_name', 'measured_emission_factor.activity_idx column should not allow null');
 select col_hasnt_default('swrs_transform', 'measured_emission_factor', 'sub_activity_name', 'measured_emission_factor.activity_idx column should not have a default');
 
---  select has_column(       'swrs_transform', 'measured_emission_factor', 'unit_name', 'measured_emission_factor.activity_id column should exist');
-select col_type_is(      'swrs_transform', 'measured_emission_factor', 'unit_name', 'character varying(1000)', 'measured_emission_factor.unit_name column should be type varchar');
-select col_is_null(      'swrs_transform', 'measured_emission_factor', 'unit_name', 'measured_emission_factor.activity_idx column should not allow null');
-select col_hasnt_default('swrs_transform', 'measured_emission_factor', 'unit_name', 'measured_emission_factor.activity_idx column should not have a default');
-
---  select has_column(       'swrs_transform', 'measured_emission_factor', 'sub_unit_name', 'measured_emission_factor.activity_id column should exist');
-select col_type_is(      'swrs_transform', 'measured_emission_factor', 'sub_unit_name', 'character varying(1000)', 'measured_emission_factor.sub_unit_name column should be type varchar');
-select col_is_null(      'swrs_transform', 'measured_emission_factor', 'sub_unit_name', 'measured_emission_factor.activity_idx column should not allow null');
-select col_hasnt_default('swrs_transform', 'measured_emission_factor', 'sub_unit_name', 'measured_emission_factor.activity_idx column should not have a default');
 
 --  select has_column(       'swrs_transform', 'measured_emission_factor', 'process_idx', 'measured_emission_factor.process_idx column should exist');
 select col_type_is(      'swrs_transform', 'measured_emission_factor', 'process_idx', 'integer', 'measured_emission_factor.process_idx column should be type integer');
