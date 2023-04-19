@@ -19,6 +19,7 @@ const FILE_URLS = Array.isArray(argv.url)
 const USER = process.env.USER;
 const PASSWORD = process.env.PASSWORD;
 const OUTPUT_FILE = "./out/uploadOutput.json";
+let RETRIES = 0;
 
 if (FILE_URLS.length === 0) {
   console.error("at least one url required");
@@ -36,22 +37,35 @@ const writeOutput = (data) => {
   });
 };
 
-const streamFileToBucket = (url) => {
+// Recursively attempt to upload the file to GCS. This function allows multiple tries in the event that the authentication is rejected.
+const fetchAndStream = (url, resolve, reject) => {
   const protocol = new URL(url).protocol;
   const filename = path.basename(url);
-  console.log(`uploading ${url}`);
-
-  return new Promise((resolve, reject) => {
-    fetch[protocol].get(url, httpOption, (resp) => {
-      const file = bucket.file(filename);
-      const writeStream = file.createWriteStream();
+  fetch[protocol].get(url, httpOption, async (resp) => {
+    const file = bucket.file(filename);
+    const writeStream = file.createWriteStream();
+    if (resp.statusCode === 200)
       resp
-        .pipe(writeStream)
-        .on("finish", () => {
-          resolve({ bucketName: BUCKET_NAME, objectName: filename });
-        })
-        .on("error", (err) => reject(err));
-    });
+      .pipe(writeStream)
+      .on("finish", () => {
+        resolve({ bucketName: BUCKET_NAME, objectName: filename });
+      })
+      .on("error", (err) => reject(err));
+    else if (resp.statusCode !== 200 && RETRIES < 20) {
+      console.log(`Upload failed with status ${resp.statusCode}. Retrying...${RETRIES + 1} / 20`)
+      await new Promise(r => setTimeout(r, 2000));
+      RETRIES++;
+      fetchAndStream(url, resolve, reject);
+    }
+    else
+      reject('Maximum numer of retries reached');
+  });
+};
+
+const streamFileToBucket = (url) => {
+  console.log(`uploading ${url}`);
+  return new Promise((resolve, reject) => {
+    fetchAndStream(url, resolve, reject);
   });
 };
 
@@ -71,7 +85,7 @@ const streamFileToBucket = (url) => {
     );
     // We use asyncForEach instead of Promise.all to avoid overloading the GCS and ECCC servers
     // Ideally we'd have a queue system that limits the number of simultaneous uploads
-    const uploadedObjects = await asyncMap(urlsToUpload, (url) =>
+    const uploadedObjects = await asyncMap(urlsToUpload, async (url) =>
       streamFileToBucket(url)
     );
     await writeOutput({ uploadedObjects, skippedUrls });
