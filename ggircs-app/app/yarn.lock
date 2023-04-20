@@ -1312,9 +1312,9 @@
     "@hapi/hoek" "^9.0.0"
 
 "@sideway/formula@^3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@sideway/formula/-/formula-3.0.0.tgz#fe158aee32e6bd5de85044be615bc08478a0a13c"
-  integrity sha512-vHe7wZ4NOXVfkoRb8T5otiENVlT7a3IAiw7H5M2+GO+9CDgcVUUsX1zalAztCmwyOr2RUTGJdgB+ZvSVqmdHmg==
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/@sideway/formula/-/formula-3.0.1.tgz#80fcbcbaf7ce031e0ef2dd29b1bfc7c3f583611f"
+  integrity sha512-/poHZJJVjx3L+zVD6g9KgHfYnb443oi7wLu/XKojDviHy6HOEOA6z1Trk5aR1dGcmPenJEgb2sK2I80LeS3MIg==
 
 "@sideway/pinpoint@^2.0.0":
   version "2.0.0"
@@ -6573,10 +6573,10 @@ jws@^3.2.2:
     jwa "^1.4.1"
     safe-buffer "^5.0.1"
 
-keycloak-connect@^12.0.1:
-  version "12.0.4"
-  resolved "https://registry.yarnpkg.com/keycloak-connect/-/keycloak-connect-12.0.4.tgz#3de6626e186c863167219ab30b77c5f1baa6b7f7"
-  integrity sha512-teWx7loS3EH8sU/t9N2fstaTuqtiyu+VIgBUdtriY7Qww+pSxbyOtsRZynmvf5YsFyphr8DjcXNbBoeXI1iZOA==
+keycloak-connect@^21.0.1:
+  version "21.1.0"
+  resolved "https://registry.yarnpkg.com/keycloak-connect/-/keycloak-connect-21.1.0.tgz#1f7509debe243c9d94fe6145602bce2da337cf20"
+  integrity sha512-LlX8qAuO08SrTjzhoeuW9QCArpE/Zob7HkaL2eJPs9lzrJg2TDis7vw1OuSSCp/GZAkpOF4mq+zy71OoAdXBsQ==
   dependencies:
     jwk-to-pem "^2.0.0"
   optionalDependencies:
@@ -9494,7 +9494,9 @@ typography@^0.16.19:
     typography-normalize "^0.16.19"
 
 ua-parser-js@^0.7.30:
-  version "0.7.33"
+  version "0.7.35"
+  resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.35.tgz#8bda4827be4f0b1dda91699a29499575a1f1d307"
+  integrity sha512-veRf7dawaj9xaWEu9HoTVn5Pggtc/qj+kqTOFvNiN1l0YdxwC1kvel57UCjThjGa3BHBihE8/UJAHI+uQHmd/g==
 
 uid-safe@~2.1.5:
   version "2.1.5"
