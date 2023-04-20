@@ -8,7 +8,7 @@ reset client_min_messages;
     swrs table after all left joins have been done. **/
 
 begin;
-select plan(14);
+select plan(13);
 
 insert into swrs_extract.eccc_xml_file (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
