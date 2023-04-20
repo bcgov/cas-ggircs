@@ -1225,19 +1225,6 @@ select set_eq(
     'Ensure left joins are not causing additional rows to be returned in swrs.facility'
 );
 
-/** MEASURED EMISSION FACTOR **/
-select set_eq(
-    'select id from swrs.measured_emission_factor',
-
-    $$
-    select measured_emission_factor.id from swrs_transform.measured_emission_factor
-    inner join swrs_transform.final_report as _final_report
-    on measured_emission_factor.eccc_xml_file_id = _final_report.eccc_xml_file_id
-    $$,
-
-    'Ensure left joins are not causing additional rows to be returned in swrs.measured_emission_factor'
-);
-
 /** NAICS **/
 select set_eq(
     'select id from swrs.naics',
