@@ -6,6 +6,6 @@
 begin;
 
 drop function swrs_transform.load_measured_emission_factor;
-  
+
 
 commit;

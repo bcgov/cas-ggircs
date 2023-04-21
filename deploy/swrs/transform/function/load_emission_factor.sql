@@ -18,7 +18,7 @@ $function$
                _measured_emission_factor.activity_name, _measured_emission_factor.sub_activity_name, _measured_emission_factor.measured_emission_factor_amount, _measured_emission_factor.measured_emission_factor_gas, _measured_emission_factor.measured_emission_factor_unit_type
 
         from swrs_transform.measured_emission_factor as _measured_emission_factor
-        
+
 
         inner join swrs_transform.final_report as _final_report on _measured_emission_factor.eccc_xml_file_id = _final_report.eccc_xml_file_id
         --FK Measured Emission Factor -> Fuel
@@ -44,7 +44,7 @@ $function$
                _emission_factor.emission_factor_amount, _emission_factor.emission_factor_gas, _emission_factor.emission_factor_unit_type
 
         from swrs_transform.emission_factor as _emission_factor
-       
+
 
         inner join swrs_transform.final_report as _final_report on _emission_factor.eccc_xml_file_id = _final_report.eccc_xml_file_id
         --FK Measured Emission Factor -> Fuel
@@ -59,7 +59,7 @@ $function$
           and _emission_factor.units_idx = _fuel.units_idx
           and _emission_factor.unit_idx = _fuel.unit_idx
           and _emission_factor.fuel_idx = _fuel.fuel_idx;
-          
+
     end
 $function$ language plpgsql volatile;
 

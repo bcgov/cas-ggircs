@@ -51,4 +51,3 @@ comment on column swrs_transform.emission_factor.emission_factor_unit_type is 'T
 
 
 commit;
-

@@ -252,7 +252,7 @@ select has_fk('swrs', 'emission_factor', 'emission_factor has foreign key constr
 select isnt_empty('select * from swrs.emission_factor', 'there is data in swrs.emission_factor');
 
 select results_eq(
-  $$ 
+  $$
   select count(*) from swrs.emission_factor where emission_factor_type is null
   $$,
   $$
@@ -262,7 +262,7 @@ select results_eq(
 );
 
 select results_eq(
-  $$ 
+  $$
   select count(*) from swrs_transform.emission_factor where emission_factor_type is not null
   $$,
   $$

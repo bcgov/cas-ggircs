@@ -129,7 +129,7 @@ refresh materialized view swrs_transform.emission_factor with data;
 
 
 -- test foreign keys
--- emission_factor -> eccc_xml_filehave 
+-- emission_factor -> eccc_xml_filehave
 -- emission_factor -> fuel
 
 select set_has(
@@ -154,8 +154,8 @@ select set_has(
 -- test xml imports
 
 select results_eq(
-  $$ 
-  select count(*) from swrs_transform.emission_factor 
+  $$
+  select count(*) from swrs_transform.emission_factor
   $$,
   $$
   values (2::bigint)
@@ -164,59 +164,59 @@ select results_eq(
 );
 
 select results_eq(
-  $$ 
-  select emission_factor_type from swrs_transform.emission_factor 
+  $$
+  select emission_factor_type from swrs_transform.emission_factor
   $$,
   $$ values
     ('DefaultOrMeasuredEF'::varchar),
-    ('DefaultOrMeasuredEF'::varchar) 
+    ('DefaultOrMeasuredEF'::varchar)
   $$,
   'emission_factor parsed column emission_factor_type from xml'
 );
 
 
 select results_eq(
-  $$ 
-  select default_or_measured from swrs_transform.emission_factor 
+  $$
+  select default_or_measured from swrs_transform.emission_factor
   $$,
   $$ values
     ('Measured'::varchar),
-    ('Default'::varchar) 
+    ('Default'::varchar)
   $$,
   'emission_factor parsed column default_or_measured from xml'
 );
 
 
 select results_eq(
-  $$ 
-  select emission_factor_amount::numeric from swrs_transform.emission_factor 
+  $$
+  select emission_factor_amount::numeric from swrs_transform.emission_factor
   $$,
   $$ values
     ('0.966'::numeric),
-    ('0.861'::numeric) 
+    ('0.861'::numeric)
   $$,
   'emission_factor parsed column emission_factor_amount from xml'
 );
 
 
 select results_eq(
-  $$ 
-  select emission_factor_gas from swrs_transform.emission_factor 
+  $$
+  select emission_factor_gas from swrs_transform.emission_factor
   $$,
   $$ values
     ('CH4'::varchar),
-    ('N2O'::varchar) 
+    ('N2O'::varchar)
   $$,
   'emission_factor parsed column emission_factor_gas from xml'
 );
 
 select results_eq(
-  $$ 
-  select emission_factor_unit_type from swrs_transform.emission_factor 
+  $$
+  select emission_factor_unit_type from swrs_transform.emission_factor
   $$,
   $$ values
     ('g/GJ'::varchar),
-    ('g/GJ'::varchar) 
+    ('g/GJ'::varchar)
   $$,
   'emission_factor parsed column emission_factor_unit_type from xml'
 );
