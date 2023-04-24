@@ -18,7 +18,7 @@ create table swrs.emission_factor (
 
 create index ggircs_emission_factor_fuel_id_fkey on swrs.emission_factor(fuel_id);
 
-comment on table swrs.emission_factor is 'The table containing the information on fuels';
+comment on table swrs.emission_factor is 'The table containing the information on emission factors';
 comment on column swrs.emission_factor.id is 'The primary key';
 comment on column swrs.emission_factor.fuel_id is 'A foreign key reference to swrs.fuel';
 comment on column swrs.emission_factor.eccc_xml_file_id is 'A foreign key reference to swrs.eccc_xml_file';
@@ -28,7 +28,6 @@ comment on column swrs.emission_factor.emission_factor_type is 'The type derived
 comment on column swrs.emission_factor.default_or_measured is 'The indication of whether the factor is a default or measured, derived from the data in the EmissionFactorDefaultOrMeasured tag';
 comment on column swrs.emission_factor.emission_factor_amount is 'The amount of the measured_emission';
 comment on column swrs.emission_factor.emission_factor_gas is 'The gas type of the measured_emission';
-comment on column swrs.emission_factor.emission_factor_unit_type is 'The unit type of the measured_emission';
-comment on column swrs.emission_factor.emission_factor_unit_type is 'The measured emission factor unit type of the fuel';
+comment on column swrs.emission_factor.emission_factor_unit_type is 'The emission factor unit type of the fuel';
 
 commit;
