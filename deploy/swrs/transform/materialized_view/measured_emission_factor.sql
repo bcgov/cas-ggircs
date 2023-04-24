@@ -25,6 +25,7 @@ create materialized view swrs_transform.measured_emission_factor as (
              measured_emission_factor_gas varchar(1000) path './MeasuredEmissionFactorGas',
              measured_emission_factor_unit_type varchar(1000) path './MeasuredEmissionFactorUnitType|./ancestor::Fuel/MeasuredEmissionFactorUnitType'
          ) as factor_details
+    order by eccc_xml_file_id
 ) with no data;
 
 create unique index ggircs_measured_emission_factor_primary_key on swrs_transform.measured_emission_factor (eccc_xml_file_id, activity_name, sub_activity_name, process_idx, sub_process_idx, units_idx, unit_idx, substances_idx, substance_idx, fuel_idx, measured_emission_factor_idx);
