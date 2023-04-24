@@ -1,5 +1,12 @@
 
 
+# [1.16.0](https://github.com/bcgov/cas-ggircs/compare/v1.15.0...v1.16.0) (2023-04-24)
+
+
+### Bug Fixes
+
+* create load_emission_factor to handle post-2017 records ([e6ea99e](https://github.com/bcgov/cas-ggircs/commit/e6ea99e20195ff01bf96ecdfcca98a8bdef9313d))
+
 # [1.15.0](https://github.com/bcgov/cas-ggircs/compare/v1.14.1...v1.15.0) (2023-02-08)
 
 
