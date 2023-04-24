@@ -2,8 +2,6 @@
 
 begin;
 
-begin;
-
 create table swrs.measured_emission_factor (
 
     id                                  integer primary key,
