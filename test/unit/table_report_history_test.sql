@@ -109,9 +109,9 @@ select has_pk('swrs_history', 'report', 'ggircs_report has primary key');
 select isnt_empty('select * from swrs_history.report', 'there is data in swrs.report');
 
 -- Report has correct emission total data
-select results_eq(
+select set_has(
   $$
-    select grand_total_less_co2bioc, reporting_only_grand_total, co2bioc from swrs_history.report where id=1;
+    select grand_total_less_co2bioc, reporting_only_grand_total, co2bioc from swrs_history.report;
   $$,
   $$
     values(200::numeric, 200::numeric, 100::numeric)

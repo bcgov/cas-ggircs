@@ -2,6 +2,15 @@
 
 begin;
 
-select pg_catalog.has_table_privilege('swrs.measured_emission_factor', 'select');
+do $$
+  begin
+
+    if (select exists(select * from pg_proc where proname='swrs.measured_emission_factor')) then
+      raise exception 'swrs.measured_emission_factor() exists when it should not';
+    else
+      perform true;
+    end if;
+
+  end; $$;
 
 rollback;

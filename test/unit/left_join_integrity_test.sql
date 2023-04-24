@@ -8,7 +8,7 @@ reset client_min_messages;
     swrs table after all left joins have been done. **/
 
 begin;
-select plan(14);
+select plan(13);
 
 insert into swrs_extract.eccc_xml_file (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -1223,19 +1223,6 @@ select set_eq(
     $$,
 
     'Ensure left joins are not causing additional rows to be returned in swrs.facility'
-);
-
-/** MEASURED EMISSION FACTOR **/
-select set_eq(
-    'select id from swrs.measured_emission_factor',
-
-    $$
-    select measured_emission_factor.id from swrs_transform.measured_emission_factor
-    inner join swrs_transform.final_report as _final_report
-    on measured_emission_factor.eccc_xml_file_id = _final_report.eccc_xml_file_id
-    $$,
-
-    'Ensure left joins are not causing additional rows to be returned in swrs.measured_emission_factor'
 );
 
 /** NAICS **/

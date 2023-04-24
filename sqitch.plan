@@ -244,3 +244,10 @@ swrs/public/table/other_venting 2023-01-25T20:58:48Z Mike Vesprini <mike@button.
 swrs/transform/function/load_other_venting 2023-01-25T22:03:25Z Mike Vesprini <mike@button.is> # Add function load_other_venting to schema ggircs_swrs
 swrs/transform/function/load [swrs/transform/function/load@v.1.13.0] 2023-01-27T21:49:53Z Mike Vesprini <mike@button.is> # Add other_venting to mv_array
 @1.15.0 2023-02-08T18:45:15Z Dylan Leard <dylan@button.is> # release v1.15.0
+swrs/transform/materialized_view/emission_factor 2023-04-17T18:13:33Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Create an emission_factor materialized_view
+swrs/transform/materialized_view/measured_emission_factor [swrs/transform/materialized_view/measured_emission_factor@1.15.0] 2023-04-17T18:28:08Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Remove unit_name and sub_unit_name from the measured_emission_factor materialized view
+swrs/public/table/emission_factor 2023-04-17T17:16:17Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Create an emission factor table
+swrs/transform/function/load_emission_factor 2023-04-17T17:19:14Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Function that inserts data from the old measured_emission_factor materialized view and then data from the newly created emission_factor materialized view
+swrs/transform/function/load [swrs/transform/function/load@1.15.0] 2023-04-17T17:54:37Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Replace measured_emission_factor in the mv_array with emission_factor in load()
+swrs/transform/function/load_measured_emission_factor [swrs/transform/function/load_measured_emission_factor@1.15.0] 2023-04-17T17:56:08Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Drop load_measured_emission_factor function
+swrs/public/table/measured_emission_factor_001 2023-04-17T18:00:07Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Drop measured_emission_factor table

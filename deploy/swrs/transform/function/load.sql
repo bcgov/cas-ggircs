@@ -24,7 +24,7 @@ $function$
        report, organisation, facility,
        activity, unit, identifier, naics, fuel,
        emission, permit, parent_organisation, address,
-       contact, additional_data, measured_emission_factor, other_venting
+       contact, additional_data, emission_factor, other_venting
       }
       $$;
 

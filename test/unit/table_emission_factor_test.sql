@@ -6,7 +6,8 @@ reset client_min_messages;
 begin;
 select * from no_plan();
 
-insert into swrs_extract.eccc_xml_file (xml_file) values ($$
+
+insert into swrs_extract.eccc_xml_file (xml_file, imported_at) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <RegistrationData>
     <Organisation>
@@ -83,12 +84,12 @@ insert into swrs_extract.eccc_xml_file (xml_file) values ($$
                   <MeasuredEmissionFactors>
                     <MeasuredEmissionFactor>
                       <MeasuredEmissionFactorGas>CO2</MeasuredEmissionFactorGas>
-                      <MeasuredEmissionFactorAmount>50000</MeasuredEmissionFactorAmount>
+                      <MeasuredEmissionFactorAmount>100</MeasuredEmissionFactorAmount>
                       <MeasuredEmissionFactorUnitType>g/GJ</MeasuredEmissionFactorUnitType>
                     </MeasuredEmissionFactor>
                     <MeasuredEmissionFactor>
                       <MeasuredEmissionFactorGas>CH4</MeasuredEmissionFactorGas>
-                      <MeasuredEmissionFactorAmount>0.966</MeasuredEmissionFactorAmount>
+                      <MeasuredEmissionFactorAmount>111</MeasuredEmissionFactorAmount>
                       <MeasuredEmissionFactorUnitType>g/GJ</MeasuredEmissionFactorUnitType>
                     </MeasuredEmissionFactor>
                   </MeasuredEmissionFactors>
@@ -118,7 +119,7 @@ insert into swrs_extract.eccc_xml_file (xml_file) values ($$
     </ActivityPages>
   </ActivityData>
 </ReportData>
-$$), ($$
+$$, '2017-06-22 19:10:25-07'::timestamptz), ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <RegistrationData>
     <Organisation>
@@ -193,18 +194,18 @@ $$), ($$
                   <FuelUnits>bone dry tonnes</FuelUnits>
                   <AnnualFuelAmount>0</AnnualFuelAmount>
                   <AnnualSteamGeneration>290471000</AnnualSteamGeneration>
-                  <MeasuredEmissionFactors>
-                    <MeasuredEmissionFactor>
-                      <MeasuredEmissionFactorGas>CO2</MeasuredEmissionFactorGas>
-                      <MeasuredEmissionFactorAmount>50000</MeasuredEmissionFactorAmount>
-                      <MeasuredEmissionFactorUnitType>g/GJ</MeasuredEmissionFactorUnitType>
-                    </MeasuredEmissionFactor>
-                    <MeasuredEmissionFactor>
-                      <MeasuredEmissionFactorGas>CH4</MeasuredEmissionFactorGas>
-                      <MeasuredEmissionFactorAmount>0.966</MeasuredEmissionFactorAmount>
-                      <MeasuredEmissionFactorUnitType>g/GJ</MeasuredEmissionFactorUnitType>
-                    </MeasuredEmissionFactor>
-                  </MeasuredEmissionFactors>
+                  <EmissionFactors EmissionFactorType="DefaultOrMeasuredEF">
+                    <EmissionFactor>
+                      <EmissionFactorGas>CO2</EmissionFactorGas>
+                      <EmissionFactorAmount>200</EmissionFactorAmount>
+                      <EmissionFactorUnitType>g/GJ</EmissionFactorUnitType>
+                    </EmissionFactor>
+                    <EmissionFactor>
+                      <EmissionFactorGas>CH4</EmissionFactorGas>
+                      <EmissionFactorAmount>222</EmissionFactorAmount>
+                      <EmissionFactorUnitType>g/GJ</EmissionFactorUnitType>
+                    </EmissionFactor>
+                  </EmissionFactors>
                   <AlternativeMethodologyDescription/>
                 </Fuel>
                 <Fuel>
@@ -231,50 +232,78 @@ $$), ($$
     </ActivityPages>
   </ActivityData>
 </ReportData>
-$$);
+$$, '2018-06-22 19:10:25-07'::timestamptz);
+
 
 -- Run table export function without clearing the materialized views (for data equality tests below)
 SET client_min_messages TO WARNING; -- load is a bit verbose
 select swrs_transform.load(true, false);
 
--- Table swrs.measured_emission_factor exists
-select has_table('swrs'::name, 'measured_emission_factor'::name);
+-- Table swrs.emission_factor exists
+select has_table('swrs'::name, 'emission_factor'::name);
 
--- Measured Emission Factor has pk
-select has_pk('swrs', 'measured_emission_factor', 'ggircs_measured_emission_factor has primary key');
+-- Emission Factor has pk
+select has_pk('swrs', 'emission_factor', 'emission_factor has primary key');
 
--- Measured Emission Factor has fk
-select has_fk('swrs', 'measured_emission_factor', 'ggircs_measured_emission_factor has foreign key constraint(s)');
+-- Emission Factor has fk
+select has_fk('swrs', 'emission_factor', 'emission_factor has foreign key constraint(s)');
 
--- Measured Emission Factor has data
-select isnt_empty('select * from swrs.measured_emission_factor', 'there is data in swrs.measured_emission_factor');
+-- Emission Factor has data
+select isnt_empty('select * from swrs.emission_factor', 'there is data in swrs.emission_factor');
+
+select results_eq(
+  $$
+  select count(*) from swrs.emission_factor where emission_factor_type is null
+  $$,
+  $$
+  values (2::bigint)
+  $$,
+  'emission_factor load function inserts pre-2017 records (emission_factor_type did not exist pre-2017)'
+);
+
+select results_eq(
+  $$
+  select count(*) from swrs_transform.emission_factor where emission_factor_type is not null
+  $$,
+  $$
+  values (2::bigint)
+  $$,
+  'emission_factor load function inserts post-2017 records'
+);
 
 -- FKey tests
--- Measured Emission Factor -> Fuel
+-- Emission Factor -> Fuel
 select set_eq(
     $$
-    select distinct(fuel.eccc_xml_file_id) from swrs.measured_emission_factor
+    select distinct(fuel.eccc_xml_file_id) from swrs.emission_factor
     join swrs.fuel
-    on measured_emission_factor.fuel_id = fuel.id
+    on emission_factor.fuel_id = fuel.id
     $$,
 
     'select distinct(eccc_xml_file_id) from swrs.fuel',
 
-    'Foreign key fuel_id in swrs.measured_emission_factor references swrs.fuel.id'
+    'Foreign key fuel_id in swrs.emission_factor references swrs.fuel.id'
 );
-
--- Data in swrs_transform.measured_emission_factor === data in swrs.measured_emission_factor
+-- Data in swrs_transform.emission_factor === data in swrs.emission_factor (not including emission_factor_type or default_or_measured because they don't exist in pre-2017 data)
 select set_eq(
               $$
               select
                 eccc_xml_file_id,
                 activity_name,
                 sub_activity_name,
-                unit_name,
-                sub_unit_name,
-                measured_emission_factor_amount,
-                measured_emission_factor_gas,
-                measured_emission_factor_unit_type
+                emission_factor_amount,
+                emission_factor_gas,
+                emission_factor_unit_type
+              from swrs_transform.emission_factor
+                eccc_xml_file_id
+              union
+              select
+                eccc_xml_file_id,
+                activity_name,
+                sub_activity_name,
+                measured_emission_factor_amount as emission_factor_amount,
+                measured_emission_factor_gas as emission_factor_gas,
+                measured_emission_factor_unit_type as emission_factor_unit_type
               from swrs_transform.measured_emission_factor
               order by
                 eccc_xml_file_id
@@ -285,18 +314,16 @@ select set_eq(
                   eccc_xml_file_id,
                   activity_name,
                   sub_activity_name,
-                  unit_name,
-                  sub_unit_name,
-                  measured_emission_factor_amount,
-                  measured_emission_factor_gas,
-                  measured_emission_factor_unit_type
-                from swrs.measured_emission_factor
+                  emission_factor_amount,
+                  emission_factor_gas,
+                  emission_factor_unit_type
+                from swrs.emission_factor
                 order by
                     eccc_xml_file_id
                  asc
               $$,
 
-              'data in swrs_transform.measured_emission_factor === swrs.measured_emission_factor');
+              'data in swrs_transform.emission_factor === swrs.emission_factor');
 
 
 
