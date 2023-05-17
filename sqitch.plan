@@ -253,3 +253,4 @@ swrs/transform/function/load_measured_emission_factor [swrs/transform/function/l
 swrs/public/table/measured_emission_factor_001 2023-04-17T18:00:07Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Drop measured_emission_factor table
 @1.16.0 2023-04-24T22:48:23Z Dylan Leard <dylan@button.is> # release v1.16.0
 @1.16.1 2023-05-15T23:59:26Z Dylan Leard <dylan@button.is> # release v1.16.1
+@1.16.2 2023-05-17T16:34:59Z Dylan Leard <dylan@button.is> # release v1.16.2
