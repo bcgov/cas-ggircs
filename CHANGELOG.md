@@ -1,5 +1,12 @@
 
 
+## [1.16.2](https://github.com/bcgov/cas-ggircs/compare/v1.16.1...v1.16.2) (2023-05-17)
+
+
+### Bug Fixes
+
+* no relative path for wget-spider call ([3c239b5](https://github.com/bcgov/cas-ggircs/commit/3c239b577f0e67b0059cb989a23567bba8ce3fec))
+
 ## [1.16.1](https://github.com/bcgov/cas-ggircs/compare/v1.16.0...v1.16.1) (2023-05-15)
 
 # [1.16.0](https://github.com/bcgov/cas-ggircs/compare/v1.15.0...v1.16.0) (2023-04-24)
