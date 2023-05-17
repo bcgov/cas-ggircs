@@ -14,7 +14,7 @@ if [ -z "$2" ]; then
     declare -i RETRIES=0
     while [ $RETRIES -lt 20 ] && [ -z "$FILE_URLS" ]
     do
-      FILE_URLS=$(./wget-spider | awk '{printf "--url=\"%s\" ",$0}')
+      FILE_URLS=$(wget-spider | awk '{printf "--url=\"%s\" ",$0}')
       if  [ -z "$FILE_URLS" ]; then
         RETRIES=$RETRIES+1
         echo 'wget failed to return any data. Retrying '$RETRIES'/20'
