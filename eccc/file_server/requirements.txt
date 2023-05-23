@@ -30,7 +30,7 @@ pyparsing==2.4.7
 pytest==6.2.1
 python-dotenv==0.15.0
 pytz==2020.5
-requests==2.25.1
+requests==2.31.0
 rsa==4.7
 six==1.15.0
 smart-open==4.1.2
