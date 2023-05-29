@@ -13,7 +13,8 @@ from multiprocessing import Pool
 
 quarantined_files_md5_hash = [
     'd9fa31d1c971fe7573e808252713254c',
-    'b5db7c337ab20e9e1c9009bc7977c7de'
+    'b5db7c337ab20e9e1c9009bc7977c7de',
+    '1ebcf460bf0b8210d3d43d1827726ac9'
 ]
 
 
