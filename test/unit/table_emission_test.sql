@@ -4,7 +4,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(13);
+select plan(14);
 
 insert into swrs_extract.eccc_xml_file (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -707,6 +707,23 @@ select results_eq(
   $$,
   ARRAY['BC_ScheduleB_VentingEmissions'::varchar],
   'Vented emissions with an emission_type in swrs.taxed_venting_emission_type are populated with the correct fuel_mapping_id'
+);
+
+select results_eq(
+  $$
+    select gas_type, quantity, ar5_calculated_quantity from swrs.emission
+  $$,
+  $$
+  values
+  ('CO2bioC'::varchar,168038.5773,168038.5773),
+  ('CO2nonbio'::varchar,29819.5973,29819.5973),
+  ('CO2bioC'::varchar,168038.5773,168038.5773),
+  ('CH4'::varchar,29819.5973,834948.7244),
+  ('CO2nonbio'::varchar,7437.645,7437.645),
+  ('CH4'::varchar,1.89,52.92),
+  ('N2O'::varchar,0.19,50.35)
+  $$,
+  'ar5_calculated_quantity is populated with correct value'
 );
 
 select * from finish();
