@@ -5,7 +5,7 @@ begin;
 create table ggircs_parameters.gwp (
   id integer generated always as identity primary key,
   gas_type varchar(1000),
-  gwp int
+  gwp numeric
 );
 
 comment on table ggircs_parameters.gwp is 'The gwp table contains AR5 (Intergovernmental Panel onClimate Change’s (IPCC) Fifth Assessment Report) GWP values global warming potential values';
