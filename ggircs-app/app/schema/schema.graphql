@@ -4395,7 +4395,7 @@ type Gwp implements Node {
   gasType: String
 
   """The global warming potential pertaining to a specific gas type"""
-  gwp: Int
+  gwp: BigFloat
 
   """
   A globally unique identifier. Can be used in various places throughout the system to identify this single value.
@@ -4414,7 +4414,7 @@ input GwpCondition {
   gasType: String
 
   """Checks for equality with the object’s `gwp` field."""
-  gwp: Int
+  gwp: BigFloat
 
   """Checks for equality with the object’s `rowId` field."""
   rowId: Int
@@ -4431,7 +4431,7 @@ input GwpFilter {
   gasType: StringFilter
 
   """Filter by the object’s `gwp` field."""
-  gwp: IntFilter
+  gwp: BigFloatFilter
 
   """Negates the expression."""
   not: GwpFilter
@@ -4449,7 +4449,7 @@ input GwpInput {
   gasType: String
 
   """The global warming potential pertaining to a specific gas type"""
-  gwp: Int
+  gwp: BigFloat
 }
 
 """Represents an update to a `Gwp`. Fields that are set will be updated."""
@@ -4458,7 +4458,7 @@ input GwpPatch {
   gasType: String
 
   """The global warming potential pertaining to a specific gas type"""
-  gwp: Int
+  gwp: BigFloat
 }
 
 """A connection to a list of `Gwp` values."""

@@ -15036,7 +15036,7 @@
               "args": [],
               "type": {
                 "kind": "SCALAR",
-                "name": "Int",
+                "name": "BigFloat",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -15107,7 +15107,7 @@
               "description": "Checks for equality with the object’s `gwp` field.",
               "type": {
                 "kind": "SCALAR",
-                "name": "Int",
+                "name": "BigFloat",
                 "ofType": null
               },
               "defaultValue": null
@@ -15166,7 +15166,7 @@
               "description": "Filter by the object’s `gwp` field.",
               "type": {
                 "kind": "INPUT_OBJECT",
-                "name": "IntFilter",
+                "name": "BigFloatFilter",
                 "ofType": null
               },
               "defaultValue": null
@@ -15235,7 +15235,7 @@
               "description": "The global warming potential pertaining to a specific gas type",
               "type": {
                 "kind": "SCALAR",
-                "name": "Int",
+                "name": "BigFloat",
                 "ofType": null
               },
               "defaultValue": null
@@ -15266,7 +15266,7 @@
               "description": "The global warming potential pertaining to a specific gas type",
               "type": {
                 "kind": "SCALAR",
-                "name": "Int",
+                "name": "BigFloat",
                 "ofType": null
               },
               "defaultValue": null
