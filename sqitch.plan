@@ -255,3 +255,6 @@ swrs/public/table/measured_emission_factor_001 2023-04-17T18:00:07Z Brianna Cerk
 @1.16.1 2023-05-15T23:59:26Z Dylan Leard <dylan@button.is> # release v1.16.1
 @1.16.2 2023-05-17T16:34:59Z Dylan Leard <dylan@button.is> # release v1.16.2
 @1.16.3 2023-05-29T22:02:48Z Dylan Leard <dylan@button.is> # release v1.16.3
+swrs/parameters/table/gwp 2023-06-05T22:35:23Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Create a table for updated AR5 (Intergovernmental Panel on Climate Change’s (IPCC) Fifth Assessment Report) GWP values
+swrs/public/table/emission_003 2023-06-06T15:37:39Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Add ar5_calculated_quantity column to the emissions table
+swrs/transform/function/load_emission [swrs/transform/function/load_emission@1.15.0] 2023-06-06T16:04:44Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> #  Calculate the ar5_calculated_quantity column in load_emission
