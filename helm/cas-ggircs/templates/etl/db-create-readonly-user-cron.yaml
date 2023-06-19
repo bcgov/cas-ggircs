@@ -65,6 +65,6 @@ spec:
                 "-d", "$(GGIRCS_DATABASE)",
                 "-u", "$(GGIRCS_USER)",
                 "-p", "$(GGIRCS_PASSWORD)",
-                "--schemas", "swrs,swrs_extract,swrs_history","ggircs_parameters",
+                "--schemas", "swrs,swrs_extract,swrs_history,ggircs_parameters",
                 "--privileges", "select"
               ]
