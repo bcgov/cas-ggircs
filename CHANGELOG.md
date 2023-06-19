@@ -1,5 +1,12 @@
 
 
+# [1.17.0](https://github.com/bcgov/cas-ggircs/compare/v1.16.3...v1.17.0) (2023-06-19)
+
+
+### Features
+
+* add calculated ar5 quantity to emission table in load ([067eaf4](https://github.com/bcgov/cas-ggircs/commit/067eaf4346e6af256757788b3f5f1cb463f7d9f1))
+
 ## [1.16.3](https://github.com/bcgov/cas-ggircs/compare/v1.16.2...v1.16.3) (2023-05-29)
 
 ## [1.16.2](https://github.com/bcgov/cas-ggircs/compare/v1.16.1...v1.16.2) (2023-05-17)
