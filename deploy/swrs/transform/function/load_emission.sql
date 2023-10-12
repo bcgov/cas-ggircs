@@ -99,6 +99,40 @@ $function$
           cas_number
         from swrs_transform.r3_emission;
 
+        /* ECCC SWRS schema changed for reporting year 2022.
+           A new materialized view was added to parse these emissions & the section below adds them to the emission table
+        */
+        insert into all_emissions(
+            eccc_xml_file_id,
+            activity_name,
+            sub_activity_name,
+            unit_name,
+            sub_unit_name,
+            process_idx,
+            sub_process_idx,
+            units_idx,
+            unit_idx,
+            substances_idx,
+            substance_idx,
+            fuel_idx,
+            fuel_name,
+            emissions_idx,
+            emission_idx,
+            emission_type,
+            gas_type,
+            ar5_calculated_quantity,
+            methodology,
+            not_applicable,
+            quantity,
+            calculated_quantity,
+            emission_category)
+          select eccc_xml_file_id, activity_name, sub_activity_name, unit_name, sub_unit_name, process_idx, sub_process_idx,
+                 units_idx, unit_idx, substances_idx, substance_idx, fuel_idx, fuel_name, emissions_idx, emission_idx,
+                 emission_type, gas_type,
+                ((select quantity * 1)),
+                 methodology, not_applicable, quantity, calculated_quantity, emission_category
+          from swrs_transform.eio_emission;
+
 
         insert into swrs_load.emission (id, eccc_xml_file_id, activity_id, facility_id,  fuel_id, naics_id, fuel_mapping_id, organisation_id, report_id, unit_id, activity_name, sub_activity_name,
                                      unit_name, sub_unit_name, fuel_name, emission_type,
