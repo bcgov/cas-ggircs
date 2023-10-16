@@ -24,14 +24,14 @@ create materialized view swrs_transform.eio_emission as (
              substance_idx integer path 'string(count(./ancestor::Substance/preceding-sibling::Substance))' not null,
              fuel_idx integer path 'string(count(./ancestor::Fuel/preceding-sibling::Fuel))' not null,
              fuel_name varchar(1000) path 'name((./ancestor::Emissions/parent::*[not(name() = "Substance")][not(name() = "Substances")] | ./parent::*[not(name() = "EIOEmissions")])[1])' not null, -- eccc_xml_file_id=2514
-             emissions_idx integer path 'string(count(./ancestor::Emissions/preceding-sibling::Emissions))' not null,
-             emission_idx integer path 'string(count(./preceding-sibling::Emission))' not null,
+             emissions_idx integer path 'string(count(./ancestor::Emissions/preceding-sibling::EIOEmissions))' not null,
+             emission_idx integer path 'string(count(./preceding-sibling::EIOEmission))' not null,
              emission_type varchar(1000) path '../@EmissionsType[normalize-space(.)]',
              gas_type varchar(1000) path 'GasType[normalize-space(.)]',
              not_applicable boolean path 'NotApplicable[normalize-space(.)]',
              quantity numeric path 'EIOEmissionAmount[normalize-space(.)]' default 0,
              calculated_quantity numeric path 'EIOEmissionAmount[normalize-space(.)]' default 0,
-             electricity_amount numeric path 'EIOElectricityAmount[normalize-space(.)]' default 0,
+             electricity_amount numeric path 'EIOElectricityAmount[normalize-space(.)]' default 0
          ) as emission_details
   order by eccc_xml_file_id
 ) with no data;
@@ -61,11 +61,10 @@ comment on column swrs_transform.eio_emission.emissions_idx is 'The number of pr
 comment on column swrs_transform.eio_emission.emission_idx is 'The number of preceding Emission siblings before this emission';
 comment on column swrs_transform.eio_emission.emission_type is 'The type of the emission';
 comment on column swrs_transform.eio_emission.gas_type is 'The type of the gas';
-comment on column swrs_transform.eio_emission.methodology is 'The emission methodology';
 comment on column swrs_transform.eio_emission.not_applicable is 'Is the emission applicable/NA';
 comment on column swrs_transform.eio_emission.quantity is 'The quantity of the emission';
 comment on column swrs_transform.eio_emission.calculated_quantity is 'The CO2 Equivalent quantity of the emission';
-comment on column swrs_transform.eio_emission.emission_category is 'The emissions category';
+comment on column swrs_transform.eio_emission.electricity_amount is 'The amount of electricity imported or exported';
 
 
 commit;
