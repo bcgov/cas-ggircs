@@ -28,11 +28,10 @@ create materialized view swrs_transform.eio_emission as (
              emission_idx integer path 'string(count(./preceding-sibling::Emission))' not null,
              emission_type varchar(1000) path '../@EmissionsType[normalize-space(.)]',
              gas_type varchar(1000) path 'GasType[normalize-space(.)]',
-             methodology varchar(1000) path 'Methodology[normalize-space(.)]',
              not_applicable boolean path 'NotApplicable[normalize-space(.)]',
              quantity numeric path 'EIOEmissionAmount[normalize-space(.)]' default 0,
              calculated_quantity numeric path 'EIOEmissionAmount[normalize-space(.)]' default 0,
-             emission_category varchar(1000) path '(Groups/EmissionGroupTypes/text()[contains(normalize-space(.), "BC_ScheduleB_")])[1]'
+             electricity_amount numeric path 'EIOElectricityAmount[normalize-space(.)]' default 0,
          ) as emission_details
   order by eccc_xml_file_id
 ) with no data;
