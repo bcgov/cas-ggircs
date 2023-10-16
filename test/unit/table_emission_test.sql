@@ -4,7 +4,7 @@ create extension if not exists pgtap;
 reset client_min_messages;
 
 begin;
-select plan(14);
+select plan(16);
 
 insert into swrs_extract.eccc_xml_file (xml_file) values ($$
 <ReportData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -376,6 +376,25 @@ $$), ($$
           </Units>
         </SubProcess>
       </Process>
+      <Process ProcessName="ElectricityImportOperation">
+        <SubProcess SubprocessName="Electricity Import: Emissions from unspecified sources" InformationRequirement="Optional">
+          <Units>
+            <Unit>
+              <Fuels>
+                <Fuel>
+                  <EIOEmissions>
+                    <EIOEmission>
+                      <NotApplicable>false</NotApplicable>
+                      <EIOElectricityAmount>12345</EIOElectricityAmount>
+                      <EIOEmissionAmount>99999</EIOEmissionAmount>
+                    </EIOEmission>
+                  </EIOEmissions>
+                </Fuel>
+              </Fuels>
+            </Unit>
+          </Units>
+        </SubProcess>
+      </Process>
       <Process>
         <SubProcess SubprocessName="Additional Reportable Information as per WCI.352(i)(1)-(12)" InformationRequirement="MandatoryAdditional">
           <Amount AmtDomain="PulpAndPaperBlackLiquor" AmtAction="Combusted" AmtPeriod="Annual">168389</Amount>
@@ -663,6 +682,7 @@ select set_eq(
     join swrs.report
       on emission.eccc_xml_file_id = report.eccc_xml_file_id
       and report.report_type != 'R3'
+      and emission.electricity_amount is null
   $$,
   'Data from swrs_transform.emission is contained in swrs.emission'
 );
@@ -701,6 +721,53 @@ select set_eq(
   'R3 report data from swrs_transform.r3_emission is contained in swrs.emission'
 );
 
+-- Data in swrs.emission contains the swrs_transform.emission data
+select set_eq(
+  $$
+  select
+    eio_emission.eccc_xml_file_id,
+    activity_name,
+    sub_activity_name,
+    unit_name,
+    sub_unit_name,
+    fuel_name,
+    emission_type,
+    gas_type,
+    not_applicable,
+    quantity,
+    calculated_quantity,
+    electricity_amount
+  from swrs_transform.eio_emission
+  join swrs_transform.report
+    on eio_emission.eccc_xml_file_id = report.eccc_xml_file_id
+    and report.report_type != 'R3'
+  order by
+    eccc_xml_file_id asc
+  $$,
+
+  $$
+  select
+      emission.eccc_xml_file_id,
+      activity_name,
+      sub_activity_name,
+      unit_name,
+      sub_unit_name,
+      fuel_name,
+      emission_type,
+      gas_type,
+      not_applicable,
+      quantity,
+      calculated_quantity,
+      electricity_amount
+    from swrs.emission
+    join swrs.report
+      on emission.eccc_xml_file_id = report.eccc_xml_file_id
+      and report.report_type != 'R3'
+      and emission.electricity_amount is not null
+  $$,
+  'Data from swrs_transform.eio_emission is contained in swrs.emission'
+);
+
 select results_eq(
   $$
     select emission_category from swrs.emission where fuel_mapping_id = (select id from ggircs_parameters.fuel_mapping where fuel_type = 'Vented Natural Gas CH4')
@@ -711,7 +778,7 @@ select results_eq(
 
 select results_eq(
   $$
-    select gas_type, quantity, ar5_calculated_quantity from swrs.emission
+    select gas_type, quantity, ar5_calculated_quantity from swrs.emission where electricity_amount is null
   $$,
   $$
   values
@@ -724,6 +791,16 @@ select results_eq(
   ('N2O'::varchar,0.19,50.35)
   $$,
   'ar5_calculated_quantity is populated with correct value'
+);
+
+select results_eq(
+  $$
+    select quantity, electricity_amount from swrs.emission where electricity_amount is not null
+  $$,
+  $$
+    values (99999::numeric, 12345::numeric)
+  $$,
+  'EIO emissions are properly parsed'
 );
 
 select * from finish();
