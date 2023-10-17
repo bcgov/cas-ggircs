@@ -6289,7 +6289,6 @@ type Query implements Node {
   ): UnmappedFuelReturnsConnection
 }
 
-"""The table housing all report data, derived from eccc_xml_file table"""
 type Report implements Node {
   co2Bioc: BigFloat
 
@@ -6313,8 +6312,6 @@ type Report implements Node {
 
   """The timestamp recorded in SWRS when the report was last modified"""
   lastModifiedDate: Datetime
-
-  """Computed column returns the latest report ordered by zip_file_name"""
   latestSwrsReport: Report
 
   """The prepop report id"""
@@ -6391,7 +6388,6 @@ type Report implements Node {
   version: String
 }
 
-"""The table housing all attachments for reports"""
 type ReportAttachment implements Node {
   comment: String
 

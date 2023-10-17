@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { EcccFile } from "types";
 import { Row, Col, ListGroup } from "react-bootstrap";
 import FileDetails from "./FileDetails";
-import 'whatwg-fetch'
 
 const FileList: React.FunctionComponent = () => {
   const [selectedFile, setSelectedFile] = useState<EcccFile>(null);
