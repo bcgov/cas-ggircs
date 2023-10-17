@@ -1,5 +1,12 @@
 
 
+## [1.17.1](https://github.com/bcgov/cas-ggircs/compare/v1.17.0...v1.17.1) (2023-10-17)
+
+
+### Bug Fixes
+
+* update load_emission function to include EIO Emission data beyond 2022 ([2d450a9](https://github.com/bcgov/cas-ggircs/commit/2d450a9ca49e2d5bac891aa1e02a05d26985d951))
+
 # [1.17.0](https://github.com/bcgov/cas-ggircs/compare/v1.16.3...v1.17.0) (2023-06-19)
 
 

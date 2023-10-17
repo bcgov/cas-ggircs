@@ -262,3 +262,4 @@ swrs/transform/function/load_emission [swrs/transform/function/load_emission@1.1
 swrs/public/table/emission_004 [swrs/public/table/emission_003] 2023-10-16T21:28:21Z Dylan Leard <dylan@button.is> # Migration: add electricity_amount to emission table for EIO emissions
 swrs/transform/materialized_view/eio_emission [swrs/transform/schema] 2023-10-12T21:56:46Z Dylan Leard <dylan@button.is> # Add a materialized view for EIO Emissions. Necessary due to schema change for EIO Emissions as of reporting year 2022.
 swrs/transform/function/load_emission [swrs/transform/function/load_emission@1.17.0] 2023-10-12T21:42:08Z Dylan Leard <dylan@button.is> # Migration: include emissions from EIOs after ECCC schema change
+@1.17.1 2023-10-17T17:29:07Z Dylan Leard <dylan@button.is> # release v1.17.1
