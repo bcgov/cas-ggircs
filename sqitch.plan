@@ -259,3 +259,6 @@ swrs/parameters/table/gwp 2023-06-05T22:35:23Z Brianna Cerkiewicz <briannacerkie
 swrs/public/table/emission_003 2023-06-06T15:37:39Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Add ar5_calculated_quantity column to the emissions table
 swrs/transform/function/load_emission [swrs/transform/function/load_emission@1.15.0] 2023-06-06T16:04:44Z Brianna Cerkiewicz <briannacerkiewicz@pop-os> # Calculate the ar5_calculated_quantity column in load_emission
 @1.17.0 2023-06-19T18:15:06Z Dylan Leard <dylan@button.is> # release v1.17.0
+swrs/public/table/emission_004 [swrs/public/table/emission_003] 2023-10-16T21:28:21Z Dylan Leard <dylan@button.is> # Migration: add electricity_amount to emission table for EIO emissions
+swrs/transform/materialized_view/eio_emission [swrs/transform/schema] 2023-10-12T21:56:46Z Dylan Leard <dylan@button.is> # Add a materialized view for EIO Emissions. Necessary due to schema change for EIO Emissions as of reporting year 2022.
+swrs/transform/function/load_emission [swrs/transform/function/load_emission@1.17.0] 2023-10-12T21:42:08Z Dylan Leard <dylan@button.is> # Migration: include emissions from EIOs after ECCC schema change
