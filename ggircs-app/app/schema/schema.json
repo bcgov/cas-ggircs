@@ -21970,7 +21970,7 @@
         {
           "kind": "OBJECT",
           "name": "Report",
-          "description": null,
+          "description": "The table housing all report data, derived from eccc_xml_file table",
           "fields": [
             {
               "name": "co2Bioc",
@@ -22074,7 +22074,7 @@
             },
             {
               "name": "latestSwrsReport",
-              "description": null,
+              "description": "Computed column returns the latest report ordered by zip_file_name",
               "args": [],
               "type": {
                 "kind": "OBJECT",
@@ -22368,7 +22368,7 @@
         {
           "kind": "OBJECT",
           "name": "ReportAttachment",
-          "description": null,
+          "description": "The table housing all attachments for reports",
           "fields": [
             {
               "name": "comment",

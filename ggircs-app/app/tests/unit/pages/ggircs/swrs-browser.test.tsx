@@ -13,7 +13,7 @@ import {
 import { RelayEnvironmentProvider, loadQuery } from "react-relay";
 import { swrsBrowserQuery } from "__generated__/swrsBrowserQuery.graphql";
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator";
-import 'whatwg-fetch'
+import "whatwg-fetch";
 
 let environment: RelayMockEnvironment;
 let initialQueryRef;
