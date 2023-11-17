@@ -43,7 +43,7 @@
     "identity-obj-proxy": "^3.0.0",
     "improved-yarn-audit": "^3.0.0",
     "isomorphic-fetch": "^3.0.0",
-    "keycloak-connect": "^21.0.1",
+    "keycloak-connect": "^22.0.5",
     "lightship": "^6.7.2",
     "lodash.debounce": "^4.0.8",
     "morgan": "^1.10.0",
@@ -109,8 +109,8 @@
     "eslint-plugin-react-hooks": "^4",
     "eslint-plugin-relay": "^1.8.2",
     "graphql-query-test-mock": "^0.12.1",
-    "happo-cypress": "^3.0.1",
-    "happo-e2e": "^1.0.3",
+    "happo-cypress": "^4.1.1",
+    "happo-e2e": "^2.2.5",
     "happo.io": "^8.3.1",
     "jest": "^27.4.5",
     "jest-canvas-mock": "^2.3.0",
@@ -121,7 +121,7 @@
     "prettier": "^2.2.1",
     "ts-node": "^10.4.0",
     "typescript": "^4.4.4",
-    "wait-on": "^5.2.1",
+    "wait-on": "^7.2.0",
     "whatwg-fetch": "^3.6.19"
   },
   "resolutions": {
