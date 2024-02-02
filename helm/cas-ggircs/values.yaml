@@ -163,3 +163,20 @@ nginx-sidecar:
   caAccountEmail: ggircs@gov.bc.ca
   storageClassName: netapp-file-standard
   renewalDays: 60
+
+devops:
+  image:
+    repository: hashicorp/terraform
+    pullPolicy: Always
+    tag: "1.4.6"
+
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 512Mi
+    requests:
+      cpu: 100m
+      memory: 64Mi
+
+  terraform:
+   namespace_apps: '["ggircs-backups", "swrs-import", "mb-backups"]'
