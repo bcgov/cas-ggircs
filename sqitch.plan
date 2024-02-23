@@ -264,3 +264,4 @@ swrs/transform/materialized_view/eio_emission [swrs/transform/schema] 2023-10-12
 swrs/transform/function/load_emission [swrs/transform/function/load_emission@1.17.0] 2023-10-12T21:42:08Z Dylan Leard <dylan@button.is> # Migration: include emissions from EIOs after ECCC schema change
 @1.17.1 2023-10-17T17:29:07Z Dylan Leard <dylan@button.is> # release v1.17.1
 @1.17.2 2023-11-22T17:03:39Z Dylan Leard <dylan@button.is> # release v1.17.2
+@1.17.3 2024-02-23T21:47:36Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # release v1.17.3
