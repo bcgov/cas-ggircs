@@ -26,3 +26,6 @@ dependencies:
   - name: nginx-sidecar
     repository: https://bcgov.github.io/cas-template-app
     version: 0.1.13
+  - name: terraform-bucket-provision
+    version: "0.1.2"
+    repository: https://bcgov.github.io/cas-pipeline/
