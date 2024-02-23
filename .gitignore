@@ -19,3 +19,11 @@ ENV/
 env.bak/
 venv.bak/
 .DS_Store
+
+# Terraform cache and files from local and migration runs
+.terraform/
+*.tfstate
+*.tfvars
+.terraform.lock.hcl
+credentials.json
+terraform/*.sh

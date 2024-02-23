@@ -32,3 +32,7 @@ persistence:
 
 nginx-sidecar:
   hostName: cas-ggircs-dev.apps.silver.devops.gov.bc.ca
+
+terraform-bucket-provision:
+  terraform:
+   namespace_apps: '["ggircs-backups", "eccc-swrs-import"]'

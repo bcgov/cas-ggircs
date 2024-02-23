@@ -163,3 +163,7 @@ nginx-sidecar:
   caAccountEmail: ggircs@gov.bc.ca
   storageClassName: netapp-file-standard
   renewalDays: 60
+
+terraform-bucket-provision:
+  terraform:
+   namespace_apps: '["ggircs-backups", "swrs-import"]'
