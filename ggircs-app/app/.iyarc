@@ -1,16 +1,4 @@
-# Ignoring this https://www.npmjs.com/advisories/1002535 advisory.
-# It is a (nextJs) redirect vulnerability that doesn't affect deployments that have a "pages/404.tsx" file (like we do)
-# Marking this as ignored until we update the major version of next
-1005071
-
-# Ignoring this https://www.npmjs.com/advisories/1002496 advisory.
-# It is a Next.js vulnerability that only affects apps where "next.config.js" has `images.domains` assigned (we don't)
-# Marking this as ignored until we update the major version of next
-1005033
-
-# Temporarily ignoring this advisory until https://github.com/button-inc/service-development-toolkit/issues/337 is fixed
-# This CVE is on a storybook dependency, which should be a devDependency of @button-inc/bcgov-theme, but is in the dependencies
-1004966
 
 # Marking this as ignored until we update the major version of next
-GHSA-25mp-g6fv-mqxx
+# This is fine to ignore since we're not using a CDN
+GHSA-c59h-r6p8-q9wc
