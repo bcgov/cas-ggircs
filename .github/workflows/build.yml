@@ -5,6 +5,8 @@ on:
     branches-ignore:
       - main
       - master
+  schedule:
+    - cron: "45 0 * * *"
 
 jobs:
   ghg-issuer-build:
@@ -19,3 +21,12 @@ jobs:
           image_tag: latest,${{ github.sha }}
           dockerfile: ghg-credentials-issuer/Dockerfile
           context: ghg-credentials-issuer
+  yarn-audit:
+    needs: install-dev-tools
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: dev env setup
+        uses: ./.github/actions/dev-env-setup
+      - run: yarn audit-deps
+        working-directory: ./app
