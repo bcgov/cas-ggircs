@@ -77,10 +77,6 @@ cas-postgres:
   gcs:
     bucketSuffix: ~
 
-swrsImportBucket:
-  enable: true
-  bucketSuffix: swrs-import
-
 storageClassName: netapp-file-standard
 
 swrsGcpApi:
@@ -166,4 +162,4 @@ nginx-sidecar:
 
 terraform-bucket-provision:
   terraform:
-   namespace_apps: '["ggircs-backups", "swrs-import"]'
+    namespace_apps: '["ggircs-backups", "swrs-import"]'

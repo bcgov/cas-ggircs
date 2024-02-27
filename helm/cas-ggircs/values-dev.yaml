@@ -10,10 +10,6 @@ cas-postgres:
   gcs:
     bucketSuffix: ggircs-backups
 
-swrsImportBucket:
-  enable: true
-  bucketSuffix: eccc-swrs-import
-
 app:
   route:
     host: cas-ggircs-dev.apps.silver.devops.gov.bc.ca
@@ -35,4 +31,4 @@ nginx-sidecar:
 
 terraform-bucket-provision:
   terraform:
-   namespace_apps: '["ggircs-backups", "eccc-swrs-import"]'
+    namespace_apps: '["ggircs-backups", "eccc-swrs-import"]'
