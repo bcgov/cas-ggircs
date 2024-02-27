@@ -34,3 +34,4 @@ triggers/update_timestamps [triggers/update_timestamps@1.13.4] 2022-12-14T23:04:
 @1.17.1 2023-10-17T17:29:07Z Dylan Leard <dylan@button.is> # release v1.17.1
 @1.17.2 2023-11-22T17:03:39Z Dylan Leard <dylan@button.is> # release v1.17.2
 @1.17.3 2024-02-23T21:47:36Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # release v1.17.3
+@1.17.4 2024-02-27T17:46:33Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # release v1.17.4

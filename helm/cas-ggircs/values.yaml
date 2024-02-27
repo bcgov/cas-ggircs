@@ -166,4 +166,4 @@ nginx-sidecar:
 
 terraform-bucket-provision:
   terraform:
-   namespace_apps: '["ggircs-backups", "swrs-import"]'
+    namespace_apps: '["ggircs-backups", "swrs-import"]'
