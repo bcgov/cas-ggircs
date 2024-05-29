@@ -266,3 +266,5 @@ swrs/transform/function/load_emission [swrs/transform/function/load_emission@1.1
 @1.17.2 2023-11-22T17:03:39Z Dylan Leard <dylan@button.is> # release v1.17.2
 @1.17.3 2024-02-23T21:47:36Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # release v1.17.3
 @1.17.4 2024-02-27T17:46:32Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # release v1.17.4
+
+swrs/parameters/table/fuel_charge_001 [swrs/parameters/table/fuel_charge] 2024-05-28T18:23:15Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Adding CTA fuel rates for 2024 year
