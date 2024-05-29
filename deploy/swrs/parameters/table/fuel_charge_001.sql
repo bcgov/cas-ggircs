@@ -11,7 +11,7 @@ update ggircs_parameters.fuel_charge set end_date='2023-03-31' where start_date=
 insert into ggircs_parameters.fuel_charge (fuel_charge, start_date, end_date, carbon_tax_act_fuel_type_id, metadata) values (0.1431, '2023-04-01', '9999-12-31', 2, null);
 
 update ggircs_parameters.fuel_charge set end_date='2023-03-31' where start_date='2022-04-01' and carbon_tax_act_fuel_type_id=3;
-insert into ggircs_parameters.fuel_charge (fuel_charge, start_date, end_date, carbon_tax_act_fuel_type_id, metadata) values (0.1593, '2023-04-01', '9999-12-31', 3, null);
+insert into ggircs_parameters.fuel_charge (fuel_charge, start_date, end_date, carbon_tax_act_fuel_type_id, metadata) values (0.2072, '2023-04-01', '9999-12-31', 3, null);
 
 update ggircs_parameters.fuel_charge set end_date='2023-03-31' where start_date='2022-04-01' and carbon_tax_act_fuel_type_id=4;
 insert into ggircs_parameters.fuel_charge (fuel_charge, start_date, end_date, carbon_tax_act_fuel_type_id, metadata) values (0.1678, '2023-04-01', '9999-12-31', 4, null);
