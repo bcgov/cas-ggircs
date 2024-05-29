@@ -28,7 +28,7 @@ app.prepare().then(async () => {
   // nginx proxy is running in the same pod
   server.set("trust proxy", "loopback");
 
-  const lightship = createLightship();
+  const lightship = await createLightship();
 
   lightship.registerShutdownHandler(async () => {
     await delay(10000);
