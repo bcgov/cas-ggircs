@@ -1,5 +1,12 @@
 
 
+# [1.18.0](https://github.com/bcgov/cas-ggircs/compare/v1.17.4...v1.18.0) (2024-05-30)
+
+
+### Features
+
+* adding 2023 carbon tax act fuel rates ([59c54ed](https://github.com/bcgov/cas-ggircs/commit/59c54ed78f8c3803063677ddd5933e0a83c50dbd))
+
 ## [1.17.4](https://github.com/bcgov/cas-ggircs/compare/v1.17.3...v1.17.4) (2024-02-27)
 
 ## [1.17.3](https://github.com/bcgov/cas-ggircs/compare/v1.17.2...v1.17.3) (2024-02-23)
