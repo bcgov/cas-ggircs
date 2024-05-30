@@ -1,6 +1,7 @@
 require("isomorphic-fetch");
 const express = require("express");
 const dotenv = require("dotenv");
+const { WritableStream } = require("node:stream/web");
 const { isAuthenticated } = require("@bcgov-cas/sso-express/dist/helpers");
 const { getUserGroups } = require("../../helpers/userGroupAuthentication");
 const { getUserGroupLandingRoute } = require("../../../lib/user-groups");
@@ -87,7 +88,16 @@ ecccApiRouter.get(
     if (contentDispositionHeader)
       res.setHeader("Content-Disposition", contentDispositionHeader);
 
-    ecccApiRes.body.pipeTo(res);
+    ecccApiRes.body.pipeTo(
+      new WritableStream({
+        write: (chunk) => {
+          res.write(chunk);
+        },
+        close: () => {
+          res.end();
+        },
+      })
+    );
   }
 );
 
