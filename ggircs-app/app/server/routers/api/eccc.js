@@ -1,10 +1,14 @@
 require("isomorphic-fetch");
 const express = require("express");
+const dotenv = require("dotenv");
 const { isAuthenticated } = require("@bcgov-cas/sso-express/dist/helpers");
 const { getUserGroups } = require("../../helpers/userGroupAuthentication");
 const { getUserGroupLandingRoute } = require("../../../lib/user-groups");
 
+dotenv.config();
+
 const ecccApiRouter = express.Router();
+
 const { ECCC_FILE_BROWSER_HOST, ECCC_FILE_BROWSER_PORT, HOST, PORT } =
   process.env;
 
