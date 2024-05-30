@@ -44,7 +44,7 @@
     "improved-yarn-audit": "^3.0.0",
     "isomorphic-fetch": "^3.0.0",
     "keycloak-connect": "^22.0.5",
-    "lightship": "^9.0.3",
+    "lightship": "^6.7.2",
     "lodash.debounce": "^4.0.8",
     "morgan": "^1.10.0",
     "next": "12.1.0",
