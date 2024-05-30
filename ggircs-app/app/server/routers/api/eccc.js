@@ -83,7 +83,7 @@ ecccApiRouter.get(
     if (contentDispositionHeader)
       res.setHeader("Content-Disposition", contentDispositionHeader);
 
-    ecccApiRes.body.pipe(res);
+    ecccApiRes.body.pipeTo(res);
   }
 );
 
