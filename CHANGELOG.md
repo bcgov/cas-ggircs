@@ -1,5 +1,13 @@
 
 
+## [1.18.1](https://github.com/bcgov/cas-ggircs/compare/v1.18.0...v1.18.1) (2024-05-31)
+
+
+### Bug Fixes
+
+* race condition when loading environment variables ([02a066b](https://github.com/bcgov/cas-ggircs/commit/02a066b4646ace257c2fd8ff785e27f863e59507))
+* using the new pipeTo method instead ([9b15fdd](https://github.com/bcgov/cas-ggircs/commit/9b15fdd888946b9d92f7ab1d11c066331e8fb5aa))
+
 # [1.18.0](https://github.com/bcgov/cas-ggircs/compare/v1.17.4...v1.18.0) (2024-05-30)
 
 
