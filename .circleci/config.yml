@@ -2,14 +2,14 @@ version: 2.1
 
 orbs:
   redhat-openshift: circleci/redhat-openshift@0.2.0
-  gcp-gcr: circleci/gcp-gcr@0.15.0
+  gcp-gcr: circleci/gcp-gcr@0.16.7
   helm: circleci/helm@1.2.0
 jobs:
   etl_db_test:
     environment:
       PGUSER: postgres
     machine:
-      image: ubuntu-2004:202107-02
+      image: ubuntu-2004:2024.05.1
     working_directory: ~/cas-ggircs
     steps:
       - run:
@@ -32,7 +32,7 @@ jobs:
             make test PSQL="psql -h localhost"
   helm_lint:
     machine:
-      image: ubuntu-2004:202107-02
+      image: ubuntu-2004:2024.05.1
     steps:
       - checkout
       - run:
@@ -178,7 +178,7 @@ jobs:
                   echo "Digest is: $(</tmp/digest.txt)"
   tools:
     machine:
-      image: ubuntu-2004:202107-02
+      image: ubuntu-2004:2024.05.1
     working_directory: ~/cas-ggircs
     steps:
       - checkout:
@@ -192,7 +192,7 @@ jobs:
           command: |
             # @see https://github.com/pyenv/pyenv/wiki/Common-build-problems
             sudo apt-get update
-            sudo apt-get install -y build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev wget libdbd-pg-perl
+            sudo apt-get install -y build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev wget libdbd-pg-perl uuid-dev
       - restore_cache:
           name: Restore asdf Tools Cache
           keys:
@@ -202,8 +202,8 @@ jobs:
           environment:
             PGUSER: postgres
           command: |
-            [[ -d ~/.asdf ]] || git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.8.1
-            pushd ~/.asdf && git checkout v0.8.1 && popd
+            [[ -d ~/.asdf ]] || git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.14.1
+            pushd ~/.asdf && git checkout v0.14.1 && popd
             echo -e '\n. $HOME/.asdf/asdf.sh' >> ~/.bashrc
             echo -e '\nexport BASH_ENV="~/.asdf/asdf.sh"' >> ~/.bashrc
             source ~/.bashrc
@@ -213,7 +213,7 @@ jobs:
             pg_ctl stop
       - save_cache:
           name: Save asdf Tools Cache
-          key: tool-versions-{{ checksum ".tool-versions" }}-v2
+          key: tool-versions-{{ checksum ".tool-versions" }}-v3
           paths:
             - ~/.asdf
       - restore_cache:
@@ -263,7 +263,7 @@ jobs:
             - perl5
   lint:
     machine:
-      image: ubuntu-2004:202107-02
+      image: ubuntu-2004:2024.05.1
     working_directory: ~/cas-ggircs
     steps:
       - attach_workspace:
@@ -279,7 +279,7 @@ jobs:
           command: git diff --exit-code || (echo 'These files are not formatted correctly. Did you forget to \"yarn format\"?' && false)
   ggircs_app_audit:
     machine:
-      image: ubuntu-2004:202107-02
+      image: ubuntu-2004:2024.05.1
     working_directory: ~/cas-ggircs/ggircs-app/app
     steps:
       - attach_workspace:
@@ -291,7 +291,7 @@ jobs:
             yarn run improved-yarn-audit
   ggircs_app_schema:
     machine:
-      image: ubuntu-2004:202107-02
+      image: ubuntu-2004:2024.05.1
     working_directory: ~/cas-ggircs/ggircs-app
     environment:
       PGUSER: postgres
@@ -356,7 +356,7 @@ jobs:
           command: git diff --exit-code || (echo 'The contents of the `schema` folder are out of sync with `app/schema/schema.graphql`. Did you forget to \"yarn build:relay\"?' && false)
   ggircs_app_compile:
     machine:
-      image: ubuntu-2004:202107-02
+      image: ubuntu-2004:2024.05.1
     working_directory: ~/cas-ggircs/ggircs-app/app
     steps:
       - attach_workspace:
@@ -373,7 +373,7 @@ jobs:
             - cas-ggircs/ggircs-app # persist the build for e2e tests
   ggircs_app_unit:
     machine:
-      image: ubuntu-2004:202107-02
+      image: ubuntu-2004:2024.05.1
     working_directory: ~/cas-ggircs/ggircs-app/app
     steps:
       - attach_workspace:
@@ -385,7 +385,7 @@ jobs:
             yarn test
   ggircs_app_test_database:
     machine:
-      image: ubuntu-2004:202107-02
+      image: ubuntu-2004:2024.05.1
     working_directory: ~/cas-ggircs/ggircs-app
     environment:
       PGUSER: postgres
@@ -412,7 +412,7 @@ jobs:
             popd
   ggircs_app_e2e-snapshots:
     machine:
-      image: ubuntu-2004:202107-02
+      image: ubuntu-2004:2024.05.1
     working_directory: ~/cas-ggircs/ggircs-app
     environment:
       PGUSER: postgres
