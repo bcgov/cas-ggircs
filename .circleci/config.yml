@@ -192,7 +192,7 @@ jobs:
           command: |
             # @see https://github.com/pyenv/pyenv/wiki/Common-build-problems
             sudo apt-get update
-            sudo apt-get install -y build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev wget libdbd-pg-perl
+            sudo apt-get install -y build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev wget libdbd-pg-perl uuid-dev
       - restore_cache:
           name: Restore asdf Tools Cache
           keys:
@@ -202,8 +202,8 @@ jobs:
           environment:
             PGUSER: postgres
           command: |
-            [[ -d ~/.asdf ]] || git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.8.1
-            pushd ~/.asdf && git checkout v0.8.1 && popd
+            [[ -d ~/.asdf ]] || git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.14.1
+            pushd ~/.asdf && git checkout v0.14.1 && popd
             echo -e '\n. $HOME/.asdf/asdf.sh' >> ~/.bashrc
             echo -e '\nexport BASH_ENV="~/.asdf/asdf.sh"' >> ~/.bashrc
             source ~/.bashrc
@@ -213,7 +213,7 @@ jobs:
             pg_ctl stop
       - save_cache:
           name: Save asdf Tools Cache
-          key: tool-versions-{{ checksum ".tool-versions" }}-v2
+          key: tool-versions-{{ checksum ".tool-versions" }}-v3
           paths:
             - ~/.asdf
       - restore_cache:

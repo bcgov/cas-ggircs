@@ -26,7 +26,7 @@ repos:
       - id: trailing-whitespace
         exclude: .*/tests/.*
   - repo: https://github.com/zricethezav/gitleaks
-    rev: v8.2.5
+    rev: v8.21.1
     hooks:
       - id: gitleaks
   - repo: https://github.com/jorisroovers/gitlint
