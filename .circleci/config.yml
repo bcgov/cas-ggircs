@@ -266,6 +266,20 @@ jobs:
       image: ubuntu-2004:2024.05.1
     working_directory: ~/cas-ggircs
     steps:
+      - run:
+          name: Install Go for pre-commit
+          command: |
+            wget https://go.dev/dl/go1.22.8.linux-amd64.tar.gz
+            sudo rm -rf /usr/local/go && sudo tar -C /usr/local -xzf go1.22.8.linux-amd64.tar.gz
+            echo -e '\nexport export PATH=$PATH:/usr/local/go/bin' >> ~/.bashrc
+            source ~/.bashrc
+      - run:
+          name: Install gitleaks executable
+          command: |
+            wget https://github.com/gitleaks/gitleaks/releases/download/v8.21.2/gitleaks_8.21.2_linux_x64.tar.gz
+            sudo mkdir -p /usr/local/gitleaks && sudo tar -C /usr/local/gitleaks -zxf gitleaks_8.21.2_linux_x64.tar.gz
+            echo -e '\nexport export PATH=$PATH:/usr/local/gitleaks' >> ~/.bashrc
+            source ~/.bashrc
       - attach_workspace:
           at: ~/
       - run:
@@ -273,6 +287,8 @@ jobs:
           command: |
             source ~/.asdf/asdf.sh
             asdf reshim
+            pre-commit clean
+            pre-commit install
             pre-commit run --all-files
       - run:
           name: Check if there is some unformatted code
