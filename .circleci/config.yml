@@ -2,7 +2,7 @@ version: 2.1
 
 orbs:
   redhat-openshift: circleci/redhat-openshift@0.2.0
-  gcp-gcr: circleci/gcp-gcr@0.15.0
+  gcp-gcr: circleci/gcp-gcr@0.16.7
   helm: circleci/helm@1.2.0
 jobs:
   etl_db_test:
