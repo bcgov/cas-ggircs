@@ -1,5 +1,7 @@
 FROM node:22.13.0
 
+RUN apt-get install ca-certificates
+
 COPY root/bin/wget-spider /bin/wget-spider
 COPY app /app
 WORKDIR /app
