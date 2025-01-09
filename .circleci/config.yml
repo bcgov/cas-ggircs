@@ -521,8 +521,8 @@ workflows:
       #         only: /^v.*/
       - build_cache_and_push:
           name: eccc-upload__sha1_build_and_push
-          requires:
-            - eccc-upload__test
+          # requires:
+          #   - eccc-upload__test
           image_name: cas-ggircs-eccc-upload
           image_tag: ${CIRCLE_SHA1}
           dockerfile_directory: cas-ggircs/eccc/upload
