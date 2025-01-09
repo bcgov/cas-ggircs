@@ -1,6 +1,6 @@
 FROM node:22.13.0
 
-COPY root /
+COPY root/bin/wget-spider /bin/wget-spider
 COPY app /app
 WORKDIR /app
 ENV HOME=/app
