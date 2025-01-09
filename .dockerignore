@@ -5,3 +5,4 @@ pgtap
 citus
 helm
 doc
+**/node-modules
