@@ -1,7 +1,11 @@
-FROM node:14.17.5
+FROM node:lts-alpine
 
-COPY root /
+RUN apk update
+RUN apk add --no-cache wget bash
+
+COPY root/bin/wget-spider /bin/wget-spider
 COPY app /app
+
 WORKDIR /app
 ENV HOME=/app
 RUN npm install
