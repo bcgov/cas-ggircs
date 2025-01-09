@@ -1,7 +1,7 @@
 FROM node:lts-alpine
 
 RUN apk update
-RUN apk add --no-cache wget
+RUN apk add --no-cache wget bash
 
 COPY root/bin/wget-spider /bin/wget-spider
 COPY app /app
