@@ -1,0 +1,96 @@
+name: Build airflow container images
+
+on:
+  workflow_call:
+
+jobs:
+  build-cas-ggircs-etl:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Build cas-ggircs-etl
+        uses: ./.github/actions/build-image
+        with:
+          image_name: cas-ggircs-etl
+          context: .
+          dockerfile_path: Dockerfile
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+  build-cas-ggircs-eccc-extract:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Build cas-ggircs-eccc-extract
+        uses: ./.github/actions/build-image
+        with:
+          image_name: cas-ggircs-eccc-extract
+          context: eccc/extract
+          dockerfile_path: eccc/extract/Dockerfile
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+  build-cas-ggircs-eccc-upload:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Build cas-ggircs-eccc-upload
+        uses: ./.github/actions/build-image
+        with:
+          image_name: cas-ggircs-eccc-upload
+          context: eccc/upload
+          dockerfile_path: eccc/upload/Dockerfile
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+  build-cas-ggircs-swrs-gcp-api:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Build cas-ggircs-swrs-gcp-api
+        uses: ./.github/actions/build-image
+        with:
+          image_name: cas-ggircs-swrs-gcp-api
+          context: eccc/file_server
+          dockerfile_path: eccc/file_server/Dockerfile
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+  build-cas-ggircs-app:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Build cas-ggircs-app
+        uses: ./.github/actions/build-image
+        with:
+          image_name: cas-ggircs-app
+          context: ggircs-app/app
+          dockerfile_path: ggircs-app/app/Dockerfile
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+  build-cas-ggircs-app-schema:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Build cas-ggircs-app-schema
+        uses: ./.github/actions/build-image
+        with:
+          image_name: cas-ggircs-app-schema
+          context: ggircs-app/schema
+          dockerfile_path: ggircs-app/schema/Dockerfile
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+
+
+
+
+
