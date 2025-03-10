@@ -22,23 +22,19 @@ metabase:
 
 image:
   app:
-    repository: gcr.io/ggl-cas-storage/cas-ggircs-app
+    repository: ghcr.io/bcgov/cas-ggircs-app
   schema:
-    repository: gcr.io/ggl-cas-storage/cas-ggircs-app-schema
+    repository: ghcr.io/bcgov/cas-ggircs-app-schema
   etl:
-    repository: gcr.io/ggl-cas-storage/cas-ggircs-etl
+    repository: ghcr.io/bcgov/cas-ggircs-etl
   psql:
-    repository: gcr.io/ggl-cas-storage/cas-postgres
+    repository: ghcr.io/bcgov/cas-postgres
     pullPolicy: Always
     tag: "0.2.0"
-  casShelf:
-    repository: gcr.io/ggl-cas-storage/cas-shelf-tfe-add-app
-    pullPolicy: Always
-    tag: "0.1"
   ecccUpload:
-    repository: gcr.io/ggl-cas-storage/cas-ggircs-eccc-upload
+    repository: ghcr.io/bcgov/cas-ggircs-eccc-upload
   ecccExtract:
-    repository: gcr.io/ggl-cas-storage/cas-ggircs-eccc-extract
+    repository: ghcr.io/bcgov/cas-ggircs-eccc-extract
 
 persistence:
   db: ggircs
@@ -83,7 +79,7 @@ storageClassName: netapp-file-standard
 
 swrsGcpApi:
   image:
-    repository: gcr.io/ggl-cas-storage/cas-ggircs-swrs-gcp-api
+    repository: ghcr.io/bcgov/cas-ggircs-swrs-gcp-api
 
   replicas: 2
   port: 5000
