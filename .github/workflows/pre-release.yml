@@ -8,6 +8,6 @@ jobs:
   sqitch-plan-ends-with-tag:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - run: ./.bin/sqitch-last-change-is-tag.sh .
       - run: ./.bin/sqitch-last-change-is-tag.sh ggircs-app/schema

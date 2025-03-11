@@ -1,0 +1,67 @@
+name: "Build and push Docker images for ggircs"
+description: "Reusable action to build and push a Docker image"
+
+inputs:
+  image_name:
+    description: "Name for the image to be pushed"
+    required: true
+  context:
+    description: "Build context"
+    required: true
+  dockerfile_path:
+    description: "Path to Dockerfile"
+    required: true
+  github_token:
+    description: "Github token needed to push to ghcr"
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/checkout@v4
+    - name: Set up Docker Buildx
+      id: buildx
+      uses: docker/setup-buildx-action@v3
+      with:
+        install: true
+    - name: Docker meta
+      id: meta
+      uses: docker/metadata-action@v5
+      with:
+        images: ghcr.io/bcgov/${{ inputs.image_name }}
+        tags: |
+          type=sha,format=long,prefix=
+          latest
+          type=ref,event=pr
+    - name: Login to GitHub Container Registry
+      uses: docker/login-action@v3
+      with:
+        registry: ghcr.io
+        username: ${{ github.repository_owner }}
+        password: ${{ inputs.github_token }}
+    - name: Cache Docker layers
+      uses: actions/cache@v4
+      with:
+        path: /tmp/.buildx-cache
+        key: ${{ runner.os }}-buildx-{{ inputs.image_name }}-${{ github.sha }}
+        restore-keys: |
+          ${{ runner.os }}-buildx-${{ inputs.image_name }}
+    - name: Build image
+      uses: docker/build-push-action@v5
+      with:
+        context: ${{ inputs.context }}
+        builder: ${{ steps.buildx.outputs.name }}
+        push: true
+        file: ${{ inputs.dockerfile_path }}
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+        cache-from: type=local,src=/tmp/.buildx-cache
+        cache-to: type=local,dest=/tmp/.buildx-cache-new
+      # Temp fix
+      # https://github.com/docker/build-push-action/issues/252
+      # https://github.com/moby/buildkit/issues/1896
+    - name: Move cache
+      shell: bash
+      run: |
+        rm -rf /tmp/.buildx-cache
+        mv /tmp/.buildx-cache-new /tmp/.buildx-cache
