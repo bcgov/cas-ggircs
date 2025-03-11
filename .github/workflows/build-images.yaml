@@ -88,9 +88,3 @@ jobs:
           context: ggircs-app/schema
           dockerfile_path: ggircs-app/schema/Dockerfile
           github_token: ${{ secrets.GITHUB_TOKEN }}
-
-
-
-
-
-
