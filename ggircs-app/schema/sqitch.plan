@@ -38,3 +38,4 @@ triggers/update_timestamps [triggers/update_timestamps@1.13.4] 2022-12-14T23:04:
 @1.18.0 2024-05-30T17:16:43Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # release v1.18.0
 @1.18.1 2024-05-31T22:44:17Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # release v1.18.1
 @1.18.2 2025-01-09T22:48:29Z Bastianelli, Pierre WLRS <pbastian@NHM500099> # release v1.18.2
+@1.18.3 2025-03-11T22:17:12Z Dylan Leard <dylan@button.is> # release v1.18.3
