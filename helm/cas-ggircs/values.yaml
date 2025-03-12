@@ -30,7 +30,7 @@ image:
   psql:
     repository: ghcr.io/bcgov/cas-postgres
     pullPolicy: Always
-    tag: "latest"
+    tag: latest
   ecccUpload:
     repository: ghcr.io/bcgov/cas-ggircs-eccc-upload
   ecccExtract:
