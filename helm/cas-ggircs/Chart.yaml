@@ -9,17 +9,17 @@ dependencies:
     version: "0.10.1"
     repository: https://bcgov.github.io/cas-postgres/
   - name: cas-airflow-dag-trigger
-    version: 1.0.9
+    version: 1.0.20
     repository: https://bcgov.github.io/cas-airflow
     alias: download-ggircs-dags
     condition: download-ggircs-dags.enabled
   - name: cas-airflow-dag-trigger
-    version: 1.0.9
+    version: 1.0.20
     repository: https://bcgov.github.io/cas-airflow
     alias: download-swrs-dags
     condition: download-swrs-dags.enabled
   - name: cas-airflow-dag-trigger
-    version: 1.0.9
+    version: 1.0.20
     repository: https://bcgov.github.io/cas-airflow
     alias: trigger-ggircs-deploy-db
     condition: trigger-ggircs-deploy-db.enabled
