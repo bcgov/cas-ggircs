@@ -135,7 +135,7 @@ trigger-ggircs-deploy-db:
 
 nginx-sidecar:
   image:
-    repository: ghcr.io/bcgov/nginx-sidecar
+    repository: ghcr.io/bcgov/cas-nginx
     tag: latest
     pullPolicy: Always
   objectNamePrefix: cas-ggircs
