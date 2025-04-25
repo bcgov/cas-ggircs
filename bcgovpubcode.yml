@@ -7,8 +7,7 @@ product_external_dependencies:
     - Design-System
   identity_authorization:
     - BCGov-SSO-Keycloak
-  notification_standard:
-    - Common-Hosted-Email-Service
+  notification_standard: []
   other_dependencies: Postgraphile, GraphQL
 product_information:
   api_specifications: []
@@ -30,8 +29,10 @@ product_technology_information:
     - name: Node.js
       version: '20'
     - name: Next.js
-      version: '13'
+      version: '12'
   backend_languages_version:
+    - name: Python
+      version: 3.9 with Flask 3
     - name: Other
       version: SQL and PL/PgSQL v16
     - name: JavaScript
@@ -46,7 +47,7 @@ product_technology_information:
   data_storage_platforms_custom: Google Cloud Storage
   frontend_frameworks:
     - name: React
-      version: '18'
+      version: '17'
     - name: Other
       version: Relay v13
   frontend_languages:
