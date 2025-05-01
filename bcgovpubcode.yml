@@ -1,0 +1,58 @@
+---
+data_management_roles:
+  data_custodian: Maral Sotoudehnia
+  product_owner: Patricia Russell
+product_external_dependencies:
+  common_components:
+    - Design-System
+  identity_authorization:
+    - BCGov-SSO-Keycloak
+  notification_standard: []
+  other_dependencies: Postgraphile, GraphQL
+product_information:
+  api_specifications: []
+  ministry:
+    - Environment and Climate Change Strategy
+  product_acronym: GGIRCS
+  product_description: >-
+    GGIRCS is a tool designed to modernize the annual reporting and verification
+    of greenhouse gas industrial emissions. This project is a fulfillment to
+    meet the requirements of the BC government initiatives including Climate
+    Strategy, Clean Growth and CleanBC, part of the Greenhouse Gas Industrial
+    Reporting and Control Act [GGIRCA].
+  product_name: Greenhouse Gas Industrial Reporting and Control System
+  product_status: maturing
+  product_urls: []
+  program_area: Climate Action Secretariat
+product_technology_information:
+  backend_frameworks:
+    - name: Node.js
+      version: '20'
+    - name: Next.js
+      version: '12'
+  backend_languages_version:
+    - name: Python
+      version: 3.9 with Flask 3
+    - name: Other
+      version: SQL and PL/PgSQL v16
+    - name: JavaScript
+      version: ECMAScript 6
+  ci_cd_tools:
+    - GitHub-Actions
+    - Helm
+    - Terraform
+  data_storage_platforms:
+    - Postgresql
+    - Other
+  data_storage_platforms_custom: Google Cloud Storage
+  frontend_frameworks:
+    - name: React
+      version: '17'
+    - name: Other
+      version: Relay v13
+  frontend_languages:
+    - name: TypeScript
+      version: '5'
+  hosting_platforms:
+    - Private-Cloud-Openshift
+version: 1
