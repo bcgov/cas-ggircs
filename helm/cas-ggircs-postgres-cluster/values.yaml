@@ -1,0 +1,46 @@
+# Values file to be passed to a deployment of https://github.com/bcgov/cas-postgres/tree/develop/helm/cas-postgres-cluster
+
+# dev, test, prod
+environment: ~
+
+postgresCluster:
+  postgresVersion: 17
+  postgres:
+    replicaCount: 3
+  pgbouncer:
+    replicaCount: 2
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+
+  # The "users" value(s) is passed to the crunch postgres operator to create the database.
+  # See http://access.crunchydata.com/documentation/postgres-operator/latest/tutorials/basic-setup/user-management
+  users:
+    - name: postgres
+      options: "SUPERUSER"
+      password:
+        type: AlphaNumeric
+    - name: ggircs
+      options: "CREATEROLE"
+      databases:
+        - ggircs
+      password:
+        type: AlphaNumeric
+
+gcsBackups:
+  enable: true
+  # Needs to match the "namespace_apps" value in the terraform provisioning chart.
+  # example syntax: bucketName
+  bucketName: ggircs-pgo-bkup
+
+terraform-bucket-provision:
+  terraform:
+    # example syntax: '["bucketName"]'
+    namespace_apps: '["ggircs-pgo-bkup"]'
+    # !important: unique for the deployment
+    workspace: ggircs-pgo
+
+# To configure a KNP allowing external access, for metabase for example
+external-access:
+  enabled: true
