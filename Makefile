@@ -194,9 +194,21 @@ project: whoami
 project: $(call make_help,project,Switches to the desired $$OC_PROJECT namespace)
 	$(call oc_project)
 
+.PHONY: install_pgo_cluster
+install_pgo_cluster:
+	@set -euo pipefail;
+	helm repo add cas-postgres https://bcgov.github.io/cas-postgres/;
+	helm repo update;
+
+	helm upgrade --install --atomic --timeout 3600s \
+		--namespace $(GGIRCS_NAMESPACE_PREFIX)-$(ENVIRONMENT) \
+		--values ./helm/cas-ggircs-postgres-cluster/values.yaml \
+		--values ./helm/cas-ggircs-postgres-cluster/values-$(ENVIRONMENT).yaml \
+		cas-ggircs-db cas-postgres/cas-postgres-cluster;
+
 # If the cas-ggircs route does not exist, deploy without SSL first to generate the certificate
 .PHONY: install
-install: whoami
+install: whoami install_pgo_cluster
 	@set -euo pipefail; \
 	ggircsDagConfig=$$(echo '{"org": "bcgov", "repo": "cas-ggircs", "ref": "$(GIT_SHA1)", "path": "dags/cas_ggircs_dags.py"}' | base64 -w0); \
 	swrsDagConfig=$$(echo '{"org": "bcgov", "repo": "cas-ggircs", "ref": "$(GIT_SHA1)", "path": "dags/cas_ggircs_swrs_dags.py"}' | base64 -w0); \
