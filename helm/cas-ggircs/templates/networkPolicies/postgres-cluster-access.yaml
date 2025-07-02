@@ -1,0 +1,17 @@
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: {{ include "cas-ggircs.fullname" . }}-postgres-cluster-access
+  labels: {{ include "cas-ggircs.labels" . | nindent 4 }}
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/instance: {{ .Values.database.releaseName }}
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              release: {{ include "cas-ggircs.name" . }}
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/instance: {{ include "cas-ggircs.name" . }}
