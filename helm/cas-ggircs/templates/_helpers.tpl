@@ -69,3 +69,69 @@ Gets the suffix of the namespace. (dev, tools, ... )
 {{- define "cas-ggircs.namespaceSuffix" }}
 {{- (split "-" .Release.Namespace)._1 | trim -}}
 {{- end }}
+
+{{/*
+Define environment variables for database cluster connection
+*/}}
+{{- define "cas-ggircs.databaseEnvVars.ggircsUser" -}}
+- name: PGUSER
+  value: null
+  valueFrom:
+    secretKeyRef:
+      key: user
+      name: {{ .Values.database.releaseName }}-{{ .Values.database.chartName }}-pguser-{{ .Values.database.user}}
+- name: PGPASSWORD
+  value: null
+  valueFrom:
+    secretKeyRef:
+      key: password
+      name: {{ .Values.database.releaseName }}-{{ .Values.database.chartName }}-pguser-{{ .Values.database.user}}
+- name: PGDATABASE
+  value: null
+  valueFrom:
+    secretKeyRef:
+      key: dbname
+      name: {{ .Values.database.releaseName }}-{{ .Values.database.chartName }}-pguser-{{ .Values.database.user}}
+- name: PGPORT
+  value: null
+  valueFrom:
+    secretKeyRef:
+      key: pgbouncer-port
+      name: {{ .Values.database.releaseName }}-{{ .Values.database.chartName }}-pguser-{{ .Values.database.user}}
+- name: PGHOST
+  value: null
+  valueFrom:
+    secretKeyRef:
+      key: pgbouncer-host
+      name: {{ .Values.database.releaseName }}-{{ .Values.database.chartName }}-pguser-{{ .Values.database.user}}
+{{- end }}
+
+{{/*
+Define environment variables for database cluster connection
+*/}}
+{{- define "cas-ggircs.databaseEnvVars.postgresUser" -}}
+- name: PGUSER
+  value: null
+  valueFrom:
+    secretKeyRef:
+      key: user
+      name: {{ .Values.database.releaseName }}-{{ .Values.database.chartName }}-pguser-postgres
+- name: PGPASSWORD
+  value: null
+  valueFrom:
+    secretKeyRef:
+      key: password
+      name: {{ .Values.database.releaseName }}-{{ .Values.database.chartName }}-pguser-postgres
+- name: PGPORT
+  value: null
+  valueFrom:
+    secretKeyRef:
+      key: port
+      name: {{ .Values.database.releaseName }}-{{ .Values.database.chartName }}-pguser-postgres
+- name: PGHOST
+  value: null
+  valueFrom:
+    secretKeyRef:
+      key: host
+      name: {{ .Values.database.releaseName }}-{{ .Values.database.chartName }}-pguser-postgres
+{{- end }}

@@ -20,6 +20,11 @@ cif:
 metabase:
   instanceName: cas-metabase
 
+database:
+  releaseName: cas-ggircs-db
+  chartName: cas-postgres-cluster
+  user: ggircs
+
 image:
   app:
     repository: ghcr.io/bcgov/cas-ggircs-app

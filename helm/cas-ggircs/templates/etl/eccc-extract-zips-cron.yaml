@@ -22,25 +22,7 @@ spec:
           restartPolicy: Never
           containers:
             - env:
-                - name: PGUSER
-                  valueFrom:
-                    secretKeyRef:
-                      key: database-user
-                      name: {{ template "cas-ggircs.fullname" . }}
-                - name: PGPASSWORD
-                  valueFrom:
-                    secretKeyRef:
-                      key: database-password
-                      name: {{ template "cas-ggircs.fullname" . }}
-                - name: PGDATABASE
-                  valueFrom:
-                    secretKeyRef:
-                      key: database-name
-                      name: {{ template "cas-ggircs.fullname" . }}
-                - name: PGPORT
-                  value: "5432"
-                - name: PGHOST
-                  value: {{ template "cas-ggircs.fullname" . }}-patroni
+                {{- include "cas-ggircs.databaseEnvVars.ggircsUser" . | nindent 16 }}
                 - name: BUCKET_NAME
                   valueFrom:
                     secretKeyRef:
