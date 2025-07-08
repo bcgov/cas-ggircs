@@ -14,7 +14,10 @@ spec:
       restartPolicy: Never
       containers:
         - env:
-            {{- include "cas-ggircs.databaseEnvVars.ggircsUser" . | nindent 12 }}
+            {{- include "cas-ggircs.databaseEnvVars.postgresUser" . | nindent 12 }}
+            - name: PGDATABASE
+              value: ggircs_test
+              valueFrom: null
             - name: SQITCH_TARGET
               value: "db:pg:"
             - name: PGDATABASE

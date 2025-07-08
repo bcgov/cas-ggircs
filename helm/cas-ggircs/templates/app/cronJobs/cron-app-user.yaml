@@ -23,6 +23,12 @@ spec:
           containers:
             - env:
                 {{- include "cas-ggircs.databaseEnvVars.postgresUser" . | nindent 16 }}
+                - name: PGDATABASE
+                  value: null
+                  valueFrom:
+                    secretKeyRef:
+                      key: dbname
+                      name: {{ .Values.database.releaseName }}-{{ .Values.database.chartName }}-pguser-{{ .Values.database.user}}
                 - name: GGIRCS_APP_USER
                   valueFrom:
                     secretKeyRef:

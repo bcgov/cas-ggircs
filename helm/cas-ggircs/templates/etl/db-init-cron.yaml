@@ -23,21 +23,24 @@ spec:
           containers:
             - env:
                 {{- include "cas-ggircs.databaseEnvVars.postgresUser" . | nindent 16 }}
+                - name: PGDATABASE
+                  value: postgres
+                  valueFrom: null
                 - name: GGIRCS_USER
                   valueFrom:
                     secretKeyRef:
-                      key: database-user
-                      name: {{ template "cas-ggircs.fullname" . }}
+                      key: user
+                      name: {{ .Values.database.releaseName }}-{{ .Values.database.chartName }}-pguser-{{ .Values.database.user}}
                 - name: GGIRCS_PASSWORD
                   valueFrom:
                     secretKeyRef:
-                      key: database-password
-                      name: {{ template "cas-ggircs.fullname" . }}
+                      key: password
+                      name: {{ .Values.database.releaseName }}-{{ .Values.database.chartName }}-pguser-{{ .Values.database.user}}
                 - name: GGIRCS_DATABASE
                   valueFrom:
                     secretKeyRef:
-                      key: database-name
-                      name: {{ template "cas-ggircs.fullname" . }}
+                      key: dbname
+                      name: {{ .Values.database.releaseName }}-{{ .Values.database.chartName }}-pguser-{{ .Values.database.user}}
               name: {{ template "cas-ggircs.fullname" . }}-db-init
               image: {{ .Values.image.psql.repository }}:{{ default .Values.defaultImageTag .Values.image.psql.tag }}
               imagePullPolicy: {{ default .Values.defaultImagePullPolicy .Values.image.psql.pullPolicy }}
