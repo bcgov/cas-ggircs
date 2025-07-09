@@ -59,4 +59,5 @@ spec:
                   set -euo pipefail;
 {{ .Values.persistence.preInitDb | indent 18 }}
                   create-user-db -d $(GGIRCS_DATABASE) -u $(GGIRCS_USER) -p $(GGIRCS_PASSWORD) --owner;
+                  psql -c "GRANT CONNECT ON DATABASE $(GGIRCS_DATABASE) TO _crunchypgbouncer;"
                   alter-role $(GGIRCS_USER) createrole;
