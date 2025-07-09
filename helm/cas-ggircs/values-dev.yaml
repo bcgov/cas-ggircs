@@ -27,7 +27,6 @@ persistence:
       -- don't kill the connections to other databases
       and datname = '$(GGIRCS_DATABASE)';
       drop database if exists $(GGIRCS_DATABASE);
-      drop user if exists $(GGIRCS_USER);
     EOF
 
 nginx-sidecar:
