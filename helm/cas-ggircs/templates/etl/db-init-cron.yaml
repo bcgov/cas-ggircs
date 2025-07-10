@@ -59,4 +59,8 @@ spec:
                   set -euo pipefail;
 {{ .Values.persistence.preInitDb | indent 18 }}
                   create-user-db -d $(GGIRCS_DATABASE) -u $(GGIRCS_USER) -p $(GGIRCS_PASSWORD) --owner;
+                  psql -c "DO \$\$ BEGIN IF NOT EXISTS (SELECT 1 FROM pg_catalog.pg_roles WHERE rolname = 'ggircs_user') THEN CREATE ROLE ggircs_user; END IF; END \$\$;"
+                  psql -c "DO \$\$ BEGIN IF NOT EXISTS (SELECT 1 FROM pg_catalog.pg_roles WHERE rolname = 'ggircs_guest') THEN CREATE ROLE ggircs_guest; END IF; END \$\$;"
+                  psql -c "DO \$\$ BEGIN IF NOT EXISTS (SELECT 1 FROM pg_auth_members m JOIN pg_roles r1 ON m.member = r1.oid JOIN pg_roles r2 ON m.roleid = r2.oid WHERE r1.rolname = 'ggircs' AND r2.rolname = 'ggircs_user' AND m.admin_option = true) THEN GRANT ggircs_user TO ggircs WITH ADMIN OPTION; END IF; END \$\$;"
+                  psql -c "DO \$\$ BEGIN IF NOT EXISTS (SELECT 1 FROM pg_auth_members m JOIN pg_roles r1 ON m.member = r1.oid JOIN pg_roles r2 ON m.roleid = r2.oid WHERE r1.rolname = 'ggircs' AND r2.rolname = 'ggircs_guest' AND m.admin_option = true) THEN GRANT ggircs_guest TO ggircs WITH ADMIN OPTION; END IF; END \$\$;"
                   psql -c "GRANT CONNECT ON DATABASE $(GGIRCS_DATABASE) TO _crunchypgbouncer;"
