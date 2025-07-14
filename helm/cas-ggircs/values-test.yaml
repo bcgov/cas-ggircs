@@ -25,7 +25,3 @@ trigger-ggircs-deploy-db:
 
 nginx-sidecar:
   hostName: cas-ggircs-test.apps.silver.devops.gov.bc.ca
-
-patroni-migration:
-  from:
-    host: cas-ggircs-patroni.9212c9-test.svc.cluster.local

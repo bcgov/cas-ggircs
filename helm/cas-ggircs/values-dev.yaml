@@ -35,7 +35,3 @@ nginx-sidecar:
 terraform-bucket-provision:
   terraform:
     namespace_apps: '["ggircs-backups", "eccc-swrs-import"]'
-
-patroni-migration:
-  from:
-    host: cas-ggircs-patroni.9212c9-dev.svc.cluster.local
