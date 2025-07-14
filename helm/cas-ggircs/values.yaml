@@ -49,33 +49,6 @@ persistence:
   relayUser: ggircs_user
   preInitDb: ""
 
-cas-postgres:
-  patroni:
-    resources:
-      limits:
-        cpu: 1000m
-        memory: 2Gi
-      requests:
-        cpu: 15m
-        memory: 600Mi
-    persistentVolume:
-      size: 10Gi
-      storageClass: netapp-block-standard
-    replicaCount: 3
-    env:
-      ALLOW_NOSSL: true
-      USE_WALG_BACKUP: "true"
-      USE_WALG_RESTORE: "true"
-    walE:
-      enable: true
-      gcsBucket: ~
-      # kubernetesSecret should be gcp-{{ namespace }}-{{ gcs.bucketSuffix }}-service-account-key
-      kubernetesSecret: ~
-    # options below are required if walE.enable is true
-  namespace: ~
-  gcs:
-    bucketSuffix: ~
-
 swrsImportBucket:
   enable: true
   bucketSuffix: swrs-import
