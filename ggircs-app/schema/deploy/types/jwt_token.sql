@@ -19,8 +19,8 @@ comment on type ggircs_app.jwt_token is E'@primaryKey sub\n@foreignKey (sub) ref
 do
 $policy$
 begin
-  perform ggircs_app_private.upsert_policy('ggircs_user_insert_ggircs_user', 'ggircs_user', 'insert', 'ggircs_user', 'session_sub=(select sub from ggircs_app.session())');
-  perform ggircs_app_private.upsert_policy('ggircs_user_update_ggircs_user', 'ggircs_user', 'update', 'ggircs_user', 'session_sub=(select sub from ggircs_app.session())');
+  perform ggircs_app_private.upsert_policy('ggircs_user_insert_ggircs_user', 'ggircs_user', 'insert', 'ggircs_user', 'session_sub=(select sub::text from ggircs_app.session())');
+  perform ggircs_app_private.upsert_policy('ggircs_user_update_ggircs_user', 'ggircs_user', 'update', 'ggircs_user', 'session_sub=(select sub::text from ggircs_app.session())');
 end
 $policy$;
 
