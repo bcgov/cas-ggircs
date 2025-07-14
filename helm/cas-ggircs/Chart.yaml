@@ -29,6 +29,3 @@ dependencies:
   - name: terraform-bucket-provision
     version: "0.1.3"
     repository: https://bcgov.github.io/cas-pipeline/
-  - name: patroni-migration
-    version: 1.0.1
-    repository: https://bcgov.github.io/cas-postgres/
