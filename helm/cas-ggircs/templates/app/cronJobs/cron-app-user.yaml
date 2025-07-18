@@ -22,22 +22,13 @@ spec:
           restartPolicy: Never
           containers:
             - env:
-                - name: PGUSER
-                  value: postgres
-                - name: PGPASSWORD
-                  valueFrom:
-                    secretKeyRef:
-                      key: password-superuser
-                      name: {{ template "cas-ggircs.fullname" . }}-patroni
+                {{- include "cas-ggircs.databaseEnvVars.postgresUser" . | nindent 16 }}
                 - name: PGDATABASE
+                  value: null
                   valueFrom:
                     secretKeyRef:
-                      key: database-name
-                      name: {{ template "cas-ggircs.fullname" . }}
-                - name: PGPORT
-                  value: "5432"
-                - name: PGHOST
-                  value: {{ template "cas-ggircs.fullname" . }}-patroni
+                      key: dbname
+                      name: {{ .Values.database.releaseName }}-{{ .Values.database.chartName }}-pguser-{{ .Values.database.user}}
                 - name: GGIRCS_APP_USER
                   valueFrom:
                     secretKeyRef:

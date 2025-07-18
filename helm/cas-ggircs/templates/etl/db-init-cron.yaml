@@ -22,34 +22,25 @@ spec:
           restartPolicy: Never
           containers:
             - env:
+                {{- include "cas-ggircs.databaseEnvVars.postgresUser" . | nindent 16 }}
                 - name: PGDATABASE
                   value: postgres
-                - name: PGUSER
-                  value: postgres
-                - name: PGPASSWORD
-                  valueFrom:
-                    secretKeyRef:
-                      key: password-superuser
-                      name: {{ template "cas-ggircs.fullname" . }}-patroni
-                - name: PGPORT
-                  value: "5432"
-                - name: PGHOST
-                  value: {{ template "cas-ggircs.fullname" . }}-patroni
+                  valueFrom: null
                 - name: GGIRCS_USER
                   valueFrom:
                     secretKeyRef:
-                      key: database-user
-                      name: {{ template "cas-ggircs.fullname" . }}
+                      key: user
+                      name: {{ .Values.database.releaseName }}-{{ .Values.database.chartName }}-pguser-{{ .Values.database.user}}
                 - name: GGIRCS_PASSWORD
                   valueFrom:
                     secretKeyRef:
-                      key: database-password
-                      name: {{ template "cas-ggircs.fullname" . }}
+                      key: password
+                      name: {{ .Values.database.releaseName }}-{{ .Values.database.chartName }}-pguser-{{ .Values.database.user}}
                 - name: GGIRCS_DATABASE
                   valueFrom:
                     secretKeyRef:
-                      key: database-name
-                      name: {{ template "cas-ggircs.fullname" . }}
+                      key: dbname
+                      name: {{ .Values.database.releaseName }}-{{ .Values.database.chartName }}-pguser-{{ .Values.database.user}}
               name: {{ template "cas-ggircs.fullname" . }}-db-init
               image: {{ .Values.image.psql.repository }}:{{ default .Values.defaultImageTag .Values.image.psql.tag }}
               imagePullPolicy: {{ default .Values.defaultImagePullPolicy .Values.image.psql.pullPolicy }}
@@ -68,4 +59,8 @@ spec:
                   set -euo pipefail;
 {{ .Values.persistence.preInitDb | indent 18 }}
                   create-user-db -d $(GGIRCS_DATABASE) -u $(GGIRCS_USER) -p $(GGIRCS_PASSWORD) --owner;
-                  alter-role $(GGIRCS_USER) createrole;
+                  psql -c "DO \$\$ BEGIN IF NOT EXISTS (SELECT 1 FROM pg_catalog.pg_roles WHERE rolname = 'ggircs_user') THEN CREATE ROLE ggircs_user; END IF; END \$\$;"
+                  psql -c "DO \$\$ BEGIN IF NOT EXISTS (SELECT 1 FROM pg_catalog.pg_roles WHERE rolname = 'ggircs_guest') THEN CREATE ROLE ggircs_guest; END IF; END \$\$;"
+                  psql -c "DO \$\$ BEGIN IF NOT EXISTS (SELECT 1 FROM pg_auth_members m JOIN pg_roles r1 ON m.member = r1.oid JOIN pg_roles r2 ON m.roleid = r2.oid WHERE r1.rolname = 'ggircs' AND r2.rolname = 'ggircs_user' AND m.admin_option = true) THEN GRANT ggircs_user TO ggircs WITH ADMIN OPTION; END IF; END \$\$;"
+                  psql -c "DO \$\$ BEGIN IF NOT EXISTS (SELECT 1 FROM pg_auth_members m JOIN pg_roles r1 ON m.member = r1.oid JOIN pg_roles r2 ON m.roleid = r2.oid WHERE r1.rolname = 'ggircs' AND r2.rolname = 'ggircs_guest' AND m.admin_option = true) THEN GRANT ggircs_guest TO ggircs WITH ADMIN OPTION; END IF; END \$\$;"
+                  psql -c "GRANT CONNECT ON DATABASE $(GGIRCS_DATABASE) TO _crunchypgbouncer;"

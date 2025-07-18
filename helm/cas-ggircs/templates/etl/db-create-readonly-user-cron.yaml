@@ -22,25 +22,16 @@ spec:
           restartPolicy: Never
           containers:
             - env:
+                {{- include "cas-ggircs.databaseEnvVars.postgresUser" . | nindent 16 }}
                 - name: PGDATABASE
                   value: postgres
-                - name: PGUSER
-                  value: postgres
-                - name: PGPASSWORD
-                  valueFrom:
-                    secretKeyRef:
-                      key: password-superuser
-                      name: {{ template "cas-ggircs.fullname" . }}-patroni
-                - name: PGPORT
-                  value: "5432"
-                - name: PGHOST
-                  value: {{ template "cas-ggircs.fullname" . }}-patroni
-                - name: GGIRCS_USER
+                  valueFrom: null
+                - name: GGIRCS_READONLY_USER
                   valueFrom:
                     secretKeyRef:
                       key: database-readonly-user
                       name: {{ template "cas-ggircs.fullname" . }}
-                - name: GGIRCS_PASSWORD
+                - name: GGIRCS_READONLY_PASSWORD
                   valueFrom:
                     secretKeyRef:
                       key: database-readonly-password
@@ -63,8 +54,8 @@ spec:
               command: [ "create-user-db" ]
               args: [
                 "-d", "$(GGIRCS_DATABASE)",
-                "-u", "$(GGIRCS_USER)",
-                "-p", "$(GGIRCS_PASSWORD)",
+                "-u", "$(GGIRCS_READONLY_USER)",
+                "-p", "$(GGIRCS_READONLY_PASSWORD)",
                 "--schemas", "swrs,swrs_extract,swrs_history,ggircs_parameters",
                 "--privileges", "select"
               ]

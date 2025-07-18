@@ -25,27 +25,9 @@ spec:
       initContainers:
 {{- if (index .Values "trigger-ggircs-deploy-db" "enabled") }}
       - env:
+          {{- include "cas-ggircs.databaseEnvVars.ggircsUser" . | nindent 10 }}
           - name: SQITCH_TARGET
             value: "db:pg:"
-          - name: PGUSER
-            valueFrom:
-              secretKeyRef:
-                key: database-user
-                name: {{ template "cas-ggircs.fullname" . }}
-          - name: PGPASSWORD
-            valueFrom:
-              secretKeyRef:
-                key: database-password
-                name: {{ template "cas-ggircs.fullname" . }}
-          - name: PGDATABASE
-            valueFrom:
-              secretKeyRef:
-                key: database-name
-                name: {{ template "cas-ggircs.fullname" . }}
-          - name: PGPORT
-            value: "5432"
-          - name: PGHOST
-            value: {{ template "cas-ggircs.fullname" . }}-patroni
           - name: NAMESPACE
             valueFrom:
               fieldRef:
@@ -96,14 +78,23 @@ spec:
                 key: database-app-password
                 name: {{ template "cas-ggircs.fullname" . }}-app
           - name: PGDATABASE
+            value: null
             valueFrom:
               secretKeyRef:
-                key: database-name
-                name: {{ template "cas-ggircs.fullname" . }}
+                key: dbname
+                name: {{ .Values.database.releaseName }}-{{ .Values.database.chartName }}-pguser-{{ .Values.database.user}}
           - name: PGPORT
-            value: "5432"
+            value: null
+            valueFrom:
+              secretKeyRef:
+                key: pgbouncer-port
+                name: {{ .Values.database.releaseName }}-{{ .Values.database.chartName }}-pguser-{{ .Values.database.user}}
           - name: PGHOST
-            value: {{ template "cas-ggircs.fullname" . }}-patroni
+            value: null
+            valueFrom:
+              secretKeyRef:
+                key: pgbouncer-host
+                name: {{ .Values.database.releaseName }}-{{ .Values.database.chartName }}-pguser-{{ .Values.database.user}}
           - name: PORT
             value: {{ .Values.app.port | quote }}
           - name: SITEWIDE_NOTICE

@@ -20,6 +20,11 @@ cif:
 metabase:
   instanceName: cas-metabase
 
+database:
+  releaseName: cas-ggircs-db
+  chartName: cas-postgres-cluster
+  user: ggircs
+
 image:
   app:
     repository: ghcr.io/bcgov/cas-ggircs-app
@@ -156,3 +161,39 @@ nginx-sidecar:
 terraform-bucket-provision:
   terraform:
     namespace_apps: '["ggircs-backups", "swrs-import"]'
+
+patroni-migration:
+  migrationJob:
+    image: postgres
+    tag: 17
+    ignoredRoles:
+      - ggircs
+
+  deployment:
+    name: cas-ggircs
+    sourceReleaseName: cas-ggircs
+    targetReleaseName: cas-ggircs-db
+    originalReplicaCount: 3
+
+  from:
+    # Assuming all database information will be in the same secret
+    # Pass either the secret's key or the specific value
+    secretName: cas-ggircs-patroni
+    hostSecretKey: ~
+    host: ~ # cas-metabase-patroni.9212c9-dev.svc.cluster.local
+    passwordSecretKey: password-superuser
+    password: ~
+    portSecretKey: ~
+    port: 5432
+    userSecretKey: ~
+    user: postgres
+
+    # The name of the database to migrate
+    db: ggircs
+
+  to:
+    # This is necessarily a PGO deployment
+    # superuser to migrate roles
+    superuserSecretName: cas-ggircs-db-cas-postgres-cluster-pguser-postgres
+    # new owner of database to run own the migrated database
+    appuserSecretName: cas-ggircs-db-cas-postgres-cluster-pguser-ggircs

@@ -27,7 +27,6 @@ persistence:
       -- don't kill the connections to other databases
       and datname = '$(GGIRCS_DATABASE)';
       drop database if exists $(GGIRCS_DATABASE);
-      drop user if exists $(GGIRCS_USER);
     EOF
 
 nginx-sidecar:
@@ -36,3 +35,7 @@ nginx-sidecar:
 terraform-bucket-provision:
   terraform:
     namespace_apps: '["ggircs-backups", "eccc-swrs-import"]'
+
+patroni-migration:
+  from:
+    host: cas-ggircs-patroni.9212c9-dev.svc.cluster.local

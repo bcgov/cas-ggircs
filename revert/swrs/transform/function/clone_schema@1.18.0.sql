@@ -47,7 +47,6 @@ DECLARE
   rec              record;
   source_schema_dot text = source_schema || '.';
   dest_schema_dot text = dest_schema || '.';
-  cycle_clause text;
 
 BEGIN
 
@@ -80,12 +79,6 @@ BEGIN
   FROM information_schema.sequences
   WHERE sequence_schema = quote_ident(source_schema)
   LOOP
-
-    cycle_clause := CASE sq_cycle_option
-                      WHEN 'YES' THEN ' CYCLE'
-                      ELSE ' NO CYCLE'
-                    END;
-
     EXECUTE 'CREATE SEQUENCE ' || quote_ident(dest_schema) || '.' || quote_ident(object);
     srctbl := quote_ident(source_schema) || '.' || quote_ident(object);
 
@@ -101,8 +94,8 @@ BEGIN
             || ' MINVALUE '     || sq_min_value
             || ' MAXVALUE '     || sq_max_value
             || ' START WITH '   || sq_start_value
-            || ' RESTART WITH ' || sq_min_value
-            || cycle_clause     || ' ;' ;
+            || ' RESTART '      || sq_min_value
+            || sq_cycle_option || ' CYCLE ;' ;
 
     buffer := quote_ident(dest_schema) || '.' || quote_ident(object);
     IF include_recs
@@ -172,10 +165,8 @@ BEGIN
   LOOP
     IF show_details THEN RAISE NOTICE 'Creating function %...', xrec.func_name; END IF;
     SELECT pg_get_functiondef(xrec.func_oid) INTO qry;
-    -- Split the function by the 'AS' part in order to only replace the source_schema in the definition, paramters and return values.
-    SELECT replace((select split_part(qry, 'AS', 1)), source_schema_dot, dest_schema_dot) INTO dest_qry;
-    -- Rebuild the function by concatenating the replaced definition with the unchanged body
-    EXECUTE dest_qry || 'AS' || (SELECT split_part(qry, 'AS', 2));
+    SELECT replace(qry, source_schema_dot, dest_schema_dot) INTO dest_qry;
+    EXECUTE dest_qry;
   END LOOP;
 
   -- add Table Triggers

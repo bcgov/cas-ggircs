@@ -17,9 +17,9 @@ tables/ggircs_user 2021-01-18T18:53:34Z Matthieu Foucault <matthieu@button.is> #
 mutations/create_ggircs_user_from_session 2021-01-27T01:42:06Z Matthieu Foucault <matthieu@button.is> # add mutation to insert the ggircs_user for the current session
 tables/eccc_file_download_log 2021-02-18T19:07:13Z Matthieu Foucault <matthieu@button.is> # add table to log eccc file downloads
 @1.13.4 2022-12-07T18:26:30Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # release v1.13.4
-types/jwt_token [types/jwt_token@1.13.4] 2022-12-09T23:44:55Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Updating the sub to be of type text
 triggers/user_session_sub_immutable_with_flag 2022-12-14T17:29:15Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Trigger that ensures the session_sub of a user can't be updated unless the allow flag is set
 tables/ggircs_user [tables/ggircs_user@1.13.4] 2022-12-10T00:07:33Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # changing the uuid column to be session_sub of type text
+types/jwt_token [types/jwt_token@1.13.4] 2022-12-09T23:44:55Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Updating the sub to be of type text
 mutations/create_ggircs_user_from_session [mutations/create_ggircs_user_from_session@1.13.4] 2022-12-14T19:11:22Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Updating the create user session to update the session sub if required
 triggers/eccc_file_download_log_insert 2023-01-05T01:20:01Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # A trigger that automatically registers a log entry every time a file is downloaded
 triggers/update_timestamps [triggers/update_timestamps@1.13.4] 2022-12-14T23:04:47Z Pierre Bastianelli <pierre.bastianelli@gov.bc.ca> # Updating timestamp trigger to fetch the session_sub from the user table

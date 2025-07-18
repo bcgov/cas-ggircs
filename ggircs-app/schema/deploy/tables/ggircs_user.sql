@@ -24,8 +24,8 @@ create unique index ggircs_app_user_email_address on ggircs_app.ggircs_user(emai
 do
 $policy$
 begin
-  perform ggircs_app_private.upsert_policy('ggircs_user_insert_ggircs_user', 'ggircs_user', 'insert', 'ggircs_user', 'session_sub=(select sub from ggircs_app.session())');
-  perform ggircs_app_private.upsert_policy('ggircs_user_update_ggircs_user', 'ggircs_user', 'update', 'ggircs_user', 'session_sub=(select sub from ggircs_app.session())');
+  perform ggircs_app_private.upsert_policy('ggircs_user_insert_ggircs_user', 'ggircs_user', 'insert', 'ggircs_user', 'session_sub=(select sub::text from ggircs_app.session())');
+  perform ggircs_app_private.upsert_policy('ggircs_user_update_ggircs_user', 'ggircs_user', 'update', 'ggircs_user', 'session_sub=(select sub::text from ggircs_app.session())');
 end
 $policy$;
 
