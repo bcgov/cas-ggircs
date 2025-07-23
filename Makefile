@@ -137,7 +137,7 @@ pgtap:
 	# clone the source for pgTAP
 	@@$(GIT) clone https://github.com/theory/pgtap.git && \
 		pushd pgtap && \
-		$(GIT) checkout v1.2.0;
+		$(GIT) checkout v1.3.3;
 
 .PHONY: install_pgtap
 install_pgtap: pgtap
