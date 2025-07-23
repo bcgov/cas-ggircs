@@ -7,8 +7,8 @@ alter table ggircs_app.ggircs_user drop column allow_sub_update;
 
 
 -- Dropping existing policies that depend on the text
-drop policy ggircs_user_insert_ggircs_user on ggircs_app.ggircs_user;
-drop policy ggircs_user_update_ggircs_user on ggircs_app.ggircs_user;
+drop policy if exists ggircs_user_insert_ggircs_user on ggircs_app.ggircs_user;
+drop policy if exists ggircs_user_update_ggircs_user on ggircs_app.ggircs_user;
 
 alter table ggircs_app.ggircs_user alter column session_sub type uuid using session_sub::uuid;
 alter table ggircs_app.ggircs_user rename column session_sub to uuid;
