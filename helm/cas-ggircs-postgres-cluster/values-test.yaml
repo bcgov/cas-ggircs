@@ -1,1 +1,4 @@
 environment: test
+
+postgresCluster:
+  storageSize: 10Gi
