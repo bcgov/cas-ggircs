@@ -1,1 +1,4 @@
 environment: prod
+
+postgresCluster:
+  storageSize: 10Gi
