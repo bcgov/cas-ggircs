@@ -1,15 +1,3 @@
-cas-postgres:
-  patroni:
-    walE:
-      enable: true
-      gcsBucket: 9212c9-dev-ggircs-backups
-      # kubernetesSecret should be gcp-{{ namespace }}-{{ gcs.bucketSuffix }}-service-account-key
-      kubernetesSecret: gcp-9212c9-dev-ggircs-backups-service-account-key
-    # options below are required if walE.enable is true
-  namespace: 9212c9-dev
-  gcs:
-    bucketSuffix: ggircs-backups
-
 swrsImportBucket:
   enable: true
   bucketSuffix: eccc-swrs-import
@@ -35,7 +23,3 @@ nginx-sidecar:
 terraform-bucket-provision:
   terraform:
     namespace_apps: '["ggircs-backups", "eccc-swrs-import"]'
-
-patroni-migration:
-  from:
-    host: cas-ggircs-patroni.9212c9-dev.svc.cluster.local
