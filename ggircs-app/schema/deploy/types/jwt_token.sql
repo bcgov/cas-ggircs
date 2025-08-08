@@ -18,9 +18,33 @@ comment on type ggircs_app.jwt_token is E'@primaryKey sub\n@foreignKey (sub) ref
 -- Rebuilding policies with the proper session_sub reference
 do
 $policy$
+declare
+  colname text;
+  coltype text;
+  policy_expr text;
 begin
-  perform ggircs_app_private.upsert_policy('ggircs_user_insert_ggircs_user', 'ggircs_user', 'insert', 'ggircs_user', 'session_sub=(select sub::text from ggircs_app.session())');
-  perform ggircs_app_private.upsert_policy('ggircs_user_update_ggircs_user', 'ggircs_user', 'update', 'ggircs_user', 'session_sub=(select sub::text from ggircs_app.session())');
+  select column_name, data_type into colname, coltype
+    from information_schema.columns
+    where table_schema = 'ggircs_app'
+      and table_name = 'ggircs_user'
+      and column_name in ('session_sub', 'uuid')
+    order by case column_name when 'session_sub' then 1 when 'uuid' then 2 end
+    limit 1;
+
+  if coltype = 'uuid' then
+    policy_expr := format('%I=(select sub::uuid from ggircs_app.session())', colname);
+  else
+    policy_expr := format('%I=(select sub::text from ggircs_app.session())', colname);
+  end if;
+
+  execute format(
+    'select ggircs_app_private.upsert_policy(''ggircs_user_insert_ggircs_user'', ''ggircs_user'', ''insert'', ''ggircs_user'', ''%s'')',
+    policy_expr
+  );
+  execute format(
+    'select ggircs_app_private.upsert_policy(''ggircs_user_update_ggircs_user'', ''ggircs_user'', ''update'', ''ggircs_user'', ''%s'')',
+    policy_expr
+  );
 end
 $policy$;
 
