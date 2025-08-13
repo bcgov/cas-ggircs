@@ -1,5 +1,12 @@
 
 
+# [1.19.0](https://github.com/bcgov/cas-ggircs/compare/v1.18.3...v1.19.0) (2025-08-13)
+
+
+### Bug Fixes
+
+* revert sqitch plan history rewrite ([0f02007](https://github.com/bcgov/cas-ggircs/commit/0f020072c2f293845f80c2bb8e86c57aa6449a7b))
+
 ## [1.18.3](https://github.com/bcgov/cas-ggircs/compare/v1.18.2...v1.18.3) (2025-03-11)
 
 ## [1.18.2](https://github.com/bcgov/cas-ggircs/compare/v1.18.1...v1.18.2) (2025-01-09)
