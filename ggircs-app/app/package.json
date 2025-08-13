@@ -1,6 +1,6 @@
 {
   "name": "ggircs-app",
-  "version": "1.18.3",
+  "version": "1.19.0",
   "private": true,
   "scripts": {
     "predev": "yarn build:schema && yarn build:relay",
