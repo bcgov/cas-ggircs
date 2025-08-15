@@ -10,6 +10,9 @@ postgresCluster:
   pgbouncer:
     replicaCount: 2
   resources:
+    limits:
+      cpu: 3000m
+      memory: 2Gi
     requests:
       cpu: 100m
       memory: 256Mi
