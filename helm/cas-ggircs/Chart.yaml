@@ -5,9 +5,6 @@ type: application
 version: 0.2.34
 appVersion: 1.19.0
 dependencies:
-  - name: cas-postgres
-    version: "0.10.2"
-    repository: https://bcgov.github.io/cas-postgres/
   - name: cas-airflow-dag-trigger
     version: 1.0.20
     repository: https://bcgov.github.io/cas-airflow
@@ -29,6 +26,3 @@ dependencies:
   - name: terraform-bucket-provision
     version: "0.1.3"
     repository: https://bcgov.github.io/cas-pipeline/
-  - name: patroni-migration
-    version: 1.0.1
-    repository: https://bcgov.github.io/cas-postgres/

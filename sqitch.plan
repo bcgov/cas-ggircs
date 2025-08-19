@@ -275,3 +275,4 @@ swrs/parameters/table/fuel_charge_001 [swrs/parameters/table/fuel_charge] 2024-0
 swrs/transform/function/clone_schema [swrs/transform/function/clone_schema@1.18.0] 2025-07-09T19:11:10Z Josh Gamache <joshua@button.is> # Fix inconsistent spaces for function output
 @1.19.0 2025-08-13T16:49:49Z Bastianelli, Pierre WLRS <pbastian@FPWWVVYPLQ> # release v1.19.0
 @1.19.1 2025-08-15T18:13:34Z Bastianelli, Pierre WLRS <pbastian@FPWWVVYPLQ> # release v1.19.1
+@1.19.2 2025-08-15T18:13:34Z Bastianelli, Pierre WLRS <pbastian@FPWWVVYPLQ> # release v1.19.2
