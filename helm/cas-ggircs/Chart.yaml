@@ -3,7 +3,7 @@ name: cas-ggircs
 description: Helm chart for the GGIRCS database and ETL
 type: application
 version: 0.2.34
-appVersion: 1.19.3
+appVersion: 1.20.0
 dependencies:
   - name: cas-airflow-dag-trigger
     version: 1.0.20
