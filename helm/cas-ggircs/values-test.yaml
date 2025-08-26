@@ -1,3 +1,5 @@
+environment: test
+
 app:
   route:
     host: cas-ggircs-test.apps.silver.devops.gov.bc.ca

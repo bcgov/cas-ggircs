@@ -1,3 +1,5 @@
+environment: prod
+
 app:
   route:
     host: cas-ggircs.apps.silver.devops.gov.bc.ca
