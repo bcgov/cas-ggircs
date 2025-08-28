@@ -1,5 +1,6 @@
 defaultImageTag: ~ # set to the GIT SHA1 in the Makefile
 defaultImagePullPolicy: IfNotPresent
+environment: ~
 
 # Ciip portal configuration
 # These values need to be set for the chart to configure access from the ciip application/namepsace
