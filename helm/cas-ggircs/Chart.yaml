@@ -2,21 +2,21 @@ apiVersion: v2
 name: cas-ggircs
 description: Helm chart for the GGIRCS database and ETL
 type: application
-version: 0.2.34
+version: 0.3.0
 appVersion: 1.20.0
 dependencies:
   - name: cas-airflow-dag-trigger
-    version: 1.0.20
+    version: 1.1.0
     repository: https://bcgov.github.io/cas-airflow
     alias: download-ggircs-dags
     condition: download-ggircs-dags.enabled
   - name: cas-airflow-dag-trigger
-    version: 1.0.20
+    version: 1.1.0
     repository: https://bcgov.github.io/cas-airflow
     alias: download-swrs-dags
     condition: download-swrs-dags.enabled
   - name: cas-airflow-dag-trigger
-    version: 1.0.20
+    version: 1.1.0
     repository: https://bcgov.github.io/cas-airflow
     alias: trigger-ggircs-deploy-db
     condition: trigger-ggircs-deploy-db.enabled
