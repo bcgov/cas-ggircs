@@ -34,7 +34,7 @@ SCHEDULE_INTERVAL = '0 8 * * *'
 
 dag = DAG(
     'cas_ggircs_swrs_eccc',
-    schedule_interval=SCHEDULE_INTERVAL,
+    schedule=SCHEDULE_INTERVAL,
     default_args=default_args,
     is_paused_upon_creation=True
 )
