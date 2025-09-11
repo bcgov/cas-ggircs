@@ -4,7 +4,7 @@ from trigger_k8s_cronjob import trigger_k8s_cronjob
 from reload_nginx_containers import reload_nginx_containers
 from walg_backups import create_backup_task
 from airflow.operators.dagrun_operator import TriggerDagRunOperator
-from airflow.operators.python_operator import PythonOperator
+from airflow.providers.standard.operators.python import PythonOperator
 from datetime import datetime, timedelta
 from airflow import DAG
 import os
@@ -38,7 +38,7 @@ default_args = {
 """
 
 
-deploy_db_dag = DAG(DEPLOY_DB_DAG_NAME, schedule_interval=None,
+deploy_db_dag = DAG(DEPLOY_DB_DAG_NAME, schedule=None,
     default_args=default_args, is_paused_upon_creation=False)
 
 ggircs_db_init = PythonOperator(
@@ -56,7 +56,7 @@ trigger_load_db_dag = TriggerDagRunOperator(
 
 ggircs_db_init >> trigger_load_db_dag
 
-load_db_dag = DAG(LOAD_DB_DAG_NAME, schedule_interval=None,
+load_db_dag = DAG(LOAD_DB_DAG_NAME, schedule=None,
     default_args=default_args, is_paused_upon_creation=False)
 
 ggircs_etl = PythonOperator(
@@ -103,7 +103,7 @@ ggircs_etl >> trigger_ciip_deploy_db_dag
 ###############################################################################
 """
 
-load_testing_setup_dag = DAG(LOAD_TESTING_SETUP_DAG_NAME, schedule_interval=None,
+load_testing_setup_dag = DAG(LOAD_TESTING_SETUP_DAG_NAME, schedule=None,
                             default_args=default_args, is_paused_upon_creation=False)
 
 ggircs_load_testing_data = PythonOperator(
@@ -167,7 +167,7 @@ DAG cas_ggircs_issue
 Issues site certificates for the GGIRCS app
 """
 acme_issue_dag = DAG(CERT_ISSUE_DAG_NAME,
-                     schedule_interval=None, default_args=acme_renewal_args)
+                     schedule=None, default_args=acme_renewal_args)
 
 cron_acme_issue_task = PythonOperator(
     python_callable=trigger_k8s_cronjob,
@@ -179,7 +179,7 @@ cron_acme_issue_task = PythonOperator(
 DAG cas_ggircs_acme_renewal
 Renews site certificates for the GGIRCS app
 """
-acme_renewal_dag = DAG(CERT_RENEWAL_DAG_NAME, schedule_interval=SCHEDULE_INTERVAL,
+acme_renewal_dag = DAG(CERT_RENEWAL_DAG_NAME, schedule=SCHEDULE_INTERVAL,
                        default_args=acme_renewal_args)
 
 cert_renewal_task = PythonOperator(
@@ -205,7 +205,7 @@ cert_renewal_task >> reload_nginx_task
 """
 
 ggircs_full_backup_dag = DAG(BACKUP_DAG_NAME, default_args=default_args,
-                             schedule_interval=SCHEDULE_INTERVAL, is_paused_upon_creation=False)
+                             schedule=SCHEDULE_INTERVAL, is_paused_upon_creation=False)
 
 create_backup_task(ggircs_full_backup_dag,
                    ggircs_namespace, 'cas-ggircs-patroni')

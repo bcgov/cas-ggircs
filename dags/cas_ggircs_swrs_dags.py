@@ -12,7 +12,7 @@ The dag will
 from dag_configuration import default_dag_args
 from trigger_k8s_cronjob import trigger_k8s_cronjob
 from airflow.operators.dagrun_operator import TriggerDagRunOperator
-from airflow.operators.python_operator import PythonOperator
+from airflow.providers.standard.operators.python import PythonOperator
 from datetime import datetime, timedelta
 from airflow import DAG
 import os
@@ -34,7 +34,7 @@ SCHEDULE_INTERVAL = '0 8 * * *'
 
 dag = DAG(
     'cas_ggircs_swrs_eccc',
-    schedule_interval=SCHEDULE_INTERVAL,
+    schedule=SCHEDULE_INTERVAL,
     default_args=default_args,
     is_paused_upon_creation=True
 )
