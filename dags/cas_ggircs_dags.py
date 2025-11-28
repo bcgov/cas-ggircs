@@ -189,17 +189,3 @@ reload_nginx_task = PythonOperator(
     dag=acme_renewal_dag)
 
 cert_renewal_task >> reload_nginx_task
-
-"""
-###############################################################################
-#                                                                             #
-# DAG triggering the wal-g backup job                                         #
-#                                                                             #
-###############################################################################
-"""
-
-ggircs_full_backup_dag = DAG(BACKUP_DAG_NAME, default_args=default_args,
-                             schedule=SCHEDULE_INTERVAL, is_paused_upon_creation=False)
-
-create_backup_task(ggircs_full_backup_dag,
-                   ggircs_namespace, 'cas-ggircs-patroni')
