@@ -83,17 +83,11 @@ ggircs_app_schema = PythonOperator(
     op_args=['cas-ggircs-schema-deploy-data', ggircs_namespace],
     dag=load_db_dag)
 
-trigger_ciip_deploy_db_dag = TriggerDagRunOperator(
-    task_id='trigger_ciip_deploy_db_dag',
-    trigger_dag_id="cas_ciip_portal_deploy_db",
-    dag=load_db_dag
-)
 
 ggircs_etl >> ggircs_read_only_user
 ggircs_etl >> ggircs_app_user
 ggircs_app_schema >> ggircs_read_only_user
 ggircs_app_schema >> ggircs_app_user
-ggircs_etl >> trigger_ciip_deploy_db_dag
 
 """
 ###############################################################################
