@@ -13,14 +13,14 @@ WORKDIR ${HOME}
 
 COPY ./ ${HOME}/
 
-RUN git clone https://github.com/asdf-vm/asdf.git ${HOME}/asdf --branch v0.8.1
-RUN cd ${HOME}/asdf && git checkout v0.8.1
+RUN git clone https://github.com/asdf-vm/asdf.git ${HOME}/asdf --branch v0.15.0
+RUN cd ${HOME}/asdf && git checkout v0.15.0
 ENV BASH_ENV="${HOME}/asdf/asdf.sh"
 # Because asdf is loaded via BASH_ENV, all commands using adsf need to be executed using /usr/bin/env bash -c
 SHELL ["/usr/bin/env", "bash", "-c"]
 
 # The app only needs yarn and node
-RUN printf "nodejs 20.18.0\nyarn 1.22.22\n" > .tool-versions
+RUN printf "nodejs 24.11.1\nyarn 1.22.22\n" > .tool-versions
 RUN cat ${HOME}/.tool-versions | cut -f 1 -d ' ' | xargs -n 1 asdf plugin-add
 RUN asdf plugin-update --all
 
