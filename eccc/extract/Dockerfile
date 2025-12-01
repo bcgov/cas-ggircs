@@ -1,4 +1,4 @@
-FROM python:3.7-slim-bullseye
+FROM python:3.12-slim
 
 # Never prompt the user for choices on installation/configuration of packages
 ENV DEBIAN_FRONTEND noninteractive
