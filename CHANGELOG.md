@@ -1,5 +1,12 @@
 
 
+## [1.20.1](https://github.com/bcgov/cas-ggircs/compare/v1.20.0...v1.20.1) (2025-12-02)
+
+
+### Bug Fixes
+
+* standard providers moved to new pacakge in Airflow 3 ([ca6f6c2](https://github.com/bcgov/cas-ggircs/commit/ca6f6c22e73d0915f95854b80c5983cdd5ed5d2a))
+
 # [1.20.0](https://github.com/bcgov/cas-ggircs/compare/v1.19.3...v1.20.0) (2025-08-20)
 
 ## [1.19.3](https://github.com/bcgov/cas-ggircs/compare/v1.19.1...v1.19.3) (2025-08-19)
