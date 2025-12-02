@@ -213,26 +213,6 @@ install: whoami install_pgo_cluster
 	ggircsDagConfig=$$(echo '{"org": "bcgov", "repo": "cas-ggircs", "ref": "$(GIT_SHA1)", "path": "dags/cas_ggircs_dags.py"}' | base64 -w0); \
 	swrsDagConfig=$$(echo '{"org": "bcgov", "repo": "cas-ggircs", "ref": "$(GIT_SHA1)", "path": "dags/cas_ggircs_swrs_dags.py"}' | base64 -w0); \
 	helm dep up ./helm/cas-ggircs; \
-	if ! oc get route cas-ggircs -o name -n $(GGIRCS_NAMESPACE_PREFIX)-$(ENVIRONMENT); then \
-		helm upgrade --install --atomic --wait-for-jobs --timeout 3600s \
-			--namespace $(GGIRCS_NAMESPACE_PREFIX)-$(ENVIRONMENT) \
-			--set defaultImageTag=$(GIT_SHA1) \
-			--set download-ggircs-dags.dagConfiguration="$$ggircsDagConfig" \
-			--set download-swrs-dags.dagConfiguration="$$swrsDagConfig" \
-			--values ./helm/cas-ggircs/values.yaml \
-			--values ./helm/cas-ggircs/values-$(ENVIRONMENT).yaml \
-			--set ciip.release=cas-ciip-portal \
-			--set ciip.namespace="$(CIIP_NAMESPACE_PREFIX)-$(ENVIRONMENT)" \
-			--set ciip.prefix="$(CIIP_NAMESPACE_PREFIX)" \
-			--set ciip.environment="$(ENVIRONMENT)" \
-			--set cif.release=cas-cif \
-			--set cif.namespace="$(CIF_NAMESPACE_PREFIX)-$(ENVIRONMENT)" \
-			--set cif.prefix="$(CIF_NAMESPACE_PREFIX)" \
-			--set cif.environment="$(ENVIRONMENT)" \
-			--set app.route.ssl.enable=false \
-			--set nginx-sidecar.sslTermination=false \
-			cas-ggircs ./helm/cas-ggircs; \
-	fi; \
 	helm upgrade --install --atomic --wait-for-jobs --timeout 3600s \
 		--namespace $(GGIRCS_NAMESPACE_PREFIX)-$(ENVIRONMENT) \
 		--set defaultImageTag=$(GIT_SHA1) \
