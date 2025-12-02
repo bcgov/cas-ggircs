@@ -250,11 +250,11 @@ install: whoami install_pgo_cluster
 		--set cif.environment="$(ENVIRONMENT)" \
 		cas-ggircs ./helm/cas-ggircs
 	# Copying generated ggircs database secret to ciip namespace, removing namespace-specific metadata
-	$(OC) get secret cas-ggircs --namespace=$(GGIRCS_NAMESPACE_PREFIX)-$(ENVIRONMENT) -o json \
+	oc get secret cas-ggircs --namespace=$(GGIRCS_NAMESPACE_PREFIX)-$(ENVIRONMENT) -o json \
 		| jq 'del(.metadata.namespace,.metadata.resourceVersion,.metadata.uid,.metadata.annotations,.metadata.managedFields,.metadata.selfLink) | .metadata.creationTimestamp=null' \
 		| oc apply --namespace="$(CIIP_NAMESPACE_PREFIX)-$(ENVIRONMENT)" -f -
 	# Copying generated ggircs database secret to cif namespace, removing namespace-specific metadata
-	$(OC) get secret cas-ggircs --namespace=$(GGIRCS_NAMESPACE_PREFIX)-$(ENVIRONMENT) -o json \
+	oc get secret cas-ggircs --namespace=$(GGIRCS_NAMESPACE_PREFIX)-$(ENVIRONMENT) -o json \
 		| jq 'del(.metadata.namespace,.metadata.resourceVersion,.metadata.uid,.metadata.annotations,.metadata.managedFields,.metadata.selfLink) | .metadata.creationTimestamp=null' \
 		| oc apply --namespace="$(CIF_NAMESPACE_PREFIX)-$(ENVIRONMENT)" -f -
 endif
