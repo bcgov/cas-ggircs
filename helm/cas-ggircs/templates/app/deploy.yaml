@@ -102,7 +102,7 @@ spec:
           - name: SUPPORT_EMAIL
             value: {{ .Values.app.env.supportEmail }}
           - name: HOST
-            value: http://{{ .Values.app.route.host }}
+            value: https://{{ .Values.app.route.host }}
           - name: ECCC_FILE_BROWSER_HOST
             value: http://{{ template "cas-ggircs.fullname" . }}-swrs-gcp-api
           - name: ECCC_FILE_BROWSER_PORT
