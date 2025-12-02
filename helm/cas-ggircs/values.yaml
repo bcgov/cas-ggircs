@@ -74,13 +74,6 @@ swrsGcpApi:
 
 app:
   route:
-    ssl:
-      enable: true
-      issueCertIfDisabled: true
-      caServerSecret: ~
-      caServerKey: ~
-      caAccountEmail: ggircs@gov.bc.ca
-      storageClassName: netapp-file-standard
     host: ~
   sitewide_notice:
     content: ""
