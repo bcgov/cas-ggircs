@@ -153,7 +153,7 @@ SCHEDULE_INTERVAL = '0 8 * * *'
 acme_renewal_args = {
     **default_dag_args,
     'start_date': TWO_DAYS_AGO,
-    'is_paused_upon_creation': False
+    'is_paused_upon_creation': True
 }
 
 """

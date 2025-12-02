@@ -111,26 +111,6 @@ trigger-ggircs-deploy-db:
   helm:
     hook: false
 
-nginx-sidecar:
-  image:
-    repository: ghcr.io/bcgov/cas-nginx
-    tag: latest
-    pullPolicy: Always
-  objectNamePrefix: cas-ggircs
-  hostName: cas-ggircs.apps.silver.devops.gov.bc.ca
-  port: 3001
-  internalPort: 3000
-  # set to false to deploy the application with an insecure route,
-  # and issue an SSL certificate using acme.sh
-  sslTermination: true
-  # If provided, the acme issue/renewal scripts will use a custom server
-  # Otherwise it defaults to Let's Encrypt
-  caServerSecret: ~ # pragma: allowlist secret
-  caServerKey: ~
-  caAccountEmail: ggircs@gov.bc.ca
-  storageClassName: netapp-file-standard
-  renewalDays: 60
-
 terraform-bucket-provision:
   terraform:
     namespace_apps: '["ggircs-backups", "swrs-import"]'
