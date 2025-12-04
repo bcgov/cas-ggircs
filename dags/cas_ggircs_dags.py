@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from dag_configuration import default_dag_args
 from trigger_k8s_cronjob import trigger_k8s_cronjob
-from reload_nginx_containers import reload_nginx_containers
 from airflow.providers.standard.operators.trigger_dagrun import TriggerDagRunOperator
 from airflow.decorators import dag, task
 from datetime import datetime, timedelta
