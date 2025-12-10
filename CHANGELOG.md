@@ -1,5 +1,12 @@
 
 
+## [1.21.1](https://github.com/bcgov/cas-ggircs/compare/v1.21.0...v1.21.1) (2025-12-10)
+
+
+### Bug Fixes
+
+* reverting smart_open version to a functional version ([50d3bf7](https://github.com/bcgov/cas-ggircs/commit/50d3bf7c140fa710aefe92a47bd3214cdb3cb603))
+
 # [1.21.0](https://github.com/bcgov/cas-ggircs/compare/v1.20.1...v1.21.0) (2025-12-03)
 
 ## [1.20.1](https://github.com/bcgov/cas-ggircs/compare/v1.20.0...v1.20.1) (2025-12-02)
