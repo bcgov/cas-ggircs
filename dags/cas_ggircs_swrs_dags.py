@@ -1,80 +1,64 @@
 # -*- coding: utf-8 -*-
-"""
-# DAG to fetch and extract SWRS data from the ECCC website.
-
-The dag will
- - fetch the zip files from the ECCC website and upload them to GCS.
- - stream the XML files contained the zip files and insert them into the swrs_extract.eccc_xml_file table.
- - stream the attachment contained the zip files and insert them into the swrs_extract.eccc_attachment table.
- - trigger the transform/load jobs
-
-"""
 from dag_configuration import default_dag_args
 from trigger_k8s_cronjob import trigger_k8s_cronjob
 from airflow.providers.standard.operators.trigger_dagrun import TriggerDagRunOperator
-from airflow.providers.standard.operators.python import PythonOperator
+from airflow.decorators import dag, task
 from datetime import datetime, timedelta
-from airflow import DAG
 import os
 import sys
 sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 
 
-START_DATE = datetime.now() - timedelta(days=2)
+TWO_DAYS_AGO = datetime.now() - timedelta(days=2)
 
 namespace = os.getenv('GGIRCS_NAMESPACE')
 
-default_args = {
-    **default_dag_args,
-    'start_date': START_DATE
-}
+default_args = {**default_dag_args, "start_date": TWO_DAYS_AGO}
 
-DAG_ID = "cas_ggircs_swrs_eccc"
-SCHEDULE_INTERVAL = '0 8 * * *'
+SWRS_ECCC_DAG_NAME = "cas_ggircs_swrs_eccc"
+SCHEDULE = "0 8 * * *"
 
-dag = DAG(
-    'cas_ggircs_swrs_eccc',
-    schedule=SCHEDULE_INTERVAL,
+GGIRCS_SWRS_ECCC_DOC = """
+# DAG to fetch and extract SWRS data from the ECCC website.
+
+The dag will
+    - fetch the zip files from the ECCC website and upload them to GCS.
+    - stream the XML files contained the zip files and insert them into the swrs_extract.eccc_xml_file table.
+    - stream the attachment contained the zip files and insert them into the swrs_extract.eccc_attachment table.
+    - trigger the transform/load jobs
+"""
+
+@dag(
+    dag_id=SWRS_ECCC_DAG_NAME,
+    schedule=SCHEDULE,
     default_args=default_args,
-    is_paused_upon_creation=True
+    doc_md=GGIRCS_SWRS_ECCC_DOC,
+    is_paused_upon_creation=True,
 )
+def eccc_dag():
+    @task
+    def eccc_upload():
+        trigger_k8s_cronjob("cas-ggircs-eccc-upload", namespace)
 
-eccc_upload = PythonOperator(
-    python_callable=trigger_k8s_cronjob,
-    task_id='cas-ggircs-eccc-upload',
-    op_args=['cas-ggircs-eccc-upload', namespace],
-    dag=dag
-)
+    @task
+    def extract_zip_files():
+        trigger_k8s_cronjob("cas-ggircs-eccc-extract-zips", namespace)
 
-extract_zip_files = PythonOperator(
-    python_callable=trigger_k8s_cronjob,
-    task_id='cas-ggircs-eccc-extract-zips',
-    op_args=['cas-ggircs-eccc-extract-zips', namespace],
-    dag=dag
-)
+    @task
+    def extract_xml_files():
+        trigger_k8s_cronjob("cas-ggircs-eccc-extract-xml-files", namespace)
 
-extract_xml_files = PythonOperator(
-    python_callable=trigger_k8s_cronjob,
-    task_id='cas-ggircs-eccc-extract-xml-files',
-    op_args=['cas-ggircs-eccc-extract-xml-files', namespace],
-    dag=dag
-)
+    @task
+    def extract_attachments():
+        trigger_k8s_cronjob("cas-ggircs-eccc-extract-attachments", namespace)
 
-extract_attachments = PythonOperator(
-    python_callable=trigger_k8s_cronjob,
-    task_id='cas-ggircs-eccc-extract-attachments',
-    op_args=['cas-ggircs-eccc-extract-attachments', namespace],
-    dag=dag
-)
+    trigger_load_db_dag = TriggerDagRunOperator(
+        task_id="trigger_cas_ggircs_load_db_dag",
+        trigger_dag_id="cas_ggircs_load_db",
+    )
 
+    eccc_upload() >> extract_zip_files()
+    extract_zip_files() >> extract_xml_files() >> trigger_load_db_dag
+    extract_zip_files() >> extract_attachments() >> trigger_load_db_dag
 
-trigger_load_db_dag = TriggerDagRunOperator(
-    task_id='trigger_cas_ggircs_load_db_dag',
-    trigger_dag_id='cas_ggircs_load_db',
-    dag=dag
-)
-
-
-eccc_upload >> extract_zip_files
-extract_zip_files >> extract_xml_files >> trigger_load_db_dag
-extract_zip_files >> extract_attachments >> trigger_load_db_dag
+eccc_dag()
