@@ -1,3 +1,5 @@
+environment: dev
+
 swrsImportBucket:
   enable: true
   bucketSuffix: eccc-swrs-import
