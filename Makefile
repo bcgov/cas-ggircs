@@ -210,14 +210,10 @@ install_pgo_cluster:
 .PHONY: install
 install: whoami install_pgo_cluster
 	@set -euo pipefail; \
-	ggircsDagConfig=$$(echo '{"org": "bcgov", "repo": "cas-ggircs", "ref": "$(GIT_SHA1)", "path": "dags/cas_ggircs_dags.py"}' | base64 -w0); \
-	swrsDagConfig=$$(echo '{"org": "bcgov", "repo": "cas-ggircs", "ref": "$(GIT_SHA1)", "path": "dags/cas_ggircs_swrs_dags.py"}' | base64 -w0); \
 	helm dep up ./helm/cas-ggircs; \
 	helm upgrade --install --atomic --wait-for-jobs --timeout 3600s \
 		--namespace $(GGIRCS_NAMESPACE_PREFIX)-$(ENVIRONMENT) \
 		--set defaultImageTag=$(GIT_SHA1) \
-		--set download-ggircs-dags.dagConfiguration="$$ggircsDagConfig" \
-		--set download-swrs-dags.dagConfiguration="$$swrsDagConfig" \
 		--values ./helm/cas-ggircs/values.yaml \
 		--values ./helm/cas-ggircs/values-$(ENVIRONMENT).yaml \
 		--set ciip.release=cas-ciip-portal \
@@ -244,13 +240,9 @@ lint_chart: $(call make_help,lint_chart,Checks the configured helm chart templat
 lint_chart: whoami
 lint_chart:
 	@set -euo pipefail; \
-	ggircsDagConfig=$$(echo '{"org": "bcgov", "repo": "cas-ggircs", "ref": "$(GIT_SHA1)", "path": "dags/cas_ggircs_dags.py"}' | base64 -w0); \
-	swrsDagConfig=$$(echo '{"org": "bcgov", "repo": "cas-ggircs", "ref": "$(GIT_SHA1)", "path": "dags/cas_ggircs_swrs_dags.py"}' | base64 -w0); \
 	helm dep up ./helm/cas-ggircs; \
 	helm template --validate \
 		--set defaultImageTag=$(GIT_SHA1) \
-		--set download-ggircs-dags.dagConfiguration="$$ggircsDagConfig" \
-		--set download-swrs-dags.dagConfiguration="$$swrsDagConfig" \
 		--values ./helm/cas-ggircs/values.yaml \
 		--values ./helm/cas-ggircs/values-dev.yaml \
 		--set ciip.release=cas-ciip-portal \
@@ -264,8 +256,6 @@ lint_chart:
 		cas-ggircs ./helm/cas-ggircs; \
 	helm template --validate \
 		--set defaultImageTag=$(GIT_SHA1) \
-		--set download-ggircs-dags.dagConfiguration="$$ggircsDagConfig" \
-		--set download-swrs-dags.dagConfiguration="$$swrsDagConfig" \
 		--values ./helm/cas-ggircs/values.yaml \
 		--values ./helm/cas-ggircs/values-test.yaml \
 		--set ciip.release=cas-ciip-portal \
@@ -279,8 +269,6 @@ lint_chart:
 		cas-ggircs ./helm/cas-ggircs; \
 	helm template --validate \
 		--set defaultImageTag=$(GIT_SHA1) \
-		--set download-ggircs-dags.dagConfiguration="$$ggircsDagConfig" \
-		--set download-swrs-dags.dagConfiguration="$$swrsDagConfig" \
 		--values ./helm/cas-ggircs/values.yaml \
 		--values ./helm/cas-ggircs/values-prod.yaml \
 		--set ciip.release=cas-ciip-portal \
