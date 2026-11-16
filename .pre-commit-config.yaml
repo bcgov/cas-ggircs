@@ -29,3 +29,9 @@ repos:
     rev: v0.12.0
     hooks:
       - id: gitlint
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.17.5
+    hooks:
+      # Cuff check Airflow Dags.
+      - id: ruff-check
+        args: ["dags/", "--select", "AIR3", "--fix"]
