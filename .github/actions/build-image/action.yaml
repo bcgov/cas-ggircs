@@ -20,8 +20,6 @@ permissions:
 
 runs:
   using: composite
-  permissions:
-    packages: write
   steps:
     - uses: actions/checkout@v4
     - name: Set up Docker Buildx
