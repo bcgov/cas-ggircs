@@ -1,4 +1,4 @@
-postgres 17.0
-nodejs 24.11.1
+postgres 17.12
+nodejs 24.22.3
 yarn 1.22.22
-python 3.12.12
+python 3.12.16

@@ -1,4 +1,4 @@
-FROM perl:5.32.1
+FROM perl:5.44.0
 
 ENV HOME=/usr/src/cas-ggircs-etl
 COPY . ${HOME}
