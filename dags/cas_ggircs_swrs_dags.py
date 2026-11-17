@@ -2,18 +2,18 @@
 from dag_configuration import default_dag_args
 from trigger_k8s_cronjob import trigger_k8s_cronjob
 from airflow.providers.standard.operators.trigger_dagrun import TriggerDagRunOperator
-from airflow.decorators import dag, task
-from datetime import datetime, timedelta
+from airflow.sdk import dag, task
+from datetime import datetime, timezone
 import os
 import sys
 sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 
 
-TWO_DAYS_AGO = datetime.now() - timedelta(days=2)
+START_DATE = datetime(2021, 1, 1, tzinfo=timezone.utc)
 
 namespace = os.getenv('GGIRCS_NAMESPACE')
 
-default_args = {**default_dag_args, "start_date": TWO_DAYS_AGO}
+default_args = {**default_dag_args, "start_date": START_DATE}
 
 SWRS_ECCC_DAG_NAME = "cas_ggircs_swrs_eccc"
 SCHEDULE = "0 8 * * *"
@@ -34,6 +34,7 @@ The dag will
     default_args=default_args,
     doc_md=GGIRCS_SWRS_ECCC_DOC,
     is_paused_upon_creation=True,
+    catchup=False,
 )
 def eccc_dag():
     @task
