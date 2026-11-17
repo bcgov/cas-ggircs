@@ -82,20 +82,6 @@ app:
   env:
     supportEmail: ggircs@gov.bc.ca
 
-download-ggircs-dags:
-  enabled: true
-  airflowEndpoint: https://cas-airflow-dev.apps.silver.devops.gov.bc.ca
-  dagId: fetch_and_save_dag_from_github
-  helm:
-    hook: "pre-install,pre-upgrade"
-
-download-swrs-dags:
-  enabled: true
-  airflowEndpoint: https://cas-airflow-dev.apps.silver.devops.gov.bc.ca
-  dagId: fetch_and_save_dag_from_github
-  helm:
-    hook: "pre-install,pre-upgrade"
-
 trigger-ggircs-deploy-db:
   enabled: true
   airflowEndpoint: https://cas-airflow-dev.apps.silver.devops.gov.bc.ca

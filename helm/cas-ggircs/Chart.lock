@@ -2,14 +2,8 @@ dependencies:
 - name: cas-airflow-dag-trigger
   repository: https://bcgov.github.io/cas-airflow
   version: 1.2.2
-- name: cas-airflow-dag-trigger
-  repository: https://bcgov.github.io/cas-airflow
-  version: 1.2.2
-- name: cas-airflow-dag-trigger
-  repository: https://bcgov.github.io/cas-airflow
-  version: 1.2.2
 - name: terraform-bucket-provision
   repository: https://bcgov.github.io/cas-pipeline/
   version: 0.1.3
-digest: sha256:0fe76f534fb377482be9f4dbbb6489469cc71f549cf9c8bcab5d1c13b4a0ab37
-generated: "2025-12-01T18:25:39.710459-08:00"
+digest: sha256:a8eb9ea0d38b7b7bd2afaa628b23588ffbfb8b17a3d3932ef0a2bdb5d422166e
+generated: "2026-07-17T14:47:15.736876411-06:00"
